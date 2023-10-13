@@ -1,0 +1,15 @@
+{
+  "header": {
+    "navbar": {
+      "UPLOAD": "Yükle",
+      "new": {
+        "NEW": "Yeni",
+        "PROJECT": "Projeler",
+        "TASK": "Görev",
+        "USER": "Kullanıcı",
+        "EMAIL": "E-posta"
+      },
+      "NOTIFICATIONS": "Bildirimler"
+    }
+  }
+}
