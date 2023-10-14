@@ -23,7 +23,7 @@ const Search: React.FC<Props> = ({ options, value, onChange, onSubmit }) => {
 
   return (
     <div
-      className="flex items-center border-2 rounded-md max-w-xl w-full max-md:hidden h-[50px]"
+      className="flex items-center border-2 rounded-md max-w-xl w-full max-md:hidden h-[50px] ring-1 ring-primary-light focus-within:ring-primary-light transition-colors duration-300"
       role="listbox"
     >
       <select

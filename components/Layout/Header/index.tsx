@@ -85,12 +85,14 @@ const Header = () => {
         />
         <Dropdown
           onChange={(value) => console.log(value)}
-          value="1"
           options={Array.from({ length: 10 }, (_, i) => ({
             value: i.toString(),
             label: `Option ${i}`,
           }))}
           isSearchable
+          dropdownPlacement="bottomLeft"
+          label="Select"
+          noOptionsMessage="No options"
         />
       </div>
     </div>

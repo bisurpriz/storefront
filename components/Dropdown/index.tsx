@@ -9,7 +9,7 @@ interface Option {
 
 interface DropdownProps {
   options: Option[];
-  value: string;
+  value?: string;
   onChange: (value: string) => void;
   dropdownPlacement?: "bottomRight" | "bottomLeft" | "topLeft" | "topRight";
   isSearchable?: boolean;
@@ -54,10 +54,10 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className="relative h-[50px]">
+    <div className="relative h-[50px] ">
       <button
         type="button"
-        className="flex items-center justify-center bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full"
+        className="flex items-center justify-center bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
         onClick={() => setIsOpen(!isOpen)}
         onFocus={(e) => toggleClass("border-primary", e.target as HTMLElement)}
         onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}

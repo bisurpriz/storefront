@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import { i18n } from "@/utils/i18n-config";
 import Header from "../../components/Layout/Header";
+import Content from "@/components/Layout/Content";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,7 +65,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Suspense fallback={<Loading />}>
           <Header />
-          {children}
+          <Content>{children}</Content>
         </Suspense>
       </body>
     </html>

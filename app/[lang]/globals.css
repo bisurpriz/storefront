@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .content-height {
+    min-height: calc(100vh - 149px);
+  }
+}
+
+.accordion-content-enter {
+  opacity: 0;
+  max-height: 0;
+}
+
+.accordion-content-enter-active {
+  opacity: 1;
+  max-height: 1000px;
+  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+.accordion-content-exit {
+  opacity: 1;
+  max-height: 1000px;
+}
+
+.accordion-content-exit-active {
+  opacity: 0;
+  max-height: 0;
+  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
