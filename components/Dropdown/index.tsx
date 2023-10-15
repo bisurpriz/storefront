@@ -1,4 +1,4 @@
-import { useClassname } from "@/hooks/useClassname";
+import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
 import React, { useState } from "react";
 

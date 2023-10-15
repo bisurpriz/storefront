@@ -3,7 +3,6 @@
 import Button from "@/components/Button";
 import Image from "next/image";
 import React from "react";
-import { BsCart3 } from "react-icons/bs";
 
 interface ProductItemProps {
   name: string;

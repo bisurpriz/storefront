@@ -10,9 +10,10 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
+  searchPlaceholder?: string;
 };
 
-const Search: React.FC<Props> = ({ options, value, onChange, onSubmit }) => {
+const Search: React.FC<Props> = ({ options, value, onChange, onSubmit,searchPlaceholder = 'Search' }) => {
   const handlClassToggle = (
     e: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLSelectElement>
   ) => {
@@ -43,7 +44,7 @@ const Search: React.FC<Props> = ({ options, value, onChange, onSubmit }) => {
       <input
         className="w-full px-4 py-2 bg-white rounded-r-md focus:outline-none max-w-xl sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl h-full text-sm"
         type="text"
-        placeholder="Search"
+        placeholder={searchPlaceholder}
         onFocus={(e) => handlClassToggle(e)}
         onBlur={(e) => handlClassToggle(e)}
         onKeyDown={(e) => {

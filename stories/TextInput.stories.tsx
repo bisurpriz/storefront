@@ -1,0 +1,48 @@
+// stories/TextInput.stories.tsx
+import React, { useState } from 'react';
+import { Story, Meta } from '@storybook/react';
+
+import TextInput, { TextInputProps } from '../components/TextInput';
+import { BsCheck } from 'react-icons/bs';
+
+export default {
+  title: 'TextInput',
+  component: TextInput,
+} as Meta;
+
+const Template: Story<TextInputProps> = (args) => {
+  const [inputValue, setInputValue] = useState('');
+
+  return (
+    <TextInput
+      {...args}
+      value={inputValue}
+      onChange={(value) => setInputValue(value)}
+    />
+  );
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  label: 'Label',
+};
+
+export const WithPrefixAndSuffix = Template.bind({});
+WithPrefixAndSuffix.args = {
+  label: 'Amount',
+  prefix: '$',
+  suffix: 'USD',
+};
+
+export const WithIcon = Template.bind({});
+WithIcon.args = {
+  label: 'Email',
+  icon: <i className="fas fa-envelope"></i>,
+};
+
+export const WithSuccessIcon = Template.bind({});
+WithSuccessIcon.args = {
+  label: 'Password',
+  type: 'password',
+  successIcon: <BsCheck/>,
+};
