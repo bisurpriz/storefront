@@ -6,6 +6,7 @@ const nextConfig = {
       "maps.googleapis.com",
       "images.unsplash.com",
       "nest-nextjs-13.vercel.app",
+      "picsum.photos",
     ],
     loader: "default",
   },

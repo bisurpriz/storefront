@@ -1,21 +1,8 @@
+"use client";
+
 import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
 import React, { useState } from "react";
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-interface DropdownProps {
-  options: Option[];
-  value?: string;
-  onChange: (value: string) => void;
-  dropdownPlacement?: "bottomRight" | "bottomLeft" | "topLeft" | "topRight";
-  isSearchable?: boolean;
-  label?: string;
-  noOptionsMessage?: string;
-}
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
@@ -25,16 +12,17 @@ const Dropdown: React.FC<DropdownProps> = ({
   isSearchable = false,
   label,
   noOptionsMessage,
+  fullWidth = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedOption, setSelectedOption] = useState<Option | null>(
+  const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
     options.find((option) => option.value === value) || null
   );
 
   const { toggleClass } = useClassname();
 
-  const handleOptionClick = (option: Option) => {
+  const handleOptionClick = (option: DropdownOption) => {
     setSelectedOption(option);
     onChange(option.value);
     setIsOpen(false);
@@ -54,10 +42,12 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className="relative h-[50px] ">
+    <div
+      className={`relative h-[50px] min-w-[150px] ${fullWidth ? "w-full" : ""}`}
+    >
       <button
         type="button"
-        className="flex items-center justify-center bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+        className="flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
         onClick={() => setIsOpen(!isOpen)}
         onFocus={(e) => toggleClass("border-primary", e.target as HTMLElement)}
         onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}

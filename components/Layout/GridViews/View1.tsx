@@ -2,15 +2,8 @@ import ProductItem from "@/components/Product/Item";
 import Image from "next/image";
 import React from "react";
 
-interface Item {
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-}
-
 interface View1Props {
-  data: Item[];
+  data: ProductItemProps[];
 }
 
 const View1: React.FC<View1Props> = ({ data }) => {
@@ -23,6 +16,7 @@ const View1: React.FC<View1Props> = ({ data }) => {
           description={item.description}
           image={item.image}
           price={item.price}
+          id={item.id}
         />
       ))}
     </div>

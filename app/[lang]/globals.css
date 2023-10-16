@@ -4,7 +4,7 @@
 
 @layer components {
   .content-height {
-    min-height: calc(100vh - 149px);
+    min-height: calc(100vh -247px);
   }
 }
 
@@ -28,4 +28,17 @@
   opacity: 0;
   max-height: 0;
   transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 20px;
 }

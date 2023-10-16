@@ -1,13 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Lato } from "next/font/google";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { i18n } from "@/utils/i18n-config";
 import Header from "../../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 
-const inter = Inter({ subsets: ["latin"] });
+const lato = Lato({ subsets: ["latin"], weight: "400" });
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -62,7 +62,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={params.lang}>
-      <body className={inter.className}>
+      <body className={lato.className}>
         <Suspense fallback={<Loading />}>
           <Header />
           <Content>{children}</Content>

@@ -3,33 +3,34 @@ import Spinner from "../Spinner";
 
 interface ButtonProps {
   label?: string;
-  onClick: () => void;
+  onClick?: () => void;
   size?: "small" | "medium" | "large";
-  color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
-  icon?: React.ReactNode; // İkon bileşeni JSX'i olarak kabul eder
+  icon?: React.ReactNode;
   iconSize?: number;
-  // Yeni eklenen özellikler
   fullWidth?: boolean;
   rounded?: boolean;
   loading?: boolean;
+  variant?: "default" | "outlined" | "dashed" | "link" | "fullfilled"; // Yeni varyasyonlar
+  color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
 }
 
 const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
   size = "medium",
-  color = "primary",
   className,
   disabled = false,
   type = "button",
   icon,
-  iconSize = 20, // Varsayılan icon boyutu
-  fullWidth = false, // Düğmenin genişliğini 100% yapar
-  rounded = true, // Kenar yuvarlatmayı etkinleştirir
-  loading = false, // Yükleme durumunu gösterir
+  iconSize = 20,
+  fullWidth = false,
+  rounded = true,
+  loading = false,
+  variant = "default", // Varsayılan olarak "default" varyasyonu
+  color = "primary", // Varsayılan olarak "primary" rengi
 }) => {
   const sizeClasses = {
     small: "py-2 px-4 text-sm",
@@ -37,21 +38,81 @@ const Button: React.FC<ButtonProps> = ({
     large: "py-4 px-8 text-lg",
   };
 
-  const colorClasses = {
-    primary: "bg-primary text-white hover:bg-primary-dark",
-    error: "bg-red-500 text-white hover:bg-red-600",
-    warning: "bg-yellow-500 text-white hover:bg-yellow-600",
-    secondary: "bg-secondary text-white hover:bg-secondary-dark",
-    success: "bg-green-500 text-white hover:bg-green-600",
-    info: "bg-blue-500 text-white hover:bg-blue-600",
-  };
-
-  const baseClasses = "flex items-center font-semibold";
+  const baseClasses = "flex items-center font-semibold cursor-pointer relative";
   const sizeClass = sizeClasses[size];
-  const colorClass = colorClasses[color];
   const widthClass = fullWidth ? "w-full" : "";
   const roundedClass = rounded ? "rounded" : "";
   const loadingClass = loading ? "opacity-50 cursor-not-allowed" : "";
+  const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
+
+  const colors = (() => {
+    // check variant
+    switch (variant) {
+      case "outlined":
+      case "dashed":
+      case "link":
+        return {
+          primary: "text-primary border border-primary",
+          error: "text-error border border-error",
+          warning: "text-warning border border-warning",
+          secondary: "text-secondary border border-secondary",
+          success: "text-success border border-success",
+          info: "text-info border border-info",
+        };
+      case "fullfilled":
+        return {
+          primary: "bg-primary text-white hover:bg-primary-dark",
+          error: "bg-error text-white hover:bg-error-dark",
+          warning: "bg-warning text-white hover:bg-warning-dark",
+          secondary: "bg-secondary text-white hover:bg-secondary-dark",
+          success: "bg-success text-white hover:bg-success-dark",
+          info: "bg-info text-white hover:bg-info-dark",
+        };
+      default:
+        return {
+          primary: "bg-primary text-white hover:bg-primary-dark",
+          error: "bg-error text-white hover:bg-error-dark",
+          warning: "bg-warning text-white hover:bg-warning-dark",
+          secondary: "bg-secondary text-white hover:bg-secondary-dark",
+          success: "bg-success text-white hover:bg-success-dark",
+          info: "bg-info text-white hover:bg-info-dark",
+        };
+    }
+  })();
+
+  const colorClass = (() => {
+    switch (color) {
+      case "primary":
+        return colors.primary;
+      case "error":
+        return colors.error;
+      case "warning":
+        return colors.warning;
+      case "secondary":
+        return colors.secondary;
+      case "success":
+        return colors.success;
+      case "info":
+        return colors.info;
+      default:
+        return "";
+    }
+  })();
+
+  const variantClass = (() => {
+    switch (variant) {
+      case "outlined":
+        return "border border-gray-400";
+      case "dashed":
+        return "border-dashed border-gray-400";
+      case "link":
+        return "border-0 underline";
+      case "fullfilled":
+        return "bg-primary text-white hover:bg-primary-dark";
+      default:
+        return "";
+    }
+  })();
 
   const iconStyle: React.CSSProperties = {
     width: `${iconSize}px`,
@@ -62,13 +123,19 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${colorClass} ${widthClass} ${roundedClass} ${loadingClass} ${className}`}
+      className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className} `}
       onClick={onClick}
       disabled={disabled || loading}
       type={type}
     >
-      {icon && !loading && <span style={iconStyle}>{icon}</span>}
-      {loading ? <Spinner /> : label}
+      {icon && <span style={iconStyle}>{icon}</span>}
+      {loading && (
+        <Spinner
+          style={iconStyle}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
+        />
+      )}
+      {label}
     </button>
   );
 };
