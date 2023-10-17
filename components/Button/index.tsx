@@ -15,6 +15,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   variant?: "default" | "outlined" | "dashed" | "link" | "fullfilled"; // Yeni varyasyonlar
   color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
+  children?: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -31,6 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   loading = false,
   variant = "default", // Varsayılan olarak "default" varyasyonu
   color = "primary", // Varsayılan olarak "primary" rengi
+  children,
   ...rest
 }) => {
   const sizeClasses = {
@@ -137,7 +139,7 @@ const Button: React.FC<ButtonProps> = ({
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
         />
       )}
-      {label}
+      {children || label}
     </button>
   );
 };

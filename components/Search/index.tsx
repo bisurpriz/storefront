@@ -11,9 +11,17 @@ type Props = {
   onChange: (value: string) => void;
   onSubmit: () => void;
   searchPlaceholder?: string;
+  fullWidth?: boolean;
 };
 
-const Search: React.FC<Props> = ({ options, value, onChange, onSubmit,searchPlaceholder = 'Search' }) => {
+const Search: React.FC<Props> = ({
+  options,
+  value,
+  onChange,
+  onSubmit,
+  searchPlaceholder = "Search",
+  fullWidth = false,
+}) => {
   const handlClassToggle = (
     e: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLSelectElement>
   ) => {
@@ -24,7 +32,9 @@ const Search: React.FC<Props> = ({ options, value, onChange, onSubmit,searchPlac
 
   return (
     <div
-      className="flex items-center border-2 rounded-md max-w-xl w-full max-md:hidden h-[50px] ring-1 ring-primary-light focus-within:ring-primary-light transition-colors duration-300"
+      className={`flex items-center border-2 rounded-md h-[50px] ring-1 ring-primary-light focus-within:ring-primary-light transition-colors duration-300 min-w-[250px] ${
+        fullWidth ? "w-full" : ""
+      }`}
       role="listbox"
     >
       <select

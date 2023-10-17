@@ -3,18 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const ProductItem = ({
+const ProductItem = async ({
   name,
   description,
   image,
   price,
   id,
 }: ProductItemProps) => {
+  const url = "https://bisurprizdev.s3.eu-north-1.amazonaws.com";
   return (
     <div className="bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300">
       <Link href={`/products/${id}`}>
         <Image
-          src={image}
+          src={`${url}/${image}`}
           alt={name}
           className="w-full h-48 object-cover cursor-pointer hover:opacity-80 hover:scale-105 transition-all duration-300"
           width={220}

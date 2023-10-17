@@ -12,4 +12,5 @@ interface DropdownProps {
   label?: string;
   noOptionsMessage?: string;
   fullWidth?: boolean;
+  loading?: boolean;
 }

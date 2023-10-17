@@ -7,6 +7,7 @@ import { i18n } from "@/utils/i18n-config";
 import Header from "../../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
@@ -67,12 +68,14 @@ export default async function RootLayout({
         loginUrl={`${params.lang}/api/auth/login`}
         profileUrl={`${params.lang}/api/auth/me`}
       >
-        <body className={lato.className}>
-          <Suspense fallback={<Loading />}>
-            <Header />
-            <Content>{children}</Content>
-          </Suspense>
-        </body>
+        <ApolloWrapper>
+          <body className={lato.className} id="root">
+            <Suspense fallback={<Loading />}>
+              <Header />
+              <Content>{children}</Content>
+            </Suspense>
+          </body>
+        </ApolloWrapper>
       </UserProvider>
     </html>
   );

@@ -16,10 +16,10 @@ export interface MenuItem {
 
 interface MenuProps {
   items: MenuItem[];
+  orientation?: "horizontal" | "vertical";
 }
 
-const Menu: React.FC<MenuProps> = ({ items }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const Menu: React.FC<MenuProps> = ({ items, orientation = "horizontal" }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const handleMouseEnter = (index: number) => {
@@ -32,13 +32,10 @@ const Menu: React.FC<MenuProps> = ({ items }) => {
 
   return (
     <nav className={`${quicksand.className} bg-transparent font-semibold`}>
-      <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-        <AiOutlineMenu size={24} />
-      </button>
       <ul
-        className={`md:flex ${
-          isOpen ? "block" : "hidden"
-        } text-base leading-4 `}
+        className={`${
+          orientation === "horizontal" ? "flex" : "flex-col"
+        } space-x-4 max-md:space-x-0 max-md:space-y-4 text-base leading-4`}
       >
         {items.map((item, index) => (
           <li

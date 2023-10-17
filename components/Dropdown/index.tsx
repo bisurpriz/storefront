@@ -3,6 +3,7 @@
 import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
 import React, { useState } from "react";
+import { CSSTransition } from "react-transition-group";
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
@@ -13,11 +14,12 @@ const Dropdown: React.FC<DropdownProps> = ({
   label,
   noOptionsMessage,
   fullWidth = false,
+  loading = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
-    options.find((option) => option.value === value) || null
+    options?.find((option) => option.value === value) || null
   );
 
   const { toggleClass } = useClassname();
@@ -47,14 +49,36 @@ const Dropdown: React.FC<DropdownProps> = ({
     >
       <button
         type="button"
-        className="flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+        className="relative flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
         onClick={() => setIsOpen(!isOpen)}
         onFocus={(e) => toggleClass("border-primary", e.target as HTMLElement)}
         onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}
       >
+        {loading && (
+          <svg
+            className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8"
+            />
+          </svg>
+        )}
         {selectedOption ? selectedOption.label : label}
         <svg
-          className="-mr-1 ml-2 h-5 w-5"
+          className="h-5 w-5 absolute right-0 top-0 text-gray-400 -translate-x-1/2 translate-y-2/3"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -67,7 +91,20 @@ const Dropdown: React.FC<DropdownProps> = ({
           />
         </svg>
       </button>
-      {isOpen && (
+      <CSSTransition
+        unmountOnExit
+        in={isOpen}
+        mountOnEnter
+        classNames={{
+          enter: "h-0 opacity-0",
+          enterActive: "h-auto opacity-100 transition-all duration-500",
+          enterDone: "h-auto opacity-100",
+          exit: "h-auto opacity-100",
+          exitActive: "h-0 opacity-0 transition-all duration-500",
+          exitDone: "h-0 opacity-0",
+        }}
+        timeout={100}
+      >
         <div
           ref={ref}
           className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-primary ring-opacity-5
@@ -108,11 +145,11 @@ const Dropdown: React.FC<DropdownProps> = ({
                 </div>
               </div>
             )}
-            {options.filter((option) =>
+            {options?.filter((option) =>
               option.label.toLowerCase().includes(searchValue.toLowerCase())
             ).length > 0 ? (
               options
-                .filter((option) =>
+                ?.filter((option) =>
                   option.label.toLowerCase().includes(searchValue.toLowerCase())
                 )
                 .map((option) => (
@@ -136,7 +173,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             )}
           </div>
         </div>
-      )}
+      </CSSTransition>
     </div>
   );
 };

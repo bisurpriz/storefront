@@ -8,6 +8,7 @@ const nextConfig = {
       "nest-nextjs-13.vercel.app",
       "picsum.photos",
       "lh3.googleusercontent.com",
+      "bisurprizdev.s3.eu-north-1.amazonaws.com",
     ],
     loader: "default",
   },
