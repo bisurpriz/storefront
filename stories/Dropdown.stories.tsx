@@ -16,7 +16,7 @@ const options = [
 export const Default = () => {
   const [selectedValue, setSelectedValue] = useState("");
 
-  const handleChange = (value:string) => {
+  const handleChange = (value: string) => {
     setSelectedValue(value);
     action("Selected value")(value);
   };
@@ -33,7 +33,7 @@ export const Default = () => {
 
 export const Searchable = () => {
   const [selectedValue, setSelectedValue] = useState("");
-  const handleChange = (value:string) => {
+  const handleChange = (value: string) => {
     setSelectedValue(value);
     action("Selected value")(value);
   };
@@ -51,14 +51,14 @@ export const Searchable = () => {
 
 export const CustomNoOptionsMessage = () => {
   const [selectedValue, setSelectedValue] = useState("");
-  const handleChange = (value:string) => {
+  const handleChange = (value: string) => {
     setSelectedValue(value);
     action("Selected value")(value);
   };
 
   return (
     <Dropdown
-      options={options}
+      options={[]}
       value={selectedValue}
       onChange={handleChange}
       label="Select an option"

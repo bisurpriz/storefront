@@ -11,7 +11,7 @@ const ProductItem = ({
   id,
 }: ProductItemProps) => {
   return (
-    <div className="bg-white rounded-lg hover:shadow-lg p-4 rounded-t border hover:border-primary transition-all duration-300">
+    <div className="bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300">
       <Link href={`/products/${id}`}>
         <Image
           src={image}

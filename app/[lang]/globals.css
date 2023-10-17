@@ -8,6 +8,10 @@
   }
 }
 
+body {
+  position: relative;
+}
+
 .accordion-content-enter {
   opacity: 0;
   max-height: 0;

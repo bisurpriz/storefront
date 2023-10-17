@@ -6,6 +6,7 @@ import Loading from "./loading";
 import { i18n } from "@/utils/i18n-config";
 import Header from "../../components/Layout/Header";
 import Content from "@/components/Layout/Content";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
@@ -62,12 +63,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang={params.lang}>
-      <body className={lato.className}>
-        <Suspense fallback={<Loading />}>
-          <Header />
-          <Content>{children}</Content>
-        </Suspense>
-      </body>
+      <UserProvider
+        loginUrl={`${params.lang}/api/auth/login`}
+        profileUrl={`${params.lang}/api/auth/me`}
+      >
+        <body className={lato.className}>
+          <Suspense fallback={<Loading />}>
+            <Header />
+            <Content>{children}</Content>
+          </Suspense>
+        </body>
+      </UserProvider>
     </html>
   );
 }

@@ -7,6 +7,7 @@ const nextConfig = {
       "images.unsplash.com",
       "nest-nextjs-13.vercel.app",
       "picsum.photos",
+      "lh3.googleusercontent.com",
     ],
     loader: "default",
   },

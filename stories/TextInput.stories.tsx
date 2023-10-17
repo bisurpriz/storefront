@@ -1,17 +1,17 @@
 // stories/TextInput.stories.tsx
-import React, { useState } from 'react';
-import { Story, Meta } from '@storybook/react';
+import React, { useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import TextInput, { TextInputProps } from '../components/TextInput';
-import { BsCheck } from 'react-icons/bs';
+import TextInput from "../components/TextInput";
+import { BsCheck } from "react-icons/bs";
 
 export default {
-  title: 'TextInput',
+  title: "TextInput",
   component: TextInput,
 } as Meta;
 
-const Template: Story<TextInputProps> = (args) => {
-  const [inputValue, setInputValue] = useState('');
+const Template: StoryFn<TextInputProps> = (args) => {
+  const [inputValue, setInputValue] = useState("");
 
   return (
     <TextInput
@@ -24,25 +24,31 @@ const Template: Story<TextInputProps> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  label: 'Label',
+  label: "Label",
 };
 
 export const WithPrefixAndSuffix = Template.bind({});
 WithPrefixAndSuffix.args = {
-  label: 'Amount',
-  prefix: '$',
-  suffix: 'USD',
+  label: "Amount",
+  prefix: "$",
+  suffix: "USD",
 };
 
 export const WithIcon = Template.bind({});
 WithIcon.args = {
-  label: 'Email',
+  label: "Email",
   icon: <i className="fas fa-envelope"></i>,
 };
 
 export const WithSuccessIcon = Template.bind({});
 WithSuccessIcon.args = {
-  label: 'Password',
-  type: 'password',
-  successIcon: <BsCheck/>,
+  label: "Password",
+  type: "password",
+  successIcon: <BsCheck />,
+};
+
+export const WithErrorMessage = Template.bind({});
+WithErrorMessage.args = {
+  label: "Email",
+  errorMessage: "Email is required",
 };

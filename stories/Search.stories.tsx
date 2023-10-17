@@ -24,7 +24,7 @@ export const InteractiveSearch = () => {
     "Option 1"
   );
 
-  const handleChange = (value:string) => {
+  const handleChange = (value: string) => {
     action("Selected value")(value);
   };
 

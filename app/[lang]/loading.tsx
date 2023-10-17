@@ -1,20 +1,10 @@
 import Image from "next/image";
+import gif from "@/public/loading.gif";
 
 export default function Loading() {
   return (
-    <div id="preloader-active">
-      <div className="preloader d-flex align-items-center justify-content-center">
-        <div className="preloader-inner position-relative">
-          <div className="text-center">
-            <Image
-              src="/assets/imgs/theme/loading.gif"
-              alt="bisurpriz"
-              width={50}
-              height={50}
-            />
-          </div>
-        </div>
-      </div>
+    <div className="fixed inset-0 flex items-center justify-center z-50 w-full h-full bg-white">
+      <Image src={gif} alt="bisurpriz" width={50} height={50} />
     </div>
   );
 }

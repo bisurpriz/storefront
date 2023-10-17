@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "../Spinner";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   onClick?: () => void;
   size?: "small" | "medium" | "large";
@@ -25,20 +25,22 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   type = "button",
   icon,
-  iconSize = 20,
+  iconSize = 16,
   fullWidth = false,
   rounded = true,
   loading = false,
   variant = "default", // Varsayılan olarak "default" varyasyonu
   color = "primary", // Varsayılan olarak "primary" rengi
+  ...rest
 }) => {
   const sizeClasses = {
     small: "py-2 px-4 text-sm",
-    medium: "py-3 px-6",
+    medium: "py-3 px-6 text-base",
     large: "py-4 px-8 text-lg",
   };
 
-  const baseClasses = "flex items-center font-semibold cursor-pointer relative";
+  const baseClasses =
+    "flex items-center font-semibold cursor-pointer relative gap-4";
   const sizeClass = sizeClasses[size];
   const widthClass = fullWidth ? "w-full" : "";
   const roundedClass = rounded ? "rounded" : "";
@@ -117,12 +119,12 @@ const Button: React.FC<ButtonProps> = ({
   const iconStyle: React.CSSProperties = {
     width: `${iconSize}px`,
     height: `${iconSize}px`,
-    marginRight: label && !loading ? "0.5rem" : "0",
-    fontSize: `${iconSize}px`,
+    fontSize: `${iconSize ?? 24}px`,
   };
 
   return (
     <button
+      {...rest}
       className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className} `}
       onClick={onClick}
       disabled={disabled || loading}
