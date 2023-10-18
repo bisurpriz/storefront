@@ -4,4 +4,5 @@ interface ProductItemProps {
   image: string;
   price: number;
   id: string;
+  loading?: boolean;
 }

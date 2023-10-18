@@ -1,11 +1,13 @@
 "use client";
 
+import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import HeaderProfile from "@/components/Profile/HeaderProfile";
 import Search from "@/components/Search";
 
 import Image from "next/image";
 import React from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const HeaderMiddle = () => {
   return (
@@ -31,7 +33,13 @@ const HeaderMiddle = () => {
         />
       </div>
 
-      <div className="w-full float-right">
+      <div className="w-full float-right flex items-center justify-end gap-8">
+        <Button
+          icon={<AiOutlineShoppingCart />}
+          type="button"
+          size="small"
+          variant="outlined"
+        />
         <HeaderProfile />
       </div>
     </div>

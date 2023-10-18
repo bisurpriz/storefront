@@ -23,6 +23,7 @@ export const InteractiveSearch = () => {
     options.map((option) => option.label), // Knob ile seçenekler
     "Option 1"
   );
+  const sizeOptions = select("Size Options", ["sm", "md", "lg"], "md");
 
   const handleChange = (value: string) => {
     action("Selected value")(value);
@@ -39,6 +40,7 @@ export const InteractiveSearch = () => {
       onChange={handleChange}
       onSubmit={handleSearch}
       searchPlaceholder={searchPlaceholder}
+      size={sizeOptions}
     />
   );
 };

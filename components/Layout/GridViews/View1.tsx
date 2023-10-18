@@ -7,12 +7,10 @@ interface View1Props {
   data: ProductItemProps[];
 }
 
-const View1: React.FC<View1Props> = async ({ data }) => {
-  const { data: products } = await getClient().query({
+const View1: React.FC<View1Props> = async () => {
+  const { data: products, loading } = await getClient().query({
     query: GET_ALL_PRODUCTS,
   });
-
-  console.log(products);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -24,6 +22,7 @@ const View1: React.FC<View1Props> = async ({ data }) => {
           image={item.image_url[0]}
           price={item.price}
           id={item.id}
+          loading={loading}
         />
       ))}
     </div>

@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import ProductItemSkeleton from "./ProductItemSkeleton";
 
 const ProductItem = async ({
   name,
@@ -9,13 +10,17 @@ const ProductItem = async ({
   image,
   price,
   id,
+  loading = false,
 }: ProductItemProps) => {
   const url = "https://bisurprizdev.s3.eu-north-1.amazonaws.com";
-  return (
+
+  return loading ? (
+    <ProductItemSkeleton />
+  ) : (
     <div className="bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300">
       <Link href={`/products/${id}`}>
         <Image
-          src={`${url}/${image}`}
+          src={`${url}/${image.toString()}`}
           alt={name}
           className="w-full h-48 object-cover cursor-pointer hover:opacity-80 hover:scale-105 transition-all duration-300"
           width={220}
