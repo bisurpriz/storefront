@@ -6,19 +6,10 @@ import Dropdown from "@/components/Dropdown";
 import Menu, { MenuItem } from "@/components/Menu";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import { useQuery } from "@apollo/client";
+import Image from "next/image";
 import React, { useState } from "react";
-import { TbCategory, TbLogin2 } from "react-icons/tb";
-
-const browAllCategories: DropdownOption[] = [
-  {
-    label: "All Categories",
-    value: "all-categories",
-  },
-  {
-    label: "Chocolate",
-    value: "chocolate",
-  },
-];
+import { TbCategory } from "react-icons/tb";
+import { MdMenu } from "react-icons/md";
 
 const menuItems: MenuItem[] = [
   {
@@ -56,23 +47,35 @@ const HeaderBottom = () => {
 
   return (
     <div className="w-full max-md:px-4 pb-2 pt-4 flex items-center sm:gap-8 container mx-auto max-md:justify-between max-md:flex-row-reverse">
-      <Dropdown
-        onChange={(value) => console.log(value)}
-        options={data?.category.map((category: any) => ({
-          label: category.name,
-          value: category.id,
-        }))}
-        label="All Categories"
-        loading={loading}
-      />
+      <div className="max-sm:hidden">
+        <Dropdown
+          onChange={(value) => console.log(value)}
+          options={data?.category.map((category: any) => ({
+            label: category.name,
+            value: category.id,
+          }))}
+          label="All Categories"
+          loading={loading}
+        />
+      </div>
       <div className="max-md:hidden">
         <Menu items={menuItems} />
       </div>
+      <Image
+        src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
+        width={180}
+        height={55}
+        alt="BiSürpriz Logo"
+        className="mx-auto sm:hidden"
+        priority
+      />
       <div className="md:hidden">
         <Button
-          icon={<TbCategory />}
+          icon={<MdMenu />}
           variant="outlined"
-          size="small"
+          size="large"
+          iconSize={24}
+          className="max-sm:p-1"
           onClick={() => setIsOpen(true)}
         />
         <Drawer
