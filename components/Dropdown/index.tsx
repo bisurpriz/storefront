@@ -2,7 +2,7 @@
 
 import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -16,6 +16,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   fullWidth = false,
   loading = false,
   className = "",
+  children,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -27,7 +28,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   const handleOptionClick = (option: DropdownOption) => {
     setSelectedOption(option);
-    onChange(option.value);
+    onChange?.(option.value);
     setIsOpen(false);
     setSearchValue("");
   };
@@ -38,62 +39,78 @@ const Dropdown: React.FC<DropdownProps> = ({
   });
 
   const placementClases = {
-    bottomLeft: "origin-top-left left-0 mt-2",
-    bottomRight: "origin-top-right right-0 mt-2",
-    topLeft: "origin-bottom-left left-0 mb-2",
-    topRight: "origin-bottom-right right-0 mb-2",
+    bottomLeft: "bottom-0 left-0 transform -translate-y-full",
+    bottomRight: "bottom-0 right-0 transform translate-y-full",
+    topLeft: "top-0 left-0 transform translate-y-[50px]",
+    topRight: "top-0 right-0 transform translate-y-[50px]",
   };
+
+  const child = children
+    ? (React.Children.only(children) as React.ReactElement)
+    : null;
+
+  const childTrigger = child
+    ? React.cloneElement(child!, {
+        onClick: () => setIsOpen(!isOpen),
+      })
+    : null;
 
   return (
     <div
-      className={`relative h-[50px] min-w-[150px] ${className} ${
+      className={`relative h-[50px] whitespace-nowrap flex items-center ${className} ${
         fullWidth ? "w-full" : ""
       }`}
     >
-      <button
-        type="button"
-        className="relative flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
-        onClick={() => setIsOpen(!isOpen)}
-        onFocus={(e) => toggleClass("border-primary", e.target as HTMLElement)}
-        onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}
-      >
-        {loading && (
+      {!childTrigger ? (
+        <button
+          type="button"
+          className="relative flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+          onClick={() => setIsOpen(!isOpen)}
+          onFocus={(e) =>
+            toggleClass("border-primary", e.target as HTMLElement)
+          }
+          onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}
+        >
+          {loading && (
+            <svg
+              className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8"
+              />
+            </svg>
+          )}
+          {selectedOption ? selectedOption.label : label}
           <svg
-            className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
+            className="h-5 w-5 absolute right-0 top-0 text-gray-400 -translate-x-1/2 translate-y-2/3"
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
           >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
             <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8"
+              fillRule="evenodd"
+              d="M10.707 14.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 11.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
+              clipRule="evenodd"
             />
           </svg>
-        )}
-        {selectedOption ? selectedOption.label : label}
-        <svg
-          className="h-5 w-5 absolute right-0 top-0 text-gray-400 -translate-x-1/2 translate-y-2/3"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10.707 14.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 11.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
+        </button>
+      ) : (
+        childTrigger
+      )}
       <CSSTransition
         unmountOnExit
         in={isOpen}
@@ -125,7 +142,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               <div className="relative">
                 <input
                   type="text"
-                  className="block w-full px-4 py-2 text-sm text-gray-700"
+                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-md rounded-b-none"
                   placeholder="Search"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
@@ -150,29 +167,45 @@ const Dropdown: React.FC<DropdownProps> = ({
               </div>
             )}
             {options?.filter((option) =>
-              option.label.toLowerCase().includes(searchValue.toLowerCase())
+              typeof option.label === "string"
+                ? option.label.toLowerCase().includes(searchValue.toLowerCase())
+                : option
+                    .searchValue!.toLowerCase()
+                    .includes(searchValue.toLowerCase())
             ).length > 0 ? (
               options
                 ?.filter((option) =>
-                  option.label.toLowerCase().includes(searchValue.toLowerCase())
+                  typeof option.label === "string"
+                    ? option.label
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase())
+                    : option
+                        .searchValue!.toLowerCase()
+                        .includes(searchValue.toLowerCase())
                 )
-                .map((option) => (
-                  <button
-                    key={option.value}
-                    className={`${
-                      option.value === value
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700"
-                    } block px-4 py-2 text-sm w-full text-left`}
-                    role="menuitem"
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    {option.label}
-                  </button>
-                ))
+                .map((option) =>
+                  typeof option.label === "string" ? (
+                    <button
+                      key={option.value}
+                      className={`${
+                        option.value === value
+                          ? "bg-gray-100 text-gray-900"
+                          : "text-gray-700"
+                      } block px-4 py-2 text-sm w-full text-left`}
+                      role="menuitem"
+                      onClick={() => handleOptionClick(option)}
+                    >
+                      {option.label}
+                    </button>
+                  ) : (
+                    <div role="menuitem" key={option.value}>
+                      {option.label}
+                    </div>
+                  )
+                )
             ) : (
               <p className="block px-4 py-2 text-sm text-gray-700">
-                {noOptionsMessage || "No option found"}
+                {noOptionsMessage || "Arama sonucu bulunamadı"}
               </p>
             )}
           </div>
@@ -182,4 +215,4 @@ const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-export default Dropdown;
+export default memo(Dropdown);

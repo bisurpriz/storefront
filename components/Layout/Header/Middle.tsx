@@ -12,7 +12,7 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 
 const HeaderMiddle = () => {
   return (
-    <div className="w-full h-[120px] py-6 max-sm:h-auto max-md:px-4 flex items-center gap-8 max-md:gap-4 container mx-auto  max-sm:py-1 max-sm:px-2">
+    <div className="w-full h-[120px] py-6 max-sm:h-auto max-md:px-4 flex items-center justify-between gap-8 max-md:gap-4 container mx-auto  max-sm:py-1 max-sm:px-2">
       <Image
         src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
         width={180}
@@ -21,7 +21,7 @@ const HeaderMiddle = () => {
         className="max-sm:hidden"
         priority
       />
-      <div className="w-full">
+      <div className="w-full grow">
         <Search
           onChange={(value) => console.log(value)}
           onSubmit={() => console.log("submit")}
@@ -34,7 +34,7 @@ const HeaderMiddle = () => {
         />
       </div>
 
-      <div className="w-full float-right flex items-center justify-end gap-4 max-sm:hidden">
+      <div className="float-right flex items-center md:gap-4 max-sm:hidden">
         <Button
           icon={<MdOutlineFavoriteBorder />}
           type="button"

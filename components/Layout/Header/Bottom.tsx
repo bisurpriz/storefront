@@ -44,19 +44,9 @@ const HeaderBottom = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { data, loading } = useQuery(GET_ALL_CATEGORIES);
-
+  console.log(data);
   return (
     <div className="w-full max-md:px-4 pb-2 pt-4 flex items-center sm:gap-8 container mx-auto max-md:justify-between max-md:flex-row-reverse">
-      <Dropdown
-        onChange={(value) => console.log(value)}
-        options={data?.category.map((category: any) => ({
-          label: category.name,
-          value: category.id,
-        }))}
-        label="All Categories"
-        loading={loading}
-        className="max-sm:hidden"
-      />
       <Menu items={menuItems} className="max-md:hidden" />
       <Image
         src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}

@@ -54,7 +54,13 @@ const HeaderTop = () => {
         </p>
         <ul className="text-right whitespace-nowrap">
           <li>
-            Need help? Call us:<a href="tel:+905459879355">+905459879355</a>
+            Bisürpriz&apos;de satış yapmak ister misiniz?&nbsp;
+            <Link
+              href="/campaign-details"
+              className="text-primary hover:text-primary-dark"
+            >
+              Satıcı Paneli
+            </Link>
           </li>
         </ul>
       </div>

@@ -1,8 +1,6 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import React, { useState } from "react";
 import { Quicksand } from "next/font/google";
-import { useMeasure } from "@uidotdev/usehooks";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -27,8 +25,6 @@ const Menu: React.FC<MenuProps> = ({
   className = "",
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [listRef, { width }] = useMeasure<HTMLUListElement>();
-
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
   };
@@ -36,13 +32,6 @@ const Menu: React.FC<MenuProps> = ({
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
-
-  useEffect(() => {
-    // taşmaları kontrol ederek sona kalan ve taşanları sakla
-    if (listRef) {
-      const ref = listRef.current;
-    }
-  }, [width]);
 
   return (
     <nav
@@ -52,7 +41,6 @@ const Menu: React.FC<MenuProps> = ({
         className={`${
           orientation === "horizontal" ? "inline-flex" : "block"
         }  text-base leading-4 w-full`}
-        ref={listRef}
       >
         {items.map((item, index) => (
           <li

@@ -1,12 +1,13 @@
 interface DropdownOption {
   value: string;
-  label: string;
+  label: string | React.ReactNode;
+  searchValue?: string;
 }
 
 interface DropdownProps {
   options: DropdownOption[];
   value?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   dropdownPlacement?: "bottomRight" | "bottomLeft" | "topLeft" | "topRight";
   isSearchable?: boolean;
   label?: string;
@@ -14,4 +15,5 @@ interface DropdownProps {
   fullWidth?: boolean;
   loading?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
