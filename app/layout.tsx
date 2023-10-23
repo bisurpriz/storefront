@@ -1,4 +1,3 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import { Suspense } from "react";
@@ -7,6 +6,9 @@ import Header from "../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
+import "./globals.css";
+import "swiper/css";
+import "swiper/css/pagination";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
