@@ -1,7 +1,7 @@
 import { SwiperSlideProps } from "swiper/react";
 import { Swiper, SwiperOptions } from "swiper/types";
 
-interface SwiperProps extends SwiperSlideProps {
+export interface SwiperProps extends SwiperSlideProps {
   slideItems: SlideItem[];
   options?: SwiperOptions;
   onSlideChange?: (swiper: Swiper) => void;
@@ -11,7 +11,7 @@ interface SwiperProps extends SwiperSlideProps {
   spaceBetween?: number;
 }
 
-interface SlideItem {
+export interface SlideItem {
   /* @param key: slide key will be unique */
   key: string;
   children: React.ReactNode;

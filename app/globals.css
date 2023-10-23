@@ -38,6 +38,7 @@
 
 body {
   position: relative;
+  min-width: 375px;
 }
 
 .accordion-content-enter {

@@ -34,8 +34,6 @@ export default function Page() {
           </div>
         ),
       }))}
-      onSlideChange={(swiper) => console.log(swiper)}
-      onSwpier={(swiper) => console.log(swiper)}
     />
   );
 }

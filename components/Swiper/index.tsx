@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { SwiperProps } from "./swiper";
+import { SwiperProps } from "./Swiper";
 
 const CustomSwiper = ({
   options,
