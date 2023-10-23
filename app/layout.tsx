@@ -9,6 +9,7 @@ import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
+import Divider from "@/components/Divider";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
@@ -66,6 +67,7 @@ export default async function RootLayout({
           <body className={lato.className} id="root">
             <Suspense fallback={<Loading />}>
               <Header />
+              <Divider orientation="horizontal" />
               <Content>{children}</Content>
             </Suspense>
           </body>

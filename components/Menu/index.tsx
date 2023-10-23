@@ -1,7 +1,8 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { Quicksand } from "next/font/google";
+import { useMeasure } from "@uidotdev/usehooks";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -17,10 +18,16 @@ export interface MenuItem {
 interface MenuProps {
   items: MenuItem[];
   orientation?: "horizontal" | "vertical";
+  className?: string;
 }
 
-const Menu: React.FC<MenuProps> = ({ items, orientation = "horizontal" }) => {
+const Menu: React.FC<MenuProps> = ({
+  items,
+  orientation = "horizontal",
+  className = "",
+}) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [listRef, { width }] = useMeasure<HTMLUListElement>();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -30,12 +37,22 @@ const Menu: React.FC<MenuProps> = ({ items, orientation = "horizontal" }) => {
     setHoveredIndex(null);
   };
 
+  useEffect(() => {
+    // taşmaları kontrol ederek sona kalan ve taşanları sakla
+    if (listRef) {
+      const ref = listRef.current;
+    }
+  }, [width]);
+
   return (
-    <nav className={`${quicksand.className} bg-transparent font-semibold`}>
+    <nav
+      className={`${quicksand.className} bg-transparent font-semibold w-full ${className}`}
+    >
       <ul
         className={`${
-          orientation === "horizontal" ? "flex" : "flex-col"
-        } space-x-4 max-md:space-x-0 max-md:space-y-4 text-base leading-4`}
+          orientation === "horizontal" ? "inline-flex" : "block"
+        }  text-base leading-4 w-full`}
+        ref={listRef}
       >
         {items.map((item, index) => (
           <li

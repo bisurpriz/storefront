@@ -19,7 +19,7 @@ export default function Page() {
           <div className="p-4 max-w-xs">
             <div className="prose-img:1/1 prose-img:rounded prose-img:shadow-lg prose-img:overflow-hidden">
               <Image
-                src={"/images/1.jpg"}
+                src={"https://picsum.photos/200/300"}
                 width={100}
                 height={100}
                 alt="Picture of the author"

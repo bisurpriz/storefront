@@ -15,6 +15,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   noOptionsMessage,
   fullWidth = false,
   loading = false,
+  className = "",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -45,7 +46,9 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div
-      className={`relative h-[50px] min-w-[150px] ${fullWidth ? "w-full" : ""}`}
+      className={`relative h-[50px] min-w-[150px] ${className} ${
+        fullWidth ? "w-full" : ""
+      }`}
     >
       <button
         type="button"
@@ -104,10 +107,11 @@ const Dropdown: React.FC<DropdownProps> = ({
           exitDone: "h-0 opacity-0",
         }}
         timeout={100}
+        nodeRef={ref}
       >
         <div
           ref={ref}
-          className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-primary ring-opacity-5
+          className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-primary ring-opacity-5 z-10
             ${placementClases[dropdownPlacement]}
           `}
         >
