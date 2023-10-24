@@ -5,7 +5,7 @@ import HeaderBottom from "./Bottom";
 
 const Header = () => {
   return (
-    <div className="md:container mx-auto py-2 text-xs leading-none max-sm:flex max-sm:flex-col-reverse">
+    <div className="text-xs leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse mx-12 max-md:mx-0">
       <HeaderTop />
       <HeaderMiddle />
       <HeaderBottom />

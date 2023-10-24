@@ -47,7 +47,9 @@ const Drawer = ({
           },
           { "opacity-0 duration-500 ease-in-out invisible": !isOpen }
         )}
-      ></div>
+      >
+        adasdas
+      </div>
       <div className={clsx({ "fixed inset-0 overflow-hidden": isOpen })}>
         <div className="absolute inset-0 overflow-hidden">
           <div

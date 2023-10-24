@@ -8,7 +8,7 @@ type ContentProps = {
 
 const Content = ({ children }: ContentProps) => {
   return (
-    <main className="content-height h-full container pt-6 max-md:px-4 mx-auto max-sm:w-auto">
+    <main className="content-height max-sm:content-height-sm h-full pt-6 max-md:px-4 max-sm:px-4 max-md:mx-0 mx-12">
       {children}
     </main>
   );

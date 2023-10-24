@@ -23,7 +23,7 @@ const headerTopLeftMenu = [
 
 const HeaderTop = () => {
   return (
-    <div className="w-full max-sm:hidden max-md:px-4 container mx-auto">
+    <div className="w-full max-sm:hidden max-md:px-4 pt-2">
       <div className="flex items-center justify-between">
         <div className={`flex items-center gap-2 `}>
           {headerTopLeftMenu.map((item, index) => {
@@ -43,8 +43,8 @@ const HeaderTop = () => {
             );
           })}
         </div>
-        <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-md:hidden">
-          Get great devices up to 50% off{" "}
+        <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
+          Get great devices up to 50% off&nbsp;
           <Link
             href="/campaign-details"
             className="text-primary hover:text-primary-dark"

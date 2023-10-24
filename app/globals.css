@@ -4,7 +4,11 @@
 
 @layer components {
   .content-height {
-    min-height: calc(100vh - 223px);
+    min-height: calc(100vh - 197px);
+  }
+
+  .content-height-sm {
+    min-height: calc(100vh - 137px);
   }
 
   .tooltip-arrow {

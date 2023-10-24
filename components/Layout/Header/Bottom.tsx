@@ -2,52 +2,33 @@
 
 import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
-import Dropdown from "@/components/Dropdown";
 import Menu, { MenuItem } from "@/components/Menu";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import React, { useState } from "react";
-import { TbCategory } from "react-icons/tb";
 import { MdMenu } from "react-icons/md";
-
-const menuItems: MenuItem[] = [
-  {
-    text: "Popüler",
-    link: "/",
-    icon: <TbCategory size={24} />,
-  },
-  { text: "Hakkımızda", link: "/about" },
-  {
-    text: "Hizmetler",
-    link: "/services",
-    subMenuItems: [
-      { text: "Hizmetler 1", link: "/services1" },
-      { text: "Hizmetler 2", link: "/services2" },
-      { text: "Hizmetler 3", link: "/services3" },
-    ],
-  },
-  {
-    text: "Ürünler",
-    link: "/products",
-    subMenuItems: [
-      { text: "Ürünler 1", link: "/products1" },
-      { text: "Ürünler 2", link: "/products2" },
-      { text: "Ürünler 3", link: "/products3" },
-    ],
-  },
-  { text: "İletişim", link: "/contact" },
-  { text: "Blog", link: "/blog" },
-];
 
 const HeaderBottom = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data, loading } = useQuery(GET_ALL_CATEGORIES);
-  console.log(data);
+  const { data } = useQuery<{
+    category: {
+      id: number;
+      name: string;
+      slug: string;
+      image_url: string;
+    }[];
+  }>(GET_ALL_CATEGORIES);
+
+  const menuData: MenuItem[] | undefined = data?.category?.map((category) => ({
+    link: `/category/${category.slug}`,
+    text: category.name,
+  }));
+
   return (
-    <div className="w-full max-md:px-4 pb-2 pt-4 flex items-center sm:gap-8 container mx-auto max-md:justify-between max-md:flex-row-reverse">
-      <Menu items={menuItems} className="max-md:hidden" />
+    <div className="w-full max-md:px-4 pb-2 pt-4 flex items-center sm:gap-8 max-md:justify-between">
+      <Menu items={menuData} className="max-sm:hidden" />
       <Image
         src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
         width={180}
@@ -56,11 +37,11 @@ const HeaderBottom = () => {
         className="mx-auto sm:hidden"
         priority
       />
-      <div className="md:hidden">
+      <div className="sm:hidden">
         <Button
           icon={<MdMenu />}
           variant="outlined"
-          size="large"
+          size="small"
           iconSize={24}
           className="max-sm:p-1"
           onClick={() => setIsOpen(true)}
@@ -71,7 +52,7 @@ const HeaderBottom = () => {
           title="Menü"
           placement="left"
         >
-          <Menu items={menuItems} orientation="vertical" />
+          <Menu items={menuData} orientation="vertical" />
         </Drawer>
       </div>
     </div>

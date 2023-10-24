@@ -44,5 +44,6 @@ export const { getClient } = registerApolloClient(() => {
       }),
     ]),
     connectToDevTools: true,
+    ssrMode: true,
   });
 });

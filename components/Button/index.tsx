@@ -41,8 +41,7 @@ const Button: React.FC<ButtonProps> = ({
     large: "py-4 px-8 text-lg",
   };
 
-  const baseClasses =
-    "flex items-center font-semibold cursor-pointer relative gap-4";
+  const baseClasses = "flex items-center font-semibold cursor-pointer relative";
   const sizeClass = sizeClasses[size];
   const widthClass = fullWidth ? "w-full" : "";
   const roundedClass = rounded ? "rounded" : "";
