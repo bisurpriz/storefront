@@ -22,18 +22,12 @@ const HeaderMiddle = () => {
         className="max-sm:hidden"
         priority
       />
-      <div className="w-full grow">
-        <Search
-          onChange={(value) => console.log(value)}
-          onSubmit={() => console.log("submit")}
-          options={Array.from({ length: 10 }, (_, i) => ({
-            value: i.toString(),
-            label: `Option ${i}`,
-          }))}
-          value="1"
-          fullWidth
-        />
-      </div>
+      <Search
+        fullWidth
+        onSearch={(value) => {
+          console.log(value);
+        }}
+      />
 
       <div className="float-right flex items-center  max-sm:hidden">
         <Link href="/favorites">

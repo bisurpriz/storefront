@@ -21,12 +21,19 @@ const CustomSwiper = ({
       onSwiper={onSwpier}
       slidesPerView={slidePerView}
       spaceBetween={spaceBetween}
+      className="w-full h-full"
     >
-      {slideItems.map((item) => (
-        <SwiperSlide className={item.className} key={item.key}>
-          {item.children}
-        </SwiperSlide>
-      ))}
+      {slideItems.map((item) => {
+        const className = item.className ? item.className : "";
+        return (
+          <SwiperSlide
+            className={`flex items-center justify-center ${className}`}
+            key={item.key}
+          >
+            {item.children}
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 };

@@ -1,46 +1,28 @@
 import React from "react";
-import { action } from "@storybook/addon-actions";
-import { withKnobs, text, select } from "@storybook/addon-knobs";
-import Search from "../components/Search";
+import { withKnobs } from "@storybook/addon-knobs";
+import SearchInput, { SearchInputProps } from "../components/Search";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: "Search",
-  component: Search,
-  decorators: [withKnobs], // Knobs addon'unu kullanabilmek için gerekli decorator
+  title: "SearchInput",
+  component: SearchInput,
+  decorators: [withKnobs],
+} as Meta;
+
+const Template: StoryFn<SearchInputProps> = (args) => <SearchInput {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  onSearch: (query: string) => {
+    console.log("Arama sorgusu:", query);
+  },
+  fullWidth: false,
 };
 
-const options = [
-  { value: "option1", label: "Option 1" },
-  { value: "option2", label: "Option 2" },
-  { value: "option3", label: "Option 3" },
-];
-
-export const InteractiveSearch = () => {
-  const selectedValue = text("Selected Value", ""); // Knob ile metin girişi
-  const searchPlaceholder = text("Search Placeholder", "Search"); // Knob ile metin girişi
-  const dropdownOptions = select(
-    "Dropdown Options",
-    options.map((option) => option.label), // Knob ile seçenekler
-    "Option 1"
-  );
-  const sizeOptions = select("Size Options", ["sm", "md", "lg"], "md");
-
-  const handleChange = (value: string) => {
-    action("Selected value")(value);
-  };
-
-  const handleSearch = () => {
-    action("Search submitted")();
-  };
-
-  return (
-    <Search
-      options={options}
-      value={selectedValue}
-      onChange={handleChange}
-      onSubmit={handleSearch}
-      searchPlaceholder={searchPlaceholder}
-      size={sizeOptions}
-    />
-  );
+export const FullWidth = Template.bind({});
+FullWidth.args = {
+  onSearch: (query: string) => {
+    console.log("Arama sorgusu:", query);
+  },
+  fullWidth: true,
 };
