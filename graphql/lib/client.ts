@@ -2,7 +2,6 @@ import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
 import { getSession } from "@auth0/nextjs-auth0";
 import { setContext } from "@apollo/client/link/context";
-import { getToken } from "next-auth/jwt";
 import { onError } from "@apollo/client/link/error";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -16,12 +15,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const token = await getToken({
-    req: {
-      headers,
-    },
-    secret: process.env.AUTH0_CLIENT_SECRET,
-  });
+  const token = await getSession();
 
   const hasToken = token ? { authorization: `Bearer ${token.idToken}` } : {};
 
