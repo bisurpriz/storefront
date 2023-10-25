@@ -13,7 +13,7 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 
 const HeaderMiddle = () => {
   return (
-    <div className="w-full h-[120px] max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 ">
+    <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 ">
       <Image
         src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
         width={180}

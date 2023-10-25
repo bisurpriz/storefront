@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { SwiperProps } from "./Swiper";
+import { CustomSwiperProps } from "./Swiper";
 
 const CustomSwiper = ({
   options,
@@ -12,16 +12,18 @@ const CustomSwiper = ({
   direction = "vertical",
   slidePerView = 1,
   spaceBetween = 0,
-}: SwiperProps) => {
+  ...props
+}: CustomSwiperProps) => {
   return (
     <Swiper
       {...options}
+      {...props}
       direction={direction}
       onSlideChange={onSlideChange}
       onSwiper={onSwpier}
       slidesPerView={slidePerView}
       spaceBetween={spaceBetween}
-      className="w-full h-full"
+      className={`w-full h-full`}
     >
       {slideItems.map((item) => {
         const className = item.className ? item.className : "";

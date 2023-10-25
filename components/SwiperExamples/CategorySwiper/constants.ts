@@ -1,0 +1,71 @@
+export const data = [
+  {
+    id: 1,
+    title: "Cake & Milk",
+    slug: "jeans",
+    img: "cat-13.png",
+    bg: "bg-9",
+  },
+  {
+    id: 2,
+    title: "Oganic Kiwi",
+    slug: "shoe",
+    img: "cat-12.png",
+    bg: "bg-10",
+  },
+  {
+    id: 3,
+    title: "Peach",
+    slug: "jacket",
+    img: "cat-11.png",
+    bg: "bg-11",
+  },
+  {
+    id: 4,
+    title: "Red Apple",
+    img: "cat-9.png",
+    bg: "bg-12",
+  },
+  {
+    id: 5,
+    title: "Snack",
+    img: "cat-3.png",
+    bg: "bg-13",
+  },
+  {
+    id: 6,
+    title: "Vegetables",
+    img: "cat-1.png",
+    bg: "bg-14",
+  },
+  {
+    id: 7,
+    title: "Strawberry",
+    img: "cat-2.png",
+    bg: "bg-15",
+  },
+  {
+    id: 8,
+    title: "Black plum",
+    img: "cat-4.png",
+    bg: "bg-12",
+  },
+  {
+    id: 9,
+    title: "Custard apple",
+    img: "cat-5.png",
+    bg: "bg-10",
+  },
+  {
+    id: 10,
+    title: "Coffe & Tea",
+    img: "cat-14.png",
+    bg: "bg-12",
+  },
+  {
+    id: 11,
+    title: "Headphone",
+    img: "cat-15.png",
+    bg: "bg-11",
+  },
+];

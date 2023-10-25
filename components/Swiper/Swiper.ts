@@ -1,7 +1,7 @@
-import { SwiperSlideProps } from "swiper/react";
+import { SwiperProps } from "swiper/react";
 import { Swiper, SwiperOptions } from "swiper/types";
 
-export interface SwiperProps extends SwiperSlideProps {
+export interface CustomSwiperProps extends SwiperProps {
   slideItems: SlideItem[];
   options?: SwiperOptions;
   onSlideChange?: (swiper: Swiper) => void;
