@@ -13,28 +13,13 @@ const CampaignGrid: React.FC = () => {
         sm: 2,
       }}
     >
-      <GridItem
-        colSpan={{
-          sm: 6,
-        }}
-        className="bg-4"
-      >
+      <GridItem className="bg-4">
         <div className="p-12">Ali baba</div>
       </GridItem>
-      <GridItem
-        colSpan={{
-          sm: 6,
-        }}
-        className="bg-4"
-      >
+      <GridItem className="bg-4">
         <div className="p-12">Ali baba</div>
       </GridItem>
-      <GridItem
-        colSpan={{
-          sm: 6,
-        }}
-        className="bg-4"
-      >
+      <GridItem className="bg-4">
         <div className="p-12">Ali baba</div>
       </GridItem>
     </Grid>

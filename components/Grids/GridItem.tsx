@@ -11,35 +11,34 @@ import {
 } from "./contants";
 
 const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
+  const colSpanIsNumber = typeof colSpan === "number";
+  const rowSpanIsNumber = typeof rowSpan === "number";
+
   const getColSpanWithSizes = () => {
-    const smColSpan =
-      typeof colSpan === "object" ? ColSpanSmSizes[colSpan.sm!] : ``;
-    const mdColSpan =
-      typeof colSpan === "object" ? ColSpanMdSizes[colSpan.md!] : ``;
-    const lgColSpan =
-      typeof colSpan === "object" ? ColSpanLgSizes[colSpan.lg!] : ``;
-    const xlColSpan =
-      typeof colSpan === "object" ? ColSpanXlSizes[colSpan.xl!] : ``;
+    const smColSpan = !colSpanIsNumber ? ColSpanSmSizes[colSpan?.sm!] : ``;
+    const mdColSpan = !colSpanIsNumber ? ColSpanMdSizes[colSpan?.md!] : ``;
+    const lgColSpan = !colSpanIsNumber ? ColSpanLgSizes[colSpan?.lg!] : ``;
+    const xlColSpan = !colSpanIsNumber ? ColSpanXlSizes[colSpan?.xl!] : ``;
+
+    const arr = ["col-span-auto", smColSpan, mdColSpan, lgColSpan, xlColSpan];
 
     const gridColSpans = colSpan
-      ? ["col-span-12", smColSpan, mdColSpan, lgColSpan, xlColSpan].join(" ")
+      ? arr.filter((item) => item !== "").join(" ")
       : "";
 
     return gridColSpans;
   };
 
   const getRowSpanWithSizes = () => {
-    const smRowSpan =
-      typeof rowSpan === "object" ? RowSpanSmSizes[rowSpan.sm!] : ``;
-    const mdRowSpan =
-      typeof rowSpan === "object" ? RowSpanMdSizes[rowSpan.md!] : ``;
-    const lgRowSpan =
-      typeof rowSpan === "object" ? RowSpanLgSizes[rowSpan.lg!] : ``;
-    const xlRowSpan =
-      typeof rowSpan === "object" ? RowSpanXlSizes[rowSpan.xl!] : ``;
+    const smRowSpan = !rowSpanIsNumber ? RowSpanSmSizes[rowSpan?.sm!] : ``;
+    const mdRowSpan = !rowSpanIsNumber ? RowSpanMdSizes[rowSpan?.md!] : ``;
+    const lgRowSpan = !rowSpanIsNumber ? RowSpanLgSizes[rowSpan?.lg!] : ``;
+    const xlRowSpan = !rowSpanIsNumber ? RowSpanXlSizes[rowSpan?.xl!] : ``;
+
+    const arr = ["row-span-auto", smRowSpan, mdRowSpan, lgRowSpan, xlRowSpan];
 
     const gridRowSpans = rowSpan
-      ? ["row-span-12", smRowSpan, mdRowSpan, lgRowSpan, xlRowSpan].join(" ")
+      ? arr.filter((item) => item !== "").join(" ")
       : "";
 
     return gridRowSpans;

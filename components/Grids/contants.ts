@@ -1,16 +1,16 @@
 export const ColSpanSmSizes = {
-  1: "sm:col-span-1",
-  2: "sm:col-span-2",
-  3: "sm:col-span-3",
-  4: "sm:col-span-4",
-  5: "sm:col-span-5",
-  6: "sm:col-span-6",
-  7: "sm:col-span-7",
-  8: "sm:col-span-8",
-  9: "sm:col-span-9",
-  10: "sm:col-span-10",
-  11: "sm:col-span-11",
-  12: "sm:col-span-12",
+  1: "sm:col-span-1 max-sm:col-span-1",
+  2: "sm:col-span-2 max-sm:col-span-2",
+  3: "sm:col-span-3 max-sm:col-span-3",
+  4: "sm:col-span-4 max-sm:col-span-4",
+  5: "sm:col-span-5 max-sm:col-span-5",
+  6: "sm:col-span-6 max-sm:col-span-6",
+  7: "sm:col-span-7 max-sm:col-span-7",
+  8: "sm:col-span-8 max-sm:col-span-8",
+  9: "sm:col-span-9 max-sm:col-span-9",
+  10: "sm:col-span-10 max-sm:col-span-10",
+  11: "sm:col-span-11 max-sm:col-span-11",
+  12: "sm:col-span-12 max-sm:col-span-12",
 };
 
 export const ColSpanMdSizes = {
@@ -59,18 +59,18 @@ export const ColSpanXlSizes = {
 };
 
 export const RowSpanSmSizes = {
-  1: "sm:grid-rows-1",
-  2: "sm:grid-rows-2",
-  3: "sm:grid-rows-3",
-  4: "sm:grid-rows-4",
-  5: "sm:grid-rows-5",
-  6: "sm:grid-rows-6",
-  7: "sm:grid-rows-7",
-  8: "sm:grid-rows-8",
-  9: "sm:grid-rows-9",
-  10: "sm:grid-rows-10",
-  11: "sm:grid-rows-11",
-  12: "sm:grid-rows-12",
+  1: "sm:grid-rows-1 max-sm:grid-rows-1",
+  2: "sm:grid-rows-2 max-sm:grid-rows-2",
+  3: "sm:grid-rows-3 max-sm:grid-rows-3",
+  4: "sm:grid-rows-4 max-sm:grid-rows-4",
+  5: "sm:grid-rows-5 max-sm:grid-rows-5",
+  6: "sm:grid-rows-6 max-sm:grid-rows-6",
+  7: "sm:grid-rows-7 max-sm:grid-rows-7",
+  8: "sm:grid-rows-8 max-sm:grid-rows-8",
+  9: "sm:grid-rows-9 max-sm:grid-rows-9",
+  10: "sm:grid-rows-10 max-sm:grid-rows-10",
+  11: "sm:grid-rows-11 max-sm:grid-rows-11",
+  12: "sm:grid-rows-12 max-sm:grid-rows-12",
 };
 
 export const RowSpanMdSizes = {
@@ -119,18 +119,18 @@ export const RowSpanXlSizes = {
 };
 
 export const SmSizes = {
-  1: "sm:grid-cols-1",
-  2: "sm:grid-cols-2",
-  3: "sm:grid-cols-3",
-  4: "sm:grid-cols-4",
-  5: "sm:grid-cols-5",
-  6: "sm:grid-cols-6",
-  7: "sm:grid-cols-7",
-  8: "sm:grid-cols-8",
-  9: "sm:grid-cols-9",
-  10: "sm:grid-cols-10",
-  11: "sm:grid-cols-11",
-  12: "sm:grid-cols-12",
+  1: "sm:grid-cols-1 max-sm:grid-cols-1",
+  2: "sm:grid-cols-2 max-sm:grid-cols-2",
+  3: "sm:grid-cols-3 max-sm:grid-cols-3",
+  4: "sm:grid-cols-4 max-sm:grid-cols-4",
+  5: "sm:grid-cols-5 max-sm:grid-cols-5",
+  6: "sm:grid-cols-6 max-sm:grid-cols-6",
+  7: "sm:grid-cols-7 max-sm:grid-cols-7",
+  8: "sm:grid-cols-8 max-sm:grid-cols-8",
+  9: "sm:grid-cols-9 max-sm:grid-cols-9",
+  10: "sm:grid-cols-10 max-sm:grid-cols-10",
+  11: "sm:grid-cols-11 max-sm:grid-cols-11",
+  12: "sm:grid-cols-12 max-sm:grid-cols-12",
 };
 
 export const MdSizes = {
@@ -179,18 +179,18 @@ export const XlSizes = {
 };
 
 export const RowSmSizes = {
-  1: "sm:grid-rows-1",
-  2: "sm:grid-rows-2",
-  3: "sm:grid-rows-3",
-  4: "sm:grid-rows-4",
-  5: "sm:grid-rows-5",
-  6: "sm:grid-rows-6",
-  7: "sm:grid-rows-7",
-  8: "sm:grid-rows-8",
-  9: "sm:grid-rows-9",
-  10: "sm:grid-rows-10",
-  11: "sm:grid-rows-11",
-  12: "sm:grid-rows-12",
+  1: "sm:grid-rows-1 max-sm:grid-rows-1",
+  2: "sm:grid-rows-2 max-sm:grid-rows-2",
+  3: "sm:grid-rows-3 max-sm:grid-rows-3",
+  4: "sm:grid-rows-4 max-sm:grid-rows-4",
+  5: "sm:grid-rows-5 max-sm:grid-rows-5",
+  6: "sm:grid-rows-6 max-sm:grid-rows-6",
+  7: "sm:grid-rows-7 max-sm:grid-rows-7",
+  8: "sm:grid-rows-8 max-sm:grid-rows-8",
+  9: "sm:grid-rows-9 max-sm:grid-rows-9",
+  10: "sm:grid-rows-10 max-sm:grid-rows-10",
+  11: "sm:grid-rows-11 max-sm:grid-rows-11",
+  12: "sm:grid-rows-12 max-sm:grid-rows-12",
 };
 
 export const RowMdSizes = {
@@ -239,18 +239,18 @@ export const RowXlSizes = {
 };
 
 export const GapSmSizes = {
-  1: "sm:gap-1",
-  2: "sm:gap-2",
-  3: "sm:gap-3",
-  4: "sm:gap-4",
-  5: "sm:gap-5",
-  6: "sm:gap-6",
-  7: "sm:gap-7",
-  8: "sm:gap-8",
-  9: "sm:gap-9",
-  10: "sm:gap-10",
-  11: "sm:gap-11",
-  12: "sm:gap-12",
+  1: "sm:gap-1 max-sm:gap-1",
+  2: "sm:gap-2 max-sm:gap-2",
+  3: "sm:gap-3 max-sm:gap-3",
+  4: "sm:gap-4 max-sm:gap-4",
+  5: "sm:gap-5 max-sm:gap-5",
+  6: "sm:gap-6 max-sm:gap-6",
+  7: "sm:gap-7 max-sm:gap-7",
+  8: "sm:gap-8 max-sm:gap-8",
+  9: "sm:gap-9 max-sm:gap-9",
+  10: "sm:gap-10 max-sm:gap-10",
+  11: "sm:gap-11 max-sm:gap-11",
+  12: "sm:gap-12 max-sm:gap-12",
 };
 
 export const GapMdSizes = {
