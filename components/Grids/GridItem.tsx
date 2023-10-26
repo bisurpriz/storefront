@@ -24,7 +24,7 @@ const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
 
     const gridColSpans = colSpan
       ? arr.filter((item) => item !== "").join(" ")
-      : "";
+      : "col-span-full";
 
     return gridColSpans;
   };
@@ -39,7 +39,7 @@ const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
 
     const gridRowSpans = rowSpan
       ? arr.filter((item) => item !== "").join(" ")
-      : "";
+      : "row-span-auto";
 
     return gridRowSpans;
   };

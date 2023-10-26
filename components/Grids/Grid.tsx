@@ -24,44 +24,45 @@ const Grid = ({
 }: GridProps) => {
   const gridFlowClass = gridFlow ? `grid-flow-${gridFlow}` : "";
 
-  const getColsWithSize = () => {
-    const smCols = typeof cols === "object" ? SmSizes[cols.sm!] : ``;
-    const mdCols = typeof cols === "object" ? MdSizes[cols.md!] : ``;
-    const lgCols = typeof cols === "object" ? LgSizes[cols.lg!] : ``;
-    const xlCols = typeof cols === "object" ? XlSizes[cols.xl!] : ``;
+  const colsIsNumber = typeof cols === "number";
+  const rowsIsNumber = typeof rows === "number";
+  const gapIsNumber = typeof gap === "number";
 
-    const gridCols =
-      typeof cols === "object"
-        ? ["grid-cols-12", smCols, mdCols, lgCols, xlCols].join(" ")
-        : `grid-cols-${cols}`;
+  const getColsWithSize = () => {
+    const smCols = !colsIsNumber ? SmSizes[cols?.sm!] : ``;
+    const mdCols = !colsIsNumber ? MdSizes[cols?.md!] : ``;
+    const lgCols = !colsIsNumber ? LgSizes[cols?.lg!] : ``;
+    const xlCols = !colsIsNumber ? XlSizes[cols?.xl!] : ``;
+
+    const gridCols = !colsIsNumber
+      ? ["grid-cols-12", smCols, mdCols, lgCols, xlCols].join(" ")
+      : `grid-cols-${cols}`;
 
     return gridCols;
   };
 
   const getRowsWithSize = () => {
-    const smRows = typeof rows === "object" ? RowSmSizes[rows.sm!] : ``;
-    const mdRows = typeof rows === "object" ? RowMdSizes[rows.md!] : ``;
-    const lgRows = typeof rows === "object" ? RowLgSizes[rows.lg!] : ``;
-    const xlRows = typeof rows === "object" ? RowXlSizes[rows.xl!] : ``;
+    const smRows = !rowsIsNumber ? RowSmSizes[rows?.sm!] : ``;
+    const mdRows = !rowsIsNumber ? RowMdSizes[rows?.md!] : ``;
+    const lgRows = !rowsIsNumber ? RowLgSizes[rows?.lg!] : ``;
+    const xlRows = !rowsIsNumber ? RowXlSizes[rows?.xl!] : ``;
 
-    const gridRows =
-      typeof rows === "object"
-        ? ["grid-rows-12", smRows, mdRows, lgRows, xlRows].join(" ")
-        : `grid-rows-${rows}`;
+    const gridRows = !rowsIsNumber
+      ? ["grid-rows-12", smRows, mdRows, lgRows, xlRows].join(" ")
+      : `grid-rows-${rows}`;
 
     return gridRows;
   };
 
   const getGapWithSize = () => {
-    const smGap = typeof gap === "object" ? GapSmSizes[gap.sm!] : ``;
-    const mdGap = typeof gap === "object" ? GapMdSizes[gap.md!] : ``;
-    const lgGap = typeof gap === "object" ? GapLgSizes[gap.lg!] : ``;
-    const xlGap = typeof gap === "object" ? GapXlSizes[gap.xl!] : ``;
+    const smGap = !gapIsNumber ? GapSmSizes[gap?.sm!] : ``;
+    const mdGap = !gapIsNumber ? GapMdSizes[gap?.md!] : ``;
+    const lgGap = !gapIsNumber ? GapLgSizes[gap?.lg!] : ``;
+    const xlGap = !gapIsNumber ? GapXlSizes[gap?.xl!] : ``;
 
-    const gridGap =
-      typeof gap === "object"
-        ? ["gap-4", smGap, mdGap, lgGap, xlGap].join(" ")
-        : `gap-${gap}`;
+    const gridGap = !gapIsNumber
+      ? ["gap-4", smGap, mdGap, lgGap, xlGap].join(" ")
+      : `gap-${gap}`;
 
     return gridGap;
   };
