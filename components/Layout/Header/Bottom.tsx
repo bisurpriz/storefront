@@ -54,6 +54,7 @@ const HeaderBottom = () => {
           onClose={() => setIsOpen(false)}
           title="Menü"
           placement="left"
+          lockScroll={true}
         >
           <MobileMenu items={menuData} />
         </Drawer>

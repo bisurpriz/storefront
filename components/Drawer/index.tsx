@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
+import { useLockScroll } from "@/hooks/useLockScroll";
+import { useMeasure } from "@uidotdev/usehooks";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -29,20 +31,31 @@ const Drawer = ({
   placement = "right",
   children,
   title,
+  lockScroll = false,
 }: DrawerProps) => {
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
+  useLockScroll({ bool: lockScroll && !isOpen });
 
+  const handleEsc = React.useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose?.();
+    }
+  }, []);
+
+  const handleResize = useCallback(() => {
+    if (window.innerWidth > 640) {
+      onClose?.();
+    }
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("keydown", handleEsc);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div
