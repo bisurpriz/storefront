@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
 import Menu, { MenuItem } from "@/components/Menu";
+import MobileMenu from "@/components/Menu/MobileMenu";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
@@ -54,7 +55,7 @@ const HeaderBottom = () => {
           title="Menü"
           placement="left"
         >
-          <Menu items={menuData} orientation="vertical" />
+          <MobileMenu items={menuData} />
         </Drawer>
       </div>
     </div>

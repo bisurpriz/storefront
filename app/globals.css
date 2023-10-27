@@ -52,7 +52,7 @@ body {
 .accordion-content-enter-active {
   opacity: 1;
   max-height: 1000px;
-  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+  transition: max-height 100ms ease-in-out, opacity 100ms ease-in-out;
 }
 
 .accordion-content-exit {
@@ -63,7 +63,7 @@ body {
 .accordion-content-exit-active {
   opacity: 0;
   max-height: 0;
-  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+  transition: max-height 100ms ease-in-out, opacity 100ms ease-in-out;
 }
 
 ::-webkit-scrollbar-thumb:hover {
