@@ -15,9 +15,16 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const token = await getSession();
+  let token = null;
 
-  const hasToken = token ? { authorization: `Bearer ${token.idToken}` } : {};
+  try {
+    const session = await getSession();
+    token = session?.idToken;
+  } catch (e) {
+    console.error(e, "error getting session");
+  }
+
+  const hasToken = token ? { authorization: `Bearer ${token}` } : {};
 
   return {
     headers: {
