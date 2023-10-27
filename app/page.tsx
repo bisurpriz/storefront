@@ -6,9 +6,8 @@ import View1 from "@/components/Layout/GridViews/View1";
 export default async function Page() {
   return (
     <div>
-      <BrandSwiper />
       <CategorySwiper />
-      <CampaignGrid />
+      <BrandSwiper />
       <View1 />
     </div>
   );

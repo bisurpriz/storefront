@@ -11,19 +11,19 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { MdMenu } from "react-icons/md";
 
-const HeaderBottom = () => {
+interface Props {
+  categories: {
+    id: number;
+    name: string;
+    slug: string;
+    image_url: string;
+  }[];
+}
+
+const HeaderBottom = ({ categories }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data } = useQuery<{
-    category: {
-      id: number;
-      name: string;
-      slug: string;
-      image_url: string;
-    }[];
-  }>(GET_ALL_CATEGORIES);
-
-  const menuData: MenuItem[] | undefined = data?.category?.map((category) => ({
+  const menuData: MenuItem[] | undefined = categories?.map((category) => ({
     link: `/category/${category.slug}`,
     text: category.name,
   }));
