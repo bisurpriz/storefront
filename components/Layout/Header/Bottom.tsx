@@ -6,6 +6,7 @@ import Menu, { MenuItem } from "@/components/Menu";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { MdMenu } from "react-icons/md";
 
@@ -29,14 +30,15 @@ const HeaderBottom = () => {
   return (
     <div className="w-full max-md:px-4 pb-2 pt-4 flex items-center sm:gap-8 max-md:justify-between">
       <Menu items={menuData} className="max-sm:hidden" />
-      <Image
-        src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
-        width={180}
-        height={55}
-        alt="BiSürpriz Logo"
-        className="mx-auto sm:hidden"
-        priority
-      />
+      <Link href="/" className="mx-auto sm:hidden">
+        <Image
+          src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
+          width={180}
+          height={55}
+          alt="BiSürpriz Logo"
+          priority
+        />
+      </Link>
       <div className="sm:hidden">
         <Button
           icon={<MdMenu />}

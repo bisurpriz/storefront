@@ -12,6 +12,9 @@ const nextConfig = {
     ],
     loader: "default",
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

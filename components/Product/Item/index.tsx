@@ -1,10 +1,12 @@
+"use client";
+
 import Button from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 
-const ProductItem = async ({
+const ProductItem = ({
   name,
   description,
   image,
@@ -22,7 +24,7 @@ const ProductItem = async ({
         <Image
           src={`${url}/${image.toString()}`}
           alt={name}
-          className="w-full h-48 object-cover cursor-pointer hover:opacity-80 hover:scale-105 transition-all duration-300"
+          className="w-full h-80 object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300"
           width={220}
           height={220}
         />

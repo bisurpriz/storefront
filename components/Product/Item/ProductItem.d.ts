@@ -1,3 +1,8 @@
+interface ProductData {
+  products: ProductItemProps[];
+  totalCount: number;
+}
+
 interface ProductItemProps {
   name: string;
   description: string;

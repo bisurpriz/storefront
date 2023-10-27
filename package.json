@@ -27,6 +27,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^4.11.0",
+    "react-intersection-observer": "^9.5.2",
     "react-transition-group": "^4.4.5",
     "server-only": "^0.0.1",
     "swiper": "^10.3.1"
