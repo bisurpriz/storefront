@@ -27,6 +27,8 @@ const ProductItem = ({
           className="w-full h-80 object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300"
           width={220}
           height={220}
+          loading="lazy"
+          sizes="220px"
         />
       </Link>
       <h2 className="text-lg font-semibold mt-2">{name}</h2>

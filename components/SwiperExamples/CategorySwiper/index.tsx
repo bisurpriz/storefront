@@ -29,6 +29,7 @@ const CategorySwiper = () => {
                     width={80}
                     height={80}
                     className="transform group-hover:scale-110 transition-all duration-300 ease-in-out"
+                    loading="lazy"
                   />
                   <div className="text-center text-sm font-bold text-gray-800">
                     {item.title}
