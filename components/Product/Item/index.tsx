@@ -6,6 +6,8 @@ import Link from "next/link";
 import React from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 
+export const IMAGE_URL = "https://bisurprizdev.s3.eu-north-1.amazonaws.com";
+
 const ProductItem = ({
   name,
   description,
@@ -14,15 +16,13 @@ const ProductItem = ({
   id,
   loading = false,
 }: ProductItemProps) => {
-  const url = "https://bisurprizdev.s3.eu-north-1.amazonaws.com";
-
   return loading ? (
     <ProductItemSkeleton />
   ) : (
     <div className="bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300">
       <Link href={`/products/${id}`}>
         <Image
-          src={`${url}/${image.toString()}`}
+          src={`${IMAGE_URL}/${image.toString()}`}
           alt={name}
           className="w-full h-80 object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300"
           width={220}

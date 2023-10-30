@@ -42,7 +42,7 @@ const CategorySwiper = () => {
             key: i.toString(),
             children: (
               <Card
-                wrapperClass={`bg-cover bg-center aspect-[10/4] ${item.image} p-16 rounded-3xl
+                wrapperClass={`bg-cover bg-center max-lg:aspect-[5/2] lg:aspect-[3/1] ${item.image} p-16 rounded-3xl
                 max-sm:p-0 max-sm:rounded-xl max-sm:bg-center max-sm:bg-cover min-h-96`}
                 bordered={false}
               >
