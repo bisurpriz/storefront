@@ -2,6 +2,7 @@
 
 import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
+import clsx from "clsx";
 import React, { memo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
@@ -28,7 +29,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   const handleOptionClick = (option: DropdownOption) => {
     setSelectedOption(option);
-    onChange?.(option.value);
+    onChange?.(option.value, option);
     setIsOpen(false);
     setSearchValue("");
   };
@@ -39,10 +40,14 @@ const Dropdown: React.FC<DropdownProps> = ({
   });
 
   const placementClases = {
-    bottomLeft: "bottom-0 left-0 transform -translate-y-full",
-    bottomRight: "bottom-0 right-0 transform translate-y-full",
-    topLeft: "top-0 left-0 transform translate-y-[50px]",
-    topRight: "top-0 right-0 transform translate-y-[50px]",
+    // kapsayıcının sol altına yaslanmalı
+    bottomLeft: "-bottom-2 left-0 transform translate-y-full",
+    // kapsayıcının sağ altına yaslanmalı
+    bottomRight: "-bottom-2 right-0 transform translate-y-full",
+    // açılan  kısım yukarı doğru açılmalı
+    topLeft: "top-0 left-0 transform translate-x-0 -translate-y-full",
+    // açılan  kısım yukarı doğru açılmalı
+    topRight: "top-0 right-0 transform translate-x-0 -translate-y-full",
   };
 
   const child = children
@@ -52,12 +57,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   const childTrigger = child
     ? React.cloneElement(child!, {
         onClick: () => setIsOpen(!isOpen),
+        key: "dropdown-trigger",
       })
     : null;
 
   return (
     <div
-      className={`relative h-[50px] whitespace-nowrap flex items-center ${className} ${
+      className={`relative whitespace-nowrap flex items-center ${className} ${
         fullWidth ? "w-full" : ""
       }`}
     >
@@ -128,9 +134,13 @@ const Dropdown: React.FC<DropdownProps> = ({
       >
         <div
           ref={ref}
-          className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-primary ring-opacity-5 z-10
-            ${placementClases[dropdownPlacement]}
-          `}
+          className={clsx(
+            "absolute z-10 bg-white shadow-lg rounded-md overflow-hidden",
+            placementClases[dropdownPlacement],
+            {
+              "w-full": fullWidth,
+            }
+          )}
         >
           <div
             className="py-1"
