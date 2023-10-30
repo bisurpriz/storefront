@@ -7,19 +7,6 @@ const quicksand = Quicksand({
   subsets: ["latin"],
 });
 
-export interface MenuItem {
-  text: string | React.ReactElement;
-  link: string;
-  subMenuItems?: MenuItem[];
-  icon?: React.ReactElement;
-}
-
-interface MenuProps {
-  items: MenuItem[] | undefined;
-  orientation?: "horizontal" | "vertical";
-  className?: string;
-}
-
 const Menu: React.FC<MenuProps> = ({
   items,
   orientation = "horizontal",
@@ -59,7 +46,7 @@ const Menu: React.FC<MenuProps> = ({
               onMouseLeave={handleMouseLeave}
             >
               <Link
-                href={item.link}
+                href={item.link ?? "#"}
                 className="flex items-center h-full group-hover:text-primary whitespace-nowrap"
               >
                 {item.icon && <span className="mr-2">{item.icon}</span>}
@@ -78,7 +65,7 @@ const Menu: React.FC<MenuProps> = ({
                           <span className="mr-2">{subMenuItem.icon}</span>
                         )}
                         <Link
-                          href={subMenuItem.link}
+                          href={subMenuItem.link ?? "#"}
                           className="block py-2 px-4 text-gray-600 hover:text-primary-dark"
                         >
                           {subMenuItem.text}

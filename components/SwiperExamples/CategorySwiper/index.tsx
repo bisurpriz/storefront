@@ -5,7 +5,6 @@ import CustomSwiper from "../../Swiper";
 import Image from "next/image";
 import { useMeasure } from "@uidotdev/usehooks";
 import Card from "../../Card";
-import { Swiper } from "swiper/react";
 import { data } from "./constants";
 
 const CategorySwiper = () => {
@@ -29,6 +28,7 @@ const CategorySwiper = () => {
                     width={80}
                     height={80}
                     className="transform group-hover:scale-110 transition-all duration-300 ease-in-out"
+                    loading="lazy"
                   />
                   <div className="text-center text-sm font-bold text-gray-800">
                     {item.title}

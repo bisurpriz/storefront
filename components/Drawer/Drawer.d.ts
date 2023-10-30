@@ -4,4 +4,5 @@ interface DrawerProps {
   title: string;
   children: React.ReactNode;
   placement?: "left" | "right" | "top" | "bottom";
+  lockScroll?: boolean;
 }

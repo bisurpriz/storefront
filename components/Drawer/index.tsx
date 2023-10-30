@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
+import { useLockScroll } from "@/hooks/useLockScroll";
+import { useMeasure } from "@uidotdev/usehooks";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -29,20 +32,31 @@ const Drawer = ({
   placement = "right",
   children,
   title,
+  lockScroll = false,
 }: DrawerProps) => {
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
+  useLockScroll({ bool: lockScroll && !isOpen });
 
+  const handleEsc = React.useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose?.();
+    }
+  }, []);
+
+  const handleResize = useCallback(() => {
+    if (window.innerWidth > 640) {
+      onClose?.();
+    }
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("keydown", handleEsc);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div
@@ -61,9 +75,7 @@ const Drawer = ({
           },
           { "opacity-0 duration-500 ease-in-out invisible": !isOpen }
         )}
-      >
-        adasdas
-      </div>
+      />
       <div className={clsx({ "fixed inset-0 overflow-hidden": isOpen })}>
         <div className="absolute inset-0 overflow-hidden">
           <div
@@ -85,7 +97,7 @@ const Drawer = ({
             >
               <div
                 className={clsx(
-                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full",
+                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full rounded-none",
                   { "rounded-l-lg": placement === "right" },
                   { "rounded-r-lg": placement === "left" },
                   { "rounded-b-lg": placement === "top" },
@@ -118,4 +130,4 @@ const Drawer = ({
   );
 };
 
-export default Drawer;
+export default memo(Drawer);

@@ -42,6 +42,7 @@ const HeaderProfile = () => {
             height={30}
             alt="User Picture"
             className="rounded-full min-h-[30px] min-w-[30px]"
+            loading="lazy"
           />
           <span className="text-sm font-semibold text-gray-700 max-lg:hidden">
             {user?.name}

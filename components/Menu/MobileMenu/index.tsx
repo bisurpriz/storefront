@@ -1,40 +1,68 @@
-import React from "react";
-import { MenuItem } from "..";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import clsx from "clsx";
 import Link from "next/link";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { BsTruck } from "react-icons/bs";
+import { memo } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import Accordion from "@/components/Accordion";
+import { BsTruck } from "react-icons/bs";
+import { FiPhoneCall } from "react-icons/fi";
+import { LuLogIn, LuLogOut } from "react-icons/lu";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { PiPathBold } from "react-icons/pi";
+import MenuItem from "./MenuItem";
 
 const mobileHeader = [
   {
-    link: "/favorites",
+    link: "/account/favorites",
     text: "Favorilerim",
     icon: MdOutlineFavoriteBorder,
+    private: true,
   },
   {
-    link: "/",
+    link: "/account/orders",
     text: "Siparişlerim",
     icon: BsTruck,
+    private: true,
   },
   {
-    link: "/",
+    link: "/account",
     text: "Hesabım",
     icon: AiOutlineShoppingCart,
+    private: true,
+  },
+  {
+    link: "/account/cargo-tracking",
+    text: "Sipariş Takip",
+    icon: PiPathBold,
+    private: false,
+  },
+  {
+    link: "/api/auth/login",
+    text: "Giriş Yap",
+    icon: LuLogIn,
+    private: false,
   },
 ];
 
-const accordionItems = [{}];
-
 const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
+  const { user, isLoading } = useUser();
+
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
-      <div className="w-full grid grid-cols-3 gap-2 mb-2">
-        {mobileHeader.map((item, index) => (
+      <div
+        className={clsx([
+          "w-full grid  gap-2 mb-2",
+          !user ? "grid-cols-2" : "grid-cols-3",
+        ])}
+      >
+        {mobileHeader.map((item) => (
           <Link
             key={item.text}
             href={item.link}
-            className="flex flex-col items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary hover:bg-primary-light hover:text-white transition-colors"
+            className={clsx([
+              "flex flex-col items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary hover:bg-primary-light hover:text-white transition-colors duration-200 ease-in-out",
+              !user && item.private && "hidden",
+              user && !item.private && "hidden",
+            ])}
           >
             <item.icon className="w-4 h-4" />
             <span className="text-xs">{item.text}</span>
@@ -42,34 +70,43 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
         ))}
       </div>
       <div className="w-full h-full">
-        <Accordion
-          items={[
-            {
-              content: <div>adasdasd</div>,
-              title: "1",
-              className: "border-b",
-            },
-            {
-              content: <div>adasdasd</div>,
-              title: "2",
-              className: "border-b",
-            },
-            {
-              content: <div>adasdasd</div>,
-              title: "3",
-              className: "border-b",
-            },
-            {
-              content: <div>adasdasd</div>,
-              title: "4",
-              className: "border-b",
-            },
-          ]}
-          bordered={false}
-        />
+        <ul>
+          {items?.map((item, index) => (
+            <MenuItem key={index} {...item} />
+          ))}
+        </ul>
+      </div>
+      <div
+        className={`w-full grid ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}
+      >
+        {isLoading ? (
+          <div></div>
+        ) : (
+          <>
+            <Link
+              href={"/contact"}
+              className={clsx([
+                "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+              ])}
+            >
+              <FiPhoneCall className="w-4 h-4" />
+              <span className="text-xs">İletişim</span>
+            </Link>
+            <Link
+              href={"/api/auth/logout"}
+              className={clsx([
+                "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+                !user && "hidden",
+              ])}
+            >
+              <LuLogOut className="w-4 h-4" />
+              <span className="text-xs">Çıkış Yap</span>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default MobileMenu;
+export default memo(MobileMenu);

@@ -8,7 +8,6 @@ export default async function Page() {
     <div>
       <BrandSwiper />
       <CategorySwiper />
-      <CampaignGrid />
       <View1 />
     </div>
   );

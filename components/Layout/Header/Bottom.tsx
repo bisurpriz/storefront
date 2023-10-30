@@ -2,28 +2,26 @@
 
 import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
-import Menu, { MenuItem } from "@/components/Menu";
+import Menu from "@/components/Menu";
 import MobileMenu from "@/components/Menu/MobileMenu";
-import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
-import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { MdMenu } from "react-icons/md";
 
-const HeaderBottom = () => {
+interface Props {
+  categories: {
+    id: number;
+    name: string;
+    slug: string;
+    image_url: string;
+  }[];
+}
+
+const HeaderBottom = ({ categories }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data } = useQuery<{
-    category: {
-      id: number;
-      name: string;
-      slug: string;
-      image_url: string;
-    }[];
-  }>(GET_ALL_CATEGORIES);
-
-  const menuData: MenuItem[] | undefined = data?.category?.map((category) => ({
+  const menuData: MenuItem[] | undefined = categories?.map((category) => ({
     link: `/category/${category.slug}`,
     text: category.name,
   }));
@@ -54,6 +52,7 @@ const HeaderBottom = () => {
           onClose={() => setIsOpen(false)}
           title="Menü"
           placement="left"
+          lockScroll={true}
         >
           <MobileMenu items={menuData} />
         </Drawer>
