@@ -47,15 +47,19 @@ module.exports = {
         "slider-1": "url('/slider/slider-1.png')",
         "slider-2": "url('/slider/slider-2.png')",
       },
+      screens: {
+        xs: "480px",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
   screens: {
-    sm: "640px",
+    xs: "480px",
+    sm: "576px",
     md: "768px",
-    lg: "1024px",
-    xl: "1280px",
-    "2xl": "1536px",
+    lg: "992px",
+    xl: "1200px",
+    "2xl": "1400px",
   },
   fontFamily: {
     sans: ["Inter", "sans-serif"],

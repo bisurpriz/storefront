@@ -5,7 +5,6 @@ import CustomSwiper from "../../Swiper";
 import Image from "next/image";
 import { useMeasure } from "@uidotdev/usehooks";
 import Card from "../../Card";
-import { Swiper } from "swiper/react";
 import { data } from "./constants";
 
 const CategorySwiper = () => {

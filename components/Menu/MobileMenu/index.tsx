@@ -1,14 +1,14 @@
-import React from "react";
-import { MenuItem } from "..";
-import Link from "next/link";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { BsTruck } from "react-icons/bs";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { LuLogIn } from "react-icons/lu";
-import { PiPathBold } from "react-icons/pi";
-import Accordion from "@/components/Accordion";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
+import Link from "next/link";
+import { memo } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BsTruck } from "react-icons/bs";
+import { FiPhoneCall } from "react-icons/fi";
+import { LuLogIn, LuLogOut } from "react-icons/lu";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { PiPathBold } from "react-icons/pi";
+import MenuItem from "./MenuItem";
 
 const mobileHeader = [
   {
@@ -43,29 +43,6 @@ const mobileHeader = [
   },
 ];
 
-const accordionItems = [
-  {
-    content: <div>adasdasd</div>,
-    title: "1",
-    className: "border-b",
-  },
-  {
-    content: <div>adasdasd</div>,
-    title: "2",
-    className: "border-b",
-  },
-  {
-    content: <div>adasdasd</div>,
-    title: "3",
-    className: "border-b",
-  },
-  {
-    content: <div>adasdasd</div>,
-    title: "4",
-    className: "border-b",
-  },
-];
-
 const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
   const { user, isLoading } = useUser();
 
@@ -77,7 +54,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
           !user ? "grid-cols-2" : "grid-cols-3",
         ])}
       >
-        {mobileHeader.map((item, index) => (
+        {mobileHeader.map((item) => (
           <Link
             key={item.text}
             href={item.link}
@@ -93,10 +70,43 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
         ))}
       </div>
       <div className="w-full h-full">
-        <Accordion items={accordionItems} bordered={false} />
+        <ul>
+          {items?.map((item, index) => (
+            <MenuItem key={index} {...item} />
+          ))}
+        </ul>
+      </div>
+      <div
+        className={`w-full grid ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}
+      >
+        {isLoading ? (
+          <div></div>
+        ) : (
+          <>
+            <Link
+              href={"/contact"}
+              className={clsx([
+                "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+              ])}
+            >
+              <FiPhoneCall className="w-4 h-4" />
+              <span className="text-xs">İletişim</span>
+            </Link>
+            <Link
+              href={"/api/auth/logout"}
+              className={clsx([
+                "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+                !user && "hidden",
+              ])}
+            >
+              <LuLogOut className="w-4 h-4" />
+              <span className="text-xs">Çıkış Yap</span>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default MobileMenu;
+export default memo(MobileMenu);

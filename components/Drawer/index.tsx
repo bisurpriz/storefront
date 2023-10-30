@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLockScroll } from "@/hooks/useLockScroll";
@@ -75,9 +75,7 @@ const Drawer = ({
           },
           { "opacity-0 duration-500 ease-in-out invisible": !isOpen }
         )}
-      >
-        adasdas
-      </div>
+      />
       <div className={clsx({ "fixed inset-0 overflow-hidden": isOpen })}>
         <div className="absolute inset-0 overflow-hidden">
           <div
@@ -99,7 +97,7 @@ const Drawer = ({
             >
               <div
                 className={clsx(
-                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full",
+                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full rounded-none",
                   { "rounded-l-lg": placement === "right" },
                   { "rounded-r-lg": placement === "left" },
                   { "rounded-b-lg": placement === "top" },
@@ -132,4 +130,4 @@ const Drawer = ({
   );
 };
 
-export default Drawer;
+export default memo(Drawer);

@@ -16,26 +16,34 @@ const ProductItem = ({
   id,
   loading = false,
 }: ProductItemProps) => {
+  const maxXsClasses = {
+    container: "max-xs:flex max-xs:items-start max-xs:justify-start gap-3",
+    image: "max-xs:w-32 max-xs:h-32 flex-1 grow ",
+  };
+
   return loading ? (
     <ProductItemSkeleton />
   ) : (
-    <div className="bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300">
-      <Link href={`/products/${id}`}>
+    <div
+      className={`bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300 ${maxXsClasses.container}`}
+    >
+      <Link href={`/products/${id}`} className="min-w-fit">
         <Image
-          src={`${IMAGE_URL}/${image.toString()}`}
+          src={`${IMAGE_URL}/${image}`}
           alt={name}
-          className="w-full h-80 object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300"
-          width={220}
-          height={220}
+          className={`w-full object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300 ${maxXsClasses.image}`}
+          width={315}
+          height={315}
           loading="lazy"
-          sizes="220px"
         />
       </Link>
-      <h2 className="text-lg font-semibold mt-2">{name}</h2>
-      <p className="text-gray-600 text-sm mt-1">{description}</p>
-      <div className="mt-4 flex justify-between items-center">
-        <span className="text-xl font-bold text-gray-800">{price} TL</span>
-        <Button size="small" label="Sepete Ekle" color="primary" />
+      <div className="max-xs:flex max-xs:flex-col max-xs:items-start max-xs:justify-start max-xs:gap-1">
+        <h2 className="text-lg font-semibold mt-2">{name}</h2>
+        <p className="text-gray-600 text-sm mt-1 truncate">{description}</p>
+        <div className="xs:mt-4 flex justify-between items-center max-xs:flex-col max-xs:items-start max-xs:justify-start">
+          <span className="text-lg font-bold text-gray-800">{price} TL</span>
+          <Button size="small" label="Sepete Ekle" color="primary" />
+        </div>
       </div>
     </div>
   );
