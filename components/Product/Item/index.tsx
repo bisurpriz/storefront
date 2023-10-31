@@ -5,8 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
-
-export const IMAGE_URL = "https://bisurprizdev.s3.eu-north-1.amazonaws.com";
+import { IMAGE_URL } from "@/contants/urls";
 
 const ProductItem = ({
   name,

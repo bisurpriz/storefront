@@ -9,6 +9,7 @@ const nextConfig = {
       "picsum.photos",
       "lh3.googleusercontent.com",
       "bisurprizdev.s3.eu-north-1.amazonaws.com",
+      "lottie.host",
     ],
     loader: "default",
   },

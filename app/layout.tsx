@@ -62,15 +62,13 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-        <ApolloWrapper>
-          <body className={lato.className} id="root">
-            <Suspense fallback={<Loading />}>
-              <Header />
-              <Divider orientation="horizontal" />
-              <Content>{children}</Content>
-            </Suspense>
-          </body>
-        </ApolloWrapper>
+        <body className={lato.className} id="root">
+          <Suspense fallback={<Loading />}>
+            <Header />
+            <Divider orientation="horizontal" />
+            <Content>{children}</Content>
+          </Suspense>
+        </body>
       </UserProvider>
     </html>
   );

@@ -21,6 +21,7 @@
     "axios": "^1.5.1",
     "clsx": "^2.0.0",
     "graphql": "^16.8.1",
+    "lottie-react": "^2.4.0",
     "negotiator": "^0.6.1",
     "next": "latest",
     "postcss": "^8.4.31",

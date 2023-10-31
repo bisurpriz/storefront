@@ -1,7 +1,6 @@
-import Dropdown from "@/components/Dropdown";
 import React from "react";
 import SearchLocation from "./components/Layout/SearchLocation";
-import Divider from "@/components/Divider";
+import Information from "./components/Layout/Information";
 
 export default async function ProductDetailLayout({
   children,
@@ -10,13 +9,9 @@ export default async function ProductDetailLayout({
 }) {
   return (
     <div>
-      <div className="p-8 mb-2 flex items-center border rounded-lg gap-8">
-        <h5 className="text-base font-semibold text-gray-700">
-          Lütfen Gönderim <br />
-          Yerini Seçiniz
-        </h5>
+      <div className="p-8 mb-4 flex items-center shadow-md border rounded-lg gap-8">
         <SearchLocation />
-        <Divider orientation="vertical" />
+        <Information />
       </div>
       {children}
     </div>
