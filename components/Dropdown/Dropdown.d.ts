@@ -7,7 +7,7 @@ interface DropdownOption {
 interface DropdownProps {
   options: DropdownOption[];
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string, option: DropdownOption) => void;
   dropdownPlacement?: "bottomRight" | "bottomLeft" | "topLeft" | "topRight";
   isSearchable?: boolean;
   label?: string;

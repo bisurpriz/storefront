@@ -8,6 +8,8 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
 import "./globals.css";
 import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import Divider from "@/components/Divider";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
@@ -62,15 +64,13 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-        <ApolloWrapper>
-          <body className={lato.className} id="root">
-            <Suspense fallback={<Loading />}>
-              <Header />
-              <Divider orientation="horizontal" />
-              <Content>{children}</Content>
-            </Suspense>
-          </body>
-        </ApolloWrapper>
+        <body className={lato.className} id="root">
+          <Suspense fallback={<Loading />}>
+            <Header />
+            <Divider orientation="horizontal" />
+            <Content>{children}</Content>
+          </Suspense>
+        </body>
       </UserProvider>
     </html>
   );

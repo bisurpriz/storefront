@@ -66,6 +66,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: red;
+  background-color: #a8bbbf;
   border-radius: 20px;
+}
+
+.gallery-scroll-hide::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }

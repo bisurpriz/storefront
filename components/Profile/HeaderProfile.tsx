@@ -30,7 +30,6 @@ const HeaderProfile = () => {
   ) : (
     <div className="flex gap-8 items-center justify-end flex-row-reverse">
       <Dropdown
-        isSearchable
         dropdownPlacement="bottomRight"
         options={profileItems}
         className="cursor-pointer"

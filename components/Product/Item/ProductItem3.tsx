@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/Button";
 import { BsCart3, BsCartFill } from "react-icons/bs";
-import { IMAGE_URL } from ".";
+import { IMAGE_URL } from "@/contants/urls";
 
 export default function ProductItem3({
   description,
