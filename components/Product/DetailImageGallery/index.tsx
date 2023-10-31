@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { breakpoints } from "@/contants/breakpoints";
 import useResponsive from "@/hooks/useResponsive";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";
-import React, { useCallback, useEffect } from "react";
-import { Mousewheel } from "swiper/modules";
+import React, { useEffect } from "react";
+import { Mousewheel, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // create fake 10 images
@@ -31,7 +30,7 @@ const ProductDetailImageGallery = () => {
   }, [isExtraLargeDesktop]);
 
   return (
-    <div className="grid grid-cols-6 grid-rows-6 gap-2 ">
+    <div className="grid grid-cols-6 grid-rows-6 gap-2">
       <div
         className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-6 2xl:order-1 overflow-hidden flex flex-col items-center justify-star rounded-lg max-h-[500px]"
         ref={ref}
@@ -42,8 +41,9 @@ const ProductDetailImageGallery = () => {
           direction={direction}
           className="h-full gallery-scroll-hide"
           mousewheel={true}
-          modules={[Mousewheel]}
+          modules={[Mousewheel, Virtual]}
           width={width}
+          virtual
         >
           {images.map((image) => (
             <SwiperSlide key={image.id} onClick={() => setSelectedImage(image)}>
@@ -62,7 +62,7 @@ const ProductDetailImageGallery = () => {
           ))}
         </Swiper>
       </div>
-      <div className="col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg max-h-[500px]">
+      <div className="col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg ">
         <Image
           src={selectedImage.url}
           alt="Product Image"
