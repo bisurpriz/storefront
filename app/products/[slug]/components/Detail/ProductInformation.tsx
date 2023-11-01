@@ -1,5 +1,7 @@
 import React from "react";
 import Rating from "./Rating";
+import Popover from "@/components/Popover";
+import RatingDetail from "./RatingDetail";
 
 const ProductInformation = () => {
   return (
@@ -28,12 +30,32 @@ const ProductInformation = () => {
             </span>
           </div>
           <div className="rounded-lg text-end w-full max-xs:text-start max-xs:mt-4">
-            <Rating
-              value={3}
-              reviewCount={0}
-              readOnly
-              className="max-w-[100px] xs:ml-auto"
-            />
+            <Popover
+              content={
+                <RatingDetail
+                  rateCounts={{
+                    //toplamı total rating olacak şekilde
+                    1: 1000,
+                    2: 1500,
+                    3: 2500,
+                    4: 1500,
+                    5: 3500,
+                  }}
+                  rating={3}
+                  totalRating={10000}
+                />
+              }
+              position="bottom"
+            >
+              <div>
+                <Rating
+                  value={3}
+                  reviewCount={23123}
+                  readOnly
+                  className="max-w-[100px] xs:ml-auto"
+                />
+              </div>
+            </Popover>
           </div>
         </div>
       </div>

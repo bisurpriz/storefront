@@ -54,6 +54,9 @@ const ProductDetail = async ({
           <ProductInformation />
         </div>
       </div>
+      <section className="bg-12" id="reviews">
+        reviews
+      </section>
     </div>
   );
 };
