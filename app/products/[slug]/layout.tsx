@@ -13,7 +13,7 @@ export default async function ProductDetailLayout({
         <SearchLocation />
         <Information />
       </div>
-      {children}
+      <div className="mb-10">{children}</div>
     </div>
   );
 }

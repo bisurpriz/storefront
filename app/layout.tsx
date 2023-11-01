@@ -10,6 +10,8 @@ import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "@smastrom/react-rating/style.css";
+
 import Divider from "@/components/Divider";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });

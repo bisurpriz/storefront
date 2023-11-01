@@ -22,7 +22,7 @@ export const getPaginatedProducts = async <T>({
   } as T;
 };
 
-export const getProductsById = async <T>({ id }: { id: number }) => {
+export const getProductById = async <T>({ id }: { id: number }) => {
   const { data } = await getClient().query({
     query: GET_PRODUCT_BY_ID,
     variables: {
