@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 
 interface PopoverProps {
@@ -14,10 +14,11 @@ const Popover: React.FC<PopoverProps> = ({
   position = "top",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [dynamicPosition, setDynamicPosition] = useState(position); // ["top", "right", "bottom", "left"]
   const ref = useRef<HTMLDivElement>(null);
 
   const getPositionClass = () => {
-    switch (position) {
+    switch (dynamicPosition) {
       case "right":
         return "left-full top-1/2 transform -translate-y-1/2 ml-2";
       case "bottom":
@@ -30,7 +31,7 @@ const Popover: React.FC<PopoverProps> = ({
   };
 
   const getCaretPosition = () => {
-    switch (position) {
+    switch (dynamicPosition) {
       case "top":
         return "-bottom-2 left-1/2 transform -translate-x-1/2";
       case "right":
@@ -55,6 +56,34 @@ const Popover: React.FC<PopoverProps> = ({
       })
     : null;
 
+  // detect if the opened popover is out of the viewport
+  // if so, change the position of the popover
+  // if (ref.current) {
+  //   const rect = ref.current.getBoundingClientRect();
+  //   const isOutOfViewport =
+  //     rect.top < 0 ||
+  //     rect.left < 0 ||
+  //     rect.right > window.innerWidth ||
+  //     rect.bottom > window.innerHeight;
+
+  useEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      console.log(rect);
+      if (rect.top < 0) {
+        setDynamicPosition("bottom");
+      } else if (rect.left < 0) {
+        setDynamicPosition("right");
+      } else if (rect.right > rect.x) {
+        setDynamicPosition("left");
+      } else if (rect.bottom > rect.y) {
+        setDynamicPosition("top");
+      } else {
+        setDynamicPosition(position);
+      }
+    }
+  }, [isOpen]);
+
   return (
     <div className="relative inline-block">
       {childTrigger}
@@ -73,7 +102,7 @@ const Popover: React.FC<PopoverProps> = ({
         nodeRef={ref}
       >
         <div
-          className={`absolute bg-white shadow-lg rounded p-4 mt-3 ${getPositionClass()}`}
+          className={`absolute bg-white shadow-lg rounded p-4 mt-3 z-50 ${getPositionClass()}`}
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
           ref={ref}
