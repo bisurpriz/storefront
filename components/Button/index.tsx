@@ -41,7 +41,8 @@ const Button: React.FC<ButtonProps> = ({
     large: "py-4 px-8 text-lg",
   };
 
-  const baseClasses = "flex items-center font-medium cursor-pointer relative";
+  const baseClasses =
+    "flex items-center font-medium cursor-pointer relative transition-colors duration-200";
   const sizeClass = sizeClasses[size];
   const widthClass = fullWidth ? "w-full" : "";
   const roundedClass = rounded ? "rounded" : "";
@@ -55,12 +56,17 @@ const Button: React.FC<ButtonProps> = ({
       case "dashed":
       case "link":
         return {
-          primary: "text-primary border border-primary",
-          error: "text-error border border-error",
-          warning: "text-warning border border-warning",
-          secondary: "text-secondary border border-secondary",
-          success: "text-success border border-success",
-          info: "text-info border border-info",
+          primary:
+            "text-primary border border-primary hover:bg-primary hover:text-white",
+          error:
+            "text-error border border-error hover:bg-error hover:text-white",
+          warning:
+            "text-warning border border-warning hover:bg-warning hover:text-white",
+          secondary:
+            "text-secondary border border-secondary hover:bg-secondary hover:text-white",
+          success:
+            "text-success border border-success hover:bg-success hover:text-white",
+          info: "text-info border border-info hover:bg-info hover:text-white",
         };
       case "fullfilled":
         return {
@@ -126,7 +132,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       {...rest}
-      className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className} `}
+      className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
       onClick={onClick}
       disabled={disabled || loading}
       type={type}

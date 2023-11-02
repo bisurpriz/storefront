@@ -76,7 +76,8 @@ const ProductDetail = async ({
             key={data.product.id}
           />
           <SearchLocation className="mt-6" />
-          <DayHourSelect />
+          <DayHourSelect className="mt-6" />
+          <div className="p-4 bg-7">Hello</div>
         </div>
       </section>
       <section className="bg-12" id="reviews">

@@ -10,6 +10,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "@smastrom/react-rating/style.css";
+import localeData from "dayjs/plugin/localeData";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import dayjs from "dayjs";
+
+dayjs.extend(localizedFormat);
+dayjs.extend(localeData);
 
 const lato = Lato({
   subsets: ["latin"],

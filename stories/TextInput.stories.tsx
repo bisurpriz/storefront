@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import TextInput from "../components/TextInput";
+import TextInput from "@/components/TextInput";
 import { BsCheck } from "react-icons/bs";
 
 export default {
