@@ -105,6 +105,9 @@ const Popover: React.FC<PopoverProps> = ({
           className={`absolute bg-white shadow-lg rounded p-4 mt-3 z-50 ${getPositionClass()}`}
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
+          onTouchStart={() => setIsOpen(true)}
+          onTouchEnd={() => setIsOpen(false)}
+          aria-hidden={!isOpen}
           ref={ref}
         >
           {content}
