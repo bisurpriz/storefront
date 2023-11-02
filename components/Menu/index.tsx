@@ -36,12 +36,12 @@ const Menu: React.FC<MenuProps> = ({
         <ul
           className={`${
             orientation === "horizontal" ? "inline-flex" : "block"
-          }  text-base leading-4 w-full`}
+          }  text-base font-normal leading-4 w-full`}
         >
           {items?.map((item, index) => (
             <li
               key={index}
-              className="relative group py-2 px-4 cursor-pointer"
+              className="relative group my-2 px-4 cursor-pointer border-r last-of-type:border-r-0"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
             >

@@ -4,12 +4,14 @@ type DividerProps = {
   orientation: "horizontal" | "vertical";
   color?: string;
   ariaLabel?: string;
+  className?: string;
 };
 
 const Divider: React.FC<DividerProps> = ({
   orientation = "horizontal",
   color = "#000",
   ariaLabel = "divider",
+  className = "",
 }) => {
   const horizontalClasses = `w-full border-b border-${color}`;
   const verticalClasses = `h-full border-r border-${color}`;
@@ -18,9 +20,9 @@ const Divider: React.FC<DividerProps> = ({
     <div
       role="separator"
       aria-label={ariaLabel}
-      className={
+      className={`${
         orientation === "horizontal" ? horizontalClasses : verticalClasses
-      }
+      } ${className}`}
     />
   );
 };

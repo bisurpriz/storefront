@@ -4,6 +4,9 @@ import { IMAGE_URL } from "@/contants/urls";
 import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
 import ProductInformation from "./components/Detail/ProductInformation";
 import { Metadata, ResolvingMetadata } from "next";
+import SearchLocation from "./components/Layout/SearchLocation";
+import Information from "./components/Layout/Information";
+import DayHourSelect from "@/components/DatePicker/DayHourSelect";
 
 type Props = {
   params: { slug: string };
@@ -22,15 +25,14 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
+  const imgs = product.product.image_url?.length
+    ? product.product.image_url?.map((url: string) => `${IMAGE_URL}/${url}`)
+    : [];
+
   return {
     title: product.product.name,
     openGraph: {
-      images: [
-        ...previousImages,
-        ...product.product.image_url.map(
-          (url: string) => `${IMAGE_URL}/${url}`
-        ),
-      ],
+      images: [...previousImages, ...imgs],
     },
     description: product.product.description,
     category: product.category.name,
@@ -46,14 +48,37 @@ const ProductDetail = async ({
 
   return (
     <div className="h-full">
-      <div className="flex items-start justify-start max-md:flex-col gap-6">
+      <section
+        className="flex items-start justify-start max-md:flex-col gap-6"
+        id="detail"
+        aria-labelledby="detail"
+        aria-describedby="Ürün detayları"
+      >
         <div className="w-1/2 max-md:w-full">
           <ProductImageCarousel />
         </div>
         <div className="w-1/2 max-md:w-full">
-          <ProductInformation />
+          <ProductInformation
+            name={data.product.name}
+            price={250}
+            rateCounts={{
+              1: 1,
+              2: 1,
+              3: 1,
+              4: 1,
+              5: 1,
+            }}
+            rating={data.reviews.data}
+            reviewCount={data.reviews.totalCount}
+            promotion="Kargo Bedava"
+            discountPrice={data.product.price}
+            discountRate={10}
+            key={data.product.id}
+          />
+          <SearchLocation className="mt-6" />
+          <DayHourSelect />
         </div>
-      </div>
+      </section>
       <section className="bg-12" id="reviews">
         reviews
       </section>

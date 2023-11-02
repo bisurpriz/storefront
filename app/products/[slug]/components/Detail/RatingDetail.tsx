@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-type Props = {
+export type RatingProps = {
   rating: number;
   rateCounts: {
     1: number;
@@ -24,7 +24,7 @@ const Star = () => (
   </svg>
 );
 
-const RatingDetail = ({ rateCounts, rating, totalRating }: Props) => {
+const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   const percentage = (val: number) => {
     const per = (val / totalRating) * 100;
 
@@ -39,7 +39,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: Props) => {
     return val;
   };
 
-  return (
+  return rateCounts ? (
     <div className="flex flex-col gap-2 items-start justify-center">
       <p className="whitespace-nowrap mx-10">5 üzerinden {rating} yıldız</p>
       {Object.entries(rateCounts).map(([key, value]) => (
@@ -74,7 +74,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: Props) => {
         Tüm değerlendirmeleri gör
       </Link>
     </div>
-  );
+  ) : null;
 };
 
 export default RatingDetail;

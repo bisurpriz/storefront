@@ -22,7 +22,7 @@ const Rating = ({
       : "Henüz Değerlendirme Yapılmamış";
 
   return (
-    <>
+    <span>
       <RatingPackage
         className={className}
         value={value}
@@ -44,7 +44,7 @@ const Rating = ({
       <p className="text-sm m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap">
         {reviewCountText}
       </p>
-    </>
+    </span>
   );
 };
 

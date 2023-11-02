@@ -5,16 +5,16 @@ import Loading from "./loading";
 import Header from "../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "@smastrom/react-rating/style.css";
 
-import Divider from "@/components/Divider";
-
-const lato = Lato({ subsets: ["latin"], weight: "400" });
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "BiSürpriz",
@@ -69,7 +69,6 @@ export default async function RootLayout({
         <body className={lato.className} id="root">
           <Suspense fallback={<Loading />}>
             <Header />
-            <Divider orientation="horizontal" />
             <Content>{children}</Content>
           </Suspense>
         </body>
