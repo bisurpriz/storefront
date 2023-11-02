@@ -1,4 +1,5 @@
 "use client";
+import useResponsive from "@/hooks/useResponsive";
 import React, { useState, useRef, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 
@@ -16,6 +17,7 @@ const Popover: React.FC<PopoverProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [dynamicPosition, setDynamicPosition] = useState(position); // ["top", "right", "bottom", "left"]
   const ref = useRef<HTMLDivElement>(null);
+  const { isMobile } = useResponsive();
 
   const getPositionClass = () => {
     switch (dynamicPosition) {
@@ -56,20 +58,15 @@ const Popover: React.FC<PopoverProps> = ({
       })
     : null;
 
-  // detect if the opened popover is out of the viewport
-  // if so, change the position of the popover
-  // if (ref.current) {
-  //   const rect = ref.current.getBoundingClientRect();
-  //   const isOutOfViewport =
-  //     rect.top < 0 ||
-  //     rect.left < 0 ||
-  //     rect.right > window.innerWidth ||
-  //     rect.bottom > window.innerHeight;
-
   useEffect(() => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
-      console.log(rect);
+
+      if (isMobile) {
+        setDynamicPosition("top");
+        return;
+      }
+
       if (rect.top < 0) {
         setDynamicPosition("bottom");
       } else if (rect.left < 0) {
