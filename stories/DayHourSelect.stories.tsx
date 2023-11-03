@@ -1,12 +1,12 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import DayHourSelect from "@/components/DatePicker/DayHourSelect";
+import HourSelect from "@/components/DatePicker/HourSelect";
 
 export default {
-  title: "DayHourSelect",
-  component: DayHourSelect,
+  title: "HourSelect",
+  component: HourSelect,
 } as Meta;
 
-const Template: StoryFn = () => <DayHourSelect />;
+const Template: StoryFn = () => <HourSelect />;
 
 export const Default = Template;

@@ -5,7 +5,7 @@ import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
 import ProductInformation from "./components/Detail/ProductInformation";
 import { Metadata, ResolvingMetadata } from "next";
 import SearchLocation from "./components/Layout/SearchLocation";
-import DayHourSelect from "@/components/DatePicker/DayHourSelect";
+import HourSelect from "@/components/DatePicker/HourSelect";
 
 type Props = {
   params: { slug: string };
@@ -16,12 +16,9 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
   const id = Number(params.slug);
 
-  // fetch data
   const product = await getProductById({ id });
-  // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
   const imgs = product.product.image_url?.length
@@ -75,7 +72,7 @@ const ProductDetail = async ({
             key={data.product.id}
           />
           <SearchLocation className="mt-6" />
-          <DayHourSelect className="mt-6" />
+          <HourSelect className="mt-6" />
         </div>
       </section>
       <section className="bg-12" id="reviews">

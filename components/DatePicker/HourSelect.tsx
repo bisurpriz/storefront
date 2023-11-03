@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Button from "../Button";
 import CollapsableDateButton from "./CollapsableButton/CollapsableDateButton";
-import { BsCalendar } from "react-icons/bs";
 import { add, isToday, isTomorrow, startOfTomorrow } from "date-fns";
 import { localeFormat } from "@/utils/format";
+import DateSelect from "./DateSelect";
 
 const date = new Date();
 const monthFormat = "d MMMM";
@@ -39,7 +38,7 @@ type Props = {
   className?: string;
 };
 
-const DayHourSelect = ({ className = "" }: Props) => {
+const HourSelect = ({ className = "" }: Props) => {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
   const handleSelect = (val: Date | null) => {
@@ -48,7 +47,7 @@ const DayHourSelect = ({ className = "" }: Props) => {
 
   return (
     <div
-      className={`grid grid-cols-4 gap-4 my-2 transition-max-height duration-300 ease-in ${className}`}
+      className={`grid grid-cols-4 gap-4 my-2 transition duration-300 ease-in ${className}`}
     >
       {buttonDays.map(({ label, value, deliveryTimes }) => {
         return (
@@ -63,19 +62,9 @@ const DayHourSelect = ({ className = "" }: Props) => {
           />
         );
       })}
-      <Button
-        className="pt-4 pb-4 flex items-center justify-center h-fit"
-        fullWidth
-        variant={selectedDay === null ? "fullfilled" : "outlined"}
-        onClick={() => handleSelect(null)}
-      >
-        <span className="min-h-[48px] flex items-center justify-center flex-col">
-          <BsCalendar className="text-lg font-medium" />
-          <p className="text-sm font-normal">Takvim</p>
-        </span>
-      </Button>
+      <DateSelect handleSelect={handleSelect} selectedDay={selectedDay} />
     </div>
   );
 };
 
-export default DayHourSelect;
+export default HourSelect;
