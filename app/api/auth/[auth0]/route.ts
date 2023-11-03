@@ -1,4 +1,4 @@
-import { handleAuth, handleLogin, LoginOptions } from "@auth0/nextjs-auth0";
+import { handleAuth, handleLogin } from "@auth0/nextjs-auth0";
 import { notFound } from "next/navigation";
 
 export const GET = handleAuth({

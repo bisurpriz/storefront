@@ -1,4 +1,4 @@
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import React from "react";
 
 const Vendor: NextPage<any> = async (props) => {

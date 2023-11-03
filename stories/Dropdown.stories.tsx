@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { action } from "@storybook/addon-actions";
-import Dropdown from "../components/Dropdown";
+import Dropdown from "@/components/Dropdown";
 
 export default {
   title: "Dropdown",

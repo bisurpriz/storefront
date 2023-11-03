@@ -10,28 +10,10 @@
   .content-height-sm {
     min-height: calc(100vh - 137px);
   }
-
-  .tooltip-arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-
-    border-bottom: 5px solid;
-    position: absolute;
-    rotate: 45deg;
-  }
-
-  .tooltip-arrow.bottom {
-    /* Yukarı sabitlenecek */
-
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
 }
 
 body {
+  scroll-behavior: smooth;
   position: relative;
 }
 
@@ -73,4 +55,37 @@ body {
 .gallery-scroll-hide::-webkit-scrollbar {
   width: 0px;
   background: transparent;
+}
+
+.react-datepicker__time-container {
+  width: 100% !important;
+}
+
+.react-datepicker__time-box {
+  width: 100% !important;
+}
+.react-datepicker__header--time {
+  padding: 0.8rem !important;
+}
+
+.react-datepicker__time-container .react-datepicker-time__header {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-family: var(--font-sans) !important;
+  color: #efefef !important;
+}
+
+.react-datepicker__header {
+  background-color: #4fc08d !important;
+}
+
+.react-datepicker__current-month {
+  color: #efefef !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.react-datepicker--time-only {
+  border: 1px solid #4fc08d !important;
 }

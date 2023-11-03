@@ -13,7 +13,7 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 
 const HeaderMiddle = () => {
   return (
-    <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 ">
+    <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 mb-4">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
         <Image
           src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
@@ -38,9 +38,9 @@ const HeaderMiddle = () => {
             size="small"
             variant="link"
             iconSize={24}
-            className="gap-2 py-0 px-0 max-lg:hidden"
+            className="gap-2 py-0 px-0 max-lg:hidden "
           >
-            <span className="max-xl:hidden">Favorilerim</span>
+            <span className="max-xl:hidden font-normal">Favorilerim</span>
           </Button>
         </Link>
         <Link href="/orders">
@@ -52,7 +52,7 @@ const HeaderMiddle = () => {
             iconSize={24}
             className="gap-2 py-0 px-0 max-lg:hidden"
           >
-            <span className="max-xl:hidden">Siparişlerim</span>
+            <span className="max-xl:hidden font-normal">Siparişlerim</span>
           </Button>
         </Link>
         <Link href="/cart">
@@ -64,7 +64,7 @@ const HeaderMiddle = () => {
             iconSize={24}
             className="gap-2 py-0 px-0"
           >
-            <span className="max-xl:hidden">Sepetim</span>
+            <span className="max-xl:hidden font-normal">Sepetim</span>
           </Button>
         </Link>
         <HeaderProfile />

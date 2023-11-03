@@ -1,6 +1,6 @@
 import React from "react";
 import { withKnobs } from "@storybook/addon-knobs";
-import SearchInput, { SearchInputProps } from "../components/Search";
+import SearchInput, { SearchInputProps } from "@/components/Search";
 import { Meta, StoryFn } from "@storybook/react";
 
 export default {

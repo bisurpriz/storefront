@@ -16,7 +16,7 @@ const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
     <div role="menuitem" className={`${textClasses}  py-2 `}>
       <Link
         href={link ?? "#"}
-        onClick={(e) => {
+        onClick={() => {
           toggle();
         }}
         className="flex items-center justify-between hover:text-primary-light transition-colors duration-300"

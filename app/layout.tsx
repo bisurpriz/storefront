@@ -1,20 +1,36 @@
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
+import { Lato, Quicksand } from "next/font/google";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { ApolloWrapper } from "@/graphql/lib/ApolloWrapper";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "@smastrom/react-rating/style.css";
+import setDefaultOptions from "date-fns/setDefaultOptions";
+import "react-datepicker/dist/react-datepicker.css";
+import tr from "date-fns/locale/tr";
 
-import Divider from "@/components/Divider";
+setDefaultOptions({
+  weekStartsOn: 1,
+  firstWeekContainsDate: 1,
+  locale: tr,
+});
 
-const lato = Lato({ subsets: ["latin"], weight: "400" });
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"],
+  variable: "--font-lato",
+});
+
+const quickSand = Quicksand({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-quicksand",
+});
 
 export const metadata: Metadata = {
   title: "BiSürpriz",
@@ -66,10 +82,13 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-        <body className={lato.className} id="root">
+        <body
+          className={`${lato.variable} ${quickSand.variable} font-sans`}
+          // Fontlar Tailwind üzerinden tanımlandı, font-sans => Lato font-mono => Quicksand olarak kullanılabilir.
+          id="root"
+        >
           <Suspense fallback={<Loading />}>
             <Header />
-            <Divider orientation="horizontal" />
             <Content>{children}</Content>
           </Suspense>
         </body>

@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLockScroll } from "@/hooks/useLockScroll";
-import { useMeasure } from "@uidotdev/usehooks";
 
 const isOpenClassNames = {
   right: "translate-x-0",

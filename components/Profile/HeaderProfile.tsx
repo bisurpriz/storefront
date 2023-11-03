@@ -1,12 +1,9 @@
 import React from "react";
 import Button from "../Button";
-import { LuLogOut } from "react-icons/lu";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Tooltip from "../Tooltip";
 import Dropdown from "../Dropdown";
-import Link from "next/link";
 import { profileItems } from "./contants";
 
 const HeaderProfile = () => {

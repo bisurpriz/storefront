@@ -1,22 +1,21 @@
-import Divider from "@/components/Divider";
 import Link from "next/link";
 import React from "react";
 
 const headerTopLeftMenu = [
   {
-    label: "About Us",
+    label: "Hakkımızda",
     link: "about-us",
   },
   {
-    label: "My Account",
+    label: "Hesabım",
     link: "my-account",
   },
   {
-    label: "Wishlist",
-    link: "wishlist",
+    label: "İletişim",
+    link: "contact-us",
   },
   {
-    label: "Order Tracking",
+    label: "Sipariş Takibi",
     link: "order-tracking",
   },
 ];
@@ -26,30 +25,24 @@ const HeaderTop = () => {
     <div className="w-full max-sm:hidden max-md:px-4 pt-2">
       <div className="flex items-center justify-between">
         <div className={`flex items-center gap-2 `}>
-          {headerTopLeftMenu.map((item, index) => {
-            return (
-              <div key={item.link}>
-                <Link
-                  href={`/${item.link}`}
-                  className="hover:text-primary-dark whitespace-nowrap w-fit"
-                >
-                  {item.label}
-                </Link>
-
-                {index !== headerTopLeftMenu.length - 1 && (
-                  <Divider orientation="vertical" color="gray-300" />
-                )}
-              </div>
-            );
-          })}
+          {headerTopLeftMenu.map((item, index) => (
+            <div key={item.link}>
+              <Link
+                href={`/${item.link}`}
+                className="hover:text-primary-dark whitespace-nowrap w-fit font-normal"
+              >
+                {item.label}
+              </Link>
+            </div>
+          ))}
         </div>
         <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
-          Get great devices up to 50% off&nbsp;
+          Sevgililer gününe özel&nbsp;
           <Link
             href="/campaign-details"
             className="text-primary hover:text-primary-dark"
           >
-            view details
+            ürünler!
           </Link>
         </p>
         <ul className="text-right whitespace-nowrap">

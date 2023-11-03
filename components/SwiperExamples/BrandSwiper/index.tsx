@@ -4,11 +4,8 @@ import { memo } from "react";
 import CustomSwiper from "../../Swiper";
 import Card from "../../Card";
 import Button from "@/components/Button";
-import { Quicksand } from "next/font/google";
 import { Autoplay } from "swiper/modules";
 import { FiShoppingCart } from "react-icons/fi";
-
-const quickSand = Quicksand({ subsets: ["latin"] });
 
 const CategorySwiper = () => {
   const data = [
@@ -29,7 +26,7 @@ const CategorySwiper = () => {
   ];
 
   return (
-    <div className={`${quickSand.className} mb-8`}>
+    <div className={`font-mono mb-8`}>
       <Card bordered={false} contentClass="py-0 px-0">
         <CustomSwiper
           autoplay={{

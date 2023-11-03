@@ -7,8 +7,8 @@ import {
   number,
 } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
-import Button from "../components/Button";
-import { Bs1Square, BsFillWebcamFill } from "react-icons/bs";
+import { BsFillWebcamFill } from "react-icons/bs";
+import Button from "@/components/Button";
 
 export default {
   title: "Button",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import {  StoryFn } from "@storybook/react";
-import NumberInput, { NumberInputProps } from "../components/NumberInput";
-import {BsCheck} from "react-icons/bs";
+import { StoryFn } from "@storybook/react";
+import NumberInput, { NumberInputProps } from "@/components/NumberInput";
+import { BsCheck } from "react-icons/bs";
 
 export default {
   title: "NumberInput",
@@ -51,6 +51,6 @@ WithIcon.args = {
   step: 5,
   precision: 0,
   label: "Quantity:",
-  icon: <BsCheck/>,
+  icon: <BsCheck />,
   iconPosition: "left",
 };

@@ -55,6 +55,14 @@ module.exports = {
         xl: "1200px",
         "2xl": "1400px",
       },
+      transitionProperty: {
+        height: "height",
+        "max-height": "max-height",
+      },
+      fontFamily: {
+        sans: ["var(--font-lato)"],
+        mono: ["var(--font-quicksand)"],
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
