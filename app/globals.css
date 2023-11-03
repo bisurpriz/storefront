@@ -89,3 +89,26 @@ body {
 .react-datepicker--time-only {
   border: 1px solid #4fc08d !important;
 }
+
+.react-datepicker__month-container {
+  width: 100% !important;
+}
+
+.react-datepicker__day-name {
+  color: #efefef !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.react-datepicker__week {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.react-datepicker__day-names {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}

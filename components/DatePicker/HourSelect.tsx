@@ -62,7 +62,19 @@ const HourSelect = ({ className = "" }: Props) => {
           />
         );
       })}
-      <DateSelect handleSelect={handleSelect} selectedDay={selectedDay} />
+      <DateSelect
+        handleSelect={handleSelect}
+        selectedDay={selectedDay}
+        deliveryTimes={[
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00",
+        ]}
+      />
     </div>
   );
 };

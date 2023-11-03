@@ -3,6 +3,7 @@ import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rs
 import { getSession } from "@auth0/nextjs-auth0";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { notFound } from "next/navigation";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -22,6 +23,7 @@ const authLink = setContext(async (_, { headers }) => {
     token = session?.idToken;
   } catch (e) {
     console.error(e, "error getting session");
+    notFound();
   }
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {};
