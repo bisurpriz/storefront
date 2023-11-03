@@ -6,6 +6,7 @@ import ProductInformation from "./components/Detail/ProductInformation";
 import { Metadata, ResolvingMetadata } from "next";
 import SearchLocation from "./components/Layout/SearchLocation";
 import HourSelect from "@/components/DatePicker/HourSelect";
+import Promotions from "./components/Detail/Promotions";
 
 type Props = {
   params: { slug: string };
@@ -54,6 +55,7 @@ const ProductDetail = async ({
           <ProductImageCarousel />
         </div>
         <div className="w-1/2 max-md:w-full">
+          <Promotions />
           <ProductInformation
             name={data.product.name}
             price={250}
