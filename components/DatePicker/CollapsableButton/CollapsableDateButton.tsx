@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "@/components/Button";
 import React from "react";
 import { CSSTransition } from "react-transition-group";
