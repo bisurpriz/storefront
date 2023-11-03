@@ -5,7 +5,6 @@ import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
 import ProductInformation from "./components/Detail/ProductInformation";
 import { Metadata, ResolvingMetadata } from "next";
 import SearchLocation from "./components/Layout/SearchLocation";
-import Information from "./components/Layout/Information";
 import DayHourSelect from "@/components/DatePicker/DayHourSelect";
 
 type Props = {
@@ -77,7 +76,6 @@ const ProductDetail = async ({
           />
           <SearchLocation className="mt-6" />
           <DayHourSelect className="mt-6" />
-          <div className="p-4 bg-7">Hello</div>
         </div>
       </section>
       <section className="bg-12" id="reviews">

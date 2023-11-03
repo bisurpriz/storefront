@@ -3,8 +3,7 @@ import axios from "axios";
 export async function getNeighborhoods(
   latitude: number,
   longitude: number,
-  radius: number,
-  API_KEY: string
+  radius: number
 ): Promise<{
   neighborhoods: any | undefined;
   error_message: string | undefined;

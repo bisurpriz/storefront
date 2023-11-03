@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
+import { Lato, Quicksand } from "next/font/google";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "../components/Layout/Header";
@@ -10,16 +10,26 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "@smastrom/react-rating/style.css";
-import localeData from "dayjs/plugin/localeData";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import dayjs from "dayjs";
+import setDefaultOptions from "date-fns/setDefaultOptions";
+import "react-datepicker/dist/react-datepicker.css";
+import tr from "date-fns/locale/tr";
 
-dayjs.extend(localizedFormat);
-dayjs.extend(localeData);
+setDefaultOptions({
+  weekStartsOn: 1,
+  firstWeekContainsDate: 1,
+  locale: tr,
+});
 
 const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
+  variable: "--font-lato",
+});
+
+const quickSand = Quicksand({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-quicksand",
 });
 
 export const metadata: Metadata = {
@@ -72,7 +82,11 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-        <body className={lato.className} id="root">
+        <body
+          className={`${lato.variable} ${quickSand.variable} font-sans`}
+          // Fontlar Tailwind üzerinden tanımlandı, font-sans => Lato font-mono => Quicksand olarak kullanılabilir.
+          id="root"
+        >
           <Suspense fallback={<Loading />}>
             <Header />
             <Content>{children}</Content>

@@ -1,41 +1,35 @@
 "use client";
 
 import React, { useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import tr from "dayjs/locale/tr";
-import isTomorrow from "dayjs/plugin/isTomorrow";
-import isToday from "dayjs/plugin/isToday";
 import Button from "../Button";
 import CollapsableDateButton from "./CollapsableButton/CollapsableDateButton";
 import { BsCalendar } from "react-icons/bs";
+import { add, isToday, isTomorrow, startOfTomorrow } from "date-fns";
+import { localeFormat } from "@/utils/format";
 
-dayjs.extend(isTomorrow);
-dayjs.extend(isToday);
-dayjs.locale(tr);
+const date = new Date();
+const monthFormat = "d MMMM";
+const namingFormat = "EEEE";
 
-const date = dayjs();
-const format = "D MMMM";
-const namingFormat = "dddd";
+const tomorrow = startOfTomorrow();
+const dayAfterTomorrow = add(date, { days: 2 });
 
-const tomorrow = date.add(1, "day");
-const dayAfterTomorrow = date.add(2, "day");
-
-const todayDay = date.isToday();
-const tomorrowDay = tomorrow.isTomorrow();
+const todayDay = isToday(date);
+const tomorrowDay = isTomorrow(tomorrow);
 
 const buttonDays = [
   {
-    label: todayDay ? "Bugün" : date.format(namingFormat),
+    label: todayDay ? "Bugün" : localeFormat(date, namingFormat),
     value: date,
     deliveryTimes: ["13:00", "14:00"],
   },
   {
-    label: tomorrowDay ? "Yarın" : tomorrow.format(namingFormat),
+    label: tomorrowDay ? "Yarın" : localeFormat(tomorrow, namingFormat),
     value: tomorrow,
     deliveryTimes: ["10:00", "11:00", "14:00"],
   },
   {
-    label: dayAfterTomorrow.format(namingFormat),
+    label: localeFormat(dayAfterTomorrow, namingFormat),
     value: dayAfterTomorrow,
     deliveryTimes: ["10:00", "11:00", "12:00"],
   },
@@ -46,9 +40,9 @@ type Props = {
 };
 
 const DayHourSelect = ({ className = "" }: Props) => {
-  const [selectedDay, setSelectedDay] = useState<dayjs.Dayjs | null>(date);
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-  const handleSelect = (val: dayjs.Dayjs | null) => {
+  const handleSelect = (val: Date | null) => {
     setSelectedDay(val);
   };
 
@@ -60,7 +54,7 @@ const DayHourSelect = ({ className = "" }: Props) => {
         return (
           <CollapsableDateButton
             key={label}
-            format={format}
+            monthFormat={monthFormat}
             label={label}
             selectedDay={selectedDay}
             value={value}

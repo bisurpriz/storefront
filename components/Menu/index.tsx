@@ -1,11 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import { Quicksand } from "next/font/google";
 import { useMeasure } from "@uidotdev/usehooks";
-
-const quicksand = Quicksand({
-  subsets: ["latin"],
-});
 
 const Menu: React.FC<MenuProps> = ({
   items,
@@ -29,7 +24,7 @@ const Menu: React.FC<MenuProps> = ({
 
   return (
     <nav
-      className={`${quicksand.className} bg-transparent font-semibold w-full ${className}`}
+      className={`font-mono bg-transparent font-semibold w-full ${className}`}
       ref={listRef}
     >
       {items ? (

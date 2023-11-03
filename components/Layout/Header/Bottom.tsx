@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/components/Button";
-import Divider from "@/components/Divider";
 import Drawer from "@/components/Drawer";
 import Menu from "@/components/Menu";
 import MobileMenu from "@/components/Menu/MobileMenu";

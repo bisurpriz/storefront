@@ -59,6 +59,10 @@ module.exports = {
         height: "height",
         "max-height": "max-height",
       },
+      fontFamily: {
+        sans: ["var(--font-lato)"],
+        mono: ["var(--font-quicksand)"],
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

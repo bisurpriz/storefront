@@ -5,7 +5,6 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import ProductItem from "../Product/Item";
 import Loading from "./Loading";
-import ProductItem3 from "../Product/Item/ProductItem3";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -35,7 +34,7 @@ const InfinityScroll = <T,>({
     });
 
     setOffset(next);
-    setData((prev) => [...prev, ...response?.[dataKey]]);
+    setData((prev) => [...prev, ...response[dataKey]]);
   };
 
   React.useEffect(() => {

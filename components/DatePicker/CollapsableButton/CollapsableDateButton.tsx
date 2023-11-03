@@ -1,26 +1,27 @@
 import Button from "@/components/Button";
-import dayjs from "dayjs";
 import React from "react";
 import { CSSTransition } from "react-transition-group";
+import { localeFormat } from "@/utils/format";
+import TimePicker from "..";
 
 type Props = {
   label: string;
-  value: dayjs.Dayjs;
-  selectedDay: dayjs.Dayjs | null;
-  format: string;
+  value: Date;
+  selectedDay: Date | null;
+  monthFormat: string;
   deliveryTimes: string[];
-  onSelect: (val: dayjs.Dayjs | null) => void;
+  onSelect: (val: Date | null) => void;
 };
 
 const CollapsableDateButton = ({
-  format,
+  monthFormat,
   label,
   value,
   deliveryTimes,
   onSelect,
   selectedDay,
 }: Props) => {
-  const ref = React.useRef<HTMLSelectElement>(null);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const handleOpen = () => {
     value === selectedDay ? onSelect(null) : onSelect(value);
@@ -36,39 +37,37 @@ const CollapsableDateButton = ({
         onClick={handleOpen}
       >
         <p className="text-lg font-medium">{label}</p>
-        <p className="text-sm font-normal">{value.format(format)}</p>
+        <p className="text-sm font-normal">
+          {localeFormat(value, monthFormat)}
+        </p>
       </Button>
       <CSSTransition
         in={value === selectedDay}
         timeout={0}
         classNames={{
-          enter: "max-h-0",
-          enterActive: "max-h-[100px]",
-          enterDone: "max-h-[100px]",
-          exit: "max-h-[100px]",
-          exitActive: "max-h-0",
-          exitDone: "max-h-0",
+          enter: "max-h-0 opacity-0",
+          enterActive: "max-h-[100px] opacity-100",
+          enterDone: "max-h-[100px] opacity-100",
+          exit: "max-h-[100px] opacity-100",
+          exitActive: "max-h-0 opacity-0",
+          exitDone: "max-h-0 opacity-0",
         }}
         unmountOnExit
         nodeRef={ref}
       >
-        <div className="transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg">
-          <select
-            className="w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal"
-            name={label}
-            id={label}
-            onChange={(e) => {}}
-            ref={ref}
-          >
-            <option value="">Saat Seçiniz</option>
-            {deliveryTimes.map((time) => {
-              return (
-                <option key={time} value={time}>
-                  {time}
-                </option>
-              );
+        <div
+          className="transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden"
+          ref={ref}
+        >
+          <TimePicker
+            // 12:00 - 13:00 - 14:00 - 15:00 to date
+            includeTimes={deliveryTimes.map((time) => {
+              const [hour, minute] = time.split(":");
+              return new Date(value.setHours(Number(hour), Number(minute)));
             })}
-          </select>
+            onChange={(date) => onSelect(date)}
+            className="w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal"
+          />
         </div>
       </CSSTransition>
     </div>
