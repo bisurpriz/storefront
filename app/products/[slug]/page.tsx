@@ -7,6 +7,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import SearchLocation from "./components/Layout/SearchLocation";
 import HourSelect from "@/components/DatePicker/HourSelect";
 import Promotions from "./components/Detail/Promotions";
+import ProductActions from "./components/Detail/ProductActions";
 
 type Props = {
   params: { slug: string };
@@ -75,6 +76,7 @@ const ProductDetail = async ({
           />
           <SearchLocation className="mt-6" />
           <HourSelect className="mt-6" />
+          <ProductActions />
         </div>
       </section>
       <section className="bg-12" id="reviews">
