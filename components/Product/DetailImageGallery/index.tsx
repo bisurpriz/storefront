@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import MagnifierImage from "@/components/ZoomableImage";
 import useResponsive from "@/hooks/useResponsive";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";
@@ -63,9 +64,9 @@ const ProductDetailImageGallery = () => {
         </Swiper>
       </div>
       <div className="col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg ">
-        <Image
-          src={selectedImage.url}
-          alt="Product Image"
+        <MagnifierImage
+          imageUrl={selectedImage.url}
+          imgAlt="Product Image"
           width={500}
           height={500}
           className="rounded-lg origin-top-left w-full h-full"
