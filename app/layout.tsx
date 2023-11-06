@@ -7,7 +7,7 @@ import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 import "./globals.css";
-
+import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
