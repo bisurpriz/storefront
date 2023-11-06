@@ -12,6 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
+import "swiper/css/zoom";
 
 import "@smastrom/react-rating/style.css";
 import setDefaultOptions from "date-fns/setDefaultOptions";
