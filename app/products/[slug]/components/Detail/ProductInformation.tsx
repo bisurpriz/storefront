@@ -32,7 +32,7 @@ const ProductInformation = ({
           {name}
         </h1>
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full">
-          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start">
+          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (
               <span className="text-xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
                 {discountRate}%
@@ -44,7 +44,7 @@ const ProductInformation = ({
                   <del>₺{price?.toFixed(2)}</del>
                 </h5>
               ) : null}
-              <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start">
+              <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
                 <h1 className="text-2xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
                   {discountPrice ? discountPrice : price}
                 </h1>

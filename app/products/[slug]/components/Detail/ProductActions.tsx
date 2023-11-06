@@ -5,7 +5,11 @@ import { MdFavoriteBorder } from "react-icons/md";
 const ProductActions = () => {
   return (
     <div className="flex items-center justify-start gap-4 py-4 font-mono">
-      <Button size="large" color="primary" className="text-xl pl-16 pr-16">
+      <Button
+        size="large"
+        color="primary"
+        className="text-xl pl-16 pr-16 max-sm:w-full"
+      >
         Sepete Ekle
       </Button>
       <div className="flex items-end gap-2">
@@ -18,7 +22,7 @@ const ProductActions = () => {
             <MdFavoriteBorder className="text-red-300 group-hover:text-white group-hover:animate-bounce" />
           }
         ></Button>
-        <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px]">
+        <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
           <strong>12414</strong> Favori
         </p>
       </div>
