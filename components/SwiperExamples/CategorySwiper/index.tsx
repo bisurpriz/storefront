@@ -20,7 +20,9 @@ const CategorySwiper = () => {
           slideItems={data.map((item, i) => ({
             key: i.toString(),
             children: (
-              <Card wrapperClass={`${item.bg} cursor-pointer group shadow-lg`}>
+              <Card
+                wrapperClass={`${item.bg} cursor-pointer group shadow-lg flex-1`}
+              >
                 <div className={`flex flex-col items-center justify-center`}>
                   <Image
                     src={`/shop/${item.img}`}
