@@ -6,6 +6,8 @@ import ProductInformation from "./components/Detail/ProductInformation";
 import { Metadata, ResolvingMetadata } from "next";
 import SearchLocation from "./components/Layout/SearchLocation";
 import HourSelect from "@/components/DatePicker/HourSelect";
+import Promotions from "./components/Detail/Promotions";
+import ProductActions from "./components/Detail/ProductActions";
 
 type Props = {
   params: { slug: string };
@@ -54,6 +56,7 @@ const ProductDetail = async ({
           <ProductImageCarousel />
         </div>
         <div className="w-1/2 max-md:w-full">
+          <Promotions />
           <ProductInformation
             name={data.product.name}
             price={250}
@@ -73,6 +76,7 @@ const ProductDetail = async ({
           />
           <SearchLocation className="mt-6" />
           <HourSelect className="mt-6" />
+          <ProductActions />
         </div>
       </section>
       <section className="bg-12" id="reviews">

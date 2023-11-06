@@ -40,7 +40,7 @@ const CategorySwiper = () => {
             children: (
               <Card
                 wrapperClass={`bg-cover bg-center max-lg:aspect-[5/2] lg:aspect-[3/1] ${item.image} p-16 rounded-3xl
-                max-sm:p-0 max-sm:rounded-xl max-sm:bg-center max-sm:bg-cover min-h-96`}
+                max-sm:p-0 max-sm:rounded-xl max-sm:bg-center max-sm:bg-cover min-h-96 flex-1`}
                 bordered={false}
               >
                 <div className="flex flex-col justify-center items-center h-full text-center gap-8 w-full max-sm:gap-4 max-sm:p-0 max-sm:rounded-xl max-sm:items-start max-sm:text-left">
