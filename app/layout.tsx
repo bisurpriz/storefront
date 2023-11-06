@@ -5,10 +5,14 @@ import Loading from "./loading";
 import Header from "../components/Layout/Header";
 import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+
 import "./globals.css";
-import "swiper/css";
+
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/free-mode";
+import "swiper/css/thumbs";
+
 import "@smastrom/react-rating/style.css";
 import setDefaultOptions from "date-fns/setDefaultOptions";
 import "react-datepicker/dist/react-datepicker.css";
@@ -72,7 +76,7 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-export const dynamic = "force dynamic";
+export const dynamic = "force-dynamic";
 
 export default async function RootLayout({
   children,
