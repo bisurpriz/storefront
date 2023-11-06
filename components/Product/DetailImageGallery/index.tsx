@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import MagnifierImage from "@/components/ZoomableImage";
 import useResponsive from "@/hooks/useResponsive";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";
