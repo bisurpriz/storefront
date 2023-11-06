@@ -8226,7 +8226,6 @@ __metadata:
     react: latest
     react-datepicker: ^4.21.0
     react-dom: latest
-    react-glass-magnifier: ^1.1.1
     react-icons: ^4.11.0
     react-intersection-observer: ^9.5.2
     react-transition-group: ^4.4.5
@@ -12110,17 +12109,6 @@ __metadata:
   version: 3.2.2
   resolution: "react-fast-compare@npm:3.2.2"
   checksum: 2071415b4f76a3e6b55c84611c4d24dcb12ffc85811a2840b5a3f1ff2d1a99be1020d9437ee7c6e024c9f4cbb84ceb35e48cf84f28fcb00265ad2dfdd3947704
-  languageName: node
-  linkType: hard
-
-"react-glass-magnifier@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "react-glass-magnifier@npm:1.1.1"
-  peerDependencies:
-    prop-types: ^15.5.4
-    react: ^15.0.0 || ^16.0.0
-    react-dom: ^15.0.0 || ^16.0.0
-  checksum: 70f1f46294aac5114c1bea56f3e7d86651ff497b80801e3d34f42d7113da6d541f294bfe535225e15aea2cd19e7ff3c172fe44342a7f40cca5e69942f0bb975e
   languageName: node
   linkType: hard
 
