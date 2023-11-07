@@ -8,6 +8,10 @@ import SearchLocation from "./components/Layout/SearchLocation";
 import HourSelect from "@/components/DatePicker/HourSelect";
 import Promotions from "./components/Detail/Promotions";
 import ProductActions from "./components/Detail/ProductActions";
+import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
+import ProductDescription from "./components/Detail/ProductDescription";
+import ProductComments from "./components/Detail/ProductComments";
+import { faker } from "@faker-js/faker";
 
 type Props = {
   params: { slug: string };
@@ -56,7 +60,20 @@ const ProductDetail = async ({
           <ProductImageCarousel />
         </div>
         <div className="w-1/2 max-md:w-full">
-          <Promotions />
+          <Promotions
+            promotions={[
+              {
+                description:
+                  "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
+                icon: <HiOutlineTicket />,
+              },
+              {
+                description:
+                  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
+                icon: <HiOutlineArchive />,
+              },
+            ]}
+          />
           <ProductInformation
             name={data.product.name}
             price={250}
@@ -79,8 +96,38 @@ const ProductDetail = async ({
           <ProductActions />
         </div>
       </section>
-      <section className="bg-12" id="reviews">
-        reviews
+      <section className="mt-6" id="reviews">
+        <ProductDescription
+          title="Ürün Detayları"
+          description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
+          notes={Array.from({ length: 5 }).map((_, index) =>
+            faker.commerce.productDescription()
+          )}
+          specifications={Array.from({ length: 5 }).map((_, index) => ({
+            name: faker.commerce.productName(),
+            value: faker.commerce.product(),
+          }))}
+        />
+      </section>
+      <section
+        className="mt-6"
+        id="comments"
+        aria-labelledby="comments"
+        aria-describedby="Ürün yorumları"
+      >
+        <ProductComments
+          comments={Array.from({ length: 5 }).map((_, index) => ({
+            comment: faker.lorem.paragraph(),
+            createdAt: faker.date.past().toISOString(),
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            user_id: index,
+            rate: faker.datatype.number({ min: 1, max: 5 }),
+            user_image_url: faker.image.avatar(),
+            comment_id: index,
+            email: faker.internet.email(),
+          }))}
+        />
       </section>
     </div>
   );

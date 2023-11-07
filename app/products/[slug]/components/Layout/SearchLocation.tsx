@@ -58,7 +58,9 @@ const SearchLocation = ({ className = "" }: Props) => {
             </span>
           </div>
         ) : (
-          <h4 className="text-lg">Nereden Gönderim Yapılacak?</h4>
+          <h4 className="text-lg text-slate-400">
+            Lütfen gönderim adresinizi seçiniz
+          </h4>
         )}
       </button>
     </Dropdown>

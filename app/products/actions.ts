@@ -23,7 +23,7 @@ export const getPaginatedProducts = async <T>({
 };
 
 export const getProductById = async <T>({ id }: { id: number }) => {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: GET_PRODUCT_BY_ID,
     variables: {
       id,
@@ -47,5 +47,6 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       data: data.product_by_pk.reviews,
       totalCount: data.product_by_pk.reviews_aggregate.aggregate.count,
     },
+    loading,
   };
 };

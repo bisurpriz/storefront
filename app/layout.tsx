@@ -90,7 +90,7 @@ export default async function RootLayout({
     <html lang="tr">
       <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
         <body
-          className={`${lato.variable} ${quickSand.variable} font-sans`}
+          className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth`}
           // Fontlar Tailwind üzerinden tanımlandı, font-sans => Lato font-mono => Quicksand olarak kullanılabilir.
           id="root"
         >
