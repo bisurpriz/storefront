@@ -54,7 +54,6 @@ const Button: React.FC<ButtonProps> = ({
     switch (variant) {
       case "outlined":
       case "dashed":
-      case "link":
         return {
           primary:
             "text-primary border border-primary hover:bg-primary hover:text-white",
@@ -76,6 +75,15 @@ const Button: React.FC<ButtonProps> = ({
           secondary: "bg-secondary text-white hover:bg-secondary-dark",
           success: "bg-success text-white hover:bg-success-dark",
           info: "bg-info text-white hover:bg-info-dark",
+        };
+      case "link":
+        return {
+          primary: "text-primary hover:text-primary-dark",
+          error: "text-error hover:text-error-dark",
+          warning: "text-warning hover:text-warning-dark",
+          secondary: "text-secondary hover:text-secondary-dark",
+          success: "text-success hover:text-success-dark",
+          info: "text-info hover:text-info-dark",
         };
       default:
         return {
