@@ -10,11 +10,13 @@ const Rating = ({
   readOnly = false,
   reviewCount = 0,
   className = "",
+  showReviewCount = true,
 }: {
   value: number;
   readOnly?: boolean;
   reviewCount?: number;
   className?: string;
+  showReviewCount?: boolean;
 }) => {
   const reviewCountText =
     reviewCount > 0
@@ -22,7 +24,7 @@ const Rating = ({
       : "Henüz Değerlendirme Yapılmamış";
 
   return (
-    <span>
+    <>
       <RatingPackage
         className={className}
         value={value}
@@ -41,10 +43,12 @@ const Rating = ({
           itemStrokeWidth: 1,
         }}
       />
-      <p className="text-sm m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap">
-        {reviewCountText}
-      </p>
-    </span>
+      {showReviewCount && (
+        <p className="text-sm m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap">
+          {reviewCountText}
+        </p>
+      )}
+    </>
   );
 };
 

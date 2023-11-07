@@ -1,15 +1,34 @@
 import React from "react";
-import { HiOutlineTicket } from "react-icons/hi";
 
-const Promotions = () => {
+type Promotions = {
+  icon: string | React.ReactElement;
+  description: string;
+};
+
+const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
   return (
-    <div className="grid grid-cols-12 mb-2 p-3 gap-2 bg-sky-100 text-sky-600 rounded-lg">
-      <HiOutlineTicket className="col-span-1 self-center text-xl" />
-      <p className="col-span-11">
-        Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve
-        HTML olarak serverdan gelecek.
-      </p>
-    </div>
+    promotions?.length > 0 && (
+      <div className="mb-2 p-3 gap-2 bg-sky-100 text-sky-600 rounded-lg">
+        {promotions?.map((promotion, index) => (
+          <div
+            key={promotion?.description}
+            className="flex items-start justify-start gap-2"
+          >
+            <span aria-label="Kampanya ikonu" className="text-xl">
+              {promotion.icon}
+            </span>
+            <p
+              aria-label="Kampanya açıklaması"
+              className={`${
+                index === promotions.length - 1 ? "mb-0" : "mb-2"
+              } text-sm`}
+            >
+              {promotion.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    )
   );
 };
 

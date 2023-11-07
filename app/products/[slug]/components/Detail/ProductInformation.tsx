@@ -59,20 +59,24 @@ const ProductInformation = ({
           <div className="rounded-lg text-end w-full max-xs:text-start max-xs:mt-4">
             <Popover
               content={
-                <RatingDetail
-                  rateCounts={rateCounts}
-                  rating={rating}
-                  totalRating={reviewCount}
-                />
+                <span>
+                  <RatingDetail
+                    rateCounts={rateCounts}
+                    rating={rating}
+                    totalRating={reviewCount}
+                  />
+                </span>
               }
               position="bottom"
             >
-              <Rating
-                value={rating}
-                reviewCount={reviewCount}
-                readOnly
-                className="max-w-[100px] xs:ml-auto"
-              />
+              <span>
+                <Rating
+                  value={rating}
+                  reviewCount={reviewCount}
+                  readOnly
+                  className="max-w-[100px] xs:ml-auto"
+                />
+              </span>
             </Popover>
           </div>
         </div>
