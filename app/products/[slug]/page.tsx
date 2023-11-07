@@ -12,6 +12,7 @@ import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 import ProductDescription from "./components/Detail/ProductDescription";
 import ProductComments from "./components/Detail/ProductComments";
 import { faker } from "@faker-js/faker";
+import PaymentMethods from "./components/Detail/PaymentMethods";
 
 type Props = {
   params: { slug: string };
@@ -95,6 +96,14 @@ const ProductDetail = async ({
           <HourSelect className="mt-6" />
           <ProductActions />
         </div>
+      </section>
+      <section
+        className="mt-6"
+        id="payment-methods"
+        aria-labelledby="payment-methods"
+        aria-describedby="Ödeme yöntemleri"
+      >
+        <PaymentMethods />
       </section>
       <section className="mt-6" id="reviews">
         <ProductDescription

@@ -31,7 +31,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         className="p-3 cursor-pointer flex justify-between items-center "
         onClick={onToggle}
       >
-        <div className="flex items-center">{title}</div>
+        <h4 className="flex items-center">{title}</h4>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-6 w-6 transform ${
