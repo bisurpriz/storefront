@@ -11,5 +11,4 @@ export const GET = handleAuth({
       prompt: "login",
     },
   }),
-
 });

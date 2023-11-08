@@ -128,10 +128,13 @@ const ProductDetail = async ({
           comments={Array.from({ length: 5 }).map((_, index) => ({
             comment: faker.lorem.paragraph(),
             createdAt: faker.date.past().toISOString(),
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
             user_id: index,
-            rate: faker.datatype.number({ min: 1, max: 5 }),
+            rate: faker.number.int({
+              min: 1,
+              max: 5,
+            }),
             user_image_url: faker.image.avatar(),
             comment_id: index,
             email: faker.internet.email(),

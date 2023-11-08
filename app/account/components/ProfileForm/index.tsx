@@ -1,0 +1,114 @@
+"use client";
+
+import Button from "@/components/Button";
+import TextInput from "@/components/TextInput";
+import { localeDistanceFormat } from "@/utils/format";
+import Image from "next/image";
+import React from "react";
+import { updateUserById } from "../../actions";
+
+const ProfileForm = ({
+  user,
+  id,
+}: {
+  user: {
+    created_at: string;
+    email: string;
+    firstname: string;
+    lastname: string;
+    picture: string;
+    phone: string;
+    reference_code: string | null;
+    vkn_tckn: string | null;
+  };
+  id: string;
+}) => {
+  const [userData, setUserData] = React.useState(user);
+
+  return (
+    <form
+      className="flex flex-col gap-4 max-md:gap-2"
+      onSubmit={async (e) => {
+        e.preventDefault();
+
+        await updateUserById({
+          ...userData,
+          id: id,
+        });
+      }}
+    >
+      <div className="flex items-start flex-col justify-start gap-2">
+        <p className="text-xs text-slate-400">
+          {localeDistanceFormat(new Date(userData.created_at))} önce kaydoldunuz
+        </p>
+        <Image
+          src={userData.picture}
+          alt="Profil resmi"
+          className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
+          width={200}
+          height={200}
+        />
+      </div>
+      <TextInput
+        label="İsim"
+        id="firstname"
+        placeholder="Adınız"
+        className="md:w-80"
+        type="text"
+        value={userData.firstname}
+        onChange={(value) => setUserData({ ...userData, firstname: value })}
+      />
+      <TextInput
+        label="Soyisim"
+        id="lastname"
+        placeholder="Adınız"
+        className="md:w-80"
+        type="text"
+        value={userData.lastname}
+        onChange={(value) => setUserData({ ...userData, lastname: value })}
+      />
+      <TextInput
+        label="E-posta"
+        id="email"
+        placeholder="E-posta adresiniz"
+        className="md:w-80"
+        type="email"
+        disabled
+        value={user?.email}
+      />
+      <TextInput
+        label="Telefon"
+        id="phone"
+        placeholder="Telefon numaranız"
+        className="md:w-80"
+        type="text"
+        value={userData.phone}
+        onChange={(value) => setUserData({ ...userData, phone: value })}
+      />
+      <TextInput
+        label="VKN/TCKN"
+        id="vkn_tckn"
+        placeholder="VKN/TCKN"
+        className="md:w-80"
+        type="text"
+        value={userData.vkn_tckn || ""}
+        onChange={(value) => setUserData({ ...userData, vkn_tckn: value })}
+      />
+      <TextInput
+        label="Referans Kodu"
+        id="reference_code"
+        placeholder="Referans kodunuz"
+        className="md:w-80"
+        type="text"
+        disabled
+        value={userData.reference_code || ""}
+      />
+
+      <Button type="submit" className="w-fit">
+        Kaydet
+      </Button>
+    </form>
+  );
+};
+
+export default ProfileForm;
