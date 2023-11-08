@@ -2,14 +2,16 @@ import React from "react";
 import ProfileForm from "./components/ProfileForm";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";
+import { getUserIdFromCookie } from "@/utils/cookies";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
-import { getSession } from "@auth0/nextjs-auth0";
 
 const Account = async () => {
-  const session = await getSession();
+  const { id, error } = getUserIdFromCookie();
 
-  const id = session?.user["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
-  const { user, loading } = await getUserById(id ?? "");
+  const { user, loading } = await getUserById(id!).catch((err) => {
+    console.error(err);
+    return { user: null, loading: false };
+  });
 
   return (
     <div>
@@ -21,7 +23,7 @@ const Account = async () => {
           <AiOutlineExclamationCircle /> Bilgilerinizi güncelleyebilirsiniz
         </p>
       </div>
-      {loading ? <ProfileFormSkeleton /> : <ProfileForm user={user} id={id} />}
+      {loading ? <ProfileFormSkeleton /> : <ProfileForm user={user} id={id!} />}
     </div>
   );
 };

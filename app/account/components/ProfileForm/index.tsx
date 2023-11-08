@@ -6,6 +6,7 @@ import { localeDistanceFormat } from "@/utils/format";
 import Image from "next/image";
 import React from "react";
 import { updateUserById } from "../../actions";
+import ProfileFormSkeleton from "./ProfileFormSkeleton";
 
 const ProfileForm = ({
   user,
@@ -25,7 +26,7 @@ const ProfileForm = ({
 }) => {
   const [userData, setUserData] = React.useState(user);
 
-  return (
+  return userData ? (
     <form
       className="flex flex-col gap-4 max-md:gap-2"
       onSubmit={async (e) => {
@@ -108,6 +109,8 @@ const ProfileForm = ({
         Kaydet
       </Button>
     </form>
+  ) : (
+    <ProfileFormSkeleton />
   );
 };
 
