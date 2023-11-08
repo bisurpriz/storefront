@@ -3,11 +3,9 @@ import AccountNavigation from "./components/Navigation";
 
 const AccountLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid grid-cols-12 gap-4 relative">
-      <div className="col-span-2 row-span-full">
-        <AccountNavigation />
-      </div>
-      <div className="col-span-10 row-span-full shadow-md border border-7 rounded-md p-4 h-[1440px]">
+    <div className="flex gap-8 max-md:gap-4 relative">
+      <AccountNavigation />
+      <div className="shadow-md border border-7 rounded-md p-4 flex-1 mb-4">
         {children}
       </div>
     </div>

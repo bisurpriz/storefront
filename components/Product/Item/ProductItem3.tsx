@@ -12,7 +12,6 @@ export default function ProductItem3({
   price,
   loading,
 }: ProductItemProps) {
-  console.log(image);
   return (
     <div className="relative group overflow-hidden rounded-lg">
       <Link className="absolute inset-0 z-10" href="#">

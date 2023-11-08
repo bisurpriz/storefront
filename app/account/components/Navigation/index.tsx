@@ -1,5 +1,6 @@
 "use client";
 
+import Tooltip from "@/components/Tooltip";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -55,28 +56,36 @@ const accountNavigationItems = [
 
 const AccountNavigation = () => {
   const pathname = usePathname();
+
   return (
     <nav
-      className="w-full flex flex-col gap-2 sticky inset-y-5"
+      className="flex flex-col gap-2 sticky inset-y-5"
       aria-label="Account Navigation"
       role="navigation"
     >
       {accountNavigationItems.map((item, index) => (
-        <Link
-          key={index}
-          className={`flex items-center gap-2 p-2 rounded-md hover:bg-7 hover:text-white transition-all duration-200 ${
-            pathname === item.link
-              ? "bg-7 text-white"
-              : "bg-white text-gray-700"
-          }`}
-          as={item.link}
-          href={item.link}
-          aria-current={pathname === item.link ? "page" : undefined}
-          aria-label={item.title}
+        <Tooltip
+          key={item.link}
+          text={item.title}
+          position="right"
+          breakpoint="md"
         >
-          <item.icon size={24} />
-          <span>{item.title}</span>
-        </Link>
+          <Link
+            key={index}
+            className={`flex items-center gap-2 p-2 rounded-md hover:bg-7 hover:text-white transition-all duration-200 max-md:justify-center ${
+              pathname === item.link
+                ? "bg-7 text-white"
+                : "bg-white text-gray-700"
+            }`}
+            as={item.link}
+            href={item.link}
+            aria-current={pathname === item.link ? "page" : undefined}
+            aria-label={item.title}
+          >
+            <item.icon size={24} />
+            <span className="max-md:hidden">{item.title}</span>
+          </Link>
+        </Tooltip>
       ))}
     </nav>
   );

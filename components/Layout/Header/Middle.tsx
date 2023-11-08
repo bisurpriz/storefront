@@ -30,7 +30,7 @@ const HeaderMiddle = () => {
         }}
       />
 
-      <div className="float-right flex items-center  max-sm:hidden">
+      <div className="float-right flex items-center max-sm:hidden">
         <Link href="/favorites">
           <Button
             icon={<MdOutlineFavoriteBorder />}
