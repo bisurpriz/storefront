@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
-import { IMAGE_URL } from "@/contants/urls";
 
 const ProductItem = ({
   name,
@@ -28,7 +27,7 @@ const ProductItem = ({
     >
       <Link href={`/products/${id}`} className="min-w-fit">
         <Image
-          src={`${IMAGE_URL}/${image}`}
+          src={`${image}`}
           alt={name}
           className={`w-full object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300 ${maxXsClasses.image}`}
           width={315}

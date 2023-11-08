@@ -40,7 +40,7 @@ const HeaderProfile = () => {
             className="rounded-full min-h-[30px] min-w-[30px]"
             loading="lazy"
           />
-          <span className="text-sm font-semibold text-gray-700 max-lg:hidden">
+          <span className="text-sm font-normal text-slate-500 max-lg:hidden">
             {user?.name}
           </span>
         </div>

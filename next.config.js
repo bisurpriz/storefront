@@ -63,6 +63,12 @@ const nextConfig = {
         pathname: "/**",
         port: "",
       },
+      {
+        hostname: "cdn03.ciceksepeti.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
     ],
   },
 };
