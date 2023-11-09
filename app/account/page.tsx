@@ -2,11 +2,11 @@ import React from "react";
 import ProfileForm from "./components/ProfileForm";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";
-import { getUserIdFromCookie } from "@/utils/cookies";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
+import { readIdFromCookies } from "../actions";
 
 const Account = async () => {
-  const { id, error } = getUserIdFromCookie();
+  const id = await readIdFromCookies("user_id");
 
   const { user, loading } = await getUserById(id!).catch((err) => {
     console.error(err);
