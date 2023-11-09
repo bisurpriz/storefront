@@ -42,8 +42,7 @@ export const metadata: Metadata = {
   description: "Sevdiklerinize sürpriz yapın",
   creator: "BiSürpriz",
   icons: {
-    icon: "/assets/imgs/theme/favicon.ico",
-    apple: "/assets/imgs/theme/apple-touch-icon.png",
+    icon: "./favicon.ico",
   },
   keywords: [
     "sürpriz",

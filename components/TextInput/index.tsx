@@ -57,7 +57,7 @@ const TextInput: React.FC<TextInputProps> = ({
     <div className={`${className}`}>
       {label && (
         <label
-          className={`block text-sm font-medium ${
+          className={`block text-sm text-gray-500 font-medium ${
             hasError
               ? "text-error"
               : hasSuccess
@@ -80,7 +80,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <input
           {...props}
           ref={inputRef}
-          className={`block outline-none w-full px-3 py-2 pl-10 text-gray-700 border rounded-md focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 ${
+          className={`block outline-none w-full px-3 py-2 text-gray-700 border rounded-md focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 ${
             hasError
               ? "border-error-light"
               : hasSuccess
@@ -88,7 +88,9 @@ const TextInput: React.FC<TextInputProps> = ({
               : focused
               ? "border-primary-dark"
               : ""
-          }`}
+          }
+          ${prefix ? "pl-10" : ""}
+          `}
           placeholder={placeholder}
           onChange={handleChange}
           disabled={disabled}

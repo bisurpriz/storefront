@@ -16,6 +16,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const authLink = setContext(async (_, { headers }) => {
+  "use server";
   let token = null;
 
   try {
