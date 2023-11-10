@@ -13,6 +13,7 @@ interface TooltipProps {
   position?: "top" | "bottom" | "left" | "right";
   children: React.ReactNode;
   breakpoint?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  whiteSpace?: "normal" | "nowrap";
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -20,6 +21,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   position = TooltipPosition.BOTTOM,
   children,
   breakpoint,
+  whiteSpace = "nowrap",
 }) => {
   const [isTooltipVisible, setTooltipVisible] = useState(false);
 
@@ -34,7 +36,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   const getTooltipStyles = () => {
     switch (position) {
       case TooltipPosition.TOP:
-        return "left-1/2 transform -translate-x-1/2";
+        return "left-1/2 transform -translate-x-1/2 -top-2 -translate-y-full";
 
       case TooltipPosition.BOTTOM:
         return "left-1/2 transform -translate-x-1/2";
@@ -77,13 +79,15 @@ const Tooltip: React.FC<TooltipProps> = ({
     }
   };
 
+  const whiteSpaceClass = whiteSpace === "nowrap" ? "whitespace-nowrap" : "";
+
   return (
     <div
       className="relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div>{children}</div>
+      <div className="cursor-pointer">{children}</div>
       <div className={`${breakpointWithOpenTooltip()}`}>
         <CSSTransition
           in={isTooltipVisible}
@@ -102,7 +106,7 @@ const Tooltip: React.FC<TooltipProps> = ({
           <div
             ref={ref}
             role="tooltip"
-            className={`absolute z-10 whitespace-nowrap inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()}`}
+            className={`absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
           >
             {text}
           </div>
