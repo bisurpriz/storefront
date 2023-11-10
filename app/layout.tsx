@@ -87,18 +87,20 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-        <body
-          className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth`}
-          // Fontlar Tailwind üzerinden tanımlandı, font-sans => Lato font-mono => Quicksand olarak kullanılabilir.
-          id="root"
-        >
-          <Suspense fallback={<Loading />}>
+      <body
+        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth`}
+        id="root"
+      >
+        <Suspense fallback={<Loading />}>
+          <UserProvider
+            loginUrl={`/api/auth/login`}
+            profileUrl={`/api/auth/me`}
+          >
             <Header />
             <Content>{children}</Content>
-          </Suspense>
-        </body>
-      </UserProvider>
+          </UserProvider>
+        </Suspense>
+      </body>
     </html>
   );
 }
