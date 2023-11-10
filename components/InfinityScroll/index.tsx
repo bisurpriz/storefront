@@ -5,6 +5,7 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import ProductItem from "../Product/Item";
 import Loading from "./Loading";
+import { IMAGE_URL } from "@/contants/urls";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -50,9 +51,7 @@ const InfinityScroll = <T,>({
           key={item.id}
           name={item.name}
           description={item.description}
-          image={
-            "https://cdn03.ciceksepeti.com/cicek/kc172274-1/L/parlament-mavisi-solmayan-gul-kc172274-1-c5f7b0784d914bdc83c411b344d96164.jpg"
-          }
+          image={IMAGE_URL + "/" + item.image_url?.[0]}
           price={item.price}
           id={item.id}
         />
