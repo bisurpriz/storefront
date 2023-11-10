@@ -48,7 +48,7 @@ const ProductDetail = async ({
   params: { slug: string | number };
 }) => {
   const data = await getProductById({ id: Number(slug) });
-
+  console.log(data);
   return (
     <div className="h-full">
       <section
@@ -58,7 +58,12 @@ const ProductDetail = async ({
         aria-describedby="Ürün detayları"
       >
         <div className="w-1/2 max-md:w-full">
-          <ProductImageCarousel />
+          <ProductImageCarousel
+            images={data.product.image_url?.map((url: string) => ({
+              id: url,
+              url: `${IMAGE_URL}/${url}`,
+            }))}
+          />
         </div>
         <div className="w-1/2 max-md:w-full">
           <Promotions

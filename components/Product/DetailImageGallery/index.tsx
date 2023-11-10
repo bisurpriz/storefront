@@ -8,13 +8,16 @@ import { Mousewheel, Pagination, Virtual, Zoom } from "swiper/modules";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { useRef } from "react";
 
-// create fake 10 images
-const images = Array.from({ length: 10 }, (_, i) => ({
-  id: i,
-  url: `https://picsum.photos/seed/${i}/1280/1280`,
-}));
+type ProductDetailImageGalleryProps = {
+  images: {
+    id: number;
+    url: string;
+  }[];
+};
 
-const ProductDetailImageGallery = () => {
+const ProductDetailImageGallery = ({
+  images,
+}: ProductDetailImageGalleryProps) => {
   const swiperRef = useRef<SwiperRef>(null);
   const [direction, setDirection] = React.useState<"horizontal" | "vertical">(
     "horizontal"
@@ -22,7 +25,6 @@ const ProductDetailImageGallery = () => {
   const { isExtraLargeDesktop } = useResponsive();
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [selected, setSelected] = React.useState<number>(0);
-  const [scaled, setScaled] = React.useState<number>(1);
 
   useEffect(() => {
     if (isExtraLargeDesktop) {
@@ -48,7 +50,7 @@ const ProductDetailImageGallery = () => {
           width={width}
           virtual
         >
-          {images.map((image, index) => (
+          {images?.map((image, index) => (
             <SwiperSlide
               key={image.id}
               onClick={() => {
@@ -90,7 +92,7 @@ const ProductDetailImageGallery = () => {
             swiper.zoom.toggle();
           }}
         >
-          {images.map((image) => (
+          {images?.map((image) => (
             <SwiperSlide key={image.id}>
               <div className="swiper-zoom-container">
                 <Image
