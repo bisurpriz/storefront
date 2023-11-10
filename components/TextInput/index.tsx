@@ -89,7 +89,7 @@ const TextInput: React.FC<TextInputProps> = ({
               ? "border-primary-dark"
               : ""
           }
-          ${prefix ? "pl-10" : ""}
+          ${prefix || icon ? "pl-8" : ""}
           `}
           placeholder={placeholder}
           onChange={handleChange}
