@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Rating as RatingPackage } from "@smastrom/react-rating";
 
@@ -11,12 +13,14 @@ const Rating = ({
   reviewCount = 0,
   className = "",
   showReviewCount = true,
+  onChange,
 }: {
   value: number;
   readOnly?: boolean;
   reviewCount?: number;
   className?: string;
   showReviewCount?: boolean;
+  onChange?: (value: number) => void;
 }) => {
   const reviewCountText =
     reviewCount > 0
@@ -26,10 +30,11 @@ const Rating = ({
   return (
     <>
       <RatingPackage
-        className={className}
+        className={`max-w-[80px] ${className}`}
         value={value}
         halfFillMode="svg"
         spaceInside={"small"}
+        onChange={(value: number) => onChange?.(value)}
         readOnly={readOnly}
         visibleItemLabelIds={["1", "2", "3", "4", "5"]}
         visibleLabelId="rating"
