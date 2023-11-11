@@ -3,8 +3,9 @@
 import Button from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
+import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 
 const ProductItem = ({
   name,
@@ -14,17 +15,52 @@ const ProductItem = ({
   id,
   loading = false,
 }: ProductItemProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const maxXsClasses = {
     container: "max-xs:flex max-xs:items-start max-xs:justify-start gap-3",
     image: "max-xs:w-32 max-xs:h-32 flex-1 grow ",
+  };
+
+  const handleToggleFavorite = async () => {
+    try {
+      if (isFavorite) {
+        /* await deleteProductFromFavorites({
+          variables: {
+            id: selectedProductId,
+          },
+        }); */
+      } else {
+        /*  await updateProductStatus({
+          variables: {
+            id: selectedProductId,
+            is_favorite: true,
+          },
+        }); */
+      }
+
+      setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
 
   return loading ? (
     <ProductItemSkeleton />
   ) : (
     <div
-      className={`bg-white rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300 ${maxXsClasses.container}`}
+      className={`bg-white relative rounded-lg hover:shadow-lg p-4  border hover:border-primary transition-all duration-300 ${maxXsClasses.container}`}
     >
+      <div
+        onClick={handleToggleFavorite}
+        className={`flex items-center justify-center bg-white w-10 h-10 text-2xl shadow-lg text-primary rounded-full cursor-pointer absolute top-2 right-2 z-10`}
+      >
+        {isFavorite ? (
+          <MdFavorite />
+        ) : (
+          <MdOutlineFavoriteBorder className="text-black hover:text-primary" />
+        )}
+      </div>
       <Link href={`/products/${id}`} className="min-w-fit">
         <Image
           src={`${image}`}
