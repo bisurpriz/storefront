@@ -1,15 +1,30 @@
-"use client";
+"use client"; // Error components must be Client Components
 
-const ErrorPage = () => {
+import { useEffect } from "react";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
+
   return (
-    <div className="w-full py-6 max-sm:h-auto max-md:px-4 flex flex-col items-center justify-between gap-8 max-md:gap-4 container mx-auto  max-sm:py-1 max-sm:px-2">
-      <h1 className="text-4xl font-bold text-center">404</h1>
-
-      <p className="text-2xl font-bold text-center">
-        Bir şeyler ters gitti. Lütfen daha sonra tekrar deneyiniz.
-      </p>
+    <div>
+      <h2>Something went wrong!</h2>
+      <button
+        onClick={
+          // Attempt to recover by trying to re-render the segment
+          () => reset()
+        }
+      >
+        Try again
+      </button>
     </div>
   );
-};
-
-export default ErrorPage;
+}
