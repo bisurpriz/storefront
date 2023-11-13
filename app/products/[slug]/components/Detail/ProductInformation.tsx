@@ -3,6 +3,7 @@ import Rating from "./Rating";
 import Popover from "@/components/Popover";
 import RatingDetail from "./RatingDetail";
 import { RatingProps } from "./RatingDetail";
+import Link from "next/link";
 
 type ProductInformationProps = {
   name: string;
@@ -13,6 +14,11 @@ type ProductInformationProps = {
   promotion?: string;
   rateCounts: RatingProps["rateCounts"];
   discountRate?: number;
+  vendor?: {
+    name: string;
+    id: string;
+    rate: number;
+  }
 };
 
 const ProductInformation = ({
@@ -24,13 +30,26 @@ const ProductInformation = ({
   discountPrice,
   promotion,
   discountRate,
+  vendor
 }: ProductInformationProps) => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 p-8 w-full h-full bg-green-50 rounded-md shadow-md shadow-green-200 max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start gap-2 flex-col">
-        <h1 className="text-3xl font-medium text-gray-800 max-w-lg mb-4">
+        <h1 className="text-3xl text-gray-800 max-w-lg mb-2">
           {name}
         </h1>
+        {vendor && <div className="flex text-sm border border-gray-400 rounded-lg p-2 max-w-lg mb-2">
+          <label className="text-gray-800 me-1">
+            Satıcı:
+          </label>
+          <Link href={`/vendor/${vendor.id}`} className="text-sky-600 font-bold cursor-pointer me-1">
+            {vendor.name}
+          </Link>
+
+          {vendor.rate && <span className="h-full px-3 bg-primary rounded-lg text-white font-bold">
+            {vendor.rate}
+          </span>}
+        </div>}
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (

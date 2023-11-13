@@ -47,6 +47,11 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       data: data.product_by_pk.reviews,
       totalCount: data.product_by_pk.reviews_aggregate.aggregate.count,
     },
+    tenant: {
+      id: data.product_by_pk.tenant.id,
+      name: "data.product_by_pk.tenant.name",
+      rate:8.2
+    },
     loading,
   };
 };

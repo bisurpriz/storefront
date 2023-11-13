@@ -96,6 +96,7 @@ const ProductDetail = async ({
             discountPrice={data.product.price}
             discountRate={10}
             key={data.product.id}
+            vendor={data.tenant}
           />
           <SearchLocation className="mt-6" />
           <HourSelect className="mt-6" />
