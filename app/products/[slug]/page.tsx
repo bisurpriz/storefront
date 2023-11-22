@@ -48,7 +48,6 @@ const ProductDetail = async ({
   params: { slug: string | number };
 }) => {
   const data = await getProductById({ id: Number(slug) });
-  console.log(data);
   return (
     <div className="h-full">
       <section

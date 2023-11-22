@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_VENDOR_BY_ID = gql`
   query MyQuery($id: bigint = 0) {
-    product_by_pk(id: $id) {
+    product: product_by_pk(id: $id) {
       category {
         name
       }

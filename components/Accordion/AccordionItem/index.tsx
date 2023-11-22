@@ -1,11 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 interface AccordionItemProps {
   title: React.ReactNode;
   content: React.ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
   className?: string;
   bordered?: boolean;
 }
@@ -19,8 +19,9 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   bordered,
 }) => {
   const nodeRef = useRef(null);
+  const [open, setOpen] = useState<boolean>(isOpen ?? false);
 
-  const isOpenClass = isOpen ? "bg-stone-50" : "";
+  const isOpenClass = open ? "bg-stone-50" : "";
   const isBordered = bordered ? "border border-b-0 last:border-b" : "";
 
   return (
@@ -29,7 +30,14 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
     >
       <div
         className="p-3 cursor-pointer flex justify-between items-center "
-        onClick={onToggle}
+        onClick={
+          onToggle
+            ? () => {
+                onToggle();
+                setOpen(!open);
+              }
+            : () => setOpen(!open)
+        }
       >
         <h4 className="flex items-center">{title}</h4>
         <svg
@@ -48,7 +56,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
       </div>
       <CSSTransition
         nodeRef={nodeRef}
-        in={isOpen}
+        in={open}
         timeout={100}
         unmountOnExit
         classNames={{

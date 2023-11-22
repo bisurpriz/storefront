@@ -75,6 +75,18 @@ const nextConfig = {
         pathname: "/**",
         port: "",
       },
+      {
+        hostname: "source.unsplash.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
+      {
+        hostname: "s.gravatar.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
     ],
   },
 };

@@ -15,7 +15,7 @@ const HeaderProfile = () => {
   };
 
   return !user ? (
-    <div className="flex items-center justify-end">
+    <div className="flex items-center justify-end ml-2">
       <Button
         type="button"
         onClick={handleLogin}

@@ -1,7 +1,7 @@
-import React, {  useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from "react";
 
 export interface NumberInputProps {
-  value: number;
+  value?: number;
   onChange: (newValue: number) => void;
   min?: number;
   max?: number;
@@ -15,7 +15,7 @@ export interface NumberInputProps {
   autoFocus?: boolean;
   onBlur?: () => void;
   icon?: React.ReactNode; // Özel ikon eklemek için özellik
-  iconPosition?: 'left' | 'right'; // Ikon pozisyonunu belirlemek için özellik
+  iconPosition?: "left" | "right"; // Ikon pozisyonunu belirlemek için özellik
 }
 
 const NumberInput: React.FC<NumberInputProps> = ({
@@ -33,7 +33,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
   autoFocus = false,
   onBlur,
   icon,
-  iconPosition = 'right',
+  iconPosition = "right",
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -43,17 +43,17 @@ const NumberInput: React.FC<NumberInputProps> = ({
     }
   }, [autoFocus]);
 
-  const formatValue = (val: number) => {
+  const formatValue = (val?: number) => {
     if (mask) {
       const maskedValue = val.toFixed(precision).replace(/[.,]/, mask);
       return maskedValue;
     }
-    return val.toFixed(precision);
+    return val?.toFixed(precision);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    const unmaskedValue = inputValue.replace(new RegExp(`[${mask}]`, 'g'), '');
+    const unmaskedValue = inputValue.replace(new RegExp(`[${mask}]`, "g"), "");
     const parsedValue = parseFloat(unmaskedValue);
 
     if (!isNaN(parsedValue)) {
@@ -89,12 +89,10 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
   return (
     <div className={`flex items-center ${className}`}>
-      {icon && iconPosition === 'left' && (
-        <div className="mr-2">{icon}</div>
-      )}
+      {icon && iconPosition === "left" && <div className="mr-2">{icon}</div>}
       {label && <label className="mr-2">{label}</label>}
       <button
-        className="bg-blue-500 text-white px-2 py-1 rounded-l hover:bg-blue-700"
+        className="bg-primary text-white px-2 py-1 rounded-l hover:bg-primary-dark"
         onClick={decrement}
         disabled={value <= min || disabled}
       >
@@ -108,17 +106,16 @@ const NumberInput: React.FC<NumberInputProps> = ({
         disabled={disabled}
         ref={inputRef}
         onBlur={handleBlur}
+        className="px-2 py-1 text-center w-16"
       />
       <button
-        className="bg-blue-500 text-white px-2 py-1 rounded-r hover:bg-blue-700"
+        className="bg-primary text-white px-2 py-1 rounded-r hover:bg-primary-dark"
         onClick={increment}
         disabled={value >= max || disabled}
       >
         +
       </button>
-      {icon && iconPosition === 'right' && (
-        <div className="ml-2">{icon}</div>
-      )}
+      {icon && iconPosition === "right" && <div className="ml-2">{icon}</div>}
     </div>
   );
 };

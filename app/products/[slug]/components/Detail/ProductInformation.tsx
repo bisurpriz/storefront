@@ -18,7 +18,7 @@ type ProductInformationProps = {
     name: string;
     id: string;
     rate: number;
-  }
+  };
 };
 
 const ProductInformation = ({
@@ -30,26 +30,29 @@ const ProductInformation = ({
   discountPrice,
   promotion,
   discountRate,
-  vendor
+  vendor,
 }: ProductInformationProps) => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 p-8 w-full h-full bg-green-50 rounded-md shadow-md shadow-green-200 max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start gap-2 flex-col">
-        <h1 className="text-3xl text-gray-800 max-w-lg mb-2">
-          {name}
-        </h1>
-        {vendor && <div className="flex text-sm border border-gray-400 rounded-lg p-2 max-w-lg mb-2">
-          <label className="text-gray-800 me-1">
-            Satıcı:
-          </label>
-          <Link href={`/vendor/${vendor.id}`} className="text-sky-600 font-bold cursor-pointer me-1">
-            {vendor.name}
-          </Link>
+        <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
+        {vendor && (
+          <div className="flex text-sm border border-gray-400 rounded-lg p-2 max-w-lg mb-2">
+            <label className="text-gray-800 me-1">Satıcı:</label>
+            <Link
+              href={`/vendor/${vendor.id}`}
+              className="text-sky-600 font-bold cursor-pointer me-1"
+            >
+              {vendor.name}
+            </Link>
 
-          {vendor.rate && <span className="h-full px-3 bg-primary rounded-lg text-white font-bold">
-            {vendor.rate}
-          </span>}
-        </div>}
+            {vendor.rate && (
+              <span className="h-full px-3 bg-primary rounded-lg text-white font-bold">
+                {vendor.rate}
+              </span>
+            )}
+          </div>
+        )}
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (
@@ -60,7 +63,7 @@ const ProductInformation = ({
             <span className="flex flex-col gap-1">
               {discountPrice ? (
                 <h5 className="text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap">
-                  <del>₺{price?.toFixed(2)}</del>
+                  <del>₺{price?.toFixed(2)} TL</del>
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
