@@ -99,6 +99,7 @@ const TextInput: React.FC<TextInputProps> = ({
           type={type}
           maxLength={maxLength}
           value={value}
+          name={id}
         />
         {suffix && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-600">

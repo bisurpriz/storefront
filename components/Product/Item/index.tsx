@@ -72,8 +72,15 @@ const ProductItem = ({
         />
       </Link>
       <div className="max-xs:flex max-xs:flex-col max-xs:items-start max-xs:justify-start max-xs:gap-1">
-        <h2 className="text-lg font-semibold mt-2">{name}</h2>
-        <p className="text-gray-600 text-sm mt-1 truncate">{description}</p>
+        <h2 className="text-lg font-semibold mt-2" title={name}>
+          {name}
+        </h2>
+        <p
+          title={description}
+          className="text-gray-600 text-sm mt-1 truncate max-w-[200px]"
+        >
+          {description}
+        </p>
         <div className="xs:mt-4 flex justify-between items-center max-xs:flex-col max-xs:items-start max-xs:justify-start">
           <span className="text-lg font-bold text-gray-800">{price} TL</span>
           <Button size="small" label="Sepete Ekle" color="primary" />

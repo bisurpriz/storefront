@@ -25,20 +25,20 @@ export const getVendorById = async <T>({ id }: { id: number }) => {
 
   return {
     category: {
-      name: data.product_by_pk.category.name,
+      name: data.product.category.name,
     },
     product: {
-      description: data.product_by_pk.description,
-      id: data.product_by_pk.id,
-      image_url: data.product_by_pk.image_url,
-      name: data.product_by_pk.name,
-      price: data.product_by_pk.price,
-      quantity: data.product_by_pk.quantity,
+      description: data.product.description,
+      id: data.product.id,
+      image_url: data.product.image_url,
+      name: data.product.name,
+      price: data.product.price,
+      quantity: data.product.quantity,
     },
-    questions: data.product_by_pk.questions,
+    questions: data.product.questions,
     reviews: {
-      data: data.product_by_pk.reviews,
-      totalCount: data.product_by_pk.reviews_aggregate.aggregate.count,
+      data: data.product.reviews,
+      totalCount: data.product.reviews_aggregate.aggregate.count,
     },
     loading,
   };

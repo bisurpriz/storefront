@@ -5,8 +5,13 @@ import TextInput from "@/components/TextInput";
 import { useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
+import { CartSummary } from "@/hooks/useCartSummary";
 
-const CartSummary = () => {
+const CartSummary = ({
+  cartSummary: { couponApplied, discount, items, totalPrice, totalQuantity },
+}: {
+  cartSummary: CartSummary;
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -19,12 +24,24 @@ const CartSummary = () => {
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">599.99 TL</span>
+              <span className="font-semibold">{totalPrice.toFixed(2)} TL</span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
               <span className="font-semibold">29.99 TL</span>
             </div>
+            {discount ? (
+              <>
+                <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
+                  <span>Toplam kazancınız</span>
+                  <span className="font-semibold">
+                    {discount} TL{" "}
+                    {couponApplied && "(İndirim Kuponu Kullanıldı)"}
+                  </span>
+                </div>
+              </>
+            ) : null}
+
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
               <TextInput
                 className="w-full"
@@ -42,7 +59,7 @@ const CartSummary = () => {
             <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                629.99 TL
+                {totalPrice.toFixed(2)} TL
               </span>
             </div>
           </div>
@@ -86,7 +103,7 @@ const CartSummary = () => {
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">599.99 TL</span>
+              <span className="font-semibold">{totalPrice} TL</span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
@@ -109,7 +126,7 @@ const CartSummary = () => {
             <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                629.99 TL
+                {totalPrice} TL
               </span>
             </div>
           </div>
