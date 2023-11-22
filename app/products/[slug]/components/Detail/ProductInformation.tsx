@@ -19,6 +19,7 @@ type ProductInformationProps = {
     id: string;
     rate: number;
   };
+
 };
 
 const ProductInformation = ({
@@ -31,6 +32,7 @@ const ProductInformation = ({
   promotion,
   discountRate,
   vendor,
+
 }: ProductInformationProps) => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 p-8 w-full h-full bg-green-50 rounded-md shadow-md shadow-green-200 max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
@@ -53,6 +55,7 @@ const ProductInformation = ({
             )}
           </div>
         )}
+
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (

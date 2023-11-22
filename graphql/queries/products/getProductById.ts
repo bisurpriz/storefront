@@ -5,33 +5,25 @@ export const GET_PRODUCT_BY_ID = gql`
     product: product_by_pk(id: $id) {
       description
       id
-      image_url
-      name
-      price
-      quantity
-      questions {
-        created_at
-        id
-        question
-        updated_at
-        user {
-          firstname
-          lastname
-        }
+      question
+      updated_at
+      user {
+        firstname
+        lastname
       }
-      reviews {
-        comment
-        created_at
-        score
-        user {
-          firstname
-          lastname
-        }
+    }
+    reviews {
+      comment
+      created_at
+      score
+      user {
+        firstname
+        lastname
       }
-      reviews_aggregate {
-        aggregate {
-          count(columns: id)
-        }
+    }
+    reviews_aggregate {
+      aggregate {
+        count(columns: id)
       }
       category {
         name
@@ -69,5 +61,12 @@ export const GET_PRODUCT_FOR_CART = gql`
         lastname
       }
     }
+    category {
+      name
+    }
+    tenant {
+      id
+    }
   }
+}
 `;
