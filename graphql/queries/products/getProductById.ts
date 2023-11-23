@@ -75,8 +75,5 @@ export const GET_PRODUCT_FOR_CART = gql`
     category {
       name
     }
-    tenant {
-      id
-    }
   }
 `;

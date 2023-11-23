@@ -3,7 +3,7 @@ import React from "react";
 import TextInput from "../TextInput";
 import ImageUpload from "../ImageUpload";
 
-const CustomizeCartItem = ({ type, count }: Area) => {
+const CustomizeCartItem = ({ type, count, values }: Area) => {
   switch (type) {
     case "special_text":
       return Array(count)
@@ -15,6 +15,7 @@ const CustomizeCartItem = ({ type, count }: Area) => {
               className="w-full"
               placeholder="Özel Yazı Giriniz"
               id={`special_text_${i}`}
+              defaultValue={values?.[`special_text_${i}`]}
             />
           </div>
         ));

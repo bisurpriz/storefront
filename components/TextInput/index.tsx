@@ -20,6 +20,7 @@ const TextInput: React.FC<TextInputProps> = ({
   icon,
   successIcon,
   value,
+  defaultValue,
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
@@ -79,6 +80,7 @@ const TextInput: React.FC<TextInputProps> = ({
         )}
         <input
           {...props}
+          defaultValue={defaultValue}
           ref={inputRef}
           className={`block outline-none w-full px-3 py-2 text-gray-700 border rounded-md focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 ${
             hasError
