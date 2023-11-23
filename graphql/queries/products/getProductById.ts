@@ -68,5 +68,4 @@ export const GET_PRODUCT_FOR_CART = gql`
       id
     }
   }
-}
 `;
