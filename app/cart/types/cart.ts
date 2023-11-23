@@ -18,4 +18,5 @@ export type ProductForCart = {
 
 export type Area = Pick<ProductForCart["customize"][0]["area"], "type"> & {
   count: ProductForCart["customize"][0]["count"];
+  values: any;
 };

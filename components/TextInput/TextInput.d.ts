@@ -16,4 +16,5 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactElement;
   successIcon?: React.ReactElement;
   value?: string;
+  defaultValue?: string;
 }

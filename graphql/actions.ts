@@ -7,7 +7,6 @@ export const getRefreshFetch = async () => {
   const session = await getSession();
   const refreshToken = session?.refreshToken;
   const isExpired = checkExpire(session.idToken);
-  console.log(isExpired, "isExpired");
   if (!isExpired) {
     return session;
   }

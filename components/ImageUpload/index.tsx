@@ -5,10 +5,19 @@ import { AiOutlineClose } from "react-icons/ai";
 interface ImageUploadProps {
   onChange: (file: File) => void;
   id?: string;
+  defaultValue?: string | null;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, id }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onChange,
+  id,
+  defaultValue = null,
+}) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    () => defaultValue
+  );
+
+  console.log(selectedImage, defaultValue, "selectedImage");
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

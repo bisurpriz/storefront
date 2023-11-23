@@ -75,7 +75,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                       <AccordionItem
                         key={i}
                         title={`Özelleştirme Seçenekleri ${i + 1}. Ürün`}
-                        className="mt-3 block w-full"
+                        className="mt-3 block w-full !bg-2 border-0 rounded-lg"
                         content={
                           <CustomizeGroup
                             key={i}
