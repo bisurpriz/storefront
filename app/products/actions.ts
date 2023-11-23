@@ -61,11 +61,6 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       name: data.product.tenant.firstname + " " + data.product.tenant.lastname,
       rate: 8.2,
     },
-    tenant: {
-      id: data.product_by_pk.tenant.id,
-      name: "data.product_by_pk.tenant.name",
-      rate:8.2
-    },
     loading,
   };
 };
