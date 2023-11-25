@@ -56,6 +56,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                   <span className="block text-primary">Ücretsiz Kargo</span>
                   <span className="block">{price} TL</span>
                   <NumberInput
+                    id={id}
                     value={quantity}
                     onChange={(value) =>
                       addToCart({
@@ -81,6 +82,8 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                             key={i}
                             customize={customize}
                             productId={id}
+                            index={i}
+                            quantity={quantity}
                           />
                         }
                       />

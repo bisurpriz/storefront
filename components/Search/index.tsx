@@ -24,6 +24,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, fullWidth }) => {
   return (
     <div className={`relative flex items-center ${isFullWidth}`}>
       <input
+        name="search"
+        id="search"
         type="text"
         placeholder="Arama yap..."
         value={query}

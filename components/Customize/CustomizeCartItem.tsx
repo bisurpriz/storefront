@@ -27,7 +27,8 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
             <span className="font-semibold">Görsel {i + 1}:</span>
             <ImageUpload
               id={`special_image_${i}`}
-              onChange={(file) => console.log(file)}
+              onChange={(file) => {}}
+              defaultValue={values?.[`special_image_${i}`]}
             />
           </div>
         ));
