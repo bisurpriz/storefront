@@ -1,8 +1,10 @@
+import toast, { ToastType } from "react-hot-toast";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type SpecialInstructions = {
   [key: string]: number | string | File | FileList | null;
+  id: string | number;
 };
 
 export type CartItem = {
@@ -24,6 +26,13 @@ interface CartState {
   }) => void;
 }
 
+const notify = (message: string, type: ToastType = "success") => {
+  toast[type](message, {
+    duration: 2000,
+    position: "bottom-right",
+  });
+};
+
 const useCart = create(
   persist<CartState>(
     (set) => ({
@@ -35,6 +44,7 @@ const useCart = create(
             (cartItem) => cartItem.id === item.id
           );
           if (foundIndex === -1) {
+            notify("Ürün sepete eklendi.");
             return {
               cartItems: [
                 ...state.cartItems,
@@ -63,6 +73,8 @@ const useCart = create(
             (acc, curr) => acc + curr.quantity,
             0
           );
+
+          notify("Ürün sepete eklendi.");
           return {
             cartItems: newCartItems,
             count: newCount,
@@ -71,6 +83,7 @@ const useCart = create(
       },
       removeAllCart: () => {
         set((state) => {
+          notify("Sepet temizlendi.");
           return {
             cartItems: [],
             count: 0,
@@ -84,6 +97,7 @@ const useCart = create(
             (acc, curr) => acc + curr.quantity,
             0
           );
+          notify("Ürün sepetten çıkarıldı.");
           return {
             cartItems: newCartItems,
             count: newCount,
@@ -105,7 +119,7 @@ const useCart = create(
               quantity,
             };
           }
-          if (specialInstructions.length > 0) {
+          if (specialInstructions?.length > 0) {
             newCartItems[foundIndex] = {
               ...newCartItems[foundIndex],
               specialInstructions,
@@ -115,6 +129,7 @@ const useCart = create(
             (acc, curr) => acc + curr.quantity,
             0
           );
+          notify("Sepet güncellendi.");
           return {
             cartItems: newCartItems,
             count: newCount,

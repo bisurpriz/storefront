@@ -11,7 +11,7 @@ import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
 
 const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
-  const { addToCart, removeItem } = useCart();
+  const { updateItem, removeItem } = useCart();
 
   const maxXsClasses = {
     image: "max-xs:w-28 max-xs:h-28 flex-1 grow ",
@@ -59,7 +59,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                     id={id}
                     value={quantity}
                     onChange={(value) =>
-                      addToCart({
+                      updateItem({
                         id,
                         quantity: value,
                       })
