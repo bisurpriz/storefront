@@ -70,7 +70,7 @@ const Cart = () => {
           </div>
         )}
         <div className="sticky bottom-0 col-span-1 md:relative">
-          <CartSummary cartSummary={cartSummary} />
+          <CartSummary cartSummary={cartSummary} tenantGrouped={tenantGrouped} />
         </div>
       </div>
     </div>
