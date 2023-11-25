@@ -13,7 +13,7 @@ import useCartSummary from "@/hooks/useCartSummary";
 
 const DynamicGroup = dynamic(() => import("./ProductGroup"));
 
-const CartWrapper = () => {
+const Cart = () => {
   const { cartItems } = useCart();
   const [cartProducts, setCartProducts] = useState<ProductForCart[]>([]);
   const [tenantGrouped, setTenantGrouped] = useState<{
@@ -62,7 +62,6 @@ const CartWrapper = () => {
             </Link>
           </div>
         ) : (
-          // Loading
           <div className="col-span-1 md:col-span-2 flex flex-col gap-3 ">
             <div className="w-full  bg-stone-100 animate-pulse flex flex-col gap-4 p-8 rounded-lg">
               <div className="w-full bg-stone-300 animate-pulse p-12 rounded-lg"></div>
@@ -78,4 +77,4 @@ const CartWrapper = () => {
   );
 };
 
-export default CartWrapper;
+export default Cart;

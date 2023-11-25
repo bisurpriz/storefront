@@ -47,9 +47,16 @@ const useCart = create(
             };
           }
           const newCartItems = [...state.cartItems];
+          const specialInstructions =
+            newCartItems[foundIndex].specialInstructions;
+          const newSpecialInstructions =
+            specialInstructions?.length > item.quantity
+              ? specialInstructions.slice(0, item.quantity)
+              : specialInstructions;
           newCartItems[foundIndex] = {
             ...newCartItems[foundIndex],
             quantity: item.quantity,
+            specialInstructions: newSpecialInstructions ?? [],
           };
 
           const newCount = state.cartItems.reduce(
@@ -84,7 +91,6 @@ const useCart = create(
         });
       },
       updateItem: ({ id, quantity, specialInstructions }) => {
-        console.log("updateItem", id, quantity, specialInstructions);
         set((state) => {
           const foundIndex = state.cartItems.findIndex(
             (cartItem) => cartItem.id === id
@@ -99,20 +105,19 @@ const useCart = create(
               quantity,
             };
           }
-          if (specialInstructions) {
+          if (specialInstructions.length > 0) {
             newCartItems[foundIndex] = {
               ...newCartItems[foundIndex],
-              specialInstructions: newCartItems[foundIndex].specialInstructions
-                ? [
-                    ...newCartItems[foundIndex].specialInstructions,
-                    ...specialInstructions,
-                  ]
-                : [...specialInstructions],
+              specialInstructions,
             };
           }
+          const newCount = newCartItems.reduce(
+            (acc, curr) => acc + curr.quantity,
+            0
+          );
           return {
             cartItems: newCartItems,
-            count: newCartItems.reduce((acc, curr) => acc + curr.quantity, 0),
+            count: newCount,
           };
         });
       },

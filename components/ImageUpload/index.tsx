@@ -17,8 +17,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     () => defaultValue
   );
 
-  console.log(selectedImage, defaultValue, "selectedImage");
-
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 

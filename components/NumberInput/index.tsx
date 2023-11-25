@@ -14,8 +14,9 @@ export interface NumberInputProps {
   mask?: string;
   autoFocus?: boolean;
   onBlur?: () => void;
-  icon?: React.ReactNode; // Özel ikon eklemek için özellik
-  iconPosition?: "left" | "right"; // Ikon pozisyonunu belirlemek için özellik
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
+  id?: string;
 }
 
 const NumberInput: React.FC<NumberInputProps> = ({
@@ -34,6 +35,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
   onBlur,
   icon,
   iconPosition = "right",
+  id,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -99,6 +101,8 @@ const NumberInput: React.FC<NumberInputProps> = ({
         -
       </button>
       <input
+        name={id}
+        id={id}
         type="text"
         value={formatValue(value)}
         onChange={handleChange}
