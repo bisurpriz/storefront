@@ -42,12 +42,15 @@ const CustomizeGroup = ({
         (item) => item.id === productId
       )?.specialInstructions;
 
-      const newSpecialInstructions =
-        oldSpecialInstructions?.length < quantity
-          ? [...oldSpecialInstructions, data]
-          : oldSpecialInstructions
-          ? [...oldSpecialInstructions, data]
-          : [data];
+      const newSpecialInstructions = oldSpecialInstructions?.map((item, i) => {
+        if (i === index) {
+          return {
+            ...item,
+            ...data,
+          };
+        }
+        return item;
+      });
 
       updateItem({
         id: productId,
