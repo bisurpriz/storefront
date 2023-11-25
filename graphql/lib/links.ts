@@ -21,11 +21,9 @@ export const authLink = setContext(async (_, { headers }) => {
 
   try {
     const ntoken = await getRefreshFetch();
-
-    token = ntoken.idToken;
+    token = ntoken?.idToken;
   } catch (e) {
     console.error(e, "error getting session");
-    notFound();
   }
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {};
