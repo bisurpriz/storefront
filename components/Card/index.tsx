@@ -31,11 +31,7 @@ const Card = ({
         </div>
       )}
       {title && <Divider orientation="horizontal" />}
-      <div
-        className={`flex flex-row flex-wrap justify-center items-center p-4 ${contentCls}`}
-      >
-        {children}
-      </div>
+      <div className={`p-4 ${contentCls}`}>{children}</div>
     </div>
   );
 };

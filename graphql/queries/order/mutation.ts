@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_ORDER = gql`
-  mutation MyMutation(
+  mutation createOrder(
     $user_id: uuid!
     $total_amount: numeric!
     $tenant_orders: [order_tenant_insert_input!]!
@@ -16,6 +16,8 @@ export const CREATE_ORDER = gql`
       }
     ) {
       id
+      created_at
+      total_amount
     }
   }
 `;

@@ -6,7 +6,7 @@ import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 import { readIdFromCookies } from "../actions";
 
 const Account = async () => {
-  const id = await readIdFromCookies("user_id");
+  const id = await readIdFromCookies();
 
   const { user, loading } = await getUserById(id!).catch((err) => {
     console.error(err);

@@ -16,4 +16,5 @@ interface DropdownProps {
   loading?: boolean;
   className?: string;
   children?: React.ReactNode;
+  id?: string;
 }

@@ -8,9 +8,7 @@ export const createOrderAction = async (
   tenantGrouped: any,
   totalPrice: any
 ) => {
-  let userId = "";
-
-  userId = await readIdFromCookies("user_id");
+  const userId = await readIdFromCookies();
 
   if (!userId) return null;
 

@@ -18,6 +18,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   loading = false,
   className = "",
   children,
+  id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -67,11 +68,16 @@ const Dropdown: React.FC<DropdownProps> = ({
         fullWidth ? "w-full" : ""
       }`}
     >
+      <input type="hidden" value={selectedOption?.value} id={id} name={id} />
+
       {!childTrigger ? (
         <button
           type="button"
-          className="relative flex items-center justify-start bg-white border-2 rounded-md  py-2 px-4  w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
-          onClick={() => setIsOpen(!isOpen)}
+          className="relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }}
           onFocus={(e) =>
             toggleClass("border-primary", e.target as HTMLElement)
           }
@@ -135,7 +141,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         <div
           ref={ref}
           className={clsx(
-            "absolute z-10 bg-white shadow-lg rounded-md overflow-hidden",
+            "absolute z-10 bg-white shadow-lg rounded-sm overflow-hidden",
             placementClases[dropdownPlacement],
             {
               "w-full": fullWidth,
@@ -152,8 +158,8 @@ const Dropdown: React.FC<DropdownProps> = ({
               <div className="relative">
                 <input
                   type="text"
-                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-md rounded-b-none"
-                  placeholder="Search"
+                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none"
+                  placeholder="Arama yapın"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                 />
@@ -196,6 +202,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 .map((option) =>
                   typeof option.label === "string" ? (
                     <button
+                      type="button"
                       key={option.value}
                       className={`${
                         option.value === value

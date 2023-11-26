@@ -10,6 +10,7 @@ import { ProductForCart } from "../../types/cart";
 import { createOrderAction } from "../../actions";
 import toast from "react-hot-toast";
 import CartDrawer from "./CartDrawer";
+import Link from "next/link";
 // import { readIdFromCookies } from "@/app/actions";
 
 const CartSummary = ({
@@ -22,21 +23,33 @@ const CartSummary = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const createOrder = async () => {
-    const { data, errors } = await createOrderAction(tenantGrouped, totalPrice);
-
-    if (errors) {
-      errors.forEach((error) => {
-        toast.error(error.message, {
-          id: error.message,
+    try {
+      const { data, errors } = await createOrderAction(
+        tenantGrouped,
+        totalPrice
+      );
+      console.log(data, errors);
+      if (errors) {
+        errors.forEach((error) => {
+          toast.error(error.message, {
+            id: error.message,
+            position: "bottom-right",
+          });
         });
-      });
 
-      return;
-    }
+        return;
+      }
 
-    if (data) {
-      toast.success("Siparişiniz başarıyla oluşturuldu.", {
-        id: "order-created",
+      if (data) {
+        toast.success("Siparişiniz başarıyla oluşturuldu.", {
+          id: "order-created",
+          position: "bottom-right",
+        });
+      }
+    } catch (error) {
+      toast.error(error.message, {
+        id: error.message,
+        position: "bottom-right",
       });
     }
   };
@@ -91,13 +104,14 @@ const CartSummary = ({
             </div>
           </div>
         </div>
-        <Button
-          size="large"
-          color="primary"
-          className="text-xl pl-16 pr-16 w-full mt-5 flex justify-center"
-          label="Sepeti Onayla"
-          onClick={createOrder}
-        />
+        <Link href={"/order-detail"}>
+          <Button
+            size="large"
+            color="primary"
+            className="text-xl pl-16 pr-16 w-full mt-5 flex justify-center"
+            label="Sepeti Onayla"
+          />
+        </Link>
       </div>
       <div className="bg-white w-full py-[16px] flex justify-between md:hidden">
         <div className="flex">
