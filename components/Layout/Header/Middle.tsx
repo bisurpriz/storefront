@@ -74,7 +74,7 @@ const HeaderMiddle = () => {
              after:shadow after:transform after:-translate-y-1 after:translate-x-1 
              after:transition-all after:duration-300 after:ease-in-out 
              after:transition-none after:content-[attr(data-count)]`}
-            data-count={count ?? 0}
+            data-count={count}
           >
             <span className="max-xl:hidden font-normal">Sepetim</span>
           </Button>

@@ -1,7 +1,6 @@
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
-import { notFound } from "next/navigation";
 import { getRefreshFetch } from "../actions";
 import { HttpLink, from } from "@apollo/client";
 

@@ -5,14 +5,22 @@ import { GET_VENDOR_BY_ID } from "@/graphql/queries/vendors/getVendorById";
 import { cookies } from "next/headers";
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
-export async function readIdFromCookies(string: string) {
+export async function readIdFromCookies() {
   const auth = cookies();
 
-  const id = auth.get(string);
+  const id = auth.get("user_id");
 
   if (!id) null;
 
   return id?.value;
+}
+
+export async function writeIdToCookies(value: string) {
+  const auth = cookies();
+
+  auth.set("user_id", value);
+
+  return auth;
 }
 
 export const getVendorById = async <T>({ id }: { id: number }) => {

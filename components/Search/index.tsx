@@ -31,11 +31,11 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, fullWidth }) => {
         value={query}
         onKeyDown={handleKeyDown}
         onChange={(e) => setQuery(e.target.value)}
-        className="block outline-none w-full pr-14 text-base py-2 pl-4 text-gray-700 border rounded-md focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 flex-1"
+        className="block outline-none w-full pr-14 text-base py-2 pl-4 text-gray-700 border rounded-sm focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 flex-1"
       />
       <button
         onClick={handleSearch}
-        className="absolute right-0 p-2 px-4 text-white focus:outline-none origin-center bg-primary h-full rounded-r-md"
+        className="absolute right-0 p-2 px-4 text-white focus:outline-none origin-center bg-primary h-full rounded-r-sm"
       >
         <BsSearch size={20} className="transform transition hover:scale-110" />
       </button>

@@ -94,7 +94,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
       {icon && iconPosition === "left" && <div className="mr-2">{icon}</div>}
       {label && <label className="mr-2">{label}</label>}
       <button
-        className="bg-primary text-white px-2 py-1 rounded-l hover:bg-primary-dark"
+        className="bg-primary text-white px-4 py-3 rounded-l-sm hover:bg-primary-dark"
         onClick={decrement}
         disabled={value <= min || disabled}
       >
@@ -110,10 +110,10 @@ const NumberInput: React.FC<NumberInputProps> = ({
         disabled={disabled}
         ref={inputRef}
         onBlur={handleBlur}
-        className="px-2 py-1 text-center w-16"
+        className="px-4 py-3 text-center w-16"
       />
       <button
-        className="bg-primary text-white px-2 py-1 rounded-r hover:bg-primary-dark"
+        className="bg-primary text-white px-4 py-3 rounded-r-sm hover:bg-primary-dark"
         onClick={increment}
         disabled={value >= max || disabled}
       >
