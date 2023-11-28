@@ -4,11 +4,10 @@ import { persist } from "zustand/middleware";
 
 export type SpecialInstructions = {
   [key: string]: number | string | File | FileList | null;
-  id: string | number;
 };
 
 export type CartItem = {
-  id: string;
+  id: number;
   quantity: number;
   specialInstructions?: SpecialInstructions[];
 };
@@ -18,9 +17,9 @@ interface CartState {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
   removeAllCart: () => void;
-  removeItem: (id: string) => void;
+  removeItem: (id: number) => void;
   updateItem: (data: {
-    id: string;
+    id: number;
     quantity?: number;
     specialInstructions?: SpecialInstructions[];
   }) => void;
@@ -112,6 +111,25 @@ const useCart = create(
           if (foundIndex === -1) {
             return state;
           }
+
+          if (quantity && quantity < state.cartItems[foundIndex].quantity) {
+            const newSpecialInstructions = state.cartItems[
+              foundIndex
+            ].specialInstructions?.slice(0, quantity);
+            return {
+              cartItems: [
+                ...state.cartItems.slice(0, foundIndex),
+                {
+                  ...state.cartItems[foundIndex],
+                  quantity,
+                  specialInstructions: newSpecialInstructions ?? [],
+                },
+                ...state.cartItems.slice(foundIndex + 1),
+              ],
+              count: state.count - 1,
+            };
+          }
+
           const newCartItems = [...state.cartItems];
           if (quantity) {
             newCartItems[foundIndex] = {

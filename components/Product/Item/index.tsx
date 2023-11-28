@@ -6,11 +6,16 @@ import Link from "next/link";
 import React, { useState } from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { Product } from "@/common/types/Product/product";
+
+export interface ProductItemProps extends Partial<Product> {
+  loading?: boolean;
+}
 
 const ProductItem = ({
   name,
   description,
-  image,
+  image_url: image,
   price,
   id,
   loading = false,

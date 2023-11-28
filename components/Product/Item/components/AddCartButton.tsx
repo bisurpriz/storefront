@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import useCart from "@/store/cart";
 import React from "react";
+import { ProductItemProps } from "..";
 
 const AddCartButton = ({ id, loading }: ProductItemProps) => {
   const { addToCart } = useCart();
