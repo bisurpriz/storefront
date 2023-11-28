@@ -1,11 +1,12 @@
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import ProductItemImage from "../ProductItemImage/ProductItemImage";
 import AddCartButton from "./components/AddCartButton";
+import { ProductItemProps } from ".";
 
 function ProductItem4({
   description,
   id,
-  image,
+  image_url: image,
   name,
   price,
   loading,
@@ -39,7 +40,7 @@ function ProductItem4({
         <AddCartButton
           description={description}
           id={id}
-          image={image}
+          image_url={image}
           name={name}
           price={price}
           loading={loading}

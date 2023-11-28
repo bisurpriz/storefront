@@ -1,7 +1,13 @@
-import { Area } from "@/app/cart/types/cart";
 import React from "react";
 import TextInput from "../TextInput";
+import { CustomizableArea } from "@/common/types/Order/order";
 import ImageUpload from "../ImageUpload";
+import { SpecialInstructions } from "@/store/cart";
+
+interface Area extends Omit<CustomizableArea, "id"> {
+  values?: SpecialInstructions;
+  count: number;
+}
 
 const CustomizeCartItem = ({ type, count, values }: Area) => {
   switch (type) {
@@ -15,7 +21,7 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
               className="w-full"
               placeholder="Özel Yazı Giriniz"
               id={`special_text_${i}`}
-              defaultValue={values?.[`special_text_${i}`]}
+              defaultValue={values?.[`special_text_${i}`] as string}
             />
           </div>
         ));
@@ -28,7 +34,7 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
             <ImageUpload
               id={`special_image_${i}`}
               onChange={(file) => {}}
-              defaultValue={values?.[`special_image_${i}`]}
+              defaultValue={values?.[`special_image_${i}`] as string}
             />
           </div>
         ));
