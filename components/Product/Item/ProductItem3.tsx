@@ -3,11 +3,12 @@ import Image from "next/image";
 import Button from "@/components/Button";
 import { BsCart3 } from "react-icons/bs";
 import { IMAGE_URL } from "@/contants/urls";
+import { ProductItemProps } from ".";
 
 export default function ProductItem3({
   description,
   id,
-  image,
+  image_url: image,
   name,
   price,
   loading,

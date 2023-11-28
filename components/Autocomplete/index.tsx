@@ -2,14 +2,21 @@
 
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
 import React, { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
+import { PiCaretUpBold } from "react-icons/pi";
+
+export type SuggestionsResponse = {
+  label: string;
+  value: string | number;
+};
 
 interface AutocompleteProps {
-  fetchSuggestions: (query: string) => Promise<string[]>;
-  onSelect?: (selectedValue: string) => void;
+  fetchSuggestions: (query: string) => Promise<SuggestionsResponse[]>;
+  onSelect?: (selectedValue: string | number) => void;
   placeholder?: string;
   openOnFocus?: boolean;
   label?: string;
   id?: string;
+  defaultValue?: string | number;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -19,9 +26,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   openOnFocus = false,
   label,
   id,
+  defaultValue,
 }) => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string | number>(
+    () => defaultValue || ""
+  );
+  const [suggestions, setSuggestions] = useState<SuggestionsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [isOpen, setIsOpen] = useState<boolean>(openOnFocus);
@@ -54,10 +64,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     setTerm(value);
   };
 
-  const handleSelect = (selectedValue: string) => {
-    setInputValue(selectedValue);
+  const handleSelect = (selectedValue: SuggestionsResponse) => {
+    setInputValue(selectedValue.label);
     setSuggestions([]);
-    onSelect?.(selectedValue);
+    onSelect?.(selectedValue.value);
     setIsOpen(false);
     setTerm("");
   };
@@ -102,17 +112,26 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           {label}
         </label>
       )}
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onFocus={handleInputFocus}
-        placeholder={placeholder}
-        id={id}
-        name={id}
-        className={`block outline-none w-full px-4 py-3 text-gray-700 border rounded-sm focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50`}
-      />
+      <span className="relative">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleInputFocus}
+          placeholder={placeholder}
+          id={id}
+          name={id}
+          className={`block outline-none w-full px-4 py-3 text-gray-700 border rounded-sm focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50`}
+        />
+        <PiCaretUpBold
+          className={`
+        absolute top-1/2 right-3 transform -translate-y-1/2 transition-all duration-200 ${
+          isOpen ? "rotate-180" : ""
+        }
+      `}
+        />
+      </span>
       {isOpen && suggestions.length > 0 && (
         <ul className="absolute bg-white border w-full mt-1 max-h-60 overflow-y-auto z-10">
           {suggestions.map((suggestion, index) => (
@@ -123,7 +142,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 index === selectedIndex ? "bg-gray-200" : ""
               } hover:bg-gray-200`}
             >
-              {suggestion}
+              {suggestion?.label}
             </li>
           ))}
         </ul>

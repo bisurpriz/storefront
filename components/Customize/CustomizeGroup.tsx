@@ -1,13 +1,13 @@
 "use client";
 import React, { useMemo } from "react";
 import CustomizeCartItem from "./CustomizeCartItem";
-import { ProductForCart } from "@/app/cart/types/cart";
 import Button from "../Button";
 import useCart from "@/store/cart";
 import { getBase64Image } from "@/utils/getBase64Image";
+import { ProductForCart } from "@/common/types/Cart/cart";
 
 interface CustomizeGroupProps {
-  customize: ProductForCart["customize"];
+  customize: ProductForCart["product_customizable_areas"];
   productId: ProductForCart["id"];
   index: number;
   quantity: ProductForCart["quantity"];
@@ -29,7 +29,6 @@ const CustomizeGroup = ({
     // Image var mı kontrol et
     const hasImages = keys?.find((item) => item.includes("special_image"));
     const image = data[hasImages];
-
     // image file to base64
     if (image instanceof File) {
       const base64 = (await getBase64Image(image)) as string;
@@ -38,29 +37,28 @@ const CustomizeGroup = ({
         data[hasImages] = base64;
       }
 
-      const oldSpecialInstructions = cartItems.find(
-        (item) => item.id === productId
-      )?.specialInstructions;
-
-      const newSpecialInstructions = oldSpecialInstructions?.map((item, i) => {
-        if (i === index) {
-          return {
-            ...item,
-            ...data,
-          };
-        }
-        return item;
-      });
-
-      updateItem({
-        id: productId,
-        specialInstructions: newSpecialInstructions,
-      });
+      // If has specailInstructions, add new instructions to old instructions
+      const item = cartItems.find((item) => item.id === productId);
+      if (item?.specialInstructions?.length > 0) {
+        const newInstructions = [...item.specialInstructions, data];
+        updateItem({
+          id: productId,
+          quantity,
+          specialInstructions: newInstructions,
+        });
+      } else {
+        updateItem({
+          id: productId,
+          quantity,
+          specialInstructions: [data],
+        });
+      }
     }
   };
 
   const values = useMemo(() => {
-    return cartItems.find((item) => item.id === productId)?.specialInstructions;
+    const item = cartItems.find((item) => item.id === productId);
+    return item?.specialInstructions;
   }, [cartItems, productId, index]);
 
   return (
@@ -68,7 +66,7 @@ const CustomizeGroup = ({
       className="flex flex-col gap-3 mt-3 w-full rounded-md"
       onSubmit={handleFormSubmit}
     >
-      {customize?.map(({ count, area: { type } }, i) => {
+      {customize?.map(({ count, customizable_area: { type } }, i) => {
         return (
           <CustomizeCartItem
             key={i}

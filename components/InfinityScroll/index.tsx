@@ -51,7 +51,7 @@ const InfinityScroll = <T,>({
           key={item.id}
           name={item.name}
           description={item.description}
-          image={IMAGE_URL + "/" + item.image_url?.[0]}
+          image_url={IMAGE_URL + "/" + item.image_url?.[0]}
           price={item.price}
           id={item.id}
         />
