@@ -1,135 +1,186 @@
-"use client";
+import * as React from "react";
+import { useAutocomplete } from "@mui/base/useAutocomplete";
+import { MdClear } from "react-icons/md";
+import { BsChevronDown } from "react-icons/bs";
 
-import { useClickAway, useDebounce } from "@uidotdev/usehooks";
-import React, { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
+export type DropdownOption = {
+  label: string;
+  value: string;
+};
 
-interface AutocompleteProps {
-  fetchSuggestions: (query: string) => Promise<string[]>;
-  onSelect?: (selectedValue: string) => void;
+export interface AutoCompleteProps {
+  options: DropdownOption[];
+  onChange: (value: DropdownOption | DropdownOption[]) => void;
+  value?: DropdownOption | DropdownOption[];
   placeholder?: string;
-  openOnFocus?: boolean;
-  label?: string;
   id?: string;
+  label?: string;
+  className?: string;
+  inputValue?: string;
+  onInputChange?: (value: string) => void;
+  multiple?: boolean;
+  getOptionLabel?: (option: DropdownOption) => string;
+  readOnly?: boolean;
+  disabled?: boolean;
+  autoComplete?: string;
 }
 
-const Autocomplete: React.FC<AutocompleteProps> = ({
-  fetchSuggestions,
-  onSelect,
-  placeholder = "",
-  openOnFocus = false,
-  label,
+export default function AutoComplete({
+  options,
+  className,
   id,
-}) => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const [isOpen, setIsOpen] = useState<boolean>(openOnFocus);
-  const [term, setTerm] = useState<string>("");
-  const searchTerm = useDebounce(term, 600);
-
-  useEffect(() => {
-    if (searchTerm === "") return;
-    setLoading(true);
-    fetchSuggestions(searchTerm)
-      .then((suggestions) => {
-        setSuggestions(suggestions);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [searchTerm]);
-
-  useEffect(() => {
-    if (inputValue === "") {
-      setSuggestions([]);
-    }
-  }, [inputValue]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    setSelectedIndex(-1);
-    setIsOpen(openOnFocus || value !== "");
-    setTerm(value);
-  };
-
-  const handleSelect = (selectedValue: string) => {
-    setInputValue(selectedValue);
-    setSuggestions([]);
-    onSelect?.(selectedValue);
-    setIsOpen(false);
-    setTerm("");
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (suggestions.length === 0) return;
-
-    if (e.key === "ArrowDown") {
-      setSelectedIndex((prevIndex) =>
-        prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
-      );
-    } else if (e.key === "ArrowUp") {
-      setSelectedIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
-      );
-    } else if (e.key === "Enter") {
-      if (selectedIndex !== -1) {
-        handleSelect(suggestions[selectedIndex]);
-      }
-    }
-  };
-
-  const handleSuggestionClick = (index: number) => {
-    handleSelect(suggestions[index]);
-  };
-
-  const handleInputFocus = () => {
-    setIsOpen(openOnFocus);
-  };
-
-  const ref = useClickAway<HTMLDivElement>(() => {
-    setIsOpen(false);
+  label,
+  onChange,
+  placeholder,
+  value,
+  inputValue,
+  onInputChange,
+  multiple,
+  getOptionLabel,
+  disabled,
+  readOnly,
+  autoComplete = "off",
+}: AutoCompleteProps) {
+  const {
+    getRootProps,
+    getInputProps,
+    getListboxProps,
+    getOptionProps,
+    groupedOptions,
+    focused,
+    dirty,
+    getClearProps,
+    getPopupIndicatorProps,
+    popupOpen,
+    value: selectedValue,
+  } = useAutocomplete<DropdownOption, typeof multiple, false, false>({
+    id,
+    options,
+    value,
+    onChange: (event, newValue) => onChange(newValue),
+    inputValue,
+    onInputChange: (event, newInputValue) => onInputChange?.(newInputValue),
+    multiple,
+    getOptionLabel,
+    disableCloseOnSelect: true,
+    readOnly,
+    disabled,
+    isOptionEqualToValue: (option, value) => option.value === value.value,
   });
 
+  const hasClearIcon = !disabled && dirty && !readOnly;
+
   return (
-    <div className="autocomplete relative" ref={ref}>
-      {label && (
-        <label
-          className={`block text-sm text-gray-500 font-medium`}
-          htmlFor={id}
+    <div className="relative">
+      <label className="block text-sm font-medium text-gray-700">
+        {label ? <p>{label}</p> : null}
+        <div
+          {...getRootProps()}
+          className={` ${focused ? "ring-1 ring-primary" : ""} 
+            rounded-md
+            bg-white 
+            border 
+            shadow-sm
+            focus-within:ring-1 focus-within:ring-primary
+            transition-colors duration-200
+            focus-visible:outline-none
+            overflow-hidden
+            flex items-center gap-2
+            `}
         >
-          {label}
-        </label>
-      )}
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onFocus={handleInputFocus}
-        placeholder={placeholder}
-        id={id}
-        name={id}
-        className={`block outline-none w-full px-4 py-3 text-gray-700 border rounded-sm focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50`}
-      />
-      {isOpen && suggestions.length > 0 && (
-        <ul className="absolute bg-white border w-full mt-1 max-h-60 overflow-y-auto z-10">
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              onClick={() => handleSuggestionClick(index)}
-              className={`p-2 cursor-pointer ${
-                index === selectedIndex ? "bg-gray-200" : ""
-              } hover:bg-gray-200`}
+          {multiple && (
+            <div className="flex gap-1 flex-nowrap whitespace-nowrap">
+              {(selectedValue as DropdownOption[])?.map((option) => (
+                <span
+                  key={option.value}
+                  className="px-2 py-1 bg-primary text-white rounded-lg"
+                >
+                  {option.label}
+                </span>
+              ))}
+            </div>
+          )}
+          <input
+            {...getInputProps()}
+            className={`
+            text-base  font-normal leading-normal
+            text-gray-900
+            bg-inherit
+            border-none
+            px-3 py-2
+            outline-none
+            flex-1
+            ${className ?? ""}`}
+            placeholder={placeholder}
+            aria-label={label}
+            autoComplete={autoComplete}
+          />
+
+          {hasClearIcon && (
+            <button
+              {...getClearProps()}
+              type="button"
+              className="flex items-center justify-center p-1 text-gray-500 hover:text-gray-700 rounded-lg
+            transition-transform duration-200 shadow-sm hover:bg-gray-50"
             >
-              {suggestion}
+              <MdClear />
+            </button>
+          )}
+
+          <button
+            {...getPopupIndicatorProps()}
+            className={`${popupOpen ? "rotate-180" : ""}
+            flex items-center justify-center mr-2 p-1 text-gray-500 hover:text-gray-700 rounded-lg
+            transition-transform duration-200 shadow-sm hover:bg-gray-50
+          `}
+          >
+            <BsChevronDown />
+          </button>
+        </div>
+      </label>
+      {groupedOptions.length > 0 && (
+        <ul
+          {...getListboxProps()}
+          className={`
+            absolute
+            left-0
+            right-0
+            z-10
+            overflow-auto
+            max-h-60
+            outline-none
+            rounded-md
+            my-3
+            bg-white dark:bg-slate-50
+            border dark:border-slate-200
+            shadow-sm
+            focus-within:ring-1 focus-within:ring-primary
+            transition-colors duration-200
+            focus-visible:outline-none
+            w-full
+            p-1
+            `}
+        >
+          {(groupedOptions as DropdownOption[]).map((option, index) => (
+            <li
+              {...getOptionProps({ option, index })}
+              key={option.value}
+              className={`
+              list-none
+              p-2
+              my-1
+              rounded-sm
+              cursor-pointer
+              ${index === groupedOptions.length - 1 ? "border-b-0" : ""}
+              hover:bg-primary-light hover:text-white
+              aria-selected:bg-primary aria-selected:text-white
+              `}
+            >
+              {option.label}
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-};
-
-export default Autocomplete;
+}

@@ -1,0 +1,35 @@
+import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { Product } from "../Product/product";
+
+export interface OrderItem {
+  id: number;
+  product_id: Product["id"];
+  quantity: Product["quantity"];
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  order_tenant_id: Product["tenant_id"];
+}
+
+export interface CustomizableArea {
+  id: number;
+  type: CustomizableAreaType.IMAGE | CustomizableAreaType.TEXT;
+}
+
+export interface ProductCustomizableArea {
+  customizable_area: CustomizableArea;
+  count: number;
+}
+
+export interface OrderItemSpecial {
+  id: number;
+  order_item_id: OrderItem["id"];
+}
+
+export interface OrderItemSpecialText extends OrderItemSpecial {
+  content: string;
+}
+
+export interface OrderItemSpecialImage extends OrderItemSpecial {
+  image_url: string;
+}

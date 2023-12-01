@@ -1,58 +1,46 @@
 "use client";
 import Button from "@/components/Button";
-import TextInput from "@/components/TextInput";
-import { useState } from "react";
+import TextInput from "@/components/TextField";
+import { memo, useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
-import { CartSummary } from "@/hooks/useCartSummary";
-// import { getClient } from "@/graphql/lib/client";
-import { ProductForCart } from "../../types/cart";
-import { createOrderAction } from "../../actions";
-import toast from "react-hot-toast";
 import CartDrawer from "./CartDrawer";
 import Link from "next/link";
-// import { readIdFromCookies } from "@/app/actions";
+import { getProductsPricesByIds } from "@/app/products/actions";
+import useCart from "@/store/cart";
 
-const CartSummary = ({
-  cartSummary: { couponApplied, discount, items, totalPrice, totalQuantity },
-  tenantGrouped,
-}: {
-  cartSummary: CartSummary;
-  tenantGrouped: { [key: string]: ProductForCart[] };
-}) => {
+const CartSummary = () => {
+  const { cartItems } = useCart();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [pricing, setPricing] = useState<{
+    total_discount: number;
+    total_discount_price: number;
+    total_price: number;
+  }>({
+    total_discount: 0,
+    total_discount_price: 0,
+    total_price: 0,
+  });
 
-  const createOrder = async () => {
-    try {
-      const { data, errors } = await createOrderAction(
-        tenantGrouped,
-        totalPrice
-      );
-      console.log(data, errors);
-      if (errors) {
-        errors.forEach((error) => {
-          toast.error(error.message, {
-            id: error.message,
-            position: "bottom-right",
-          });
-        });
+  const ids = cartItems?.map((item) => ({ id: item.id }));
 
-        return;
-      }
+  const fetchProducts = useCallback(async () => {
+    const { total_discount, total_discount_price, total_price } =
+      await getProductsPricesByIds(ids);
 
-      if (data) {
-        toast.success("Siparişiniz başarıyla oluşturuldu.", {
-          id: "order-created",
-          position: "bottom-right",
-        });
-      }
-    } catch (error) {
-      toast.error(error.message, {
-        id: error.message,
-        position: "bottom-right",
-      });
-    }
-  };
+    setPricing({
+      total_discount,
+      total_discount_price,
+      total_price,
+    });
+  }, [cartItems]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [cartItems]);
+
+  const { total_price, total_discount, total_discount_price } = pricing;
 
   return (
     <>
@@ -64,20 +52,19 @@ const CartSummary = ({
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">{totalPrice.toFixed(2)} TL</span>
+              <span className="font-semibold">
+                {total_discount_price.toFixed(2)} TL
+              </span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
               <span className="font-semibold">29.99 TL</span>
             </div>
-            {discount ? (
+            {total_discount ? (
               <>
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
-                  <span className="font-semibold">
-                    {discount} TL{" "}
-                    {couponApplied && "(İndirim Kuponu Kullanıldı)"}
-                  </span>
+                  <span className="font-semibold">{total_discount} TL </span>
                 </div>
               </>
             ) : null}
@@ -99,12 +86,12 @@ const CartSummary = ({
             <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                {totalPrice.toFixed(2)} TL
+                {total_price.toFixed(2)} TL
               </span>
             </div>
           </div>
         </div>
-        <Link href={"/order-detail"}>
+        <Link href={"/cart/order-detail"}>
           <Button
             size="large"
             color="primary"
@@ -124,7 +111,9 @@ const CartSummary = ({
           />
           <span className="flex flex-col justify-center ml-2">
             <span className="text-xs">Toplam:</span>
-            <span className="text-md text-primary font-medium">629.99 TL</span>
+            <span className="text-md text-primary font-medium">
+              {total_price.toFixed(2)} TL
+            </span>
           </span>
         </div>
         <Button
@@ -132,16 +121,17 @@ const CartSummary = ({
           size="small"
           color="primary"
           label="Sepeti Onayla"
-          onClick={createOrder}
         />
       </div>
       <CartDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        totalPrice={totalPrice}
+        totalPrice={total_price}
+        totalDiscount={total_discount}
+        totalDiscountPrice={total_discount_price}
       />
     </>
   );
 };
 
-export default CartSummary;
+export default memo(CartSummary);

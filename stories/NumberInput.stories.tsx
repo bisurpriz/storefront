@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { StoryFn } from "@storybook/react";
-import NumberInput, { NumberInputProps } from "@/components/NumberInput";
+import NumberInput from "@/components/NumberInput";
 import { BsCheck } from "react-icons/bs";
+import { NumberInputProps } from "@/components/NumberInput/NumberInputProps";
 
 export default {
   title: "NumberInput",
@@ -25,7 +26,7 @@ export default {
 const Template: StoryFn<NumberInputProps> = (args) => {
   const [value, setValue] = useState(args.value);
 
-  const handleChange = (newValue: number) => {
+  const handleChange = (e, newValue: number) => {
     setValue(newValue);
   };
 

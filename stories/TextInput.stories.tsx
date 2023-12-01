@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import TextInput from "@/components/TextInput";
+import TextInput from "@/components/TextField";
 import { BsCheck } from "react-icons/bs";
 
 export default {
@@ -17,7 +17,7 @@ const Template: StoryFn<TextInputProps> = (args) => {
     <TextInput
       {...args}
       value={inputValue}
-      onChange={(value) => setInputValue(value)}
+      onChange={(e, value) => setInputValue(value)}
     />
   );
 };

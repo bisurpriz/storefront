@@ -1,9 +1,15 @@
 import { getPaginatedProducts } from "@/app/products/actions";
+import { Product } from "@/common/types/Product/product";
 import InfinityScroll from "@/components/InfinityScroll";
 import React from "react";
 
+interface ProductResponse {
+  products: Product[];
+  totalCount: number;
+}
+
 const View1: React.FC = async () => {
-  const { products, totalCount } = await getPaginatedProducts<ProductData>({
+  const { products, totalCount } = await getPaginatedProducts<ProductResponse>({
     offset: 0,
   });
 
