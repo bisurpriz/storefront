@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "../components/Layout/Header";
 import Content from "@/components/Layout/Content";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 import "./globals.css";
 import "swiper/css";
@@ -94,13 +93,8 @@ export default async function RootLayout({
         id="root"
       >
         <Suspense fallback={<Loading />}>
-          <UserProvider
-            loginUrl={`/api/auth/login`}
-            profileUrl={`/api/auth/me`}
-          >
-            <Header />
-            <Content>{children}</Content>
-          </UserProvider>
+          <Header />
+          <Content>{children}</Content>
         </Suspense>
       </body>
     </html>
