@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineClose } from "react-icons/ai";
-import NumberInput from "@/components/NumberInput";
 import useCart from "@/store/cart";
 import { memo } from "react";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import CartSkeleton from "../Skeletons/CartSkeleton";
+import QuantityInput from "@/components/NumberInput";
 
 const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
   const { updateItem, removeItem } = useCart();
@@ -54,17 +54,17 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                     </span>
                     <span className="block text-primary">Ücretsiz Kargo</span>
                     <span className="block">{price} TL</span>
-                    <NumberInput
-                      id={id.toString()}
+                    <QuantityInput
                       value={quantity}
-                      onChange={(value) =>
+                      onChange={(e, val) => {
                         updateItem({
                           id,
-                          quantity: value,
-                        })
-                      }
-                      precision={0}
+                          quantity: val,
+                        });
+                      }}
                       min={1}
+                      max={20}
+                      defaultValue={quantity}
                     />
                   </div>
                 </div>

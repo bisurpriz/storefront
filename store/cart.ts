@@ -116,6 +116,7 @@ const useCart = create(
             const newSpecialInstructions = state.cartItems[
               foundIndex
             ].specialInstructions?.slice(0, quantity);
+
             return {
               cartItems: [
                 ...state.cartItems.slice(0, foundIndex),
@@ -131,7 +132,10 @@ const useCart = create(
           }
 
           const newCartItems = [...state.cartItems];
-          if (quantity) {
+          if (
+            quantity &&
+            !(quantity === state.cartItems[foundIndex].quantity)
+          ) {
             newCartItems[foundIndex] = {
               ...newCartItems[foundIndex],
               quantity,
@@ -147,7 +151,7 @@ const useCart = create(
             (acc, curr) => acc + curr.quantity,
             0
           );
-          notify("Sepet güncellendi.");
+
           return {
             cartItems: newCartItems,
             count: newCount,

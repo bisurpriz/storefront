@@ -1,5 +1,5 @@
 import React from "react";
-import TextInput from "../TextInput";
+import TextInput from "../TextField";
 import { CustomizableArea } from "@/common/types/Order/order";
 import ImageUpload from "../ImageUpload";
 import { SpecialInstructions } from "@/store/cart";

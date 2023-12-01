@@ -1,10 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
-import TextInput from "@/components/TextInput";
+import TextInput from "@/components/TextField";
 import { localeDistanceFormat } from "@/utils/format";
 import Image from "next/image";
-import React from "react";
+import { useState } from "react";
 import { updateUserById } from "../../actions";
 import ProfileFormSkeleton from "./ProfileFormSkeleton";
 
@@ -24,7 +24,7 @@ const ProfileForm = ({
   };
   id: string;
 }) => {
-  const [userData, setUserData] = React.useState(user);
+  const [userData, setUserData] = useState(user);
 
   return userData ? (
     <form
@@ -57,7 +57,7 @@ const ProfileForm = ({
         className="md:w-80"
         type="text"
         value={userData.firstname}
-        onChange={(value) => setUserData({ ...userData, firstname: value })}
+        onChange={(e, value) => setUserData({ ...userData, firstname: value })}
       />
       <TextInput
         label="Soyisim"
@@ -66,7 +66,7 @@ const ProfileForm = ({
         className="md:w-80"
         type="text"
         value={userData.lastname}
-        onChange={(value) => setUserData({ ...userData, lastname: value })}
+        onChange={(e, value) => setUserData({ ...userData, lastname: value })}
       />
       <TextInput
         label="E-posta"
@@ -84,7 +84,7 @@ const ProfileForm = ({
         className="md:w-80"
         type="text"
         value={userData.phone}
-        onChange={(value) => setUserData({ ...userData, phone: value })}
+        onChange={(e, value) => setUserData({ ...userData, phone: value })}
       />
       <TextInput
         label="VKN/TCKN"
@@ -93,7 +93,7 @@ const ProfileForm = ({
         className="md:w-80"
         type="text"
         value={userData.vkn_tckn || ""}
-        onChange={(value) => setUserData({ ...userData, vkn_tckn: value })}
+        onChange={(e, value) => setUserData({ ...userData, vkn_tckn: value })}
       />
       <TextInput
         label="Referans Kodu"

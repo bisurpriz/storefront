@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import TextInput from "@/components/TextInput";
+import TextInput from "@/components/TextField";
 import { memo, useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";

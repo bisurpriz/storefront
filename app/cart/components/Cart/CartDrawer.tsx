@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
-import TextInput from "@/components/TextInput";
+import TextField from "@/components/TextField";
 import React from "react";
 
 import { IoTicketOutline } from "react-icons/io5";
@@ -47,7 +47,7 @@ const CartDrawer = ({
             </>
           ) : null}
           <div className="flex justify-between text-sm py-3 mt-1">
-            <TextInput
+            <TextField
               className="w-full"
               icon={<IoTicketOutline />}
               placeholder="İndirim Kodu Girin"
