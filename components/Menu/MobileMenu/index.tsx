@@ -1,4 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
 import Link from "next/link";
 import { memo } from "react";
@@ -9,6 +8,7 @@ import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiPathBold } from "react-icons/pi";
 import MenuItem from "./MenuItem";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const mobileHeader = [
   {
@@ -44,7 +44,9 @@ const mobileHeader = [
 ];
 
 const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
-  const { user, isLoading } = useUser();
+  // const { user, isLoading } = useUser();
+
+  const { user, isLoading } = useKindeBrowserClient();
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">

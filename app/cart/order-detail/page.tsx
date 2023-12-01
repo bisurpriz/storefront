@@ -129,8 +129,8 @@ const OrderDetail = (props: any) => {
                       }, 1000);
                     });
 
-                    return (response as any[]).filter((item: any) =>
-                      item.toLowerCase().includes(value.toLowerCase())
+                    return (response as any[]).filter((item) =>
+                      item.label.toLowerCase().includes(value.toLowerCase())
                     );
                   }}
                   placeholder="Lütfen bir il seçiniz"
@@ -250,8 +250,8 @@ const OrderDetail = (props: any) => {
                       }, 1000);
                     });
 
-                    return (response as any[]).filter((item: any) =>
-                      item.toLowerCase().includes(value.toLowerCase())
+                    return (response as any[]).filter((item) =>
+                      item.label.toLowerCase().includes(value.toLowerCase())
                     );
                   }}
                   placeholder="Lütfen bir ilçe seçiniz"

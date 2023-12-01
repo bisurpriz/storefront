@@ -1,28 +1,35 @@
 import React from "react";
-import Button from "../Button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Dropdown from "../Dropdown";
 import { profileItems } from "./contants";
+import {
+  LoginLink,
+  useKindeBrowserClient,
+  RegisterLink,
+} from "@kinde-oss/kinde-auth-nextjs";
+import Button from "../Button";
 
 const HeaderProfile = () => {
-  const router = useRouter();
-  const { user, isLoading } = useUser();
+  const { isAuthenticated, user, isLoading } = useKindeBrowserClient();
 
-  const handleLogin = () => {
-    router.push(`/api/auth/login`);
-  };
-
-  return !user ? (
-    <div className="flex items-center justify-end ml-2">
-      <Button
-        type="button"
-        onClick={handleLogin}
-        size="small"
-        label="Giriş Yap"
-        loading={isLoading}
-      />
+  return !isAuthenticated ? (
+    <div className="flex items-center justify-end gap-4 ml-2">
+      <LoginLink>
+        <Button
+          type="button"
+          size="small"
+          label="Giriş Yap"
+          loading={isLoading}
+        />
+      </LoginLink>
+      <RegisterLink>
+        <Button
+          type="button"
+          size="small"
+          label="Kayıt Ol"
+          loading={isLoading}
+        />
+      </RegisterLink>
     </div>
   ) : (
     <div className="flex gap-8 items-center justify-end flex-row-reverse">
@@ -41,7 +48,7 @@ const HeaderProfile = () => {
             loading="lazy"
           />
           <span className="text-sm font-normal text-slate-500 max-lg:hidden">
-            {user?.name}
+            {user?.given_name + " " + user?.family_name}
           </span>
         </div>
       </Dropdown>
