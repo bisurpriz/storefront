@@ -1,20 +1,20 @@
-// stories/TextInput.stories.tsx
+// stories/TextField.stories.tsx
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import TextInput from "@/components/TextField";
+import TextField from "@/components/TextField";
 import { BsCheck } from "react-icons/bs";
 
 export default {
-  title: "TextInput",
-  component: TextInput,
+  title: "TextField",
+  component: TextField,
 } as Meta;
 
-const Template: StoryFn<TextInputProps> = (args) => {
+const Template: StoryFn<TextFieldProps> = (args) => {
   const [inputValue, setInputValue] = useState("");
 
   return (
-    <TextInput
+    <TextField
       {...args}
       value={inputValue}
       onChange={(e, value) => setInputValue(value)}
