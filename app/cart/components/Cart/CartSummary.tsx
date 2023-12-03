@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import TextInput from "@/components/TextField";
+import TextField from "@/components/TextField";
 import { memo, useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
@@ -64,17 +64,19 @@ const CartSummary = () => {
               <>
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
-                  <span className="font-semibold">{total_discount} TL </span>
+                  <span className="font-semibold">
+                    {total_discount.toFixed(2)} TL{" "}
+                  </span>
                 </div>
               </>
             ) : null}
 
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
-              <TextInput
-                className="w-full"
+              <TextField
                 icon={<IoTicketOutline />}
                 placeholder="İndirim Kodu Girin"
                 id="discount"
+                fullWidth
               />
               <Button
                 size="small"

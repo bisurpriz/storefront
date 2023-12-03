@@ -2,7 +2,8 @@
 
 import Autocomplete from "@/components/Autocomplete";
 import Card from "@/components/Card";
-import TextInput from "@/components/TextField";
+import PhoneInput from "@/components/PhoneInput";
+import TextField from "@/components/TextField";
 import { useState } from "react";
 
 const OrderDetail = (props: any) => {
@@ -41,8 +42,8 @@ const OrderDetail = (props: any) => {
                   placeholder="İl seçiniz"
                 />
 
-                <TextInput label="Adres" placeholder="Adres giriniz" />
-                <TextInput
+                <TextField label="Adres" placeholder="Adres giriniz" />
+                <TextField
                   label="Telefon Numarası"
                   placeholder="Telefon numarası giriniz"
                 />
@@ -51,8 +52,8 @@ const OrderDetail = (props: any) => {
             <div className="flex flex-col gap-3 w-1/2 max-md:w-full">
               <h1 className="text-2xl font-semibold">Teslimat Bilgileri</h1>
               <div className="flex flex-col gap-3">
-                <TextInput label="Ad Soyad" placeholder="Ad soyad giriniz" />
-                <TextInput
+                <TextField label="Ad Soyad" placeholder="Ad soyad giriniz" />
+                <PhoneInput
                   label="Telefon Numarası"
                   placeholder="Telefon numarası giriniz"
                 />

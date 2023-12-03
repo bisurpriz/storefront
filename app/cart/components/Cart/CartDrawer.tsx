@@ -42,16 +42,18 @@ const CartDrawer = ({
             <>
               <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                 <span>Toplam kazancınız</span>
-                <span className="font-semibold">{totalDiscount} TL </span>
+                <span className="font-semibold">
+                  {totalDiscount.toFixed(2)} TL{" "}
+                </span>
               </div>
             </>
           ) : null}
           <div className="flex justify-between text-sm py-3 mt-1">
             <TextField
-              className="w-full"
               icon={<IoTicketOutline />}
               placeholder="İndirim Kodu Girin"
               id="discount"
+              fullWidth
             />
             <Button
               size="small"

@@ -1,12 +1,13 @@
 "use client";
 
 import Button from "@/components/Button";
-import TextInput from "@/components/TextField";
+import TextField from "@/components/TextField";
 import { localeDistanceFormat } from "@/utils/format";
 import Image from "next/image";
 import { useState } from "react";
 import { updateUserById } from "../../actions";
 import ProfileFormSkeleton from "./ProfileFormSkeleton";
+import PhoneInput from "@/components/PhoneInput";
 
 const ProfileForm = ({
   user,
@@ -50,7 +51,7 @@ const ProfileForm = ({
           height={200}
         />
       </div>
-      <TextInput
+      <TextField
         label="İsim"
         id="firstname"
         placeholder="Adınız"
@@ -59,7 +60,7 @@ const ProfileForm = ({
         value={userData.firstname}
         onChange={(e, value) => setUserData({ ...userData, firstname: value })}
       />
-      <TextInput
+      <TextField
         label="Soyisim"
         id="lastname"
         placeholder="Adınız"
@@ -68,7 +69,7 @@ const ProfileForm = ({
         value={userData.lastname}
         onChange={(e, value) => setUserData({ ...userData, lastname: value })}
       />
-      <TextInput
+      <TextField
         label="E-posta"
         id="email"
         placeholder="E-posta adresiniz"
@@ -77,16 +78,14 @@ const ProfileForm = ({
         disabled
         value={user?.email}
       />
-      <TextInput
+      <PhoneInput
         label="Telefon"
-        id="phone"
-        placeholder="Telefon numaranız"
         className="md:w-80"
-        type="text"
+        placeholder="Telefon numaranız"
         value={userData.phone}
         onChange={(e, value) => setUserData({ ...userData, phone: value })}
       />
-      <TextInput
+      <TextField
         label="VKN/TCKN"
         id="vkn_tckn"
         placeholder="VKN/TCKN"
@@ -95,7 +94,7 @@ const ProfileForm = ({
         value={userData.vkn_tckn || ""}
         onChange={(e, value) => setUserData({ ...userData, vkn_tckn: value })}
       />
-      <TextInput
+      <TextField
         label="Referans Kodu"
         id="reference_code"
         placeholder="Referans kodunuz"

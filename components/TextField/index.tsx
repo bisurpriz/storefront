@@ -2,7 +2,7 @@ import * as React from "react";
 import clsx from "clsx";
 import { useInput } from "@mui/base/useInput";
 
-const TextField = React.forwardRef<HTMLInputElement, TextInputProps>(
+const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       defaultValue,
@@ -22,6 +22,8 @@ const TextField = React.forwardRef<HTMLInputElement, TextInputProps>(
       id,
       type = "text",
       icon,
+      onKeyDown,
+      ...rest
     },
     ref
   ) => {
@@ -64,32 +66,35 @@ const TextField = React.forwardRef<HTMLInputElement, TextInputProps>(
     const hasIconClasses = icon ? "pl-10" : "";
 
     return (
-      <div {...getRootProps()} className={fullWidthClasses}>
-        <label className="flex flex-col gap-1 text-sm font-medium text-gray-700 relative">
-          {label ?? null}
-          {icon && <div className="absolute left-3 top-3">{icon}</div>}
-          <input
-            {...getInputProps()}
-            type={type}
-            name={id}
-            id={id}
-            autoComplete={autoComplete}
-            ref={inputRef}
-            required={isRequired}
-            placeholder={placeholder}
-            value={value as string}
-            className={clsx(
-              "w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200 ",
-              className,
-              focusedClasses,
-              disabledClasses,
-              isErrorClasses,
-              hasIconClasses
-            )}
-            disabled={isDisabled}
-          />
-        </label>
-      </div>
+      <label
+        {...getRootProps()}
+        className={`${fullWidthClasses} flex flex-col gap-1 text-sm font-medium text-gray-700 relative`}
+      >
+        {label ?? null}
+        {icon && <div className="absolute left-3 top-3">{icon}</div>}
+        <input
+          {...getInputProps()}
+          {...rest}
+          onKeyDown={onKeyDown}
+          type={type}
+          name={id}
+          id={id}
+          autoComplete={autoComplete}
+          ref={inputRef}
+          required={isRequired}
+          placeholder={placeholder}
+          value={value as string}
+          className={clsx(
+            "w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200 ",
+            className,
+            focusedClasses,
+            disabledClasses,
+            isErrorClasses,
+            hasIconClasses
+          )}
+          disabled={isDisabled}
+        />
+      </label>
     );
   }
 );

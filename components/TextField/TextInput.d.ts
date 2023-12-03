@@ -1,4 +1,4 @@
-interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   label?: string;
   error?: boolean;
@@ -16,4 +16,5 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   id?: string;
   type?: "text" | "password" | "email" | "number" | "tel" | "url";
   icon?: React.ReactNode;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }

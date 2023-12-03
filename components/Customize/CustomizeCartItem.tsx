@@ -1,5 +1,5 @@
 import React from "react";
-import TextInput from "../TextField";
+import TextField from "../TextField";
 import { CustomizableArea } from "@/common/types/Order/order";
 import ImageUpload from "../ImageUpload";
 import { SpecialInstructions } from "@/store/cart";
@@ -17,7 +17,7 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
         .map((_, i) => (
           <div className="flex items-center gap-3 whitespace-nowrap" key={i}>
             <span className="font-semibold">Yazı {i + 1}:</span>
-            <TextInput
+            <TextField
               className="w-full"
               placeholder="Özel Yazı Giriniz"
               id={`special_text_${i}`}
