@@ -49,7 +49,7 @@ const Button = React.forwardRef(
     };
 
     const baseClasses =
-      "flex items-center font-medium cursor-pointer relative transition-colors duration-200";
+      "flex items-center font-medium cursor-pointer relative transition-colors duration-200 focus:outline-none focus-visible:outline-none";
     const sizeClass = sizeClasses[size];
     const widthClass = fullWidth ? "w-full" : "";
     const roundedClass = rounded ? "rounded" : "";

@@ -23,7 +23,10 @@ const CartSummary = () => {
     total_price: 0,
   });
 
-  const ids = cartItems?.map((item) => ({ id: item.id }));
+  const ids = cartItems?.map((item) => ({
+    id: item.id,
+    quantity: item.quantity,
+  }));
 
   const fetchProducts = useCallback(async () => {
     const { total_discount, total_discount_price, total_price } =

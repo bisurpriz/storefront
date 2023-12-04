@@ -5,7 +5,7 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import Loading from "./Loading";
 import { IMAGE_URL } from "@/contants/urls";
-import ProductItem4 from "../Product/Item/ProductItem4";
+import ProductItem from "../Product/Item";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -47,7 +47,7 @@ const InfinityScroll = <T,>({
   return (
     <div className="grid max-xs:grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {data?.map((item: any) => (
-        <ProductItem4
+        <ProductItem
           key={item.id}
           name={item.name}
           description={item.description}

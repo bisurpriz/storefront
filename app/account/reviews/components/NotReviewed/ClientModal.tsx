@@ -1,6 +1,6 @@
 "use client";
 
-import Rating from "@/app/products/[slug]/components/Detail/Rating";
+import Rating from "@/components/Rating/Rating";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Tooltip from "@/components/Tooltip";

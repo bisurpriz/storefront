@@ -8,8 +8,12 @@ const AddCartButton = ({ id, loading }: ProductItemProps) => {
 
   return (
     <Button
-      size="small"
       loading={loading}
+      fullWidth
+      color="secondary"
+      variant="outlined"
+      rounded
+      className="mt-auto justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
       onClick={() =>
         addToCart({
           id,

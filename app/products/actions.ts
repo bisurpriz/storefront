@@ -133,7 +133,7 @@ export const getProductsByIdsForCart = async (
 };
 
 export const getProductsPricesByIds = async (
-  ids: Pick<CartItem, "id">[]
+  ids: Pick<CartItem, "id" | "quantity">[]
 ): Promise<{
   total_price: number;
   total_discount_price: number;
@@ -151,11 +151,19 @@ export const getProductsPricesByIds = async (
   const results = await Promise.all(promiseList);
 
   const total_price = results.reduce((acc, { data }) => {
-    return acc + data.product.price;
+    return (
+      acc +
+      data.product.price *
+        ids.find((item) => item.id === data.product.id)?.quantity
+    );
   }, 0);
 
   const total_discount_price = results.reduce((acc, { data }) => {
-    return acc + data.product.discount_price;
+    return (
+      acc +
+      data.product.discount_price *
+        ids.find((item) => item.id === data.product.id)?.quantity
+    );
   }, 0);
 
   // positive number
