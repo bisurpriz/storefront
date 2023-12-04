@@ -21,9 +21,11 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
       slotProps={{
         incrementButton: {
           children: <IoAdd fontSize="small" />,
+          color: props.color,
         },
         decrementButton: {
           children: <IoRemove fontSize="small" />,
+          color: props.color,
         },
       }}
       {...props}

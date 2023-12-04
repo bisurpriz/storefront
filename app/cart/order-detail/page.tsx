@@ -1,6 +1,7 @@
 "use client";
 
 import Autocomplete from "@/components/Autocomplete";
+import Button from "@/components/Button";
 import Card from "@/components/Card";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
@@ -47,6 +48,7 @@ const OrderDetail = (props: any) => {
                   label="Telefon Numarası"
                   placeholder="Telefon numarası giriniz"
                 />
+                <Button>Adresi Kaydet</Button>
               </div>
             </div>
             <div className="flex flex-col gap-3 w-1/2 max-md:w-full">

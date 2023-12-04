@@ -150,3 +150,19 @@
 .modal-content.modal-large {
   max-width: 800px;
 }
+
+.swiper-button-next {
+  color: #4fc08d !important;
+}
+
+.swiper-button-next::after {
+  font-size: 1.5rem !important;
+}
+
+.swiper-button-prev {
+  color: #4fc08d !important;
+}
+
+.swiper-button-prev::after {
+  font-size: 1.5rem !important;
+}

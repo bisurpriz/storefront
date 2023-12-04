@@ -15,13 +15,16 @@ const CategorySwiper = () => {
       <Card bordered={false} contentClass="py-0 px-0">
         <CustomSwiper
           direction="horizontal"
-          slidePerView={Math.floor(width! / 200)}
+          slidePerView={Math.floor(width! / 160)}
           spaceBetween={20}
+          navigation={true}
           slideItems={data.map((item, i) => ({
             key: i.toString(),
             children: (
               <Card
-                wrapperClass={`${item.bg} cursor-pointer group shadow-lg flex-1`}
+                wrapperClass={`cursor-pointer group shadow-lg my-4 bg-slate-100 rounded-xl`}
+                bordered={false}
+                onClick={() => console.log("click")}
               >
                 <div className={`flex flex-col items-center justify-center`}>
                   <Image

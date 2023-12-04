@@ -8,6 +8,7 @@ const Card = ({
   titleClass,
   contentClass,
   bordered = true,
+  onClick,
 }: {
   children: React.ReactNode;
   title?: string;
@@ -15,6 +16,7 @@ const Card = ({
   titleClass?: string;
   contentClass?: string;
   bordered?: boolean;
+  onClick?: () => void;
 }) => {
   const isBordered = bordered ? "border rounded-md border-primary-light" : "";
   const containerCls = wrapperClass ?? "";
@@ -22,7 +24,7 @@ const Card = ({
   const contentCls = contentClass ?? "";
 
   return (
-    <div className={`${isBordered} ${containerCls}`}>
+    <div className={`${isBordered} ${containerCls}`} onClick={onClick}>
       {title && (
         <div
           className={`text-center text-md font-bold text-gray-800 p-4 ${titleCls}`}

@@ -3,6 +3,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { CustomSwiperProps } from "./Swiper";
+import { Navigation } from "swiper/modules";
 
 const CustomSwiper = ({
   options,
@@ -12,6 +13,7 @@ const CustomSwiper = ({
   direction = "vertical",
   slidePerView = 1,
   spaceBetween = 0,
+  navigation,
   ...props
 }: CustomSwiperProps) => {
   return (
@@ -24,6 +26,8 @@ const CustomSwiper = ({
       slidesPerView={slidePerView}
       spaceBetween={spaceBetween}
       className={`w-full h-full`}
+      modules={[Navigation]}
+      navigation={navigation}
     >
       {slideItems.map((item) => {
         const className = item.className ? item.className : "";

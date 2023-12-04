@@ -26,7 +26,7 @@ const CategorySwiper = () => {
   ];
 
   return (
-    <div className={`font-mono mb-8`}>
+    <div className={`font-mono mb-4`}>
       <Card bordered={false} contentClass="py-0 px-0">
         <CustomSwiper
           autoplay={{

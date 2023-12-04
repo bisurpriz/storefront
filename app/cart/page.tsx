@@ -32,6 +32,7 @@ const Cart = () => {
   }, [cartItems]);
 
   const tenantIds = useMemo(() => Object.keys(tenantGrouped), [tenantGrouped]);
+
   return (
     <div className="w-full relative">
       <div>

@@ -47,7 +47,7 @@ const HeaderMiddle = () => {
             <span className="max-xl:hidden font-normal">Favorilerim</span>
           </Button>
         </Link>
-        <Link href="/orders">
+        <Link href="/account/orders">
           <Button
             icon={<BsTruck />}
             type="button"

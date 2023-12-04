@@ -9,6 +9,7 @@ export interface CustomSwiperProps extends SwiperProps {
   direction?: "horizontal" | "vertical";
   slidePerView?: number;
   spaceBetween?: number;
+  navigation?: boolean;
 }
 
 export interface SlideItem {

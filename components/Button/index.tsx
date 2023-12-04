@@ -3,7 +3,8 @@
 import React from "react";
 import Spinner from "../Spinner";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   onClick?: () => void;
   size?: "small" | "medium" | "large";

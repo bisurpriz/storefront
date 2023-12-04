@@ -72,7 +72,7 @@ export default function AutoComplete({
 
   return (
     <div className="relative">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="text-sm font-medium text-gray-700 flex flex-col gap-1">
         {label ? <p>{label}</p> : null}
         <div
           {...getRootProps()}
