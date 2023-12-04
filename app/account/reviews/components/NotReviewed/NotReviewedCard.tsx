@@ -1,4 +1,4 @@
-import Rating from "@/app/products/[slug]/components/Detail/Rating";
+import Rating from "@/components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";

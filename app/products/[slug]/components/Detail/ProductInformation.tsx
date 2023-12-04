@@ -1,5 +1,5 @@
 import React from "react";
-import Rating from "./Rating";
+import Rating from "../../../../../components/Rating/Rating";
 import Popover from "@/components/Popover";
 import RatingDetail from "./RatingDetail";
 import { RatingProps } from "./RatingDetail";
@@ -19,7 +19,6 @@ type ProductInformationProps = {
     id: string;
     rate: number;
   };
-
 };
 
 const ProductInformation = ({
@@ -32,7 +31,6 @@ const ProductInformation = ({
   promotion,
   discountRate,
   vendor,
-
 }: ProductInformationProps) => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 p-8 w-full h-full bg-green-50 rounded-md shadow-md shadow-green-200 max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">

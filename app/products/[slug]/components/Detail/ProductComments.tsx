@@ -1,6 +1,6 @@
 import Avatar from "@/components/Avatar";
 import React from "react";
-import Rating from "./Rating";
+import Rating from "../../../../../components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 
 type Comment = {

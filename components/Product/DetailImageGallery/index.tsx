@@ -4,7 +4,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { Mousewheel, Pagination, Virtual, Zoom } from "swiper/modules";
+import { Pagination, Virtual, Zoom } from "swiper/modules";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { useRef } from "react";
 
@@ -45,8 +45,7 @@ const ProductDetailImageGallery = ({
           spaceBetween={10}
           direction={direction}
           className="h-full gallery-scroll-hide"
-          mousewheel={true}
-          modules={[Mousewheel, Virtual]}
+          modules={[Virtual]}
           width={width}
           virtual
         >

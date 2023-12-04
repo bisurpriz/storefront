@@ -1,7 +1,7 @@
 "use client";
 
+import Badge from "@/components/Badge";
 import Button from "@/components/Button";
-import CountBadge from "@/components/CountBadge/CountBadge";
 import HeaderProfile from "@/components/Profile/HeaderProfile";
 import Search from "@/components/Search";
 import useCart from "@/store/cart";
@@ -60,7 +60,7 @@ const HeaderMiddle = () => {
           </Button>
         </Link>
         <Link href="/cart">
-          <CountBadge count={count}>
+          <Badge badgeContent={count}>
             <Button
               icon={<AiOutlineShoppingCart />}
               type="button"
@@ -71,7 +71,7 @@ const HeaderMiddle = () => {
             >
               <span className="max-xl:hidden font-normal">Sepetim</span>
             </Button>
-          </CountBadge>
+          </Badge>
         </Link>
         <HeaderProfile />
       </div>
