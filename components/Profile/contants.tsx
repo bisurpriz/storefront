@@ -1,76 +1,32 @@
-import Link from "next/link";
-
 export const profileItems = [
   {
-    label: (
-      <Link
-        href="/account/orders"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Siparişlerim
-      </Link>
-    ),
-    value: "siparislerim",
+    label: "Siparişlerim",
+    path: "/account/orders",
     searchValue: "Siparişlerim",
   },
   {
-    label: (
-      <Link
-        href="/account/coupons"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Kuponlarım
-      </Link>
-    ),
-    value: "kuponlarim",
+    label: "Kuponlarım",
+    path: "/account/coupons",
     searchValue: "Kuponlarım",
   },
   {
-    label: (
-      <Link
-        href="/account/reviews"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Değerlendirmelerim
-      </Link>
-    ),
-    value: "degerlendirmelerim",
+    label: "Değerlendirmelerim",
+    path: "/account/reviews",
     searchValue: "Değerlendirmelerim",
   },
   {
-    label: (
-      <Link
-        href="/account/favorites"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Favorilerim
-      </Link>
-    ),
-    value: "favorilerim",
+    label: "Favorilerim",
+    path: "/account/favorites",
     searchValue: "Favorilerim",
   },
   {
-    label: (
-      <Link
-        href="/account"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Üyelik Bilgilerim
-      </Link>
-    ),
-    value: "hesabim",
+    label: "Üyelik Bilgilerim",
+    path: "/account",
     searchValue: "Üyelik Bilgilerim",
   },
   {
-    label: (
-      <Link
-        href="/api/auth/logout"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Çıkış Yap
-      </Link>
-    ),
-    value: "cikis",
+    label: "Çıkış Yap",
+    path: "/api/auth/logout",
     searchValue: "Çıkış Yap",
   },
 ];

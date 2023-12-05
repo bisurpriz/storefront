@@ -1,10 +1,8 @@
 import React from "react";
 import Button from "../Button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import Dropdown from "../Dropdown";
-import { profileItems } from "./contants";
+import AnimatedProfileHeader from "./Animated";
 
 const HeaderProfile = () => {
   const router = useRouter();
@@ -26,25 +24,7 @@ const HeaderProfile = () => {
     </div>
   ) : (
     <div className="flex gap-8 items-center justify-end flex-row-reverse">
-      <Dropdown
-        dropdownPlacement="bottomRight"
-        options={profileItems}
-        className="cursor-pointer"
-      >
-        <div className="flex items-center gap-2">
-          <Image
-            src={user?.picture || ""}
-            width={30}
-            height={30}
-            alt="User Picture"
-            className="rounded-full min-h-[30px] min-w-[30px]"
-            loading="lazy"
-          />
-          <span className="text-sm font-normal text-slate-500 max-lg:hidden">
-            {user?.name}
-          </span>
-        </div>
-      </Dropdown>
+      <AnimatedProfileHeader />
     </div>
   );
 };

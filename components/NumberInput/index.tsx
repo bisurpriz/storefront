@@ -27,6 +27,9 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
           children: <IoRemove fontSize="small" />,
           color: props.color,
         },
+        input: {
+          disabled: props.disabled,
+        },
       }}
       {...props}
       ref={ref}
@@ -34,10 +37,4 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
   );
 });
 
-export interface QuantityInputProps extends NumberInputProps {}
-
-export default function QuantityInput({ ...props }: QuantityInputProps) {
-  return (
-    <NumberInput aria-label="Quantity Input" min={1} max={99} {...props} />
-  );
-}
+export default NumberInput;

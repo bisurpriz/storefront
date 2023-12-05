@@ -21,9 +21,9 @@ export const NumberCustomInput = forwardRef(
         focus-visible:outline-none
         w-16
         text-center
-        border-x-0
-        "
+        border-x-0"
         autoComplete="off"
+        disabled={true}
       />
     );
   }

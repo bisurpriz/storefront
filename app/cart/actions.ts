@@ -4,10 +4,7 @@ import { getClient } from "@/graphql/lib/client";
 import { CREATE_ORDER } from "@/graphql/queries/order/mutation";
 import { readIdFromCookies } from "../actions";
 
-export const createOrderAction = async (
-  tenantGrouped: any,
-  totalPrice: any
-) => {
+export const createOrderAction = async (tenantGrouped: any) => {
   const userId = await readIdFromCookies();
 
   if (!userId) return null;
@@ -34,7 +31,6 @@ export const createOrderAction = async (
 
   const variables = {
     user_id: userId,
-    total_amount: totalPrice,
     tenant_orders,
     order_addresses: [
       {
