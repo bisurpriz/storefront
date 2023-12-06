@@ -68,18 +68,18 @@ const ProductItem = ({
         id={id}
       />
       <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1">
-        <div className="w-full flex items-center gap-2 font-mono mt-2">
-          <span className="text-start text-xl font-semibold text-gray-700 max-xs:text-xl">
-            {/* {formatCurrency(price)} */} ${price.toFixed(2)}
+        <div className="w-full flex items-center gap-2 font-sans mt-2">
+          <span className="text-start text-2xl font-semibold text-primary-light max-xs:text-xl">
+            {/* {formatCurrency(price)} */} ₺{price.toFixed(2)}
           </span>
-          <span className="text-sm text-gray-500 line-through">
-            {/* {formatCurrency(price * 1.2)} */} ${(price * 1.2).toFixed(2)}
+          <span className="text-sm text-error-light line-through">
+            {/* {formatCurrency(price * 1.2)} */} ₺{(price * 1.2).toFixed(2)}
           </span>
         </div>
         <div className="w-full">
           <Link href={`/products/${id}`}>
             <h3
-              className="text-lg font-semibold text-gray-700 font-mono line-clamp-2 capitalize"
+              className="text-lg font-extrabold text-gray-700 font-mono line-clamp-2 capitalize"
               title={name}
             >
               {name}

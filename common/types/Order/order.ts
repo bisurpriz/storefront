@@ -1,5 +1,7 @@
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
+import { Address } from "../Addresses/addresses";
+import { User } from "../User/user";
 
 export interface OrderItem {
   id: number;
@@ -32,4 +34,11 @@ export interface OrderItemSpecialText extends OrderItemSpecial {
 
 export interface OrderItemSpecialImage extends OrderItemSpecial {
   image_url: string;
+}
+
+export interface OrderDetailFormData extends Address {
+  user_id: User["id"];
+  receiver_firstname: string;
+  receiver_surname: string;
+  receiver_phone: string;
 }

@@ -15,6 +15,7 @@ export const GET_PRODUCT_BY_ID = gql`
       name
       price
       quantity
+      properties
       questions {
         created_at
         id

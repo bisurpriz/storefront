@@ -3,15 +3,12 @@ import { useAutocomplete } from "@mui/base/useAutocomplete";
 import { MdClear } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
 
-export type DropdownOption = {
-  label: string;
-  value: string;
-};
+export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
 
 export interface AutoCompleteProps {
-  options: DropdownOption[];
-  onChange: (value: DropdownOption | DropdownOption[]) => void;
-  value?: DropdownOption | DropdownOption[];
+  options: AutoCompleteOption[];
+  onChange: (value: AutoCompleteOption | AutoCompleteOption[]) => void;
+  value?: AutoCompleteOption | AutoCompleteOption[] | null;
   placeholder?: string;
   id?: string;
   label?: string;
@@ -19,10 +16,13 @@ export interface AutoCompleteProps {
   inputValue?: string;
   onInputChange?: (value: string) => void;
   multiple?: boolean;
-  getOptionLabel?: (option: DropdownOption) => string;
+  getOptionLabel?: (option: any) => string;
   readOnly?: boolean;
   disabled?: boolean;
   autoComplete?: string;
+  disableCloseOnSelect?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 export default function AutoComplete({
@@ -39,7 +39,10 @@ export default function AutoComplete({
   getOptionLabel,
   disabled,
   readOnly,
+  disableCloseOnSelect,
   autoComplete = "off",
+  error,
+  errorMessage,
 }: AutoCompleteProps) {
   const {
     getRootProps,
@@ -62,7 +65,7 @@ export default function AutoComplete({
     onInputChange: (event, newInputValue) => onInputChange?.(newInputValue),
     multiple,
     getOptionLabel,
-    disableCloseOnSelect: true,
+    disableCloseOnSelect,
     readOnly,
     disabled,
     isOptionEqualToValue: (option, value) => option.value === value.value,
@@ -70,9 +73,17 @@ export default function AutoComplete({
 
   const hasClearIcon = !disabled && dirty && !readOnly;
 
+  const hasErrorClass = error
+    ? "border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500"
+    : "";
+
   return (
     <div className="relative">
-      <label className="text-sm font-medium text-gray-700 flex flex-col gap-1">
+      <label
+        className={`text-sm font-medium text-gray-700 flex flex-col gap-1 
+      ${error ? "text-red-500" : ""}
+      `}
+      >
         {label ? <p>{label}</p> : null}
         <div
           {...getRootProps()}
@@ -86,6 +97,7 @@ export default function AutoComplete({
             focus-visible:outline-none
             overflow-hidden
             flex items-center gap-2
+            ${hasErrorClass}
             `}
         >
           {multiple && (
@@ -132,11 +144,15 @@ export default function AutoComplete({
             className={`${popupOpen ? "rotate-180" : ""}
             flex items-center justify-center mr-2 p-1 text-gray-500 hover:text-gray-700 rounded-lg
             transition-transform duration-200 shadow-sm hover:bg-gray-50
+            ${error ? "text-red-500 hover:text-red-700" : ""}
           `}
           >
             <BsChevronDown />
           </button>
         </div>
+        {error && errorMessage && (
+          <span className="text-xs text-red-500">{errorMessage}</span>
+        )}
       </label>
       {groupedOptions.length > 0 && (
         <ul

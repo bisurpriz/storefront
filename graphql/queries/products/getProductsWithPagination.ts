@@ -22,6 +22,7 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       image_url
       price
       quantity
+      properties
     }
   }
 `;

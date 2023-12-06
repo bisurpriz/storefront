@@ -16,7 +16,7 @@ const steps = [
     path: "/cart",
   },
   {
-    label: "Kişisel Bilgiler",
+    label: "Teslimat Bilgileri",
     value: 2,
     icon: <IoInformationCircle />,
     path: "/cart/order-detail",

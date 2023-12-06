@@ -7,12 +7,14 @@ interface PopoverProps {
   children: React.ReactElement;
   content: React.ReactElement;
   position?: "top" | "right" | "bottom" | "left";
+  contentClassName?: string;
 }
 
 const Popover: React.FC<PopoverProps> = ({
   children,
   content,
   position = "top",
+  contentClassName,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dynamicPosition, setDynamicPosition] = useState(position); // ["top", "right", "bottom", "left"]
@@ -99,7 +101,7 @@ const Popover: React.FC<PopoverProps> = ({
         nodeRef={ref}
       >
         <div
-          className={`absolute bg-white shadow-lg rounded p-4 mt-3 z-50 ${getPositionClass()}`}
+          className={`absolute bg-white shadow-lg rounded p-4 mt-3 z-50 ${getPositionClass()} ${contentClassName}`}
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
           onTouchStart={() => setIsOpen(true)}
@@ -109,7 +111,7 @@ const Popover: React.FC<PopoverProps> = ({
         >
           {content}
           <div
-            className={`absolute w-4 h-4 bg-white transform rotate-45 ${getCaretPosition()}`}
+            className={`absolute w-4 h-4 bg-white transform rotate-45 border-t border-r ${getCaretPosition()}`}
           />
         </div>
       </CSSTransition>

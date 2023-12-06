@@ -37,7 +37,7 @@ const PaymentMethods = () => {
       title="Ödeme Yöntemleri"
       bordered
       content={
-        <div className="grid grid-cols-4 max-md:grid-cols-2 grid-flow-dense gap-4 p-4 bg-white rounded-lg shadow-md">
+        <div className="grid grid-cols-4 max-md:grid-cols-2 grid-flow-dense gap-4 p-4 bg-white">
           {paymentMethods.map((method) => (
             <div
               key={method.name}

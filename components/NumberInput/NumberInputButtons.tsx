@@ -11,7 +11,7 @@ export const IncrementButton = forwardRef(
         ref={ref}
         {...props}
         className="order-1 rounded-l-none border-l-0"
-        color="primary"
+        color={props.color}
         size="small"
       />
     );
@@ -27,7 +27,7 @@ export const DecrementButton = forwardRef(
       <Button
         ref={ref}
         {...props}
-        color="primary"
+        color={props.color}
         size="small"
         className="rounded-r-none border-r-0"
       />

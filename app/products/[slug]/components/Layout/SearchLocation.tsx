@@ -11,8 +11,8 @@ type Props = {
 
 const SearchLocation = ({ className = "" }: Props) => {
   const [location, setLocation] = React.useState<{
-    label: string;
-    value: string;
+    label: string | number;
+    value: string | number;
   } | null>(null);
 
   const isSelectedLocationButtonClass = location

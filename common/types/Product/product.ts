@@ -24,7 +24,7 @@ export interface Product {
   discount_price: number;
   stock: number;
   stock_track: boolean;
-  properties: any;
+  properties: string;
   delivery_type: keyof typeof DeliveryType;
   order_items: OrderItem[];
   product_customizable_areas: ProductCustomizableArea[];

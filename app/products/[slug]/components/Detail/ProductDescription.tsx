@@ -51,10 +51,12 @@ const ProductDescription = ({
             <tbody>
               {specifications?.map((specification, index) => (
                 <tr key={`${specification.name}-${index}`}>
-                  <td className="border px-4 py-2 font-semibold">
+                  <td className="border px-4 py-2 font-semibold capitalize">
                     {specification.name}
                   </td>
-                  <td className="border px-4 py-2">{specification.value}</td>
+                  <td className="border px-4 py-2 capitalize">
+                    {specification.value}
+                  </td>
                 </tr>
               ))}
             </tbody>

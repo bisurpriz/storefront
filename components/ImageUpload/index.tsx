@@ -1,17 +1,20 @@
 import Image from "next/image";
 import React, { useState, ChangeEvent } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import Button from "../Button";
 
 interface ImageUploadProps {
   onChange: (file: File) => void;
   id?: string;
   defaultValue?: string | null;
+  label?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   id,
   defaultValue = null,
+  label,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(
     () => defaultValue
@@ -34,7 +37,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   return (
     <div className="flex items-center justify-center gap-3 bg-gray-100 rounded-md">
       <label
-        className={`flex items-center justify-center gap-3 bg-gray-100 rounded-md cursor-pointer ${
+        className={`flex items-center justify-center gap-3 bg-gray-100 rounded-md cursor-pointer p-4 ${
           selectedImage ? "hidden" : ""
         }`}
       >
@@ -58,13 +61,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             alt="Resim"
             className="rounded-md"
           />
-          <button
+          <Button
             type="button"
             onClick={() => setSelectedImage(null)}
-            className="absolute top-0 right-0 p-1 bg-gray-100 rounded-full"
+            color="secondary"
+            variant="outlined"
+            className="!absolute !top-1 !right-1 !p-[2px] rounded-full"
           >
             <AiOutlineClose />
-          </button>
+          </Button>
         </div>
       )}
     </div>

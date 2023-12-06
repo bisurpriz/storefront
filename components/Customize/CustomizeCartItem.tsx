@@ -15,13 +15,16 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
       return Array(count)
         .fill(0)
         .map((_, i) => (
-          <div className="flex items-center gap-3 whitespace-nowrap" key={i}>
-            <span className="font-semibold">Yazı {i + 1}:</span>
+          <div
+            className="flex items-center gap-3 whitespace-nowrap font-sans"
+            key={i}
+          >
             <TextField
-              className="w-full"
-              placeholder="Özel Yazı Giriniz"
+              fullWidth
+              placeholder="Lütfen istediğiniz yazıyı giriniz."
               id={`special_text_${i}`}
               defaultValue={values?.[`special_text_${i}`] as string}
+              label={`Özel Yazı ${i + 1}:`}
             />
           </div>
         ));
@@ -29,12 +32,15 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
       return Array(count)
         .fill(0)
         .map((_, i) => (
-          <div className="flex items-center gap-3 whitespace-nowrap" key={i}>
-            <span className="font-semibold">Görsel {i + 1}:</span>
+          <div
+            className="flex items-center gap-3 whitespace-nowrap font-sans"
+            key={i}
+          >
             <ImageUpload
               id={`special_image_${i}`}
               onChange={(file) => {}}
               defaultValue={values?.[`special_image_${i}`] as string}
+              label={`Özel Resim ${i + 1}:`}
             />
           </div>
         ));

@@ -102,14 +102,7 @@ const ProductDetail = async ({
           <ProductActions />
         </div>
       </section>
-      <section
-        className="mt-6"
-        id="payment-methods"
-        aria-labelledby="payment-methods"
-        aria-describedby="Ödeme yöntemleri"
-      >
-        <PaymentMethods />
-      </section>
+
       <section className="mt-6" id="reviews">
         <ProductDescription
           title="Ürün Detayları"
@@ -117,11 +110,16 @@ const ProductDetail = async ({
           notes={Array.from({ length: 5 }).map((_, index) =>
             faker.commerce.productDescription()
           )}
-          specifications={Array.from({ length: 5 }).map((_, index) => ({
-            name: faker.commerce.productName(),
-            value: faker.commerce.product(),
-          }))}
+          specifications={data.product.properties}
         />
+      </section>
+      <section
+        className="mt-6"
+        id="payment-methods"
+        aria-labelledby="payment-methods"
+        aria-describedby="Ödeme yöntemleri"
+      >
+        <PaymentMethods />
       </section>
       <section
         className="mt-6"

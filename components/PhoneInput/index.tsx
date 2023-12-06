@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import TextField from "../TextField";
 
 interface PhoneInputProps {
@@ -7,6 +7,9 @@ interface PhoneInputProps {
   placeholder?: string;
   label?: string;
   className?: string;
+  id?: string;
+  errorMessage?: string;
+  error?: boolean;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
@@ -15,9 +18,18 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
   value,
   label,
   className,
+  id,
+  errorMessage,
+  error: hasError,
 }) => {
-  const [phoneNumber, setPhoneNumber] = useState<string>(() => value || "");
-  const [error, setError] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [error, setError] = useState<string>(errorMessage || "");
+
+  useEffect(() => {
+    if (value) {
+      handleChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
+    }
+  }, [value]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     let inputPhoneNumber = event.target.value;
@@ -33,7 +45,9 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
     const match = inputPhoneNumber.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
 
     if (trRegex.test(inputPhoneNumber)) {
-      setError("");
+      setError(null);
+    } else if (inputPhoneNumber.length === 0) {
+      setError(null);
     } else {
       setError("Lütfen geçerli bir telefon numarası giriniz.");
     }
@@ -71,8 +85,10 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
       value={phoneNumber}
       onChange={handleChange}
       label={label}
-      error={!!error}
+      error={!!error?.length || hasError}
+      errorMessage={errorMessage}
       className={className}
+      id={id}
     />
   );
 };

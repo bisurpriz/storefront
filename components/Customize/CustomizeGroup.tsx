@@ -63,7 +63,8 @@ const CustomizeGroup = ({
 
   return (
     <form
-      className="flex flex-col gap-3 mt-3 w-full rounded-md"
+      autoComplete="off"
+      className="flex flex-col gap-3 w-full"
       onSubmit={handleFormSubmit}
     >
       {customize?.map(({ count, customizable_area: { type } }, i) => {
@@ -81,6 +82,7 @@ const CustomizeGroup = ({
         className="mt-3 w-fit"
         size="small"
         variant="outlined"
+        color="secondary"
       >
         Kaydet
       </Button>

@@ -1,5 +1,32 @@
 import { gql } from "@apollo/client";
 
+export const GET_USER_ADDRESS_BY_ID = gql`
+  query getUserAddressById($id: uuid = "") {
+    user_by_pk(id: $id) {
+      user_addresses {
+        address
+        address_title
+        receiver_firstname
+        receiver_phone
+        receiver_surname
+        id
+        city {
+          id
+          name
+        }
+        district {
+          id
+          name
+        }
+        quarter {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const GET_USER_BY_ID = gql`
   query getUserById($id: uuid = "") {
     user_by_pk(id: $id) {
@@ -11,6 +38,10 @@ export const GET_USER_BY_ID = gql`
       phone
       reference_code
       vkn_tckn
+      user_addresses {
+        address_title
+        address
+      }
     }
   }
 `;
@@ -40,6 +71,34 @@ export const UPDATE_USER_BY_ID = gql`
       phone
       picture
       vkn_tckn
+    }
+  }
+`;
+
+export const GET_CITIES = gql`
+  query getCities {
+    cities: city {
+      code
+      id
+      name
+    }
+  }
+`;
+
+export const GET_DISTRICTS = gql`
+  query getDistricts($cityId: Int = 10) {
+    districts: district(where: { city: { id: { _eq: $cityId } } }) {
+      name
+      id
+    }
+  }
+`;
+
+export const GET_QUARTERS = gql`
+  query getQuarters($districtId: Int = 1) {
+    quarters: quarter(where: { district: { id: { _eq: $districtId } } }) {
+      name
+      id
     }
   }
 `;

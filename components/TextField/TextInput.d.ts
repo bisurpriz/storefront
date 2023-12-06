@@ -2,6 +2,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   label?: string;
   error?: boolean;
+  errorMessage?: string;
   required?: boolean;
   value?: string;
   defaultValue?: string;

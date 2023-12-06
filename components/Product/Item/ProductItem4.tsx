@@ -36,7 +36,7 @@ function ProductItem4({
         </p>
       </div>
       <div className="flex justify-between items-end mt-4 max-2xl:flex-col max-2xl:justify-start max-2xl:items-start max-2xl:gap-4 grow">
-        <div className="text-2xl font-bold">{price} TL</div>
+        <div className="text-2xl font-bold">{price} ₺</div>
         <AddCartButton
           description={description}
           id={id}

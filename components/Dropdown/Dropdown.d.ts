@@ -1,5 +1,5 @@
 interface DropdownOption {
-  value: string;
+  value: string | number;
   label: string | React.ReactNode;
   searchValue?: string;
 }
@@ -7,7 +7,7 @@ interface DropdownOption {
 interface DropdownProps {
   options: DropdownOption[];
   value?: string;
-  onChange?: (value: string, option: DropdownOption) => void;
+  onChange?: (value: string | number, option: DropdownOption) => void;
   dropdownPlacement?: "bottomRight" | "bottomLeft" | "topLeft" | "topRight";
   isSearchable?: boolean;
   label?: string;

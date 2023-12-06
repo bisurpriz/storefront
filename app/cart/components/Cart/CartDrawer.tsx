@@ -32,18 +32,18 @@ const CartDrawer = ({
         <div className="flex flex-col">
           <div className="flex justify-between text-sm py-1">
             <span>Ara Toplam</span>
-            <span className="font-semibold">{totalDiscountPrice} TL</span>
+            <span className="font-semibold">{totalDiscountPrice} ₺</span>
           </div>
           <div className="flex justify-between text-sm py-1">
             <span>Kargo</span>
-            <span className="font-semibold">29.99 TL</span>
+            <span className="font-semibold">29.99 ₺</span>
           </div>
           {totalDiscount ? (
             <>
               <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                 <span>Toplam kazancınız</span>
                 <span className="font-semibold">
-                  {totalDiscount.toFixed(2)} TL{" "}
+                  {totalDiscount.toFixed(2)} ₺{" "}
                 </span>
               </div>
             </>
@@ -65,7 +65,7 @@ const CartDrawer = ({
           <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
             <span className="font-medium">Toplam</span>
             <span className="font-semibold text-xl text-primary ">
-              {totalPrice.toFixed(2)} TL
+              {totalPrice.toFixed(2)} ₺
             </span>
           </div>
         </div>

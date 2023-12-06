@@ -53,6 +53,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
                 "text-base font-medium",
                 activeStep > index ? "text-primary" : "text-gray-500",
                 activeStep === index ? "text-primary-light" : "text-gray-500",
+                "max-sm:hidden",
               ])}
             >
               {step.label}

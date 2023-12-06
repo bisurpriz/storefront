@@ -37,7 +37,7 @@ const Button = React.forwardRef(
       children,
       onClick,
       label,
-      type,
+      type = "button",
       className,
       ownerState,
       ...rest

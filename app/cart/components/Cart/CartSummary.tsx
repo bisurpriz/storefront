@@ -56,19 +56,19 @@ const CartSummary = () => {
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
               <span className="font-semibold">
-                {total_discount_price.toFixed(2)} TL
+                {total_discount_price.toFixed(2)} ₺
               </span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
-              <span className="font-semibold">29.99 TL</span>
+              <span className="font-semibold">29.99 ₺</span>
             </div>
             {total_discount ? (
               <>
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
                   <span className="font-semibold">
-                    {total_discount.toFixed(2)} TL{" "}
+                    {total_discount.toFixed(2)} ₺{" "}
                   </span>
                 </div>
               </>
@@ -91,7 +91,7 @@ const CartSummary = () => {
             <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                {total_price.toFixed(2)} TL
+                {total_price.toFixed(2)} ₺
               </span>
             </div>
           </div>
@@ -117,7 +117,7 @@ const CartSummary = () => {
           <span className="flex flex-col justify-center ml-2">
             <span className="text-xs">Toplam:</span>
             <span className="text-md text-primary font-medium">
-              {total_price.toFixed(2)} TL
+              {total_price.toFixed(2)} ₺
             </span>
           </span>
         </div>

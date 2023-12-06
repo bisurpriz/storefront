@@ -1,13 +1,14 @@
-import * as React from "react";
 import clsx from "clsx";
 import { useInput } from "@mui/base/useInput";
+import { forwardRef } from "react";
 
-const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
+const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       defaultValue,
       disabled,
       error,
+      errorMessage,
       label,
       onBlur,
       onChange,
@@ -68,10 +69,16 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <label
         {...getRootProps()}
-        className={`${fullWidthClasses} flex flex-col gap-1 text-sm font-medium text-gray-700 relative`}
+        className={`${fullWidthClasses} flex flex-col gap-1 text-sm font-medium text-gray-700 relative
+          ${isError && "text-red-500"}
+          `}
       >
         {label ?? null}
-        {icon && <div className="absolute left-3 top-3">{icon}</div>}
+        {icon && (
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            {icon}
+          </div>
+        )}
         <input
           {...getInputProps()}
           {...rest}
@@ -94,6 +101,9 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
           disabled={isDisabled}
         />
+        {isError && errorMessage && (
+          <span className="text-xs text-red-500">{errorMessage}</span>
+        )}
       </label>
     );
   }

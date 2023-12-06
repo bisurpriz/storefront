@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import { HiChevronDown } from "react-icons/hi";
 
 interface AccordionItemProps {
   title: React.ReactNode;
@@ -21,15 +22,15 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   const nodeRef = useRef(null);
   const [open, setOpen] = useState<boolean>(isOpen ?? false);
 
-  const isOpenClass = open ? "bg-stone-50" : "";
+  const isOpenClass = open ? "border-b" : "";
   const isBordered = bordered ? "border border-b-0 last:border-b" : "";
 
   return (
     <div
-      className={` transition-colors ${isOpenClass} ${isBordered} ${className}`}
+      className={` transition-colors select-none ${isBordered} ${className}`}
     >
       <div
-        className="p-3 cursor-pointer flex justify-between items-center "
+        className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
         onClick={
           onToggle
             ? () => {
@@ -40,19 +41,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         }
       >
         <h4 className="flex items-center">{title}</h4>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className={`h-6 w-6 transform ${
-            isOpen ? "rotate-180" : ""
-          } transition-transform`}
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M6.293 6.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-          />
-        </svg>
+        <HiChevronDown
+          className={`transition-transform transform ${
+            open ? "-rotate-180" : ""
+          }`}
+        />
       </div>
       <CSSTransition
         nodeRef={nodeRef}

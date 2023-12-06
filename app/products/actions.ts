@@ -54,6 +54,9 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       name: data.product.name,
       price: data.product.price,
       quantity: data.product.quantity,
+      properties: data.product.properties
+        ? JSON.parse(data.product.properties)
+        : [],
     },
     questions: data.product.questions,
     reviews: {

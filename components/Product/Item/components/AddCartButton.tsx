@@ -10,6 +10,7 @@ const AddCartButton = ({ id, loading }: ProductItemProps) => {
     <Button
       loading={loading}
       fullWidth
+      size="small"
       color="secondary"
       variant="outlined"
       rounded
