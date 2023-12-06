@@ -37,13 +37,13 @@ const Popover: React.FC<PopoverProps> = ({
   const getCaretPosition = () => {
     switch (dynamicPosition) {
       case "top":
-        return "-bottom-2 left-1/2 transform -translate-x-1/2";
+        return "-bottom-2 left-1/2 transform -translate-x-1/2 border-b border-r";
       case "right":
-        return "top-1/2 -left-2 transform -translate-y-1/2";
+        return "top-1/2 -left-2 transform -translate-y-1/2 border-t border-l";
       case "bottom":
-        return "-top-2 left-1/2 transform -translate-x-1/2";
+        return "-top-2 left-1/2 transform -translate-x-1/2 border-t border-l";
       case "left":
-        return "top-1/2 -right-2 transform -translate-y-1/2";
+        return "top-1/2 -right-2 transform -translate-y-1/2 border-t border-r";
       default:
         return "bottom-full left-1/2 transform -translate-x-1/2";
     }
@@ -111,7 +111,7 @@ const Popover: React.FC<PopoverProps> = ({
         >
           {content}
           <div
-            className={`absolute w-4 h-4 bg-white transform rotate-45 border-t border-r ${getCaretPosition()}`}
+            className={`absolute w-4 h-4 bg-white transform rotate-45 ${getCaretPosition()}`}
           />
         </div>
       </CSSTransition>

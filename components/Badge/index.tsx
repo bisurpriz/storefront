@@ -15,7 +15,8 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
   }, []);
 
   return (
-    isClient && (
+    isClient &&
+    props.badgeContent && (
       <BaseBadge
         ref={ref}
         {...props}

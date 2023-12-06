@@ -27,9 +27,8 @@ const ProductItem = ({
   const [isFavorite, setIsFavorite] = useState(false);
 
   const maxXsClasses = {
-    container:
-      "max-xs:flex-row max-xs:items-center max-xs:justify-start overflow-hidden rounded-lg border relative flex flex-col",
-    image: "max-xs:w-32 max-xs:h-32 flex-1 grow",
+    container: "overflow-hidden rounded-lg border relative flex flex-col",
+    image: "flex-1 grow",
   };
 
   const handleToggleFavorite = async () => {
@@ -67,33 +66,39 @@ const ProductItem = ({
         className={maxXsClasses.image}
         id={id}
       />
-      <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1">
-        <div className="w-full flex items-center gap-2 font-sans mt-2">
-          <span className="text-start text-2xl font-semibold text-primary-light max-xs:text-xl">
+      <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
+        <div className="w-full flex items-center gap-2 font-sans mt-2 max-xs:flex-col max-xs:items-start max-xs:gap-0">
+          <span className="text-start text-2xl font-semibold text-primary-light max-xs:text-lg">
             {/* {formatCurrency(price)} */} ₺{price.toFixed(2)}
           </span>
-          <span className="text-sm text-error-light line-through">
+          <span className="text-sm text-error-light line-through decoration-black">
             {/* {formatCurrency(price * 1.2)} */} ₺{(price * 1.2).toFixed(2)}
           </span>
         </div>
-        <div className="w-full">
+        <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
           <Link href={`/products/${id}`}>
             <h3
-              className="text-lg font-extrabold text-gray-700 font-mono line-clamp-2 capitalize"
+              className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize"
               title={name}
             >
               {name}
             </h3>
           </Link>
-          <span className="flex items-center gap-2 text-xs text-gray-500 my-2">
-            <Rating value={4} readOnly showReviewCount={false} />
-            {`(${4})`}
-          </span>
-          <p className="text-sm text-gray-500 line-clamp-1" title={description}>
+          <p
+            className="text-sm text-gray-500 line-clamp-1 max-sm:hidden"
+            title={description}
+          >
             {description}
           </p>
         </div>
-        <AddCartButton id={id} loading={loading} />
+
+        <div className="mt-auto w-full">
+          <span className="flex items-center gap-2 text-xs text-gray-500 my-1 max-sm:mt-auto mb-4">
+            <Rating value={4} readOnly showReviewCount={false} />
+            {`(${4})`}
+          </span>
+          <AddCartButton id={id} loading={loading} />
+        </div>
         <AddToFavorite
           isFavorite={isFavorite}
           onClick={handleToggleFavorite}

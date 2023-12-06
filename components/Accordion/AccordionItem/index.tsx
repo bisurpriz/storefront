@@ -27,7 +27,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 
   return (
     <div
-      className={` transition-colors select-none ${isBordered} ${className}`}
+      className={` transition-colors select-none ${isBordered} ${className} whitespace-nowrap`}
     >
       <div
         className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}

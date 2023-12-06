@@ -14,7 +14,7 @@ const AddCartButton = ({ id, loading }: ProductItemProps) => {
       color="secondary"
       variant="outlined"
       rounded
-      className="mt-auto justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
+      className="justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
       onClick={() =>
         addToCart({
           id,

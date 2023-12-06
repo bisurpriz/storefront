@@ -16,7 +16,7 @@ export interface ButtonProps
   fullWidth?: boolean;
   rounded?: boolean;
   loading?: boolean;
-  variant?: "default" | "outlined" | "dashed" | "link" | "fullfilled"; // Yeni varyasyonlar
+  variant?: "default" | "outlined" | "dashed" | "link" | "fullfilled";
   color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
   children?: React.ReactNode;
   ownerState?: Record<string, any>;

@@ -44,7 +44,7 @@ const HeaderBottom = ({ categories }: Props) => {
         />
       </Link>
       <div className="sm:hidden flex">
-        <Link href="/cart">
+        <Link href="/cart" className="mr-4">
           <Badge badgeContent={count}>
             <Button
               icon={<AiOutlineShoppingCart />}

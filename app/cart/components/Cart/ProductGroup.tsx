@@ -38,18 +38,21 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
               discount_price,
             }) => (
               <li className="py-4" key={id}>
-                <div className="rounded-lg px-8 py-4 border relative">
-                  <div className="flex items-start justify-start gap-8 mt-2 ">
+                <div className="rounded-lg px-8 py-4 border relative max-sm:px-4">
+                  <div className="flex items-start justify-start gap-8 mt-2 max-md:flex-col max-xl:gap-2 max-xl:flex-wrap">
                     <Image
                       src={`${IMAGE_URL}/${image_url}`}
                       alt="image"
-                      className={`object-contain aspect-square w-48 h-48`}
+                      className={`object-contain aspect-square w-48 h-48 max-sm:h-32 max-sm:w-32 max-sm:self-center`}
                       width={500}
                       height={500}
                       loading="lazy"
                     />
-                    <div className="font-mono pr-8">
-                      <Link href={`/products/${id}`} className="block w-fit">
+                    <div className="font-mono pr-8 max-sm:flex max-md:flex-col max-sm:flex-wrap">
+                      <Link
+                        href={`/products/${id}`}
+                        className="block w-fit max-sm:flex-1"
+                      >
                         <h3
                           className="text-xl font-semibold text-gray-800 uppercase w-fit"
                           title={name}
@@ -60,7 +63,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
 
                       <div>
                         {discount_price && (
-                          <h6 className="text-base font-semibold text-error-light line-through">
+                          <h6 className="text-base font-semibold text-error-light line-through decoration-black">
                             {discount_price.toFixed(2)} ₺
                           </h6>
                         )}
@@ -83,7 +86,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                     </div>
 
                     {customize?.length * quantity > 1 ? (
-                      <div className="flex-1">
+                      <div className="flex-1 max-2xl:w-full min-w-[300px]">
                         {Array(quantity)
                           .fill(0)
                           .map((_, i) => (
@@ -105,7 +108,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                       </div>
                     ) : null}
 
-                    <span className="absolute top-2 right-2 max-xs:right-0 flex gap-2 items-center">
+                    <span className="absolute top-2 right-2 flex gap-2 items-center">
                       {customize?.length > 0 ? (
                         <Popover
                           contentClassName="w-[300px] shadow-md border rounded-sm"

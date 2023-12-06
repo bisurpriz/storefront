@@ -14,7 +14,7 @@ interface InfinityScrollProps<T> {
   totalCount: number;
 }
 
-const PER_REQUEST = 10;
+const PER_REQUEST = 15;
 
 const InfinityScroll = <T,>({
   initialData,
@@ -45,7 +45,7 @@ const InfinityScroll = <T,>({
   }, [inView]);
 
   return (
-    <div className="grid max-xs:grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 max-sm:gap-2">
       {data?.map((item: any) => (
         <ProductItem
           key={item.id}
