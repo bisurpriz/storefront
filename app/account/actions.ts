@@ -58,7 +58,7 @@ export const getUserAddressById = async (id?: string) => {
   let userId = id;
   if (!userId) {
     userId = await readIdFromCookies();
-  }
+  } else return;
 
   const { data, loading } = await client.query({
     query: GET_USER_ADDRESS_BY_ID,
@@ -78,7 +78,7 @@ export const getUserById = async (id?: string) => {
   let userId = id;
   if (!userId) {
     userId = await readIdFromCookies();
-  }
+  } else return;
 
   const { data, loading } = await client.query({
     query: GET_USER_BY_ID,

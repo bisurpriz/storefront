@@ -121,12 +121,14 @@ const CartSummary = () => {
             </span>
           </span>
         </div>
-        <Button
-          className="flex justify-center"
-          size="small"
-          color="primary"
-          label="Sepeti Onayla"
-        />
+        <Link href={"/cart/order-detail"}>
+          <Button
+            className="flex justify-center"
+            size="small"
+            color="primary"
+            label="Sepeti Onayla"
+          />
+        </Link>
       </div>
       <CartDrawer
         isOpen={isOpen}

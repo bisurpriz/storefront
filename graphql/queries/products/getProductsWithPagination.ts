@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_PRODUCTS_WITH_PAGINATION = gql`
   query getProductsWithPagination(
-    $limit: Int = 10
+    $limit: Int = 15
     $offset: Int = 0
     $is_active: Boolean = true
   ) {
@@ -23,6 +23,7 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       price
       quantity
       properties
+      discount_price
     }
   }
 `;

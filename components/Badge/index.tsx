@@ -15,8 +15,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
   }, []);
 
   return (
-    isClient &&
-    props.badgeContent && (
+    isClient && (
       <BaseBadge
         ref={ref}
         {...props}
@@ -44,7 +43,8 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
               ...resolvedSlotProps,
               className: clsx(
                 "z-auto absolute flex items-center justify-center top-2 right-2 min-w-[22px] min-h-[22px] font-sans p-0 text-white font-semibold font-xs font-sans rounded-xl bg-secondary leading-5.5 whitespace-nowrap text-center translate-x-1/2 -translate-y-1/2 drop-shadow-lg origin-right",
-                resolvedSlotProps?.className
+                resolvedSlotProps?.className,
+                props.badgeContent === 0 ? "hidden" : ""
               ),
             };
           },

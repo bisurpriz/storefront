@@ -9,6 +9,7 @@ import ProductItemImage from "../ProductItemImage/ProductItemImage";
 import Rating from "@/components/Rating/Rating";
 import AddCartButton from "./components/AddCartButton";
 import AddToFavorite from "./components/AddToFavorite";
+import PriceTag from "@/components/PriceTag";
 
 export interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -23,6 +24,7 @@ const ProductItem = ({
   loading = false,
   reviews,
   delivery_type,
+  discount_price,
 }: ProductItemProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -67,14 +69,7 @@ const ProductItem = ({
         id={id}
       />
       <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
-        <div className="w-full flex items-center gap-2 font-sans mt-2 max-xs:flex-col max-xs:items-start max-xs:gap-0">
-          <span className="text-start text-2xl font-semibold text-primary-light max-xs:text-lg">
-            {/* {formatCurrency(price)} */} ₺{price.toFixed(2)}
-          </span>
-          <span className="text-sm text-error-light line-through decoration-black">
-            {/* {formatCurrency(price * 1.2)} */} ₺{(price * 1.2).toFixed(2)}
-          </span>
-        </div>
+        <PriceTag discount={discount_price} price={price} />
         <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
           <Link href={`/products/${id}`}>
             <h3

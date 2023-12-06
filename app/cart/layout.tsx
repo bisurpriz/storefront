@@ -55,7 +55,7 @@ const CartLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="col-span-2 md:col-span-2 flex flex-col gap-3">
           {children}
         </div>
-        <div className="sticky bottom-0 col-span-1 md:relative">
+        <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg">
           <CartSummary />
         </div>
       </div>

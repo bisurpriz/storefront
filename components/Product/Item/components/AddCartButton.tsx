@@ -4,7 +4,7 @@ import React from "react";
 import { ProductItemProps } from "..";
 
 const AddCartButton = ({ id, loading }: ProductItemProps) => {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
 
   return (
     <Button
@@ -15,12 +15,14 @@ const AddCartButton = ({ id, loading }: ProductItemProps) => {
       variant="outlined"
       rounded
       className="justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
-      onClick={() =>
+      onClick={() => {
+        const prev = cartItems.find((item) => item.id === id);
+
         addToCart({
           id,
-          quantity: 1,
-        })
-      }
+          quantity: prev ? prev.quantity + 1 : 1,
+        });
+      }}
     >
       Sepete Ekle
     </Button>

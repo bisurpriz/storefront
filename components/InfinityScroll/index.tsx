@@ -45,7 +45,7 @@ const InfinityScroll = <T,>({
   }, [inView]);
 
   return (
-    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 max-sm:gap-2">
+    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
       {data?.map((item: any) => (
         <ProductItem
           key={item.id}
@@ -54,6 +54,7 @@ const InfinityScroll = <T,>({
           image_url={IMAGE_URL + "/" + item.image_url?.[0]}
           price={item.price}
           id={item.id}
+          discount_price={item.discount_price}
         />
       ))}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>
