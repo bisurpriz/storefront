@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Loading from "./Loading";
 import { IMAGE_URL } from "@/contants/urls";
@@ -22,8 +22,8 @@ const InfinityScroll = <T,>({
   query,
   dataKey,
 }: InfinityScrollProps<T>) => {
-  const [data, setData] = React.useState<T[]>(initialData);
-  const [offset, setOffset] = React.useState(0);
+  const [data, setData] = useState<T[]>(initialData);
+  const [offset, setOffset] = useState(0);
   const { ref, inView } = useInView({
     threshold: 0.9,
   });
@@ -38,7 +38,7 @@ const InfinityScroll = <T,>({
     setData((prev) => [...prev, ...response[dataKey]]);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inView && totalCount > data?.length) {
       loadMoreData();
     }
