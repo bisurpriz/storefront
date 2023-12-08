@@ -147,12 +147,12 @@ const Button = React.forwardRef(
 
     return (
       <button
+        ref={ref}
         {...rest}
         className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
         onClick={onClick}
         disabled={disabled || loading}
         type={type}
-        ref={ref}
       >
         {icon && <span style={iconStyle}>{icon}</span>}
         {loading && (

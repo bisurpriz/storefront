@@ -33,14 +33,31 @@ const CustomizeGroup = ({
     if (image instanceof File) {
       const base64 = (await getBase64Image(image)) as string;
 
-      if (base64) {
+      if (image.name && base64) {
         data[hasImages] = base64;
+      } else {
+        data[hasImages] = "";
       }
 
       // If has specailInstructions, add new instructions to old instructions
       const item = cartItems.find((item) => item.id === productId);
       if (item?.specialInstructions?.length > 0) {
-        const newInstructions = [...item.specialInstructions, data];
+        const newInstructions = item.specialInstructions[index]
+          ? [
+              ...item.specialInstructions.slice(0, index),
+              {
+                ...item.specialInstructions[index],
+                ...data,
+              },
+              ...item.specialInstructions.slice(index + 1),
+            ]
+          : [
+              ...item.specialInstructions,
+              {
+                ...data,
+              },
+            ];
+
         updateItem({
           id: productId,
           quantity,

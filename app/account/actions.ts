@@ -70,6 +70,13 @@ export const getCities = async () => {
 export const getUserAddressById = async (id?: string) => {
   const userId = id || (await readIdFromCookies());
 
+  if (!userId) {
+    return {
+      userAddresses: [],
+      loading: false,
+    };
+  }
+
   const { data, loading } = await query({
     query: GET_USER_ADDRESS_BY_ID,
     variables: {
@@ -96,8 +103,6 @@ export const getUserById = async (id?: string) => {
       id: userId,
     },
   });
-
-  console.log(data, loading);
 
   const { user_by_pk: user } = data;
 

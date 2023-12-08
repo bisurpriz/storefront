@@ -24,6 +24,9 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       quantity
       properties
       discount_price
+      product_customizable_areas {
+        count
+      }
     }
   }
 `;

@@ -25,6 +25,7 @@ const ProductItem = ({
   reviews,
   delivery_type,
   discount_price,
+  product_customizable_areas,
 }: ProductItemProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -92,7 +93,11 @@ const ProductItem = ({
             <Rating value={4} readOnly showReviewCount={false} />
             {`(${4})`}
           </span>
-          <AddCartButton id={id} loading={loading} />
+          <AddCartButton
+            id={id}
+            loading={loading}
+            product_customizable_areas={product_customizable_areas}
+          />
         </div>
         <AddToFavorite
           isFavorite={isFavorite}

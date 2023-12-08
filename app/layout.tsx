@@ -72,6 +72,11 @@ export const metadata: Metadata = {
     "çikolata ankara",
     "çikolata istanbul",
     "çikolata çeşitleri",
+    "çikolata çeşitleri ankara",
+    "çikolata çeşitleri istanbul",
+    "çikolata çeşitleri fiyatları",
+    "çikolata çeşitleri fiyatları ankara",
+    "çikolata çeşitleri fiyatları istanbul",
   ],
   robots: "index, follow",
 };
