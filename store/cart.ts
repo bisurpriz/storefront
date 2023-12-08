@@ -50,6 +50,7 @@ const useCart = create(
               count,
             };
           }
+
           return {
             cartItems: [...state.cartItems, item],
             count: state.count + item.quantity,

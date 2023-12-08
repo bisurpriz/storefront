@@ -16,7 +16,7 @@ const AddCartButton = ({
     addToCart({
       id,
       quantity: prev ? prev.quantity + 1 : 1,
-      specialInstructions: prev.specialInstructions
+      specialInstructions: prev?.specialInstructions
         ? prev.specialInstructions
         : hasSpecialInstructions
         ? []
