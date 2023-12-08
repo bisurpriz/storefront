@@ -2,12 +2,12 @@ import React from "react";
 import HeaderTop from "./Top";
 import HeaderMiddle from "./Middle";
 import HeaderBottom from "./Bottom";
-import { getClient } from "@/graphql/lib/client";
+import { query } from "@/graphql/lib/client";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import Divider from "@/components/Divider";
 
 const Header = async () => {
-  const { data } = await getClient().query({
+  const { data } = await query({
     query: GET_ALL_CATEGORIES,
   });
 

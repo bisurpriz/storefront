@@ -23,3 +23,9 @@ export interface LocationCommonTypes {
   maxlongitude: string;
   maxlatitude: string;
 }
+
+export type CityResponse = Pick<City, "id" | "name" | "code">;
+
+export type DistrictResponse = Pick<District, "id" | "name">;
+
+export type QuarterResponse = Pick<Quarter, "id" | "name">;

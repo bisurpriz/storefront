@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/graphql/lib/client";
+import { mutate } from "@/graphql/lib/client";
 import { CREATE_ORDER } from "@/graphql/queries/order/mutation";
 import { readIdFromCookies } from "../actions";
 
@@ -50,7 +50,7 @@ export const createOrderAction = async (
     ],
   };
 
-  const response = await getClient().mutate({
+  const response = await mutate({
     mutation: CREATE_ORDER,
     variables,
   });

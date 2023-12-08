@@ -1,8 +1,9 @@
-"use client";
-
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
+import { getCities } from "@/app/account/actions";
 
-const OrderDetail = (props: any) => {
+const OrderDetail = async () => {
+  const { cities } = await getCities();
+
   return (
     <div className="w-full relative">
       <section
@@ -10,7 +11,7 @@ const OrderDetail = (props: any) => {
         aria-describedby="order-detail-description"
         aria-label="Sipariş Detayı"
       >
-        <ReceiverForm />
+        <ReceiverForm cities={cities} />
       </section>
     </div>
   );

@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/graphql/lib/client";
+import { mutate, query } from "@/graphql/lib/client";
 import {
   GET_CITIES,
   GET_DISTRICTS,
@@ -8,94 +8,107 @@ import {
   GET_USER_ADDRESS_BY_ID,
   GET_USER_BY_ID,
   UPDATE_USER_BY_ID,
-} from "@/graphql/queries/account/getUserById";
+} from "@/graphql/queries/account/account";
 import { readIdFromCookies } from "../actions";
+import {
+  CityResponse,
+  DistrictResponse,
+  QuarterResponse,
+} from "@/common/types/Addresses/addresses";
 
 export const getQuarters = async (districtId: string) => {
-  const client = getClient();
-  const { data, loading } = await client.query({
+  const { data, loading } = await query<{
+    quarters: QuarterResponse[];
+  }>({
     query: GET_QUARTERS,
     variables: {
       districtId,
     },
   });
 
+  const { quarters } = data;
+
   return {
-    quarters: data.quarters,
+    quarters,
     loading,
   };
 };
 
 export const getDiscrits = async (cityId: string) => {
-  const client = getClient();
-  const { data, loading } = await client.query({
+  const { data, loading } = await query<{
+    districts: DistrictResponse[];
+  }>({
     query: GET_DISTRICTS,
     variables: {
       cityId,
     },
   });
 
+  const { districts } = data;
+
   return {
-    districts: data.districts,
+    districts,
     loading,
   };
 };
 
 export const getCities = async () => {
-  const client = getClient();
-  const { data, loading } = await client.query({
+  const { data, loading } = await query<{
+    cities: CityResponse[];
+  }>({
     query: GET_CITIES,
   });
 
+  const { cities } = data;
   return {
-    cities: data.cities,
+    cities,
     loading,
+    error: null,
   };
 };
 
 export const getUserAddressById = async (id?: string) => {
-  const client = getClient();
-  let userId = id;
-  if (!userId) {
-    userId = await readIdFromCookies();
-  } else return;
+  const userId = id || (await readIdFromCookies());
 
-  const { data, loading } = await client.query({
+  const { data, loading } = await query({
     query: GET_USER_ADDRESS_BY_ID,
     variables: {
       id: userId,
     },
   });
 
+  const {
+    user_by_pk: { user_addresses },
+  } = data;
+
   return {
-    userAddresses: data.user_by_pk.user_addresses,
+    userAddresses: user_addresses,
     loading,
   };
 };
 
 export const getUserById = async (id?: string) => {
-  const client = getClient();
-  let userId = id;
-  if (!userId) {
-    userId = await readIdFromCookies();
-  } else return;
+  const userId = id || (await readIdFromCookies());
 
-  const { data, loading } = await client.query({
+  const { data, loading } = await query({
     query: GET_USER_BY_ID,
     variables: {
       id: userId,
     },
   });
 
+  console.log(data, loading);
+
+  const { user_by_pk: user } = data;
+
   return {
-    user: data.user_by_pk,
+    user,
     loading,
   };
 };
 
 export const updateUserById = async (data: any) => {
-  const client = getClient();
-  const { data: updatedData } = await client.mutate({
+  const { data: updatedData } = await mutate({
     mutation: UPDATE_USER_BY_ID,
     awaitRefetchQueries: true,
     refetchQueries: [
@@ -112,7 +125,9 @@ export const updateUserById = async (data: any) => {
     },
   });
 
+  const { update_user_by_pk: user } = updatedData;
+
   return {
-    user: updatedData.update_user_by_pk,
+    user,
   };
 };

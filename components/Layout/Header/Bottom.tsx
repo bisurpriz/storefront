@@ -39,7 +39,7 @@ const HeaderBottom = ({ categories }: Props) => {
           src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
           width={180}
           height={55}
-          alt="BiSürpriz Logo"
+          alt="Bonnmarşe Logo"
           priority
         />
       </Link>

@@ -12,12 +12,14 @@ import {
 import { GET_PRODUCTS_WITH_PAGINATION } from "@/graphql/queries/products/getProductsWithPagination";
 import { CartItem } from "@/store/cart";
 
+const client = getClient();
+
 export const getPaginatedProducts = async <T>({
   offset,
 }: {
   offset: number;
 }) => {
-  const { data } = await getClient().query({
+  const { data } = await client.query({
     query: GET_PRODUCTS_WITH_PAGINATION,
     variables: {
       offset,
@@ -31,7 +33,7 @@ export const getPaginatedProducts = async <T>({
 };
 
 export const getProductById = async <T>({ id }: { id: number }) => {
-  const { data, loading } = await getClient().query({
+  const { data, loading } = await client.query({
     query: GET_PRODUCT_BY_ID,
     variables: {
       id,
@@ -81,7 +83,7 @@ export const getProductsByIdsForCart = async (
   products: ProductForCart[];
 }> => {
   const promiseList = ids.map(({ id }) => {
-    return getClient().query<ProductForCartResponse>({
+    return client.query<ProductForCartResponse>({
       query: GET_PRODUCT_FOR_CART,
       variables: {
         id,
@@ -143,7 +145,7 @@ export const getProductsPricesByIds = async (
   total_discount: number;
 }> => {
   const promiseList = ids.map(({ id }) => {
-    return getClient().query<ProductPricesResponse>({
+    return client.query<ProductPricesResponse>({
       query: GET_PRODUCTS_PRICE_BY_IDS,
       variables: {
         id,

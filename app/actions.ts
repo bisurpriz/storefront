@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/graphql/lib/client";
+import { query } from "@/graphql/lib/client";
 import { GET_VENDOR_BY_ID } from "@/graphql/queries/vendors/getVendorById";
 import { cookies } from "next/headers";
 
@@ -24,7 +24,7 @@ export async function writeIdToCookies(value: string) {
 }
 
 export const getVendorById = async <T>({ id }: { id: number }) => {
-  const { data, loading } = await getClient().query({
+  const { data, loading } = await query({
     query: GET_VENDOR_BY_ID,
     variables: {
       id,

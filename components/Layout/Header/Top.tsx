@@ -47,7 +47,7 @@ const HeaderTop = () => {
         </p>
         <ul className="text-right whitespace-nowrap">
           <li>
-            Bisürpriz&apos;de satış yapmak ister misiniz?&nbsp;
+            Bonnmarşe&apos;de satış yapmak ister misiniz?&nbsp;
             <Link
               href="/campaign-details"
               className="text-primary hover:text-primary-dark"

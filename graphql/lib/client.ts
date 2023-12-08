@@ -10,3 +10,5 @@ export const { getClient } = registerApolloClient(() => {
     ssrMode: true,
   });
 });
+
+export const { query, mutate, subscribe } = getClient();

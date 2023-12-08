@@ -1,3 +1,5 @@
+"use client";
+
 import Card from "@/components/Card";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
@@ -5,12 +7,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, number, string } from "yup";
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import { getUserAddressById } from "@/app/account/actions";
-import { useCities } from "@/hooks/useCities";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import TextField from "@/components/TextField";
 import PhoneInput from "@/components/PhoneInput";
+import { CityResponse } from "@/common/types/Addresses/addresses";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -48,25 +50,21 @@ const defaultValues = {
   saved_address: "",
 };
 
-const ReceiverForm = () => {
+interface ReceiverFormProps {
+  cities: CityResponse[];
+}
+
+const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
 
   useEffect(() => {
-    getUserAddressById().then(({ userAddresses }) =>
-      setUserAddresses(userAddresses)
-    );
+    getUserAddressById().then(({ userAddresses }) => {
+      setUserAddresses(userAddresses);
+    });
   }, []);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm<FormData>({
+  const { control, handleSubmit, reset, watch, getValues } = useForm<FormData>({
     defaultValues,
     mode: "onChange",
     delayError: 1000,
@@ -101,10 +99,8 @@ const ReceiverForm = () => {
     }
   }, [selectedSavedAddress]);
 
-  const { cities } = useCities();
   const { districts } = useDiscrits(cityId);
   const { quarters } = useQuarters(districtId);
-
   return (
     <Card>
       <Title>Teslimat Bilgileri</Title>
