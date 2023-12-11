@@ -3,14 +3,11 @@ import ProfileForm from "./components/ProfileForm";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
-import { readIdFromCookies } from "../actions";
 
 const Account = async () => {
-  const id = await readIdFromCookies();
-
-  const { user, loading } = await getUserById(id!).catch((err) => {
+  const { user, loading, id } = await getUserById().catch((err) => {
     console.error(err);
-    return { user: null, loading: false };
+    return { user: null, loading: false, id: null };
   });
 
   return (

@@ -1,12 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import useResponsive from "@/hooks/useResponsive";
+
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";
-import React, { useEffect } from "react";
 import { Pagination, Virtual, Zoom } from "swiper/modules";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { useRef } from "react";
+import useResponsive from "@/hooks/useResponsive";
+import { Swiper as SwiperType } from "swiper/types";
 
 type ProductDetailImageGalleryProps = {
   images: {
@@ -15,16 +16,16 @@ type ProductDetailImageGalleryProps = {
   }[];
 };
 
-const ProductDetailImageGallery = ({
+const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
-}: ProductDetailImageGalleryProps) => {
+}) => {
   const swiperRef = useRef<SwiperRef>(null);
-  const [direction, setDirection] = React.useState<"horizontal" | "vertical">(
+  const [direction, setDirection] = useState<"horizontal" | "vertical">(
     "horizontal"
   );
   const { isExtraLargeDesktop } = useResponsive();
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const [selected, setSelected] = React.useState<number>(0);
+  const [selected, setSelected] = useState<number>(0);
 
   useEffect(() => {
     if (isExtraLargeDesktop) {
@@ -33,6 +34,19 @@ const ProductDetailImageGallery = ({
       setDirection("vertical");
     }
   }, [isExtraLargeDesktop]);
+
+  const handleImageClick = (index: number) => {
+    swiperRef?.current?.swiper.slideTo(index);
+    setSelected(index);
+  };
+
+  const handleSlideChange = (swiper: SwiperType) => {
+    setSelected(swiper.activeIndex);
+  };
+
+  const handleZoomClick = (swiper: SwiperType) => {
+    swiper.zoom.toggle();
+  };
 
   return (
     <div className="grid grid-cols-6 grid-rows-6 gap-2">
@@ -50,13 +64,7 @@ const ProductDetailImageGallery = ({
           virtual
         >
           {images?.map((image, index) => (
-            <SwiperSlide
-              key={image.id}
-              onClick={() => {
-                swiperRef?.current?.swiper.slideTo(index);
-                setSelected(index);
-              }}
-            >
+            <SwiperSlide key={image.id} onClick={() => handleImageClick(index)}>
               <Image
                 src={image.url}
                 alt="Product Image"
@@ -84,12 +92,8 @@ const ProductDetailImageGallery = ({
           zoom={{
             toggle: false,
           }}
-          onSlideChange={(swiper) => {
-            setSelected(swiper.activeIndex);
-          }}
-          onClick={(swiper) => {
-            swiper.zoom.toggle();
-          }}
+          onSlideChange={handleSlideChange}
+          onClick={handleZoomClick}
         >
           {images?.map((image) => (
             <SwiperSlide key={image.id}>

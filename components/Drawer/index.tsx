@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { memo, useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLockScroll } from "@/hooks/useLockScroll";
@@ -25,27 +25,30 @@ const classNames = {
   bottom: "inset-x-0 bottom-0",
 };
 
-const Drawer = ({
+const Drawer: React.FC<DrawerProps> = ({
   isOpen,
   onClose,
   placement = "right",
   children,
   title,
   lockScroll = false,
-}: DrawerProps) => {
+}) => {
   useLockScroll({ bool: lockScroll && !isOpen });
 
-  const handleEsc = React.useCallback((event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose?.();
-    }
-  }, []);
+  const handleEsc = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    },
+    [onClose]
+  );
 
   const handleResize = useCallback(() => {
     if (window.innerWidth > 640) {
       onClose?.();
     }
-  }, []);
+  }, [onClose]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleEsc);
@@ -55,7 +58,7 @@ const Drawer = ({
       window.removeEventListener("keydown", handleEsc);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleEsc, handleResize]);
 
   return (
     <div

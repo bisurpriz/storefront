@@ -8,7 +8,7 @@ const AddCartButton = ({
   loading,
   product_customizable_areas,
 }: ProductItemProps) => {
-  const { addToCart, cartItems } = useCart();
+  const { addToCart, cartItems } = useCart.getState();
 
   const handleAddToCart = useCallback(() => {
     const prev = cartItems.find((item) => item.id === id);

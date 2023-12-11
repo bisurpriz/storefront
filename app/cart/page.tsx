@@ -8,11 +8,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useCart from "@/store/cart";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { getProductsByIdsForCart } from "../products/actions";
+import EmptyCart from "./components/Cart/EmptyCart";
 
 const DynamicGroup = dynamic(() => import("./components/Cart/ProductGroup"));
 
 const Cart = () => {
-  const { cartItems } = useCart();
+  const [loading, setLoading] = useState(false);
+  const { cartItems, count } = useCart();
   const [tenantGrouped, setTenantGrouped] = useState<{
     [key: string]: ProductForCart[];
   }>({});
@@ -23,8 +25,10 @@ const Cart = () => {
   );
 
   const fetchProducts = useCallback(async () => {
+    setLoading(true);
     const { productsByTenantGroup } = await getProductsByIdsForCart(ids);
     setTenantGrouped(productsByTenantGroup);
+    setLoading(false);
   }, [ids]);
 
   useEffect(() => {
@@ -36,11 +40,11 @@ const Cart = () => {
   return (
     <div className="w-full relative">
       <div>
-        {tenantIds?.length > 0 ? (
+        {count > 0 ? (
           <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
-            {tenantIds.map((id) => {
-              return <DynamicGroup products={tenantGrouped[id]} key={id} />;
-            })}
+            {tenantIds.map((id) => (
+              <DynamicGroup products={tenantGrouped[id]} key={id} />
+            ))}
             <Link href="/">
               <Button
                 icon={<AiOutlineArrowLeft />}
@@ -54,7 +58,7 @@ const Cart = () => {
             </Link>
           </div>
         ) : (
-          <div>Sepetinizde ürün bulunmamaktadır.</div>
+          <EmptyCart />
         )}
       </div>
     </div>

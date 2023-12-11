@@ -46,6 +46,7 @@ export default function QuantityInput({ ...props }: QuantityInputProps) {
       min={1}
       max={99}
       color="secondary"
+      readOnly
       {...props}
     />
   );

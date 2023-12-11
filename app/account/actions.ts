@@ -109,6 +109,7 @@ export const getUserById = async (id?: string) => {
   return {
     user,
     loading,
+    id: userId,
   };
 };
 
