@@ -32,9 +32,9 @@ const HeaderBottom = ({ categories }: Props) => {
   const { count } = useCart();
 
   return (
-    <div className="w-full max-md:px-4 pb-2 pt-2 flex items-center sm:gap-8 max-md:justify-between">
+    <div className="w-full max-md:px-4 pb-2 pt-2 flex items-center sm:gap-8 max-md:justify-between overflow-hidden">
       <Menu items={menuData} className="max-sm:hidden" />
-      <Link href="/" className="mx-auto sm:hidden">
+      <Link href="/" className="sm:hidden max-sm:mr-auto">
         <Image
           src={"https://nest-nextjs-13.vercel.app/assets/imgs/theme/logo.svg"}
           width={180}
