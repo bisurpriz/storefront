@@ -95,7 +95,7 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <body
-        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden`}
+        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden mb-10`}
         id="root"
       >
         <Suspense fallback={<Loading />}>
