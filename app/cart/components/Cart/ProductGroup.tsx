@@ -49,14 +49,8 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                       loading="lazy"
                     />
                     <div className="font-mono pr-8 max-sm:flex max-md:flex-col max-sm:flex-wrap">
-                      <Link
-                        href={`/products/${id}`}
-                        className="block w-fit max-sm:flex-1"
-                      >
-                        <h3
-                          className="text-xl font-semibold text-gray-800 uppercase w-fit"
-                          title={name}
-                        >
+                      <Link href={`/products/${id}`} className="block w-fit max-sm:flex-1">
+                        <h3 className="text-xl font-semibold text-gray-800 uppercase w-fit" title={name}>
                           {name}
                         </h3>
                       </Link>
@@ -64,17 +58,13 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                       <div>
                         {discount_price && (
                           <h6 className="text-base font-semibold text-error-light line-through decoration-black">
-                            {discount_price.toFixed(2)} ₺
+                            {discount_price?.toFixed(2)} ₺
                           </h6>
                         )}
-                        <h5 className="text-xl font-bold font-sans text-primary">
-                          {price.toFixed(2)} ₺
-                        </h5>
+                        <h5 className="text-xl font-bold font-sans text-primary">{price?.toFixed(2)} ₺</h5>
                       </div>
                       <div className="flex items-center justify-start gap-2 mt-2">
-                        <span className="text-base font-semibold text-gray-600">
-                          Adet:
-                        </span>
+                        <span className="text-base font-semibold text-gray-600">Adet:</span>
                         <QuantityInput
                           value={quantity}
                           onChange={(e, quantity) => {
@@ -115,10 +105,8 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                           position="top"
                           content={
                             <p className="text-xs font-normal text-gray-800">
-                              Bu kısımda satıcının belirlediği ürün
-                              özelleştirmeleri yer alır. Örneğin ürün üzerine
-                              yazı yazdırmak istiyorsanız bu kısımdan yazı
-                              yazdırabilirsiniz.
+                              Bu kısımda satıcının belirlediği ürün özelleştirmeleri yer alır. Örneğin ürün üzerine yazı
+                              yazdırmak istiyorsanız bu kısımdan yazı yazdırabilirsiniz.
                             </p>
                           }
                         >

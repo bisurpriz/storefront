@@ -13,3 +13,11 @@ export const localeDistanceFormat = (value: Date) => {
 
   return formatted;
 };
+
+export const parseJson = (json: any) => {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+};

@@ -2,6 +2,7 @@
 
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { getClient } from "@/graphql/lib/client";
+import { ADD_TO_FAVORITES } from "@/graphql/queries/account/favorites";
 import {
   GET_PRODUCTS_PRICE_BY_IDS,
   GET_PRODUCT_BY_ID,
@@ -11,14 +12,11 @@ import {
 } from "@/graphql/queries/products/getProductById";
 import { GET_PRODUCTS_WITH_PAGINATION } from "@/graphql/queries/products/getProductsWithPagination";
 import { CartItem } from "@/store/cart";
+import { parseJson } from "@/utils/format";
 
 const client = getClient();
 
-export const getPaginatedProducts = async <T>({
-  offset,
-}: {
-  offset: number;
-}) => {
+export const getPaginatedProducts = async <T>({ offset }: { offset: number }) => {
   const { data } = await client.query({
     query: GET_PRODUCTS_WITH_PAGINATION,
     variables: {
@@ -44,7 +42,6 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       },
     },
   });
-
   return {
     category: {
       name: data.product.category.name,
@@ -56,9 +53,7 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       name: data.product.name,
       price: data.product.price,
       quantity: data.product.quantity,
-      properties: data.product.properties
-        ? JSON.parse(data.product.properties)
-        : [],
+      properties: parseJson(data.product.properties) ?? [],
     },
     questions: data.product.questions,
     reviews: {
@@ -71,6 +66,7 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       rate: 8.2,
     },
     loading,
+    favorites: data.product.user_favorites,
   };
 };
 
@@ -156,19 +152,11 @@ export const getProductsPricesByIds = async (
   const results = await Promise.all(promiseList);
 
   const total_price = results.reduce((acc, { data }) => {
-    return (
-      acc +
-      data.product.price *
-        ids.find((item) => item.id === data.product.id)?.quantity
-    );
+    return acc + data.product.price * ids.find((item) => item.id === data.product.id)?.quantity;
   }, 0);
 
   const total_discount_price = results.reduce((acc, { data }) => {
-    return (
-      acc +
-      data.product.discount_price *
-        ids.find((item) => item.id === data.product.id)?.quantity
-    );
+    return acc + data.product.discount_price * ids.find((item) => item.id === data.product.id)?.quantity;
   }, 0);
 
   // positive number
@@ -179,4 +167,15 @@ export const getProductsPricesByIds = async (
     total_discount_price,
     total_discount,
   };
+};
+
+export const addToFavorites = async ({ productId }: { productId: number }) => {
+  const { data } = await getClient().mutate({
+    mutation: ADD_TO_FAVORITES,
+    variables: {
+      productId,
+    },
+  });
+
+  return data;
 };

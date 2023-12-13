@@ -1,24 +1,26 @@
+import { addToFavorites } from "@/app/products/actions";
 import Button from "@/components/Button";
 import clsx from "clsx";
-import React from "react";
+import { useState } from "react";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 
 interface AddToFavoriteProps {
   isFavorite: boolean;
-  onClick: () => void;
+  productId: number;
 }
 
-const AddToFavorite = ({ isFavorite, onClick }: AddToFavoriteProps) => {
+const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
+  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   return (
     <Button
-      onClick={onClick}
+      onClick={() => addToFavorites({ productId }).then(() => setIsFavoriteState((prev) => !prev))}
       variant="link"
       color="secondary"
       size="large"
-      icon={isFavorite ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
+      icon={isFavoriteState ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
       className={clsx([
-        isFavorite ? "animate-pulse" : "",
-        "!absolute top-2 right-2 !p-0",
+        isFavoriteState ? "animate-pulse" : "",
+        "!absolute top-2 right-2 !p-0 shadow-lg shadow-cyan-500/50 rounded-full",
       ])}
       style={{
         animationIterationCount: 2,

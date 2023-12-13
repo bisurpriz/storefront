@@ -1,15 +1,23 @@
+"use client";
+import { removeFromFavorites } from "@/app/account/favorites/actions";
+import { addToFavorites } from "@/app/products/actions";
 import Button from "@/components/Button";
-import React from "react";
+import React, { useState } from "react";
 import { MdFavoriteBorder } from "react-icons/md";
 
-const ProductActions = () => {
+interface Props {
+  productId: number;
+  favorite: {
+    isFavorite: boolean;
+    id: number; // primary key
+  };
+}
+
+const ProductActions = ({ productId, favorite }: Props) => {
+  const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
   return (
     <div className="flex items-center justify-start gap-4 py-4 font-mono">
-      <Button
-        size="large"
-        color="primary"
-        className="text-xl pl-16 pr-16 max-sm:w-full"
-      >
+      <Button size="large" color="primary" className="text-xl pl-16 pr-16 max-sm:w-full">
         Sepete Ekle
       </Button>
       <div className="flex items-end gap-2">
@@ -17,10 +25,18 @@ const ProductActions = () => {
           size="large"
           iconSize={28}
           variant="outlined"
-          className="group border-red-300 hover:bg-red-400 rounded-xl "
+          className={`group border-red-300 hover:bg-red-400 rounded-xl ${isFavoriteState ? "bg-red-400" : ""}`}
           icon={
-            <MdFavoriteBorder className="text-red-300 group-hover:text-white group-hover:animate-bounce" />
+            <MdFavoriteBorder
+              className={`text-red-300 group-hover:text-white group-hover:animate-bounce ${
+                isFavoriteState ? "text-white" : ""
+              }`}
+            />
           }
+          onClick={() => {
+            favorite?.isFavorite ? removeFromFavorites({ id: favorite.id }) : addToFavorites({ productId });
+            setIsFavoriteState((prev) => !prev);
+          }}
         ></Button>
         <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
           <strong>12414</strong> Favori

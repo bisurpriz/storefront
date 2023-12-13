@@ -48,6 +48,10 @@ export const GET_PRODUCT_BY_ID = gql`
         firstname
         lastname
       }
+      user_favorites {
+        user_id
+        id
+      }
     }
   }
 `;
@@ -55,13 +59,7 @@ export const GET_PRODUCT_BY_ID = gql`
 export interface ProductForCartResponse {
   product: Pick<
     Product,
-    | "id"
-    | "name"
-    | "image_url"
-    | "price"
-    | "product_customizable_areas"
-    | "discount_price"
-    | "description"
+    "id" | "name" | "image_url" | "price" | "product_customizable_areas" | "discount_price" | "description"
   > & {
     category: Pick<Category, "name">;
     tenant: Pick<User, "id" | "nickname">;

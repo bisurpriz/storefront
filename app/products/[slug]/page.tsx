@@ -19,10 +19,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const id = Number(params.slug);
 
   const product = await getProductById({ id });
@@ -42,12 +39,11 @@ export async function generateMetadata(
   };
 }
 
-const ProductDetail = async ({
-  params: { slug },
-}: {
-  params: { slug: string | number };
-}) => {
+const ProductDetail = async ({ params: { slug } }: { params: { slug: string | number } }) => {
   const data = await getProductById({ id: Number(slug) });
+
+  const isFavoriteForCurrentUser = data.favorites.length > 0;
+
   return (
     <div className="h-full">
       <section
@@ -99,7 +95,13 @@ const ProductDetail = async ({
           />
           <SearchLocation className="mt-6" />
           <HourSelect className="mt-6" />
-          <ProductActions />
+          <ProductActions
+            productId={data.product.id}
+            favorite={{
+              id: data.favorites[0]?.id ?? null,
+              isFavorite: isFavoriteForCurrentUser ?? false,
+            }}
+          />
         </div>
       </section>
 
@@ -107,9 +109,7 @@ const ProductDetail = async ({
         <ProductDescription
           title="Ürün Detayları"
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
-          notes={Array.from({ length: 5 }).map((_, index) =>
-            faker.commerce.productDescription()
-          )}
+          notes={Array.from({ length: 5 }).map((_, index) => faker.commerce.productDescription())}
           specifications={data.product.properties}
         />
       </section>
@@ -121,12 +121,7 @@ const ProductDetail = async ({
       >
         <PaymentMethods />
       </section>
-      <section
-        className="mt-6"
-        id="comments"
-        aria-labelledby="comments"
-        aria-describedby="Ürün yorumları"
-      >
+      <section className="mt-6" id="comments" aria-labelledby="comments" aria-describedby="Ürün yorumları">
         <ProductComments
           comments={Array.from({ length: 5 }).map((_, index) => ({
             comment: faker.lorem.paragraph(),
