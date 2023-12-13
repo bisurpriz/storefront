@@ -29,8 +29,7 @@ const CartSummary = () => {
   }));
 
   const fetchProducts = useCallback(async () => {
-    const { total_discount, total_discount_price, total_price } =
-      await getProductsPricesByIds(ids);
+    const { total_discount, total_discount_price, total_price } = await getProductsPricesByIds(ids);
 
     setPricing({
       total_discount,
@@ -49,15 +48,11 @@ const CartSummary = () => {
     <>
       <div className="hidden md:block">
         <div className="bg-white border rounded-lg py-[8px] px-[12px]">
-          <span className="block text-xl w-full text-center mb-3 font-normal">
-            Sipariş Özeti
-          </span>
+          <span className="block text-xl w-full text-center mb-3 font-normal">Sipariş Özeti</span>
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">
-                {total_discount_price.toFixed(2)} ₺
-              </span>
+              <span className="font-semibold">{total_discount_price?.toFixed(2)} ₺</span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
@@ -67,20 +62,13 @@ const CartSummary = () => {
               <>
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
-                  <span className="font-semibold">
-                    {total_discount.toFixed(2)} ₺{" "}
-                  </span>
+                  <span className="font-semibold">{total_discount?.toFixed(2)} ₺ </span>
                 </div>
               </>
             ) : null}
 
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
-              <TextField
-                icon={<IoTicketOutline />}
-                placeholder="İndirim Kodu Girin"
-                id="discount"
-                fullWidth
-              />
+              <TextField icon={<IoTicketOutline />} placeholder="İndirim Kodu Girin" id="discount" fullWidth />
               <Button
                 size="small"
                 color="primary"
@@ -90,9 +78,7 @@ const CartSummary = () => {
             </div>
             <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
               <span className="font-medium">Toplam</span>
-              <span className="font-semibold text-xl text-primary ">
-                {total_price.toFixed(2)} ₺
-              </span>
+              <span className="font-semibold text-xl text-primary ">{total_price?.toFixed(2)} ₺</span>
             </div>
           </div>
         </div>
@@ -116,18 +102,11 @@ const CartSummary = () => {
           />
           <span className="flex flex-col justify-center ml-2">
             <span className="text-xs">Toplam:</span>
-            <span className="text-md text-primary font-medium">
-              {total_price.toFixed(2)} ₺
-            </span>
+            <span className="text-md text-primary font-medium">{total_price?.toFixed(2)} ₺</span>
           </span>
         </div>
         <Link href={"/cart/order-detail"}>
-          <Button
-            className="flex justify-center"
-            size="small"
-            color="primary"
-            label="Sepeti Onayla"
-          />
+          <Button className="flex justify-center" size="small" color="primary" label="Sepeti Onayla" />
         </Link>
       </div>
       <CartDrawer

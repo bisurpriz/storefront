@@ -3,7 +3,7 @@ import { Product } from "@/common/types/Product/product";
 import InfinityScroll from "@/components/InfinityScroll";
 import React from "react";
 
-interface ProductResponse {
+export interface ProductResponse {
   products: Product[];
   totalCount: number;
 }
@@ -14,12 +14,7 @@ const View1: React.FC = async () => {
   });
 
   return (
-    <InfinityScroll
-      totalCount={totalCount}
-      initialData={products}
-      dataKey="products"
-      query={getPaginatedProducts}
-    />
+    <InfinityScroll totalCount={totalCount} initialData={products} dataKey="products" query={getPaginatedProducts} />
   );
 };
 

@@ -13,21 +13,9 @@ interface CartDrawerProps {
   totalDiscount: number;
 }
 
-const CartDrawer = ({
-  isOpen,
-  setIsOpen,
-  totalPrice,
-  totalDiscount,
-  totalDiscountPrice,
-}: CartDrawerProps) => {
+const CartDrawer = ({ isOpen, setIsOpen, totalPrice, totalDiscount, totalDiscountPrice }: CartDrawerProps) => {
   return (
-    <Drawer
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      title="Sipariş Özeti"
-      placement="bottom"
-      lockScroll={true}
-    >
+    <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} title="Sipariş Özeti" placement="bottom" lockScroll={true}>
       <div className="bg-white border rounded-lg py-[8px] px-[12px]">
         <div className="flex flex-col">
           <div className="flex justify-between text-sm py-1">
@@ -42,31 +30,17 @@ const CartDrawer = ({
             <>
               <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                 <span>Toplam kazancınız</span>
-                <span className="font-semibold">
-                  {totalDiscount.toFixed(2)} ₺{" "}
-                </span>
+                <span className="font-semibold">{totalDiscount.toFixed(2)} ₺ </span>
               </div>
             </>
           ) : null}
           <div className="flex justify-between text-sm py-3 mt-1">
-            <TextField
-              icon={<IoTicketOutline />}
-              placeholder="İndirim Kodu Girin"
-              id="discount"
-              fullWidth
-            />
-            <Button
-              size="small"
-              color="primary"
-              className="flex justify-center ml-3"
-              label="İndirim Kodu Kullan"
-            />
+            <TextField icon={<IoTicketOutline />} placeholder="İndirim Kodu Girin" id="discount" fullWidth />
+            <Button size="small" color="primary" className="flex justify-center ml-3" label="İndirim Kodu Kullan" />
           </div>
           <div className="flex justify-between items-center text-sm border-t-[1px] py-1 mt-1">
             <span className="font-medium">Toplam</span>
-            <span className="font-semibold text-xl text-primary ">
-              {totalPrice.toFixed(2)} ₺
-            </span>
+            <span className="font-semibold text-xl text-primary ">{totalPrice?.toFixed(2)} ₺</span>
           </div>
         </div>
       </div>
