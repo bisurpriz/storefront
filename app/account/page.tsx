@@ -3,14 +3,13 @@ import ProfileForm from "./components/ProfileForm";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
-import { readIdFromCookies } from "../actions";
 
 const Account = async () => {
-  const id = await readIdFromCookies();
+  let error = null;
 
-  const { user, loading } = await getUserById(id!).catch((err) => {
-    console.error(err);
-    return { user: null, loading: false };
+  const { user, loading, id } = await getUserById().catch((err) => {
+    error = err;
+    return { user: null, loading: false, id: null, error: err };
   });
 
   return (
@@ -23,7 +22,11 @@ const Account = async () => {
           <AiOutlineExclamationCircle /> Bilgilerinizi güncelleyebilirsiniz
         </p>
       </div>
-      {loading ? <ProfileFormSkeleton /> : <ProfileForm user={user} id={id!} />}
+      {loading ? (
+        <ProfileFormSkeleton />
+      ) : (
+        <ProfileForm user={user} id={id!} error={error} />
+      )}
     </div>
   );
 };

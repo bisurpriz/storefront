@@ -1,30 +1,32 @@
-"use client";
-
-import React from "react";
+import React, {
+  forwardRef,
+  ButtonHTMLAttributes,
+  ReactNode,
+  CSSProperties,
+} from "react";
 import Spinner from "../Spinner";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   onClick?: () => void;
   size?: "small" | "medium" | "large";
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   iconSize?: number;
   fullWidth?: boolean;
   rounded?: boolean;
   loading?: boolean;
   variant?: "default" | "outlined" | "dashed" | "link" | "fullfilled";
   color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
-  children?: React.ReactNode;
+  children?: ReactNode;
   ownerState?: Record<string, any>;
 }
 
-const Button = React.forwardRef(
-  (props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
-    const {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
       size = "medium",
       fullWidth,
       rounded = true,
@@ -41,8 +43,9 @@ const Button = React.forwardRef(
       className,
       ownerState,
       ...rest
-    } = props;
-
+    },
+    ref
+  ) => {
     const sizeClasses = {
       small: "py-2 px-4 text-sm",
       medium: "py-3 px-6 text-base",
@@ -139,7 +142,7 @@ const Button = React.forwardRef(
       }
     })();
 
-    const iconStyle: React.CSSProperties = {
+    const iconStyle: CSSProperties = {
       width: `${iconSize}px`,
       height: `${iconSize}px`,
       fontSize: `${iconSize ?? 24}px`,
@@ -147,12 +150,12 @@ const Button = React.forwardRef(
 
     return (
       <button
+        ref={ref}
         {...rest}
         className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
         onClick={onClick}
         disabled={disabled || loading}
         type={type}
-        ref={ref}
       >
         {icon && <span style={iconStyle}>{icon}</span>}
         {loading && (

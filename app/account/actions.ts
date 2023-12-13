@@ -15,6 +15,7 @@ import {
   DistrictResponse,
   QuarterResponse,
 } from "@/common/types/Addresses/addresses";
+import { User } from "@/common/types/User/user";
 
 export const getQuarters = async (districtId: string) => {
   const { data, loading } = await query<{
@@ -70,6 +71,13 @@ export const getCities = async () => {
 export const getUserAddressById = async (id?: string) => {
   const userId = id || (await readIdFromCookies());
 
+  if (!userId) {
+    return {
+      userAddresses: [],
+      loading: false,
+    };
+  }
+
   const { data, loading } = await query({
     query: GET_USER_ADDRESS_BY_ID,
     variables: {
@@ -84,6 +92,7 @@ export const getUserAddressById = async (id?: string) => {
   return {
     userAddresses: user_addresses,
     loading,
+    user_id: userId,
   };
 };
 
@@ -97,17 +106,28 @@ export const getUserById = async (id?: string) => {
     },
   });
 
-  console.log(data, loading);
-
   const { user_by_pk: user } = data;
-
   return {
     user,
     loading,
+    id: userId,
   };
 };
 
-export const updateUserById = async (data: any) => {
+export const updateUserById = async (
+  data: Partial<
+    Pick<
+      User,
+      | "firstname"
+      | "lastname"
+      | "email"
+      | "id"
+      | "phone"
+      | "picture"
+      | "vkn_tckn"
+    >
+  >
+) => {
   const { data: updatedData } = await mutate({
     mutation: UPDATE_USER_BY_ID,
     awaitRefetchQueries: true,

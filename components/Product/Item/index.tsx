@@ -28,7 +28,7 @@ const ProductItem = ({
   delivery_type,
   discount_price,
   isFavorite,
-  handleToggleFavorite,
+  product_customizable_areas,
 }: ProductItemProps) => {
   const maxXsClasses = {
     container: "overflow-hidden rounded-lg border relative flex flex-col",
@@ -58,7 +58,7 @@ const ProductItem = ({
             <Rating value={4} readOnly showReviewCount={false} />
             {`(${4})`}
           </span>
-          <AddCartButton id={id} loading={loading} />
+          <AddCartButton id={id} loading={loading} product_customizable_areas={product_customizable_areas} />
         </div>
         <AddToFavorite isFavorite={isFavorite} productId={id} key={id} />
       </div>

@@ -12,7 +12,7 @@ const Header = async () => {
   });
 
   return (
-    <div className="text-xs leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse mx-12 max-md:mx-0">
+    <div className="text-xs leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse px-12 max-sm:p-0 max-md:mx-0 sticky top-0 w-full left-0 z-50 bg-white">
       <HeaderTop />
       <HeaderMiddle />
       <Divider orientation="horizontal" />

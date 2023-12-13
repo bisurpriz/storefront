@@ -23,6 +23,7 @@ interface CartState {
     quantity?: number;
     specialInstructions?: SpecialInstructions[];
   }) => void;
+  resetCartStorage: () => void;
 }
 
 const notify = (message: string, type: ToastType = "success") => {
@@ -39,50 +40,26 @@ const useCart = create(
       cartItems: [],
       addToCart: (item) => {
         set((state) => {
-          const foundIndex = state.cartItems.findIndex(
-            (cartItem) => cartItem.id === item.id
-          );
-          if (foundIndex === -1) {
-            notify("Ürün sepete eklendi.");
+          // If item already exists in cart, update quantity
+          const itemExists = state.cartItems.find((i) => i.id === item.id);
+
+          if (itemExists) {
+            const count = state.count - itemExists.quantity + item.quantity;
+            itemExists.quantity = item.quantity;
             return {
-              cartItems: [
-                ...state.cartItems,
-                {
-                  ...item,
-                  quantity: item.quantity || 1,
-                },
-              ],
-              count: state.count + 1,
+              cartItems: [...state.cartItems],
+              count,
             };
           }
-          const newCartItems = [...state.cartItems];
-          const specialInstructions =
-            newCartItems[foundIndex].specialInstructions;
-          const newSpecialInstructions =
-            specialInstructions?.length > item.quantity
-              ? specialInstructions.slice(0, item.quantity)
-              : specialInstructions;
-          newCartItems[foundIndex] = {
-            ...newCartItems[foundIndex],
-            quantity: item.quantity,
-            specialInstructions: newSpecialInstructions ?? [],
-          };
 
-          const newCount = state.cartItems.reduce(
-            (acc, curr) => acc + curr.quantity,
-            0
-          );
-
-          notify("Ürün sepete eklendi.");
           return {
-            cartItems: newCartItems,
-            count: newCount,
+            cartItems: [...state.cartItems, item],
+            count: state.count + item.quantity,
           };
         });
       },
       removeAllCart: () => {
         set((state) => {
-          notify("Sepet temizlendi.");
           return {
             cartItems: [],
             count: 0,
@@ -91,70 +68,52 @@ const useCart = create(
       },
       removeItem: (id) => {
         set((state) => {
-          const newCartItems = state.cartItems.filter((item) => item.id !== id);
-          const newCount = newCartItems.reduce(
-            (acc, curr) => acc + curr.quantity,
-            0
-          );
-          notify("Ürün sepetten çıkarıldı.");
+          // If item already exists in cart, update quantity and specialInstructions
+          const itemExists = state.cartItems.find((i) => i.id === id);
+          if (itemExists) {
+            return {
+              cartItems: state.cartItems.filter((i) => i.id !== id),
+              count: state.count - itemExists.quantity,
+            };
+          }
           return {
-            cartItems: newCartItems,
-            count: newCount,
+            cartItems: [...state.cartItems],
+            count: state.count,
           };
         });
       },
       updateItem: ({ id, quantity, specialInstructions }) => {
         set((state) => {
-          const foundIndex = state.cartItems.findIndex(
-            (cartItem) => cartItem.id === id
-          );
-          if (foundIndex === -1) {
-            return state;
-          }
-
-          if (quantity && quantity < state.cartItems[foundIndex].quantity) {
-            const newSpecialInstructions = state.cartItems[
-              foundIndex
-            ].specialInstructions?.slice(0, quantity);
-
+          // If item already exists in cart, update quantity and specialInstructions if quantity decreases slice specialInstructions
+          const itemExists = state.cartItems.find((i) => i.id === id);
+          if (itemExists) {
+            if (quantity && quantity < itemExists.quantity) {
+              itemExists.specialInstructions =
+                itemExists.specialInstructions?.slice(0, quantity);
+            }
             return {
-              cartItems: [
-                ...state.cartItems.slice(0, foundIndex),
-                {
-                  ...state.cartItems[foundIndex],
-                  quantity,
-                  specialInstructions: newSpecialInstructions ?? [],
-                },
-                ...state.cartItems.slice(foundIndex + 1),
-              ],
-              count: state.count - 1,
+              cartItems: state.cartItems.map((item) => {
+                if (item.id === id) {
+                  return {
+                    ...item,
+                    quantity: quantity || item.quantity,
+                    specialInstructions:
+                      specialInstructions || item.specialInstructions,
+                  };
+                }
+                return item;
+              }),
+              count: state.count - itemExists.quantity + quantity,
             };
           }
-
-          const newCartItems = [...state.cartItems];
-          if (
-            quantity &&
-            !(quantity === state.cartItems[foundIndex].quantity)
-          ) {
-            newCartItems[foundIndex] = {
-              ...newCartItems[foundIndex],
-              quantity,
-            };
-          }
-          if (specialInstructions?.length > 0) {
-            newCartItems[foundIndex] = {
-              ...newCartItems[foundIndex],
-              specialInstructions,
-            };
-          }
-          const newCount = newCartItems.reduce(
-            (acc, curr) => acc + curr.quantity,
-            0
-          );
-
+        });
+      },
+      resetCartStorage: () => {
+        set(() => {
+          localStorage.removeItem("cart-storage");
           return {
-            cartItems: newCartItems,
-            count: newCount,
+            cartItems: [],
+            count: 0,
           };
         });
       },

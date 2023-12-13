@@ -55,6 +55,7 @@ const InfinityScroll = <T,>({
           price={item.price}
           id={item.id}
           discount_price={item.discount_price}
+          product_customizable_areas={item.product_customizable_areas}
         />
       ))}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>

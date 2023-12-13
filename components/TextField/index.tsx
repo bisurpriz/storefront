@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import { useInput } from "@mui/base/useInput";
 import { forwardRef } from "react";

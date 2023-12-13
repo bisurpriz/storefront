@@ -1,22 +1,18 @@
-"only client";
-
 import { breakpoints } from "@/contants/breakpoints";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const useResponsive = () => {
-  const [width, setWidth] = React.useState<number>(0);
+  const [width, setWidth] = useState<number>(0);
 
   const handleResize = useCallback(() => {
     setWidth(window.innerWidth);
   }, []);
 
-  // initial screen width
-  React.useEffect(() => {
+  useEffect(() => {
     handleResize();
   }, []);
 
-  // update screen width
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);

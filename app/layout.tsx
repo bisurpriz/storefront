@@ -72,6 +72,11 @@ export const metadata: Metadata = {
     "çikolata ankara",
     "çikolata istanbul",
     "çikolata çeşitleri",
+    "çikolata çeşitleri ankara",
+    "çikolata çeşitleri istanbul",
+    "çikolata çeşitleri fiyatları",
+    "çikolata çeşitleri fiyatları ankara",
+    "çikolata çeşitleri fiyatları istanbul",
   ],
   robots: "index, follow",
 };
@@ -90,7 +95,7 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <body
-        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden`}
+        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden mb-10`}
         id="root"
       >
         <Suspense fallback={<Loading />}>
