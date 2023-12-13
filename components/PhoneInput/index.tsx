@@ -29,6 +29,9 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 
   useEffect(() => {
     if (value) {
+      if (value.startsWith("+90")) {
+        value = value.replace("+90", "").trim();
+      }
       handleChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
     }
   }, [value]);

@@ -1,28 +1,21 @@
 import React from "react";
 import Button from "../Button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Dropdown from "../Dropdown";
 import { profileItems } from "./contants";
+import Link from "next/link";
+import { getSession } from "@auth0/nextjs-auth0";
 
-const HeaderProfile = () => {
-  const router = useRouter();
-  const { user, isLoading } = useUser();
+const HeaderProfile = async () => {
+  const session = await getSession();
 
-  const handleLogin = () => {
-    router.push(`/api/auth/login`);
-  };
+  const user = session?.user;
 
   return !user ? (
     <div className="flex items-center justify-end ml-2">
-      <Button
-        type="button"
-        onClick={handleLogin}
-        size="small"
-        label="Giriş Yap"
-        loading={isLoading}
-      />
+      <Link href="/api/auth/login">
+        <Button type="button" size="small" label="Giriş Yap" />
+      </Link>
     </div>
   ) : (
     <div className="flex gap-8 items-center justify-end flex-row-reverse ml-2">

@@ -23,6 +23,7 @@ interface CartState {
     quantity?: number;
     specialInstructions?: SpecialInstructions[];
   }) => void;
+  resetCartStorage: () => void;
 }
 
 const notify = (message: string, type: ToastType = "success") => {
@@ -105,6 +106,15 @@ const useCart = create(
               count: state.count - itemExists.quantity + quantity,
             };
           }
+        });
+      },
+      resetCartStorage: () => {
+        set(() => {
+          localStorage.removeItem("cart-storage");
+          return {
+            cartItems: [],
+            count: 0,
+          };
         });
       },
     }),

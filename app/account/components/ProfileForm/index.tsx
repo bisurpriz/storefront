@@ -1,17 +1,17 @@
-"use client";
-
-import Button from "@/components/Button";
 import TextField from "@/components/TextField";
 import { localeDistanceFormat } from "@/utils/format";
 import Image from "next/image";
-import { useState } from "react";
 import { updateUserById } from "../../actions";
-import ProfileFormSkeleton from "./ProfileFormSkeleton";
 import PhoneInput from "@/components/PhoneInput";
+import SubmitButton from "@/components/Button/SubmitButton";
+import { revalidatePath } from "next/cache";
+import Button from "@/components/Button";
+import Link from "next/link";
 
 const ProfileForm = ({
   user,
   id,
+  error,
 }: {
   user: {
     created_at: string;
@@ -24,27 +24,61 @@ const ProfileForm = ({
     vkn_tckn: string | null;
   };
   id: string;
+  error: any;
 }) => {
-  const [userData, setUserData] = useState(user);
+  console.log(error);
 
-  return userData ? (
-    <form
-      className="flex flex-col gap-4 max-md:gap-2"
-      onSubmit={async (e) => {
-        e.preventDefault();
+  async function updateUser(formData: FormData) {
+    "use server";
 
-        await updateUserById({
-          ...userData,
-          id: id,
-        });
-      }}
-    >
+    const values = Object.fromEntries(formData.entries());
+    const variables = {
+      firstname:
+        (values.firstname as string)?.length > 0
+          ? (values.firstname as string)
+          : user.firstname,
+      lastname:
+        (values.lastname as string)?.length > 0
+          ? (values.lastname as string)
+          : user.lastname,
+      phone:
+        (values.phone as string)?.length > 0
+          ? (values.phone as string)
+          : user.phone,
+      vkn_tckn:
+        (values.vkn_tckn as string)?.length > 0
+          ? (values.vkn_tckn as string)
+          : user.vkn_tckn,
+      email:
+        (values.email as string)?.length > 0
+          ? (values.email as string)
+          : user.email,
+      id,
+      picture:
+        (values.picture as string)?.length > 0
+          ? (values.picture as string)
+          : user.picture,
+    };
+
+    try {
+      await updateUserById({
+        ...variables,
+      });
+
+      revalidatePath("/account");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  return user ? (
+    <form className="flex flex-col gap-4 max-md:gap-2" action={updateUser}>
       <div className="flex items-start flex-col justify-start gap-2">
         <p className="text-xs text-slate-400">
-          {localeDistanceFormat(new Date(userData.created_at))} önce kaydoldunuz
+          {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
         </p>
         <Image
-          src={userData.picture}
+          src={user.picture}
           alt="Profil resmi"
           className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
           width={200}
@@ -54,62 +88,58 @@ const ProfileForm = ({
       <TextField
         label="İsim"
         id="firstname"
-        placeholder="Adınız"
-        className="md:w-80"
+        placeholder={user.firstname || "Adınız"}
         type="text"
-        value={userData.firstname}
-        onChange={(e, value) => setUserData({ ...userData, firstname: value })}
       />
       <TextField
         label="Soyisim"
         id="lastname"
-        placeholder="Adınız"
-        className="md:w-80"
+        placeholder={user.lastname || "Soyadınız"}
         type="text"
-        value={userData.lastname}
-        onChange={(e, value) => setUserData({ ...userData, lastname: value })}
       />
       <TextField
         label="E-posta"
         id="email"
-        placeholder="E-posta adresiniz"
-        className="md:w-80"
+        placeholder={user.email || "E-posta adresiniz"}
         type="email"
         disabled
-        value={user?.email}
       />
       <PhoneInput
         label="Telefon"
-        className="md:w-80"
-        placeholder="Telefon numaranız"
-        value={userData.phone}
-        onChange={(e, value) => setUserData({ ...userData, phone: value })}
+        placeholder={user.phone || "Telefon numaranız"}
       />
       <TextField
         label="VKN/TCKN"
         id="vkn_tckn"
-        placeholder="VKN/TCKN"
-        className="md:w-80"
+        placeholder={user.vkn_tckn || "VKN/TCKN"}
         type="text"
-        value={userData.vkn_tckn || ""}
-        onChange={(e, value) => setUserData({ ...userData, vkn_tckn: value })}
       />
       <TextField
         label="Referans Kodu"
         id="reference_code"
-        placeholder="Referans kodunuz"
-        className="md:w-80"
+        placeholder={user.reference_code || "Referans kodunuz"}
         type="text"
         disabled
-        value={userData.reference_code || ""}
       />
 
-      <Button type="submit" className="w-fit">
-        Kaydet
-      </Button>
+      <SubmitButton className="w-fit">Kaydet</SubmitButton>
     </form>
   ) : (
-    <ProfileFormSkeleton />
+    <div className="flex flex-col items-center justify-center gap-2 text-center my-auto">
+      <h1 className="text-2xl font-semibold tracking-wide">
+        Kullanıcı verileri alınıken bir hata oluştu.
+      </h1>
+      <p className="text-sm text-slate-400 capitalize">
+        {error?.message || "Lütfen daha sonra tekrar deneyin."}
+      </p>
+
+      <p>
+        Tekrar giriş yapmak sorununuzu çözebilir.{" "}
+        <Link href="/api/auth/logout">
+          <Button>Çıkış yap</Button>
+        </Link>
+      </p>
+    </div>
   );
 };
 

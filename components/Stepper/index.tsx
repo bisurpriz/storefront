@@ -15,6 +15,8 @@ interface StepperProps {
 
 const DoneIcon = () => <MdDone />;
 
+console.log("@/components/Stepper/index.tsx");
+
 export default function Stepper({ activeStep, steps }: StepperProps) {
   return (
     <div className={clsx(["flex justify-between space-x-4 py-4"])}>

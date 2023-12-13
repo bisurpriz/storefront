@@ -5,9 +5,11 @@ import { getUserById } from "./actions";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 
 const Account = async () => {
+  let error = null;
+
   const { user, loading, id } = await getUserById().catch((err) => {
-    console.error(err);
-    return { user: null, loading: false, id: null };
+    error = err;
+    return { user: null, loading: false, id: null, error: err };
   });
 
   return (
@@ -20,7 +22,11 @@ const Account = async () => {
           <AiOutlineExclamationCircle /> Bilgilerinizi güncelleyebilirsiniz
         </p>
       </div>
-      {loading ? <ProfileFormSkeleton /> : <ProfileForm user={user} id={id!} />}
+      {loading ? (
+        <ProfileFormSkeleton />
+      ) : (
+        <ProfileForm user={user} id={id!} error={error} />
+      )}
     </div>
   );
 };

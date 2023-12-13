@@ -1,14 +1,17 @@
+"use client";
+
 import { memo, useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import CartDrawer from "./CartDrawer";
 import { getProductsPricesByIds } from "@/app/products/actions";
 import useCart from "@/store/cart";
-import { cartStepperPaths } from "../../constants";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useFormContext } from "react-hook-form";
+import { cartStepperPaths } from "../constants";
+import CartDrawer from "../components/Cart/CartDrawer";
 
 const CartSummary = () => {
   const { cartItems } = useCart();
@@ -26,55 +29,68 @@ const CartSummary = () => {
   });
   const [paths] = useState(() => cartStepperPaths.map((step) => step.path));
 
-  const isCartPage = (nextPath: string) => {
-    const specials = cartItems.filter(
-      (item) => item.specialInstructions !== null
-    );
+  const { handleSubmit: handleDetailSubmit } = useFormContext();
 
-    const hasEmptySpecialInstructions = specials.some((spec) => {
-      if (spec.specialInstructions.length < spec.quantity) {
-        return true;
-      }
+  const isCartPage = useCallback(
+    (nextPath: string) => {
+      const specials = cartItems.filter(
+        (item) => item.specialInstructions !== null
+      );
 
-      if (spec.specialInstructions.length === 0) {
-        return true;
-      } else {
-        return spec.specialInstructions.some((instruction) => {
-          if (instruction) {
-            return Object.values(instruction).some((value) => !value);
-          } else {
-            return true;
-          }
-        });
-      }
-    });
+      const hasEmptySpecialInstructions = specials.some((spec) => {
+        if (spec.specialInstructions?.length < spec.quantity) {
+          return true;
+        }
 
-    if (hasEmptySpecialInstructions) {
-      toast.error("Lütfen tüm özel istekleri doldurunuz.", {
-        icon: "⚠️",
-        position: "bottom-right",
+        if (spec.specialInstructions?.length === 0) {
+          return true;
+        } else {
+          return spec.specialInstructions?.some((instruction) => {
+            if (instruction) {
+              return Object.values(instruction).some((value) => !value);
+            } else {
+              return true;
+            }
+          });
+        }
       });
-    } else {
-      push(nextPath);
-    }
-  };
+
+      if (hasEmptySpecialInstructions) {
+        toast.error("Lütfen tüm özel istekleri doldurunuz.", {
+          icon: "⚠️",
+          position: "bottom-right",
+        });
+      } else {
+        push(nextPath);
+      }
+    },
+    [cartItems, push]
+  );
+
+  const onSubmitDetailForm = useCallback(
+    (values) => {
+      push(paths[2]);
+    },
+    [push]
+  );
+
+  const onError = useCallback((errors) => {
+    toast.error("Lütfen tüm alanları doldurunuz.", {
+      icon: "⚠️",
+      position: "bottom-right",
+    });
+  }, []);
 
   const handlePathChange = useCallback(() => {
-    const currentPathIndex = paths.findIndex((path) => path === pathname);
-    const nextPath = paths[currentPathIndex + 1];
-
-    if (pathname === "/cart") {
-      isCartPage(nextPath);
+    if (pathname === paths[0]) {
+      isCartPage(paths[1]);
       return;
     }
-
-    if (nextPath === "/cart/checkout" && cartItems.length === 0) {
-      toast.error("Sepetinizde ürün bulunmamaktadır.");
+    if (pathname === paths[1]) {
+      handleDetailSubmit(onSubmitDetailForm, onError)();
       return;
     }
-
-    // push(nextPath);
-  }, [pathname, cartItems]);
+  }, [pathname, cartItems, isCartPage]);
 
   const [ids] = useState(() =>
     cartItems?.map((item) => ({
@@ -92,7 +108,7 @@ const CartSummary = () => {
       total_discount_price,
       total_price,
     });
-  }, [cartItems]);
+  }, [cartItems, ids]);
 
   useEffect(() => {
     fetchProducts();
