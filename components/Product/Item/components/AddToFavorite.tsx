@@ -1,5 +1,6 @@
 import { addToFavorites } from "@/app/products/actions";
 import Button from "@/components/Button";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 import clsx from "clsx";
 import { useState } from "react";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
@@ -11,9 +12,16 @@ interface AddToFavoriteProps {
 
 const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+  const { handleRedirect } = useAuthRedirect({ lazy: true });
+
+  const handleAddToFavorites = () => {
+    addToFavorites({ productId });
+    setIsFavoriteState(true);
+  };
+
   return (
     <Button
-      onClick={() => addToFavorites({ productId }).then(() => setIsFavoriteState((prev) => !prev))}
+      onClick={() => handleRedirect(handleAddToFavorites)}
       variant="link"
       color="secondary"
       size="large"
