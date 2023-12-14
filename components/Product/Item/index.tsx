@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { Product } from "@/common/types/Product/product";
 import clsx from "clsx";
@@ -40,16 +39,29 @@ const ProductItem = ({
     <ProductItemSkeleton />
   ) : (
     <div className={clsx([maxXsClasses.container])}>
-      <ProductItemImage src={`${image}`} alt={name} height={500} width={500} className={maxXsClasses.image} id={id} />
+      <ProductItemImage
+        src={`${image}`}
+        alt={name}
+        height={500}
+        width={500}
+        className={maxXsClasses.image}
+        id={id}
+      />
       <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
         <PriceTag discount={discount_price} price={price} />
         <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
           <Link href={`/${category.slug}/${name}?pid=${id}`}>
-            <h3 className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize" title={name}>
+            <h3
+              className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize"
+              title={name}
+            >
               {name}
             </h3>
           </Link>
-          <p className="text-sm text-gray-500 line-clamp-1 max-sm:hidden" title={description}>
+          <p
+            className="text-sm text-gray-500 line-clamp-1 max-sm:hidden"
+            title={description}
+          >
             {description}
           </p>
         </div>
@@ -59,7 +71,11 @@ const ProductItem = ({
             <Rating value={4} readOnly showReviewCount={false} />
             {`(${4})`}
           </span>
-          <AddCartButton id={id} loading={loading} product_customizable_areas={product_customizable_areas} />
+          <AddCartButton
+            id={id}
+            loading={loading}
+            product_customizable_areas={product_customizable_areas}
+          />
         </div>
         <AddToFavorite isFavorite={isFavorite} productId={id} key={id} />
       </div>

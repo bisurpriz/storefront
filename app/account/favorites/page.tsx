@@ -4,7 +4,6 @@ import { IMAGE_URL } from "@/contants/urls";
 import { useEffect, useState } from "react";
 import { getUserFavorites, removeFromFavorites } from "./actions";
 import { Product } from "@/common/types/Product/product";
-import { refetchQueries } from "@/graphql/lib/client";
 
 interface FavoritesResponse {
   user_favorite: {
@@ -29,7 +28,9 @@ const FavoritesPage = () => {
   }, []);
 
   const onToggleFavorite = async (productId: number) => {
-    const favoriteId = userFavorites?.user_favorite?.find((item) => item.product.id === productId)?.id;
+    const favoriteId = userFavorites?.user_favorite?.find(
+      (item) => item.product.id === productId
+    )?.id;
     const response = await removeFromFavorites({ id: favoriteId });
     console.log(response, "response");
     getData();
@@ -37,7 +38,9 @@ const FavoritesPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-mono font-semibold tracking-wide mb-4">Favorilerim</h1>
+      <h1 className="text-2xl font-mono font-semibold tracking-wide mb-4">
+        Favorilerim
+      </h1>
       <div className="grid max-xs:grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {userFavorites?.user_favorite?.map((item) => (
           <ProductItem

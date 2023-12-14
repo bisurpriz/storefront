@@ -1,8 +1,6 @@
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
 import { getCities } from "@/app/account/actions";
 
-console.log("Server side code");
-
 const OrderDetail = async () => {
   const { cities } = await getCities();
 

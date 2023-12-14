@@ -2,7 +2,7 @@
 
 import Card from "@/components/Card";
 import React, { useEffect, useState } from "react";
-import { Controller, useWatch, useFormContext } from "react-hook-form";
+import { Controller, useWatch, useForm } from "react-hook-form";
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import { getUserAddressById } from "@/app/account/actions";
 import { useDiscrits } from "@/hooks/useDistricts";
@@ -12,6 +12,10 @@ import TextField from "@/components/TextField";
 import PhoneInput from "@/components/PhoneInput";
 import { CityResponse } from "@/common/types/Addresses/addresses";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -28,10 +32,44 @@ interface ReceiverFormProps {
   cities: CityResponse[];
 }
 
+const OrderDetailSchema = object({
+  city_id: number().required("İl alanı zorunludur."),
+  district_id: number().required("İlçe alanı zorunludur."),
+  quarter_id: number().required("Mahalle alanı zorunludur."),
+  address_title: string().required("Adres başlığı zorunludur."),
+  address: string().required("Adres alanı zorunludur."),
+  receiver_firstname: string().required("Alıcı adı zorunludur."),
+  receiver_surname: string().required("Alıcı soyadı zorunludur."),
+  receiver_phone: string().required("Alıcı telefonu zorunludur."),
+  user_id: string().optional(),
+  saved_address: string().optional(),
+});
+
+const defaultValues = {
+  address: "",
+  address_title: "",
+  city_id: null,
+  district_id: null,
+  quarter_id: null,
+  receiver_firstname: "",
+  receiver_phone: "",
+  receiver_surname: "",
+  user_id: "",
+  saved_address: "",
+};
+
 const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
   const [user_id, setUser_id] = useState(null);
+  const { push } = useRouter();
+  const { control, reset, watch, getValues, handleSubmit } =
+    useForm<OrderDetailPartialFormData>({
+      defaultValues,
+      mode: "onChange",
+      delayError: 500,
+      resolver: yupResolver(OrderDetailSchema),
+    });
 
   useEffect(() => {
     getUserAddressById().then(({ userAddresses, user_id }) => {
@@ -39,9 +77,6 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
       setUserAddresses(userAddresses);
     });
   }, []);
-
-  const { control, reset, watch, getValues } =
-    useFormContext<OrderDetailPartialFormData>();
 
   const [cityId, districtId] = useWatch({
     control,
@@ -79,6 +114,17 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const { districts } = useDiscrits(cityId);
   const { quarters } = useQuarters(districtId);
+
+  const onSubmit = (values) => {
+    console.log(values);
+    if (values) {
+      toast.success("Siparişiniz başarıyla oluşturuldu.", {
+        icon: "👏",
+        position: "bottom-right",
+      });
+      push("/cart/checkout");
+    }
+  };
 
   const renderSavedAddress = () => {
     if (userAddresses?.length > 0) {
@@ -165,6 +211,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         name="order-detail-form"
         autoComplete="off"
         className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-3 flex-1 ">
           {renderSavedAddress()}

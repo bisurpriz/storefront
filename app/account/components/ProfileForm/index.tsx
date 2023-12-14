@@ -26,8 +26,6 @@ const ProfileForm = ({
   id: string;
   error: any;
 }) => {
-  console.log(error);
-
   async function updateUser(formData: FormData) {
     "use server";
 
