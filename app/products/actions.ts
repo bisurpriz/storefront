@@ -1,6 +1,7 @@
 "use server";
 
 import { ProductForCart } from "@/common/types/Cart/cart";
+import { IProductFilter } from "@/common/types/Filter/productFilter";
 import { getClient } from "@/graphql/lib/client";
 import { ADD_TO_FAVORITES } from "@/graphql/queries/account/favorites";
 import {
@@ -16,11 +17,11 @@ import { parseJson } from "@/utils/format";
 
 const client = getClient();
 
-export const getPaginatedProducts = async <T>({ offset }: { offset: number }) => {
+export const getPaginatedProducts = async <T>(params: IProductFilter) => {
   const { data } = await client.query({
     query: GET_PRODUCTS_WITH_PAGINATION,
     variables: {
-      offset,
+      ...params,
     },
   });
 

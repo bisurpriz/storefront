@@ -29,6 +29,7 @@ const ProductItem = ({
   discount_price,
   isFavorite,
   product_customizable_areas,
+  category,
 }: ProductItemProps) => {
   const maxXsClasses = {
     container: "overflow-hidden rounded-lg border relative flex flex-col",
@@ -43,7 +44,7 @@ const ProductItem = ({
       <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
         <PriceTag discount={discount_price} price={price} />
         <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
-          <Link href={`/products/${id}`}>
+          <Link href={`/${category.slug}/${name}?pid=${id}`}>
             <h3 className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize" title={name}>
               {name}
             </h3>

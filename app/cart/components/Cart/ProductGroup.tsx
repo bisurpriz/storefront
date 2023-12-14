@@ -36,6 +36,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
               image_url,
               tenant,
               discount_price,
+              category,
             }) => (
               <li className="py-4" key={id}>
                 <div className="rounded-lg px-8 py-4 border relative max-sm:px-4">
@@ -49,7 +50,7 @@ const ProductGroup = ({ products }: { products: ProductForCart[] }) => {
                       loading="lazy"
                     />
                     <div className="font-mono pr-8 max-sm:flex max-md:flex-col max-sm:flex-wrap">
-                      <Link href={`/products/${id}`} className="block w-fit max-sm:flex-1">
+                      <Link href={`/${category.slug}/${name}?pid=${id}`} className="block w-fit max-sm:flex-1">
                         <h3 className="text-xl font-semibold text-gray-800 uppercase w-fit" title={name}>
                           {name}
                         </h3>

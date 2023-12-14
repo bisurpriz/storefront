@@ -1,0 +1,127 @@
+import PaymentMethods from "@/app/products/[slug]/components/Detail/PaymentMethods";
+import ProductActions from "@/app/products/[slug]/components/Detail/ProductActions";
+import ProductComments from "@/app/products/[slug]/components/Detail/ProductComments";
+import ProductDescription from "@/app/products/[slug]/components/Detail/ProductDescription";
+import ProductImageCarousel from "@/app/products/[slug]/components/Detail/ProductImageCarousel";
+import ProductInformation from "@/app/products/[slug]/components/Detail/ProductInformation";
+import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
+import SearchLocation from "@/app/products/[slug]/components/Layout/SearchLocation";
+import { getProductById } from "@/app/products/actions";
+import HourSelect from "@/components/DatePicker/HourSelect";
+import { IMAGE_URL } from "@/contants/urls";
+import { faker } from "@faker-js/faker";
+import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
+
+export default async function ProductExample({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
+}) {
+  const productId = searchParams["pid"];
+
+  const data = await getProductById({ id: Number(productId) });
+
+  const isFavoriteForCurrentUser = data.favorites.length > 0;
+
+  return (
+    <div className="h-full">
+      <section
+        className="flex items-start justify-start max-md:flex-col gap-6"
+        id="detail"
+        aria-labelledby="detail"
+        aria-describedby="Ürün detayları"
+      >
+        <div className="w-1/2 max-md:w-full">
+          <ProductImageCarousel
+            images={data.product.image_url?.map((url: string) => ({
+              id: url,
+              url: `${IMAGE_URL}/${url}`,
+            }))}
+          />
+        </div>
+        <div className="w-1/2 max-md:w-full">
+          <Promotions
+            promotions={[
+              {
+                description:
+                  "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
+                icon: <HiOutlineTicket />,
+              },
+              {
+                description:
+                  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
+                icon: <HiOutlineArchive />,
+              },
+            ]}
+          />
+          <ProductInformation
+            name={data.product.name}
+            price={250}
+            rateCounts={{
+              1: 1,
+              2: 1,
+              3: 1,
+              4: 1,
+              5: 1,
+            }}
+            rating={data.reviews.data}
+            reviewCount={data.reviews.totalCount}
+            promotion="Kargo Bedava"
+            discountPrice={data.product.price}
+            discountRate={10}
+            key={data.product.id}
+            vendor={data.tenant}
+          />
+          <SearchLocation className="mt-6" />
+          <HourSelect className="mt-6" />
+          <ProductActions
+            productId={data.product.id}
+            favorite={{
+              id: data.favorites[0]?.id ?? null,
+              isFavorite: isFavoriteForCurrentUser ?? false,
+            }}
+          />
+        </div>
+      </section>
+
+      <section className="mt-6" id="reviews">
+        <ProductDescription
+          title="Ürün Detayları"
+          description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
+          notes={Array.from({ length: 5 }).map((_, index) => faker.commerce.productDescription())}
+          specifications={data.product.properties}
+        />
+      </section>
+      <section
+        className="mt-6"
+        id="payment-methods"
+        aria-labelledby="payment-methods"
+        aria-describedby="Ödeme yöntemleri"
+      >
+        <PaymentMethods />
+      </section>
+      <section className="mt-6" id="comments" aria-labelledby="comments" aria-describedby="Ürün yorumları">
+        <ProductComments
+          comments={Array.from({ length: 5 }).map((_, index) => ({
+            comment: faker.lorem.paragraph(),
+            createdAt: faker.date.past().toISOString(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
+            user_id: index,
+            rate: faker.number.int({
+              min: 1,
+              max: 5,
+            }),
+            user_image_url: faker.image.avatar(),
+            comment_id: index,
+            email: faker.internet.email(),
+          }))}
+        />
+      </section>
+    </div>
+  );
+}

@@ -5,8 +5,9 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
     $limit: Int = 15
     $offset: Int = 0
     $is_active: Boolean = true
+    $category_slug: String
   ) {
-    product_aggregate(where: { is_active: { _eq: $is_active } }) {
+    product_aggregate(where: { is_active: { _eq: $is_active }, category: { slug: { _eq: $category_slug } } }) {
       aggregate {
         count
       }
@@ -14,11 +15,15 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
     product(
       limit: $limit
       offset: $offset
-      where: { is_active: { _eq: $is_active } }
+      where: { is_active: { _eq: $is_active }, category: { slug: { _eq: $category_slug } } }
     ) {
       id
       description
       name
+      category {
+        name
+        slug
+      }
       image_url
       price
       quantity
