@@ -20,6 +20,7 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       id
       description
       name
+      slug
       category {
         name
         slug
@@ -31,6 +32,11 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       discount_price
       product_customizable_areas {
         count
+      }
+      reviews_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }

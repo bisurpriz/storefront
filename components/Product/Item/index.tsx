@@ -14,6 +14,7 @@ import PriceTag from "@/components/PriceTag";
 export interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
   isFavorite?: boolean;
+  totalReviewCount?: number;
   handleToggleFavorite?: (productId: number) => void;
 }
 
@@ -30,6 +31,8 @@ const ProductItem = ({
   isFavorite,
   product_customizable_areas,
   category,
+  slug,
+  totalReviewCount,
 }: ProductItemProps) => {
   const maxXsClasses = {
     container: "overflow-hidden rounded-lg border relative flex flex-col",
@@ -44,7 +47,7 @@ const ProductItem = ({
       <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
         <PriceTag discount={discount_price} price={price} />
         <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
-          <Link href={`/${category.slug}/${name}?pid=${id}`}>
+          <Link href={`/${category.slug}/${slug}?pid=${id}`}>
             <h3 className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize" title={name}>
               {name}
             </h3>
@@ -56,7 +59,7 @@ const ProductItem = ({
 
         <div className="mt-auto w-full">
           <span className="flex items-center gap-2 text-xs text-gray-500 my-1 max-sm:mt-auto mb-4">
-            <Rating value={4} readOnly showReviewCount={false} />
+            <Rating value={4} readOnly showReviewCount={false} reviewCount={totalReviewCount} />
             {`(${4})`}
           </span>
           <AddCartButton id={id} loading={loading} product_customizable_areas={product_customizable_areas} />

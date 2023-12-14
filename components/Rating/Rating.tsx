@@ -22,10 +22,7 @@ const Rating = ({
   showReviewCount?: boolean;
   onChange?: (value: number) => void;
 }) => {
-  const reviewCountText =
-    reviewCount > 0
-      ? `${reviewCount} Değerlendirme`
-      : "Henüz Değerlendirme Yapılmamış";
+  const reviewCountText = reviewCount > 0 ? `${reviewCount} Değerlendirme` : "Henüz Değerlendirme Yapılmamış";
 
   return (
     <>
@@ -49,9 +46,7 @@ const Rating = ({
         }}
       />
       {showReviewCount && (
-        <p className="text-sm m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap">
-          {reviewCountText}
-        </p>
+        <p className="text-sm m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap">{reviewCountText}</p>
       )}
     </>
   );

@@ -11,9 +11,10 @@ interface Props {
     isFavorite: boolean;
     id: number; // primary key
   };
+  favoriteCount?: number;
 }
 
-const ProductActions = ({ productId, favorite }: Props) => {
+const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
   return (
     <div className="flex items-center justify-start gap-4 py-4 font-mono">
@@ -39,7 +40,7 @@ const ProductActions = ({ productId, favorite }: Props) => {
           }}
         ></Button>
         <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
-          <strong>12414</strong> Favori
+          <strong>{favoriteCount ?? 0}</strong> Favori
         </p>
       </div>
     </div>

@@ -26,7 +26,10 @@ export const getPaginatedProducts = async <T>(params: IProductFilter) => {
   });
 
   return {
-    products: data.product,
+    products: data.product.map((product: any) => ({
+      ...product,
+      totalReviewCount: product.reviews_aggregate.aggregate.count,
+    })),
     totalCount: data.product_aggregate.aggregate.count,
   } as T;
 };
@@ -67,7 +70,10 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       rate: 8.2,
     },
     loading,
-    favorites: data.product.user_favorites,
+    favorites: {
+      data: data.product.user_favorites,
+      totalCount: data.product.user_favorites_aggregate.aggregate.count,
+    },
   };
 };
 

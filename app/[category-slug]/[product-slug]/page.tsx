@@ -9,7 +9,8 @@ import SearchLocation from "@/app/products/[slug]/components/Layout/SearchLocati
 import { getProductById } from "@/app/products/actions";
 import HourSelect from "@/components/DatePicker/HourSelect";
 import { IMAGE_URL } from "@/contants/urls";
-import { faker } from "@faker-js/faker";
+import { destructClaims } from "@/utils/getClaims";
+import { getSession } from "@auth0/nextjs-auth0";
 import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 
 export default async function ProductExample({
@@ -25,7 +26,9 @@ export default async function ProductExample({
 
   const data = await getProductById({ id: Number(productId) });
 
-  const isFavoriteForCurrentUser = data.favorites.length > 0;
+  const { user } = await getSession();
+  const { id } = destructClaims(user);
+  const isFavoriteForCurrentUser = data.favorites.data.some((favorite) => favorite.user_id === id);
 
   return (
     <div className="h-full">
@@ -84,6 +87,7 @@ export default async function ProductExample({
               id: data.favorites[0]?.id ?? null,
               isFavorite: isFavoriteForCurrentUser ?? false,
             }}
+            favoriteCount={data.favorites.totalCount}
           />
         </div>
       </section>
@@ -91,8 +95,8 @@ export default async function ProductExample({
       <section className="mt-6" id="reviews">
         <ProductDescription
           title="Ürün Detayları"
-          description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
-          notes={Array.from({ length: 5 }).map((_, index) => faker.commerce.productDescription())}
+          description={data.product.description}
+          notes={[]}
           specifications={data.product.properties}
         />
       </section>
@@ -106,19 +110,12 @@ export default async function ProductExample({
       </section>
       <section className="mt-6" id="comments" aria-labelledby="comments" aria-describedby="Ürün yorumları">
         <ProductComments
-          comments={Array.from({ length: 5 }).map((_, index) => ({
-            comment: faker.lorem.paragraph(),
-            createdAt: faker.date.past().toISOString(),
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
-            user_id: index,
-            rate: faker.number.int({
-              min: 1,
-              max: 5,
-            }),
-            user_image_url: faker.image.avatar(),
-            comment_id: index,
-            email: faker.internet.email(),
+          comments={data.reviews.data.map((cm) => ({
+            createdAt: cm.created_at,
+            comment_id: cm.id,
+            rate: cm.score,
+            comment: cm.comment,
+            user_image_url: cm.user.picture,
           }))}
         />
       </section>

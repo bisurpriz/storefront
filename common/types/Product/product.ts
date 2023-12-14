@@ -12,6 +12,7 @@ export interface DeliveryTypeRelation {
 
 export interface Product {
   name: string;
+  slug: string;
   id: number;
   description: string;
   price: number;

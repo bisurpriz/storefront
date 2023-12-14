@@ -27,12 +27,14 @@ export const GET_PRODUCT_BY_ID = gql`
         }
       }
       reviews {
+        id
         comment
         created_at
         score
         user {
           firstname
           lastname
+          picture
         }
       }
       reviews_aggregate {
@@ -51,6 +53,11 @@ export const GET_PRODUCT_BY_ID = gql`
       user_favorites {
         user_id
         id
+      }
+      user_favorites_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }
