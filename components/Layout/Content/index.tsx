@@ -1,5 +1,3 @@
-"use client";
-
 import Loading from "@/app/loading";
 import React, { Suspense } from "react";
 import { Toaster } from "react-hot-toast";

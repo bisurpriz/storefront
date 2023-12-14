@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartCheckout = async () => {
+const CartCheckout = () => {
   return <div>Hello</div>;
 };
 

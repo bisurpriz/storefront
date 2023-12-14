@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Link from "next/link";
+import { memo } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const EmptyCart = () => {
@@ -24,4 +25,4 @@ const EmptyCart = () => {
   );
 };
 
-export default EmptyCart;
+export default memo(EmptyCart);

@@ -11,7 +11,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsTruck } from "react-icons/bs";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 
-const HeaderMiddle = () => {
+const HeaderMiddle = async () => {
   const { count } = useCart.getState();
 
   return (

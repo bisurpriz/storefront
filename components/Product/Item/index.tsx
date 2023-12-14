@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { Product } from "@/common/types/Product/product";
 import clsx from "clsx";
