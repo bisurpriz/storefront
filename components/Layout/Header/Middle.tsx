@@ -52,8 +52,8 @@ const HeaderMiddle = async () => {
             <span className="max-xl:hidden font-normal">Siparişlerim</span>
           </Button>
         </Link>
-        <Link href="/cart">
-          <Badge badgeContent={count}>
+        <Badge badgeContent={count}>
+          <Link href="/cart">
             <Button
               icon={<AiOutlineShoppingCart />}
               type="button"
@@ -64,8 +64,8 @@ const HeaderMiddle = async () => {
             >
               <span className="max-xl:hidden font-normal">Sepetim</span>
             </Button>
-          </Badge>
-        </Link>
+          </Link>
+        </Badge>
         <HeaderProfile />
       </div>
     </div>

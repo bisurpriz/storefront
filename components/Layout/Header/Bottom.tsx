@@ -65,7 +65,13 @@ const HeaderBottom = ({ categories }: Props) => {
           className="max-sm:p-1"
           onClick={() => setIsOpen(true)}
         />
-        <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} title="Menü" placement="left" lockScroll={true}>
+        <Drawer
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="Menü"
+          placement="left"
+          lockScroll={true}
+        >
           <MobileMenu items={menuData} />
         </Drawer>
       </div>
