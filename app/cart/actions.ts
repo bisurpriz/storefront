@@ -1,5 +1,16 @@
 "use server";
 
+/**
+ *
+ * TODO: total_amount ayarla.
+ *
+ *
+ *
+ *
+ *
+ *
+ * */
+
 import { mutate } from "@/graphql/lib/client";
 import { CREATE_ORDER } from "@/graphql/queries/order/mutation";
 import { readIdFromCookies } from "../actions";
@@ -17,6 +28,7 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     acc[tenantId].push(item);
     return acc;
   }, {});
+
   console.log(userId, "burada");
 
   const tenant_orders = Object.keys(tenantGrouped).map((key) => {
@@ -27,20 +39,21 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
         data: tenantItems.map((item) => ({
           product_id: item.id,
           quantity: item.quantity,
-          user_id: userId,
           order_item_special_texts: {
-            data: item.specialInstructions?.map((instruction) => ({
-              content: Object.keys(instruction).map((key) => {
-                key.includes("text") && instruction[key];
-              }),
-            })),
+            data:
+              item.specialInstructions?.map((instruction) => ({
+                content: Object.keys(instruction).map((key) => {
+                  key.includes("text") && instruction[key];
+                }),
+              })) ?? [],
           },
           order_item_special_images: {
-            data: item.specialInstructions?.map((instruction) => ({
-              image_url: Object.keys(instruction).map((key) => {
-                key.includes("image") && instruction[key];
-              }),
-            })),
+            data:
+              item.specialInstructions?.map((instruction) => ({
+                image_url: Object.keys(instruction).map((key) => {
+                  key.includes("image") && instruction[key];
+                }),
+              })) ?? [],
           },
         })),
       },
@@ -61,6 +74,7 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
   const variables = {
     user_id: userId,
     tenant_orders,
+    total_amount: 789.99,
     order_addresses: [
       {
         address,
