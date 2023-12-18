@@ -1,4 +1,7 @@
-import { CustomizableAreaType } from "@/common/enums/Order/product";
+import {
+  CustomizableAreaType,
+  OrderItemStatus,
+} from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
 import { Address } from "../Addresses/addresses";
 import { User } from "../User/user";
@@ -41,4 +44,27 @@ export interface OrderDetailFormData extends Address {
   receiver_firstname: string;
   receiver_surname: string;
   receiver_phone: string;
+}
+
+export interface OrderItemResponse {
+  id: number;
+  order_item_no: string;
+  product_id: number;
+  quantity: number;
+  product: Product;
+  order_item_specials: OrderItemSpecial[];
+}
+
+export interface OrderResponse {
+  id: number;
+  total_amount: number;
+  created_at: string;
+  updated_at: string;
+  tenant_orders: {
+    id: number;
+    order_items: OrderItemResponse[];
+    order_status: {
+      value: OrderItemStatus;
+    };
+  }[];
 }

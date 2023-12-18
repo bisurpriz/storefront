@@ -102,3 +102,38 @@ export const GET_QUARTERS = gql`
     }
   }
 `;
+
+export const GET_USER_ORDERS = gql`
+  query getUserOrders {
+    order {
+      created_at
+      id
+      total_amount
+      tenant_orders {
+        id
+        order_items {
+          id
+          order_item_no
+          product_id
+          quantity
+          product {
+            category {
+              name
+              slug
+            }
+            id
+            slug
+            description
+            image_url
+            name
+            price
+            discount_price
+          }
+        }
+        order_status {
+          value
+        }
+      }
+    }
+  }
+`;
