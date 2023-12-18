@@ -15,7 +15,6 @@ import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -41,8 +40,8 @@ const OrderDetailSchema = object({
   receiver_firstname: string().required("Alıcı adı zorunludur."),
   receiver_surname: string().required("Alıcı soyadı zorunludur."),
   receiver_phone: string().required("Alıcı telefonu zorunludur."),
-  user_id: string().optional(),
-  saved_address: string().optional(),
+  user_id: string().optional().nullable(),
+  saved_address: string().optional().nullable(),
 });
 
 const defaultValues = {
@@ -63,13 +62,19 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const [userAddresses, setUserAddresses] = useState(null);
   const [user_id, setUser_id] = useState(null);
   const { push } = useRouter();
-  const { control, reset, watch, getValues, handleSubmit } =
-    useForm<OrderDetailPartialFormData>({
-      defaultValues,
-      mode: "onChange",
-      delayError: 500,
-      resolver: yupResolver(OrderDetailSchema),
-    });
+  const {
+    control,
+    reset,
+    watch,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OrderDetailPartialFormData>({
+    defaultValues,
+    mode: "onChange",
+    delayError: 500,
+    resolver: yupResolver(OrderDetailSchema),
+  });
 
   useEffect(() => {
     getUserAddressById().then(({ userAddresses, user_id }) => {
@@ -84,6 +89,39 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   });
 
   useEffect(() => {
+    const serializeLocale = localStorage.getItem("detail-data");
+    const localStorageData = JSON.parse(serializeLocale);
+
+    if (localStorageData) {
+      reset({
+        ...getValues(),
+        city_id: localStorageData.city_id,
+        district_id: localStorageData.district_id,
+        quarter_id: localStorageData.quarter_id,
+        address: localStorageData.address,
+        receiver_firstname: localStorageData.receiver_firstname,
+        receiver_surname: localStorageData.receiver_surname,
+        receiver_phone: localStorageData.receiver_phone,
+        user_id,
+        address_title: localStorageData.address_title,
+      });
+
+      if (userAddresses?.length > 0) {
+        console.log(
+          userAddresses.find(
+            (address) => address.id === localStorageData.saved_address
+          )
+        );
+        setSelectedSavedAddress(
+          userAddresses.find(
+            (address) => address.id === localStorageData.saved_address
+          )
+        );
+      }
+
+      return;
+    }
+
     if (selectedSavedAddress) {
       const formattedPhone = formatPhoneNumber(
         selectedSavedAddress.receiver_phone
@@ -116,14 +154,14 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const { quarters } = useQuarters(districtId);
 
   const onSubmit = (values) => {
-    console.log(values);
     if (values) {
-      toast.success("Siparişiniz başarıyla oluşturuldu.", {
-        icon: "👏",
-        position: "bottom-right",
-      });
+      localStorage.setItem("detail-data", JSON.stringify(values));
       push("/cart/checkout");
     }
+  };
+
+  const onError = (errors) => {
+    console.log(errors);
   };
 
   const renderSavedAddress = () => {
@@ -211,7 +249,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         name="order-detail-form"
         autoComplete="off"
         className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onError)}
       >
         <div className="flex flex-col gap-3 flex-1 ">
           {renderSavedAddress()}

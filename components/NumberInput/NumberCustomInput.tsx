@@ -1,7 +1,5 @@
 import { forwardRef } from "react";
 
-// color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
-
 export const NumberCustomInput = forwardRef(
   (
     props: React.ComponentPropsWithoutRef<"input"> & { ownerState: any },

@@ -7,6 +7,7 @@ const AddCartButton = ({
   id,
   loading,
   product_customizable_areas,
+  tenant_id,
 }: ProductItemProps) => {
   const { addToCart, cartItems } = useCart.getState();
 
@@ -21,6 +22,7 @@ const AddCartButton = ({
         : hasSpecialInstructions
         ? []
         : null,
+      tenant_id,
     });
   }, [id, addToCart, cartItems, product_customizable_areas]);
 

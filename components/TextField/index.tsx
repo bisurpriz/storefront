@@ -77,7 +77,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       >
         {label ?? null}
         {icon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="absolute bottom-2 left-0 flex items-center pl-3 pointer-events-none">
             {icon}
           </div>
         )}

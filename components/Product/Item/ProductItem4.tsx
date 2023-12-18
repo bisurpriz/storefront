@@ -10,6 +10,7 @@ function ProductItem4({
   name,
   price,
   loading,
+  tenant_id,
 }: ProductItemProps) {
   return !loading ? (
     <div
@@ -44,6 +45,7 @@ function ProductItem4({
           name={name}
           price={price}
           loading={loading}
+          tenant_id={tenant_id}
         />
       </div>
     </div>

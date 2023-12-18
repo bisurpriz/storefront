@@ -1,4 +1,3 @@
-import toast, { ToastType } from "react-hot-toast";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -10,6 +9,7 @@ export type CartItem = {
   id: number;
   quantity: number;
   specialInstructions?: SpecialInstructions[];
+  tenant_id: number | string;
 };
 
 interface CartState {
@@ -25,13 +25,6 @@ interface CartState {
   }) => void;
   resetCartStorage: () => void;
 }
-
-const notify = (message: string, type: ToastType = "success") => {
-  toast[type](message, {
-    duration: 2000,
-    position: "bottom-right",
-  });
-};
 
 const useCart = create(
   persist<CartState>(

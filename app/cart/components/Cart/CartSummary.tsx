@@ -2,15 +2,15 @@
 
 import { memo, useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
-import { IoTicketOutline } from "react-icons/io5";
+import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
 import { getProductsPricesByIds } from "@/app/products/actions";
 import useCart from "@/store/cart";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { cartStepperPaths } from "../constants";
-import CartDrawer from "../components/Cart/CartDrawer";
+import { cartStepperPaths } from "../../constants";
+import CartDrawer from "./CartDrawer";
 
 interface Pricing {
   total_discount: number;
@@ -21,7 +21,9 @@ interface Pricing {
 const CartSummary = () => {
   const { cartItems } = useCart();
   const { push } = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
   const [pricing, setPricing] = useState<Pricing>({
     total_discount: 0,
     total_discount_price: 0,
@@ -89,7 +91,37 @@ const CartSummary = () => {
     fetchProducts();
   }, [cartItems]);
 
+  const handlePageChange = () => {
+    if (pathname === paths[0]) {
+      console.log("isCartPage");
+      isCartPage(paths[1]);
+      return;
+    }
+
+    if (pathname === "/cart/order-detail") {
+      console.log("Şu an order-detail sayfasındasın");
+    }
+
+    if (pathname === "/cart/checkout") {
+      console.log("Şu an checkout sayfasındasın");
+    }
+  };
+
   const { total_discount, total_discount_price, total_price } = pricing;
+
+  useEffect(() => {
+    switch (pathname) {
+      case paths[1]:
+        setFormTarget("order-detail-form");
+        break;
+      case paths[2]:
+        setFormTarget("credit-card-form");
+        break;
+      default:
+        setFormTarget(undefined);
+        break;
+    }
+  }, [pathname]);
 
   return (
     <>
@@ -139,6 +171,15 @@ const CartSummary = () => {
                 {total_price?.toFixed(2)} ₺
               </span>
             </div>
+            <Button
+              type={formTarget ? "submit" : "button"}
+              size="large"
+              color="primary"
+              className="flex justify-center w-full mt-3"
+              label="Onayla ve Devam Et"
+              onClick={handlePageChange}
+              form={formTarget}
+            />
           </div>
         </div>
       </div>
