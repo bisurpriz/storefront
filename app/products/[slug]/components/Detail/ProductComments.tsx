@@ -41,11 +41,10 @@ const ProductCommentSkeleton = () => {
 };
 
 const ProductComments = ({ comments }: ProductCommentsProps) => {
-  return comments && comments.length > 0 ? (
+  if (!comments) return <ProductCommentSkeleton />;
+  return (
     <div className="mt-4 w-full rounded-lg px-4 py-8 font-sans">
-      <h2 className="text-lg font-medium font-mono mb-2 text-slate-700">
-        Yorumlar
-      </h2>
+      <h2 className="text-lg font-medium font-mono mb-2 text-slate-700">Yorumlar</h2>
       <ul className="flex flex-col gap-2">
         {comments?.map((comment, index) => (
           <li
@@ -75,16 +74,12 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
               </div>
             </div>
             <div className="rounded-lg bg-4 ml-4 max-sm:ml-0 mb-2">
-              <p className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4">
-                {comment.comment}
-              </p>
+              <p className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4">{comment.comment}</p>
             </div>
           </li>
         ))}
       </ul>
     </div>
-  ) : (
-    <ProductCommentSkeleton />
   );
 };
 

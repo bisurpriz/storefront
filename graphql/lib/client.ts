@@ -4,7 +4,13 @@ import { links } from "./links";
 
 export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        category: {
+          keyFields: ["name"],
+        },
+      },
+    }),
     link: links,
     connectToDevTools: true,
     ssrMode: true,

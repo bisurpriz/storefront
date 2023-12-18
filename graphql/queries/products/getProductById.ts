@@ -15,6 +15,8 @@ export const GET_PRODUCT_BY_ID = gql`
       name
       price
       quantity
+      is_service_free
+      delivery_type
       properties
       questions {
         created_at
@@ -44,6 +46,8 @@ export const GET_PRODUCT_BY_ID = gql`
       }
       category {
         name
+        id
+        slug
       }
       tenant {
         id

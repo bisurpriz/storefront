@@ -26,9 +26,12 @@ export default async function ProductExample({
 
   const data = await getProductById({ id: Number(productId) });
 
-  const { user } = await getSession();
-  const { id } = destructClaims(user);
-  const isFavoriteForCurrentUser = data.favorites.data.some((favorite) => favorite.user_id === id);
+  const session = await getSession();
+  const claims = destructClaims(session?.user);
+  const isFavoriteForCurrentUser = data.favorites.data.some((favorite) => favorite.user_id === claims?.id);
+
+  const shippingType = data.product.delivery_type;
+  const freeShipping = data.product.is_service_free;
 
   return (
     <div className="h-full">
@@ -50,13 +53,11 @@ export default async function ProductExample({
           <Promotions
             promotions={[
               {
-                description:
-                  "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
+                description: shippingType?.includes("SAME_DAY") ? "Gün içi teslimat" : "Aynı gün kargo",
                 icon: <HiOutlineTicket />,
               },
               {
-                description:
-                  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
+                description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
                 icon: <HiOutlineArchive />,
               },
             ]}

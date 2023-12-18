@@ -2,6 +2,7 @@
 import { removeFromFavorites } from "@/app/account/favorites/actions";
 import { addToFavorites } from "@/app/products/actions";
 import Button from "@/components/Button";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 import React, { useState } from "react";
 import { MdFavoriteBorder } from "react-icons/md";
 
@@ -16,6 +17,7 @@ interface Props {
 
 const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
+  const { handleRedirect } = useAuthRedirect({ lazy: true });
   return (
     <div className="flex items-center justify-start gap-4 py-4 font-mono">
       <Button size="large" color="primary" className="text-xl pl-16 pr-16 max-sm:w-full">
@@ -34,10 +36,12 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
               }`}
             />
           }
-          onClick={() => {
-            favorite?.isFavorite ? removeFromFavorites({ id: favorite.id }) : addToFavorites({ productId });
-            setIsFavoriteState((prev) => !prev);
-          }}
+          onClick={() =>
+            handleRedirect(() => {
+              favorite?.isFavorite ? removeFromFavorites({ id: favorite.id }) : addToFavorites({ productId });
+              setIsFavoriteState((prev) => !prev);
+            })
+          }
         ></Button>
         <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
           <strong>{favoriteCount ?? 0}</strong> Favori

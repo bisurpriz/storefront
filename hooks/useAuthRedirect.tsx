@@ -6,7 +6,6 @@ const useAuthRedirect = ({ lazy }: { lazy: boolean }) => {
 
   const handleRedirect = useCallback(
     (callback?: Function) => {
-      console.log(user, "user");
       if (!user) {
         window.location.href = "/api/auth/login";
         return;

@@ -56,6 +56,8 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       image_url: data.product.image_url,
       name: data.product.name,
       price: data.product.price,
+      is_service_free: data.product.is_service_free,
+      delivery_type: data.product.delivery_type,
       quantity: data.product.quantity,
       properties: parseJson(data.product.properties) ?? [],
     },
