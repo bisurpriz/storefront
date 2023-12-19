@@ -16,8 +16,6 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     return acc;
   }, {});
 
-  console.log(userId, "burada");
-
   const getTexts = (specialInstructions) => {
     // will return an object of texts { content: "text"}
     if (!specialInstructions) return [];

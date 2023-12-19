@@ -14,7 +14,6 @@ export interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
   isFavorite?: boolean;
   totalReviewCount?: number;
-  handleToggleFavorite?: (productId: number) => void;
 }
 
 const ProductItem = ({

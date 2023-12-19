@@ -113,6 +113,7 @@ export const GET_USER_ORDERS = gql`
         id
         tenant {
           nickname
+          id
         }
         order_items {
           id

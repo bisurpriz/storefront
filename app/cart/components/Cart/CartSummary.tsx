@@ -93,17 +93,8 @@ const CartSummary = () => {
 
   const handlePageChange = () => {
     if (pathname === paths[0]) {
-      console.log("isCartPage");
       isCartPage(paths[1]);
       return;
-    }
-
-    if (pathname === "/cart/order-detail") {
-      console.log("Şu an order-detail sayfasındasın");
-    }
-
-    if (pathname === "/cart/checkout") {
-      console.log("Şu an checkout sayfasındasın");
     }
   };
 

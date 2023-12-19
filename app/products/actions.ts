@@ -3,7 +3,6 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { IProductFilter } from "@/common/types/Filter/productFilter";
 import { getClient } from "@/graphql/lib/client";
-import { ADD_TO_FAVORITES } from "@/graphql/queries/account/favorites";
 import {
   GET_PRODUCTS_PRICE_BY_IDS,
   GET_PRODUCT_BY_ID,
@@ -161,11 +160,19 @@ export const getProductsPricesByIds = async (
   const results = await Promise.all(promiseList);
 
   const total_price = results.reduce((acc, { data }) => {
-    return acc + data.product.price * ids.find((item) => item.id === data.product.id)?.quantity;
+    return (
+      acc +
+      data.product.price *
+        ids.find((item) => item.id === data.product.id)?.quantity
+    );
   }, 0);
 
   const total_discount_price = results.reduce((acc, { data }) => {
-    return acc + data.product.discount_price * ids.find((item) => item.id === data.product.id)?.quantity;
+    return (
+      acc +
+      data.product.discount_price *
+        ids.find((item) => item.id === data.product.id)?.quantity
+    );
   }, 0);
 
   // positive number
@@ -176,15 +183,4 @@ export const getProductsPricesByIds = async (
     total_discount_price,
     total_discount,
   };
-};
-
-export const addToFavorites = async ({ productId }: { productId: number }) => {
-  const { data } = await getClient().mutate({
-    mutation: ADD_TO_FAVORITES,
-    variables: {
-      productId,
-    },
-  });
-
-  return data;
 };

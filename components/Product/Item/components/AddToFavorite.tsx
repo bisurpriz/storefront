@@ -1,4 +1,7 @@
-import { addToFavorites } from "@/app/products/actions";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/app/account/favorites/actions";
 import Button from "@/components/Button";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import clsx from "clsx";
@@ -15,6 +18,11 @@ const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
   const { handleRedirect } = useAuthRedirect({ lazy: true });
 
   const handleAddToFavorites = () => {
+    if (isFavorite) {
+      removeFromFavorites({ productId });
+      setIsFavoriteState(false);
+      return;
+    }
     addToFavorites({ productId });
     setIsFavoriteState(true);
   };

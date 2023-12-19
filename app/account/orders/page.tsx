@@ -1,7 +1,5 @@
 import { getUserOrders } from "./actions";
 import Button from "@/components/Button";
-import StatusBadge from "./components/statusBadge";
-import { OrderItemStatus } from "@/common/enums/Order/product";
 import TenantOrders from "./components/TenantOrders";
 
 const OrdersPage = async () => {
@@ -10,9 +8,6 @@ const OrdersPage = async () => {
   return (
     <ul>
       {orders?.map((order) => {
-        const isAllDelivered = order?.tenant_orders.every(
-          (to) => to.order_status.value === OrderItemStatus.Delivered
-        );
         const totalProducts = order?.tenant_orders.reduce(
           (acc, to) => acc + to.order_items.length,
           0
@@ -49,14 +44,6 @@ const OrdersPage = async () => {
               </div>
 
               <div className="h-px border my-3"></div>
-
-              <StatusBadge
-                status={
-                  isAllDelivered
-                    ? OrderItemStatus.Delivered
-                    : OrderItemStatus.Processing
-                }
-              />
 
               <TenantOrders tenants={order?.tenant_orders} />
 

@@ -2,7 +2,7 @@
 import ProductItem from "@/components/Product/Item";
 import { IMAGE_URL } from "@/contants/urls";
 import { useEffect, useState } from "react";
-import { getUserFavorites, removeFromFavorites } from "./actions";
+import { getUserFavorites } from "./actions";
 import { Product } from "@/common/types/Product/product";
 
 interface FavoritesResponse {
@@ -27,15 +27,6 @@ const FavoritesPage = () => {
     getData();
   }, []);
 
-  const onToggleFavorite = async (productId: number) => {
-    const favoriteId = userFavorites?.user_favorite?.find(
-      (item) => item.product.id === productId
-    )?.id;
-    const response = await removeFromFavorites({ id: favoriteId });
-    console.log(response, "response");
-    getData();
-  };
-
   return (
     <div>
       <h1 className="text-2xl font-mono font-semibold tracking-wide mb-4">
@@ -51,7 +42,7 @@ const FavoritesPage = () => {
             image_url={IMAGE_URL + "/" + item.product.image_url?.[0]}
             price={item.product.price}
             isFavorite={true}
-            handleToggleFavorite={onToggleFavorite}
+            category={item.product.category}
           />
         ))}
       </div>

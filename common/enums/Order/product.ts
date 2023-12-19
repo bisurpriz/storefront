@@ -4,12 +4,12 @@ export enum CustomizableAreaType {
 }
 
 export enum OrderItemStatus {
-  Created,
-  Processing,
-  Shipped,
-  Delivered,
-  Canceled,
-  Completed,
-  Failed,
-  Refunded
+  Created = "Created",
+  Processing = "Processing",
+  Shipped = "Shipped",
+  Delivered = "Delivered",
+  Canceled = "Canceled",
+  Completed = "Completed",
+  Failed = "Failed",
+  Refunded = "Refunded",
 }

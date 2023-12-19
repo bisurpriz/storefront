@@ -107,11 +107,6 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
       });
 
       if (userAddresses?.length > 0) {
-        console.log(
-          userAddresses.find(
-            (address) => address.id === localStorageData.saved_address
-          )
-        );
         setSelectedSavedAddress(
           userAddresses.find(
             (address) => address.id === localStorageData.saved_address

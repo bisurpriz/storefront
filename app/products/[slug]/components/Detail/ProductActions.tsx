@@ -1,6 +1,8 @@
 "use client";
-import { removeFromFavorites } from "@/app/account/favorites/actions";
-import { addToFavorites } from "@/app/products/actions";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/app/account/favorites/actions";
 import Button from "@/components/Button";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import React, { useState } from "react";
@@ -20,7 +22,11 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
   const { handleRedirect } = useAuthRedirect({ lazy: true });
   return (
     <div className="flex items-center justify-start gap-4 py-4 font-mono">
-      <Button size="large" color="primary" className="text-xl pl-16 pr-16 max-sm:w-full">
+      <Button
+        size="large"
+        color="primary"
+        className="text-xl pl-16 pr-16 max-sm:w-full"
+      >
         Sepete Ekle
       </Button>
       <div className="flex items-end gap-2">
@@ -28,7 +34,9 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
           size="large"
           iconSize={28}
           variant="outlined"
-          className={`group border-red-300 hover:bg-red-400 rounded-xl ${isFavoriteState ? "bg-red-400" : ""}`}
+          className={`group border-red-300 hover:bg-red-400 rounded-xl ${
+            isFavoriteState ? "bg-red-400" : ""
+          }`}
           icon={
             <MdFavoriteBorder
               className={`text-red-300 group-hover:text-white group-hover:animate-bounce ${
@@ -38,7 +46,9 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
           }
           onClick={() =>
             handleRedirect(() => {
-              favorite?.isFavorite ? removeFromFavorites({ id: favorite.id }) : addToFavorites({ productId });
+              favorite?.isFavorite
+                ? removeFromFavorites({ productId })
+                : addToFavorites({ productId });
               setIsFavoriteState((prev) => !prev);
             })
           }

@@ -10,6 +10,10 @@ const GET_USER_FAVORITES = gql`
         image_url
         price
         discount_price
+        category {
+          name
+          slug
+        }
       }
     }
     user_favorite_aggregate {
@@ -29,9 +33,9 @@ const ADD_TO_FAVORITES = gql`
 `;
 
 const REMOVE_FROM_FAVORITES = gql`
-  mutation removeFromFavorites($id: bigint!) {
-    delete_user_favorite_by_pk(id: $id) {
-      id
+  mutation removeFromFavorites($productId: bigint!) {
+    delete_user_favorite(where: { product_id: { _eq: $productId } }) {
+      affected_rows
     }
   }
 `;

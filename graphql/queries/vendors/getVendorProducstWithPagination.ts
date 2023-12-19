@@ -25,6 +25,10 @@ export const GET_VENDOR_PRODUCTS_WITH_PAGINATION = gql`
       image_url
       price
       quantity
+      category {
+        name
+        slug
+      }
     }
   }
 `;

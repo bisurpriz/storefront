@@ -1,8 +1,6 @@
 import React from "react";
 import Divider from "../Divider";
 
-console.log("@/components/Card/index.tsx");
-
 const Card = ({
   children,
   title,
