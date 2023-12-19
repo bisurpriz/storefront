@@ -1,20 +1,7 @@
 "use server";
-
-/**
- *
- * TODO: total_amount ayarla.
- *
- *
- *
- *
- *
- *
- * */
-
-import { mutate } from "@/graphql/lib/client";
-import { CREATE_ORDER } from "@/graphql/queries/order/mutation";
 import { readIdFromCookies } from "../actions";
 import { CartItem } from "@/store/cart";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
   const userId = await readIdFromCookies();
@@ -31,6 +18,29 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
 
   console.log(userId, "burada");
 
+  const getTexts = (specialInstructions) => {
+    // will return an object of texts { content: "text"}
+    if (!specialInstructions) return [];
+    const texts = Object.keys(specialInstructions)
+      .filter((key) => key.includes("text") && specialInstructions[key] !== null)
+      .map((key) => ({
+        content: specialInstructions[key],
+      }));
+
+    return texts;
+  };
+
+  const getImages = (specialInstructions) => {
+    // will return an object of images { content: "image"}
+    if (!specialInstructions) return [];
+    const images = Object.keys(specialInstructions)
+      .filter((key) => key.includes("image") && specialInstructions[key] !== null)
+      .map((key) => ({
+        image_url: specialInstructions[key],
+      }));
+    return images;
+  };
+
   const tenant_orders = Object.keys(tenantGrouped).map((key) => {
     const tenantItems = tenantGrouped[key];
     return {
@@ -40,20 +50,14 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
           product_id: item.id,
           quantity: item.quantity,
           order_item_special_texts: {
-            data:
-              item.specialInstructions?.map((instruction) => ({
-                content: Object.keys(instruction).map((key) => {
-                  key.includes("text") && instruction[key];
-                }),
-              })) ?? [],
+            data: item.specialInstructions
+              ? item.specialInstructions.flatMap((instruction) => getTexts(instruction))
+              : [],
           },
           order_item_special_images: {
-            data:
-              item.specialInstructions?.map((instruction) => ({
-                image_url: Object.keys(instruction).map((key) => {
-                  key.includes("image") && instruction[key];
-                }),
-              })) ?? [],
+            data: item.specialInstructions
+              ? item.specialInstructions.flatMap((instruction) => getImages(instruction))
+              : [],
           },
         })),
       },
@@ -73,8 +77,9 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
 
   const variables = {
     user_id: userId,
-    tenant_orders,
-    total_amount: 789.99,
+    tenantOrders: {
+      data: tenant_orders,
+    },
     order_addresses: [
       {
         address,
@@ -89,10 +94,16 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     ],
   };
 
-  const response = await mutate({
-    mutation: CREATE_ORDER,
-    variables,
+  const { accessToken } = await getSession();
+
+  const response = await fetch("https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws", {
+    method: "POST",
+    body: JSON.stringify(variables),
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${accessToken}`,
+    },
   });
 
-  return response;
+  return response.json();
 };
