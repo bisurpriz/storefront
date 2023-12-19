@@ -9,15 +9,20 @@ import { object, string } from "yup";
 import { createOrderAction } from "../../actions";
 import toast from "react-hot-toast";
 import useCart from "@/store/cart";
+import { useRouter } from "next/navigation";
 
 const schema = object().shape({
-  creditCartNumber: string().test("test-number", "Geçersiz kart numarası", (value) => {
-    if (value) {
-      return value.replace(/\s+/g, "").length === 16;
-    } else {
-      return false;
+  creditCartNumber: string().test(
+    "test-number",
+    "Geçersiz kart numarası",
+    (value) => {
+      if (value) {
+        return value.replace(/\s+/g, "").length === 16;
+      } else {
+        return false;
+      }
     }
-  }),
+  ),
   creditCartName: string().required("Kart üzerindeki isim zorunludur"),
   creditCartDate: string().test("test-date", "Geçersiz tarih", (value) => {
     const splitted = value?.split("/");
@@ -50,27 +55,34 @@ const CreditCartForm = () => {
     mode: "onChange",
   });
 
-  const { cartItems } = useCart();
+  const { cartItems, removeAllCart } = useCart();
+  const { push } = useRouter();
 
   const onSubmit = async (data: any) => {
     if (data) {
       const serialize = localStorage.getItem("detail-data");
 
       const detailData = JSON.parse(serialize);
-      toast.promise(
-        createOrderAction(cartItems, detailData),
-        {
-          loading: "Ödeme yapılıyor...",
-          success: "Ödeme başarılı",
-          error: "Ödeme başarısız",
-        },
-        {
-          icon: "💳",
-          style: {
-            minWidth: "250px",
+      toast
+        .promise(
+          createOrderAction(cartItems, detailData),
+          {
+            loading: "Ödeme yapılıyor...",
+            success: "Ödeme başarılı",
+            error: "Ödeme başarısız",
           },
-        }
-      );
+          {
+            icon: "💳",
+            style: {
+              minWidth: "250px",
+            },
+          }
+        )
+        .then(() => {
+          localStorage.removeItem("detail-data");
+          removeAllCart();
+          push("/cart/complete");
+        });
     }
   };
 
@@ -85,7 +97,11 @@ const CreditCartForm = () => {
         name="creditCartNumber"
         control={control}
         render={({ field: { onChange }, fieldState: { error } }) => (
-          <CreditCardInput onChange={onChange} error={!!error} errorMessage={error?.message} />
+          <CreditCardInput
+            onChange={onChange}
+            error={!!error}
+            errorMessage={error?.message}
+          />
         )}
       />
       <div className="flex flex-col md:flex-row md:justify-start md:items-start w-full gap-4">
@@ -107,7 +123,11 @@ const CreditCartForm = () => {
           name="creditCartDate"
           control={control}
           render={({ field: { onChange }, fieldState: { error } }) => (
-            <CreditCardDateInput error={!!error} errorMessage={error?.message} onChange={(e, val) => onChange(val)} />
+            <CreditCardDateInput
+              error={!!error}
+              errorMessage={error?.message}
+              onChange={(e, val) => onChange(val)}
+            />
           )}
         />
         <Controller

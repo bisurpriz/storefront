@@ -111,6 +111,9 @@ export const GET_USER_ORDERS = gql`
       total_amount
       tenant_orders {
         id
+        tenant {
+          nickname
+        }
         order_items {
           id
           order_item_no
@@ -128,6 +131,7 @@ export const GET_USER_ORDERS = gql`
             name
             price
             discount_price
+            quantity
           }
         }
         order_status {

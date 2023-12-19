@@ -62,6 +62,7 @@ export interface OrderResponse {
   updated_at: string;
   tenant_orders: {
     id: number;
+    tenant: Pick<User, "nickname">;
     order_items: OrderItemResponse[];
     order_status: {
       value: OrderItemStatus;

@@ -4,10 +4,11 @@ import useCart from "@/store/cart";
 import CartSteps from "./components/Cart/CartSteps";
 import CartSummary from "./components/Cart/CartSummary";
 import EmptyCart from "./components/Cart/EmptyCart";
+import { usePathname } from "next/navigation";
 
 const CartTemplate = ({ children }: { children: React.ReactNode }) => {
   const { count } = useCart();
-
+  const pathname = usePathname();
   return (
     <>
       {count > 0 ? (
@@ -24,6 +25,8 @@ const CartTemplate = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </div>
+      ) : pathname === "/cart/complete" ? (
+        <>{children} </>
       ) : (
         <EmptyCart />
       )}
