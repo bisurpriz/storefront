@@ -1,7 +1,20 @@
-import React from "react";
+import { getUserAddresses } from "./actions";
+import Address from "./components/Address";
 
-const AddressesPage = () => {
-  return <div>AddressesPage</div>;
+const AddressesPage = async () => {
+  const { user_addresses } = await getUserAddresses();
+  return (
+    <div>
+      <h1 className="text-2xl font-bold">
+        Kayıtlı Adreslerim ({user_addresses?.length})
+      </h1>
+      <div className="mt-4">
+        {user_addresses?.map((address) => (
+          <Address key={address.id} address={address} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default AddressesPage;
