@@ -22,7 +22,9 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     // will return an object of texts { content: "text"}
     if (!specialInstructions) return [];
     const texts = Object.keys(specialInstructions)
-      .filter((key) => key.includes("text") && specialInstructions[key] !== null)
+      .filter(
+        (key) => key.includes("text") && specialInstructions[key] !== null
+      )
       .map((key) => ({
         content: specialInstructions[key],
       }));
@@ -34,7 +36,9 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     // will return an object of images { content: "image"}
     if (!specialInstructions) return [];
     const images = Object.keys(specialInstructions)
-      .filter((key) => key.includes("image") && specialInstructions[key] !== null)
+      .filter(
+        (key) => key.includes("image") && specialInstructions[key] !== null
+      )
       .map((key) => ({
         image_url: specialInstructions[key],
       }));
@@ -51,12 +55,16 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
           quantity: item.quantity,
           order_item_special_texts: {
             data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) => getTexts(instruction))
+              ? item.specialInstructions.flatMap((instruction) =>
+                  getTexts(instruction)
+                )
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) => getImages(instruction))
+              ? item.specialInstructions.flatMap((instruction) =>
+                  getImages(instruction)
+                )
               : [],
           },
         })),
@@ -94,16 +102,19 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
     ],
   };
 
-  const { accessToken } = await getSession();
+  const { idToken } = await getSession();
 
-  const response = await fetch("https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws", {
-    method: "POST",
-    body: JSON.stringify(variables),
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await fetch(
+    "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
+    {
+      method: "POST",
+      body: JSON.stringify(variables),
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${idToken}`,
+      },
+    }
+  );
 
   return response.json();
 };
