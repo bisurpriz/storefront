@@ -69,3 +69,16 @@ export interface OrderResponse {
     };
   }[];
 }
+
+export interface OrderItemWithReview {
+  id: number;
+  order_tenant: {
+    order_status: {
+      value: OrderItemStatus;
+    };
+    updated_at: string;
+  };
+  created_at: string;
+  product: Partial<Product>;
+  review_count: number;
+}

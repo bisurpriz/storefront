@@ -7,11 +7,35 @@ import Tooltip from "@/components/Tooltip";
 import { localeFormat } from "@/utils/format";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
-import React from "react";
+import { useState } from "react";
 
-const ClientModal = () => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedRating, setSelectedRating] = React.useState(0);
+const ClientModal = ({
+  productId,
+  onSubmit,
+}: {
+  productId: number;
+  onSubmit: ({
+    product_id,
+    score,
+    comment,
+  }: {
+    product_id: number;
+    score: number;
+    comment: string;
+  }) => Promise<void>;
+}) => {
+  const [open, setOpen] = useState(false);
+  const [comment, setComment] = useState("");
+  const [selectedRating, setSelectedRating] = useState(0);
+
+  const handleSubmit = async () => {
+    await onSubmit({
+      product_id: productId,
+      score: selectedRating,
+      comment: comment,
+    });
+    setOpen(false);
+  };
 
   return (
     <>
@@ -106,6 +130,10 @@ const ClientModal = () => {
               rows={3}
               className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-2"
               placeholder="Değerlendirmenizi buraya yazabilirsiniz."
+              value={comment}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
             />
             <label
               htmlFor="review-terms"
@@ -127,9 +155,7 @@ const ClientModal = () => {
             size="small"
             className="w-full justify-center"
             disabled={selectedRating === 0}
-            onClick={() => {
-              setOpen(false);
-            }}
+            onClick={handleSubmit}
           />
         </div>
       </Modal>

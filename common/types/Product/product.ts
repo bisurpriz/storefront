@@ -31,6 +31,11 @@ export interface Product {
   product_customizable_areas: ProductCustomizableArea[];
   questions: Question[];
   reviews: Review[];
+  reviews_aggregate: {
+    aggregate: {
+      count: number;
+    };
+  };
   category: Category;
   delivery_type_rel: DeliveryTypeRelation;
   tenant: User;

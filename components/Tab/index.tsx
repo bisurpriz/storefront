@@ -1,9 +1,9 @@
 "use client";
 
 // src/components/Tab.tsx
-import React, { useState } from "react";
+import  { useState,FC } from "react";
 
-const Tab: React.FC<TabsProps> = ({
+const Tab: FC<TabsProps> = ({
   tabs,
   bordered,
   onTabChange,
