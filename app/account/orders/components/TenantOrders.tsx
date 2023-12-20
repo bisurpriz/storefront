@@ -2,7 +2,6 @@ import type { OrderResponse } from "@/common/types/Order/order";
 import Link from "next/link";
 import React from "react";
 import OrderItem from "./OrderItem";
-import StatusBadge from "./StatusBadge";
 
 const TenantOrders = ({
   tenants,
@@ -25,7 +24,6 @@ const TenantOrders = ({
             ({to.order_items.length} ürün)
           </span>
         </span>
-        <StatusBadge status={to.order_status.value} />
       </div>
 
       <OrderItem order_items={to.order_items} />
