@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
 import Menu from "@/components/Menu";
 import MobileMenu from "@/components/Menu/MobileMenu";
+import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
 import useCart from "@/store/cart";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,10 +36,11 @@ const HeaderBottom = ({ categories }: Props) => {
       <Menu items={menuData} className="max-sm:hidden" />
       <Link href="/" className="sm:hidden max-sm:mr-auto">
         <Image
-          src={"/newlogo.png"}
+          src={"/logo.svg"}
           width={180}
           height={55}
           alt="Bonnmarşe Logo"
+          className="w-auto h-auto scale-150"
           priority
         />
       </Link>
@@ -75,6 +77,7 @@ const HeaderBottom = ({ categories }: Props) => {
           <MobileMenu items={menuData} />
         </Drawer>
       </div>
+      <OfflineStatus />
     </div>
   );
 };

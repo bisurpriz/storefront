@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
@@ -29,25 +29,19 @@ const CartSummary = () => {
     total_discount_price: 0,
     total_price: 0,
   });
-  const [paths] = useState<string[]>(() =>
-    cartStepperPaths.map((step) => step.path)
-  );
+  const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
 
   const isCartPage = useCallback(
     (nextPath: string) => {
-      const specials = cartItems.filter(
-        (item) => item.specialInstructions !== null
-      );
-
-      const hasEmptySpecialInstructions = specials.some((spec) => {
-        if (spec.specialInstructions?.length < spec.quantity) {
+      const hasEmptySpecialInstructions = cartItems.some((item) => {
+        if (item.specialInstructions?.length < item.quantity) {
           return true;
         }
 
-        if (spec.specialInstructions?.length === 0) {
+        if (item.specialInstructions?.length === 0) {
           return true;
         } else {
-          return spec.specialInstructions?.some((instruction) => {
+          return item.specialInstructions?.some((instruction) => {
             if (instruction) {
               return Object.values(instruction).some((value) => !value);
             } else {
@@ -69,11 +63,13 @@ const CartSummary = () => {
     [cartItems, push]
   );
 
-  const [ids] = useState(() =>
-    cartItems?.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-    }))
+  const ids = useMemo(
+    () =>
+      cartItems?.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+    [cartItems]
   );
 
   const fetchProducts = useCallback(async () => {
@@ -85,18 +81,17 @@ const CartSummary = () => {
       total_discount_price,
       total_price,
     });
-  }, [cartItems, ids]);
+  }, [ids]);
 
   useEffect(() => {
     fetchProducts();
   }, [cartItems]);
 
-  const handlePageChange = () => {
+  const handlePageChange = useCallback(() => {
     if (pathname === paths[0]) {
       isCartPage(paths[1]);
-      return;
     }
-  };
+  }, [pathname, paths, isCartPage]);
 
   const { total_discount, total_discount_price, total_price } = pricing;
 
@@ -112,10 +107,10 @@ const CartSummary = () => {
         setFormTarget(undefined);
         break;
     }
-  }, [pathname]);
+  }, [pathname, paths]);
 
   return (
-    <>
+    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg">
       <div className="hidden md:block">
         <div className="bg-white border rounded-lg py-2 px-3">
           <span className="block text-xl w-full text-center mb-3 font-normal">
@@ -198,7 +193,7 @@ const CartSummary = () => {
         totalDiscount={total_discount}
         totalDiscountPrice={total_discount_price}
       />
-    </>
+    </div>
   );
 };
 

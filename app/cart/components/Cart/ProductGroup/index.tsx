@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 
 import { ProductForCart } from "@/common/types/Cart/cart";

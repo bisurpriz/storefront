@@ -1,5 +1,3 @@
-"use client";
-
 import { BsGift } from "react-icons/bs";
 import { CiDeliveryTruck, CiWarning } from "react-icons/ci";
 import { HiOutlineReceiptRefund } from "react-icons/hi";

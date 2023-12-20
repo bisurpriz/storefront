@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { HiChevronDown } from "react-icons/hi";
@@ -25,20 +27,20 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   const isOpenClass = open ? "border-b" : "";
   const isBordered = bordered ? "border border-b-0 last:border-b" : "";
 
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle();
+    }
+    setOpen(!open);
+  };
+
   return (
     <div
       className={` transition-colors select-none ${isBordered} ${className} whitespace-nowrap`}
     >
       <div
         className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
-        onClick={
-          onToggle
-            ? () => {
-                onToggle();
-                setOpen(!open);
-              }
-            : () => setOpen(!open)
-        }
+        onClick={handleToggle}
       >
         <h4 className="flex items-center">{title}</h4>
         <HiChevronDown

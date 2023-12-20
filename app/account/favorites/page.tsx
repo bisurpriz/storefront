@@ -1,7 +1,5 @@
-"use client";
 import ProductItem from "@/components/Product/Item";
 import { IMAGE_URL } from "@/contants/urls";
-import { useEffect, useState } from "react";
 import { getUserFavorites } from "./actions";
 import { Product } from "@/common/types/Product/product";
 
@@ -13,27 +11,19 @@ interface FavoritesResponse {
   totalCount: number;
 }
 
-const FavoritesPage = () => {
-  const [userFavorites, setUserFavorites] = useState<FavoritesResponse>(null);
-
-  const getData = async () => {
-    const result = await getUserFavorites<FavoritesResponse>({
+const FavoritesPage = async () => {
+  const { user_favorite, totalCount } =
+    await getUserFavorites<FavoritesResponse>({
       offset: 0,
     });
-    setUserFavorites(result);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <div>
       <h1 className="text-2xl font-mono font-semibold tracking-wide mb-4">
-        Favorilerim
+        Favorilerim ({totalCount})
       </h1>
       <div className="grid max-xs:grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {userFavorites?.user_favorite?.map((item) => (
+        {user_favorite?.map((item) => (
           <ProductItem
             key={item.id}
             id={item.product.id}

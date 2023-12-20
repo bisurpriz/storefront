@@ -1,13 +1,12 @@
 "use client";
 
 import Stepper from "@/components/Stepper";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cartStepperPaths } from "../../constants";
+import { usePathname } from "next/navigation";
 
 const CartSteps = () => {
   const pathname = usePathname();
-
   const [activeStep, setActiveStep] = useState(
     cartStepperPaths.findIndex((step) => step.path === pathname)
   );
@@ -17,7 +16,7 @@ const CartSteps = () => {
   }, [pathname]);
 
   return (
-    <div>
+    <div className="block text-3xl mb-3">
       <Stepper
         activeStep={activeStep}
         steps={cartStepperPaths.map((step, i) => ({

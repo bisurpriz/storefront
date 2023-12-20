@@ -4,7 +4,6 @@ import TenantOrders from "./components/TenantOrders";
 
 const OrdersPage = async () => {
   const { orders } = await getUserOrders();
-
   return (
     <ul>
       {orders?.map((order) => {

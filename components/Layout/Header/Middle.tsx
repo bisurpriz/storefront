@@ -18,10 +18,11 @@ const HeaderMiddle = async () => {
     <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 mb-4">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
         <Image
-          src={"/newlogo.png"}
+          src={"/logo.svg"}
           width={180}
           height={55}
           alt="BiSürpriz Logo"
+          className="w-auto h-auto scale-150"
           priority
         />
       </Link>

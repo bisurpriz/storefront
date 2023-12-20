@@ -1,4 +1,3 @@
-"use-client";
 import { destructClaims } from "@/utils/getClaims";
 import { getSession } from "@auth0/nextjs-auth0";
 import { useEffect } from "react";

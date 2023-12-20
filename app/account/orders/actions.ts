@@ -9,6 +9,7 @@ export const getUserOrders = async () => {
     order: OrderResponse[];
   }>({
     query: GET_USER_ORDERS,
+    fetchPolicy: "no-cache",
   });
   const { order } = data;
   return {

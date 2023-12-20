@@ -1,5 +1,3 @@
-"use client";
-
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import React from "react";
 import amex from "@/public/payment/amex.png";
@@ -28,12 +26,9 @@ const paymentMethods = [
 ];
 
 const PaymentMethods = () => {
-  const [open, setOpen] = React.useState(false);
-
   return (
     <AccordionItem
-      isOpen={open}
-      onToggle={() => setOpen(!open)}
+      isOpen={false}
       title="Ödeme Yöntemleri"
       bordered
       content={

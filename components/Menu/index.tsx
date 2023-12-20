@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React, { useState } from "react";
 import { useMeasure } from "@uidotdev/usehooks";
@@ -8,7 +10,7 @@ const Menu: React.FC<MenuProps> = ({
   className = "",
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [listRef, { width }] = useMeasure<HTMLElement>();
+  const [listRef] = useMeasure<HTMLElement>();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);

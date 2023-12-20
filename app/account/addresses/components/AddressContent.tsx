@@ -5,6 +5,8 @@ import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 
+console.log("@AddressContent: Server Side Rendering");
+
 const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
   return (
     <div className="flex flex-col">

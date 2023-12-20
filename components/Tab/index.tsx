@@ -26,7 +26,11 @@ const Tab: FC<TabsProps> = ({
 
   return (
     <div className="p-4 overflow-hidden">
-      <div className="flex items-center justify-start overflow-x-auto mb-4 little-scroll">
+      <div
+        className={`flex items-center justify-start overflow-x-auto mb-4 little-scroll
+      ${borderedClass}
+      `}
+      >
         {tabs.map((tab, index) => (
           <div
             key={index}
