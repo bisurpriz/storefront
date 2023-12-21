@@ -40,7 +40,6 @@ const HeaderBottom = ({ categories }: Props) => {
           width={180}
           height={55}
           alt="Bonnmarşe Logo"
-          className="w-auto h-auto scale-150"
           priority
         />
       </Link>

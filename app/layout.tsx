@@ -1,23 +1,24 @@
+import Content from "@/components/Layout/Content";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Lato, Quicksand } from "next/font/google";
 import { Suspense } from "react";
-import Loading from "./loading";
-import Header from "../components/Layout/Header";
-import Content from "@/components/Layout/Content";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-
-import "./globals.css";
 import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/zoom";
+import Header from "../components/Layout/Header";
+import "./globals.css";
+import Loading from "./loading";
 
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import "@smastrom/react-rating/style.css";
+import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
 import "react-datepicker/dist/react-datepicker.css";
-import tr from "date-fns/locale/tr";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -80,7 +81,6 @@ export const metadata: Metadata = {
   ],
   robots: "index, follow",
 };
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({
@@ -99,6 +99,7 @@ export default async function RootLayout({
         id="root"
       >
         <Suspense fallback={<Loading />}>
+          <SpeedInsights debug={process.env.NODE_ENV === "development"} />
           <UserProvider
             loginUrl={`/api/auth/login`}
             profileUrl={`/api/auth/me`}

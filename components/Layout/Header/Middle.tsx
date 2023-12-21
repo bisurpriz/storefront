@@ -22,7 +22,6 @@ const HeaderMiddle = async () => {
           width={180}
           height={55}
           alt="BiSürpriz Logo"
-          className="w-auto h-auto scale-150"
           priority
         />
       </Link>

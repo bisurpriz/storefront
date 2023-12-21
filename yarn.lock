@@ -4864,6 +4864,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/speed-insights@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@vercel/speed-insights@npm:1.0.2"
+  checksum: 074213d71684d618eb1e755df192d4a8bffa4921d1ff3314796d4fb883aad73672d7ce68ae059426def308cf3a4cd176f870803e880e31eb4d633759eb6a6ed4
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.6, @webassemblyjs/ast@npm:^1.11.5":
   version: 1.11.6
   resolution: "@webassemblyjs/ast@npm:1.11.6"
@@ -8131,6 +8138,7 @@ eslint@latest:
     "@types/react-transition-group": ^4.4.7
     "@typescript-eslint/eslint-plugin": ^6.9.1
     "@uidotdev/usehooks": ^2.4.0
+    "@vercel/speed-insights": ^1.0.2
     autoprefixer: ^10.4.16
     axios: ^1.5.1
     clsx: ^2.0.0
