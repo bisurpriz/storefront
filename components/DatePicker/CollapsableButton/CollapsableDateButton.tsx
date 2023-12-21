@@ -1,10 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
-import React from "react";
 import { CSSTransition } from "react-transition-group";
 import { localeFormat } from "@/utils/format";
 import TimePicker from "../TimePicker";
+import { useRef } from "react";
 
 type Props = {
   label: string;
@@ -23,7 +23,7 @@ const CollapsableDateButton = ({
   onSelect,
   selectedDay,
 }: Props) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleOpen = () => {
     value === selectedDay ? onSelect(null) : onSelect(value);

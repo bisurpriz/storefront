@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type { FC, ReactNode } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 enum TooltipPosition {
@@ -11,12 +12,12 @@ enum TooltipPosition {
 interface TooltipProps {
   text: string;
   position?: "top" | "bottom" | "left" | "right";
-  children: React.ReactNode;
+  children: ReactNode;
   breakpoint?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   whiteSpace?: "normal" | "nowrap";
 }
 
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: FC<TooltipProps> = ({
   text,
   position = TooltipPosition.BOTTOM,
   children,
@@ -52,7 +53,7 @@ const Tooltip: React.FC<TooltipProps> = ({
     }
   };
 
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const breakpointWithOpenTooltip = () => {
     switch (breakpoint) {

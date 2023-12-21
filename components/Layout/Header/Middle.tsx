@@ -6,7 +6,6 @@ import useCart from "@/store/cart";
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsTruck } from "react-icons/bs";
 import { MdOutlineFavoriteBorder } from "react-icons/md";

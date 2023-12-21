@@ -1,4 +1,3 @@
-import React from "react";
 import TextField from "../TextField";
 import { CustomizableArea } from "@/common/types/Order/order";
 import ImageUpload from "../ImageUpload";

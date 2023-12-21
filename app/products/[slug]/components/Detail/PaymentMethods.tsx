@@ -1,5 +1,4 @@
 import AccordionItem from "@/components/Accordion/AccordionItem";
-import React from "react";
 import amex from "@/public/payment/amex.png";
 import mastercard from "@/public/payment/mastercard.png";
 import visa from "@/public/payment/visa.png";

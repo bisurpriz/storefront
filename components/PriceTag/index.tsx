@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 
 interface PriceTagProps {
   price: number;

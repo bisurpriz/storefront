@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TextField from "../TextField";
 import VisaSvg from "../Svgs/Visa";
 import MasterCard from "../Svgs/MasterCard";

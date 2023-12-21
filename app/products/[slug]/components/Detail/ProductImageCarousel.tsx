@@ -1,5 +1,4 @@
 import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
-import React from "react";
 
 const ProductImageCarousel = ({
   images,

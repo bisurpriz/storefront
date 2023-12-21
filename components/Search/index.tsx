@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 export interface SearchInputProps {

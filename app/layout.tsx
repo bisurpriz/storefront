@@ -3,7 +3,6 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Lato, Quicksand } from "next/font/google";
-import { Suspense } from "react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -12,7 +11,6 @@ import "swiper/css/thumbs";
 import "swiper/css/zoom";
 import Header from "../components/Layout/Header";
 import "./globals.css";
-import Loading from "./loading";
 
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import "@smastrom/react-rating/style.css";
@@ -98,16 +96,11 @@ export default async function RootLayout({
         className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden mb-10`}
         id="root"
       >
-        <Suspense fallback={<Loading />}>
-          <SpeedInsights debug={process.env.NODE_ENV === "development"} />
-          <UserProvider
-            loginUrl={`/api/auth/login`}
-            profileUrl={`/api/auth/me`}
-          >
-            <Header />
-            <Content>{children}</Content>
-          </UserProvider>
-        </Suspense>
+        <SpeedInsights debug={process.env.NODE_ENV === "development"} />
+        <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
+          <Header />
+          <Content>{children}</Content>
+        </UserProvider>
       </body>
     </html>
   );

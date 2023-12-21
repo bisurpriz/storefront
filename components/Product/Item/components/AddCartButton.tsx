@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import useCart from "@/store/cart";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { ProductItemProps } from "..";
 
 const AddCartButton = ({

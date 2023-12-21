@@ -1,4 +1,3 @@
-import React from "react";
 import CouponCard from "../components/CouponCard";
 
 const CouponsPage = () => {

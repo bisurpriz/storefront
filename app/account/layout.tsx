@@ -1,4 +1,3 @@
-import React from "react";
 import AccountNavigation from "./components/Navigation";
 
 const AccountLayout = async ({ children }: { children: React.ReactNode }) => {

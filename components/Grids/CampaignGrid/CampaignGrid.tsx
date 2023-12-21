@@ -1,8 +1,8 @@
-import React from "react";
+import { FC } from "react";
 import Grid from "../Grid";
 import GridItem from "../GridItem";
 
-const CampaignGrid: React.FC = () => {
+const CampaignGrid: FC = () => {
   return (
     <Grid
       cols={12}

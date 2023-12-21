@@ -1,4 +1,3 @@
-import React from "react";
 import Rating from "../../../../../components/Rating/Rating";
 import Popover from "@/components/Popover";
 import RatingDetail from "./RatingDetail";

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Button from "../Button";
 

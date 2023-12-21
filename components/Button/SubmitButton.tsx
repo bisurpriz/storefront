@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Button, { ButtonProps } from ".";
 import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";

@@ -1,4 +1,3 @@
-import React from "react";
 import { getProductById } from "../actions";
 import { IMAGE_URL } from "@/contants/urls";
 import ProductImageCarousel from "./components/Detail/ProductImageCarousel";

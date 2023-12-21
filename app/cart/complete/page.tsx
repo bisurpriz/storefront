@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import Link from "next/link";
-import React from "react";
 
 const OrderCompletePage: React.FC = async () => {
   return (

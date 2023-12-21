@@ -9,7 +9,7 @@ import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
 import useCart from "@/store/cart";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdMenu } from "react-icons/md";
 

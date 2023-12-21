@@ -9,7 +9,6 @@ import useCart from "@/store/cart";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoAccessibility, IoAirplane, IoInformation } from "react-icons/io5";
 

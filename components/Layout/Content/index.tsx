@@ -1,5 +1,5 @@
 import Loading from "@/app/loading";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 
 type ContentProps = {

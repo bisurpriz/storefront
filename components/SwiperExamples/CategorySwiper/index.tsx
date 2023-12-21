@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo } from "react";
+import { memo } from "react";
 import CustomSwiper from "../../Swiper";
 import Image from "next/image";
 import { useMeasure } from "@uidotdev/usehooks";

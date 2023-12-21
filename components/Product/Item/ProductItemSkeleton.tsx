@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProductItemSkeleton = () => {
   return (
     <div className="bg-gray-200 rounded-lg p-4 animate-pulse border">

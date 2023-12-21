@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import { faker } from "@faker-js/faker";
 import { format } from "date-fns";
-import React from "react";
 
 const CouponCard = () => {
   return (

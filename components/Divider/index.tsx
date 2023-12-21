@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 
 type DividerProps = {
   orientation: "horizontal" | "vertical";
@@ -7,7 +7,7 @@ type DividerProps = {
   className?: string;
 };
 
-const Divider: React.FC<DividerProps> = ({
+const Divider: FC<DividerProps> = ({
   orientation = "horizontal",
   color = "#000",
   ariaLabel = "divider",

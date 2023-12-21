@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { CustomSwiperProps } from "./Swiper";
 import { Navigation } from "swiper/modules";

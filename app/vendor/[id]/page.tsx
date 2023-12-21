@@ -1,6 +1,5 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
-import React from "react";
 import { getPaginatedVendorProducts } from "@/app/vendor/actions";
 import SearchLocation from "@/app/products/[slug]/components/Layout/SearchLocation";
 

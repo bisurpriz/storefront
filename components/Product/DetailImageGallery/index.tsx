@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { useMeasure } from "@uidotdev/usehooks";
 import Image from "next/image";

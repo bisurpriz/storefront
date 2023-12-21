@@ -1,7 +1,6 @@
 import type { OrderResponse } from "@/common/types/Order/order";
 import StatusBadge from "@/components/StatusBadge";
 import Link from "next/link";
-import React from "react";
 import OrderItem from "./OrderItem";
 
 const TenantOrders = ({

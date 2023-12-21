@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMeasure } from "@uidotdev/usehooks";
 
 const Menu: React.FC<MenuProps> = ({

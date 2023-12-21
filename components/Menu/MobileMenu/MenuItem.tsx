@@ -1,16 +1,16 @@
 import Link from "next/link";
-import React from "react";
+import { useRef, useState } from "react";
 import { PiCaretDownBold } from "react-icons/pi";
 import { CSSTransition } from "react-transition-group";
 
 const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
-  const [isCollapse, setIsCollapse] = React.useState(false);
+  const [isCollapse, setIsCollapse] = useState(false);
 
   const toggle = () => setIsCollapse(!isCollapse);
 
   const textClasses = "text-lg font-normal mt-2 text-slate-500";
 
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div role="menuitem" className={`${textClasses}  py-2 `}>

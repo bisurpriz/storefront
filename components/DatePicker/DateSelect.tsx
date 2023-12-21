@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import Button from "../Button";
 import { BsCalendar } from "react-icons/bs";
 import ReactDatePicker from "react-datepicker";
@@ -63,7 +63,7 @@ const CustomButton = forwardRef(
 );
 
 function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
     <ReactDatePicker

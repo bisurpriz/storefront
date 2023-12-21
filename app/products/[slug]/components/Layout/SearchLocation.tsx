@@ -1,7 +1,7 @@
 "use client";
 
 import Dropdown from "@/components/Dropdown";
-import React from "react";
+import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const SearchLocation = ({ className = "" }: Props) => {
-  const [location, setLocation] = React.useState<{
+  const [location, setLocation] = useState<{
     label: string | number;
     value: string | number;
   } | null>(null);

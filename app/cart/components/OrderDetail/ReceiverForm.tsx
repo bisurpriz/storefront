@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/components/Card";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useWatch, useForm } from "react-hook-form";
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import { getUserAddressById } from "@/app/account/actions";

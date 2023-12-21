@@ -1,4 +1,3 @@
-import React from "react";
 import CreditCartForm from "../components/Checkout/CreditCartForm";
 
 const CartCheckout = async () => {

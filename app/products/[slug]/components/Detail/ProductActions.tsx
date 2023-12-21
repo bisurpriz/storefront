@@ -5,7 +5,7 @@ import {
 } from "@/app/account/favorites/actions";
 import Button from "@/components/Button";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdFavoriteBorder } from "react-icons/md";
 
 interface Props {

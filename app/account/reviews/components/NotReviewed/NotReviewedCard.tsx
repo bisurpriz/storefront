@@ -1,7 +1,6 @@
 import Rating from "@/components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
-import React from "react";
 import ClientModal from "./ClientModal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 

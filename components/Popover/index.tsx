@@ -1,6 +1,13 @@
 "use client";
 import useResponsive from "@/hooks/useResponsive";
-import React, { useState, useRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  Children,
+  ReactElement,
+  cloneElement,
+} from "react";
 import { CSSTransition } from "react-transition-group";
 
 interface PopoverProps {
@@ -49,12 +56,10 @@ const Popover: React.FC<PopoverProps> = ({
     }
   };
 
-  const child = children
-    ? (React.Children?.only(children) as React.ReactElement)
-    : null;
+  const child = children ? (Children?.only(children) as ReactElement) : null;
 
   const childTrigger = child
-    ? React.cloneElement(children, {
+    ? cloneElement(children, {
         onMouseEnter: () => setIsOpen(true),
         onMouseLeave: () => setIsOpen(false),
       })

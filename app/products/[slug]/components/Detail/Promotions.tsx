@@ -1,5 +1,3 @@
-import React from "react";
-
 type Promotions = {
   icon: string | React.ReactElement;
   description: string;

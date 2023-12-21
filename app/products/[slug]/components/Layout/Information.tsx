@@ -1,4 +1,3 @@
-import React from "react";
 import { TfiGift } from "react-icons/tfi";
 
 const Information = () => {

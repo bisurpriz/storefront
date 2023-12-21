@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import CollapsableDateButton from "./CollapsableButton/CollapsableDateButton";
 import { add, isToday, isTomorrow, startOfTomorrow } from "date-fns";
 import { localeFormat } from "@/utils/format";

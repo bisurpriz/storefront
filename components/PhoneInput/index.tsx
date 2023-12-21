@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import TextField from "../TextField";
 
 interface PhoneInputProps {
@@ -14,7 +14,7 @@ interface PhoneInputProps {
   error?: boolean;
 }
 
-const PhoneInput: React.FC<PhoneInputProps> = ({
+const PhoneInput: FC<PhoneInputProps> = ({
   onChange,
   placeholder,
   value,

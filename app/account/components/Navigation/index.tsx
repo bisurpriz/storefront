@@ -3,7 +3,6 @@
 import Tooltip from "@/components/Tooltip";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 import { AiOutlineUnlock, AiOutlineUser } from "react-icons/ai";
 import { BsTruck } from "react-icons/bs";
 import { FiMessageSquare, FiStar } from "react-icons/fi";

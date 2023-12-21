@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Transition } from "react-transition-group";
 import ClientOnlyPortal from "./ClientOnlyPortal";
 import { useClickAway } from "@uidotdev/usehooks";

@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProfileFormSkeleton = () => {
   return (
     <div className="p-8 rounded-lg flex-col gap-8 bg-slate-200 animate-pulse flex items-center justify-between w-full">

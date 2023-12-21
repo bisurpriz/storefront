@@ -2,7 +2,6 @@ import type { OrderItemResponse } from "@/common/types/Order/order";
 import { IMAGE_URL } from "@/contants/urls";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const OrderItem = ({ order_items }: { order_items: OrderItemResponse[] }) => {
   return (

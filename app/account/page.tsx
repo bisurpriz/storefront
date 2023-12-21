@@ -1,4 +1,3 @@
-import React from "react";
 import ProfileForm from "./components/ProfileForm";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";

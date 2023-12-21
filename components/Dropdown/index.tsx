@@ -3,7 +3,7 @@
 import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import React, { memo, useState } from "react";
+import { Children, ReactElement, cloneElement, memo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -51,12 +51,10 @@ const Dropdown: React.FC<DropdownProps> = ({
     topRight: "top-0 right-0 transform translate-x-0 -translate-y-full",
   };
 
-  const child = children
-    ? (React.Children.only(children) as React.ReactElement)
-    : null;
+  const child = children ? (Children.only(children) as ReactElement) : null;
 
   const childTrigger = child
-    ? React.cloneElement(child!, {
+    ? cloneElement(child!, {
         onClick: () => setIsOpen(!isOpen),
         key: "dropdown-trigger",
       })

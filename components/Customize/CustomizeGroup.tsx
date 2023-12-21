@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import CustomizeCartItem from "./CustomizeCartItem";
 import Button from "../Button";
 import useCart from "@/store/cart";
