@@ -1,14 +1,8 @@
 "use client";
 
-// src/components/Tab.tsx
-import  { useState,FC } from "react";
+import { useState, FC } from "react";
 
-const Tab: FC<TabsProps> = ({
-  tabs,
-  bordered,
-  onTabChange,
-  activeTab,
-}) => {
+const Tab: FC<TabsProps> = ({ tabs, bordered, onTabChange, activeTab }) => {
   const [selectedTab, setSelectedTab] = useState<TabProps>(
     tabs.find((tab) => tab.id === activeTab) || tabs[0]
   );

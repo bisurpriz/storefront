@@ -61,7 +61,6 @@ const useCart = create(
       },
       removeItem: (id) => {
         set((state) => {
-          // If item already exists in cart, update quantity and specialInstructions
           const itemExists = state.cartItems.find((i) => i.id === id);
           if (itemExists) {
             return {
@@ -77,7 +76,6 @@ const useCart = create(
       },
       updateItem: ({ id, quantity, specialInstructions }) => {
         set((state) => {
-          // If item already exists in cart, update quantity and specialInstructions if quantity decreases slice specialInstructions
           const itemExists = state.cartItems.find((i) => i.id === id);
           if (itemExists) {
             if (quantity && quantity < itemExists.quantity) {

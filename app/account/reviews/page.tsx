@@ -1,68 +1,28 @@
-"use client";
-
 import Tab from "@/components/Tab";
-import NotReviewedCard from "./components/NotReviewed/NotReviewedCard";
-import { createReview, getOrderWithReview } from "./actions";
-import { OrderItemWithReview } from "@/common/types/Order/order";
-import { useEffect, useState } from "react";
+import { getOrderWithReview } from "./actions";
+import NotReviewedCardMapper from "./components/NotReviewed/CardMapper";
 
-const mapper = (
-  result: OrderItemWithReview[],
-  onReviewSubmit: ({
-    product_id,
-    score,
-    comment,
-  }: {
-    product_id: number;
-    score: number;
-    comment: string;
-  }) => Promise<void>
-) =>
-  result.map((item) => (
-    <NotReviewedCard
-      key={item.id}
-      productName={item.product.name}
-      deliveryDate={item.created_at}
-      imageUrl={item.product.image_url[0]}
-      rating={3}
-      reviewCount={item.review_count}
-      productId={item.product.id}
-      onReviewSubmit={onReviewSubmit}
-    />
-  ));
+const ReviewsPage = async () => {
+  const { order_item } = await getOrderWithReview();
 
-const ReviewsPage = () => {
-  const [items, setItems] = useState<OrderItemWithReview[] | null>(null);
-
-  const getNotReviewed = async () => {
-    const response = await getOrderWithReview();
-    setItems(response.order_item);
-  };
-
-  const handleCreateReview = async ({
-    product_id,
-    score,
-    comment,
-  }: {
-    product_id: number;
-    score: number;
-    comment: string;
-  }) => {
-    await createReview({ product_id, score, comment });
-    getNotReviewed();
-  };
-
-  useEffect(() => {
-    getNotReviewed();
-  }, []);
-
-  console.log(items, "items");
+  // const handleCreateReview = async ({
+  //   product_id,
+  //   score,
+  //   comment,
+  // }: {
+  //   product_id: number;
+  //   score: number;
+  //   comment: string;
+  // }) => {
+  //   await createReview({ product_id, score, comment });
+  //   getNotReviewed();
+  // };
 
   return (
     <Tab
       tabs={[
         {
-          content: mapper(items, handleCreateReview),
+          content: <NotReviewedCardMapper result={order_item} />,
           id: "not-reviewed",
           label: "Değerlendirme yapılmayanlar",
         },

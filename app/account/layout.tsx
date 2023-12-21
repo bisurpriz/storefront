@@ -1,6 +1,6 @@
 import AccountNavigation from "./components/Navigation";
 
-const AccountLayout = async ({ children }: { children: React.ReactNode }) => {
+const AccountLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex gap-8 max-md:gap-4 relative">
       <AccountNavigation />
