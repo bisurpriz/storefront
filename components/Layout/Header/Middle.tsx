@@ -1,18 +1,14 @@
-import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import HeaderProfile from "@/components/Profile/HeaderProfile";
 import Search from "@/components/Search";
-import useCart from "@/store/cart";
 
 import Image from "next/image";
 import Link from "next/link";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsTruck } from "react-icons/bs";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
+import CartButton from "./components/CartButton";
 
 const HeaderMiddle = async () => {
-  const { count } = useCart.getState();
-
   return (
     <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 mb-4">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
@@ -51,20 +47,7 @@ const HeaderMiddle = async () => {
             <span className="max-xl:hidden font-normal">Siparişlerim</span>
           </Button>
         </Link>
-        <Badge badgeContent={count}>
-          <Link href="/cart">
-            <Button
-              icon={<AiOutlineShoppingCart />}
-              type="button"
-              size="small"
-              variant="link"
-              iconSize={24}
-              className={`gap-2 py-0 px-0`}
-            >
-              <span className="max-xl:hidden font-normal">Sepetim</span>
-            </Button>
-          </Link>
-        </Badge>
+        <CartButton />
         <HeaderProfile />
       </div>
     </div>

@@ -26,14 +26,14 @@ const Menu: React.FC<MenuProps> = ({
 
   return (
     <nav
-      className={`font-mono bg-transparent font-semibold w-full ${className}`}
+      className={`font-mono bg-transparent font-medium w-full ${className}`}
       ref={listRef}
     >
       {items ? (
         <ul
           className={`${
             orientation === "horizontal" ? "inline-flex" : "block"
-          }  text-base font-normal leading-4 w-full`}
+          }  text-base leading-4 w-full`}
         >
           {items?.map((item, index) => (
             <li

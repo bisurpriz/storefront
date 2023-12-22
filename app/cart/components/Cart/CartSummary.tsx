@@ -75,7 +75,6 @@ const CartSummary = () => {
   const fetchProducts = useCallback(async () => {
     const { total_discount, total_discount_price, total_price } =
       await getProductsPricesByIds(ids);
-    if (!total_discount_price && !total_discount && !total_price) return;
     setPricing({
       total_discount,
       total_discount_price,
