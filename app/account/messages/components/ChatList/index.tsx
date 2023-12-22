@@ -7,9 +7,9 @@ const data = {
   unread: 2,
 };
 
-const ChatList = () => {
+const ChatList = ({ onMessageSelect }: { onMessageSelect: () => void }) => {
   return (
-    <div className="flex-1 h-full overflow-auto px-2">
+    <div className="flex-1 h-full overflow-auto px-2" onClick={onMessageSelect}>
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
         <ChatItem key={item} {...data} />
       ))}
