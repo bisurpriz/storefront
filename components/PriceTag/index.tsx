@@ -16,21 +16,29 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
     [price, discount]
   );
 
+  if (!discount)
+    <span
+      className={clsx([
+        "font-semibold leading-none text-xl text-primary-light",
+        discount > 0 ? "" : "font-semibold",
+      ])}
+    >
+      {discount?.toFixed(2)} &#8378;
+    </span>;
+
   return (
-    <div className="flex items-end justify-start flex-wrap gap-2 whitespace-nowrap w-full max-sm:justify-between">
+    <div className="flex items-end justify-start gap-2 whitespace-nowrap w-full max-sm:justify-between">
       {discount > 0 && price && discountRate > 0 && (
         <span className="text-sm text-white font-semibold p-1.5 bg-secondary-light rounded-lg">
           %{discountRate}
         </span>
       )}
-      <div className="flex gap-2 mb-1 items-center max-sm:items-start max-sm:mb-0 ">
+      <div className="flex gap-2 mb-1 items-center max-sm:items-start max-sm:mb-0 max-xs:flex-wrap-reverse">
         {discount > 0 && (
           <span
             className={clsx([
-              "font-semibold leading-none",
-              discount > 0
-                ? "text-xl text-primary-light"
-                : "text-xl font-semibold text-primary-light",
+              "font-semibold leading-none text-xl text-primary-light",
+              discount > 0 ? "" : "font-semibold",
             ])}
           >
             {discount?.toFixed(2)} &#8378;
