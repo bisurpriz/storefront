@@ -1,8 +1,10 @@
+import Spinner from "../Spinner";
+
 const Loading = () => {
   return (
     <section className="py-24">
       <div className="container">
-        <h2>Loading...</h2>
+        <Spinner />
       </div>
     </section>
   );
