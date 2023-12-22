@@ -8,6 +8,10 @@ interface AddCartButtonProps extends ProductForCart {
   loading?: boolean;
 }
 
+interface AddCartButtonProps extends ProductItemProps {
+  className?: string;
+}
+
 const AddCartButton = ({
   category,
   discount_price,
