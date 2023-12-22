@@ -1,8 +1,11 @@
+"use client";
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { memo, useCallback, useEffect } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLockScroll } from "@/hooks/useLockScroll";
+import { usePathname } from "next/navigation";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -34,6 +37,13 @@ const Drawer: React.FC<DrawerProps> = ({
   lockScroll = false,
 }) => {
   useLockScroll({ bool: lockScroll && !isOpen });
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname) {
+      onClose?.();
+    }
+  }, [pathname]);
 
   const handleEsc = useCallback(
     (event: KeyboardEvent) => {

@@ -10,7 +10,7 @@ import CartButton from "./components/CartButton";
 
 const HeaderMiddle = async () => {
   return (
-    <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-center justify-between gap-4 max-md:gap-4 max-sm:py-1 mb-4">
+    <div className="w-full pt-6 pb-2 max-sm:h-auto max-md:py-2 max-md:px-4 flex items-end justify-between gap-4 max-md:gap-4 max-sm:py-1 mb-4">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
         <Image
           src={"/logo.svg"}
