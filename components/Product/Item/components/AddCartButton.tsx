@@ -1,14 +1,10 @@
+"use client";
 import Button from "@/components/Button";
 import useCart from "@/store/cart";
 import { useCallback } from "react";
 import { ProductItemProps } from "..";
 
-const AddCartButton = ({
-  id,
-  loading,
-  product_customizable_areas,
-  tenant_id,
-}: ProductItemProps) => {
+const AddCartButton = ({ id, loading, product_customizable_areas, tenant_id }: ProductItemProps) => {
   const { addToCart, cartItems } = useCart.getState();
 
   const handleAddToCart = useCallback(() => {
@@ -17,11 +13,7 @@ const AddCartButton = ({
     addToCart({
       id,
       quantity: prev ? prev.quantity + 1 : 1,
-      specialInstructions: prev?.specialInstructions
-        ? prev.specialInstructions
-        : hasSpecialInstructions
-        ? []
-        : null,
+      specialInstructions: prev?.specialInstructions ? prev.specialInstructions : hasSpecialInstructions ? [] : null,
       tenant_id,
     });
   }, [id, addToCart, cartItems, product_customizable_areas]);
