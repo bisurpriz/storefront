@@ -1,9 +1,10 @@
 import Tab from "@/components/Tab";
 import { getOrderWithReview } from "./actions";
 import NotReviewedCardMapper from "./components/NotReviewed/CardMapper";
+import ReviewedCardMapper from "./components/Reviewed/CardMapper";
 
 const ReviewsPage = async () => {
-  const { order_item } = await getOrderWithReview();
+  const { order_item, reviews } = await getOrderWithReview();
 
   // const handleCreateReview = async ({
   //   product_id,
@@ -27,7 +28,7 @@ const ReviewsPage = async () => {
           label: "Değerlendirme yapılmayanlar",
         },
         {
-          content: <div>Değerlendirilenler</div>,
+          content: <ReviewedCardMapper result={reviews} />,
           id: "reviewed",
           label: "Değerlendirilenler",
         },

@@ -9,3 +9,11 @@ export interface Review {
   product_id: Product["id"];
   score: number;
 }
+
+export interface ReviewWithProduct {
+  id: number;
+  comment: string;
+  score: number;
+  created_at: string;
+  product: { review_count: number } & Partial<Product>;
+}

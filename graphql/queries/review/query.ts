@@ -9,11 +9,7 @@ const GET_ORDERS_WITH_REVIEW = gql`
             product: {
               _or: [
                 { reviews_aggregate: { count: { predicate: { _eq: 0 } } } }
-                {
-                  reviews: {
-                    user_id: { _neq: $user_id }
-                  }
-                }
+                { reviews: { user_id: { _neq: $user_id } } }
               ]
             }
           }
@@ -34,6 +30,33 @@ const GET_ORDERS_WITH_REVIEW = gql`
         id
         name
         image_url
+        reviews_aggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+    }
+
+    review(where: { user_id: { _eq: $user_id } }) {
+      id
+      comment
+      score
+      created_at
+      product {
+        slug
+        name
+        id
+        image_url
+        category {
+          name
+          slug
+          id
+        }
+        tenant {
+          id
+          picture
+        }
         reviews_aggregate {
           aggregate {
             count
