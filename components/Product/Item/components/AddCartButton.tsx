@@ -9,6 +9,10 @@ interface AddCartButtonProps extends ProductItemProps {
   className?: string;
 }
 
+interface AddCartButtonProps extends ProductItemProps {
+  className?: string;
+}
+
 const AddCartButton = ({
   id,
   loading,
