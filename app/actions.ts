@@ -2,17 +2,25 @@
 
 import { query } from "@/graphql/lib/client";
 import { GET_VENDOR_BY_ID } from "@/graphql/queries/vendors/getVendorById";
+import { getSession } from "@auth0/nextjs-auth0";
 import { cookies } from "next/headers";
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
   const auth = cookies();
 
+  console.log(JSON.stringify(auth), "auth");
+
   const id = auth.get("user_id");
 
   if (!id) null;
 
   return id?.value;
+}
+
+export async function getIdToken() {
+  const session = await getSession();
+  return session.idToken;
 }
 
 export async function writeIdToCookies(value: string) {
