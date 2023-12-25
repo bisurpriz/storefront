@@ -1,4 +1,5 @@
 "use server";
+import redis from "@/redis";
 import { readIdFromCookies } from "../actions";
 import { CartItem } from "@/store/cart";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -115,4 +116,9 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
   );
 
   return response.json();
+};
+
+export const setRedisProduct = async (product: any) => {
+  const result = await redis.set("1", JSON.stringify(product));
+  return result;
 };

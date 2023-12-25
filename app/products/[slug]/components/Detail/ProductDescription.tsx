@@ -21,18 +21,18 @@ const ProductDescription = ({
       aria-labelledby="description"
       aria-describedby="Ürün açıklaması"
     >
-      <h2 className="text-xl font-medium font-mono mb-4 text-slate-700">
+      <h2 className="text-xl font-medium font-sans mb-4 text-slate-700">
         {title}
       </h2>
-      <p className="text-sm font-light tracking-wide text-slate-700">
+      <p className="text-sm font-light font-mono tracking-wide text-slate-700">
         {description}
       </p>
       {notes && notes.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
+          <h3 className="text-md font-medium font-sans mb-2 text-slate-700">
             Notlar
           </h3>
-          <ul className="list-disc list-inside text-sm font-light tracking-wide text-slate-700">
+          <ul className="list-disc list-inside text-sm font-light font-mono tracking-wide text-slate-700">
             {notes?.map((note, index) => (
               <li key={`${note}-${index}`}>{note}</li>
             ))}
