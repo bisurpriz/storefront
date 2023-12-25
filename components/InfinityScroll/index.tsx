@@ -4,8 +4,7 @@
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Loading from "./Loading";
-import { IMAGE_URL } from "@/contants/urls";
-import ProductItem from "../Product/Item";
+import ProductItem5 from "../Product/Item/ProductItem5";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -16,7 +15,12 @@ interface InfinityScrollProps<T> {
 
 const PER_REQUEST = 15;
 
-const InfinityScroll = <T,>({ initialData, totalCount, query, dataKey }: InfinityScrollProps<T>) => {
+const InfinityScroll = <T,>({
+  initialData,
+  totalCount,
+  query,
+  dataKey,
+}: InfinityScrollProps<T>) => {
   const [data, setData] = useState<T[]>(initialData);
   const [offset, setOffset] = useState(0);
   const { ref, inView } = useInView({
@@ -40,9 +44,9 @@ const InfinityScroll = <T,>({ initialData, totalCount, query, dataKey }: Infinit
   }, [inView]);
 
   return (
-    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
+    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6 gap-4 max-sm:gap-2">
       {data?.map((item: any) => (
-        <ProductItem key={item.id} {...item} image_url={IMAGE_URL + "/" + item.image_url?.[0]} />
+        <ProductItem5 key={item.id} {...item} />
       ))}
       {totalCount === 0 && <div className="text-center">Ürün bulunamadı</div>}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>

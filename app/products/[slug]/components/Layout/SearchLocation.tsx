@@ -30,8 +30,6 @@ const SearchLocation = ({ className = "" }: Props) => {
       dropdownPlacement="bottomLeft"
       isSearchable
       noOptionsMessage="Aradığınız Konum Bulunamadı"
-      fullWidth
-      className="h-auto"
       onChange={(value, option) => {
         setLocation({
           label: option.label as string,
