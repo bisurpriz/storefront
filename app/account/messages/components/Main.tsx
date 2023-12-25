@@ -56,7 +56,11 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
     });
 
     // send to server
-    sendMessage({ message: text, receiver_id: tenantId, chat_thread_id: thread?.id });
+    sendMessage({
+      message: text,
+      receiver_id: tenantId,
+      chat_thread_id: thread?.id,
+    });
   };
 
   const thread = chats?.find((item) => item.tenant.id === tenantId);
@@ -76,7 +80,10 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
               placeholder="Search"
             />
           </div>
-          <ChatList onMessageSelect={() => setIsMessageOpen(true)} chats={chats ?? []} />
+          <ChatList
+            onMessageSelect={() => setIsMessageOpen(true)}
+            chats={chats ?? []}
+          />
         </div>
 
         <div
@@ -96,12 +103,17 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
             />
 
             <h2 className="text-xl py-1 border-b-2 border-gray-200 inline-block mb-0 flex-auto">
-              <b>{thread?.tenant.firstname + " " + thread?.tenant.lastname}</b> ile Görüşme
+              <b>{thread?.tenant.firstname + " " + thread?.tenant.lastname}</b>{" "}
+              ile Görüşme
             </h2>
           </div>
 
           <MessageList messages={thread?.messages} />
-          <Input onMessageSend={handleMessage} value={text} onChange={(e) => setText(e.target.value)} />
+          <Input
+            onMessageSend={handleMessage}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
         </div>
       </div>
     </>
