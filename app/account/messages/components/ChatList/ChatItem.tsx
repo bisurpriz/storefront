@@ -1,22 +1,21 @@
-import React from "react";
-
-interface IChatItem {
+export interface IChatItem {
   name: string;
   message: string;
   date: string;
   unread: number;
+  imgPath: string;
+  onMessageSelect: () => void;
 }
 
-const ChatItem = ({ name, message, date, unread }: IChatItem) => {
+const ChatItem = ({ name, message, date, unread, imgPath, onMessageSelect }: IChatItem) => {
   return (
-    <div className="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
+    <div
+      className="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
+      onClick={onMessageSelect}
+    >
       <div className="flex-2">
         <div className="w-12 h-12 relative">
-          <img
-            className="w-12 h-12 rounded-full mx-auto"
-            src="https://tailwindcss-chat.vercel.app/resources/profile-image.png"
-            alt="chat-user"
-          />
+          <img className="w-12 h-12 rounded-full mx-auto" src={imgPath} alt="chat-user" />
           <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
         </div>
       </div>

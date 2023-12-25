@@ -1,18 +1,23 @@
-import ChatItem from "./ChatItem";
+import { localeFormat } from "@/utils/format";
+import ChatItem, { IChatItem } from "./ChatItem";
 
-const data = {
-  name: "John Doe",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  date: "12:00 PM",
-  unread: 2,
-};
-
-const ChatList = ({ onMessageSelect }: { onMessageSelect: () => void }) => {
+const ChatList = ({ onMessageSelect, chats }: { onMessageSelect: IChatItem["onMessageSelect"]; chats: any[] }) => {
   return (
-    <div className="flex-1 h-full overflow-auto px-2" onClick={onMessageSelect}>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-        <ChatItem key={item} {...data} />
-      ))}
+    <div className="flex-1 h-full overflow-auto px-2">
+      {chats.map((item) => {
+        const date = localeFormat(item.messages.length > 0 ? new Date(item.messages[0].created_at) : undefined, "PPP");
+        return (
+          <ChatItem
+            key={item.id}
+            name={item.tenant.firstname + " " + item.tenant.lastname}
+            message={item.messages.length > 0 ? item.messages[0].message : ""}
+            date={item.messages.length > 0 ? date : ""}
+            unread={item.messages.length}
+            imgPath={item.tenant.picture}
+            onMessageSelect={onMessageSelect}
+          />
+        );
+      })}
     </div>
   );
 };
