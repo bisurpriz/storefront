@@ -1,23 +1,23 @@
 "use server";
 
-import { OrderItem } from "@/common/types/Order/order";
+import { OrderItem, TenantOrderItem } from "@/common/types/Order/order";
 import { mutate, query } from "@/graphql/lib/client";
 import { SEND_MESSAGE } from "@/graphql/queries/chat/mutation";
-import { GET_ORDER_ITEM } from "@/graphql/queries/order/query";
+import { GET_TENANT_ORDER_ITEM } from "@/graphql/queries/order/query";
 
-export const getOrderItem = async (orderId: number) => {
+export const getTenantOrderItem = async (orderId: number) => {
   const { data, loading } = await query<{
-    order_item: OrderItem[];
+    order_tenant: TenantOrderItem[];
   }>({
-    query: GET_ORDER_ITEM,
+    query: GET_TENANT_ORDER_ITEM,
     fetchPolicy: "no-cache",
     variables: {
       id: orderId,
     },
   });
-  const { order_item } = data;
+  const { order_tenant } = data;
   return {
-    order_item,
+    order_tenant,
     loading,
   };
 };

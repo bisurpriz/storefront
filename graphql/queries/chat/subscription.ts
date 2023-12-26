@@ -23,11 +23,15 @@ const SUBSCRIBE_TO_CHATS = gql`
           id
         }
       }
-      order_item {
-        product {
-          image_url
-          name
+      order_tenant {
+        id
+        order_items {
           id
+          product {
+            image_url
+            name
+            id
+          }
         }
       }
     }
