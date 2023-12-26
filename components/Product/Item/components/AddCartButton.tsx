@@ -16,7 +16,7 @@ const AddCartButton = ({
   tenant_id,
   className,
 }: AddCartButtonProps) => {
-  const { addToCart, cartItems } = useCart.getState();
+  const { addToCart, cartItems } = useCart();
 
   const handleAddToCart = useCallback(async () => {
     const prev = cartItems.find((item) => item.id === id);
@@ -32,7 +32,7 @@ const AddCartButton = ({
       tenant_id,
     });
 
-    const rest = await setRedisProduct({
+    await setRedisProduct({
       id,
       quantity: prev ? prev.quantity + 1 : 1,
       specialInstructions: prev?.specialInstructions
@@ -41,8 +41,7 @@ const AddCartButton = ({
         ? []
         : null,
       tenant_id,
-    });
-    console.log(rest);
+    }).catch((err) => console.log(err));
   }, [id, addToCart, cartItems, product_customizable_areas]);
 
   return (

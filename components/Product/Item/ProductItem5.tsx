@@ -31,9 +31,10 @@ const ProductItem5 = ({
         alt={name}
         width={500}
         height={500}
-        className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none"
+        className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-auto h-auto"
         loading="eager"
         quality={70}
+        priority
       />
       <div className="p-2">
         <article className="flex flex-col justify-between flex-grow mb-2">

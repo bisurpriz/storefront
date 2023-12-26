@@ -2,8 +2,11 @@ import CartSteps from "./components/Cart/CartSteps";
 import CartSummary from "./components/Cart/CartSummary";
 import { Suspense } from "react";
 import CartSkeleton from "./components/Skeletons/CartSkeleton";
+import { getRedisProducts } from "./actions";
 
-const CartTemplate = ({ children }: { children: React.ReactNode }) => {
+const CartLayout = async ({ children }: { children: React.ReactNode }) => {
+  const cartData = await getRedisProducts();
+
   return (
     <Suspense fallback={<CartSkeleton />}>
       <CartSteps />
@@ -11,10 +14,10 @@ const CartTemplate = ({ children }: { children: React.ReactNode }) => {
         <div className={`col-span-2 md:col-span-2 flex flex-col gap-3`}>
           {children}
         </div>
-        <CartSummary />
+        <CartSummary cartItems={cartData} />
       </div>
     </Suspense>
   );
 };
 
-export default CartTemplate;
+export default CartLayout;

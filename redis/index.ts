@@ -18,4 +18,10 @@ redis.on("error", (error) => {
   console.log("Redis error", error);
 });
 
+// close redis connection on app close
+process.on("SIGINT", () => {
+  console.log("Closing redis connection");
+  redis.disconnect();
+});
+
 export default redis;

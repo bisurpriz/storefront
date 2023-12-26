@@ -6,11 +6,11 @@ import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
 import { getProductsPricesByIds } from "@/app/products/actions";
-import useCart from "@/store/cart";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { cartStepperPaths } from "../../constants";
 import CartDrawer from "./CartDrawer";
+import { CartItem } from "@/store/cart";
 
 interface Pricing {
   total_discount: number;
@@ -18,8 +18,7 @@ interface Pricing {
   total_price: number;
 }
 
-const CartSummary = () => {
-  const { cartItems } = useCart();
+const CartSummary = ({ cartItems }: { cartItems: CartItem[] }) => {
   const { push } = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);

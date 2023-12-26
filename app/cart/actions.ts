@@ -1,6 +1,7 @@
 "use server";
+
 import redis from "@/redis";
-import { readIdFromCookies } from "../actions";
+import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
 import { CartItem } from "@/store/cart";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -118,7 +119,52 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
   return response.json();
 };
 
-export const setRedisProduct = async (product: any) => {
-  const result = await redis.set("1", JSON.stringify(product));
+export const checkUserId = async () => {
+  const userId = await readIdFromCookies();
+  const fingerPrint = await readFingerPrintFromCookies();
+
+  if (!userId) {
+    return fingerPrint;
+  }
+
+  return userId;
+};
+
+export const setRedisProduct = async (cartItem: CartItem) => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+  const value = JSON.stringify([cartItem]);
+  const exp = 60 * 60 * 24 * 7;
+
+  const result = await getRedisProducts();
+  if (result) {
+    const existingCartItems = result as CartItem[];
+    existingCartItems.push(cartItem);
+    await redis.set(key, JSON.stringify(existingCartItems), "EX", exp);
+  } else {
+    await redis.set(key, value, "EX", exp);
+  }
+
+  return result;
+};
+
+export const getRedisProducts = async () => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.get(key);
+
+  return JSON.parse(result) as CartItem[] | null;
+};
+
+export const listenToRedis = async () => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.subscribe(key);
+
   return result;
 };
