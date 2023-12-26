@@ -1,7 +1,4 @@
-import {
-  CustomizableAreaType,
-  OrderItemStatus,
-} from "@/common/enums/Order/product";
+import { CustomizableAreaType, OrderItemStatus } from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
 import { Address } from "../Addresses/addresses";
 import { User } from "../User/user";
@@ -14,6 +11,7 @@ export interface OrderItem {
   updated_at: string;
   user_id: string;
   order_tenant_id: Product["tenant_id"];
+  product: Product;
 }
 
 export interface CustomizableArea {
@@ -83,3 +81,9 @@ export interface OrderItemWithReview {
   review_count: number;
 }
 
+export interface TenantOrderItem {
+  id: number;
+  tenant: {
+    id: string;
+  };
+}

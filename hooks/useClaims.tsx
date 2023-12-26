@@ -1,25 +1,26 @@
 import { destructClaims } from "@/utils/getClaims";
-import { getSession } from "@auth0/nextjs-auth0";
-import { useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useEffect, useState } from "react";
 
 export const useClaims = () => {
-  let claims = {
+  const [claims, setClaims] = useState({
     id: null,
     role: null,
     allowedRoles: null,
     fullName: null,
-  };
+  });
+  const { user } = useUser();
 
-  const setUser = async () => {
-    const { user } = await getSession();
+  const setUser = () => {
     if (user) {
-      claims = destructClaims(user);
+      const claims = destructClaims(user);
+      setClaims(claims);
     }
   };
 
   useEffect(() => {
     setUser();
-  }, []);
+  }, [user]);
 
   return { claims };
 };
