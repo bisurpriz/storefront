@@ -4,10 +4,18 @@ const redis = new Redis({
   port: 14533,
   host: "redis-14533.c250.eu-central-1-1.ec2.cloud.redislabs.com",
   password: "CdJkITrZCcwBrzrtdZrDNW8NM7V65hHo",
-  retryStrategy: (times) => {
-    // reconnect after
-    return Math.min(times * 50, 2000);
-  },
+  connectionName: "redis",
+  retryStrategy: (times) => Math.min(times * 50, 2000),
+  connectTimeout: 10000,
+  lazyConnect: true,
+  name: "redis",
+  disconnectTimeout: 10000,
+  maxLoadingRetryTime: 10000,
+  enableReadyCheck: true,
+});
+
+redis.on("ready", () => {
+  console.log("Redis ready");
 });
 
 redis.on("connect", () => {
@@ -18,10 +26,8 @@ redis.on("error", (error) => {
   console.log("Redis error", error);
 });
 
-// close redis connection on app close
-process.on("SIGINT", () => {
-  console.log("Closing redis connection");
-  redis.disconnect();
+redis.on("end", () => {
+  console.log("Redis connection closed");
 });
 
 export default redis;

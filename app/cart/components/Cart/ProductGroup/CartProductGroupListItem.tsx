@@ -1,18 +1,20 @@
+"use client";
+
+import { removeCartItemWithRedis } from "@/app/cart/actions";
 import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
 import QuantityInput from "@/components/NumberInput";
 import Popover from "@/components/Popover";
-import { IMAGE_URL } from "@/contants/urls";
-import useCart from "@/store/cart";
-import { faker } from "@faker-js/faker";
+import PriceTag from "@/components/PriceTag";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineClose } from "react-icons/ai";
-import { IoAccessibility, IoAirplane, IoInformation } from "react-icons/io5";
+import { IoAccessibility, IoInformation } from "react-icons/io5";
 
-const CartProductGroupListItem = (props: ProductForCart) => {
+const CartProductGroupListItem = (product: ProductForCart) => {
   const {
     id,
     name,
@@ -22,53 +24,42 @@ const CartProductGroupListItem = (props: ProductForCart) => {
     image_url,
     discount_price,
     category,
-  } = props;
-
-  const { updateItem, removeItem } = useCart.getState();
+    tenant,
+  } = product;
 
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 border relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-md:flex-col max-xl:gap-2 max-xl:flex-wrap">
+        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2">
           <Image
-            src={`${IMAGE_URL}/${image_url}`}
+            src={getImageUrlFromPath(image_url[0])}
             alt="image"
             className={`object-contain aspect-square w-48 h-48 max-sm:h-32 max-sm:w-32 max-sm:self-center`}
             width={500}
             height={500}
             loading="lazy"
           />
-          <div className="font-mono pr-8 max-sm:flex max-md:flex-col max-sm:flex-wrap">
-            <Link href={`/${category.slug}/${name}?pid=${id}`}>
-              <h3
-                className="text-xl font-semibold text-gray-800 uppercase w-fit"
-                title={name}
-              >
-                {name}
-              </h3>
+          <div className="flex flex-col gap-4">
+            <Link
+              className="text-base font-semibold text-gray-800 uppercase"
+              href={`/${category.slug}/${name}?pid=${id}`}
+            >
+              <h3 title={name}>{name}</h3>
             </Link>
-
-            <div>
-              {discount_price && (
-                <h6 className="text-base font-semibold text-error-light line-through decoration-black">
-                  {discount_price?.toFixed(2)} ₺
-                </h6>
-              )}
-              <h5 className="text-xl font-bold font-sans text-primary">
-                {price?.toFixed(2)} ₺
-              </h5>
-            </div>
-            <div className="flex items-center justify-start gap-2 mt-2">
-              <span className="text-base font-semibold text-gray-600">
-                Adet:
-              </span>
-              <QuantityInput
-                value={quantity}
-                onChange={(e, quantity) => {
-                  updateItem({ id, quantity });
-                }}
-                color="primary"
-              />
+            <div className="flex flex-col gap-4">
+              <PriceTag price={price} discount={discount_price} />
+              <div className="flex items-center justify-start gap-2">
+                <span className="text-base font-semibold text-gray-600">
+                  Adet:
+                </span>
+                <QuantityInput
+                  value={quantity}
+                  onChange={(e, quantity) => {
+                    console.log(e, quantity);
+                  }}
+                  color="primary"
+                />
+              </div>
             </div>
           </div>
 
@@ -113,7 +104,7 @@ const CartProductGroupListItem = (props: ProductForCart) => {
             ) : null}
             <AiOutlineClose
               onClick={() => {
-                removeItem(id);
+                removeCartItemWithRedis(id);
               }}
               className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"
             />
@@ -123,12 +114,8 @@ const CartProductGroupListItem = (props: ProductForCart) => {
           <Promotions
             promotions={[
               {
-                description: faker.commerce.productDescription(),
+                description: tenant.nickname,
                 icon: <IoAccessibility />,
-              },
-              {
-                description: faker.commerce.productDescription(),
-                icon: <IoAirplane />,
               },
             ]}
           />

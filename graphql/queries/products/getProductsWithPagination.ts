@@ -41,6 +41,13 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       discount_price
       product_customizable_areas {
         count
+        customizable_area {
+          type
+        }
+      }
+      tenant {
+        nickname
+        id
       }
       reviews_aggregate {
         aggregate {

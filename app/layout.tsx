@@ -90,6 +90,7 @@ export default async function RootLayout({
     loadDevMessages();
     loadErrorMessages();
   }
+
   return (
     <html lang="tr">
       <body

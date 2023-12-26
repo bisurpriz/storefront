@@ -1,8 +1,11 @@
-import { getRedisProducts } from "./actions";
+import { getCartWithRedis } from "./actions";
 import CartWrapper from "./components/Cart/CartWrapper/index";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 1;
+
 const Cart = async () => {
-  const cartData = await getRedisProducts();
+  const cartData = await getCartWithRedis();
 
   return (
     <div

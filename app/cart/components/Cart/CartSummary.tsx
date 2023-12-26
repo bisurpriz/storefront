@@ -1,16 +1,14 @@
 "use client";
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import { getProductsPricesByIds } from "@/app/products/actions";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { cartStepperPaths } from "../../constants";
 import CartDrawer from "./CartDrawer";
-import { CartItem } from "@/store/cart";
+import { ProductForCart } from "@/common/types/Cart/cart";
 
 interface Pricing {
   total_discount: number;
@@ -18,10 +16,9 @@ interface Pricing {
   total_price: number;
 }
 
-const CartSummary = ({ cartItems }: { cartItems: CartItem[] }) => {
+const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   const { push } = useRouter();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
   const [pricing, setPricing] = useState<Pricing>({
     total_discount: 0,
@@ -30,17 +27,26 @@ const CartSummary = ({ cartItems }: { cartItems: CartItem[] }) => {
   });
   const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
 
+  const ids = useMemo(
+    () =>
+      cartItems?.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+    [cartItems]
+  );
+
   const isCartPage = useCallback(
     (nextPath: string) => {
       const hasEmptySpecialInstructions = cartItems.some((item) => {
-        if (item.specialInstructions?.length < item.quantity) {
+        if (item.product_customizable_areas?.length < item.quantity) {
           return true;
         }
 
-        if (item.specialInstructions?.length === 0) {
+        if (item.product_customizable_areas?.length === 0) {
           return true;
         } else {
-          return item.specialInstructions?.some((instruction) => {
+          return item.product_customizable_areas?.some((instruction) => {
             if (instruction) {
               return Object.values(instruction).some((value) => !value);
             } else {
@@ -62,28 +68,16 @@ const CartSummary = ({ cartItems }: { cartItems: CartItem[] }) => {
     [cartItems, push]
   );
 
-  const ids = useMemo(
-    () =>
-      cartItems?.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-    [cartItems]
-  );
-
-  const fetchProducts = useCallback(async () => {
-    const { total_discount, total_discount_price, total_price } =
-      await getProductsPricesByIds(ids);
-    setPricing({
-      total_discount,
-      total_discount_price,
-      total_price,
-    });
-  }, [ids]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [cartItems]);
+  // const fetchProducts = useCallback(async () => {
+  //   if (!ids) return;
+  //   const { total_discount, total_discount_price, total_price } =
+  //     await getProductsPricesByIds(ids);
+  //   setPricing({
+  //     total_discount,
+  //     total_discount_price,
+  //     total_price,
+  //   });
+  // }, [ids]);
 
   const handlePageChange = useCallback(() => {
     if (pathname === paths[0]) {
@@ -167,26 +161,8 @@ const CartSummary = ({ cartItems }: { cartItems: CartItem[] }) => {
           </div>
         </div>
       </div>
-      <div className="bg-white w-full py-4 flex justify-between md:hidden">
-        <div className="flex">
-          <Button
-            icon={<MdKeyboardArrowUp />}
-            size="small"
-            iconSize={24}
-            className="p-2"
-            onClick={() => setIsOpen(true)}
-          />
-          <span className="flex flex-col justify-center ml-2">
-            <span className="text-xs">Toplam:</span>
-            <span className="text-md text-primary font-medium">
-              {total_price?.toFixed(2)} ₺
-            </span>
-          </span>
-        </div>
-      </div>
+
       <CartDrawer
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
         totalPrice={total_price}
         totalDiscount={total_discount}
         totalDiscountPrice={total_discount_price}
