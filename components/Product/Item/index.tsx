@@ -31,6 +31,7 @@ const ProductItem = ({
   slug,
   totalReviewCount,
   tenant_id,
+  tenant,
 }: ProductItemProps) => {
   const maxXsClasses = {
     container: "overflow-hidden rounded-lg border relative flex flex-col",
@@ -81,7 +82,13 @@ const ProductItem = ({
               id={id}
               loading={loading}
               product_customizable_areas={product_customizable_areas}
-              tenant_id={tenant_id}
+              tenant={tenant}
+              category={category}
+              discount_price={discount_price}
+              image_url={image[0]}
+              name={name}
+              price={price}
+              quantity={1}
             />
           </div>
           <AddToFavorite isFavorite={isFavorite} productId={id} key={id} />

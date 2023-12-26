@@ -10,7 +10,6 @@ interface AddCartButtonProps extends ProductForCart {
 
 const AddCartButton = ({
   category,
-  description,
   discount_price,
   id,
   image_url,
