@@ -80,3 +80,10 @@ export interface OrderItemWithReview {
   product: Partial<Product>;
   review_count: number;
 }
+
+export interface TenantOrderItem {
+  id: number;
+  tenant: {
+    id: string;
+  };
+}

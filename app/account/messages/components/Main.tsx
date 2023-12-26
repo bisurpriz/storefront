@@ -8,26 +8,60 @@ import { useSubscription } from "@apollo/client";
 import { SUBSCRIBE_TO_CHATS } from "@/graphql/queries/chat/subscription";
 import Input from "./Message/Input";
 import { sendMessage } from "../action";
+import { useClaims } from "@/hooks/useClaims";
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
-  const [isMessageOpen, setIsMessageOpen] = useState(false);
-  const { data, error } = useSubscription(SUBSCRIBE_TO_CHATS);
+  const [isMessageOpen, setIsMessageOpen] = useState(!!tenantId);
+  const [text, setText] = useState("");
+  const [chats, setChats] = useState([]);
+  const { claims } = useClaims();
+
+  const { error } = useSubscription(SUBSCRIBE_TO_CHATS, {
+    onData(options: any) {
+      console.log(options?.data?.data?.chat_thread);
+      setChats(options?.data?.data?.chat_thread);
+    },
+  });
 
   if (error) {
     console.log(error);
   }
 
-  if (data) {
-    console.log(data);
-  }
-
   const handleMessage = async () => {
-    await sendMessage({ message: "test", receiver_id: tenantId, chat_thread_id: thread?.id });
+    // add to local
+    setChats((prev) => {
+      const thread = prev.find((item) => item.tenant.id === tenantId);
+      return prev.map((item) => {
+        if (item.tenant.id === tenantId) {
+          return {
+            ...item,
+            messages: [
+              ...item.messages,
+              {
+                id: Math.random().toString(),
+                message: text,
+                created_at: new Date().toISOString(),
+                sender: {
+                  id: claims.id,
+                },
+                receiver: {
+                  id: tenantId,
+                },
+              },
+            ],
+          };
+        }
+        return item;
+      });
+    });
+
+    // send to server
+    sendMessage({ message: text, receiver_id: tenantId, chat_thread_id: thread?.id });
   };
 
-  const thread = data?.chat_thread.find((item) => item.tenant.id === tenantId);
+  const thread = chats?.find((item) => item.tenant.id === tenantId);
 
-  return (
+  return chats.length > 0 ? (
     <>
       <div className="flex-1 flex relative h-full">
         <div
@@ -42,7 +76,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
               placeholder="Search"
             />
           </div>
-          <ChatList onMessageSelect={() => setIsMessageOpen(true)} chats={data?.chat_thread ?? []} />
+          <ChatList onMessageSelect={() => setIsMessageOpen(true)} chats={chats ?? []} />
         </div>
 
         <div
@@ -66,11 +100,13 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
             </h2>
           </div>
 
-          <MessageList messages={thread?.messages ?? []} />
-          <Input onMessageSend={handleMessage} />
+          <MessageList messages={thread?.messages} />
+          <Input onMessageSend={handleMessage} value={text} onChange={(e) => setText(e.target.value)} />
         </div>
       </div>
     </>
+  ) : (
+    <div></div>
   );
 };
 

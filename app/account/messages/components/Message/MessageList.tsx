@@ -47,9 +47,9 @@ const MessageList = ({
         <MessageItem
           key={item.id}
           message={item.message}
-          date={localeFormat(new Date(item.created_at), "PPP")}
-          picture={item.sender.picture}
-          type={item.sender.id === id ? "sent" : "received"}
+          date={item?.created_at ? localeFormat(new Date(item.created_at), "PPP") : ""}
+          picture={item?.sender?.picture}
+          type={item?.sender?.id === id ? "sent" : "received"}
         />
       ))}
     </div>

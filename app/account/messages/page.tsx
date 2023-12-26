@@ -1,6 +1,6 @@
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import Main from "./components/Main";
-import { getOrderItem } from "./action";
+import { getTenantOrderItem } from "./action";
 
 export const dynamic = "force-dynamic";
 
@@ -11,11 +11,11 @@ const MessagesPage = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
-  const orderItemId = searchParams["oid"];
-  const { order_item: orderItems = [] } = await getOrderItem(Number(orderItemId));
+  const orderTenantId = searchParams["oid"];
+  const { order_tenant: orderTenants = [] } = await getTenantOrderItem(Number(orderTenantId));
 
-  const orderItem = orderItems[0];
-  const tenantId = orderItem?.product.tenant.id;
+  const orderItem = orderTenants[0];
+  const tenantId = orderItem?.tenant?.id;
 
   return (
     <ApolloWrapper>
