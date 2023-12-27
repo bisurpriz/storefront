@@ -3,8 +3,10 @@ import ChatItem, { IChatItem } from "./ChatItem";
 import ChatItemSkeleton from "./ChatItemSkeleton";
 import { useClaims } from "@/hooks/useClaims";
 
-const calculateUnread = (messages: any[], userId: String) => {
-  const unread = messages.filter((item) => item.sender.id !== userId && !item.is_read);
+const calculateUnread = (messages: any[], userId: string) => {
+  const unread = messages.filter(
+    (item) => item.sender.id !== userId && !item.is_read
+  );
   return unread.length;
 };
 
@@ -25,14 +27,23 @@ const ChatList = ({
       ) : (
         chats.map((item) => {
           const date = item?.messages?.[0]?.created_at
-            ? localeFormat(item?.messages.length > 0 ? new Date(item.messages[0].created_at) : undefined, "PPP")
+            ? localeFormat(
+                item?.messages.length > 0
+                  ? new Date(item.messages[0].created_at)
+                  : undefined,
+                "PPP"
+              )
             : "";
           const unread = calculateUnread(item.messages, id);
           return (
             <ChatItem
               key={item.id}
               name={item?.tenant?.firstname + " " + item?.tenant?.lastname}
-              message={item?.messages?.length > 0 ? item.messages?.slice(-1)?.[0]?.message : ""}
+              message={
+                item?.messages?.length > 0
+                  ? item.messages?.slice(-1)?.[0]?.message
+                  : ""
+              }
               date={date}
               imgPath={item.tenant?.picture}
               tenantId={item.tenant.id}

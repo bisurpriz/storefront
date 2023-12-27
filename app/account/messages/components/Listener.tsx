@@ -6,7 +6,7 @@ import { useSubscription } from "@apollo/client";
 
 export const dynamic = "force-dynamic";
 
-const SocketListener = ({}) => {
+const SocketListener = () => {
   const { setChats } = useChatStore((state) => state);
 
   const { error } = useSubscription(SUBSCRIBE_TO_CHATS, {
