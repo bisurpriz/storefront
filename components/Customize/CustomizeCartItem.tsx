@@ -1,10 +1,9 @@
 import TextField from "../TextField";
 import { CustomizableArea } from "@/common/types/Order/order";
 import ImageUpload from "../ImageUpload";
-import { SpecialInstructions } from "@/store/cart";
 
 interface Area extends Omit<CustomizableArea, "id"> {
-  values?: SpecialInstructions;
+  values?: any;
   count: number;
 }
 

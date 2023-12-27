@@ -2,8 +2,7 @@
 import { useMemo } from "react";
 import CustomizeCartItem from "./CustomizeCartItem";
 import Button from "../Button";
-import useCart from "@/store/cart";
-import { getBase64Image } from "@/utils/getBase64Image";
+// import { getBase64Image } from "@/utils/getBase64Image";
 import { ProductForCart } from "@/common/types/Cart/cart";
 
 interface CustomizeGroupProps {
@@ -19,64 +18,59 @@ const CustomizeGroup = ({
   index,
   quantity,
 }: CustomizeGroupProps) => {
-  const { updateItem, cartItems } = useCart();
-
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    const keys = Object.keys(data);
-    // Image var mı kontrol et
-    const hasImages = keys?.find((item) => item.includes("special_image"));
-    const image = data[hasImages];
-    // image file to base64
-    if (image instanceof File) {
-      const base64 = (await getBase64Image(image)) as string;
-
-      if (image.name && base64) {
-        data[hasImages] = base64;
-      } else {
-        data[hasImages] = "";
-      }
-
-      // If has specailInstructions, add new instructions to old instructions
-      const item = cartItems.find((item) => item.id === productId);
-      if (item?.specialInstructions?.length > 0) {
-        const newInstructions = item.specialInstructions[index]
-          ? [
-              ...item.specialInstructions.slice(0, index),
-              {
-                ...item.specialInstructions[index],
-                ...data,
-              },
-              ...item.specialInstructions.slice(index + 1),
-            ]
-          : [
-              ...item.specialInstructions,
-              {
-                ...data,
-              },
-            ];
-
-        updateItem({
-          id: productId,
-          quantity,
-          specialInstructions: newInstructions,
-        });
-      } else {
-        updateItem({
-          id: productId,
-          quantity,
-          specialInstructions: [data],
-        });
-      }
-    }
+    // e.preventDefault();
+    // const formData = new FormData(e.currentTarget);
+    // const data = Object.fromEntries(formData.entries());
+    // const keys = Object.keys(data);
+    // // Image var mı kontrol et
+    // const hasImages = keys?.find((item) => item.includes("special_image"));
+    // const image = data[hasImages];
+    // // image file to base64
+    // if (image instanceof File) {
+    //   const base64 = (await getBase64Image(image)) as string;
+    //   if (image.name && base64) {
+    //     data[hasImages] = base64;
+    //   } else {
+    //     data[hasImages] = "";
+    //   }
+    //   // If has specailInstructions, add new instructions to old instructions
+    //   const item = cartItems.find((item) => item.id === productId);
+    //   if (item?.specialInstructions?.length > 0) {
+    //     const newInstructions = item.specialInstructions[index]
+    //       ? [
+    //           ...item.specialInstructions.slice(0, index),
+    //           {
+    //             ...item.specialInstructions[index],
+    //             ...data,
+    //           },
+    //           ...item.specialInstructions.slice(index + 1),
+    //         ]
+    //       : [
+    //           ...item.specialInstructions,
+    //           {
+    //             ...data,
+    //           },
+    //         ];
+    //     updateItem({
+    //       id: productId,
+    //       quantity,
+    //       specialInstructions: newInstructions,
+    //     });
+    //   } else {
+    //     updateItem({
+    //       id: productId,
+    //       quantity,
+    //       specialInstructions: [data],
+    //     });
+    //   }
+    // }
   };
 
   const values = useMemo(() => {
-    const item = cartItems.find((item) => item.id === productId);
-    return item?.specialInstructions;
-  }, [cartItems, productId, index]);
+    // const item = cartItems.find((item) => item.id === productId);
+    // return item?.specialInstructions;
+  }, [productId, index]);
 
   return (
     <form

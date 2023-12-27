@@ -1,16 +1,13 @@
 "use client";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
-import useCart from "@/store/cart";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const CartButton = () => {
-  const { count } = useCart();
-
   return (
-    <Badge badgeContent={count}>
+    <Badge badgeContent={1}>
       <Link href="/cart">
         <Button
           icon={<AiOutlineShoppingCart />}

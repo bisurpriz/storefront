@@ -10,7 +10,7 @@ function ProductItem4({
   name,
   price,
   loading,
-  tenant_id,
+  tenant,
 }: ProductItemProps) {
   return !loading ? (
     <div
@@ -39,13 +39,16 @@ function ProductItem4({
       <div className="flex justify-between items-end mt-4 max-2xl:flex-col max-2xl:justify-start max-2xl:items-start max-2xl:gap-4 grow">
         <div className="text-2xl font-bold">{price} ₺</div>
         <AddCartButton
-          description={description}
           id={id}
           image_url={image}
           name={name}
           price={price}
           loading={loading}
-          tenant_id={tenant_id}
+          category={null}
+          discount_price={null}
+          product_customizable_areas={null}
+          quantity={1}
+          tenant={tenant}
         />
       </div>
     </div>

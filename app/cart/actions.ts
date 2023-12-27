@@ -1,15 +1,20 @@
 "use server";
-import redis from "@/redis";
-import { readIdFromCookies } from "../actions";
-import { CartItem } from "@/store/cart";
-import { getSession } from "@auth0/nextjs-auth0";
 
-export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
+import redis from "@/redis";
+import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
+import { getSession } from "@auth0/nextjs-auth0";
+import { ProductForCart } from "@/common/types/Cart/cart";
+import { revalidatePath } from "next/cache";
+
+export const createOrderAction = async (
+  cartItems: ProductForCart[],
+  orderDetail
+) => {
   const userId = await readIdFromCookies();
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant_id;
+    const tenantId = item.tenant.id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }
@@ -118,7 +123,117 @@ export const createOrderAction = async (cartItems: CartItem[], orderDetail) => {
   return response.json();
 };
 
-export const setRedisProduct = async (product: any) => {
-  const result = await redis.set("1", JSON.stringify(product));
+export const checkUserId = async () => {
+  const userId = await readIdFromCookies();
+  const fingerPrint = await readFingerPrintFromCookies();
+
+  if (!userId) {
+    return fingerPrint;
+  }
+
+  return userId;
+};
+
+export const setCartWithRedis = async (cartItem: ProductForCart) => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+  const value = JSON.stringify([cartItem]);
+  const exp = 60 * 60 * 24 * 7;
+
+  const result = await getCartWithRedis();
+  if (result) {
+    const existingCartItems = result as ProductForCart[];
+    existingCartItems.push(cartItem);
+    await redis.set(key, JSON.stringify(existingCartItems), "EX", exp);
+  } else {
+    await redis.set(key, value, "EX", exp);
+  }
+  revalidatePath("/cart");
+
+  return result;
+};
+
+export const getCartWithRedis = async () => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.get(key);
+
+  return JSON.parse(result) as ProductForCart[];
+};
+
+export const listenCartChangedWithRedis = async () => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.subscribe(key);
+
+  return result;
+};
+
+export const removeCartWithRedis = async () => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.del(key);
+  revalidatePath("/cart");
+
+  return result;
+};
+
+export const removeCartItemWithRedis = async (id: number) => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await getCartWithRedis();
+  if (result) {
+    const existingCartItems = result as ProductForCart[];
+    const filteredCartItems = existingCartItems.filter(
+      (item) => item.id !== id
+    );
+
+    if (existingCartItems.length === 1) {
+      return await removeCartWithRedis();
+    } else {
+      await redis.set(key, JSON.stringify(filteredCartItems));
+    }
+  }
+  console.log("REVALIDATE CART");
+  revalidatePath("/cart");
+
+  return result;
+};
+
+export const updateCartItemWithRedis = async (cartItem: ProductForCart) => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await getCartWithRedis();
+  if (result) {
+    const existingCartItems = result as ProductForCart[];
+    const filteredCartItems = existingCartItems.filter(
+      (item) => item.id !== cartItem.id
+    );
+    filteredCartItems.push(cartItem);
+    await redis.set(key, JSON.stringify(filteredCartItems));
+  }
+  revalidatePath("/cart");
+
+  return result;
+};
+
+export const publishCartChangedWithRedis = async (cartItem: ProductForCart) => {
+  const userId = await checkUserId();
+
+  const key = `cart:${userId}`;
+
+  const result = await redis.publish(key, JSON.stringify(cartItem));
+
   return result;
 };

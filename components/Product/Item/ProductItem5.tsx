@@ -21,19 +21,21 @@ const ProductItem5 = ({
   category,
   slug,
   totalReviewCount,
-  tenant_id,
   properties,
+  description,
+  tenant,
 }: ProductItemProps) => {
   return (
-    <div className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative">
+    <div className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col">
       <Image
         src={getImageUrlFromPath(image[0])}
         alt={name}
         width={500}
         height={500}
-        className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none"
+        className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-auto h-auto"
         loading="eager"
         quality={70}
+        priority
       />
       <div className="p-2">
         <article className="flex flex-col justify-between flex-grow mb-2">
@@ -82,10 +84,18 @@ const ProductItem5 = ({
         </div>
       </div>
       <AddCartButton2
-        id={id}
+        product={{
+          category,
+          discount_price,
+          id,
+          image_url: image,
+          name,
+          price,
+          product_customizable_areas,
+          tenant,
+          quantity: 1,
+        }}
         loading={loading}
-        product_customizable_areas={product_customizable_areas}
-        tenant_id={tenant_id}
       />
     </div>
   );

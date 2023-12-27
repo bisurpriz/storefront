@@ -1,35 +1,18 @@
 import Button from "@/components/Button";
-import useCart from "@/store/cart";
 import { useCallback } from "react";
-import { ProductItemProps } from "..";
+import { ProductForCart } from "@/common/types/Cart/cart";
+import { setCartWithRedis } from "@/app/cart/actions";
 
-interface AddCartButton2Props extends ProductItemProps {
-  className?: string;
+interface AddCartButton2Props {
+  product: ProductForCart;
+  loading?: boolean;
 }
 
-const AddCartButton2 = ({
-  id,
-  loading,
-  product_customizable_areas,
-  tenant_id,
-  className,
-}: AddCartButton2Props) => {
-  const { addToCart, cartItems } = useCart.getState();
-
-  const handleAddToCart = useCallback(() => {
-    const prev = cartItems.find((item) => item.id === id);
-    const hasSpecialInstructions = product_customizable_areas?.length > 0;
-    addToCart({
-      id,
-      quantity: prev ? prev.quantity + 1 : 1,
-      specialInstructions: prev?.specialInstructions
-        ? prev.specialInstructions
-        : hasSpecialInstructions
-        ? []
-        : null,
-      tenant_id,
-    });
-  }, [id, addToCart, cartItems, product_customizable_areas]);
+const AddCartButton2 = ({ product, loading }: AddCartButton2Props) => {
+  const handleAddToCart = useCallback(async () => {
+    setCartWithRedis(product);
+    console.log("AddCartButton2Props", product);
+  }, []);
 
   return (
     <Button

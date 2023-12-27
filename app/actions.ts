@@ -31,6 +31,16 @@ export async function writeIdToCookies(value: string) {
   return auth;
 }
 
+export async function readFingerPrintFromCookies() {
+  const auth = cookies();
+
+  const fingerprint = auth.get("fingerPrint");
+
+  if (!fingerprint) null;
+
+  return fingerprint?.value;
+}
+
 export const getVendorById = async <T>({ id }: { id: number }) => {
   const { data, loading } = await query({
     query: GET_VENDOR_BY_ID,
