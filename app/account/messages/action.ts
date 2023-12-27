@@ -1,6 +1,6 @@
 "use server";
 
-import { OrderItem, TenantOrderItem } from "@/common/types/Order/order";
+import { TenantOrderItem } from "@/common/types/Order/order";
 import { mutate, query } from "@/graphql/lib/client";
 import { SEND_MESSAGE } from "@/graphql/queries/chat/mutation";
 import { GET_TENANT_ORDER_ITEM } from "@/graphql/queries/order/query";
