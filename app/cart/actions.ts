@@ -10,7 +10,7 @@ export const createOrderAction = async (
   cartItems: ProductForCart[],
   orderDetail
 ) => {
-  const userId = await readIdFromCookies();
+  const userId = await checkUserId();
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {

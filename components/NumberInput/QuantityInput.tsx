@@ -1,3 +1,5 @@
+"use client";
+
 import NumberInput from ".";
 import type { NumberInputProps } from "./NumberInputProps";
 

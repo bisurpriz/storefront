@@ -6,7 +6,7 @@ import TextField from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { createOrderAction } from "../../actions";
+import { createOrderAction, removeCartWithRedis } from "../../actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -80,6 +80,7 @@ const CreditCartForm = () => {
         )
         .then(() => {
           localStorage.removeItem("detail-data");
+          removeCartWithRedis();
           push("/cart/complete");
         });
     }

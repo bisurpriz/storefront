@@ -12,6 +12,7 @@ const SubmitButton = (props: ButtonProps) => {
     if (pending) {
       toast.loading("İşlem yapılıyor...", {
         id: "submit-button",
+        position: "bottom-right",
       });
     } else {
       toast.dismiss("submit-button");

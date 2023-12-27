@@ -1,21 +1,14 @@
-"use client";
-
-import {
-  changeQuantityWithRedis,
-  removeCartItemWithRedis,
-} from "@/app/cart/actions";
 import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
-import QuantityInput from "@/components/NumberInput/QuantityInput";
-import Popover from "@/components/Popover";
 import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
-import { AiOutlineClose } from "react-icons/ai";
-import { IoAccessibility, IoInformation } from "react-icons/io5";
+import { IoAccessibility } from "react-icons/io5";
+import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
+import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -29,7 +22,6 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     category,
     tenant,
   } = product;
-
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 border relative max-sm:px-4">
@@ -51,18 +43,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             </Link>
             <div className="flex flex-col gap-4">
               <PriceTag price={price} discount={discount_price} />
-              <div className="flex items-center justify-start gap-2">
-                <span className="text-base font-semibold text-gray-600">
-                  Adet:
-                </span>
-                <QuantityInput
-                  value={quantity}
-                  onChange={(e, quantity) => {
-                    changeQuantityWithRedis(id, quantity);
-                  }}
-                  color="primary"
-                />
-              </div>
+              <CartProductGroupListQuantityInput id={id} quantity={quantity} />
             </div>
           </div>
 
@@ -87,30 +68,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
                 ))}
             </div>
           ) : null}
-
-          <span className="absolute top-2 right-2 flex gap-2 items-center">
-            {customize?.length > 0 ? (
-              <Popover
-                contentClassName="w-[300px] shadow-md border rounded-sm"
-                position="top"
-                content={
-                  <p className="text-xs font-normal text-gray-800">
-                    Bu kısımda satıcının belirlediği ürün özelleştirmeleri yer
-                    alır. Örneğin ürün üzerine yazı yazdırmak istiyorsanız bu
-                    kısımdan yazı yazdırabilirsiniz.
-                  </p>
-                }
-              >
-                <IoInformation className="text-gray-500 cursor-pointer transition-all duration-200 ease-in-out w-4 h-4 rounded-full border hover:bg-7 hover:text-white hover:border-7" />
-              </Popover>
-            ) : null}
-            <AiOutlineClose
-              onClick={() => {
-                removeCartItemWithRedis(id);
-              }}
-              className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"
-            />
-          </span>
+          <ProductGroupListItemInfo customize={customize} id={id} />
         </div>
         <div className="mt-4">
           <Promotions

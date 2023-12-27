@@ -1,3 +1,5 @@
+"use client";
+
 import CustomizeCartItem from "./CustomizeCartItem";
 import Button from "../Button";
 import { getBase64Image } from "@/utils/getBase64Image";
@@ -14,10 +16,8 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
   const handleFormSubmit = async (formData: FormData) => {
     const data = Object.fromEntries(formData.entries());
     const keys = Object.keys(data);
-    // Image var mı kontrol et
     const hasImages = keys?.find((item) => item.includes("special_image"));
     const image = data[hasImages];
-    // image file to base64
     if (image instanceof File) {
       const base64 = (await getBase64Image(image)) as string;
       if (image.name && base64) {
@@ -66,8 +66,7 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
         }
       ),
     };
-
-    await updateCartItemWithRedis(newProd);
+    updateCartItemWithRedis(newProd);
   };
 
   return (
