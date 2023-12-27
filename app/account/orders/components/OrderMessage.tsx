@@ -21,7 +21,7 @@ const OrderMessage = ({ tenant, orderTenantId }: { tenant: User; orderTenantId: 
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
-      nextRouter.push(`/account/messages?oid${response.insert_message_one.chat_thread.order_tenant_id}`);
+      nextRouter.push(`/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`);
     }
     setOpen(false);
   };

@@ -26,4 +26,14 @@ const SEND_MESSAGE = gql`
   }
 `;
 
-export { SEND_MESSAGE_ALONE, SEND_MESSAGE };
+const MARK_AS_READ = gql`
+  mutation markAsRead($chat_thread_id: uuid!) {
+    update_message_many(
+      updates: { _set: { is_read: true }, where: { chat_thread_id: { _eq: $chat_thread_id }, is_read: { _eq: false } } }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export { SEND_MESSAGE_ALONE, SEND_MESSAGE, MARK_AS_READ };
