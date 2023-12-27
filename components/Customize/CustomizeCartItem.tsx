@@ -1,9 +1,9 @@
 import TextField from "../TextField";
 import ImageUpload from "../ImageUpload";
-import { CartCustomizableArea } from "@/common/types/Cart/cart";
 import { memo } from "react";
+import { CustomizableArea } from "@/common/types/Order/order";
 
-interface Area extends Partial<CartCustomizableArea> {
+interface Area extends Partial<CustomizableArea> {
   count: number;
 }
 
