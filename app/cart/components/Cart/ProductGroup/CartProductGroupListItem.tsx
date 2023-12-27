@@ -1,11 +1,14 @@
 "use client";
 
-import { removeCartItemWithRedis } from "@/app/cart/actions";
+import {
+  changeQuantityWithRedis,
+  removeCartItemWithRedis,
+} from "@/app/cart/actions";
 import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
-import QuantityInput from "@/components/NumberInput";
+import QuantityInput from "@/components/NumberInput/QuantityInput";
 import Popover from "@/components/Popover";
 import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -55,7 +58,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
                 <QuantityInput
                   value={quantity}
                   onChange={(e, quantity) => {
-                    console.log(e, quantity);
+                    changeQuantityWithRedis(id, quantity);
                   }}
                   color="primary"
                 />
@@ -75,10 +78,9 @@ const CartProductGroupListItem = (product: ProductForCart) => {
                     content={
                       <CustomizeGroup
                         key={i}
-                        customize={customize}
-                        productId={id}
                         index={i}
                         quantity={quantity}
+                        product={product}
                       />
                     }
                   />

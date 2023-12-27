@@ -9,8 +9,6 @@ import { cookies } from "next/headers";
 export async function readIdFromCookies() {
   const auth = cookies();
 
-  console.log(JSON.stringify(auth), "auth");
-
   const id = auth.get("user_id");
 
   if (!id) null;

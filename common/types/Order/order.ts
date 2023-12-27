@@ -1,4 +1,7 @@
-import { CustomizableAreaType, OrderItemStatus } from "@/common/enums/Order/product";
+import {
+  CustomizableAreaType,
+  OrderItemStatus,
+} from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
 import { Address } from "../Addresses/addresses";
 import { User } from "../User/user";

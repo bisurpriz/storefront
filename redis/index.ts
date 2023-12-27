@@ -12,6 +12,7 @@ const redis = new Redis({
   disconnectTimeout: 10000,
   maxLoadingRetryTime: 10000,
   enableReadyCheck: true,
+  showFriendlyErrorStack: true,
 });
 
 redis.on("ready", () => {

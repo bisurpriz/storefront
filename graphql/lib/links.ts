@@ -75,4 +75,4 @@ const _httpLink =
       )
     : httpLink;
 
-export const links = from([authLink, errorLink, removeTypenameLink, _httpLink]);
+export const links = from([removeTypenameLink, authLink, errorLink, _httpLink]);
