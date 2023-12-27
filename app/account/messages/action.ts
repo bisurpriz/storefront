@@ -2,23 +2,23 @@
 
 import { TenantOrderItem } from "@/common/types/Order/order";
 import { mutate, query } from "@/graphql/lib/client";
-import { SEND_MESSAGE } from "@/graphql/queries/chat/mutation";
+import { MARK_AS_READ, SEND_MESSAGE } from "@/graphql/queries/chat/mutation";
 import { GET_TENANT_ORDER_ITEM } from "@/graphql/queries/order/query";
 
 export const getTenantOrderItem = async (orderId: number) => {
-  const { data, loading } = await query<{
+  console.log("orderId getTenantOrderItem", orderId);
+  const response = await query<{
     order_tenant: TenantOrderItem[];
   }>({
     query: GET_TENANT_ORDER_ITEM,
-    fetchPolicy: "no-cache",
+    fetchPolicy: "standby",
     variables: {
       id: orderId,
     },
   });
-  const { order_tenant } = data;
   return {
-    order_tenant,
-    loading,
+    order_tenant: response?.data?.order_tenant ?? [],
+    loading: response?.loading,
   };
 };
 
@@ -44,5 +44,20 @@ export const sendMessage = async ({
   const { insert_message_one } = data;
   return {
     insert_message_one,
+  };
+};
+
+export const markAsRead = async (chat_thread_id: string) => {
+  const { data } = await mutate<{
+    update_message_many;
+  }>({
+    mutation: MARK_AS_READ,
+    variables: {
+      chat_thread_id,
+    },
+  });
+  const { update_message_many } = data;
+  return {
+    update_message_many,
   };
 };

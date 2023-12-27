@@ -10,9 +10,10 @@ const SUBSCRIBE_TO_CHATS = gql`
         firstname
         lastname
       }
-      messages {
+      messages(order_by: { created_at: asc }) {
         message
         id
+        is_read
         created_at
         sender {
           picture
