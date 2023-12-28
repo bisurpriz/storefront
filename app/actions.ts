@@ -24,7 +24,10 @@ export async function getIdToken() {
 export async function writeIdToCookies(value: string) {
   const auth = cookies();
 
-  auth.set("user_id", value);
+  auth.set("user_id", value, {
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+  });
 
   return auth;
 }

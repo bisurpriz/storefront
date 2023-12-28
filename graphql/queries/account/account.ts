@@ -142,3 +142,34 @@ export const GET_USER_ORDERS = gql`
     }
   }
 `;
+
+export const CREATE_NEW_ADDRESS = gql`
+  mutation createNewAddress(
+    $address: String
+    $address_title: String
+    $city_id: Int
+    $district_id: Int
+    $quarter_id: Int
+    $receiver_firstname: String
+    $receiver_phone: String
+    $receiver_surname: String
+    $user_id: uuid
+  ) {
+    insert_user_address_one(
+      object: {
+        address: $address
+        address_title: $address_title
+        city_id: $city_id
+        district_id: $district_id
+        quarter_id: $quarter_id
+        receiver_firstname: $receiver_firstname
+        receiver_phone: $receiver_phone
+        receiver_surname: $receiver_surname
+        user_id: $user_id
+      }
+    ) {
+      address_title
+      id
+    }
+  }
+`;
