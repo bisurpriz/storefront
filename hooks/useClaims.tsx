@@ -9,7 +9,7 @@ export const useClaims = () => {
     allowedRoles: null,
     fullName: null,
   });
-  const { user } = useUser();
+  const { user } = { user: null };
 
   const setUser = () => {
     if (user) {

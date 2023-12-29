@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
+  return null;
   const auth = cookies();
 
   const id = auth.get("user_id");
@@ -17,11 +18,13 @@ export async function readIdFromCookies() {
 }
 
 export async function getIdToken() {
+  return null;
   const session = await getSession();
   return session.idToken;
 }
 
 export async function writeIdToCookies(value: string) {
+  return null;
   const auth = cookies();
 
   auth.set("user_id", value);
@@ -30,6 +33,7 @@ export async function writeIdToCookies(value: string) {
 }
 
 export async function readFingerPrintFromCookies() {
+  return null;
   const auth = cookies();
 
   const fingerprint = auth.get("fingerPrint");

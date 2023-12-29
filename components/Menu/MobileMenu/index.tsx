@@ -44,16 +44,11 @@ const mobileHeader = [
 ];
 
 const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
-  const { user, isLoading } = useUser();
+  const { user, isLoading } = { user: null, isLoading: false };
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
-      <div
-        className={clsx([
-          "w-full grid  gap-2 mb-2",
-          !user ? "grid-cols-2" : "grid-cols-3",
-        ])}
-      >
+      <div className={clsx(["w-full grid  gap-2 mb-2", !user ? "grid-cols-2" : "grid-cols-3"])}>
         {mobileHeader.map((item) => (
           <Link
             key={item.text}
@@ -76,9 +71,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
           ))}
         </ul>
       </div>
-      <div
-        className={`w-full grid ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}
-      >
+      <div className={`w-full grid ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}>
         {isLoading ? (
           <div></div>
         ) : (

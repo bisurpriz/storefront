@@ -11,9 +11,7 @@ export const removeTypenameLink = removeTypenameFromVariables();
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
     );
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
@@ -25,8 +23,7 @@ const wsLink =
         options: {
           reconnect: true,
           connectionParams: async () => {
-            const token = await getSession();
-
+            const token = null;
             return {
               headers: {
                 Authorization: `Bearer ${token?.idToken}`,
@@ -65,10 +62,7 @@ const _httpLink =
     ? split(
         ({ query }) => {
           const definition = getMainDefinition(query);
-          return (
-            definition.kind === "OperationDefinition" &&
-            definition.operation === "subscription"
-          );
+          return definition.kind === "OperationDefinition" && definition.operation === "subscription";
         },
         wsLink as any,
         httpLink

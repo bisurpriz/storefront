@@ -26,7 +26,7 @@ export default async function ProductExample({
 
   const data = await getProductById({ id: Number(productId) });
 
-  const session = await getSession();
+  const session = null;
   const claims = destructClaims(session?.user);
   const isFavoriteForCurrentUser = data.favorites.data.some((favorite) => favorite.user_id === claims?.id);
 

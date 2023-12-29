@@ -1,4 +1,5 @@
 import Content from "@/components/Layout/Content";
+import { ClerkProvider } from "@clerk/nextjs";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -95,12 +96,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         id="root"
       >
         <SpeedInsights debug={process.env.NODE_ENV === "development"} />
-        <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
+        {/*  <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}> */}
+        <ClerkProvider>
           <Header />
           <Content>{children}</Content>
 
-          <Listener />
-        </UserProvider>
+          {/*  <Listener /> */}
+        </ClerkProvider>
+        {/* </UserProvider> */}
       </body>
     </html>
   );

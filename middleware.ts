@@ -1,12 +1,20 @@
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { v4 as uuid } from "uuid";
 
-export function middleware(request: NextRequest) {
+export default authMiddleware({
+  publicRoutes: (req) => !req.url.includes("/account"),
+});
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+
+/* function handleFingerPrint() {
   const hasUserId = request.cookies.has("user_id");
   const hasFingerPrint = request.cookies.has("fingerPrint");
 
-  const response = NextResponse.next();
   if (!hasUserId && !hasFingerPrint) {
     console.log("No user id or finger print");
 
@@ -23,5 +31,4 @@ export function middleware(request: NextRequest) {
     response.cookies.delete("fingerPrint");
   }
 
-  return response;
-}
+} */

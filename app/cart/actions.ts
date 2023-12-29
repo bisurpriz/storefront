@@ -6,10 +6,7 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { revalidatePath } from "next/cache";
 
-export const createOrderAction = async (
-  cartItems: ProductForCart[],
-  orderDetail
-) => {
+export const createOrderAction = async (cartItems: ProductForCart[], orderDetail) => {
   const userId = await readIdFromCookies();
 
   if (!userId) return null;
@@ -26,9 +23,7 @@ export const createOrderAction = async (
     // will return an object of texts { content: "text"}
     if (!specialInstructions) return [];
     const texts = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("text") && specialInstructions[key] !== null
-      )
+      .filter((key) => key.includes("text") && specialInstructions[key] !== null)
       .map((key) => ({
         content: specialInstructions[key],
       }));
@@ -40,9 +35,7 @@ export const createOrderAction = async (
     // will return an object of images { content: "image"}
     if (!specialInstructions) return [];
     const images = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("image") && specialInstructions[key] !== null
-      )
+      .filter((key) => key.includes("image") && specialInstructions[key] !== null)
       .map((key) => ({
         image_url: specialInstructions[key],
       }));
@@ -59,16 +52,12 @@ export const createOrderAction = async (
           quantity: item.quantity,
           order_item_special_texts: {
             data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction)
-                )
+              ? item.specialInstructions.flatMap((instruction) => getTexts(instruction))
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction)
-                )
+              ? item.specialInstructions.flatMap((instruction) => getImages(instruction))
               : [],
           },
         })),
@@ -106,19 +95,16 @@ export const createOrderAction = async (
     ],
   };
 
-  const { idToken } = await getSession();
+  const { idToken } = { idToken: null };
 
-  const response = await fetch(
-    "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
-    {
-      method: "POST",
-      body: JSON.stringify(variables),
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${idToken}`,
-      },
-    }
-  );
+  const response = await fetch("https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws", {
+    method: "POST",
+    body: JSON.stringify(variables),
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${idToken}`,
+    },
+  });
 
   return response.json();
 };
@@ -199,9 +185,7 @@ export const removeCartItemWithRedis = async (id: number) => {
   const result = await getCartWithRedis();
   if (result) {
     const existingCartItems = result as ProductForCart[];
-    const filteredCartItems = existingCartItems.filter(
-      (item) => item.id !== id
-    );
+    const filteredCartItems = existingCartItems.filter((item) => item.id !== id);
 
     if (existingCartItems.length === 1) {
       return await removeCartWithRedis();
@@ -223,9 +207,7 @@ export const updateCartItemWithRedis = async (cartItem: ProductForCart) => {
   const result = await getCartWithRedis();
   if (result) {
     const existingCartItems = result as ProductForCart[];
-    const filteredCartItems = existingCartItems.filter(
-      (item) => item.id !== cartItem.id
-    );
+    const filteredCartItems = existingCartItems.filter((item) => item.id !== cartItem.id);
     filteredCartItems.push(cartItem);
 
     await redis.set(key, JSON.stringify(filteredCartItems), "EX", exp);
@@ -245,10 +227,7 @@ export const publishCartChangedWithRedis = async (cartItem: ProductForCart) => {
   return result;
 };
 
-export const changeQuantityWithRedis = async (
-  id: number,
-  quantity: number
-): Promise<ProductForCart[]> => {
+export const changeQuantityWithRedis = async (id: number, quantity: number): Promise<ProductForCart[]> => {
   const userId = await checkUserId();
 
   const { key, exp } = getExpireDefinition(userId);
@@ -256,9 +235,7 @@ export const changeQuantityWithRedis = async (
   const result = await getCartWithRedis();
   if (result) {
     const existingCartItems = result as ProductForCart[];
-    const filteredCartItems = existingCartItems.filter(
-      (item) => item.id !== id
-    );
+    const filteredCartItems = existingCartItems.filter((item) => item.id !== id);
     const cartItem = existingCartItems.find((item) => item.id === id);
     cartItem.quantity = quantity;
     filteredCartItems.push(cartItem);
