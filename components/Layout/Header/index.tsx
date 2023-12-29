@@ -4,6 +4,7 @@ import HeaderBottom from "./Bottom";
 import { query } from "@/graphql/lib/client";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
 import Divider from "@/components/Divider";
+import { memo } from "react";
 
 const Header = async () => {
   const { data } = await query({
@@ -21,4 +22,4 @@ const Header = async () => {
   );
 };
 
-export default Header;
+export default memo(Header);

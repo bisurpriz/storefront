@@ -56,6 +56,10 @@
   background: transparent;
 }
 
+.react-datepicker__day {
+  width: auto !important;
+}
+
 .react-datepicker__time-container {
   width: 100% !important;
 }

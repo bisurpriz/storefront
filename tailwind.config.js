@@ -46,6 +46,7 @@ module.exports = {
       backgroundImage: {
         "slider-1": "url('/slider/slider-1.png')",
         "slider-2": "url('/slider/slider-2.png')",
+        "slider-0": "url('/slider/slider-0.png')",
       },
       screens: {
         xs: "480px",

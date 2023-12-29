@@ -67,6 +67,7 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
 
   return (
     <ReactDatePicker
+      className="relative"
       selected={selectedDate}
       onChange={(date) => {
         setSelectedDate(date);
@@ -91,6 +92,16 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
           selectedDay={selectedDay}
         />
       }
+      renderDayContents={(day, date) => {
+        return (
+          <div className="text-center text-sm p-2">
+            <p className="text-sm font-medium">{localeFormat(date, "d")}</p>
+            <p className="text-sm font-normal">
+              {localeFormat(date, "EEEE").slice(0, 3)}
+            </p>
+          </div>
+        );
+      }}
     />
   );
 }
