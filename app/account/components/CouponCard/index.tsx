@@ -1,38 +1,40 @@
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import { faker } from "@faker-js/faker";
-import { format } from "date-fns";
+import { differenceInDays, parseISO } from "date-fns";
 
-const CouponCard = () => {
+interface CouponCardProps {
+  title: string;
+  description?: string;
+  endDate?: string;
+  minimumAmount?: number;
+  discountAmount?: number;
+}
+
+const CouponCard = ({
+  title,
+  description,
+  endDate,
+  minimumAmount,
+  discountAmount,
+}: CouponCardProps) => {
+  const today = new Date();
+
+  const daysDifference = differenceInDays(parseISO(endDate), today);
+
   return (
     <Card wrapperClass="border !border-gray-300">
       <div className="flex items-center justify-between">
         <span className="text-sm rounded-md flex gap-1 whitespace-nowrap items-center capitalize">
-          {faker.lorem.words(
-            faker.number.int({
-              min: 2,
-              max: 4,
-            })
-          )}
+          {title}
         </span>
         <span className="text-xs text-orange-500 p-2 bg-orange-100 rounded-md leading-none whitespace-nowrap">
-          ⚠️ Son{" "}
-          {format(
-            faker.date.between({
-              from: new Date(),
-              to: new Date(new Date().setDate(new Date().getDate() + 30)),
-            }),
-            "d"
-          )}{" "}
+          ⚠️ Son {daysDifference + ' ' }
           gün
         </span>
       </div>
       <div className="flex items-center mt-2">
         <p className="text-xs text-gray-500 w-1/2 whitespace-pre-line">
-          {faker.lorem.sentence({
-            max: 10,
-            min: 5,
-          })}
+          {description}
         </p>
         <div
           // divider
@@ -41,11 +43,7 @@ const CouponCard = () => {
         <div className="w-1/2 flex">
           <div className="w-full h-full flex items-center justify-between my-auto">
             <h4 className="text-xl font-semibold text-orange-500">
-              {faker.number.int({
-                min: 5,
-                max: 50,
-              })}
-              %
+              {discountAmount} TL
             </h4>
             <Button
               size="small"
@@ -57,6 +55,16 @@ const CouponCard = () => {
             </Button>
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-between mt-2">
+        <span className="text-gray-500 text-[0.55rem]">
+          Min. Alışveriş Tutarı: {minimumAmount} TL
+        </span>
+
+        <span className="text-[0.55rem] text-gray-500">
+          Skt: {new Date(endDate).toLocaleDateString("tr-TR")}
+        </span>
       </div>
     </Card>
   );
