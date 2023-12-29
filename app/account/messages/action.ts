@@ -6,12 +6,11 @@ import { MARK_AS_READ, SEND_MESSAGE } from "@/graphql/queries/chat/mutation";
 import { GET_TENANT_ORDER_ITEM } from "@/graphql/queries/order/query";
 
 export const getTenantOrderItem = async (orderId: number) => {
-  console.log("orderId getTenantOrderItem", orderId);
   const response = await query<{
     order_tenant: TenantOrderItem[];
   }>({
     query: GET_TENANT_ORDER_ITEM,
-    fetchPolicy: "standby",
+    fetchPolicy: "no-cache",
     variables: {
       id: orderId,
     },

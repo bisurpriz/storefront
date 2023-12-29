@@ -12,9 +12,9 @@ const MessagesPage = async ({
   };
 }) => {
   const orderTenantId = searchParams["oid"];
-  const { order_tenant: orderTenants = [] } = await getTenantOrderItem(Number(orderTenantId));
-
-  console.log(orderTenantId, "orderTenantId");
+  const { order_tenant: orderTenants = [] } = await getTenantOrderItem(
+    Number(orderTenantId)
+  );
 
   const orderItem = orderTenants[0];
   const tenantId = orderItem?.tenant?.id;

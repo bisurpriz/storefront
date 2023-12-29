@@ -2,6 +2,7 @@ import { localeFormat } from "@/utils/format";
 import ChatItem, { IChatItem } from "./ChatItem";
 import ChatItemSkeleton from "./ChatItemSkeleton";
 import { useClaims } from "@/hooks/useClaims";
+import Empty from "@/components/Empty";
 
 const calculateUnread = (messages: any[], userId: string) => {
   const unread = messages.filter(
@@ -20,6 +21,15 @@ const ChatList = ({
   const {
     claims: { id },
   } = useClaims();
+
+  if (chats && chats.length === 0)
+    return (
+      <Empty
+        title="Henüz mesajınız yok"
+        description="Siparişlerim sayfasından sipariş verdiğiniz satıcılarla iletşime geçebilirsiniz."
+      />
+    );
+
   return (
     <div className="flex-1 h-full overflow-auto px-2">
       {!chats ? (

@@ -64,7 +64,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
           }
         </div>
 
-        {shouldRenderChild && (
+        {shouldRenderChild && thread && (
           <div
             className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${
               isMessageOpen ? "translate-x-0" : "-translate-x-[110%]"
@@ -82,12 +82,19 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
               />
 
               <h2 className="text-xl py-1 border-b-2 border-gray-200 inline-block mb-0 flex-auto">
-                <b>{thread?.tenant.firstname + " " + thread?.tenant.lastname}</b> ile Görüşme
+                <b>
+                  {thread?.tenant.firstname + " " + thread?.tenant.lastname}
+                </b>{" "}
+                ile Görüşme
               </h2>
             </div>
 
             <MessageList messages={thread?.messages} threadId={thread?.id} />
-            <Input onMessageSend={handleMessage} value={text} onChange={(e) => setText(e.target.value)} />
+            <Input
+              onMessageSend={handleMessage}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
           </div>
         )}
       </div>
