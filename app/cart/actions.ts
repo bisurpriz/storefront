@@ -144,9 +144,11 @@ const getExpireDefinition = (id: string, item?: ProductForCart) => {
 };
 
 export const getCartCount = (carItems: ProductForCart[]) => {
-  const count = carItems.reduce((acc, item) => {
+  const count = carItems?.reduce((acc, item) => {
     return acc + item.quantity;
   }, 0);
+
+  if (!count) return "0";
 
   return String(count);
 };
