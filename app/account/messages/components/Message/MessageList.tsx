@@ -2,10 +2,13 @@
 import MessageItem from "./MessageItem";
 import { useClaims } from "@/hooks/useClaims";
 import { localeFormat } from "@/utils/format";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
+import MessageItemSkeleton from "./MessageItemSkeleton";
+import { markAsRead } from "../../action";
 
 const MessageList = ({
   messages,
+  threadId,
 }: {
   messages: {
     id: string;
@@ -24,6 +27,7 @@ const MessageList = ({
       picture: string;
     };
   }[];
+  threadId: string;
 }) => {
   const {
     claims: { id },
@@ -38,22 +42,27 @@ const MessageList = ({
   };
 
   useEffect(() => {
+    markAsRead(threadId);
     scrollToBottom();
   }, [messages]);
 
   return (
     <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
-      {messages?.map((item) => (
-        <MessageItem
-          key={item.id}
-          message={item.message}
-          date={item?.created_at ? localeFormat(new Date(item.created_at), "PPP") : ""}
-          picture={item?.sender?.picture}
-          type={item?.sender?.id === id ? "sent" : "received"}
-        />
-      ))}
+      {!messages
+        ? [1, 2, 3, 4, 5, 6, 7]?.map((item) => (
+            <MessageItemSkeleton key={item} type={item % 2 === 0 ? "sent" : "received"} />
+          ))
+        : messages?.map((item) => (
+            <MessageItem
+              key={item.id}
+              message={item.message}
+              date={item?.created_at ? localeFormat(new Date(item.created_at), "PPP") : ""}
+              picture={item?.sender?.picture}
+              type={item?.sender?.id === id ? "sent" : "received"}
+            />
+          ))}
     </div>
   );
 };
 
-export default MessageList;
+export default memo(MessageList);

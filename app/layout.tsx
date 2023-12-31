@@ -17,6 +17,7 @@ import "@smastrom/react-rating/style.css";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
 import "react-datepicker/dist/react-datepicker.css";
+import Listener from "./account/messages/components/Listener";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -87,11 +88,7 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   if (process.env.NODE_ENV === "development") {
     loadDevMessages();
     loadErrorMessages();
@@ -109,6 +106,8 @@ export default async function RootLayout({
         <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
           <Header />
           <Content>{children}</Content>
+
+          <Listener />
         </UserProvider>
       </body>
     </html>

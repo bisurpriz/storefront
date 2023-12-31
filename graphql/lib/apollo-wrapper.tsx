@@ -29,9 +29,12 @@ function makeClient() {
       ? new WebSocketLink({
           uri: "wss://bisurprizdev.hasura.app/v1/graphql",
           options: {
+            lazy: true,
+            timeout: 30000,
             reconnect: true,
             connectionParams: () => {
               return getIdToken().then((cooks) => {
+                if (!cooks) return {};
                 return {
                   headers: {
                     Authorization: `Bearer ${cooks}`,

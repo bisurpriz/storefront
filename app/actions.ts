@@ -18,6 +18,10 @@ export async function readIdFromCookies() {
 
 export async function getIdToken() {
   const session = await getSession();
+
+  if (!session)
+    return new Promise((resolve, reject) => reject("Session is null"));
+
   return session.idToken;
 }
 
