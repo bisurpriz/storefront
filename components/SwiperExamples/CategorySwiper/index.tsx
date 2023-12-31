@@ -22,7 +22,7 @@ const CategorySwiper = () => {
             key: i.toString(),
             children: (
               <Card
-                wrapperClass={`cursor-pointer group shadow-lg my-4 bg-slate-100 rounded-xl`}
+                wrapperClass={`cursor-pointer group shadow-md my-4 rounded-xl`}
                 bordered={false}
                 onClick={() => console.log("click")}
               >

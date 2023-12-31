@@ -1,5 +1,4 @@
 "use client";
-
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
@@ -9,6 +8,7 @@ import toast from "react-hot-toast";
 import { cartStepperPaths } from "../../constants";
 import CartDrawer from "./CartDrawer";
 import { ProductForCart } from "@/common/types/Cart/cart";
+import SubmitButton from "@/components/Button/SubmitButton";
 
 interface Pricing {
   total_discount: number;
@@ -19,65 +19,54 @@ interface Pricing {
 const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   const { push } = useRouter();
   const pathname = usePathname();
-  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
-  const [pricing, setPricing] = useState<Pricing>({
-    total_discount: 0,
-    total_discount_price: 0,
-    total_price: 0,
+  const [pricing] = useState<Pricing>(() => {
+    let total_discount = 0;
+    let total_discount_price = 0;
+    let total_price = 0;
+    cartItems.forEach((item) => {
+      total_discount += item.price - item.discount_price;
+      total_discount_price += item.discount_price * item.quantity;
+      total_price += item.discount_price * item.quantity;
+    });
+    return { total_discount, total_discount_price, total_price };
   });
-  const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
+  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
 
-  const ids = useMemo(
-    () =>
-      cartItems?.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-    [cartItems]
-  );
+  const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
 
   const isCartPage = useCallback(
     (nextPath: string) => {
-      const hasEmptySpecialInstructions = cartItems.some((item) => {
-        if (item.product_customizable_areas?.length < item.quantity) {
-          return true;
-        }
+      console.log("is cart page");
+      if (cartItems.length > 0) {
+        const isCustomizable = cartItems.find(
+          (item) => item.product_customizable_areas.length > 0
+        );
+        if (isCustomizable) {
+          console.log("has customizable");
+          const isCustomizableAreaEmpty =
+            isCustomizable.product_customizable_areas.find((area) =>
+              area?.customizable_area.values?.find((value) => {
+                const keys = Object.keys(value);
 
-        if (item.product_customizable_areas?.length === 0) {
-          return true;
+                if (keys.length === 1) {
+                  return value[keys[0]] === "";
+                }
+              })
+            );
+
+          if (isCustomizableAreaEmpty) {
+            toast.error("Özelleştirilebilir alanlar boş bırakılamaz.");
+            return;
+          } else {
+            push(nextPath);
+          }
         } else {
-          return item.product_customizable_areas?.some((instruction) => {
-            if (instruction) {
-              return Object.values(instruction).some((value) => !value);
-            } else {
-              return true;
-            }
-          });
+          push(nextPath);
         }
-      });
-
-      if (hasEmptySpecialInstructions) {
-        toast.error("Lütfen tüm özel istekleri doldurunuz.", {
-          icon: "⚠️",
-          position: "bottom-right",
-        });
-      } else {
-        push(nextPath);
       }
     },
     [cartItems, push]
   );
-
-  // const fetchProducts = useCallback(async () => {
-  //   if (!ids) return;
-  //   const { total_discount, total_discount_price, total_price } =
-  //     await getProductsPricesByIds(ids);
-  //   setPricing({
-  //     total_discount,
-  //     total_discount_price,
-  //     total_price,
-  //   });
-  // }, [ids]);
 
   const handlePageChange = useCallback(() => {
     if (pathname === paths[0]) {
@@ -149,7 +138,7 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
                 {total_price?.toFixed(2)} ₺
               </span>
             </div>
-            <Button
+            <SubmitButton
               type={formTarget ? "submit" : "button"}
               size="large"
               color="primary"

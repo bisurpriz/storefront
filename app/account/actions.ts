@@ -2,6 +2,7 @@
 
 import { mutate, query } from "@/graphql/lib/client";
 import {
+  CREATE_NEW_ADDRESS,
   GET_CITIES,
   GET_DISTRICTS,
   GET_QUARTERS,
@@ -142,6 +143,40 @@ export const updateUserById = async (
     variables: {
       ...data,
       id: data.id,
+    },
+  });
+
+  const { update_user_by_pk: user } = updatedData;
+
+  return {
+    user,
+  };
+};
+
+export const createNewUserAddress = async (data: {
+  address: string;
+  city_id: string;
+  district_id: string;
+  quarter_id: string;
+  user_id: string;
+  receiver_firstname: string;
+  receiver_lastname: string;
+  receiver_phone: string;
+}) => {
+  const { data: updatedData } = await mutate({
+    mutation: CREATE_NEW_ADDRESS,
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: GET_USER_BY_ID,
+        variables: {
+          id: data.user_id,
+        },
+      },
+    ],
+    variables: {
+      ...data,
+      id: data.user_id,
     },
   });
 

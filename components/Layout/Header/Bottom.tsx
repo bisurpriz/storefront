@@ -1,28 +1,16 @@
-"use client";
-
-import Button from "@/components/Button";
-import Drawer from "@/components/Drawer";
 import Menu from "@/components/Menu";
-import MobileMenu from "@/components/Menu/MobileMenu";
 import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { MdMenu } from "react-icons/md";
 import CartButton from "./components/CartButton";
+import MobileDrawer from "./components/MobileDrawer";
+import { Category } from "@/common/types/Category/category";
 
 interface Props {
-  categories: {
-    id: number;
-    name: string;
-    slug: string;
-    image_url: string;
-  }[];
+  categories: Category[];
 }
 
 const HeaderBottom = ({ categories }: Props) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const menuData: MenuItem[] | undefined = categories?.map((category) => ({
     link: `/${category.slug}`,
     text: category.name,
@@ -42,23 +30,7 @@ const HeaderBottom = ({ categories }: Props) => {
       </Link>
       <div className="sm:hidden flex">
         <CartButton />
-        <Button
-          icon={<MdMenu />}
-          variant="outlined"
-          size="small"
-          iconSize={24}
-          className="max-sm:p-1"
-          onClick={() => setIsOpen(true)}
-        />
-        <Drawer
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Menü"
-          placement="left"
-          lockScroll={true}
-        >
-          <MobileMenu items={menuData} />
-        </Drawer>
+        <MobileDrawer categories={categories} menuData={menuData} />
       </div>
       <OfflineStatus />
     </div>

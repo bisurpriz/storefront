@@ -1,16 +1,17 @@
 "use server";
 
-import redis from "@/redis";
 import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
 import { getSession } from "@auth0/nextjs-auth0";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { revalidatePath } from "next/cache";
+import { redisOptions } from "@/redis";
+import Redis from "ioredis";
 
 export const createOrderAction = async (
   cartItems: ProductForCart[],
   orderDetail
 ) => {
-  const userId = await readIdFromCookies();
+  const userId = await checkUserId();
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
@@ -142,21 +143,55 @@ const getExpireDefinition = (id: string, item?: ProductForCart) => {
   return { key, value, exp };
 };
 
-export const setCartWithRedis = async (cartItem: ProductForCart) => {
-  const userId = await checkUserId();
+export const getCartCount = (carItems: ProductForCart[]) => {
+  const count = carItems?.reduce((acc, item) => {
+    return acc + item.quantity;
+  }, 0);
 
-  const { key, value, exp } = getExpireDefinition(userId, cartItem);
+  if (!count) return "0";
 
-  const result = await getCartWithRedis();
-  if (result) {
-    const existingCartItems = result as ProductForCart[];
-    existingCartItems.push(cartItem);
-    await redis.set(key, JSON.stringify(existingCartItems), "EX", exp);
-  } else {
-    await redis.set(key, value, "EX", exp);
-  }
+  return String(count);
+};
+
+const set = async (key: string, value: string, exp: number) => {
+  const redis = new Redis(redisOptions);
+
+  const count = getCartCount(JSON.parse(value));
+
+  await redis.connect();
+  await redis.set(key, value, "EX", exp);
+  await publish(key, count);
+  revalidatePath("/cart");
+  await redis.disconnect();
+};
+
+const get = async (key: string) => {
+  const redis = new Redis(redisOptions);
+
+  await redis.connect();
+  const result = await redis.get(key);
+  await redis.disconnect();
+  return result;
+};
+
+const del = async (key: string) => {
+  const redis = new Redis(redisOptions);
+
+  await redis.connect();
+  const result = await redis.del(key);
+  await publish(key, "0");
+  await redis.disconnect();
   revalidatePath("/cart");
 
+  return result;
+};
+
+const publish = async (key: string, value: string) => {
+  const redis = new Redis(redisOptions);
+
+  await redis.connect();
+  const result = await redis.publish(key, value);
+  await redis.disconnect();
   return result;
 };
 
@@ -165,17 +200,32 @@ export const getCartWithRedis = async () => {
 
   const key = `cart:${userId}`;
 
-  const result = await redis.get(key);
-
+  const result = await get(key);
   return JSON.parse(result) as ProductForCart[];
 };
 
-export const listenCartChangedWithRedis = async () => {
+export const setCartWithRedis = async (cartItem: ProductForCart) => {
   const userId = await checkUserId();
 
-  const key = `cart:${userId}`;
+  const { key, value, exp } = getExpireDefinition(userId, cartItem);
 
-  const result = await redis.subscribe(key);
+  const result = await getCartWithRedis();
+  if (result) {
+    const existingCartItems = result as ProductForCart[];
+    const hasItem = existingCartItems.find((item) => item.id === cartItem.id);
+    if (hasItem) {
+      return await changeQuantityWithRedis(
+        hasItem.id,
+        hasItem.quantity + cartItem.quantity
+      );
+    }
+
+    existingCartItems.push(cartItem);
+
+    await set(key, JSON.stringify(existingCartItems), exp);
+  } else {
+    await set(key, value, exp);
+  }
 
   return result;
 };
@@ -185,8 +235,7 @@ export const removeCartWithRedis = async () => {
 
   const key = `cart:${userId}`;
 
-  const result = await redis.del(key);
-  revalidatePath("/cart");
+  const result = await del(key);
 
   return result;
 };
@@ -206,11 +255,9 @@ export const removeCartItemWithRedis = async (id: number) => {
     if (existingCartItems.length === 1) {
       return await removeCartWithRedis();
     } else {
-      await redis.set(key, JSON.stringify(filteredCartItems), "EX", exp);
+      await set(key, JSON.stringify(filteredCartItems), exp);
     }
   }
-  console.log("REVALIDATE CART");
-  revalidatePath("/cart");
 
   return result;
 };
@@ -228,19 +275,8 @@ export const updateCartItemWithRedis = async (cartItem: ProductForCart) => {
     );
     filteredCartItems.push(cartItem);
 
-    await redis.set(key, JSON.stringify(filteredCartItems), "EX", exp);
+    await set(key, JSON.stringify(filteredCartItems), exp);
   }
-  revalidatePath("/cart");
-
-  return result;
-};
-
-export const publishCartChangedWithRedis = async (cartItem: ProductForCart) => {
-  const userId = await checkUserId();
-
-  const key = `cart:${userId}`;
-
-  const result = await redis.publish(key, JSON.stringify(cartItem));
 
   return result;
 };
@@ -262,9 +298,9 @@ export const changeQuantityWithRedis = async (
     const cartItem = existingCartItems.find((item) => item.id === id);
     cartItem.quantity = quantity;
     filteredCartItems.push(cartItem);
-    await redis.set(key, JSON.stringify(filteredCartItems), "EX", exp);
+
+    await set(key, JSON.stringify(filteredCartItems), exp);
   }
-  revalidatePath("/cart");
 
   return result;
 };

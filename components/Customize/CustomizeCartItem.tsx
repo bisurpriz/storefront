@@ -1,3 +1,5 @@
+"use client";
+
 import TextField from "../TextField";
 import ImageUpload from "../ImageUpload";
 import { memo } from "react";
@@ -8,7 +10,6 @@ interface Area extends Partial<CustomizableArea> {
 }
 
 const CustomizeCartItem = ({ type, count, values }: Area) => {
-  console.log("CustomizeCartItem", values);
   switch (type) {
     case "special_text":
       return Array(count)
