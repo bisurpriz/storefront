@@ -2,7 +2,7 @@ import Content from "@/components/Layout/Content";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Lato, Quicksand } from "next/font/google";
+import { Lato, Manrope, Quicksand } from "next/font/google";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -28,6 +28,12 @@ const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-manrope",
 });
 
 const quickSand = Quicksand({
@@ -94,7 +100,9 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <body
-        className={`${lato.variable} ${quickSand.variable} font-sans relative scroll-smooth overflow-hidden mb-10`}
+        className={`${lato.variable} ${quickSand.variable} 
+        ${manrope.variable}
+        font-manrope relative scroll-smooth overflow-hidden mb-10`}
         id="root"
       >
         <SpeedInsights debug={process.env.NODE_ENV === "development"} />

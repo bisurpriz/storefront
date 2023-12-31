@@ -24,12 +24,12 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   } = product;
   return (
     <li className="py-4" key={id}>
-      <div className="rounded-lg px-8 py-4 border relative max-sm:px-4">
+      <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
         <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2">
           <Image
             src={getImageUrlFromPath(image_url[0])}
             alt="image"
-            className={`object-contain aspect-square w-48 h-48 max-sm:h-32 max-sm:w-32 max-sm:self-center`}
+            className={`object-contain aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center`}
             width={500}
             height={500}
             loading="lazy"

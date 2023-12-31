@@ -9,7 +9,13 @@ import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 
-const OrderMessage = ({ tenant, orderTenantId }: { tenant: User; orderTenantId: number }) => {
+const OrderMessage = ({
+  tenant,
+  orderTenantId,
+}: {
+  tenant: User;
+  orderTenantId: number;
+}) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const nextRouter = useRouter();
@@ -21,7 +27,9 @@ const OrderMessage = ({ tenant, orderTenantId }: { tenant: User; orderTenantId: 
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
-      nextRouter.push(`/account/messages?oid${response.insert_message_one.chat_thread.order_tenant_id}`);
+      nextRouter.push(
+        `/account/messages?oid${response.insert_message_one.chat_thread.order_tenant_id}`
+      );
     }
     setOpen(false);
   };
@@ -35,7 +43,7 @@ const OrderMessage = ({ tenant, orderTenantId }: { tenant: User; orderTenantId: 
         onClick={() => {
           setOpen(true);
         }}
-        icon={<GrChatOption />}
+        icon={<GrChatOption size={16} />}
       />
 
       <Modal
@@ -45,10 +53,17 @@ const OrderMessage = ({ tenant, orderTenantId }: { tenant: User; orderTenantId: 
         }}
         title={
           <span>
-            <Link href={`/vendor/${tenant.id}`} aria-label="Satıcıya git" className="text-sm text-secondary">
+            <Link
+              href={`/vendor/${tenant.id}`}
+              aria-label="Satıcıya git"
+              className="text-sm text-secondary"
+            >
               {tenant.nickname}
             </Link>
-            <span className="text-sm text-gray-500"> satıcısı ile iletişime geçin</span>{" "}
+            <span className="text-sm text-gray-500">
+              {" "}
+              satıcısı ile iletişime geçin
+            </span>{" "}
           </span>
         }
       >

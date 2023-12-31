@@ -93,7 +93,7 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   return (
     <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg">
       <div className="hidden md:block">
-        <div className="bg-white border rounded-lg py-2 px-3">
+        <div>
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti
           </span>

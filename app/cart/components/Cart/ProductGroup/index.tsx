@@ -12,8 +12,8 @@ const ProductGroup = ({
   const tenantIds = Object.keys(products);
 
   return tenantIds?.map((id) => (
-    <div className="bg-white" key={id}>
-      <span className="text-sm font-semibold text-white p-1 rounded-lg bg-purple-400 font-mono">
+    <div className="rounded-lg border relative mb-4" key={id}>
+      <span className="text-sm font-semibold text-slate-500 py-1 px-2 bg-purple-200 rounded-lg font-mono absolute left-0 top-0 -translate-y-1/2 translate-x-8">
         {products[id][0].tenant.nickname} satıcısından {products[id].length}{" "}
         Ürün
       </span>

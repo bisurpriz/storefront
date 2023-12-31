@@ -5,17 +5,27 @@ import OrderItem from "./OrderItem";
 import OrderMessage from "./OrderMessage";
 import { User } from "@/common/types/User/user";
 
-const TenantOrders = ({ tenants }: { tenants: OrderResponse["tenant_orders"] }) => {
+const TenantOrders = ({
+  tenants,
+}: {
+  tenants: OrderResponse["tenant_orders"];
+}) => {
   return tenants?.map((to) => (
     <div key={to.id} className="flex items-start flex-col justify-start">
-      <div className="flex justify-between w-full">
-        <div className="flex items-start justify-start mr-4 gap-4">
+      <div className="flex justify-between w-full  max-sm:items-baseline">
+        <div className="flex items-start justify-start gap-4 max-sm:flex-col max-sm:gap-2">
           <span className="my-1">
-            <Link href={`/vendor/${to.tenant.id}`} aria-label="Satıcıya git" className="text-sm text-secondary">
+            <Link
+              href={`/vendor/${to.tenant.id}`}
+              aria-label="Satıcıya git"
+              className="text-sm text-secondary"
+            >
               {to.tenant.nickname}
             </Link>{" "}
             <span className="text-sm text-gray-500">satıcısından</span>{" "}
-            <span className="text-sm text-gray-500">({to.order_items.length} ürün)</span>
+            <span className="text-sm text-gray-500">
+              ({to.order_items.length} ürün)
+            </span>
           </span>
           <StatusBadge status={to.order_status.value} />
         </div>

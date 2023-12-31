@@ -14,7 +14,6 @@ const CartButton = () => {
     const eventSource = new EventSource("/api/cart");
     getCartWithRedis().then(async (data) => {
       const count = await getCartCount(data);
-      console.log(count);
       setCount(Number(count));
     });
 
