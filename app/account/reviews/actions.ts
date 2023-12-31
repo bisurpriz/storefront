@@ -6,6 +6,7 @@ import { ReviewWithProduct } from "@/common/types/Review/review";
 import { mutate, query } from "@/graphql/lib/client";
 import { CREATE_REVIEW } from "@/graphql/queries/review/mutation";
 import { GET_ORDERS_WITH_REVIEW } from "@/graphql/queries/review/query";
+import { revalidatePath } from "next/cache";
 
 export const getOrderWithReview = async () => {
   const userId = await readIdFromCookies();
@@ -43,12 +44,10 @@ export const createReview = async ({
   comment,
   score,
   product_id,
-  refetch,
 }: {
   comment: string;
   score: number;
   product_id: number;
-  refetch?: () => void;
 }) => {
   const { data } = await mutate<{
     created_at: string;
@@ -61,9 +60,7 @@ export const createReview = async ({
     },
   });
 
-  if (refetch) {
-    refetch();
-  }
+  revalidatePath("/account/reviews");
 
   const { created_at } = data;
 

@@ -43,11 +43,7 @@ const Tab: FC<TabsProps> = ({ tabs, bordered, onTabChange, activeTab }) => {
         ))}
       </div>
       <div
-        className={`flex flex-1 transition duration-300 ease-in-out transform ${
-          selectedTab.id === activeTab
-            ? "scale-100"
-            : "scale-0 -translate-x-full"
-        }`}
+        className={`flex flex-1 transition duration-300 ease-in-out transform`}
       >
         {selectedTab.content}
       </div>

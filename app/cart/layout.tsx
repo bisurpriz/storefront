@@ -11,15 +11,18 @@ const CartLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <Suspense fallback={<CartSkeleton />}>
       {cartData?.length > 0 ? (
-        <>
+        <section
+          id="cart"
+          className="overflow-hidden bg-white rounded-xl border border-slate-200"
+        >
           <CartSteps />
-          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 p-4">
             <div className={`col-span-2 md:col-span-2 flex flex-col gap-3`}>
               {children}
             </div>
             <CartSummary cartItems={cartData} />
           </div>
-        </>
+        </section>
       ) : (
         <EmptyCart />
       )}

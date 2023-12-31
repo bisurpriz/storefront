@@ -51,6 +51,10 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
           <li
             key={comment.comment_id}
             className="flex items-start justify-start border-b border-slate-100 pb-4 max-sm:flex-col max-sm:pb-0 max-sm:gap-2 w-full"
+            aria-labelledby={`comment-${index}`}
+            aria-describedby={`comment-${index}`}
+            id={`comment-${index}`}
+            aria-label={`comment-${index}`}
           >
             <div className="flex gap-2 items-center justify-start max-w-[200px] min-w-[200px]">
               <Avatar
@@ -60,7 +64,13 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                 size="small"
               />
               <div className="p-4 max-sm:p-2">
-                <p className="text-sm font-medium font-mono text-slate-500">
+                <p
+                  className="text-sm font-medium font-mono text-slate-500"
+                  aria-label={`comment-${index}-name`}
+                  id={`comment-${index}-name`}
+                  aria-describedby={`comment-${index}-name`}
+                  key={`comment-${index}-name`}
+                >
                   {comment.firstName} {comment.lastName}
                 </p>
                 <Rating
@@ -75,7 +85,13 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
               </div>
             </div>
             <div className="rounded-lg bg-4 ml-4 max-sm:ml-0 mb-2">
-              <p className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4">
+              <p
+                className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
+                aria-label={`comment-${index}-comment`}
+                id={`comment-${index}-comment`}
+                aria-describedby={`comment-${index}-comment`}
+                key={`comment-${index}-comment`}
+              >
                 {comment.comment}
               </p>
             </div>

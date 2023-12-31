@@ -34,7 +34,7 @@ const ProductItem5 = ({
           alt={name}
           width={500}
           height={500}
-          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-auto h-auto"
+          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
           loading="eager"
           quality={70}
           priority

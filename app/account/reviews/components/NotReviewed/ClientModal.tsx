@@ -5,15 +5,22 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Tooltip from "@/components/Tooltip";
 import { localeFormat } from "@/utils/format";
-import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import { useState } from "react";
 
 const ClientModal = ({
   productId,
   onSubmit,
+  image,
+  productName,
+  deliveryDate,
+  reviewCount,
 }: {
   productId: number;
+  image: string;
+  productName: string;
+  deliveryDate: string;
+  reviewCount: number;
   onSubmit: ({
     product_id,
     score,
@@ -58,7 +65,7 @@ const ClientModal = ({
         <div className="p-8 pt-4 font-mono">
           <div className="flex items-start gap-4 border-b pb-4">
             <Image
-              src={faker.image.imageUrl(200, 200, undefined, true)}
+              src={image}
               alt="product"
               width={200}
               height={200}
@@ -66,10 +73,10 @@ const ClientModal = ({
             />
             <div>
               <h4 className="text-lg font-semibold text-slate-700 m-0">
-                {faker.commerce.productName()}
+                {productName}
               </h4>
               <p className="text-xs m-0 leading-none text-slate-500 mt-0 whitespace-nowrap mb-2">
-                Teslim tarihi: {localeFormat(faker.date.past(), "dd MMMM yyyy")}
+                Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
               </p>
               <div className="flex flex-col gap-2 items-start mb-2 text-xs text-slate-400">
                 <Rating
@@ -80,9 +87,7 @@ const ClientModal = ({
                 />
                 <p className="text-sm m-0 leading-none text-slate-500 max-w-lg">
                   Bu ürün toplam{" "}
-                  <strong className="text-slate-600">
-                    {faker.datatype.number({ min: 1, max: 50000 })}
-                  </strong>
+                  <strong className="text-slate-600">{reviewCount}</strong>
                   &nbsp; değerlendirme almıştır.
                 </p>
               </div>

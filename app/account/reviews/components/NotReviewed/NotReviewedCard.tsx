@@ -3,6 +3,7 @@ import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import ClientModal from "./ClientModal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { createReview } from "../../actions";
 
 interface Props {
   imageUrl: string;
@@ -11,15 +12,6 @@ interface Props {
   rating: number;
   reviewCount: number;
   productId: number;
-  onReviewSubmit: ({
-    product_id,
-    score,
-    comment,
-  }: {
-    product_id: number;
-    score: number;
-    comment: string;
-  }) => Promise<void>;
 }
 
 const NotReviewedCard = ({
@@ -29,8 +21,19 @@ const NotReviewedCard = ({
   rating,
   reviewCount,
   productId,
-  onReviewSubmit,
 }: Props) => {
+  const handleCreateReview = async ({
+    product_id,
+    score,
+    comment,
+  }: {
+    product_id: number;
+    score: number;
+    comment: string;
+  }) => {
+    await createReview({ product_id, score, comment });
+  };
+
   return (
     <div className="flex items-center gap-4 border p-4 shadow-md rounded-md max-sm:flex-col max-sm:items-center max-sm:w-full">
       <Image
@@ -55,7 +58,14 @@ const NotReviewedCard = ({
           {reviewCount}
         </div>
 
-        <ClientModal productId={productId} onSubmit={onReviewSubmit} />
+        <ClientModal
+          productId={productId}
+          onSubmit={handleCreateReview}
+          deliveryDate={deliveryDate}
+          image={getImageUrlFromPath(imageUrl)}
+          productName={productName}
+          reviewCount={reviewCount}
+        />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Button from "@/components/Button";
+import { BsTrash } from "react-icons/bs";
 
 interface Props {
   imageUrl: string;
@@ -14,7 +15,7 @@ interface Props {
   comment: string;
 }
 
-const ReviewedCard = ({
+const ReviewedCard = async ({
   imageUrl,
   productName,
   reviewDate,
@@ -22,8 +23,15 @@ const ReviewedCard = ({
   reviewCount,
   comment,
 }: Props) => {
+  const handleDeleteReview = async () => {
+    "use server";
+    console.log("delete review");
+  };
   return (
-    <div className="flex items-center gap-4 border p-4 shadow-md rounded-md max-sm:flex-col max-sm:items-center max-sm:w-full">
+    <form
+      action={handleDeleteReview}
+      className="flex items-center gap-4 border p-4 shadow-md rounded-md max-sm:flex-col max-sm:items-center max-sm:w-full"
+    >
       <Image
         src={getImageUrlFromPath(imageUrl)}
         alt="product"
@@ -47,9 +55,15 @@ const ReviewedCard = ({
           {comment}
         </p>
 
-        <Button label="Sil" variant="outlined" color="secondary" size="small" />
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          type="submit"
+          icon={<BsTrash size={16} />}
+        />
       </div>
-    </div>
+    </form>
   );
 };
 
