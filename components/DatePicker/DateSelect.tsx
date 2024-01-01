@@ -73,6 +73,7 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
         setSelectedDate(date);
         handleSelect(date);
       }}
+      timeFormat="p"
       includeTimes={deliveryTimes.map((time) => {
         const [hour, minute] = time.split(":");
         return add(new Date(), {
@@ -82,6 +83,7 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
       })}
       locale={tr}
       minDate={new Date(add(new Date(), { days: 3 }))}
+      maxDate={new Date(add(new Date(), { days: 7 }))}
       showTimeSelect
       timeIntervals={60}
       onCalendarOpen={() => handleSelect(null)}
@@ -102,7 +104,11 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
           </div>
         );
       }}
-    />
+    >
+      <p className="text-xs font-normal text-center">
+        Sipariş teslim tarihi 7 gün sonrasına kadar seçilebilir.
+      </p>
+    </ReactDatePicker>
   );
 }
 

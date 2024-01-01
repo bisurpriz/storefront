@@ -10,7 +10,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
         {promotions?.map((promotion, index) => (
           <div
             key={promotion?.description}
-            className="flex items-start justify-start rounded-lg p-2  gap-1 bg-sky-50  border border-sky-600 text-sky-600 "
+            className="flex items-start justify-start rounded-lg p-1 gap-1 bg-sky-50  border border-sky-600 text-sky-600 "
           >
             <span aria-label="Kampanya ikonu" className="text-lg">
               {promotion.icon}

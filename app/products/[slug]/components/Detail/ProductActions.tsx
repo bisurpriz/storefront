@@ -21,7 +21,7 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
   const { handleRedirect } = useAuthRedirect({ lazy: true });
   return (
-    <div className="flex items-center justify-start gap-4 py-4 font-mono">
+    <div className="flex items-center justify-start gap-4 py-4 md:mt-4 font-mono">
       <Button
         size="large"
         color="primary"
