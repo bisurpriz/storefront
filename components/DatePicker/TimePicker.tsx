@@ -20,11 +20,11 @@ const TimePicker = ({ className = "", ...rest }: TimePickerProps) => {
       selected={startDate}
       onChange={(date) => setStartDate(date)}
       showTimeSelect
-      placeholderText="Lütfen saat seçiniz"
+      placeholderText="Seçiniz"
       showTimeSelectOnly
       timeIntervals={60}
       timeCaption="Lütfen saat seçiniz"
-      timeFormat="HH:mm"
+      timeFormat="p"
       dateFormat="HH:mm"
       className={inputClasses}
     />

@@ -34,12 +34,12 @@ export default async function ProductExample({
   return (
     <div className="h-full">
       <section
-        className="flex items-start justify-start max-md:flex-col gap-6"
+        className="flex items-start justify-start max-sm:flex-col gap-6 flex-nowrap"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="max-md:w-full md:max-w-[50%]">
+        <div className="w-1/2 max-md:w-1/4 max-sm:w-full">
           <ProductImageCarousel
             images={data.product.image_url?.map((url: string) => ({
               id: url,
@@ -47,7 +47,7 @@ export default async function ProductExample({
             }))}
           />
         </div>
-        <div className="max-md:w-full flex-1 px-8">
+        <div className="w-1/2 max-md:w-3/4 max-sm:w-full">
           <ProductInformation
             name={data.product.name}
             price={250}
@@ -83,9 +83,9 @@ export default async function ProductExample({
 
       <section
         className="mt-6"
-        aria-labelledby="comments"
-        aria-describedby="Ürün yorumları"
-        id="comments"
+        aria-labelledby="product-detail"
+        aria-describedby="Ürün Detayları"
+        id="product-detail"
       >
         <ProductDescription
           title="Ürün Detayları"
