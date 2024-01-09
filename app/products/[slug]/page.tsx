@@ -73,11 +73,13 @@ const ProductDetail = async ({
                 description:
                   "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
                 icon: <HiOutlineTicket />,
+                filterKey: "SAME_DAY",
               },
               {
                 description:
                   "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
                 icon: <HiOutlineArchive />,
+                filterKey: "SAME_DAY",
               },
             ]}
           />

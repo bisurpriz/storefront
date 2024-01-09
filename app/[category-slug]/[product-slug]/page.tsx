@@ -68,8 +68,6 @@ export default async function ProductExample({
             freeShipping={freeShipping}
             shippingType={shippingType}
           />
-          {/* <SearchLocation className="mt-6" /> */}
-          {/* <HourSelect className="mt-6" /> */}
           <ProductActions
             productId={data.product.id}
             favorite={{

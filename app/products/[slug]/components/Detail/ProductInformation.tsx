@@ -116,10 +116,12 @@ const ProductInformation = ({
                 ? "Gün içi teslimat"
                 : "Aynı gün kargo",
               icon: <HiOutlineTicket />,
+              filterKey: "SAME_DAY",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
               icon: <HiOutlineArchive />,
+              filterKey: "FREE_SHIPPING",
             },
           ]}
         />
