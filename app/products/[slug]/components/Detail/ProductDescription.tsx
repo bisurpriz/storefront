@@ -1,5 +1,4 @@
 type ProductDescriptionProps = {
-  title: string;
   description: string;
   notes?: string[];
   specifications?: {
@@ -10,20 +9,15 @@ type ProductDescriptionProps = {
 
 const ProductDescription = ({
   description,
-  title,
   notes,
   specifications,
 }: ProductDescriptionProps) => {
   return (
     <div
-      className="py-8 px-4 rounded-lg border border-slate-200"
       id="description"
       aria-labelledby="description"
       aria-describedby="Ürün açıklaması"
     >
-      <h2 className="text-xl font-medium font-sans mb-4 text-slate-700">
-        {title}
-      </h2>
       <p className="text-sm font-light font-mono tracking-wide text-slate-700">
         {description}
       </p>
