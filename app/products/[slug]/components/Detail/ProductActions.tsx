@@ -25,7 +25,7 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
       <Button
         size="large"
         color="primary"
-        className="text-xl pl-16 pr-16 max-sm:w-full"
+        className="text-xl max-sm:w-full max-sm:justify-center"
       >
         Sepete Ekle
       </Button>
