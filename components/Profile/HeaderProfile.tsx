@@ -17,7 +17,7 @@ const HeaderProfile = async () => {
       </Link>
     </div>
   ) : (
-    <div className="flex gap-8 items-center justify-end flex-row-reverse ml-2">
+    <div className="flex gap-8 items-center justify-end flex-row-reverse ml-4">
       <Dropdown
         dropdownPlacement="bottomRight"
         options={profileItems}
