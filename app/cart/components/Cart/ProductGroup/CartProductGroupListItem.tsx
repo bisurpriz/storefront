@@ -73,7 +73,7 @@ const CartProductGroupListItem = (props: ProductForCart) => {
           </div>
 
           {customize?.length * quantity > 1 ? (
-            <div className="flex-1 max-2xl:w-full min-w-[300px]">
+            <div className="flex-1 max-2xl:w-full">
               {Array(quantity)
                 .fill(0)
                 .map((_, i) => (
