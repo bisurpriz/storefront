@@ -11,17 +11,27 @@ const CategorySwiper = () => {
   const data = [
     {
       id: 1,
+      name: "Yılbaşı",
+      image: "bg-slider-0",
+      header: "",
+      subHeader: "",
+      button: false,
+    },
+    {
+      id: 2,
       name: "Çiçekler",
       image: "bg-slider-1",
       header: "Çiçek siparişlerinizde %20 indirim",
       subHeader: "Günün fırsatını kaçırmayın",
+      button: true,
     },
     {
-      id: 2,
+      id: 3,
       name: "Çikolata",
       image: "bg-slider-2",
       header: "Çikolata siparişlerinizde %24 indirim",
       subHeader: "Hemen sipariş verin indirimden yararlanın",
+      button: true,
     },
   ];
 
@@ -30,7 +40,7 @@ const CategorySwiper = () => {
       <Card bordered={false} contentClass="py-0 px-0">
         <CustomSwiper
           autoplay={{
-            delay: 4000,
+            delay: 2000,
             disableOnInteraction: false,
           }}
           modules={[Autoplay]}
@@ -50,13 +60,15 @@ const CategorySwiper = () => {
                   <p className="text-xl text-slate-700 font-semibold max-w-lg self-start text-left max-sm:text-xl max-sm:leading-tight max-sm:font-medium max-sm:tracking-tight">
                     {item.subHeader}
                   </p>
-                  <Button
-                    type="submit"
-                    className="rounded-l-none gap-2 self-start"
-                    icon={<FiShoppingCart />}
-                  >
-                    <p>Sipariş Ver</p>
-                  </Button>
+                  {item.button ? (
+                    <Button
+                      type="submit"
+                      className="rounded-l-none gap-2 self-start"
+                      icon={<FiShoppingCart />}
+                    >
+                      <p>Sipariş Ver</p>
+                    </Button>
+                  ) : null}
                 </div>
               </Card>
             ),

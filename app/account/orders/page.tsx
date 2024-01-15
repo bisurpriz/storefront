@@ -14,7 +14,7 @@ const OrdersPage = async () => {
 
         return (
           <li className="py-4" key={order.id}>
-            <div className="rounded-lg px-8 py-4 relative max-sm:px-4 shadow-md">
+            <div className="rounded-lg px-2 py-2 relative max-sm:px-4">
               <div className="flex justify-between">
                 <div>
                   <p aria-label="Kampanya açıklaması" className="text-sm">
@@ -33,13 +33,15 @@ const OrdersPage = async () => {
                   </p>
                 </div>
 
-                <Button
-                  type="button"
-                  size="small"
-                  color="primary"
-                  className="xl:mt-0 xl:ml-3"
-                  label="Detaylar"
-                />
+                <div className="flex">
+                  <Button
+                    type="button"
+                    size="small"
+                    color="primary"
+                    className="xl:mt-0 xl:ml-3"
+                    label="Detaylar"
+                  />
+                </div>
               </div>
 
               <div className="h-px border my-3"></div>

@@ -4,14 +4,11 @@ import ProductComments from "@/app/products/[slug]/components/Detail/ProductComm
 import ProductDescription from "@/app/products/[slug]/components/Detail/ProductDescription";
 import ProductImageCarousel from "@/app/products/[slug]/components/Detail/ProductImageCarousel";
 import ProductInformation from "@/app/products/[slug]/components/Detail/ProductInformation";
-import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
-import SearchLocation from "@/app/products/[slug]/components/Layout/SearchLocation";
 import { getProductById } from "@/app/products/actions";
-import HourSelect from "@/components/DatePicker/HourSelect";
+import AccordionItem from "@/components/Accordion/AccordionItem";
 import { IMAGE_URL } from "@/contants/urls";
 import { destructClaims } from "@/utils/getClaims";
 import { getSession } from "@auth0/nextjs-auth0";
-import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 
 export default async function ProductExample({
   params,
@@ -28,7 +25,9 @@ export default async function ProductExample({
 
   const session = await getSession();
   const claims = destructClaims(session?.user);
-  const isFavoriteForCurrentUser = data.favorites.data.some((favorite) => favorite.user_id === claims?.id);
+  const isFavoriteForCurrentUser = data.favorites.data.some(
+    (favorite) => favorite.user_id === claims?.id
+  );
 
   const shippingType = data.product.delivery_type;
   const freeShipping = data.product.is_service_free;
@@ -36,12 +35,12 @@ export default async function ProductExample({
   return (
     <div className="h-full">
       <section
-        className="flex items-start justify-start max-md:flex-col gap-6"
+        className="flex items-start justify-start max-sm:flex-col gap-6 flex-nowrap"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-full">
+        <div className="w-1/2 max-md:w-1/4 max-sm:w-full">
           <ProductImageCarousel
             images={data.product.image_url?.map((url: string) => ({
               id: url,
@@ -49,19 +48,7 @@ export default async function ProductExample({
             }))}
           />
         </div>
-        <div className="w-1/2 max-md:w-full">
-          <Promotions
-            promotions={[
-              {
-                description: shippingType?.includes("SAME_DAY") ? "Gün içi teslimat" : "Aynı gün kargo",
-                icon: <HiOutlineTicket />,
-              },
-              {
-                description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-                icon: <HiOutlineArchive />,
-              },
-            ]}
-          />
+        <div className="w-1/2 max-md:w-3/4 max-sm:w-full">
           <ProductInformation
             name={data.product.name}
             price={250}
@@ -79,9 +66,9 @@ export default async function ProductExample({
             discountRate={10}
             key={data.product.id}
             vendor={data.tenant}
+            freeShipping={freeShipping}
+            shippingType={shippingType}
           />
-          <SearchLocation className="mt-6" />
-          <HourSelect className="mt-6" />
           <ProductActions
             productId={data.product.id}
             favorite={{
@@ -93,12 +80,24 @@ export default async function ProductExample({
         </div>
       </section>
 
-      <section className="mt-6" id="reviews">
-        <ProductDescription
+      <section
+        className="mt-6"
+        aria-labelledby="product-detail"
+        aria-describedby="Ürün Detayları"
+        id="product-detail"
+      >
+        <AccordionItem
+          content={
+            <ProductDescription
+              description={data.product.description}
+              notes={[]}
+              specifications={data.product.properties}
+            />
+          }
           title="Ürün Detayları"
-          description={data.product.description}
-          notes={[]}
-          specifications={data.product.properties}
+          bordered
+          isOpen
+          className="rounded-lg"
         />
       </section>
       <section
@@ -109,7 +108,12 @@ export default async function ProductExample({
       >
         <PaymentMethods />
       </section>
-      <section className="mt-6" id="comments" aria-labelledby="comments" aria-describedby="Ürün yorumları">
+      <section
+        className="mt-6"
+        id="reviews"
+        aria-labelledby="reviews"
+        aria-describedby="Yorumlar"
+      >
         <ProductComments
           comments={data.reviews.data.map((cm) => ({
             createdAt: cm.created_at,

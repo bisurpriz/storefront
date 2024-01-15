@@ -47,7 +47,7 @@ const HourSelect = ({ className = "" }: Props) => {
 
   return (
     <div
-      className={`grid grid-cols-4 gap-4 my-2 transition duration-300 ease-in ${className}`}
+      className={`grid grid-cols-4 gap-4 my-2 transition duration-300 w-full ease-in ${className}`}
     >
       {buttonDays.map(({ label, value, deliveryTimes }) => {
         return (

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
 import { AiOutlineClose } from "react-icons/ai";

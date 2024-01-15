@@ -6,9 +6,8 @@ import TextField from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { createOrderAction } from "../../actions";
+import { createOrderAction, removeCartWithRedis } from "../../actions";
 import toast from "react-hot-toast";
-import useCart from "@/store/cart";
 import { useRouter } from "next/navigation";
 
 const schema = object().shape({
@@ -55,7 +54,6 @@ const CreditCartForm = () => {
     mode: "onChange",
   });
 
-  const { cartItems, removeAllCart } = useCart();
   const { push } = useRouter();
 
   const onSubmit = async (data: any) => {
@@ -63,6 +61,8 @@ const CreditCartForm = () => {
       const serialize = localStorage.getItem("detail-data");
 
       const detailData = JSON.parse(serialize);
+      // TODO: cartItems
+      const cartItems = [];
       toast
         .promise(
           createOrderAction(cartItems, detailData),
@@ -80,7 +80,7 @@ const CreditCartForm = () => {
         )
         .then(() => {
           localStorage.removeItem("detail-data");
-          removeAllCart();
+          removeCartWithRedis();
           push("/cart/complete");
         });
     }

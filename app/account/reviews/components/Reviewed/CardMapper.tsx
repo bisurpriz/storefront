@@ -1,4 +1,3 @@
-"use client";
 import { ReviewWithProduct } from "@/common/types/Review/review";
 import ReviewedCard from "./ReviewedCard";
 

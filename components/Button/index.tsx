@@ -3,6 +3,7 @@ import {
   ButtonHTMLAttributes,
   ReactNode,
   CSSProperties,
+  Suspense,
 } from "react";
 import Spinner from "../Spinner";
 
@@ -149,23 +150,31 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <button
-        ref={ref}
-        {...rest}
-        className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
-        onClick={onClick}
-        disabled={disabled || loading}
-        type={type}
-      >
-        {icon && <span style={iconStyle}>{icon}</span>}
-        {loading && (
+      <Suspense
+        fallback={
           <Spinner
-            style={iconStyle}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit`}
           />
-        )}
-        {children || label}
-      </button>
+        }
+      >
+        <button
+          ref={ref}
+          {...rest}
+          className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
+          onClick={onClick}
+          disabled={disabled || loading}
+          type={type}
+        >
+          {icon && <span style={iconStyle}>{icon}</span>}
+          {loading && (
+            <Spinner
+              style={iconStyle}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
+            />
+          )}
+          {children || label}
+        </button>
+      </Suspense>
     );
   }
 );

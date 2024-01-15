@@ -19,7 +19,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
   if (!discount)
     <span
       className={clsx([
-        "font-semibold leading-none text-xl text-primary-light",
+        "font-semibold leading-none text-xl text-green-500",
         discount > 0 ? "" : "font-semibold",
       ])}
     >
@@ -29,7 +29,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
   return (
     <div className="flex items-end justify-start gap-2 whitespace-nowrap w-full max-sm:justify-between">
       {discount > 0 && price && discountRate > 0 && (
-        <span className="text-sm text-white font-semibold p-1.5 bg-secondary-light rounded-lg">
+        <span className="text-sm text-white font-semibold p-1.5 bg-red-500 rounded-lg">
           %{discountRate}
         </span>
       )}
@@ -37,7 +37,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {discount > 0 && (
           <span
             className={clsx([
-              "font-semibold leading-none text-xl text-primary-light",
+              "font-semibold leading-none text-xl text-green-500",
               discount > 0 ? "" : "font-semibold",
             ])}
           >
@@ -50,7 +50,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
               "decoration-slate-500 self-end leading-none",
               discount > 0
                 ? "text-sm line-through"
-                : "text-xl font-semibold text-primary-light",
+                : "text-xl font-semibold text-green-500",
             ])}
           >
             {price?.toFixed(2)} &#8378;

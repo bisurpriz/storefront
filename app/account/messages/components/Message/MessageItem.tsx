@@ -1,3 +1,6 @@
+import Image from "next/image";
+import { memo } from "react";
+
 export interface IMessageItem {
   type: "sent" | "received";
   message: string;
@@ -10,7 +13,7 @@ const MessageItem = ({ type, message, date, picture }: IMessageItem) => {
     <div className="message mb-4 flex">
       <div className="flex-2">
         <div className="w-12 h-12 relative">
-          <img className="w-12 h-12 rounded-full mx-auto" src={picture} alt="chat-user" />
+          <Image className="w-12 h-12 rounded-full mx-auto" src={picture} alt="chat-user" width="48" height="48" />
           <span className="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
         </div>
       </div>
@@ -37,4 +40,4 @@ const MessageItem = ({ type, message, date, picture }: IMessageItem) => {
   );
 };
 
-export default MessageItem;
+export default memo(MessageItem);

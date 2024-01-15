@@ -1,99 +1,92 @@
 "use client";
-import { useMemo } from "react";
+
 import CustomizeCartItem from "./CustomizeCartItem";
 import Button from "../Button";
-import useCart from "@/store/cart";
 import { getBase64Image } from "@/utils/getBase64Image";
 import { ProductForCart } from "@/common/types/Cart/cart";
+import { updateCartItemWithRedis } from "@/app/cart/actions";
 
 interface CustomizeGroupProps {
-  customize: ProductForCart["product_customizable_areas"];
-  productId: ProductForCart["id"];
   index: number;
   quantity: ProductForCart["quantity"];
+  product: ProductForCart;
 }
 
-const CustomizeGroup = ({
-  customize,
-  productId,
-  index,
-  quantity,
-}: CustomizeGroupProps) => {
-  const { updateItem, cartItems } = useCart();
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
+  const handleFormSubmit = async (formData: FormData) => {
     const data = Object.fromEntries(formData.entries());
     const keys = Object.keys(data);
-    // Image var mı kontrol et
     const hasImages = keys?.find((item) => item.includes("special_image"));
     const image = data[hasImages];
-    // image file to base64
     if (image instanceof File) {
       const base64 = (await getBase64Image(image)) as string;
-
       if (image.name && base64) {
         data[hasImages] = base64;
       } else {
         data[hasImages] = "";
       }
+    }
 
-      // If has specailInstructions, add new instructions to old instructions
-      const item = cartItems.find((item) => item.id === productId);
-      if (item?.specialInstructions?.length > 0) {
-        const newInstructions = item.specialInstructions[index]
-          ? [
-              ...item.specialInstructions.slice(0, index),
-              {
-                ...item.specialInstructions[index],
-                ...data,
-              },
-              ...item.specialInstructions.slice(index + 1),
-            ]
-          : [
-              ...item.specialInstructions,
-              {
-                ...data,
-              },
-            ];
+    const texts = [];
+    const images = [];
 
-        updateItem({
-          id: productId,
-          quantity,
-          specialInstructions: newInstructions,
+    keys.forEach((key) => {
+      if (key.includes("special_text")) {
+        texts.push({
+          [key]: data[key],
         });
-      } else {
-        updateItem({
-          id: productId,
-          quantity,
-          specialInstructions: [data],
+      } else if (key.includes("special_image")) {
+        images.push({
+          [key]: data[key],
         });
       }
-    }
-  };
+    });
 
-  const values = useMemo(() => {
-    const item = cartItems.find((item) => item.id === productId);
-    return item?.specialInstructions;
-  }, [cartItems, productId, index]);
+    const newProd = {
+      ...product,
+      product_customizable_areas: product.product_customizable_areas?.map(
+        (item) => {
+          if (item.customizable_area.type === "special_text") {
+            return {
+              ...item,
+              customizable_area: {
+                ...item.customizable_area,
+                values: texts,
+              },
+            };
+          } else if (item.customizable_area.type === "special_image") {
+            return {
+              ...item,
+              customizable_area: {
+                ...item.customizable_area,
+                values: images,
+              },
+            };
+          }
+        }
+      ),
+    };
+    updateCartItemWithRedis(newProd);
+  };
 
   return (
     <form
       autoComplete="off"
       className="flex flex-col gap-3 w-full"
-      onSubmit={handleFormSubmit}
+      action={handleFormSubmit}
     >
-      {customize?.map(({ count, customizable_area: { type } }, i) => {
-        return (
-          <CustomizeCartItem
-            key={i}
-            type={type}
-            count={count}
-            values={values?.[index]}
-          />
-        );
-      })}
+      {product.product_customizable_areas?.map(
+        ({ count, customizable_area: { type, values } }, i) => {
+          return (
+            <CustomizeCartItem
+              key={i}
+              type={type}
+              count={count}
+              values={values}
+            />
+          );
+        }
+      )}
       <Button
         type="submit"
         className="mt-3 w-fit"

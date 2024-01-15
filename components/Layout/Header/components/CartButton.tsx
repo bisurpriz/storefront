@@ -1,17 +1,34 @@
 "use client";
+
+import { getCartCount, getCartWithRedis } from "@/app/cart/actions";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
-import useCart from "@/store/cart";
 import Link from "next/link";
-import React from "react";
+import { memo, useEffect, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const CartButton = () => {
-  const { count } = useCart();
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    const eventSource = new EventSource("/api/cart");
+    getCartWithRedis().then(async (data) => {
+      const count = await getCartCount(data);
+      setCount(Number(count));
+    });
+
+    eventSource.onmessage = (e) => {
+      setCount(Number(e.data));
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <Badge badgeContent={count}>
-      <Link href="/cart">
+      <Link href="/cart" className="relative">
         <Button
           icon={<AiOutlineShoppingCart />}
           type="button"
@@ -27,4 +44,4 @@ const CartButton = () => {
   );
 };
 
-export default CartButton;
+export default memo(CartButton);

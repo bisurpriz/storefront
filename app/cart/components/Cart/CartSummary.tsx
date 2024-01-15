@@ -1,16 +1,14 @@
 "use client";
-
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5/";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import { getProductsPricesByIds } from "@/app/products/actions";
-import useCart from "@/store/cart";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { cartStepperPaths } from "../../constants";
 import CartDrawer from "./CartDrawer";
+import { ProductForCart } from "@/common/types/Cart/cart";
+import SubmitButton from "@/components/Button/SubmitButton";
 
 interface Pricing {
   total_discount: number;
@@ -18,73 +16,57 @@ interface Pricing {
   total_price: number;
 }
 
-const CartSummary = () => {
-  const { cartItems } = useCart();
+const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   const { push } = useRouter();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
-  const [pricing, setPricing] = useState<Pricing>({
-    total_discount: 0,
-    total_discount_price: 0,
-    total_price: 0,
+  const [pricing] = useState<Pricing>(() => {
+    let total_discount = 0;
+    let total_discount_price = 0;
+    let total_price = 0;
+    cartItems.forEach((item) => {
+      total_discount += item.price - item.discount_price;
+      total_discount_price += item.discount_price * item.quantity;
+      total_price += item.discount_price * item.quantity;
+    });
+    return { total_discount, total_discount_price, total_price };
   });
+  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
+
   const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
 
   const isCartPage = useCallback(
     (nextPath: string) => {
-      const hasEmptySpecialInstructions = cartItems.some((item) => {
-        if (item.specialInstructions?.length < item.quantity) {
-          return true;
-        }
+      console.log("is cart page");
+      if (cartItems.length > 0) {
+        const isCustomizable = cartItems.find(
+          (item) => item.product_customizable_areas.length > 0
+        );
+        if (isCustomizable) {
+          console.log("has customizable");
+          const isCustomizableAreaEmpty =
+            isCustomizable.product_customizable_areas.find((area) =>
+              area?.customizable_area.values?.find((value) => {
+                const keys = Object.keys(value);
 
-        if (item.specialInstructions?.length === 0) {
-          return true;
+                if (keys.length === 1) {
+                  return value[keys[0]] === "";
+                }
+              })
+            );
+
+          if (isCustomizableAreaEmpty) {
+            toast.error("Özelleştirilebilir alanlar boş bırakılamaz.");
+            return;
+          } else {
+            push(nextPath);
+          }
         } else {
-          return item.specialInstructions?.some((instruction) => {
-            if (instruction) {
-              return Object.values(instruction).some((value) => !value);
-            } else {
-              return true;
-            }
-          });
+          push(nextPath);
         }
-      });
-
-      if (hasEmptySpecialInstructions) {
-        toast.error("Lütfen tüm özel istekleri doldurunuz.", {
-          icon: "⚠️",
-          position: "bottom-right",
-        });
-      } else {
-        push(nextPath);
       }
     },
     [cartItems, push]
   );
-
-  const ids = useMemo(
-    () =>
-      cartItems?.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-    [cartItems]
-  );
-
-  const fetchProducts = useCallback(async () => {
-    const { total_discount, total_discount_price, total_price } =
-      await getProductsPricesByIds(ids);
-    setPricing({
-      total_discount,
-      total_discount_price,
-      total_price,
-    });
-  }, [ids]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [cartItems]);
 
   const handlePageChange = useCallback(() => {
     if (pathname === paths[0]) {
@@ -111,7 +93,7 @@ const CartSummary = () => {
   return (
     <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg">
       <div className="hidden md:block">
-        <div className="bg-white border rounded-lg py-2 px-3">
+        <div>
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti
           </span>
@@ -156,7 +138,7 @@ const CartSummary = () => {
                 {total_price?.toFixed(2)} ₺
               </span>
             </div>
-            <Button
+            <SubmitButton
               type={formTarget ? "submit" : "button"}
               size="large"
               color="primary"
@@ -168,26 +150,8 @@ const CartSummary = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white w-full py-4 flex justify-between md:hidden">
-        <div className="flex">
-          <Button
-            icon={<MdKeyboardArrowUp />}
-            size="small"
-            iconSize={24}
-            className="p-2"
-            onClick={() => setIsOpen(true)}
-          />
-          <span className="flex flex-col justify-center ml-2">
-            <span className="text-xs">Toplam:</span>
-            <span className="text-md text-primary font-medium">
-              {total_price?.toFixed(2)} ₺
-            </span>
-          </span>
-        </div>
-      </div>
+
       <CartDrawer
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
         totalPrice={total_price}
         totalDiscount={total_discount}
         totalDiscountPrice={total_discount_price}

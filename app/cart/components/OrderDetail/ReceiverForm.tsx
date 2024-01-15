@@ -4,7 +4,10 @@ import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 import { Controller, useWatch, useForm } from "react-hook-form";
 import { OrderDetailFormData } from "@/common/types/Order/order";
-import { getUserAddressById } from "@/app/account/actions";
+import {
+  createNewUserAddress,
+  getUserAddressById,
+} from "@/app/account/actions";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
@@ -12,9 +15,10 @@ import TextField from "@/components/TextField";
 import PhoneInput from "@/components/PhoneInput";
 import { CityResponse } from "@/common/types/Addresses/addresses";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { number, object, string } from "yup";
+import { boolean, number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import Checkbox from "@/components/Checkbox";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -25,6 +29,7 @@ const Title = ({ children }: { children: React.ReactNode }) => (
 export interface OrderDetailPartialFormData
   extends Partial<OrderDetailFormData> {
   saved_address?: string;
+  wantToSaveAddress?: boolean;
 }
 
 interface ReceiverFormProps {
@@ -42,6 +47,7 @@ const OrderDetailSchema = object({
   receiver_phone: string().required("Alıcı telefonu zorunludur."),
   user_id: string().optional().nullable(),
   saved_address: string().optional().nullable(),
+  wantToSaveAddress: boolean().optional().nullable(),
 });
 
 const defaultValues = {
@@ -55,6 +61,7 @@ const defaultValues = {
   receiver_surname: "",
   user_id: "",
   saved_address: "",
+  wantToSaveAddress: false,
 };
 
 const ReceiverForm = ({ cities }: ReceiverFormProps) => {
@@ -148,10 +155,22 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const { districts } = useDiscrits(cityId);
   const { quarters } = useQuarters(districtId);
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     if (values) {
       localStorage.setItem("detail-data", JSON.stringify(values));
       push("/cart/checkout");
+      if (values.wantToSaveAddress) {
+        await createNewUserAddress({
+          address: values.address,
+          city_id: values.city_id,
+          district_id: values.district_id,
+          quarter_id: values.quarter_id,
+          receiver_firstname: values.receiver_firstname,
+          receiver_lastname: values.receiver_surname,
+          receiver_phone: values.receiver_phone,
+          user_id: user_id,
+        });
+      }
     }
   };
 
@@ -211,26 +230,45 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const renderAddressTitle = () => {
     if (!selectedSavedAddress) {
       return (
-        <Controller
-          control={control}
-          name="address_title"
-          render={({
-            field: { onChange, value, ref },
-            fieldState: { error },
-          }) => (
-            <TextField
-              ref={ref}
-              label="Adres Başlığı"
-              placeholder="Ev Adresi"
-              fullWidth
-              id="address_title"
-              value={value}
-              onChange={onChange}
-              error={!!error}
-              errorMessage={error?.message}
+        <>
+          <Controller
+            control={control}
+            name="address_title"
+            render={({
+              field: { onChange, value, ref },
+              fieldState: { error },
+            }) => (
+              <TextField
+                ref={ref}
+                label="Adres Başlığı"
+                placeholder="Ev Adresi"
+                fullWidth
+                id="address_title"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                errorMessage={error?.message}
+              />
+            )}
+          />
+          {!selectedSavedAddress && (
+            <Controller
+              control={control}
+              name="wantToSaveAddress"
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <Checkbox
+                  checked={value}
+                  onChange={onChange}
+                  label="Sonraki alışverişlerimde bu adresi kullanmak istiyorum."
+                  id="wantToSaveAddress"
+                />
+              )}
             />
           )}
-        />
+        </>
       );
     }
     return null;

@@ -9,12 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#3bb77e",
-        ["primary-dark"]: "#2b8a5e",
-        ["primary-light"]: "#4fc08d",
-        secondary: "#c72b98",
-        ["secondary-dark"]: "#a21e7c",
-        ["secondary-light"]: "#d13daa",
+        primary: "#828EF9",
+        ["primary-dark"]: "#5b6ee1",
+        ["primary-light"]: "#a5b4fc",
+        secondary: "#EF6497",
+        ["secondary-dark"]: "#d9467c",
+        ["secondary-light"]: "#f472b6",
         error: "#dc2626",
         ["error-dark"]: "#b91c1c",
         ["error-light"]: "#ef4444",
@@ -46,6 +46,7 @@ module.exports = {
       backgroundImage: {
         "slider-1": "url('/slider/slider-1.png')",
         "slider-2": "url('/slider/slider-2.png')",
+        "slider-0": "url('/slider/slider-0.png')",
       },
       screens: {
         xs: "480px",
@@ -62,6 +63,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-lato)"],
         mono: ["var(--font-quicksand)"],
+        manrope: ["var(--font-manrope)"],
       },
     },
   },

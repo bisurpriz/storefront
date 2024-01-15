@@ -50,7 +50,7 @@ export const GET = handleAuth({
         afterCallback,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Callback error", error);
     }
   },
 });

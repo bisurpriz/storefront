@@ -1,10 +1,11 @@
-import TextField from "../TextField";
-import { CustomizableArea } from "@/common/types/Order/order";
-import ImageUpload from "../ImageUpload";
-import { SpecialInstructions } from "@/store/cart";
+"use client";
 
-interface Area extends Omit<CustomizableArea, "id"> {
-  values?: SpecialInstructions;
+import TextField from "../TextField";
+import ImageUpload from "../ImageUpload";
+import { memo } from "react";
+import { CustomizableArea } from "@/common/types/Order/order";
+
+interface Area extends Partial<CustomizableArea> {
   count: number;
 }
 
@@ -21,8 +22,8 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
             <TextField
               fullWidth
               placeholder="Lütfen istediğiniz yazıyı giriniz."
-              id={`special_text_${i}`}
-              defaultValue={values?.[`special_text_${i}`] as string}
+              id={`${type}_${i}`}
+              defaultValue={values?.[i][`${type}_${i}`] as string}
               label={`Özel Yazı ${i + 1}:`}
             />
           </div>
@@ -36,9 +37,9 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
             key={i}
           >
             <ImageUpload
-              id={`special_image_${i}`}
+              id={`${type}_${i}`}
               onChange={(file) => {}}
-              defaultValue={values?.[`special_image_${i}`] as string}
+              defaultValue={values?.[i][`${type}_${i}`] as string}
               label={`Özel Resim ${i + 1}:`}
             />
           </div>
@@ -48,4 +49,4 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
   }
 };
 
-export default CustomizeCartItem;
+export default memo(CustomizeCartItem);

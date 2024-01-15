@@ -14,11 +14,15 @@ export interface OrderItem {
   updated_at: string;
   user_id: string;
   order_tenant_id: Product["tenant_id"];
+  product: Product;
 }
 
 export interface CustomizableArea {
   id: number;
   type: CustomizableAreaType.IMAGE | CustomizableAreaType.TEXT;
+  values?: {
+    [key: string]: string | number;
+  }[];
 }
 
 export interface ProductCustomizableArea {
@@ -83,3 +87,9 @@ export interface OrderItemWithReview {
   review_count: number;
 }
 
+export interface TenantOrderItem {
+  id: number;
+  tenant: {
+    id: string;
+  };
+}

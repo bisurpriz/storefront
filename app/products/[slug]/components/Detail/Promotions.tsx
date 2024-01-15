@@ -1,29 +1,32 @@
+import Link from "next/link";
+
 type Promotions = {
   icon: string | React.ReactElement;
   description: string;
+  filterKey: string;
 };
 
 const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
   return (
     promotions?.length > 0 && (
-      <div className="mb-2 p-3 gap-2 bg-sky-100 text-sky-600 rounded-lg">
+      <div className="gap-2 flex items-start mb-2">
         {promotions?.map((promotion, index) => (
-          <div
+          <Link
             key={promotion?.description}
-            className="flex items-start justify-start gap-2"
+            className="flex items-start justify-start rounded-lg p-1 gap-1 bg-sky-50  border border-sky-600 text-sky-600"
+            // TODO: this link refactor for filtering and sorting
+            href={`/products?filter=${promotion.filterKey}&sort=bestSeller`}
           >
-            <span aria-label="Kampanya ikonu" className="text-xl">
+            <span aria-label="Kampanya ikonu" className="text-lg">
               {promotion.icon}
             </span>
             <p
               aria-label="Kampanya açıklaması"
-              className={`${
-                index === promotions.length - 1 ? "mb-0" : "mb-2"
-              } text-sm`}
+              className={`text-xs tracking-wide`}
             >
               {promotion.description}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     )

@@ -3,6 +3,9 @@ import Popover from "@/components/Popover";
 import RatingDetail from "./RatingDetail";
 import { RatingProps } from "./RatingDetail";
 import Link from "next/link";
+import Promotions from "./Promotions";
+import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
+import HourSelect from "@/components/DatePicker/HourSelect";
 
 type ProductInformationProps = {
   name: string;
@@ -18,6 +21,8 @@ type ProductInformationProps = {
     id: string;
     rate: number;
   };
+  shippingType?: string;
+  freeShipping?: boolean;
 };
 
 const ProductInformation = ({
@@ -30,13 +35,15 @@ const ProductInformation = ({
   promotion,
   discountRate,
   vendor,
+  freeShipping,
+  shippingType,
 }: ProductInformationProps) => {
   return (
-    <div className="flex flex-col items-start justify-start gap-4 p-8 w-full h-full bg-green-50 rounded-md shadow-md shadow-green-200 max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
-      <div className="rounded-lg w-full flex items-start justify-start gap-2 flex-col">
+    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
+      <div className="rounded-lg w-full flex items-start justify-start flex-col">
         <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
         {vendor && (
-          <div className="flex text-sm border border-gray-400 rounded-lg p-2 max-w-lg mb-2">
+          <div className="text-xs flex items-center max-md:mb-2">
             <label className="text-gray-800 me-1">Satıcı:</label>
             <Link
               href={`/vendor/${vendor.id}`}
@@ -53,7 +60,7 @@ const ProductInformation = ({
           </div>
         )}
 
-        <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full">
+        <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (
               <span className="text-xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
@@ -102,6 +109,23 @@ const ProductInformation = ({
             </Popover>
           </div>
         </div>
+        <Promotions
+          promotions={[
+            {
+              description: shippingType?.includes("SAME_DAY")
+                ? "Gün içi teslimat"
+                : "Aynı gün kargo",
+              icon: <HiOutlineTicket />,
+              filterKey: "SAME_DAY",
+            },
+            {
+              description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
+              icon: <HiOutlineArchive />,
+              filterKey: "FREE_SHIPPING",
+            },
+          ]}
+        />
+        <HourSelect />
       </div>
     </div>
   );

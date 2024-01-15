@@ -1,18 +1,68 @@
-import ChatItem from "./ChatItem";
+import { localeFormat } from "@/utils/format";
+import ChatItem, { IChatItem } from "./ChatItem";
+import ChatItemSkeleton from "./ChatItemSkeleton";
+import { useClaims } from "@/hooks/useClaims";
+import Empty from "@/components/Empty";
 
-const data = {
-  name: "John Doe",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  date: "12:00 PM",
-  unread: 2,
+const calculateUnread = (messages: any[], userId: string) => {
+  const unread = messages.filter(
+    (item) => item.sender.id !== userId && !item.is_read
+  );
+  return unread.length;
 };
 
-const ChatList = ({ onMessageSelect }: { onMessageSelect: () => void }) => {
+const ChatList = ({
+  onMessageSelect,
+  chats,
+}: {
+  onMessageSelect: IChatItem["onMessageSelect"];
+  chats: any[] | null;
+}) => {
+  const {
+    claims: { id },
+  } = useClaims();
+
+  if (chats && chats.length === 0)
+    return (
+      <Empty
+        title="Henüz mesajınız yok"
+        description="Siparişlerim sayfasından sipariş verdiğiniz satıcılarla iletşime geçebilirsiniz."
+      />
+    );
+
   return (
-    <div className="flex-1 h-full overflow-auto px-2" onClick={onMessageSelect}>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-        <ChatItem key={item} {...data} />
-      ))}
+    <div className="flex-1 h-full overflow-auto px-2">
+      {!chats ? (
+        <ChatItemSkeleton />
+      ) : (
+        chats.map((item) => {
+          const date = item?.messages?.[0]?.created_at
+            ? localeFormat(
+                item?.messages.length > 0
+                  ? new Date(item.messages[0].created_at)
+                  : undefined,
+                "PPP"
+              )
+            : "";
+          const unread = calculateUnread(item.messages, id);
+          return (
+            <ChatItem
+              key={item.id}
+              name={item?.tenant?.firstname + " " + item?.tenant?.lastname}
+              message={
+                item?.messages?.length > 0
+                  ? item.messages?.slice(-1)?.[0]?.message
+                  : ""
+              }
+              date={date}
+              imgPath={item.tenant?.picture}
+              tenantId={item.tenant.id}
+              onMessageSelect={onMessageSelect}
+              unRead={unread}
+            />
+          );
+        })
+      )}
     </div>
   );
 };

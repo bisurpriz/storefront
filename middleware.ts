@@ -1,18 +1,42 @@
-import {
-  NextResponse,
-  type NextFetchEvent,
-  type NextRequest,
-} from "next/server";
-import { withMiddlewareAuthRequired } from "@auth0/nextjs-auth0/edge";
+import { getSession } from "@auth0/nextjs-auth0/edge";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { v4 as uuid } from "uuid";
 
-async function middleware(request: NextRequest, event: NextFetchEvent) {
-  const res = NextResponse.next();
+export async function middleware(request: NextRequest) {
+  const hasUserId = request.cookies.has("user_id");
+  const hasFingerPrint = request.cookies.has("fingerPrint");
 
-  return res;
+  const session = await getSession();
+  const response = NextResponse.next();
+
+  if (session?.user) {
+    const userId =
+      session.user["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
+
+    if (!hasUserId) {
+      response.cookies.set("user_id", userId, {
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+    }
+  }
+
+  if (!hasUserId && !hasFingerPrint) {
+    console.log("No user id or finger print");
+
+    const id = uuid();
+
+    response.cookies.set("fingerPrint", id, {
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+  }
+
+  if (hasUserId && hasFingerPrint) {
+    console.log("Has user id and finger print");
+    response.cookies.delete("fingerPrint");
+  }
+
+  return response;
 }
-
-export default withMiddlewareAuthRequired(middleware);
-
-export const config = {
-  matcher: ["/account/:path*"],
-};

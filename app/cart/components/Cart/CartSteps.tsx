@@ -16,7 +16,7 @@ const CartSteps = () => {
   }, [pathname]);
 
   return (
-    <div className="block text-3xl mb-3">
+    <div className="p-4 rounded-t-xl bg-slate-50 border-b border-slate-200">
       <Stepper
         activeStep={activeStep}
         steps={cartStepperPaths.map((step, i) => ({

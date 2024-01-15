@@ -3,7 +3,6 @@ import { Product } from "../Product/product";
 export interface ProductForCart
   extends Pick<
     Product,
-    | "description"
     | "id"
     | "image_url"
     | "name"

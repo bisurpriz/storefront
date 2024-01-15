@@ -30,15 +30,15 @@ const CollapsableDateButton = ({
   };
 
   return (
-    <div className="relative">
+    <div className='relative'>
       <Button
         key={value?.toString()}
-        className="pt-4 pb-4 flex items-center justify-center flex-col h-fit"
+        className='!p-2 flex items-center justify-center flex-col h-fit'
         variant={value === selectedDay ? "fullfilled" : "outlined"}
         fullWidth
         onClick={handleOpen}
       >
-        <p className="text-lg font-medium">{label}</p>
+        <p className="text-base font-medium truncate">{label}</p>
         <p className="text-sm font-normal">
           {value ? localeFormat(value, monthFormat) : ""}
         </p>
@@ -58,7 +58,7 @@ const CollapsableDateButton = ({
         nodeRef={ref}
       >
         <div
-          className="transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden"
+          className='transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden'
           ref={ref}
         >
           {value ? (
@@ -69,7 +69,7 @@ const CollapsableDateButton = ({
                 return new Date(value.setHours(Number(hour), Number(minute)));
               })}
               onChange={(date) => onSelect(date)}
-              className="w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal"
+              className='w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal'
             />
           ) : (
             "Uygun teslimat zamanı bulunamadı"

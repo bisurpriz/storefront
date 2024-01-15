@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scroll-behavior: smooth;
+}
+
 @layer components {
   .content-height {
     min-height: calc(100vh - 197px);
@@ -52,8 +56,8 @@
   background: transparent;
 }
 
-.react-datepicker__time-container {
-  width: 100% !important;
+.react-datepicker__day {
+  width: auto !important;
 }
 
 .react-datepicker__time-box {
@@ -71,7 +75,7 @@
 }
 
 .react-datepicker__header {
-  background-color: #4fc08d !important;
+  background-color: #a5b4fc !important;
 }
 
 .react-datepicker__current-month {
@@ -81,14 +85,6 @@
   font-family: var(--font-sans) !important;
 }
 
-.react-datepicker--time-only {
-  border: 1px solid #4fc08d !important;
-}
-
-.react-datepicker__month-container {
-  width: 100% !important;
-}
-
 .react-datepicker__day-name {
   color: #efefef !important;
   font-size: 14px !important;
@@ -96,10 +92,21 @@
   font-family: var(--font-sans) !important;
 }
 
-.react-datepicker__week {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
+.react-datepicker__time-list-item--selected,
+.react-datepicker__day--selected {
+  background-color: #f472b6 !important;
+  color: #efefef !important;
+  outline: none !important;
+}
+
+.react-datepicker__children-container {
+  width: 100% !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: rgba(244, 114, 182, 0.2) !important;
+  color: #323232 !important;
+  outline: none !important;
 }
 
 .react-datepicker__day-names {
@@ -152,7 +159,7 @@
 }
 
 .swiper-button-next {
-  color: #4fc08d !important;
+  color: #a5b4fc !important;
 }
 
 .swiper-button-next::after {
@@ -160,7 +167,7 @@
 }
 
 .swiper-button-prev {
-  color: #4fc08d !important;
+  color: #a5b4fc !important;
 }
 
 .swiper-button-prev::after {
