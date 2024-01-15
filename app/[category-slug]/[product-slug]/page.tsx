@@ -5,6 +5,7 @@ import ProductDescription from "@/app/products/[slug]/components/Detail/ProductD
 import ProductImageCarousel from "@/app/products/[slug]/components/Detail/ProductImageCarousel";
 import ProductInformation from "@/app/products/[slug]/components/Detail/ProductInformation";
 import { getProductById } from "@/app/products/actions";
+import AccordionItem from "@/components/Accordion/AccordionItem";
 import { IMAGE_URL } from "@/contants/urls";
 import { destructClaims } from "@/utils/getClaims";
 import { getSession } from "@auth0/nextjs-auth0";
@@ -68,8 +69,6 @@ export default async function ProductExample({
             freeShipping={freeShipping}
             shippingType={shippingType}
           />
-          {/* <SearchLocation className="mt-6" /> */}
-          {/* <HourSelect className="mt-6" /> */}
           <ProductActions
             productId={data.product.id}
             favorite={{
@@ -87,11 +86,18 @@ export default async function ProductExample({
         aria-describedby="Ürün Detayları"
         id="product-detail"
       >
-        <ProductDescription
+        <AccordionItem
+          content={
+            <ProductDescription
+              description={data.product.description}
+              notes={[]}
+              specifications={data.product.properties}
+            />
+          }
           title="Ürün Detayları"
-          description={data.product.description}
-          notes={[]}
-          specifications={data.product.properties}
+          bordered
+          isOpen
+          className="rounded-lg"
         />
       </section>
       <section

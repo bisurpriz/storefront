@@ -74,8 +74,9 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <Promotions
             promotions={[
               {
-                description: tenant.nickname,
+                description: "Kategori İndirimi",
                 icon: <IoAccessibility />,
+                filterKey: "category",
               },
             ]}
           />

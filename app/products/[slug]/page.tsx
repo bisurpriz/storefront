@@ -73,11 +73,13 @@ const ProductDetail = async ({
                 description:
                   "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
                 icon: <HiOutlineTicket />,
+                filterKey: "SAME_DAY",
               },
               {
                 description:
                   "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
                 icon: <HiOutlineArchive />,
+                filterKey: "SAME_DAY",
               },
             ]}
           />
@@ -113,7 +115,6 @@ const ProductDetail = async ({
 
       <section className="mt-6" id="reviews">
         <ProductDescription
-          title="Ürün Detayları"
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
           notes={Array.from({ length: 5 }).map((_, index) =>
             faker.commerce.productDescription()
