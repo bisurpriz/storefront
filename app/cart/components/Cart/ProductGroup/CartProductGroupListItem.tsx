@@ -25,7 +25,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2">
+        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col">
           <Image
             src={getImageUrlFromPath(image_url[0])}
             alt="image"
@@ -36,7 +36,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           />
           <div className="flex flex-col gap-4">
             <Link
-              className="text-base font-semibold text-gray-800 uppercase"
+              className="text-base font-semibold text-gray-800 uppercase max-md:text-xs"
               href={`/${category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
