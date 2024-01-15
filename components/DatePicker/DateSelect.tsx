@@ -82,8 +82,8 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
         });
       })}
       locale={tr}
-      minDate={new Date(add(new Date(), { days: 3 }))}
-      maxDate={new Date(add(new Date(), { days: 7 }))}
+      minDate={new Date()}
+      maxDate={new Date(add(new Date(), { days: 6 }))}
       showTimeSelect
       timeIntervals={60}
       onCalendarOpen={() => handleSelect(null)}
