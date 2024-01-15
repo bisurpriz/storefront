@@ -50,9 +50,14 @@ const CustomButton = forwardRef(
               </>
             ) : (
               <p className="text-sm font-medium">
-                {isSelectCalendar
-                  ? localeFormat(isSelectCalendar, "d MMMM HH:mm")
-                  : "Tarih seçiniz"}
+                {isSelectCalendar ? (
+                  <span className="flex flex-wrap justify-center">
+                    <span>{localeFormat(isSelectCalendar, "d MMMM")}</span>{" "}
+                    <span>{localeFormat(isSelectCalendar, "HH:mm")}</span>
+                  </span>
+                ) : (
+                  "Tarih seçiniz"
+                )}
               </p>
             )}
           </span>

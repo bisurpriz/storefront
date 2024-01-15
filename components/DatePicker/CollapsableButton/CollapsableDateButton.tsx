@@ -38,7 +38,7 @@ const CollapsableDateButton = ({
         fullWidth
         onClick={handleOpen}
       >
-        <p className="text-lg font-medium">{label}</p>
+        <p className="text-base font-medium truncate">{label}</p>
         <p className="text-sm font-normal">
           {value ? localeFormat(value, monthFormat) : ""}
         </p>
