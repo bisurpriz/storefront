@@ -61,7 +61,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
           exitActive: "accordion-content-exit-active",
         }}
       >
-        <div ref={nodeRef} className="p-4">
+        <div ref={nodeRef} className="p-4 whitespace-normal">
           {content}
         </div>
       </CSSTransition>
