@@ -3,8 +3,16 @@ import Grid from "../Grid";
 import GridItem from "../GridItem";
 import Image from "next/image";
 import Link from "next/link";
+import { Banner } from "@/common/types/Banners/banners";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
-const CampaignGrid: FC = () => {
+interface CampaignGridProps {
+  banners: Banner[];
+}
+
+const CampaignGrid: FC<CampaignGridProps> = ({
+  banners
+}) => {
   return (
     <Grid
       cols={12}
@@ -14,9 +22,9 @@ const CampaignGrid: FC = () => {
         md: 3,
         sm: 2,
       }}
-      className="my-8"
+      className='my-8'
     >
-      {Array.from(Array(8).keys()).map((item, i) => (
+      {banners.map((item, i) => (
         <GridItem
           key={i}
           colSpan={{
@@ -26,13 +34,13 @@ const CampaignGrid: FC = () => {
             sm: 12,
           }}
         >
-          <Link href={`/campaigns/${i}`}>
+          <Link href={item.redirect_link}>
             <Image
-              src={`/slider/slider-${i}.png`}
+              src={getImageUrlFromPath(item.path)}
               width={500}
               height={500}
-              className="rounded-lg w-full h-full"
-              alt="Picture of the author"
+              className='rounded-lg w-auto h-full'
+              alt={item.name}
               priority
             />
           </Link>
