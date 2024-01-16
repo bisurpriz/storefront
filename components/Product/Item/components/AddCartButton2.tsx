@@ -2,6 +2,8 @@ import Button from "@/components/Button";
 import { Suspense } from "react";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { setCartWithRedis } from "@/app/cart/actions";
+import toast from "react-hot-toast";
+import ToastAddCart from "@/components/ToastWrapper/ToastAddCart";
 
 interface AddCartButton2Props {
   product: ProductForCart;
@@ -9,7 +11,19 @@ interface AddCartButton2Props {
 }
 
 const AddCartButton2 = ({ product, loading }: AddCartButton2Props) => {
-  const handleAddToCart = () => setCartWithRedis(product);
+  const handleAddToCart = () => setCartWithRedis(product).then(() => {
+  
+    toast.custom((t) => (
+      <ToastAddCart
+        t={t}
+        message="Ürün sepete eklendi."
+      />
+    ), {
+      position: 'bottom-right',
+      id: 'add-cart-toast',
+      duration:500
+    })
+  })
 
   return (
     <Suspense fallback={<>Loading...</>}>
