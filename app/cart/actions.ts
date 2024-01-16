@@ -246,17 +246,21 @@ export const removeCartItemWithRedis = async (id: number) => {
   const { key, exp } = getExpireDefinition(userId);
 
   const result = await getCartWithRedis();
-  if (result) {
-    const existingCartItems = result as ProductForCart[];
-    const filteredCartItems = existingCartItems.filter(
-      (item) => item.id !== id
-    );
+  try {
+    if (result) {
+      const existingCartItems = result as ProductForCart[];
+      const filteredCartItems = existingCartItems.filter(
+        (item) => item.id !== id
+      );
 
-    if (existingCartItems.length === 1) {
-      return await removeCartWithRedis();
-    } else {
-      await set(key, JSON.stringify(filteredCartItems), exp);
+      if (existingCartItems.length === 1) {
+        return await removeCartWithRedis();
+      } else {
+        await set(key, JSON.stringify(filteredCartItems), exp);
+      }
     }
+  } catch (error) {
+    console.log(error);
   }
 
   return result;
