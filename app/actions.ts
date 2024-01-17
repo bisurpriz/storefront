@@ -1,6 +1,7 @@
 "use server";
 
 import { query } from "@/graphql/lib/client";
+import { GET_ALL_BANNERS } from "@/graphql/queries/banners/banners";
 import { GET_VENDOR_BY_ID } from "@/graphql/queries/vendors/getVendorById";
 import { getSession } from "@auth0/nextjs-auth0";
 import { cookies } from "next/headers";
@@ -74,3 +75,15 @@ export const getVendorById = async <T>({ id }: { id: number }) => {
     loading,
   };
 };
+
+export async function getBanners() {
+  const { data, loading } = await query({
+    query: GET_ALL_BANNERS,
+  });
+  console.log(data);
+
+  return {
+    banners: data.system_banner,
+    loading,
+  };
+}

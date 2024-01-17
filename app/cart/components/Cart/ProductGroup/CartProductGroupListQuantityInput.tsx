@@ -14,7 +14,7 @@ const CartProductGroupListQuantityInput = ({
 }) => {
   return (
     <div className="flex items-center justify-start gap-2">
-      <span className="text-base font-semibold text-gray-600">Adet:</span>
+      <span className="text-base font-semibold text-gray-600 max-xs:text-xs">Adet:</span>
       <QuantityInput
         value={quantity}
         onChange={async (e, quantity) => {

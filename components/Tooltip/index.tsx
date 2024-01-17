@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC, ReactNode } from "react";
 import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
