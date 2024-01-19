@@ -10,7 +10,6 @@ import ProductActions from "./components/Detail/ProductActions";
 import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 import ProductDescription from "./components/Detail/ProductDescription";
 import ProductComments from "./components/Detail/ProductComments";
-import { faker } from "@faker-js/faker";
 import PaymentMethods from "./components/Detail/PaymentMethods";
 
 type Props = {
@@ -51,14 +50,14 @@ const ProductDetail = async ({
   const isFavoriteForCurrentUser = data.favorites.data.length > 0;
 
   return (
-    <div className="h-full">
+    <div className='h-full'>
       <section
-        className="flex items-start justify-start max-md:flex-col gap-6"
-        id="detail"
-        aria-labelledby="detail"
-        aria-describedby="Ürün detayları"
+        className='flex items-start justify-start max-md:flex-col gap-6'
+        id='detail'
+        aria-labelledby='detail'
+        aria-describedby='Ürün detayları'
       >
-        <div className="w-1/2 max-md:w-full">
+        <div className='w-1/2 max-md:w-full'>
           <ProductImageCarousel
             images={data.product.image_url?.map((url: string) => ({
               id: url,
@@ -66,7 +65,7 @@ const ProductDetail = async ({
             }))}
           />
         </div>
-        <div className="w-1/2 max-md:w-full">
+        <div className='w-1/2 max-md:w-full'>
           <Promotions
             promotions={[
               {
@@ -95,14 +94,14 @@ const ProductDetail = async ({
             }}
             rating={data.reviews.data}
             reviewCount={data.reviews.totalCount}
-            promotion="Kargo Bedava"
+            promotion='Kargo Bedava'
             discountPrice={data.product.price}
             discountRate={10}
             key={data.product.id}
             vendor={data.tenant}
           />
-          <SearchLocation className="mt-6" />
-          <HourSelect className="mt-6" />
+          <SearchLocation className='mt-6' />
+          <HourSelect className='mt-6' />
           <ProductActions
             productId={data.product.id}
             favorite={{
@@ -113,43 +112,41 @@ const ProductDetail = async ({
         </div>
       </section>
 
-      <section className="mt-6" id="reviews">
+      <section className='mt-6' id='reviews'>
         <ProductDescription
-          description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
-          notes={Array.from({ length: 5 }).map((_, index) =>
-            faker.commerce.productDescription()
+          description='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus.'
+          notes={Array.from({ length: 5 }).map(
+            (_, index) =>
+              " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam, alias."
           )}
           specifications={data.product.properties}
         />
       </section>
       <section
-        className="mt-6"
-        id="payment-methods"
-        aria-labelledby="payment-methods"
-        aria-describedby="Ödeme yöntemleri"
+        className='mt-6'
+        id='payment-methods'
+        aria-labelledby='payment-methods'
+        aria-describedby='Ödeme yöntemleri'
       >
         <PaymentMethods />
       </section>
       <section
-        className="mt-6"
-        id="comments"
-        aria-labelledby="comments"
-        aria-describedby="Ürün yorumları"
+        className='mt-6'
+        id='comments'
+        aria-labelledby='comments'
+        aria-describedby='Ürün yorumları'
       >
         <ProductComments
           comments={Array.from({ length: 5 }).map((_, index) => ({
-            comment: faker.lorem.paragraph(),
-            createdAt: faker.date.past().toISOString(),
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
+            comment: 'lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+            createdAt: '2021-05-12T12:00:00.000Z', 
+            firstName:'John' ,
+            lastName: 'Doe' ,
             user_id: index,
-            rate: faker.number.int({
-              min: 1,
-              max: 5,
-            }),
-            user_image_url: faker.image.avatar(),
+            rate: 4,
+            user_image_url: 'https://picsum.photos/200',
             comment_id: index,
-            email: faker.internet.email(),
+            email: 'john_doe@gmail.com'
           }))}
         />
       </section>

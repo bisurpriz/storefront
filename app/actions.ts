@@ -80,7 +80,6 @@ export async function getBanners() {
   const { data, loading } = await query({
     query: GET_ALL_BANNERS,
   });
-  console.log(data);
 
   return {
     banners: data.system_banner,
