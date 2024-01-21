@@ -10,7 +10,6 @@ import ProductActions from "./components/Detail/ProductActions";
 import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 import ProductDescription from "./components/Detail/ProductDescription";
 import ProductComments from "./components/Detail/ProductComments";
-import { faker } from "@faker-js/faker";
 import PaymentMethods from "./components/Detail/PaymentMethods";
 
 type Props = {
@@ -117,7 +116,7 @@ const ProductDetail = async ({
         <ProductDescription
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
           notes={Array.from({ length: 5 }).map((_, index) =>
-            faker.commerce.productDescription()
+            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
           )}
           specifications={data.product.properties}
         />
@@ -138,18 +137,15 @@ const ProductDetail = async ({
       >
         <ProductComments
           comments={Array.from({ length: 5 }).map((_, index) => ({
-            comment: faker.lorem.paragraph(),
-            createdAt: faker.date.past().toISOString(),
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
+            comment: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+            createdAt: '2021-08-10T12:00:00.000Z',
+            firstName: 'John',
+            lastName: 'Doe',
             user_id: index,
-            rate: faker.number.int({
-              min: 1,
-              max: 5,
-            }),
-            user_image_url: faker.image.avatar(),
+            rate: 5,
+            user_image_url: 'https://picsum.photos/200/300',
             comment_id: index,
-            email: faker.internet.email(),
+            email: 'john@doe.com',
           }))}
         />
       </section>

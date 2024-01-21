@@ -87,6 +87,13 @@ const nextConfig = {
         pathname: "/**",
         port: "",
       },
+      {
+        hostname: "cdn.trendyol.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+        
+      }
     ],
   },
 };
