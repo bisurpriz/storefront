@@ -16,6 +16,7 @@ const CampaignGrid: FC<CampaignGridProps> = ({ banners }) => {
       {banners.map((item, i) => (
         <Link href={item.redirect_link}
           className="w-full h-full"
+          key={item.id}
         >
           <Image
             src={getImageUrlFromPath(item.path)}

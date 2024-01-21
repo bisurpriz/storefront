@@ -3,7 +3,6 @@ import HeaderMiddle from "./Middle";
 import HeaderBottom from "./Bottom";
 import { query } from "@/graphql/lib/client";
 import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
-import Divider from "@/components/Divider";
 import { memo } from "react";
 
 const Header = async () => {

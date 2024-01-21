@@ -3,7 +3,6 @@ import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
-import Tooltip from "@/components/Tooltip";
 import Rating from "@/components/Rating/Rating";
 import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
