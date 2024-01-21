@@ -17,7 +17,7 @@ const HeaderBottom = ({ categories }: Props) => {
   }));
 
   return (
-    <div className="w-full max-md:px-4 pb-2 pt-2 flex items-center sm:gap-8 max-md:justify-between overflow-hidden">
+    <div className="w-full max-md:px-4 pb-2 pt-2 flex items-center sm:gap-8 max-md:justify-between overflow-hidden border-y">
       <Menu items={menuData} className="max-sm:hidden" />
       <Link href="/" className="sm:hidden max-sm:mr-auto">
         <Image

@@ -33,7 +33,7 @@ const AddCartButton2 = ({ product, loading }: AddCartButton2Props) => {
         fullWidth
         color="primary"
         variant="outlined"
-        className="justify-center rounded-b-lg text-lg max-xs:p-2 max-xs:text-sm rounded-none border-l-transparent border-r-transparent border-b-transparent border-t-slate-200 mt-auto"
+        className="justify-center rounded-b-lg text-base max-xs:p-2 max-xs:text-sm rounded-none border-l-transparent border-r-transparent border-b-transparent border-t-slate-200 mt-auto"
         label="Sepete Ekle"
       >
         Sepete Ekle

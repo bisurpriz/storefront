@@ -9,7 +9,7 @@ const Content = ({ children }: ContentProps) => {
   return (
     <Suspense fallback={<>Loading ...</>}>
       <Toaster />
-      <main className="content-height max-sm:content-height-sm h-full pt-6 max-md:px-4 max-sm:px-4 max-md:mx-0 mx-12 scroll-smooth">
+      <main className="content-height max-sm:content-height-sm h-full md:container pt-6 p-0 px-4 mx-auto scroll-smooth">
         {children}
       </main>
     </Suspense>

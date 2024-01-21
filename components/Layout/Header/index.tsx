@@ -12,12 +12,10 @@ const Header = async () => {
   });
 
   return (
-    <div className="text-xs z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse px-12 max-sm:p-0 max-md:mx-0">
+    <div className="text-xs md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
       <HeaderTop />
       <HeaderMiddle />
-      <Divider orientation="horizontal" />
       <HeaderBottom categories={data.category} />
-      <Divider orientation="horizontal" />
     </div>
   );
 };

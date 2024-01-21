@@ -7,6 +7,7 @@ import Tooltip from "@/components/Tooltip";
 import Rating from "@/components/Rating/Rating";
 import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
+import ProductCardStamps from "./components/Stamps";
 
 const ProductItem5 = ({
   name,
@@ -27,21 +28,21 @@ const ProductItem5 = ({
   tenant,
 }: ProductItemProps) => {
   return (
-    <div className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col">
+    <div className='border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col'>
       <Link href={`/${category.slug}/${slug}?pid=${id}`}>
         <Image
           src={getImageUrlFromPath(image[0])}
           alt={name}
           width={500}
           height={500}
-          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
-          loading="eager"
+          className='aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto'
+          loading='eager'
           quality={70}
           priority
         />
-        <div className="p-2">
-          <article className="flex flex-col justify-between flex-grow mb-2">
-            <span className="text-xs flex text-slate-400 gap-2 items-center">
+        <div className='p-2'>
+          <article className='flex flex-col justify-between flex-grow'>
+            <span className='text-xs flex text-slate-400 gap-2 items-center'>
               <Rating
                 value={4}
                 readOnly
@@ -51,7 +52,7 @@ const ProductItem5 = ({
               {`(${4})`}
             </span>
             <h1
-              className="text-md font-semibold text-gray-800 h-12 line-clamp-2 mb-2 capitalize"
+              className='text-sm font-normal text-gray-800 h-10 line-clamp-2 mb-1 capitalize'
               title={name}
             >
               {name}
@@ -59,31 +60,7 @@ const ProductItem5 = ({
             <PriceTag price={price} discount={discount_price} />
           </article>
 
-          <div className="flex items-center justify-start gap-3 rounded-md ps-2">
-            {[
-              {
-                description: "Kargo Bedava",
-                icon: "🚚",
-              },
-              {
-                description: "İade Garantisi",
-                icon: "🔄",
-              },
-              {
-                description: "Taksit Seçenekleri",
-                icon: "💳",
-              },
-            ].map((item) => (
-              <div
-                key={item.description}
-                className="flex items-center gap-2 text-base text-gray-500 mt-2"
-              >
-                <Tooltip text={item.description} position="top">
-                  <span>{item.icon}</span>
-                </Tooltip>
-              </div>
-            ))}
-          </div>
+          {false && <ProductCardStamps/>}
         </div>
       </Link>
       <AddCartButton2
