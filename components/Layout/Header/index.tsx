@@ -1,4 +1,3 @@
-import HeaderTop from "./Top";
 import HeaderMiddle from "./Middle";
 import HeaderBottom from "./Bottom";
 import { query } from "@/graphql/lib/client";
@@ -11,8 +10,7 @@ const Header = async () => {
   });
 
   return (
-    <div className="text-xs md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
-      <HeaderTop />
+    <div className='md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse'>
       <HeaderMiddle />
       <HeaderBottom categories={data.category} />
     </div>

@@ -16,23 +16,20 @@ const Menu: React.FC<MenuProps> = ({
 
   return (
     <nav
-      className={`font-mono bg-transparent font-medium w-full ${className}`}
+      className={`font-mono bg-transparent font-medium w-full border-y ${className}`}
       ref={listRef}
     >
       {items ? (
         <ul
           className={`${
             orientation === "horizontal" ? "inline-flex" : "block"
-          }  text-base leading-4 w-full`}
+          }  text-base leading-4 w-full py-2`}
         >
           {items?.map((item, index) => (
-            <li
-              key={index}
-              className='relative group my-2 px-4 cursor-pointer border-r last-of-type:border-r-0'
-            >
+            <li key={index} className='relative group cursor-pointer'>
               <Link
                 href={item.link ?? "#"}
-                className='flex items-center h-full group-hover:text-primary whitespace-nowrap'
+                className='flex items-center justify-center h-full w-full p-2 px-4 font-semibold hover:text-gray-600 transition-colors duration-200 ease-in-out hover:bg-gray-100 rounded-md'
               >
                 {item.icon && <span className='mr-2'>{item.icon}</span>}
                 {item.text}
