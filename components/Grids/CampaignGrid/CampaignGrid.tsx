@@ -10,14 +10,9 @@ interface CampaignGridProps {
 
 const CampaignGrid: FC<CampaignGridProps> = ({ banners }) => {
   return (
-    <div
-     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-4 my-2"
-    >
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2'>
       {banners.map((item, i) => (
-        <Link href={item.redirect_link}
-          className="w-full h-full"
-          key={item.id}
-        >
+        <Link href={item.redirect_link} className='w-full h-full' key={item.id}>
           <Image
             src={getImageUrlFromPath(item.path)}
             width={500}

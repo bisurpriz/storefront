@@ -20,17 +20,17 @@ const MobileDrawer = ({
     <>
       <Button
         icon={<MdMenu />}
-        variant="outlined"
-        size="small"
+        variant='outlined'
+        size='small'
         iconSize={24}
-        className="max-sm:p-1"
+        className='max-sm:p-1 px-0 py-0'
         onClick={() => setIsOpen(true)}
       />
       <Drawer
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Menü"
-        placement="left"
+        title='Menü'
+        placement='left'
         lockScroll={true}
       >
         <MobileMenu items={menuData} />

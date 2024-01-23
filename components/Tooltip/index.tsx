@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import type { FC, ReactNode } from "react";
 import { useRef, useState } from "react";
@@ -86,21 +86,21 @@ const Tooltip: FC<TooltipProps> = ({
 
   return (
     <div
-      className="relative"
+      className='relative'
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="cursor-pointer">{children}</div>
+      <div className='cursor-pointer'>{children}</div>
       <div className={`${breakpointWithOpenTooltip()}`}>
         <CSSTransition
           in={isTooltipVisible}
-          timeout={200}
+          timeout={100}
           classNames={{
             enter: "opacity-0",
             enterActive: "opacity-100 transition-opacity duration-300",
             enterDone: "opacity-100",
             exit: "opacity-100",
-            exitActive: "opacity-0 transition-opacity duration-300",
+            exitActive: "opacity-0 transition-opacity duration-100",
             exitDone: "opacity-0",
           }}
           unmountOnExit
@@ -108,8 +108,8 @@ const Tooltip: FC<TooltipProps> = ({
         >
           <div
             ref={ref}
-            role="tooltip"
-            className={`absolute z-10 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
+            role='tooltip'
+            className={`absolute z-20 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
           >
             {text}
           </div>

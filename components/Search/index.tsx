@@ -1,48 +1,31 @@
 "use client";
-
-import { useState } from "react";
+import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
+import Button from "../Button";
+import TextField from "../TextField";
 
-export interface SearchInputProps {
-  onSearch?: (query: string) => void;
-  fullWidth?: boolean;
-}
-
-const SearchInput: React.FC<SearchInputProps> = ({ onSearch, fullWidth }) => {
-  const [query, setQuery] = useState("");
-
-  const handleSearch = () => {
-    onSearch?.(query);
+const Search = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  const handleFocus = () => {
+    ref.current?.focus();
   };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const isFullWidth = fullWidth ? "w-full" : "";
 
   return (
-    <div className={`relative flex items-center ${isFullWidth}`}>
-      <input
-        name="search"
-        id="search"
-        type="text"
-        placeholder="Arama yap..."
-        value={query}
-        onKeyDown={handleKeyDown}
-        onChange={(e) => setQuery(e.target.value)}
-        className="block outline-none w-full pr-14 text-base py-2 pl-4 text-gray-700 border rounded-sm focus:ring-primary focus:border-primary-dark shadow-sm focus:ring focus:ring-opacity-50 flex-1"
+    <div className='relative w-full'>
+      <TextField
+        type='text'
+        className='!w-full !h-10 !pl-4 !pr-10 !text-sm !rounded-full'
+        placeholder='Çiçek, hediye, süprizler...'
+        ref={ref}
       />
-      <button
-        onClick={handleSearch}
-        className="absolute right-0 p-2 px-4 text-white focus:outline-none origin-center bg-primary h-full rounded-r-sm"
+      <Button
+        className='!absolute !top-0 !right-0 !w-10 !h-10 !mt-0 !mr-0 !rounded-full !p-0 !justify-center z-0'
+        onFocus={handleFocus}
       >
-        <BsSearch size={20} className="transform transition hover:scale-110" />
-      </button>
+        <BsSearch />
+      </Button>
     </div>
   );
 };
 
-export default SearchInput;
+export default Search;
