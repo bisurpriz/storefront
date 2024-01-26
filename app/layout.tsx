@@ -18,6 +18,7 @@ import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
 import "react-datepicker/dist/react-datepicker.css";
 import Listener from "./account/messages/components/Listener";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -88,7 +89,11 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   if (process.env.NODE_ENV === "development") {
     loadDevMessages();
     loadErrorMessages();
@@ -110,6 +115,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Listener />
         </UserProvider>
       </body>
+      <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>
   );
 }
