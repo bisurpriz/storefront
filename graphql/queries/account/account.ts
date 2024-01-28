@@ -37,7 +37,6 @@ export const GET_USER_BY_ID = gql`
       picture
       phone
       reference_code
-      vkn_tckn
       user_addresses {
         address_title
         address

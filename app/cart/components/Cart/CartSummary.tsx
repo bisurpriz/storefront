@@ -36,13 +36,11 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
 
   const isCartPage = useCallback(
     (nextPath: string) => {
-      console.log("is cart page");
       if (cartItems.length > 0) {
         const isCustomizable = cartItems.find(
           (item) => item.product_customizable_areas.length > 0
         );
         if (isCustomizable) {
-          console.log("has customizable");
           const isCustomizableAreaEmpty =
             isCustomizable.product_customizable_areas.find((area) =>
               area?.customizable_area.values?.find((value) => {
@@ -91,59 +89,59 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   }, [pathname, paths]);
 
   return (
-    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg">
-      <div className="hidden md:block">
+    <div className='max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg'>
+      <div className='hidden md:block'>
         <div>
-          <span className="block text-xl w-full text-center mb-3 font-normal">
+          <span className='block text-xl w-full text-center mb-3 font-normal'>
             Sipariş Özeti
           </span>
-          <div className="flex flex-col">
-            <div className="flex justify-between text-sm py-1">
+          <div className='flex flex-col'>
+            <div className='flex justify-between text-sm py-1'>
               <span>Ara Toplam</span>
-              <span className="font-semibold">
+              <span className='font-semibold'>
                 {total_discount_price?.toFixed(2)} ₺
               </span>
             </div>
-            <div className="flex justify-between text-sm py-1">
+            <div className='flex justify-between text-sm py-1'>
               <span>Kargo</span>
-              <span className="font-semibold">29.99 ₺</span>
+              <span className='font-semibold'>29.99 ₺</span>
             </div>
             {total_discount ? (
-              <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
+              <div className='flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md'>
                 <span>Toplam kazancınız</span>
-                <span className="font-semibold">
+                <span className='font-semibold'>
                   {total_discount?.toFixed(2)} ₺{" "}
                 </span>
               </div>
             ) : null}
 
-            <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
+            <div className='xl:flex xl:justify-between text-sm py-3 mt-1'>
               <TextField
                 icon={<IoTicketOutline />}
-                placeholder="İndirim Kodu Girin"
-                id="discountCode"
+                placeholder='İndirim Kodu Girin'
+                id='discountCode'
                 fullWidth
               />
               <Button
-                type="button"
-                size="small"
-                color="primary"
-                className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
-                label="İndirim Kodu Kullan"
+                type='button'
+                size='small'
+                color='primary'
+                className='flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3'
+                label='İndirim Kodu Kullan'
               />
             </div>
-            <div className="flex justify-between items-center text-sm border-t py-1 mt-1">
-              <span className="font-medium">Toplam</span>
-              <span className="font-semibold text-xl text-primary ">
+            <div className='flex justify-between items-center text-sm border-t py-1 mt-1'>
+              <span className='font-medium'>Toplam</span>
+              <span className='font-semibold text-xl text-primary '>
                 {total_price?.toFixed(2)} ₺
               </span>
             </div>
             <SubmitButton
               type={formTarget ? "submit" : "button"}
-              size="large"
-              color="primary"
-              className="flex justify-center w-full mt-3"
-              label="Onayla ve Devam Et"
+              size='large'
+              color='primary'
+              className='flex justify-center w-full mt-3'
+              label='Onayla ve Devam Et'
               onClick={handlePageChange}
               form={formTarget}
             />

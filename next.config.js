@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    instrumentationHooks: true,
+  },
   images: {
     loader: "default",
+
     remotePatterns: [
       {
         hostname: "lh3.googleusercontent.com",
@@ -92,8 +96,7 @@ const nextConfig = {
         protocol: "https",
         pathname: "/**",
         port: "",
-        
-      }
+      },
     ],
   },
 };

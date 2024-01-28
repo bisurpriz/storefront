@@ -3,6 +3,7 @@ import { getOrderWithReview } from "./actions";
 import NotReviewedCardMapper from "./components/NotReviewed/CardMapper";
 import ReviewedCardMapper from "./components/Reviewed/CardMapper";
 import { Suspense } from "react";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const ReviewsPage = async () => {
   const { order_item, reviews } = await getOrderWithReview();
@@ -10,8 +11,8 @@ const ReviewsPage = async () => {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center w-full h-full">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        <div className='flex items-center justify-center w-full h-full'>
+          <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900'></div>
         </div>
       }
     >
@@ -33,4 +34,4 @@ const ReviewsPage = async () => {
   );
 };
 
-export default ReviewsPage;
+export default withPageAuthRequired(ReviewsPage);

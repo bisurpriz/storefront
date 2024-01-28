@@ -8,7 +8,6 @@ export interface User {
   phone: string;
   id: string;
   role: keyof typeof Roles;
-  vkn_tckn: string;
   company_type: string;
   auth0_id: string;
   picture: string;

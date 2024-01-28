@@ -7,22 +7,14 @@ import SubmitButton from "@/components/Button/SubmitButton";
 import { revalidatePath } from "next/cache";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { User } from "@/common/types/User/user";
 
 const ProfileForm = ({
   user,
   id,
   error,
 }: {
-  user: {
-    created_at: string;
-    email: string;
-    firstname: string;
-    lastname: string;
-    picture: string;
-    phone: string;
-    reference_code: string | null;
-    vkn_tckn: string | null;
-  };
+  user: User;
   id: string;
   error: any;
 }) => {
@@ -34,7 +26,7 @@ const ProfileForm = ({
       firstname:
         (values.firstname as string)?.length > 0
           ? (values.firstname as string)
-          : user.firstname,
+          : user.firstname || "",
       lastname:
         (values.lastname as string)?.length > 0
           ? (values.lastname as string)
@@ -70,70 +62,64 @@ const ProfileForm = ({
   }
 
   return user ? (
-    <form className="flex flex-col gap-4 max-md:gap-2" action={updateUser}>
-      <div className="flex items-start flex-col justify-start gap-2">
-        <p className="text-xs text-slate-400">
+    <form className='flex flex-col gap-4 max-md:gap-2' action={updateUser}>
+      <div className='flex items-start flex-col justify-start gap-2'>
+        <p className='text-xs text-slate-400'>
           {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
         </p>
         <Image
           src={user.picture}
-          alt="Profil resmi"
-          className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
+          alt='Profil resmi'
+          className='rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7'
           width={200}
           height={200}
         />
       </div>
       <TextField
-        label="İsim"
-        id="firstname"
+        label='İsim'
+        id='firstname'
         placeholder={user.firstname || "Adınız"}
-        type="text"
+        type='text'
       />
       <TextField
-        label="Soyisim"
-        id="lastname"
+        label='Soyisim'
+        id='lastname'
         placeholder={user.lastname || "Soyadınız"}
-        type="text"
+        type='text'
       />
       <TextField
-        label="E-posta"
-        id="email"
+        label='E-posta'
+        id='email'
         placeholder={user.email || "E-posta adresiniz"}
-        type="email"
+        type='email'
         disabled
       />
       <PhoneInput
-        label="Telefon"
+        label='Telefon'
         placeholder={user.phone || "Telefon numaranız"}
       />
       <TextField
-        label="VKN/TCKN"
-        id="vkn_tckn"
-        placeholder={user.vkn_tckn || "VKN/TCKN"}
-        type="text"
-      />
-      <TextField
-        label="Referans Kodu"
-        id="reference_code"
+        label='Referans Kodu'
+        id='reference_code'
         placeholder={user.reference_code || "Referans kodunuz"}
-        type="text"
+        type='text'
         disabled
       />
 
-      <SubmitButton className="w-fit">Kaydet</SubmitButton>
+      <SubmitButton className='w-fit'>Kaydet</SubmitButton>
     </form>
   ) : (
-    <div className="flex flex-col items-center justify-center gap-2 text-center my-auto">
-      <h1 className="text-2xl font-semibold tracking-wide">
+    <div className='flex flex-col items-center justify-center gap-2 text-center my-auto'>
+      <h1 className='text-2xl font-semibold tracking-wide'>
         Kullanıcı verileri alınıken bir hata oluştu.
       </h1>
-      <p className="text-sm text-slate-400 capitalize">
+      <p className='text-sm text-slate-400 capitalize'>
         {error?.message || "Lütfen daha sonra tekrar deneyin."}
       </p>
 
       <p>
         Tekrar giriş yapmak sorununuzu çözebilir.{" "}
-        <Link href="/api/auth/logout">
+        <Link href='/api/auth/logout'>
           <Button>Çıkış yap</Button>
         </Link>
       </p>

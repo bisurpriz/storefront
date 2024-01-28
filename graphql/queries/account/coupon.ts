@@ -10,21 +10,11 @@ const GET_ALL_COUPONS = gql`
     ) {
       id
       code
-      description
       created_at
       start_date
       end_date
       minimum_cost
       amount
-      product {
-        name
-        slug
-        id
-        image_url
-        tenant {
-          nickname
-        }
-      }
     }
   }
 `;

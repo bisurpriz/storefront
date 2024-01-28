@@ -1,6 +1,7 @@
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import Main from "./components/Main";
 import { getTenantOrderItem } from "./action";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 export const dynamic = "force-dynamic";
 
@@ -26,4 +27,4 @@ const MessagesPage = async ({
   );
 };
 
-export default MessagesPage;
+export default withPageAuthRequired(MessagesPage);

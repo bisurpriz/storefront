@@ -98,9 +98,19 @@ export const getUserAddressById = async (id?: string) => {
 };
 
 export const getUserById = async (id?: string) => {
-  const userId = id || (await readIdFromCookies());
+  const hasId = await readIdFromCookies();
+  const userId = id || hasId;
 
-  const { data, loading } = await query({
+  if (!hasId) {
+    return {
+      user: null,
+      loading: false,
+    };
+  }
+
+  const { data, loading } = await query<{
+    user_by_pk: User;
+  }>({
     query: GET_USER_BY_ID,
     variables: {
       id: userId,
@@ -109,7 +119,7 @@ export const getUserById = async (id?: string) => {
 
   const { user_by_pk: user } = data;
   return {
-    user,
+    user: user as User,
     loading,
     id: userId,
   };
@@ -117,16 +127,7 @@ export const getUserById = async (id?: string) => {
 
 export const updateUserById = async (
   data: Partial<
-    Pick<
-      User,
-      | "firstname"
-      | "lastname"
-      | "email"
-      | "id"
-      | "phone"
-      | "picture"
-      | "vkn_tckn"
-    >
+    Pick<User, "firstname" | "lastname" | "email" | "id" | "phone" | "picture">
   >
 ) => {
   const { data: updatedData } = await mutate({

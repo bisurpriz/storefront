@@ -9,6 +9,7 @@ const GET_USER_FAVORITES = gql`
         id
         image_url
         price
+        slug
         discount_price
         category {
           name
