@@ -1,6 +1,7 @@
 import { getUserOrders } from "./actions";
 import Button from "@/components/Button";
 import TenantOrders from "./components/TenantOrders";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const OrdersPage = async () => {
   const { orders } = await getUserOrders();
@@ -13,11 +14,11 @@ const OrdersPage = async () => {
         );
 
         return (
-          <li className="py-4" key={order.id}>
-            <div className="rounded-lg px-2 py-2 relative max-sm:px-4">
-              <div className="flex justify-between">
+          <li className='py-4' key={order.id}>
+            <div className='rounded-lg px-2 py-2 relative max-sm:px-4'>
+              <div className='flex justify-between'>
                 <div>
-                  <p aria-label="Kampanya açıklaması" className="text-sm">
+                  <p aria-label='Kampanya açıklaması' className='text-sm'>
                     {new Date(order?.created_at).toLocaleDateString("tr-TR", {
                       day: "numeric",
                       month: "long",
@@ -25,32 +26,32 @@ const OrdersPage = async () => {
                     })}
                   </p>
 
-                  <p className="text-sm">
+                  <p className='text-sm'>
                     Toplam:{" "}
-                    <span className="text-sm font-bold font-sans text-primary">
+                    <span className='text-sm font-bold font-sans text-primary'>
                       {order?.total_amount?.toFixed(2)} ₺
                     </span>
                   </p>
                 </div>
 
-                <div className="flex">
+                <div className='flex'>
                   <Button
-                    type="button"
-                    size="small"
-                    color="primary"
-                    className="xl:mt-0 xl:ml-3"
-                    label="Detaylar"
+                    type='button'
+                    size='small'
+                    color='primary'
+                    className='xl:mt-0 xl:ml-3'
+                    label='Detaylar'
                   />
                 </div>
               </div>
 
-              <div className="h-px border my-3"></div>
+              <div className='h-px border my-3'></div>
 
               <TenantOrders tenants={order?.tenant_orders} />
 
-              <p className="text-sm text-right">
+              <p className='text-sm text-right'>
                 Siparişinizde toplam{" "}
-                <span className="text-base font-bold font-sans text-primary">
+                <span className='text-base font-bold font-sans text-primary'>
                   {totalProducts}
                 </span>{" "}
                 ürün bulunmaktadır.
@@ -63,4 +64,4 @@ const OrdersPage = async () => {
   );
 };
 
-export default OrdersPage;
+export default withPageAuthRequired(OrdersPage);
