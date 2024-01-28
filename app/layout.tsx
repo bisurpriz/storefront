@@ -19,6 +19,7 @@ import setDefaultOptions from "date-fns/setDefaultOptions";
 import "react-datepicker/dist/react-datepicker.css";
 import Listener from "./account/messages/components/Listener";
 import { getSession } from "@auth0/nextjs-auth0";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -120,6 +121,7 @@ export default async function RootLayout({
           <Listener />
         </UserProvider>
       </body>
+      <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>
   );
 }
