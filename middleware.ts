@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
 
   const session = await getSession();
   const response = NextResponse.next();
-
+  console.log("Session", session);
   if (session?.user) {
     const userId =
       session.user["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
@@ -20,9 +20,11 @@ export async function middleware(request: NextRequest) {
         path: "/",
       });
     }
+
+    return response;
   }
 
-  if (!hasUserId && !hasFingerPrint) {
+  if (!session && !hasFingerPrint) {
     console.log("No user id or finger print");
 
     const id = uuid();
@@ -31,6 +33,7 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
+    return response;
   }
 
   if (hasUserId && hasFingerPrint) {

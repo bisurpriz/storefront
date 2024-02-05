@@ -1,10 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
-import { CSSTransition } from "react-transition-group";
 import { localeFormat } from "@/utils/format";
 import TimePicker from "../TimePicker";
 import { useRef } from "react";
+import { motion } from "framer-motion";
 
 type Props = {
   label: string;
@@ -38,24 +38,20 @@ const CollapsableDateButton = ({
         fullWidth
         onClick={handleOpen}
       >
-        <p className="text-base font-medium truncate">{label}</p>
-        <p className="text-sm font-normal">
+        <p className='text-base font-medium truncate'>{label}</p>
+        <p className='text-sm font-normal'>
           {value ? localeFormat(value, monthFormat) : ""}
         </p>
       </Button>
-      <CSSTransition
-        in={value === selectedDay}
-        timeout={0}
-        classNames={{
-          enter: "max-h-0 opacity-0",
-          enterActive: "max-h-[100px] opacity-100",
-          enterDone: "max-h-[100px] opacity-100",
-          exit: "max-h-[100px] opacity-100",
-          exitActive: "max-h-0 opacity-0",
-          exitDone: "max-h-0 opacity-0",
+      <motion.div
+        initial={false}
+        animate={value === selectedDay ? "open" : "closed"}
+        variants={{
+          open: { maxHeight: 100, opacity: 1 },
+          closed: { maxHeight: 0, opacity: 0 },
         }}
-        unmountOnExit
-        nodeRef={ref}
+        className='overflow-hidden'
+        ref={ref}
       >
         <div
           className='transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden'
@@ -75,7 +71,7 @@ const CollapsableDateButton = ({
             "Uygun teslimat zamanı bulunamadı"
           )}
         </div>
-      </CSSTransition>
+      </motion.div>
     </div>
   );
 };

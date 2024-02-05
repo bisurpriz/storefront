@@ -2,7 +2,7 @@
 
 import type { FC, ReactNode } from "react";
 import { useRef, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import { motion } from "framer-motion";
 
 enum TooltipPosition {
   TOP = "top",
@@ -92,28 +92,20 @@ const Tooltip: FC<TooltipProps> = ({
     >
       <div className='cursor-pointer'>{children}</div>
       <div className={`${breakpointWithOpenTooltip()}`}>
-        <CSSTransition
-          in={isTooltipVisible}
-          timeout={100}
-          classNames={{
-            enter: "opacity-0",
-            enterActive: "opacity-100 transition-opacity duration-300",
-            enterDone: "opacity-100",
-            exit: "opacity-100",
-            exitActive: "opacity-0 transition-opacity duration-100",
-            exitDone: "opacity-0",
+        <motion.div
+          initial={false}
+          animate={isTooltipVisible ? "open" : "closed"}
+          variants={{
+            open: { opacity: 1 },
+            closed: { opacity: 0 },
           }}
-          unmountOnExit
-          nodeRef={ref}
+          transition={{ duration: 0.2 }}
+          ref={ref}
+          role='tooltip'
+          className={`absolute z-20 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
         >
-          <div
-            ref={ref}
-            role='tooltip'
-            className={`absolute z-20 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
-          >
-            {text}
-          </div>
-        </CSSTransition>
+          {text}
+        </motion.div>
       </div>
     </div>
   );
