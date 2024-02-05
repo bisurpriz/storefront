@@ -12,13 +12,11 @@ export async function GET() {
   const customReadable = new ReadableStream({
     start(controller) {
       redis.on("message", (channel, message) => {
-        console.log("message", message);
         if (!message) return;
         controller.enqueue(encoder.encode(`data: ${message}\n\n`));
       });
     },
     cancel() {
-      console.log("Redis stream cancelled");
       redis.disconnect();
     },
   });

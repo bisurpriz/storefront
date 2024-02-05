@@ -9,7 +9,6 @@ export async function middleware(request: NextRequest) {
 
   const session = await getSession();
   const response = NextResponse.next();
-  console.log("Session", session);
   if (session?.user) {
     const userId =
       session.user["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
@@ -25,7 +24,6 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!session && !hasFingerPrint) {
-    console.log("No user id or finger print");
 
     const id = uuid();
 
@@ -37,7 +35,6 @@ export async function middleware(request: NextRequest) {
   }
 
   if (hasUserId && hasFingerPrint) {
-    console.log("Has user id and finger print");
     response.cookies.delete("fingerPrint");
   }
 

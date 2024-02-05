@@ -36,13 +36,11 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
 
   const isCartPage = useCallback(
     (nextPath: string) => {
-      console.log("is cart page");
       if (cartItems.length > 0) {
         const isCustomizable = cartItems.find(
           (item) => item.product_customizable_areas.length > 0
         );
         if (isCustomizable) {
-          console.log("has customizable");
           const isCustomizableAreaEmpty =
             isCustomizable.product_customizable_areas.find((area) =>
               area?.customizable_area.values?.find((value) => {

@@ -39,7 +39,6 @@ const InfinityScroll = <T,>({
   };
 
   useEffect(() => {
-    console.log("inView", inView, totalCount, data?.length);
     if (inView && totalCount > data?.length) {
       loadMoreData();
     }
