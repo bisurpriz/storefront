@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { PiCaretDownBold } from "react-icons/pi";
-import { CSSTransition } from "react-transition-group";
+import { motion } from "framer-motion";
 
 const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
   const [isCollapse, setIsCollapse] = useState(false);
@@ -13,16 +13,16 @@ const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <div role="menuitem" className={`${textClasses}  py-2 `}>
+    <div role='menuitem' className={`${textClasses}  py-2 `}>
       <Link
         href={link ?? "#"}
         onClick={() => {
           toggle();
         }}
-        className="flex items-center justify-between hover:text-primary-light transition-colors duration-300"
+        className='flex items-center justify-between hover:text-primary-light transition-colors duration-300'
       >
-        <div className="flex items-center">
-          <div className="w-6 h-6 flex items-center justify-center">
+        <div className='flex items-center'>
+          <div className='w-6 h-6 flex items-center justify-center'>
             {icon ?? null}
           </div>
           {text}
@@ -35,25 +35,21 @@ const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
           />
         ) : null}
       </Link>
-      <CSSTransition
-        in={isCollapse}
-        timeout={300}
-        classNames={{
-          enter: "accordion-content-enter",
-          enterActive: "accordion-content-enter-active",
-          exit: "accordion-content-exit",
-          exitActive: "accordion-content-exit-active",
+      <motion.div
+        initial={false}
+        animate={isCollapse ? "open" : "closed"}
+        variants={{
+          open: { height: "auto", opacity: 1 },
+          closed: { height: 0, opacity: 0 },
         }}
-        unmountOnExit
-        nodeRef={ref}
+        className='overflow-hidden'
+        ref={ref}
       >
-        <div ref={ref} className="ml-6">
-          {subMenuItems?.length &&
-            subMenuItems.map((item) => {
-              return <MenuItem key={item.link} {...item} />;
-            })}
-        </div>
-      </CSSTransition>
+        {subMenuItems?.length &&
+          subMenuItems.map((item) => {
+            return <MenuItem key={item.link} {...item} />;
+          })}
+      </motion.div>
     </div>
   );
 };

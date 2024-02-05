@@ -9,6 +9,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 
 export const removeTypenameLink = removeTypenameFromVariables();
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
+  console.log(graphQLErrors, networkError, "selamun aleyküm");
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
       console.log(

@@ -4,7 +4,7 @@ import { useClassname } from "../../hooks/useClassname";
 import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { Children, ReactElement, cloneElement, memo, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import { motion } from "framer-motion";
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
@@ -40,17 +40,6 @@ const Dropdown: React.FC<DropdownProps> = ({
     setSearchValue("");
   });
 
-  const placementClases = {
-    // kapsayıcının sol altına yaslanmalı
-    bottomLeft: "-bottom-2 left-0 transform translate-y-full",
-    // kapsayıcının sağ altına yaslanmalı
-    bottomRight: "-bottom-2 right-0 transform translate-y-full",
-    // açılan  kısım yukarı doğru açılmalı
-    topLeft: "top-0 left-0 transform translate-x-0 -translate-y-full",
-    // açılan  kısım yukarı doğru açılmalı
-    topRight: "top-0 right-0 transform translate-x-0 -translate-y-full",
-  };
-
   const child = children ? (Children.only(children) as ReactElement) : null;
 
   const childTrigger = child
@@ -65,13 +54,14 @@ const Dropdown: React.FC<DropdownProps> = ({
       className={`relative whitespace-nowrap flex items-center ${className} ${
         fullWidth ? "w-full" : ""
       }`}
+      ref={ref}
     >
-      <input type="hidden" value={selectedOption?.value} id={id} name={id} />
+      <input type='hidden' value={selectedOption?.value} id={id} name={id} />
 
       {!childTrigger ? (
         <button
-          type="button"
-          className="relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+          type='button'
+          className='relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light'
           onClick={(e) => {
             e.preventDefault();
             setIsOpen(!isOpen);
@@ -83,149 +73,148 @@ const Dropdown: React.FC<DropdownProps> = ({
         >
           {loading && (
             <svg
-              className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
+              className='animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700'
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
             >
               <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
+                className='opacity-25'
+                cx='12'
+                cy='12'
+                r='10'
+                stroke='currentColor'
+                strokeWidth='4'
               />
               <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8"
+                className='opacity-75'
+                fill='currentColor'
+                d='M4 12a8 8 0 018-8'
               />
             </svg>
           )}
           {selectedOption ? selectedOption.label : label}
           <svg
-            className="h-5 w-5 absolute right-0 top-0 text-gray-400 -translate-x-1/2 translate-y-2/3"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
+            className='h-5 w-5 absolute right-0 top-0 text-gray-400 -translate-x-1/2 translate-y-2/3'
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 20 20'
+            fill='currentColor'
+            aria-hidden='true'
           >
             <path
-              fillRule="evenodd"
-              d="M10.707 14.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 11.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
-              clipRule="evenodd"
+              fillRule='evenodd'
+              d='M10.707 14.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 11.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z'
+              clipRule='evenodd'
             />
           </svg>
         </button>
       ) : (
         childTrigger
       )}
-      <CSSTransition
-        unmountOnExit
-        in={isOpen}
-        mountOnEnter
-        classNames={{
-          enter: "h-0 opacity-0",
-          enterActive: "h-auto opacity-100 transition-all duration-500",
-          enterDone: "h-auto opacity-100",
-          exit: "h-auto opacity-100",
-          exitActive: "h-0 opacity-0 transition-all duration-500",
-          exitDone: "h-0 opacity-0",
+      <motion.div
+        initial={false}
+        animate={isOpen ? "open" : "closed"}
+        variants={{
+          closed: {
+            scale: 0,
+            transition: {
+              delay: 0.15,
+            },
+          },
+          open: {
+            scale: 1,
+            transition: {
+              type: "spring",
+              duration: 0.4,
+            },
+          },
         }}
-        timeout={100}
-        nodeRef={ref}
+        className={clsx(
+          "absolute z-10 rounded-sm shadow-lg bg-white focus:outline-none left-0 mt-2 top-full",
+          {
+            "w-full": fullWidth,
+          }
+        )}
       >
         <div
-          ref={ref}
-          className={clsx(
-            "absolute z-10 bg-white shadow-lg rounded-sm overflow-hidden",
-            placementClases[dropdownPlacement],
-            {
-              "w-full": fullWidth,
-            }
-          )}
+          className='py-1'
+          role='menu'
+          aria-orientation='vertical'
+          aria-labelledby='options-menu'
         >
-          <div
-            className="py-1"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="options-menu"
-          >
-            {isSearchable && (
-              <div className="relative">
-                <input
-                  type="text"
-                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none"
-                  placeholder="Arama yapın"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    x-description="Heroicon name: solid/search"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      x-description="Search icon"
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M9 3a6 6 0 100 12 6 6 0 000-12zM7.707 9.293a1 1 0 00-1.414-1.414l-2 2a1 1 0 101.414 1.414l2-2z"
-                    />
-                  </svg>
-                </div>
+          {isSearchable && (
+            <div className='relative'>
+              <input
+                type='text'
+                className='block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none'
+                placeholder='Arama yapın'
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <div className='absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none'>
+                <svg
+                  className='h-5 w-5 text-gray-400'
+                  x-description='Heroicon name: solid/search'
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  aria-hidden='true'
+                >
+                  <path
+                    x-description='Search icon'
+                    fillRule='evenodd'
+                    clipRule='evenodd'
+                    d='M9 3a6 6 0 100 12 6 6 0 000-12zM7.707 9.293a1 1 0 00-1.414-1.414l-2 2a1 1 0 101.414 1.414l2-2z'
+                  />
+                </svg>
               </div>
-            )}
-            {options?.filter((option) =>
-              typeof option.label === "string"
-                ? option.label.toLowerCase().includes(searchValue.toLowerCase())
-                : option
-                    .searchValue!.toLowerCase()
-                    .includes(searchValue.toLowerCase())
-            ).length > 0 ? (
-              options
-                ?.filter((option) =>
-                  typeof option.label === "string"
-                    ? option.label
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase())
-                    : option
-                        .searchValue!.toLowerCase()
-                        .includes(searchValue.toLowerCase())
+            </div>
+          )}
+          {options?.filter((option) =>
+            typeof option.label === "string"
+              ? option.label.toLowerCase().includes(searchValue.toLowerCase())
+              : option
+                  .searchValue!.toLowerCase()
+                  .includes(searchValue.toLowerCase())
+          ).length > 0 ? (
+            options
+              ?.filter((option) =>
+                typeof option.label === "string"
+                  ? option.label
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase())
+                  : option
+                      .searchValue!.toLowerCase()
+                      .includes(searchValue.toLowerCase())
+              )
+              .map((option) =>
+                typeof option.label === "string" ? (
+                  <button
+                    type='button'
+                    key={option.value}
+                    className={`${
+                      option.value === value
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-700"
+                    } block px-4 py-2 text-sm w-full text-left`}
+                    role='menuitem'
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option.label}
+                  </button>
+                ) : (
+                  <div role='menuitem' key={option.value}>
+                    {option.label}
+                  </div>
                 )
-                .map((option) =>
-                  typeof option.label === "string" ? (
-                    <button
-                      type="button"
-                      key={option.value}
-                      className={`${
-                        option.value === value
-                          ? "bg-gray-100 text-gray-900"
-                          : "text-gray-700"
-                      } block px-4 py-2 text-sm w-full text-left`}
-                      role="menuitem"
-                      onClick={() => handleOptionClick(option)}
-                    >
-                      {option.label}
-                    </button>
-                  ) : (
-                    <div role="menuitem" key={option.value}>
-                      {option.label}
-                    </div>
-                  )
-                )
-            ) : (
-              <p className="block px-4 py-2 text-sm text-gray-700">
-                {noOptionsMessage || "Arama sonucu bulunamadı"}
-              </p>
-            )}
-          </div>
+              )
+          ) : (
+            <p className='block px-4 py-2 text-sm text-gray-700'>
+              {noOptionsMessage || "Arama sonucu bulunamadı"}
+            </p>
+          )}
         </div>
-      </CSSTransition>
+      </motion.div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   ReactElement,
   cloneElement,
 } from "react";
-import { CSSTransition } from "react-transition-group";
+import { motion } from "framer-motion";
 
 interface PopoverProps {
   children: React.ReactElement;
@@ -31,13 +31,13 @@ const Popover: React.FC<PopoverProps> = ({
   const getPositionClass = () => {
     switch (dynamicPosition) {
       case "right":
-        return "left-full top-1/2 transform -translate-y-1/2 ml-2";
+        return "left-full top-1/2 transform -translate-y-1/2 ml-3";
       case "bottom":
-        return "top-full left-1/2 transform -translate-x-1/2 mt-2";
+        return "top-full left-1/2 transform -translate-x-1/2 mt-3";
       case "left":
-        return "right-full top-1/2 transform -translate-y-1/2 mr-2";
+        return "right-full top-1/2 transform -translate-y-1/2 mr-3";
       default:
-        return "bottom-full left-1/2 transform -translate-x-1/2 mb-2";
+        return "bottom-full left-1/2 transform -translate-x-1/2 mt-3";
     }
   };
 
@@ -89,37 +89,29 @@ const Popover: React.FC<PopoverProps> = ({
   }, [isOpen]);
 
   return (
-    <div className="relative inline-block">
+    <div className='relative inline-block'>
       {childTrigger}
-      <CSSTransition
-        in={isOpen}
-        timeout={200}
-        classNames={{
-          enter: "opacity-0",
-          enterActive: "opacity-100",
-          enterDone: "opacity-100",
-          exit: "opacity-100",
-          exitActive: "opacity-0",
-          exitDone: "opacity-0",
+      <motion.div
+        initial={false}
+        animate={isOpen ? "open" : "closed"}
+        variants={{
+          open: { opacity: 1 },
+          closed: { opacity: 0 },
         }}
-        unmountOnExit
-        nodeRef={ref}
+        transition={{ duration: 0.2 }}
+        className={`absolute bg-white shadow-lg rounded p-4 z-50 ${getPositionClass()} ${contentClassName}`}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        onTouchStart={() => setIsOpen(true)}
+        onTouchEnd={() => setIsOpen(false)}
+        aria-hidden={!isOpen}
+        ref={ref}
       >
+        {content}
         <div
-          className={`absolute bg-white shadow-lg rounded p-4 mt-3 z-50 ${getPositionClass()} ${contentClassName}`}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-          onTouchStart={() => setIsOpen(true)}
-          onTouchEnd={() => setIsOpen(false)}
-          aria-hidden={!isOpen}
-          ref={ref}
-        >
-          {content}
-          <div
-            className={`absolute w-4 h-4 bg-white transform rotate-45 ${getCaretPosition()}`}
-          />
-        </div>
-      </CSSTransition>
+          className={`absolute w-4 h-4 bg-white transform rotate-45 ${getCaretPosition()}`}
+        />
+      </motion.div>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import { HiChevronDown } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 interface AccordionItemProps {
   title: React.ReactNode;
@@ -42,29 +42,27 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
         onClick={handleToggle}
       >
-        <h4 className="flex items-center">{title}</h4>
+        <h4 className='flex items-center'>{title}</h4>
         <HiChevronDown
           className={`transition-transform transform ${
             open ? "-rotate-180" : ""
           }`}
         />
       </div>
-      <CSSTransition
-        nodeRef={nodeRef}
-        in={open}
-        timeout={100}
-        unmountOnExit
-        classNames={{
-          enter: "accordion-content-enter",
-          enterActive: "accordion-content-enter-active",
-          exit: "accordion-content-exit",
-          exitActive: "accordion-content-exit-active",
+      <motion.div
+        ref={nodeRef}
+        initial={false}
+        animate={open ? "open" : "closed"}
+        variants={{
+          open: { height: "auto", opacity: 1 },
+          closed: { height: 0, opacity: 0 },
         }}
+        className='overflow-hidden'
       >
-        <div ref={nodeRef} className="p-4 whitespace-normal">
+        <div ref={nodeRef} className='p-4 whitespace-normal'>
           {content}
         </div>
-      </CSSTransition>
+      </motion.div>
     </div>
   );
 };
