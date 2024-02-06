@@ -39,53 +39,53 @@ const ProductInformation = ({
   shippingType,
 }: ProductInformationProps) => {
   return (
-    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
-      <div className="rounded-lg w-full flex items-start justify-start flex-col">
-        <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
+    <div className='flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none'>
+      <div className='rounded-lg w-full flex items-start justify-start flex-col'>
+        <h1 className='text-3xl text-gray-800 max-w-lg mb-2'>{name}</h1>
         {vendor && (
-          <div className="text-xs flex items-center max-md:mb-2">
-            <label className="text-gray-800 me-1">Satıcı:</label>
+          <div className='text-xs flex items-center max-md:mb-2'>
+            <label className='text-gray-800 me-1'>Satıcı:</label>
             <Link
               href={`/vendor/${vendor.id}`}
-              className="text-sky-600 font-bold cursor-pointer me-1"
+              className='text-sky-600 font-bold cursor-pointer me-1'
             >
               {vendor.name}
             </Link>
 
             {vendor.rate && (
-              <span className="h-full px-3 bg-primary rounded-lg text-white font-bold">
+              <span className='h-full px-3 bg-primary rounded-lg text-white font-bold'>
                 {vendor.rate}
               </span>
             )}
           </div>
         )}
 
-        <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4">
-          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
+        <div className='flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4'>
+          <div className='flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center'>
             {discountRate ? (
-              <span className="text-xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
+              <span className='text-2xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max'>
                 {discountRate}%
               </span>
             ) : null}
-            <span className="flex flex-col gap-1">
+            <span className='flex flex-col gap-1'>
               {discountPrice ? (
-                <h5 className="text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap">
+                <h5 className='text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap'>
                   <del>₺{price?.toFixed(2)} ₺</del>
                 </h5>
               ) : null}
-              <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
-                <h1 className="text-2xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
-                  {discountPrice ? discountPrice : price}
+              <span className='flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center'>
+                <h1 className='text-3xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap'>
+                  {discountPrice ? discountPrice : price}₺
                 </h1>
                 {promotion && (
-                  <p className="text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap">
+                  <p className='text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap'>
                     & {promotion}
                   </p>
                 )}
               </span>
             </span>
           </div>
-          <div className="rounded-lg text-end w-full max-xs:text-start max-xs:mt-4">
+          <div className='rounded-lg text-end w-full max-xs:text-start max-xs:mt-4'>
             <Popover
               content={
                 <span>
@@ -96,14 +96,14 @@ const ProductInformation = ({
                   />
                 </span>
               }
-              position="bottom"
+              position='bottom'
             >
               <span>
                 <Rating
                   value={rating}
                   reviewCount={reviewCount}
                   readOnly
-                  className="max-w-[100px] xs:ml-auto"
+                  className='max-w-[100px] xs:ml-auto'
                 />
               </span>
             </Popover>

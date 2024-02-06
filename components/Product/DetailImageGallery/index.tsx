@@ -49,16 +49,16 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-6 grid-rows-6 gap-2">
+    <div className='grid grid-cols-6 grid-rows-6 gap-2'>
       <div
-        className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-6 2xl:order-1 overflow-hidden flex flex-col items-center justify-star rounded-lg max-h-[500px]"
+        className='col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-6 2xl:order-1 overflow-hidden flex flex-col items-center justify-star rounded-lg max-h-[500px]'
         ref={ref}
       >
         <Swiper
           slidesPerView={5}
           spaceBetween={10}
           direction={direction}
-          className="h-full gallery-scroll-hide"
+          className='h-full gallery-scroll-hide'
           modules={[Virtual]}
           width={width}
           virtual
@@ -67,7 +67,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
             <SwiperSlide key={image.id} onClick={() => handleImageClick(index)}>
               <Image
                 src={image.url}
-                alt="Product Image"
+                alt='Product Image'
                 width={100}
                 height={100}
                 className={`rounded-lg cursor-pointer object-fill transition-all duration-300 ease-linear  ${
@@ -80,7 +80,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           ))}
         </Swiper>
       </div>
-      <div className="col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg ">
+      <div className='col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg '>
         <Swiper
           ref={swiperRef}
           className={`h-full gallery-scroll-hide cursor-zoom-in`}
@@ -97,13 +97,14 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         >
           {images?.map((image) => (
             <SwiperSlide key={image.id}>
-              <div className="swiper-zoom-container">
+              <div className='swiper-zoom-container'>
                 <Image
                   src={image.url}
                   alt={`Product Image ${image.id}`}
                   width={1024}
                   height={1024}
                   className={`rounded-lg w-full h-full transition-all duration-300 ease-linear`}
+                  priority={image.id === 0}
                 />
               </div>
             </SwiperSlide>
