@@ -1,7 +1,7 @@
-import InfinityScroll from "@/components/InfinityScroll";
-import { Metadata } from "next";
-import { getPaginatedVendorProducts } from "@/app/vendor/actions";
-import SearchLocation from "@/app/products/[slug]/components/Layout/SearchLocation";
+import InfinityScroll from '@/components/InfinityScroll';
+import { Metadata } from 'next';
+import { getPaginatedVendorProducts } from '@/app/vendor/actions';
+import SearchLocation from '@/app/products/[slug]/components/Layout/SearchLocation';
 
 type Props = {
   products: any;

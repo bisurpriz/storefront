@@ -3,6 +3,6 @@ interface DrawerProps {
   onClose?: () => void;
   title: string;
   children: React.ReactNode;
-  placement?: "left" | "right" | "top" | "bottom";
+  placement?: 'left' | 'right' | 'top' | 'bottom';
   lockScroll?: boolean;
 }

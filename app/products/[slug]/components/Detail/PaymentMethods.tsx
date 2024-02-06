@@ -1,25 +1,25 @@
-import AccordionItem from "@/components/Accordion/AccordionItem";
-import amex from "@/public/payment/amex.png";
-import mastercard from "@/public/payment/mastercard.png";
-import visa from "@/public/payment/visa.png";
-import safepay from "@/public/payment/safepay.png";
-import Image from "next/image";
+import AccordionItem from '@/components/Accordion/AccordionItem';
+import amex from '@/public/payment/amex.png';
+import mastercard from '@/public/payment/mastercard.png';
+import visa from '@/public/payment/visa.png';
+import safepay from '@/public/payment/safepay.png';
+import Image from 'next/image';
 
 const paymentMethods = [
   {
-    name: "Mastercard",
+    name: 'Mastercard',
     image: mastercard,
   },
   {
-    name: "Visa",
+    name: 'Visa',
     image: visa,
   },
   {
-    name: "Amex",
+    name: 'Amex',
     image: amex,
   },
   {
-    name: "Safepay",
+    name: 'Safepay',
     image: safepay,
   },
 ];

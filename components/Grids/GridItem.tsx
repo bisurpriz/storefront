@@ -7,11 +7,11 @@ import {
   RowSpanMdSizes,
   RowSpanSmSizes,
   RowSpanXlSizes,
-} from "./contants";
+} from './contants';
 
 const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
-  const colSpanIsNumber = typeof colSpan === "number";
-  const rowSpanIsNumber = typeof rowSpan === "number";
+  const colSpanIsNumber = typeof colSpan === 'number';
+  const rowSpanIsNumber = typeof rowSpan === 'number';
 
   const getColSpanWithSizes = () => {
     const smColSpan = !colSpanIsNumber ? ColSpanSmSizes[colSpan?.sm!] : ``;
@@ -19,11 +19,11 @@ const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
     const lgColSpan = !colSpanIsNumber ? ColSpanLgSizes[colSpan?.lg!] : ``;
     const xlColSpan = !colSpanIsNumber ? ColSpanXlSizes[colSpan?.xl!] : ``;
 
-    const arr = ["col-span-auto", smColSpan, mdColSpan, lgColSpan, xlColSpan];
+    const arr = ['col-span-auto', smColSpan, mdColSpan, lgColSpan, xlColSpan];
 
     const gridColSpans = colSpan
-      ? arr.filter((item) => item !== "").join(" ")
-      : "col-span-full";
+      ? arr.filter((item) => item !== '').join(' ')
+      : 'col-span-full';
 
     return gridColSpans;
   };
@@ -34,11 +34,11 @@ const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
     const lgRowSpan = !rowSpanIsNumber ? RowSpanLgSizes[rowSpan?.lg!] : ``;
     const xlRowSpan = !rowSpanIsNumber ? RowSpanXlSizes[rowSpan?.xl!] : ``;
 
-    const arr = ["row-span-auto", smRowSpan, mdRowSpan, lgRowSpan, xlRowSpan];
+    const arr = ['row-span-auto', smRowSpan, mdRowSpan, lgRowSpan, xlRowSpan];
 
     const gridRowSpans = rowSpan
-      ? arr.filter((item) => item !== "").join(" ")
-      : "row-span-auto";
+      ? arr.filter((item) => item !== '').join(' ')
+      : 'row-span-auto';
 
     return gridRowSpans;
   };
@@ -47,7 +47,7 @@ const GridItem = ({ children, colSpan, rowSpan, className }: GridItemProps) => {
   const gridRowSpans = getRowSpanWithSizes();
 
   return (
-    <div className={`${gridColSpans} ${gridRowSpans} ${className ?? ""}`}>
+    <div className={`${gridColSpans} ${gridRowSpans} ${className ?? ''}`}>
       {children}
     </div>
   );

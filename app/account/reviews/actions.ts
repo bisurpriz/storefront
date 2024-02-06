@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { readIdFromCookies } from "@/app/actions";
-import { OrderItemWithReview } from "@/common/types/Order/order";
-import { ReviewWithProduct } from "@/common/types/Review/review";
-import { mutate, query } from "@/graphql/lib/client";
-import { CREATE_REVIEW } from "@/graphql/queries/review/mutation";
-import { GET_ORDERS_WITH_REVIEW } from "@/graphql/queries/review/query";
-import { revalidatePath } from "next/cache";
+import { readIdFromCookies } from '@/app/actions';
+import { OrderItemWithReview } from '@/common/types/Order/order';
+import { ReviewWithProduct } from '@/common/types/Review/review';
+import { mutate, query } from '@/graphql/lib/client';
+import { CREATE_REVIEW } from '@/graphql/queries/review/mutation';
+import { GET_ORDERS_WITH_REVIEW } from '@/graphql/queries/review/query';
+import { revalidatePath } from 'next/cache';
 
 export const getOrderWithReview = async () => {
   const userId = await readIdFromCookies();
@@ -15,7 +15,7 @@ export const getOrderWithReview = async () => {
     review: ReviewWithProduct[];
   }>({
     query: GET_ORDERS_WITH_REVIEW,
-    fetchPolicy: "no-cache",
+    fetchPolicy: 'no-cache',
     variables: { user_id: userId },
   });
 
@@ -27,7 +27,7 @@ export const getOrderWithReview = async () => {
         ({
           ...item,
           reviews_count: item.product.reviews_aggregate.aggregate.count,
-        } as OrderItemWithReview)
+        }) as OrderItemWithReview
     ),
     reviews: review.map((item) => ({
       ...item,
@@ -60,7 +60,7 @@ export const createReview = async ({
     },
   });
 
-  revalidatePath("/account/reviews");
+  revalidatePath('/account/reviews');
 
   const { created_at } = data;
 

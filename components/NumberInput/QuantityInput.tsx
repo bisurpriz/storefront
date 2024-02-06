@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import NumberInput from ".";
-import type { NumberInputProps } from "./NumberInputProps";
+import NumberInput from '.';
+import type { NumberInputProps } from './NumberInputProps';
 
 export interface QuantityInputProps extends NumberInputProps {}
 

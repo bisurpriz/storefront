@@ -1,5 +1,5 @@
-import { ReviewWithProduct } from "@/common/types/Review/review";
-import ReviewedCard from "./ReviewedCard";
+import { ReviewWithProduct } from '@/common/types/Review/review';
+import ReviewedCard from './ReviewedCard';
 
 const ReviewedCardMapper = ({ result }: { result: ReviewWithProduct[] }) =>
   result?.map((item) => (

@@ -1,4 +1,4 @@
-import { TfiGift } from "react-icons/tfi";
+import { TfiGift } from 'react-icons/tfi';
 
 const Information = () => {
   return (

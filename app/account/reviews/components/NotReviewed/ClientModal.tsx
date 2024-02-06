@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Rating from "@/components/Rating/Rating";
-import Button from "@/components/Button";
-import Modal from "@/components/Modal";
-import Tooltip from "@/components/Tooltip";
-import { localeFormat } from "@/utils/format";
-import Image from "next/image";
-import { useState } from "react";
+import Rating from '@/components/Rating/Rating';
+import Button from '@/components/Button';
+import Modal from '@/components/Modal';
+import Tooltip from '@/components/Tooltip';
+import { localeFormat } from '@/utils/format';
+import Image from 'next/image';
+import { useState } from 'react';
 
 const ClientModal = ({
   productId,
@@ -32,7 +32,7 @@ const ClientModal = ({
   }) => Promise<void>;
 }) => {
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [selectedRating, setSelectedRating] = useState(0);
 
   const handleSubmit = async () => {
@@ -76,7 +76,7 @@ const ClientModal = ({
                 {productName}
               </h4>
               <p className="text-xs m-0 leading-none text-slate-500 mt-0 whitespace-nowrap mb-2">
-                Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
+                Teslim tarihi: {localeFormat(new Date(deliveryDate), 'PPP')}
               </p>
               <div className="flex flex-col gap-2 items-start mb-2 text-xs text-slate-400">
                 <Rating
@@ -86,7 +86,7 @@ const ClientModal = ({
                   readOnly
                 />
                 <p className="text-sm m-0 leading-none text-slate-500 max-w-lg">
-                  Bu ürün toplam{" "}
+                  Bu ürün toplam{' '}
                   <strong className="text-slate-600">{reviewCount}</strong>
                   &nbsp; değerlendirme almıştır.
                 </p>

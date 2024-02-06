@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export async function getNeighborhoods(
   latitude: number,
@@ -14,7 +14,7 @@ export async function getNeighborhoods(
   if (response.status === 200) {
     const { results, error_message } = response.data;
     const neighborhoods = results?.map((place: any) => {
-      return place ?? "";
+      return place ?? '';
     });
 
     return { neighborhoods, error_message };

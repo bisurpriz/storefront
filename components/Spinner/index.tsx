@@ -1,4 +1,4 @@
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner } from 'react-icons/fa';
 
 const Spinner = ({
   style,
@@ -13,8 +13,8 @@ const Spinner = ({
         className="animate-spin"
         style={{
           ...style,
-          width: "1em",
-          height: "1em",
+          width: '1em',
+          height: '1em',
         }}
       />
       <span className="sr-only">Loading...</span>

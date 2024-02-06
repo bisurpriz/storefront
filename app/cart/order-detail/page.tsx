@@ -1,5 +1,5 @@
-import ReceiverForm from "../components/OrderDetail/ReceiverForm";
-import { getCities } from "@/app/account/actions";
+import ReceiverForm from '../components/OrderDetail/ReceiverForm';
+import { getCities } from '@/app/account/actions';
 
 const OrderDetail = async () => {
   const { cities } = await getCities();

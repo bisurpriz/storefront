@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Stepper from "@/components/Stepper";
-import { useEffect, useState } from "react";
-import { cartStepperPaths } from "../../constants";
-import { usePathname } from "next/navigation";
+import Stepper from '@/components/Stepper';
+import { useEffect, useState } from 'react';
+import { cartStepperPaths } from '../../constants';
+import { usePathname } from 'next/navigation';
 
 const CartSteps = () => {
   const pathname = usePathname();

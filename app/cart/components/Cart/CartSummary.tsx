@@ -1,14 +1,14 @@
-"use client";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { IoTicketOutline } from "react-icons/io5/";
-import Button from "@/components/Button";
-import TextField from "@/components/TextField";
-import { usePathname, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { cartStepperPaths } from "../../constants";
-import CartDrawer from "./CartDrawer";
-import { ProductForCart } from "@/common/types/Cart/cart";
-import SubmitButton from "@/components/Button/SubmitButton";
+'use client';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { IoTicketOutline } from 'react-icons/io5/';
+import Button from '@/components/Button';
+import TextField from '@/components/TextField';
+import { usePathname, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { cartStepperPaths } from '../../constants';
+import CartDrawer from './CartDrawer';
+import SubmitButton from '@/components/Button/SubmitButton';
+import { useCart } from '@/contexts/CartContext';
 
 interface Pricing {
   total_discount: number;
@@ -16,7 +16,10 @@ interface Pricing {
   total_price: number;
 }
 
-const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
+const CartSummary = () => {
+
+  const { cartItems } = useCart();
+
   const { push } = useRouter();
   const pathname = usePathname();
   const [pricing] = useState<Pricing>(() => {
@@ -28,7 +31,11 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
       total_discount_price += item.discount_price * item.quantity;
       total_price += item.discount_price * item.quantity;
     });
-    return { total_discount, total_discount_price, total_price };
+    return {
+      total_discount,
+      total_discount_price,
+      total_price,
+    };
   });
   const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
 
@@ -47,13 +54,13 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
                 const keys = Object.keys(value);
 
                 if (keys.length === 1) {
-                  return value[keys[0]] === "";
+                  return value[keys[0]] === '';
                 }
               })
             );
 
           if (isCustomizableAreaEmpty) {
-            toast.error("Özelleştirilebilir alanlar boş bırakılamaz.");
+            toast.error('Özelleştirilebilir alanlar boş bırakılamaz.');
             return;
           } else {
             push(nextPath);
@@ -77,10 +84,10 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
   useEffect(() => {
     switch (pathname) {
       case paths[1]:
-        setFormTarget("order-detail-form");
+        setFormTarget('order-detail-form');
         break;
       case paths[2]:
-        setFormTarget("credit-card-form");
+        setFormTarget('credit-card-form');
         break;
       default:
         setFormTarget(undefined);
@@ -110,7 +117,7 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
               <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                 <span>Toplam kazancınız</span>
                 <span className="font-semibold">
-                  {total_discount?.toFixed(2)} ₺{" "}
+                  {total_discount?.toFixed(2)} ₺{' '}
                 </span>
               </div>
             ) : null}
@@ -137,7 +144,7 @@ const CartSummary = ({ cartItems }: { cartItems: ProductForCart[] }) => {
               </span>
             </div>
             <SubmitButton
-              type={formTarget ? "submit" : "button"}
+              type={formTarget ? 'submit' : 'button'}
               size="large"
               color="primary"
               className="flex justify-center w-full mt-3"

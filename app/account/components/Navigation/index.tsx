@@ -1,55 +1,55 @@
-"use client";
+'use client';
 
-import Tooltip from "@/components/Tooltip";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AiOutlineUnlock, AiOutlineUser } from "react-icons/ai";
-import { BsTruck } from "react-icons/bs";
-import { FiMessageSquare, FiStar } from "react-icons/fi";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { PiAddressBook } from "react-icons/pi";
-import { RiCoupon2Line } from "react-icons/ri";
+import Tooltip from '@/components/Tooltip';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { AiOutlineUnlock, AiOutlineUser } from 'react-icons/ai';
+import { BsTruck } from 'react-icons/bs';
+import { FiMessageSquare, FiStar } from 'react-icons/fi';
+import { MdOutlineFavoriteBorder } from 'react-icons/md';
+import { PiAddressBook } from 'react-icons/pi';
+import { RiCoupon2Line } from 'react-icons/ri';
 
 const accountNavigationItems = [
   {
-    title: "Siparişlerim",
+    title: 'Siparişlerim',
     icon: BsTruck,
-    link: "/account/orders",
+    link: '/account/orders',
   },
   {
-    title: "Kuponlarım",
+    title: 'Kuponlarım',
     icon: RiCoupon2Line,
-    link: "/account/coupons",
+    link: '/account/coupons',
   },
   {
-    title: "Favorilerim",
+    title: 'Favorilerim',
     icon: MdOutlineFavoriteBorder,
-    link: "/account/favorites",
+    link: '/account/favorites',
   },
   {
-    title: "Değerlendirmelerim",
+    title: 'Değerlendirmelerim',
     icon: FiStar,
-    link: "/account/reviews",
+    link: '/account/reviews',
   },
   {
-    title: "Bilgilerim",
+    title: 'Bilgilerim',
     icon: AiOutlineUser,
-    link: "/account",
+    link: '/account',
   },
   {
-    title: "Mesajlarım",
+    title: 'Mesajlarım',
     icon: FiMessageSquare,
-    link: "/account/messages",
+    link: '/account/messages',
   },
   {
-    title: "Adreslerim",
+    title: 'Adreslerim',
     icon: PiAddressBook,
-    link: "/account/addresses",
+    link: '/account/addresses',
   },
   {
-    title: "İzinlerim",
+    title: 'İzinlerim',
     icon: AiOutlineUnlock,
-    link: "/account/permissions",
+    link: '/account/permissions',
   },
 ];
 
@@ -73,12 +73,12 @@ const AccountNavigation = () => {
             key={index}
             className={`flex items-center gap-2 p-2 rounded-md hover:bg-7 hover:text-white transition-all duration-200 max-md:justify-center ${
               pathname === item.link
-                ? "bg-7 text-white"
-                : "bg-white text-gray-700"
+                ? 'bg-7 text-white'
+                : 'bg-white text-gray-700'
             }`}
             as={item.link}
             href={item.link}
-            aria-current={pathname === item.link ? "page" : undefined}
+            aria-current={pathname === item.link ? 'page' : undefined}
             aria-label={item.title}
           >
             <item.icon size={24} />

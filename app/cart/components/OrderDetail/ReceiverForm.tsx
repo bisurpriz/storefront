@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import Card from "@/components/Card";
-import { useEffect, useState } from "react";
-import { Controller, useWatch, useForm } from "react-hook-form";
-import { OrderDetailFormData } from "@/common/types/Order/order";
+import Card from '@/components/Card';
+import { useEffect, useState } from 'react';
+import { Controller, useWatch, useForm } from 'react-hook-form';
+import { OrderDetailFormData } from '@/common/types/Order/order';
 import {
   createNewUserAddress,
   getUserAddressById,
-} from "@/app/account/actions";
-import { useDiscrits } from "@/hooks/useDistricts";
-import { useQuarters } from "@/hooks/useQuarters";
-import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
-import TextField from "@/components/TextField";
-import PhoneInput from "@/components/PhoneInput";
-import { CityResponse } from "@/common/types/Addresses/addresses";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { boolean, number, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import Checkbox from "@/components/Checkbox";
+} from '@/app/account/actions';
+import { useDiscrits } from '@/hooks/useDistricts';
+import { useQuarters } from '@/hooks/useQuarters';
+import AutoComplete, { AutoCompleteOption } from '@/components/Autocomplete';
+import TextField from '@/components/TextField';
+import PhoneInput from '@/components/PhoneInput';
+import { CityResponse } from '@/common/types/Addresses/addresses';
+import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
+import { boolean, number, object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/navigation';
+import Checkbox from '@/components/Checkbox';
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -37,30 +37,30 @@ interface ReceiverFormProps {
 }
 
 const OrderDetailSchema = object({
-  city_id: number().required("İl alanı zorunludur."),
-  district_id: number().required("İlçe alanı zorunludur."),
-  quarter_id: number().required("Mahalle alanı zorunludur."),
-  address_title: string().required("Adres başlığı zorunludur."),
-  address: string().required("Adres alanı zorunludur."),
-  receiver_firstname: string().required("Alıcı adı zorunludur."),
-  receiver_surname: string().required("Alıcı soyadı zorunludur."),
-  receiver_phone: string().required("Alıcı telefonu zorunludur."),
+  city_id: number().required('İl alanı zorunludur.'),
+  district_id: number().required('İlçe alanı zorunludur.'),
+  quarter_id: number().required('Mahalle alanı zorunludur.'),
+  address_title: string().required('Adres başlığı zorunludur.'),
+  address: string().required('Adres alanı zorunludur.'),
+  receiver_firstname: string().required('Alıcı adı zorunludur.'),
+  receiver_surname: string().required('Alıcı soyadı zorunludur.'),
+  receiver_phone: string().required('Alıcı telefonu zorunludur.'),
   user_id: string().optional().nullable(),
   saved_address: string().optional().nullable(),
   wantToSaveAddress: boolean().optional().nullable(),
 });
 
 const defaultValues = {
-  address: "",
-  address_title: "",
+  address: '',
+  address_title: '',
   city_id: null,
   district_id: null,
   quarter_id: null,
-  receiver_firstname: "",
-  receiver_phone: "",
-  receiver_surname: "",
-  user_id: "",
-  saved_address: "",
+  receiver_firstname: '',
+  receiver_phone: '',
+  receiver_surname: '',
+  user_id: '',
+  saved_address: '',
   wantToSaveAddress: false,
 };
 
@@ -78,7 +78,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     formState: { errors },
   } = useForm<OrderDetailPartialFormData>({
     defaultValues,
-    mode: "onChange",
+    mode: 'onChange',
     delayError: 500,
     resolver: yupResolver(OrderDetailSchema),
   });
@@ -92,11 +92,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const [cityId, districtId] = useWatch({
     control,
-    name: ["city_id", "district_id"],
+    name: ['city_id', 'district_id'],
   });
 
   useEffect(() => {
-    const serializeLocale = localStorage.getItem("detail-data");
+    const serializeLocale = localStorage.getItem('detail-data');
     const localStorageData = JSON.parse(serializeLocale);
 
     if (localStorageData) {
@@ -146,7 +146,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         city_id: null,
         district_id: null,
         quarter_id: null,
-        address: "",
+        address: '',
         user_id,
       });
     }
@@ -157,8 +157,8 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const onSubmit = async (values) => {
     if (values) {
-      localStorage.setItem("detail-data", JSON.stringify(values));
-      push("/cart/checkout");
+      localStorage.setItem('detail-data', JSON.stringify(values));
+      push('/cart/checkout');
       if (values.wantToSaveAddress) {
         await createNewUserAddress({
           address: values.address,
@@ -302,7 +302,10 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                 <AutoComplete
                   value={
                     selectedCity
-                      ? { label: selectedCity.name, value: selectedCity.id }
+                      ? {
+                          label: selectedCity.name,
+                          value: selectedCity.id,
+                        }
                       : null
                   }
                   label="İl"

@@ -10,7 +10,7 @@ interface TabsProps {
    *  onTabChange fonksiyonu gönderilirse tab dışardan kontrol edilir, gönderilmezse tab kendi içinde kontrol edilir.
    *  @default tabs[0].id
    */
-  activeTab?: TabProps["id"];
+  activeTab?: TabProps['id'];
 }
 
 interface TabProps {

@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { query } from "@/graphql/lib/client";
-import { GET_ALL_BANNERS } from "@/graphql/queries/banners/banners";
-import { GET_VENDOR_BY_ID } from "@/graphql/queries/vendors/getVendorById";
-import { getSession } from "@auth0/nextjs-auth0";
-import { cookies } from "next/headers";
+import { query } from '@/graphql/lib/client';
+import { GET_ALL_BANNERS } from '@/graphql/queries/banners/banners';
+import { GET_VENDOR_BY_ID } from '@/graphql/queries/vendors/getVendorById';
+import { getSession } from '@auth0/nextjs-auth0';
+import { cookies } from 'next/headers';
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
   const auth = cookies();
 
-  const id = auth.get("user_id");
+  const id = auth.get('user_id');
 
   if (!id) null;
 
@@ -21,7 +21,7 @@ export async function getIdToken() {
   const session = await getSession();
 
   if (!session)
-    return new Promise((resolve, reject) => reject("Session is null"));
+    return new Promise((resolve, reject) => reject('Session is null'));
 
   return session.idToken;
 }
@@ -29,9 +29,9 @@ export async function getIdToken() {
 export async function writeIdToCookies(value: string) {
   const auth = cookies();
 
-  auth.set("user_id", value, {
+  auth.set('user_id', value, {
     maxAge: 60 * 60 * 24 * 7,
-    path: "/",
+    path: '/',
   });
 
   return auth;
@@ -40,7 +40,7 @@ export async function writeIdToCookies(value: string) {
 export async function readFingerPrintFromCookies() {
   const auth = cookies();
 
-  const fingerprint = auth.get("fingerPrint");
+  const fingerprint = auth.get('fingerPrint');
 
   if (!fingerprint) null;
 

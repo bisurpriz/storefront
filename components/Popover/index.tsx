@@ -1,5 +1,5 @@
-"use client";
-import useResponsive from "@/hooks/useResponsive";
+'use client';
+import useResponsive from '@/hooks/useResponsive';
 import {
   useState,
   useRef,
@@ -7,20 +7,20 @@ import {
   Children,
   ReactElement,
   cloneElement,
-} from "react";
-import { motion } from "framer-motion";
+} from 'react';
+import { motion } from 'framer-motion';
 
 interface PopoverProps {
   children: React.ReactElement;
   content: React.ReactElement;
-  position?: "top" | "right" | "bottom" | "left";
+  position?: 'top' | 'right' | 'bottom' | 'left';
   contentClassName?: string;
 }
 
 const Popover: React.FC<PopoverProps> = ({
   children,
   content,
-  position = "top",
+  position = 'top',
   contentClassName,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,29 +30,29 @@ const Popover: React.FC<PopoverProps> = ({
 
   const getPositionClass = () => {
     switch (dynamicPosition) {
-      case "right":
-        return "left-full top-1/2 transform -translate-y-1/2 ml-3";
-      case "bottom":
-        return "top-full left-1/2 transform -translate-x-1/2 mt-3";
-      case "left":
-        return "right-full top-1/2 transform -translate-y-1/2 mr-3";
+      case 'right':
+        return 'left-full top-1/2 transform -translate-y-1/2 ml-3';
+      case 'bottom':
+        return 'top-full left-1/2 transform -translate-x-1/2 mt-3';
+      case 'left':
+        return 'right-full top-1/2 transform -translate-y-1/2 mr-3';
       default:
-        return "bottom-full left-1/2 transform -translate-x-1/2 mt-3";
+        return 'bottom-full left-1/2 transform -translate-x-1/2 mt-3';
     }
   };
 
   const getCaretPosition = () => {
     switch (dynamicPosition) {
-      case "top":
-        return "-bottom-2 left-1/2 transform -translate-x-1/2 border-b border-r";
-      case "right":
-        return "top-1/2 -left-2 transform -translate-y-1/2 border-t border-l";
-      case "bottom":
-        return "-top-2 left-1/2 transform -translate-x-1/2 border-t border-l";
-      case "left":
-        return "top-1/2 -right-2 transform -translate-y-1/2 border-t border-r";
+      case 'top':
+        return '-bottom-2 left-1/2 transform -translate-x-1/2 border-b border-r';
+      case 'right':
+        return 'top-1/2 -left-2 transform -translate-y-1/2 border-t border-l';
+      case 'bottom':
+        return '-top-2 left-1/2 transform -translate-x-1/2 border-t border-l';
+      case 'left':
+        return 'top-1/2 -right-2 transform -translate-y-1/2 border-t border-r';
       default:
-        return "bottom-full left-1/2 transform -translate-x-1/2";
+        return 'bottom-full left-1/2 transform -translate-x-1/2';
     }
   };
 
@@ -70,18 +70,18 @@ const Popover: React.FC<PopoverProps> = ({
       const rect = ref.current.getBoundingClientRect();
 
       if (isMobile) {
-        setDynamicPosition("top");
+        setDynamicPosition('top');
         return;
       }
 
       if (rect.top < 0) {
-        setDynamicPosition("bottom");
+        setDynamicPosition('bottom');
       } else if (rect.left < 0) {
-        setDynamicPosition("right");
+        setDynamicPosition('right');
       } else if (rect.right > rect.x) {
-        setDynamicPosition("left");
+        setDynamicPosition('left');
       } else if (rect.bottom > rect.y) {
-        setDynamicPosition("top");
+        setDynamicPosition('top');
       } else {
         setDynamicPosition(position);
       }
@@ -89,11 +89,11 @@ const Popover: React.FC<PopoverProps> = ({
   }, [isOpen]);
 
   return (
-    <div className='relative inline-block'>
+    <div className="relative inline-block">
       {childTrigger}
       <motion.div
         initial={false}
-        animate={isOpen ? "open" : "closed"}
+        animate={isOpen ? 'open' : 'closed'}
         variants={{
           open: { opacity: 1 },
           closed: { opacity: 0 },

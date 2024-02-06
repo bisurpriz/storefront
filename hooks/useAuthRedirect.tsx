@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useCallback, useEffect } from 'react';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const useAuthRedirect = ({ lazy }: { lazy: boolean }) => {
   const { user } = useUser();
@@ -7,7 +7,7 @@ const useAuthRedirect = ({ lazy }: { lazy: boolean }) => {
   const handleRedirect = useCallback(
     (callback?: () => void) => {
       if (!user) {
-        window.location.href = "/api/auth/login";
+        window.location.href = '/api/auth/login';
         return;
       }
       if (callback) callback();

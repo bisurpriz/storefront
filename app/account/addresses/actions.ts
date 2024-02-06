@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { UserAddressesResponse } from "@/common/types/User/user";
-import { query } from "@/graphql/lib/client";
-import { GET_USER_ADDRESSES } from "@/graphql/queries/address/address";
+import { UserAddressesResponse } from '@/common/types/User/user';
+import { query } from '@/graphql/lib/client';
+import { GET_USER_ADDRESSES } from '@/graphql/queries/address/address';
 
 export const getUserAddresses = async () => {
   const { data } = await query<{

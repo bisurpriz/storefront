@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { mutate, query } from "@/graphql/lib/client";
+import { mutate, query } from '@/graphql/lib/client';
 import {
   CREATE_NEW_ADDRESS,
   GET_CITIES,
@@ -9,14 +9,14 @@ import {
   GET_USER_ADDRESS_BY_ID,
   GET_USER_BY_ID,
   UPDATE_USER_BY_ID,
-} from "@/graphql/queries/account/account";
-import { readIdFromCookies } from "../actions";
+} from '@/graphql/queries/account/account';
+import { readIdFromCookies } from '../actions';
 import {
   CityResponse,
   DistrictResponse,
   QuarterResponse,
-} from "@/common/types/Addresses/addresses";
-import { User } from "@/common/types/User/user";
+} from '@/common/types/Addresses/addresses';
+import { User } from '@/common/types/User/user';
 
 export const getQuarters = async (districtId: string) => {
   const { data, loading } = await query<{
@@ -119,13 +119,13 @@ export const updateUserById = async (
   data: Partial<
     Pick<
       User,
-      | "firstname"
-      | "lastname"
-      | "email"
-      | "id"
-      | "phone"
-      | "picture"
-      | "vkn_tckn"
+      | 'firstname'
+      | 'lastname'
+      | 'email'
+      | 'id'
+      | 'phone'
+      | 'picture'
+      | 'vkn_tckn'
     >
   >
 ) => {

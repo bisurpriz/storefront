@@ -1,4 +1,4 @@
-import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
+import ProductDetailImageGallery from '@/components/Product/DetailImageGallery';
 
 const ProductImageCarousel = ({
   images,

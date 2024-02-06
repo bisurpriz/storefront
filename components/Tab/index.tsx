@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, FC } from "react";
+import { useState, FC } from 'react';
 
 const Tab: FC<TabsProps> = ({ tabs, bordered, onTabChange, activeTab }) => {
   const [selectedTab, setSelectedTab] = useState<TabProps>(
     tabs.find((tab) => tab.id === activeTab) || tabs[0]
   );
 
-  const borderedClass = bordered ? "border rounded" : "";
+  const borderedClass = bordered ? 'border rounded' : '';
 
   const handleChange = (tab: TabProps) => {
     if (onTabChange) {
@@ -35,8 +35,8 @@ const Tab: FC<TabsProps> = ({ tabs, bordered, onTabChange, activeTab }) => {
             <div
               className={`absolute bottom-0 left-0 h-0.5 bg-blue-500 transition duration-300 ease-in-out transform translate-x-0 w-full ${
                 selectedTab.id === tab.id
-                  ? "scale-100"
-                  : "scale-x-0 -translate-x-full"
+                  ? 'scale-100'
+                  : 'scale-x-0 -translate-x-full'
               }`}
             />
           </div>

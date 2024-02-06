@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_VENDOR_BY_ID = gql`
   query MyQuery($id: bigint = 0) {

@@ -1,6 +1,6 @@
-import { destructClaims } from "@/utils/getClaims";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { useEffect, useState } from "react";
+import { destructClaims } from '@/utils/getClaims';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useEffect, useState } from 'react';
 
 export const useClaims = () => {
   const [claims, setClaims] = useState({

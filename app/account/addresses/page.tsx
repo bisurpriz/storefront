@@ -1,5 +1,5 @@
-import { getUserAddresses } from "./actions";
-import Address from "./components/Address";
+import { getUserAddresses } from './actions';
+import Address from './components/Address';
 
 const AddressesPage = async () => {
   const { user_addresses } = await getUserAddresses();

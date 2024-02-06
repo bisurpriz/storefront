@@ -1,8 +1,8 @@
 enum GridBreakpoint {
-  sm = "sm",
-  md = "md",
-  lg = "lg",
-  xl = "xl",
+  sm = 'sm',
+  md = 'md',
+  lg = 'lg',
+  xl = 'xl',
 }
 
 type GridSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -24,5 +24,5 @@ interface GridProps {
   gap?: GridSize | GapSize;
   children?: React.ReactNode;
   className?: string;
-  gridFlow?: "dense" | "row" | "col";
+  gridFlow?: 'dense' | 'row' | 'col';
 }

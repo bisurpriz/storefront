@@ -1,8 +1,8 @@
-import { localeFormat } from "@/utils/format";
-import ChatItem, { IChatItem } from "./ChatItem";
-import ChatItemSkeleton from "./ChatItemSkeleton";
-import { useClaims } from "@/hooks/useClaims";
-import Empty from "@/components/Empty";
+import { localeFormat } from '@/utils/format';
+import ChatItem, { IChatItem } from './ChatItem';
+import ChatItemSkeleton from './ChatItemSkeleton';
+import { useClaims } from '@/hooks/useClaims';
+import Empty from '@/components/Empty';
 
 const calculateUnread = (messages: any[], userId: string) => {
   const unread = messages.filter(
@@ -15,7 +15,7 @@ const ChatList = ({
   onMessageSelect,
   chats,
 }: {
-  onMessageSelect: IChatItem["onMessageSelect"];
+  onMessageSelect: IChatItem['onMessageSelect'];
   chats: any[] | null;
 }) => {
   const {
@@ -41,18 +41,18 @@ const ChatList = ({
                 item?.messages.length > 0
                   ? new Date(item.messages[0].created_at)
                   : undefined,
-                "PPP"
+                'PPP'
               )
-            : "";
+            : '';
           const unread = calculateUnread(item.messages, id);
           return (
             <ChatItem
               key={item.id}
-              name={item?.tenant?.firstname + " " + item?.tenant?.lastname}
+              name={item?.tenant?.firstname + ' ' + item?.tenant?.lastname}
               message={
                 item?.messages?.length > 0
                   ? item.messages?.slice(-1)?.[0]?.message
-                  : ""
+                  : ''
               }
               date={date}
               imgPath={item.tenant?.picture}

@@ -3,13 +3,13 @@ export const serializeData = (data: Record<string, unknown>) => {
     .map((key) => {
       const value = data[key];
       if (
-        typeof value === "string" ||
-        typeof value === "number" ||
-        typeof value === "boolean"
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        typeof value === 'boolean'
       ) {
         return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
       }
-      return "";
+      return '';
     })
-    .join("&");
+    .join('&');
 };

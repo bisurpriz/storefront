@@ -1,7 +1,7 @@
-"use client";
-import Button from "@/components/Button";
-import { useCallback } from "react";
-import { ProductForCart } from "@/common/types/Cart/cart";
+'use client';
+import Button from '@/components/Button';
+import { useCallback } from 'react';
+import { ProductForCart } from '@/common/types/Cart/cart';
 
 interface AddCartButtonProps extends ProductForCart {
   className?: string;
@@ -36,7 +36,7 @@ const AddCartButton = ({
       rounded
       className={
         className ??
-        "justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
+        'justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm'
       }
       onClick={handleAddToCart}
     >

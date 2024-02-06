@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { ApolloLink, HttpLink, split } from "@apollo/client";
+import { ApolloLink, HttpLink, split } from '@apollo/client';
 import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
   SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support/ssr";
-import { WebSocketLink } from "apollo-link-ws";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import { setVerbosity } from "ts-invariant";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { getIdToken } from "@/app/actions";
+} from '@apollo/experimental-nextjs-app-support/ssr';
+import { WebSocketLink } from 'apollo-link-ws';
+import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
+import { setVerbosity } from 'ts-invariant';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { getIdToken } from '@/app/actions';
 
-if (process.env.NODE_ENV === "development") {
-  setVerbosity("debug");
+if (process.env.NODE_ENV === 'development') {
+  setVerbosity('debug');
   loadDevMessages();
   loadErrorMessages();
 }
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://bisurprizdev.hasura.app/v1/graphql",
+    uri: 'https://bisurprizdev.hasura.app/v1/graphql',
   });
 
   const wsLink =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? new WebSocketLink({
-          uri: "wss://bisurprizdev.hasura.app/v1/graphql",
+          uri: 'wss://bisurprizdev.hasura.app/v1/graphql',
           options: {
             lazy: true,
             timeout: 30000,
@@ -47,13 +47,13 @@ function makeClient() {
       : null;
 
   const _httpLink =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? split(
           ({ query }) => {
             const definition = getMainDefinition(query);
             return (
-              definition.kind === "OperationDefinition" &&
-              definition.operation === "subscription"
+              definition.kind === 'OperationDefinition' &&
+              definition.operation === 'subscription'
             );
           },
           wsLink as any,
@@ -64,7 +64,7 @@ function makeClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
-      typeof window === "undefined"
+      typeof window === 'undefined'
         ? ApolloLink.from([
             // in a SSR environment, if you use multipart features like
             // @defer, you need to decide how to handle these.

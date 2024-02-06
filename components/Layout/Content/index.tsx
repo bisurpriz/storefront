@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { Toaster } from "react-hot-toast";
+import { Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 type ContentProps = {
   children: React.ReactNode;

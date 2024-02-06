@@ -1,19 +1,19 @@
-"use client";
-import { useState } from "react";
-import ChatList from "./ChatList";
-import Button from "@/components/Button";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
-import MessageList from "./Message/MessageList";
-import Input from "./Message/Input";
-import { sendMessage } from "../action";
-import { useClaims } from "@/hooks/useClaims";
-import useChatStore from "@/store";
-import useDelayUnmount from "@/hooks/useDelayUnmount";
+'use client';
+import { useState } from 'react';
+import ChatList from './ChatList';
+import Button from '@/components/Button';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
+import MessageList from './Message/MessageList';
+import Input from './Message/Input';
+import { sendMessage } from '../action';
+import { useClaims } from '@/hooks/useClaims';
+import useChatStore from '@/store';
+import useDelayUnmount from '@/hooks/useDelayUnmount';
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
   const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId));
   const [tenantIdState, setTenantIdState] = useState(tenantId);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const { claims } = useClaims();
 
   const shouldRenderChild = useDelayUnmount(isMessageOpen, 500);
@@ -40,7 +40,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
       chat_thread_id: thread?.id,
     });
 
-    setText("");
+    setText('');
   };
 
   const thread = chats?.find((item) => item.tenant.id === tenantIdState);
@@ -50,7 +50,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
       <div className="flex-1 flex relative h-full">
         <div
           className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${
-            !isMessageOpen ? "translate-x-0" : "-translate-x-[110%]"
+            !isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
           }`}
         >
           {
@@ -67,7 +67,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
         {shouldRenderChild && thread && (
           <div
             className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${
-              isMessageOpen ? "translate-x-0" : "-translate-x-[110%]"
+              isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
             }`}
           >
             <div className="flex items-center">
@@ -83,8 +83,8 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
 
               <h2 className="text-xl py-1 border-b-2 border-gray-200 inline-block mb-0 flex-auto">
                 <b>
-                  {thread?.tenant.firstname + " " + thread?.tenant.lastname}
-                </b>{" "}
+                  {thread?.tenant.firstname + ' ' + thread?.tenant.lastname}
+                </b>{' '}
                 ile Görüşme
               </h2>
             </div>

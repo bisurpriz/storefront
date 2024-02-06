@@ -1,4 +1,4 @@
-import CreditCartForm from "../components/Checkout/CreditCartForm";
+import CreditCartForm from '../components/Checkout/CreditCartForm';
 
 const CartCheckout = async () => {
   return (

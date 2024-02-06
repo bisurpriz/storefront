@@ -1,8 +1,8 @@
-import { UserAddressesResponse } from "@/common/types/User/user";
-import Button from "@/components/Button";
-import TextField from "@/components/TextField";
-import { BsTrash } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
+import { UserAddressesResponse } from '@/common/types/User/user';
+import Button from '@/components/Button';
+import TextField from '@/components/TextField';
+import { BsTrash } from 'react-icons/bs';
+import { FiEdit } from 'react-icons/fi';
 
 const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
   return (

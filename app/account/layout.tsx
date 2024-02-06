@@ -1,4 +1,4 @@
-import AccountNavigation from "./components/Navigation";
+import AccountNavigation from './components/Navigation';
 
 const AccountLayout = ({ children }: { children: React.ReactNode }) => {
   return (

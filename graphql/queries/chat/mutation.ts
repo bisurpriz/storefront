@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const SEND_MESSAGE_ALONE = gql`
   mutation sendMessage(

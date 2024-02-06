@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import useOnlineStatus from "@/hooks/useOnlineStatus";
+import useOnlineStatus from '@/hooks/useOnlineStatus';
 
 const OfflineStatus = () => {
   const handleReload = () => {

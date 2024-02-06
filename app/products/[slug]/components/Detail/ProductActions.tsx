@@ -1,12 +1,12 @@
-"use client";
+'use client';
 import {
   addToFavorites,
   removeFromFavorites,
-} from "@/app/account/favorites/actions";
-import Button from "@/components/Button";
-import useAuthRedirect from "@/hooks/useAuthRedirect";
-import { useState } from "react";
-import { MdFavoriteBorder } from "react-icons/md";
+} from '@/app/account/favorites/actions';
+import Button from '@/components/Button';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
+import { useState } from 'react';
+import { MdFavoriteBorder } from 'react-icons/md';
 
 interface Props {
   productId: number;
@@ -19,7 +19,9 @@ interface Props {
 
 const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
-  const { handleRedirect } = useAuthRedirect({ lazy: true });
+  const { handleRedirect } = useAuthRedirect({
+    lazy: true,
+  });
   return (
     <div className="flex items-center justify-start gap-4 py-4 md:mt-4 font-mono">
       <Button
@@ -35,12 +37,12 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
           iconSize={28}
           variant="outlined"
           className={`group border-red-300 hover:bg-red-400 rounded-xl ${
-            isFavoriteState ? "bg-red-400" : ""
+            isFavoriteState ? 'bg-red-400' : ''
           }`}
           icon={
             <MdFavoriteBorder
               className={`text-red-300 group-hover:text-white group-hover:animate-bounce ${
-                isFavoriteState ? "text-white" : ""
+                isFavoriteState ? 'text-white' : ''
               }`}
             />
           }

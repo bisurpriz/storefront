@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { IProductFilter } from "@/common/types/Filter/productFilter";
-import { getClient } from "@/graphql/lib/client";
-import { GET_PRODUCT_BY_ID } from "@/graphql/queries/products/getProductById";
-import { GET_PRODUCTS_WITH_PAGINATION } from "@/graphql/queries/products/getProductsWithPagination";
-import { parseJson } from "@/utils/format";
+import { IProductFilter } from '@/common/types/Filter/productFilter';
+import { getClient } from '@/graphql/lib/client';
+import { GET_PRODUCT_BY_ID } from '@/graphql/queries/products/getProductById';
+import { GET_PRODUCTS_WITH_PAGINATION } from '@/graphql/queries/products/getProductsWithPagination';
+import { parseJson } from '@/utils/format';
 
 const client = getClient();
 

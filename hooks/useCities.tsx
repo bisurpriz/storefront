@@ -1,5 +1,5 @@
-import { getCities } from "@/app/account/actions";
-import { useEffect, useState } from "react";
+import { getCities } from '@/app/account/actions';
+import { useEffect, useState } from 'react';
 
 export const useCities = () => {
   const [cities, setCities] = useState([]);

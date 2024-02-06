@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
+'use client';
 
-import { Suspense, useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import Loading from "./Loading";
-import ProductItem5 from "../Product/Item/ProductItem5";
-import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
+import { Suspense, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Loading from './Loading';
+import ProductItem5 from '../Product/Item/ProductItem5';
+import ProductItemSkeleton from '../Product/Item/ProductItemSkeleton';
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -45,17 +45,17 @@ const InfinityScroll = <T,>({
   }, [inView]);
 
   return (
-    <div className='grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2'>
+    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
       <Suspense
-        fallback={Array.from({ length: PER_REQUEST }).map((_, i) => (
+        fallback={Array.from({
+          length: PER_REQUEST,
+        }).map((_, i) => (
           <ProductItemSkeleton key={i} />
         ))}
       >
-        {data?.map((item: any) => (
-          <ProductItem5 key={item.id} {...item} />
-        ))}
+        {data?.map((item: any) => <ProductItem5 key={item.id} {...item} />)}
       </Suspense>
-      {totalCount === 0 && <div className='text-center'>Ürün bulunamadı</div>}
+      {totalCount === 0 && <div className="text-center">Ürün bulunamadı</div>}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>
     </div>
   );

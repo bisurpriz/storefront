@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import React from "react";
+import clsx from 'clsx';
+import React from 'react';
 
 interface CheckboxProps {
   checked: boolean;
@@ -16,7 +16,7 @@ interface CheckboxProps {
   ariaLabel?: string;
   ariaLabelledBy?: string;
   ariaDescribedBy?: string;
-  ariaChecked?: boolean | "mixed";
+  ariaChecked?: boolean | 'mixed';
   ariaDisabled?: boolean;
   ariaRequired?: boolean;
   ariaInvalid?: boolean;
@@ -27,14 +27,14 @@ const Checkbox = ({
   checked,
   onChange,
   ariaChecked = checked,
-  ariaDescribedBy = "",
+  ariaDescribedBy = '',
   ariaDisabled = false,
   ariaInvalid = false,
-  ariaLabel = "",
-  ariaLabelledBy = "",
+  ariaLabel = '',
+  ariaLabelledBy = '',
   ariaRequired = false,
   autoFocus = false,
-  className = "",
+  className = '',
   disabled = false,
   id,
   name,
@@ -50,7 +50,7 @@ const Checkbox = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onChange(!checked);
     }
@@ -60,10 +60,10 @@ const Checkbox = ({
     <label
       htmlFor={id}
       className={clsx(
-        "inline-flex items-center cursor-pointer select-none relative pl-6 pr-3 py-2 text-gray-700",
+        'inline-flex items-center cursor-pointer select-none relative pl-6 pr-3 py-2 text-gray-700',
         className,
-        disabled && "opacity-50 cursor-not-allowed",
-        readOnly && "opacity-50 cursor-not-allowed"
+        disabled && 'opacity-50 cursor-not-allowed',
+        readOnly && 'opacity-50 cursor-not-allowed'
       )}
     >
       <p className="m-0 p-0 text-sm leading-5 font-medium text-gray-900">
@@ -71,9 +71,9 @@ const Checkbox = ({
       </p>
       <input
         className={clsx(
-          "absolute opacity-0 cursor-pointer h-0 w-0",
-          disabled && "opacity-0",
-          readOnly && "opacity-0"
+          'absolute opacity-0 cursor-pointer h-0 w-0',
+          disabled && 'opacity-0',
+          readOnly && 'opacity-0'
         )}
         type="checkbox"
         checked={checked}
@@ -97,16 +97,16 @@ const Checkbox = ({
       />
       <div
         className={clsx(
-          "absolute top-1/2 left-0 -translate-y-1/2 w-4 h-4 rounded border-2 transition-all duration-200 ease-in-out cursor-pointer flex items-center justify-center",
-          checked ? "bg-primary border-primary" : "bg-white border-gray-400",
-          disabled && "bg-gray-200 border-gray-200",
-          readOnly && "bg-gray-200 border-gray-200"
+          'absolute top-1/2 left-0 -translate-y-1/2 w-4 h-4 rounded border-2 transition-all duration-200 ease-in-out cursor-pointer flex items-center justify-center',
+          checked ? 'bg-primary border-primary' : 'bg-white border-gray-400',
+          disabled && 'bg-gray-200 border-gray-200',
+          readOnly && 'bg-gray-200 border-gray-200'
         )}
       >
         <svg
           className={clsx(
-            "text-white fill-current stroke-2",
-            checked ? "block" : "hidden"
+            'text-white fill-current stroke-2',
+            checked ? 'block' : 'hidden'
           )}
           viewBox="0 0 24 24"
         >

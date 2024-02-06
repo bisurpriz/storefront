@@ -11,7 +11,7 @@ import {
   RowXlSizes,
   SmSizes,
   XlSizes,
-} from "./contants";
+} from './contants';
 
 const Grid = ({
   children,
@@ -21,11 +21,11 @@ const Grid = ({
   className,
   gridFlow,
 }: GridProps) => {
-  const gridFlowClass = gridFlow ? `grid-flow-${gridFlow}` : "";
+  const gridFlowClass = gridFlow ? `grid-flow-${gridFlow}` : '';
 
-  const colsIsNumber = typeof cols === "number";
-  const rowsIsNumber = typeof rows === "number";
-  const gapIsNumber = typeof gap === "number";
+  const colsIsNumber = typeof cols === 'number';
+  const rowsIsNumber = typeof rows === 'number';
+  const gapIsNumber = typeof gap === 'number';
 
   const getColsWithSize = () => {
     const smCols = !colsIsNumber ? SmSizes[cols?.sm!] : ``;
@@ -34,7 +34,7 @@ const Grid = ({
     const xlCols = !colsIsNumber ? XlSizes[cols?.xl!] : ``;
 
     const gridCols = !colsIsNumber
-      ? ["grid-cols-12", smCols, mdCols, lgCols, xlCols].join(" ")
+      ? ['grid-cols-12', smCols, mdCols, lgCols, xlCols].join(' ')
       : `grid-cols-${cols}`;
 
     return gridCols;
@@ -47,7 +47,7 @@ const Grid = ({
     const xlRows = !rowsIsNumber ? RowXlSizes[rows?.xl!] : ``;
 
     const gridRows = !rowsIsNumber
-      ? ["grid-rows-12", smRows, mdRows, lgRows, xlRows].join(" ")
+      ? ['grid-rows-12', smRows, mdRows, lgRows, xlRows].join(' ')
       : `grid-rows-${rows}`;
 
     return gridRows;
@@ -60,7 +60,7 @@ const Grid = ({
     const xlGap = !gapIsNumber ? GapXlSizes[gap?.xl!] : ``;
 
     const gridGap = !gapIsNumber
-      ? ["gap-4", smGap, mdGap, lgGap, xlGap].join(" ")
+      ? ['gap-4', smGap, mdGap, lgGap, xlGap].join(' ')
       : `gap-${gap}`;
 
     return gridGap;
@@ -73,7 +73,7 @@ const Grid = ({
   return (
     <div
       className={`grid ${gridGap}  ${gridCols} ${gridRows} ${gridFlowClass} ${
-        className ?? ""
+        className ?? ''
       }`}
     >
       {children}

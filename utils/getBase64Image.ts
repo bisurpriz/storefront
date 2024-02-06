@@ -4,7 +4,7 @@ export const getBase64Image = (file: File) => {
 
     reader.readAsDataURL(file);
     reader.onload = () => {
-      if (typeof reader.result === "string") {
+      if (typeof reader.result === 'string') {
         resolve(reader.result);
       }
     };

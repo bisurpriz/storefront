@@ -1,6 +1,6 @@
-import CartHomePageButton from "../CartHomePageButton";
-import ProductGroup from "../ProductGroup";
-import { ProductForCart } from "@/common/types/Cart/cart";
+import CartHomePageButton from '../CartHomePageButton';
+import ProductGroup from '../ProductGroup';
+import { ProductForCart } from '@/common/types/Cart/cart';
 
 const CartWrapper = ({
   initialCartItems,

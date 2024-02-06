@@ -1,14 +1,14 @@
-import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
-import { ProductForCart } from "@/common/types/Cart/cart";
-import AccordionItem from "@/components/Accordion/AccordionItem";
-import CustomizeGroup from "@/components/Customize/CustomizeGroup";
-import PriceTag from "@/components/PriceTag";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import Image from "next/image";
-import Link from "next/link";
-import { IoAccessibility } from "react-icons/io5";
-import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
-import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
+import Promotions from '@/app/products/[slug]/components/Detail/Promotions';
+import { ProductForCart } from '@/common/types/Cart/cart';
+import AccordionItem from '@/components/Accordion/AccordionItem';
+import CustomizeGroup from '@/components/Customize/CustomizeGroup';
+import PriceTag from '@/components/PriceTag';
+import { getImageUrlFromPath } from '@/utils/getImageUrl';
+import Image from 'next/image';
+import Link from 'next/link';
+import { IoAccessibility } from 'react-icons/io5';
+import CartProductGroupListQuantityInput from './CartProductGroupListQuantityInput';
+import ProductGroupListItemInfo from './ProductGroupListItemInfo';
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -74,9 +74,9 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <Promotions
             promotions={[
               {
-                description: "Kategori İndirimi",
+                description: 'Kategori İndirimi',
                 icon: <IoAccessibility />,
-                filterKey: "category",
+                filterKey: 'category',
               },
             ]}
           />

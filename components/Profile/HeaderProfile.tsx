@@ -1,9 +1,9 @@
-import Button from "../Button";
-import Image from "next/image";
-import Dropdown from "../Dropdown";
-import { profileItems } from "./contants";
-import Link from "next/link";
-import { getSession } from "@auth0/nextjs-auth0";
+import Button from '../Button';
+import Image from 'next/image';
+import Dropdown from '../Dropdown';
+import { profileItems } from './contants';
+import Link from 'next/link';
+import { getSession } from '@auth0/nextjs-auth0';
 
 const HeaderProfile = async () => {
   const session = await getSession();
@@ -25,7 +25,7 @@ const HeaderProfile = async () => {
       >
         <div className="flex items-center gap-2">
           <Image
-            src={user?.picture || ""}
+            src={user?.picture || ''}
             width={30}
             height={30}
             alt="User Picture"

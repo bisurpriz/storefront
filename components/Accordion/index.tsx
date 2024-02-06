@@ -1,6 +1,6 @@
-"use client";
-import { useState } from "react";
-import AccordionItem from "./AccordionItem";
+'use client';
+import { useState } from 'react';
+import AccordionItem from './AccordionItem';
 
 interface AccordionProps {
   items: {

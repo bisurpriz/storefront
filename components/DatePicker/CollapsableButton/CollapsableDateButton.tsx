@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Button from "@/components/Button";
-import { localeFormat } from "@/utils/format";
-import TimePicker from "../TimePicker";
-import { useRef } from "react";
-import { motion } from "framer-motion";
+import Button from '@/components/Button';
+import { localeFormat } from '@/utils/format';
+import TimePicker from '../TimePicker';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 type Props = {
   label: string;
@@ -30,45 +30,45 @@ const CollapsableDateButton = ({
   };
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <Button
         key={value?.toString()}
-        className='!p-2 flex items-center justify-center flex-col h-fit'
-        variant={value === selectedDay ? "fullfilled" : "outlined"}
+        className="!p-2 flex items-center justify-center flex-col h-fit"
+        variant={value === selectedDay ? 'fullfilled' : 'outlined'}
         fullWidth
         onClick={handleOpen}
       >
-        <p className='text-base font-medium truncate'>{label}</p>
-        <p className='text-sm font-normal'>
-          {value ? localeFormat(value, monthFormat) : ""}
+        <p className="text-base font-medium truncate">{label}</p>
+        <p className="text-sm font-normal">
+          {value ? localeFormat(value, monthFormat) : ''}
         </p>
       </Button>
       <motion.div
         initial={false}
-        animate={value === selectedDay ? "open" : "closed"}
+        animate={value === selectedDay ? 'open' : 'closed'}
         variants={{
           open: { maxHeight: 100, opacity: 1 },
           closed: { maxHeight: 0, opacity: 0 },
         }}
-        className='overflow-hidden'
+        className="overflow-hidden"
         ref={ref}
       >
         <div
-          className='transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden'
+          className="transition-max-height duration-300 ease-in w-full border mt-2 rounded-lg overflow-hidden"
           ref={ref}
         >
           {value ? (
             <TimePicker
               // 12:00 - 13:00 - 14:00 - 15:00 to date
               includeTimes={deliveryTimes.map((time) => {
-                const [hour, minute] = time.split(":");
+                const [hour, minute] = time.split(':');
                 return new Date(value.setHours(Number(hour), Number(minute)));
               })}
               onChange={(date) => onSelect(date)}
-              className='w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal'
+              className="w-full h-full outline-none border-none bg-transparent text-center text-sm font-normal"
             />
           ) : (
-            "Uygun teslimat zamanı bulunamadı"
+            'Uygun teslimat zamanı bulunamadı'
           )}
         </div>
       </motion.div>

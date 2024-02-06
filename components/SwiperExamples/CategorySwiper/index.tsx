@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { memo } from "react";
-import CustomSwiper from "../../Swiper";
-import Image from "next/image";
-import { useMeasure } from "@uidotdev/usehooks";
-import Card from "../../Card";
-import { data } from "./constants";
+import { memo } from 'react';
+import CustomSwiper from '../../Swiper';
+import Image from 'next/image';
+import { useMeasure } from '@uidotdev/usehooks';
+import Card from '../../Card';
+import { data } from './constants';
 
 const CategorySwiper = () => {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
@@ -24,7 +24,7 @@ const CategorySwiper = () => {
               <Card
                 wrapperClass={`cursor-pointer group shadow-md my-4 rounded-xl`}
                 bordered={false}
-                onClick={() => console.log("click")}
+                onClick={() => console.log('click')}
               >
                 <div className={`flex flex-col items-center justify-center`}>
                   <Image

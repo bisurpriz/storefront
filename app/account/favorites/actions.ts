@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { getClient, query } from "@/graphql/lib/client";
+import { getClient, query } from '@/graphql/lib/client';
 import {
   ADD_TO_FAVORITES,
   GET_USER_FAVORITES,
   REMOVE_FROM_FAVORITES,
-} from "@/graphql/queries/account/favorites";
+} from '@/graphql/queries/account/favorites';
 
 export const getUserFavorites = async <T>({ offset }: { offset: number }) => {
   const { data } = await query({
@@ -13,7 +13,7 @@ export const getUserFavorites = async <T>({ offset }: { offset: number }) => {
     variables: {
       offset,
     },
-    fetchPolicy: "no-cache",
+    fetchPolicy: 'no-cache',
   });
 
   return {

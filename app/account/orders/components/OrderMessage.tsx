@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { User } from "@/common/types/User/user";
-import Button from "@/components/Button";
-import Modal from "@/components/Modal";
-import Link from "next/link";
-import { useState } from "react";
-import { GrChatOption } from "react-icons/gr";
-import { startMessageForOrder } from "../actions";
-import { useRouter } from "next/navigation";
+import { User } from '@/common/types/User/user';
+import Button from '@/components/Button';
+import Modal from '@/components/Modal';
+import Link from 'next/link';
+import { useState } from 'react';
+import { GrChatOption } from 'react-icons/gr';
+import { startMessageForOrder } from '../actions';
+import { useRouter } from 'next/navigation';
 
 const OrderMessage = ({
   tenant,
@@ -17,7 +17,7 @@ const OrderMessage = ({
   orderTenantId: number;
 }) => {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
@@ -27,8 +27,9 @@ const OrderMessage = ({
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
-
-      nextRouter.push(`/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`);
+      nextRouter.push(
+        `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`
+      );
     }
     setOpen(false);
   };
@@ -60,9 +61,9 @@ const OrderMessage = ({
               {tenant.nickname}
             </Link>
             <span className="text-sm text-gray-500">
-              {" "}
+              {' '}
               satıcısı ile iletişime geçin
-            </span>{" "}
+            </span>{' '}
           </span>
         }
       >

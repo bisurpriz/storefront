@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useState, ChangeEvent } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import Button from "../Button";
+import Image from 'next/image';
+import { useState, ChangeEvent } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
+import Button from '../Button';
 
 interface ImageUploadProps {
   onChange: (file: File) => void;
@@ -40,7 +40,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div className="flex items-center justify-center gap-3 bg-gray-100 rounded-md">
       <label
         className={`flex items-center justify-center gap-3 bg-gray-100 rounded-md cursor-pointer p-4 ${
-          selectedImage ? "hidden" : ""
+          selectedImage ? 'hidden' : ''
         }`}
       >
         <input

@@ -1,7 +1,7 @@
-import type { OrderItemResponse } from "@/common/types/Order/order";
-import { IMAGE_URL } from "@/contants/urls";
-import Image from "next/image";
-import Link from "next/link";
+import type { OrderItemResponse } from '@/common/types/Order/order';
+import { IMAGE_URL } from '@/contants/urls';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const OrderItem = ({ order_items }: { order_items: OrderItemResponse[] }) => {
   return (
@@ -20,8 +20,8 @@ const OrderItem = ({ order_items }: { order_items: OrderItemResponse[] }) => {
             href={`/${oi?.product?.category?.slug}/${oi?.product?.slug}?pid=${oi.product_id}`}
             className="text-sm mt-1 block"
           >
-            {oi.product.name}{" "}
-            {oi.product.quantity > 1 ? `(${oi.product.quantity} adet)` : ""}
+            {oi.product.name}{' '}
+            {oi.product.quantity > 1 ? `(${oi.product.quantity} adet)` : ''}
           </Link>
         </div>
       ))}
