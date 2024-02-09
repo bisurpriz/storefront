@@ -7,6 +7,7 @@ import ProductInformation from '@/app/products/[slug]/components/Detail/ProductI
 import { getProductById } from '@/app/products/actions';
 import AccordionItem from '@/components/Accordion/AccordionItem';
 import { IMAGE_URL } from '@/contants/urls';
+import { createJSONLd } from '@/utils/createJSONLd';
 import { destructClaims } from '@/utils/getClaims';
 import { getSession } from '@auth0/nextjs-auth0';
 import { Metadata } from 'next';
@@ -16,10 +17,13 @@ export async function generateMetadata({ params, searchParams }) {
     id: Number(searchParams.pid),
   });
 
+
+
   return {
     title: data.product.name,
     description: data.product.description,
     image: data.product.image_url[0],
+    category: data.category.name,
   } as Metadata;
 }
 
@@ -27,14 +31,41 @@ export default async function ProductExample({
   searchParams,
   params,
 }: {
-  params: { slug: string };
+  params: {
+    'category-slug': string;
+    'product-slug': string;
+  };
   searchParams: {
     [key: string]: string | string[] | undefined;
   };
 }) {
+
+
   const productId = searchParams['pid'];
   const data = await getProductById({
     id: Number(productId),
+  });
+
+  const jsonld = createJSONLd({
+    data: {
+      name: data.product.name,
+      description: data.product.description,
+      image: `${IMAGE_URL}/${data.product.image_url[0]}`,
+      offers: {
+        '@type': 'Offer',
+        price: data.product.price,
+        priceCurrency: 'TRY',
+        availability: 'https://schema.org/InStock',
+        url: `https://www.bonnmarse.com/${params['category-slug']}/${params['product-slug']}?pid=${productId}`,
+      },
+      seller: {
+        '@type': 'Organization',
+        name: data.tenant.name,
+        url: `https://www.bonnmarse.com/vendor/${data.tenant.id}`,
+        rating: `${IMAGE_URL}/${data.tenant.rate}`,
+      }
+    },
+    type: 'Product',
   });
 
   const session = await getSession();
@@ -136,6 +167,10 @@ export default async function ProductExample({
             comment: cm.comment,
             user_image_url: cm.user.picture,
           }))}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
         />
       </section>
     </div>

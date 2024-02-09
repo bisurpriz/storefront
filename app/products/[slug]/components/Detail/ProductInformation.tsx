@@ -1,11 +1,10 @@
-import Rating from '../../../../../components/Rating/Rating';
-import Popover from '@/components/Popover';
-import RatingDetail from './RatingDetail';
-import { RatingProps } from './RatingDetail';
-import Link from 'next/link';
-import Promotions from './Promotions';
-import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
 import HourSelect from '@/components/DatePicker/HourSelect';
+import Popover from '@/components/Popover';
+import Link from 'next/link';
+import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
+import Rating from '../../../../../components/Rating/Rating';
+import Promotions from './Promotions';
+import RatingDetail, { RatingProps } from './RatingDetail';
 
 type ProductInformationProps = {
   name: string;
