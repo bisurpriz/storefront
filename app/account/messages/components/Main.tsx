@@ -1,24 +1,25 @@
-'use client';
-import { useState } from 'react';
-import ChatList from './ChatList';
-import Button from '@/components/Button';
-import { IoArrowBackCircleSharp } from 'react-icons/io5';
-import MessageList from './Message/MessageList';
-import Input from './Message/Input';
-import { sendMessage } from '../action';
-import { useClaims } from '@/hooks/useClaims';
-import useChatStore from '@/store';
-import useDelayUnmount from '@/hooks/useDelayUnmount';
+'use client'
+import { getUserFromCookies } from '@/app/actions'
+import { User } from '@/common/types/User/user'
+import Button from '@/components/Button'
+import useDelayUnmount from '@/hooks/useDelayUnmount'
+import useChatStore from '@/store'
+import { useState } from 'react'
+import { IoArrowBackCircleSharp } from 'react-icons/io5'
+import { sendMessage } from '../action'
+import ChatList from './ChatList'
+import Input from './Message/Input'
+import MessageList from './Message/MessageList'
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
-  const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId));
-  const [tenantIdState, setTenantIdState] = useState(tenantId);
-  const [text, setText] = useState('');
-  const { claims } = useClaims();
+  const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId))
+  const [tenantIdState, setTenantIdState] = useState(tenantId)
+  const [text, setText] = useState('')
+  const user = getUserFromCookies() as unknown as User
 
-  const shouldRenderChild = useDelayUnmount(isMessageOpen, 500);
+  const shouldRenderChild = useDelayUnmount(isMessageOpen, 500)
 
-  const { chats, addMessage } = useChatStore((state) => state);
+  const { chats, addMessage } = useChatStore((state) => state)
 
   const handleMessage = async () => {
     addMessage({
@@ -26,24 +27,24 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
       message: text,
       created_at: new Date().toISOString(),
       sender: {
-        id: claims.id,
+        id: user.id,
       },
       receiver: {
         id: tenantId,
       },
-    });
+    })
 
     // send to server
     sendMessage({
       message: text,
       receiver_id: tenantIdState,
       chat_thread_id: thread?.id,
-    });
+    })
 
-    setText('');
-  };
+    setText('')
+  }
 
-  const thread = chats?.find((item) => item.tenant.id === tenantIdState);
+  const thread = chats?.find((item) => item.tenant.id === tenantIdState)
 
   return (
     <>
@@ -51,13 +52,12 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
         <div
           className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${
             !isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
-          }`}
-        >
+          }`}>
           {
             <ChatList
               onMessageSelect={(tenantId) => {
-                setTenantIdState(tenantId);
-                setIsMessageOpen(!isMessageOpen);
+                setTenantIdState(tenantId)
+                setIsMessageOpen(!isMessageOpen)
               }}
               chats={chats}
             />
@@ -68,8 +68,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
           <div
             className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${
               isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
-            }`}
-          >
+            }`}>
             <div className="flex items-center">
               <Button
                 icon={<IoArrowBackCircleSharp />}
@@ -99,7 +98,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

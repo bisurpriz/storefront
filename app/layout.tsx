@@ -1,49 +1,48 @@
-import Content from '@/components/Layout/Content';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import type { Metadata } from 'next';
-import { Lato, Manrope, Quicksand } from 'next/font/google';
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
-import 'swiper/css/zoom';
-import Header from '../components/Layout/Header';
-import './globals.css';
+import Content from '@/components/Layout/Content'
+import type { Metadata } from 'next'
+import { Lato, Manrope, Quicksand } from 'next/font/google'
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/thumbs'
+import 'swiper/css/zoom'
+import Header from '../components/Layout/Header'
+import './globals.css'
 
-import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import '@smastrom/react-rating/style.css';
-import tr from 'date-fns/locale/tr';
-import setDefaultOptions from 'date-fns/setDefaultOptions';
-import 'react-datepicker/dist/react-datepicker.css';
-import Listener from './account/messages/components/Listener';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { CartProvider } from '@/contexts/CartContext';
+import { CartProvider } from '@/contexts/CartContext'
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
+import { GoogleAnalytics } from '@next/third-parties/google'
+import '@smastrom/react-rating/style.css'
+import tr from 'date-fns/locale/tr'
+import setDefaultOptions from 'date-fns/setDefaultOptions'
+import { ReactNode } from 'react'
+import 'react-datepicker/dist/react-datepicker.css'
+import Listener from './account/messages/components/Listener'
 
 setDefaultOptions({
   weekStartsOn: 1,
   firstWeekContainsDate: 1,
   locale: tr,
-});
+})
 
 const lato = Lato({
   subsets: ['latin'],
   weight: ['100', '300', '400', '700', '900'],
   variable: '--font-lato',
-});
+})
 
 const manrope = Manrope({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-manrope',
-});
+})
 
 const quickSand = Quicksand({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-quicksand',
-});
+})
 
 export const metadata: Metadata = {
   title: 'Bonnmarşe',
@@ -87,17 +86,19 @@ export const metadata: Metadata = {
     'çikolata çeşitleri fiyatları istanbul',
   ],
   robots: 'index, follow',
-};
-export const dynamic = 'force-dynamic';
+}
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({
   children,
+  auth,
 }: {
-  children: React.ReactNode;
+  children: ReactNode
+  auth: ReactNode
 }) {
   if (process.env.NODE_ENV === 'development') {
-    loadDevMessages();
-    loadErrorMessages();
+    loadDevMessages()
+    loadErrorMessages()
   }
 
   return (
@@ -106,18 +107,17 @@ export default async function RootLayout({
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
         font-manrope relative scroll-smooth overflow-hidden mb-10`}
-        id="root"
-      >
-        <SpeedInsights debug={process.env.NODE_ENV === 'development'} />
-        <UserProvider loginUrl={`/api/auth/login`} profileUrl={`/api/auth/me`}>
-          <CartProvider>
-            <Header />
-            <Content>{children}</Content>
-            <Listener />
-          </CartProvider>
-        </UserProvider>
+        id="root">
+        <CartProvider>
+          <Header />
+          <Content>
+            {children}
+            {auth}
+          </Content>
+          <Listener />
+        </CartProvider>
       </body>
       <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>
-  );
+  )
 }

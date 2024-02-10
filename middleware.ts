@@ -1,39 +1,8 @@
-import { getSession } from '@auth0/nextjs-auth0/edge';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { v4 as uuid } from 'uuid';
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const config = {
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
-  };
-  const hasUserId = request.cookies.has('user_id');
-  const hasFingerPrint = request.cookies.has('fingerPrint');
+  const response = NextResponse.next()
 
-  const session = await getSession();
-  const response = NextResponse.next();
-  if (session?.user) {
-    const userId =
-      session.user['https://hasura.io/jwt/claims']['x-hasura-user-id'];
-
-    if (!hasUserId) {
-      response.cookies.set('user_id', userId, config);
-    }
-
-    return response;
-  }
-
-  if (!session && !hasFingerPrint) {
-    const id = uuid();
-
-    response.cookies.set('fingerPrint', id, config);
-    return response;
-  }
-
-  if (hasUserId && hasFingerPrint) {
-    response.cookies.delete('fingerPrint');
-  }
-
-  return response;
+  return response
 }

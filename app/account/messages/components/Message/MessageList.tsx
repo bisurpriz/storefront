@@ -1,50 +1,49 @@
-'use client';
-import MessageItem from './MessageItem';
-import { useClaims } from '@/hooks/useClaims';
-import { localeFormat } from '@/utils/format';
-import { memo, useEffect, useRef } from 'react';
-import MessageItemSkeleton from './MessageItemSkeleton';
-import { markAsRead } from '../../action';
+'use client'
+import { getUserFromCookies } from '@/app/actions'
+import { User } from '@/common/types/User/user'
+import { localeFormat } from '@/utils/format'
+import { memo, useEffect, useRef } from 'react'
+import { markAsRead } from '../../action'
+import MessageItem from './MessageItem'
+import MessageItemSkeleton from './MessageItemSkeleton'
 
 const MessageList = ({
   messages,
   threadId,
 }: {
   messages: {
-    id: string;
-    message: string;
-    created_at: string;
+    id: string
+    message: string
+    created_at: string
     sender: {
-      id: string;
-      firstname: string;
-      lastname: string;
-      picture: string;
-    };
+      id: string
+      firstname: string
+      lastname: string
+      picture: string
+    }
     receiver: {
-      id: string;
-      firstname: string;
-      lastname: string;
-      picture: string;
-    };
-  }[];
-  threadId: string;
+      id: string
+      firstname: string
+      lastname: string
+      picture: string
+    }
+  }[]
+  threadId: string
 }) => {
-  const {
-    claims: { id },
-  } = useClaims();
+  const { id } = getUserFromCookies() as unknown as User
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
     if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
+      ref.current.scrollTop = ref.current.scrollHeight
     }
-  };
+  }
 
   useEffect(() => {
-    markAsRead(threadId);
-    scrollToBottom();
-  }, [messages]);
+    markAsRead(threadId)
+    scrollToBottom()
+  }, [messages])
 
   return (
     <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
@@ -69,7 +68,7 @@ const MessageList = ({
             />
           ))}
     </div>
-  );
-};
+  )
+}
 
-export default memo(MessageList);
+export default memo(MessageList)

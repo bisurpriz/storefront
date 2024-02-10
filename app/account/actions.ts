@@ -1,6 +1,12 @@
-'use server';
+'use server'
 
-import { mutate, query } from '@/graphql/lib/client';
+import {
+  CityResponse,
+  DistrictResponse,
+  QuarterResponse,
+} from '@/common/types/Addresses/addresses'
+import { User } from '@/common/types/User/user'
+import { mutate, query } from '@/graphql/lib/client'
 import {
   CREATE_NEW_ADDRESS,
   GET_CITIES,
@@ -9,74 +15,68 @@ import {
   GET_USER_ADDRESS_BY_ID,
   GET_USER_BY_ID,
   UPDATE_USER_BY_ID,
-} from '@/graphql/queries/account/account';
-import { readIdFromCookies } from '../actions';
-import {
-  CityResponse,
-  DistrictResponse,
-  QuarterResponse,
-} from '@/common/types/Addresses/addresses';
-import { User } from '@/common/types/User/user';
+} from '@/graphql/queries/account/account'
+import { readIdFromCookies } from '../actions'
 
 export const getQuarters = async (districtId: string) => {
   const { data, loading } = await query<{
-    quarters: QuarterResponse[];
+    quarters: QuarterResponse[]
   }>({
     query: GET_QUARTERS,
     variables: {
       districtId,
     },
-  });
+  })
 
-  const { quarters } = data;
+  const { quarters } = data
 
   return {
     quarters,
     loading,
-  };
-};
+  }
+}
 
 export const getDiscrits = async (cityId: string) => {
   const { data, loading } = await query<{
-    districts: DistrictResponse[];
+    districts: DistrictResponse[]
   }>({
     query: GET_DISTRICTS,
     variables: {
       cityId,
     },
-  });
+  })
 
-  const { districts } = data;
+  const { districts } = data
 
   return {
     districts,
     loading,
-  };
-};
+  }
+}
 
 export const getCities = async () => {
   const { data, loading } = await query<{
-    cities: CityResponse[];
+    cities: CityResponse[]
   }>({
     query: GET_CITIES,
-  });
+  })
 
-  const { cities } = data;
+  const { cities } = data
   return {
     cities,
     loading,
     error: null,
-  };
-};
+  }
+}
 
 export const getUserAddressById = async (id?: string) => {
-  const userId = id || (await readIdFromCookies());
+  const userId = id || (await readIdFromCookies())
 
   if (!userId) {
     return {
       userAddresses: [],
       loading: false,
-    };
+    }
   }
 
   const { data, loading } = await query({
@@ -84,36 +84,44 @@ export const getUserAddressById = async (id?: string) => {
     variables: {
       id: userId,
     },
-  });
+  })
 
   const {
     user_by_pk: { user_addresses },
-  } = data;
+  } = data
 
   return {
     userAddresses: user_addresses,
     loading,
     user_id: userId,
-  };
-};
+  }
+}
 
 export const getUserById = async (id?: string) => {
-  const userId = id || (await readIdFromCookies());
+  const userId = id || (await readIdFromCookies())
 
-  const { data, loading } = await query({
-    query: GET_USER_BY_ID,
-    variables: {
+  try {
+    const { data, loading } = await query({
+      query: GET_USER_BY_ID,
+      variables: {
+        id: userId,
+      },
+    })
+
+    const { user_by_pk: user } = data
+    return {
+      user: user ?? null,
+      loading,
       id: userId,
-    },
-  });
-
-  const { user_by_pk: user } = data;
-  return {
-    user,
-    loading,
-    id: userId,
-  };
-};
+    }
+  } catch (error) {
+    return {
+      user: null,
+      loading: false,
+      id: userId,
+    }
+  }
+}
 
 export const updateUserById = async (
   data: Partial<
@@ -127,7 +135,7 @@ export const updateUserById = async (
       | 'picture'
       | 'vkn_tckn'
     >
-  >
+  >,
 ) => {
   const { data: updatedData } = await mutate({
     mutation: UPDATE_USER_BY_ID,
@@ -144,24 +152,24 @@ export const updateUserById = async (
       ...data,
       id: data.id,
     },
-  });
+  })
 
-  const { update_user_by_pk: user } = updatedData;
+  const { update_user_by_pk: user } = updatedData
 
   return {
     user,
-  };
-};
+  }
+}
 
 export const createNewUserAddress = async (data: {
-  address: string;
-  city_id: string;
-  district_id: string;
-  quarter_id: string;
-  user_id: string;
-  receiver_firstname: string;
-  receiver_lastname: string;
-  receiver_phone: string;
+  address: string
+  city_id: string
+  district_id: string
+  quarter_id: string
+  user_id: string
+  receiver_firstname: string
+  receiver_lastname: string
+  receiver_phone: string
 }) => {
   const { data: updatedData } = await mutate({
     mutation: CREATE_NEW_ADDRESS,
@@ -178,11 +186,11 @@ export const createNewUserAddress = async (data: {
       ...data,
       id: data.user_id,
     },
-  });
+  })
 
-  const { update_user_by_pk: user } = updatedData;
+  const { update_user_by_pk: user } = updatedData
 
   return {
     user,
-  };
-};
+  }
+}
