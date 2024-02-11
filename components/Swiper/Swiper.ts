@@ -1,12 +1,12 @@
-import { SwiperProps } from "swiper/react";
-import { Swiper, SwiperOptions } from "swiper/types";
+import { SwiperProps } from 'swiper/react';
+import { Swiper, SwiperOptions } from 'swiper/types';
 
 export interface CustomSwiperProps extends SwiperProps {
   slideItems: SlideItem[];
   options?: SwiperOptions;
   onSlideChange?: (swiper: Swiper) => void;
   onSwpier?: (swiper: Swiper) => void;
-  direction?: "horizontal" | "vertical";
+  direction?: 'horizontal' | 'vertical';
   slidePerView?: number;
   spaceBetween?: number;
   navigation?: boolean;

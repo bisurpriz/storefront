@@ -1,8 +1,10 @@
-import { forwardRef } from "react";
+import { forwardRef } from 'react';
 
 export const NumberInputRoot = forwardRef(
   (
-    props: React.ComponentPropsWithoutRef<"div"> & { ownerState: any },
+    props: React.ComponentPropsWithoutRef<'div'> & {
+      ownerState: any;
+    },
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const { ownerState, ...other } = props;

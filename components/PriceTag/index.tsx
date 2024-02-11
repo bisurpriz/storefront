@@ -1,5 +1,6 @@
-import clsx from "clsx";
-import { memo, useMemo } from "react";
+import { getPriceTR } from '@/utils/getPriceTR';
+import clsx from 'clsx';
+import { memo, useMemo } from 'react';
 
 interface PriceTagProps {
   price: number;
@@ -7,7 +8,10 @@ interface PriceTagProps {
 }
 
 const getDiscountRate = (price: number, discount: number) => {
-  return discount ? Math.floor((discount / price) * 100) : 0;
+  // indirim oranı hesaplanır
+  const dif = price - discount;
+
+  return Math.round((dif * 100) / price);
 };
 
 const PriceTag = ({ price, discount }: PriceTagProps) => {
@@ -19,41 +23,41 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
   if (!discount)
     <span
       className={clsx([
-        "font-semibold leading-none text-xl text-green-500",
-        discount > 0 ? "" : "font-semibold",
+        'font-normal leading-none text-lg text-green-500',
+        discount > 0 ? '' : 'font-normal',
       ])}
     >
       {discount?.toFixed(2)} &#8378;
     </span>;
 
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex items-end gap-1">
       {discount > 0 && price && discountRate > 0 && (
-        <span className="text-sm text-white font-semibold p-1.5 bg-red-500 rounded-lg max-md:text-xs">
+        <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-lg max-md:text-xs">
           %{discountRate}
         </span>
       )}
-      <div className="flex gap-2 items-end max-sm:mb-0 max-md:text-xs">
+      <div className="flex gap-1 items-end max-sm:mb-0 max-md:text-xs">
         {discount > 0 && (
           <span
             className={clsx([
-              "font-semibold leading-none text-xl text-green-500 max-md:text-sm",
-              discount > 0 ? "" : "font-semibold",
+              'font-normal leading-none text-lg text-green-500 max-md:text-xs whitespace-nowrap',
+              discount > 0 ? '' : 'font-normal',
             ])}
           >
-            {discount?.toFixed(2)} &#8378;
+            {getPriceTR(discount)}
           </span>
         )}
         {price && (
           <span
             className={clsx([
-              "decoration-slate-500 self-end leading-none max-md:text-xs",
+              'decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap',
               discount > 0
-                ? "text-sm line-through"
-                : "text-xl font-semibold text-green-500",
+                ? 'text-xs line-through'
+                : 'text-lg font-normal text-green-500',
             ])}
           >
-            {price?.toFixed(2)} &#8378;
+            {getPriceTR(price)}
           </span>
         )}
       </div>

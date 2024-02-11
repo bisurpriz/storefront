@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const GET_USER_FAVORITES = gql`
   query getUserFavorites($offset: Int = 0) {

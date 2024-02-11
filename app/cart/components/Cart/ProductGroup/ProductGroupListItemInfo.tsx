@@ -1,20 +1,22 @@
-"use client";
+'use client';
 
-import { removeCartItemWithRedis } from "@/app/cart/actions";
-import { Product } from "@/common/types/Product/product";
-import Popover from "@/components/Popover";
-import React from "react";
-import toast from "react-hot-toast";
-import { AiOutlineClose } from "react-icons/ai";
-import { IoInformation } from "react-icons/io5";
+import { Product } from '@/common/types/Product/product';
+import Popover from '@/components/Popover';
+import { useCart } from '@/contexts/CartContext';
+import React from 'react';
+import toast from 'react-hot-toast';
+import { AiOutlineClose } from 'react-icons/ai';
+import { IoInformation } from 'react-icons/io5';
 
 const ProductGroupListItemInfo = ({
   id,
   customize,
 }: {
-  id: Product["id"];
-  customize: Product["product_customizable_areas"];
+  id: Product['id'];
+  customize: Product['product_customizable_areas'];
 }) => {
+  const { removeFromCart } = useCart();
+
   return (
     <span className="absolute top-2 right-2 flex gap-2 items-center">
       {customize?.length > 0 ? (
@@ -33,12 +35,13 @@ const ProductGroupListItemInfo = ({
         </Popover>
       ) : null}
       <AiOutlineClose
-        onClick={() => removeCartItemWithRedis(id).then(() => { 
-          toast("Ürün sepetten kaldırıldı.", {
-            icon: "🗑️",
-            position:'bottom-right'
+        onClick={() => {
+          removeFromCart(id);
+          toast('Ürün sepetten kaldırıldı.', {
+            icon: '🗑️',
+            position: 'bottom-right',
           });
-        })}
+        }}
         className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"
       />
     </span>

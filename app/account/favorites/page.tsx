@@ -1,21 +1,21 @@
-import ProductItem from "@/components/Product/Item";
-import { IMAGE_URL } from "@/contants/urls";
-import { getUserFavorites } from "./actions";
-import { Product } from "@/common/types/Product/product";
+import { Product } from '@/common/types/Product/product'
+import ProductItem from '@/components/Product/Item'
+import { IMAGE_URL } from '@/contants/urls'
+import { getUserFavorites } from './actions'
 
 interface FavoritesResponse {
   user_favorite: {
-    id: number;
-    product: Product;
-  }[];
-  totalCount: number;
+    id: number
+    product: Product
+  }[]
+  totalCount: number
 }
 
 const FavoritesPage = async () => {
   const { user_favorite, totalCount } =
     await getUserFavorites<FavoritesResponse>({
       offset: 0,
-    });
+    })
 
   return (
     <div>
@@ -29,7 +29,7 @@ const FavoritesPage = async () => {
             id={item.product.id}
             name={item.product.name}
             description={item.product.description}
-            image_url={IMAGE_URL + "/" + item.product.image_url?.[0]}
+            image_url={IMAGE_URL + '/' + item.product.image_url?.[0]}
             price={item.product.price}
             isFavorite={true}
             category={item.product.category}
@@ -37,7 +37,7 @@ const FavoritesPage = async () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FavoritesPage;
+export default FavoritesPage

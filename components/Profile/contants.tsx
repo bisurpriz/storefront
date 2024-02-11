@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from 'next/link';
+import LogoutButton from '../LogoutButton';
 
 export const profileItems = [
   {
@@ -10,8 +11,8 @@ export const profileItems = [
         Siparişlerim
       </Link>
     ),
-    value: "siparislerim",
-    searchValue: "Siparişlerim",
+    value: 'siparislerim',
+    searchValue: 'Siparişlerim',
   },
   {
     label: (
@@ -22,8 +23,8 @@ export const profileItems = [
         Kuponlarım
       </Link>
     ),
-    value: "kuponlarim",
-    searchValue: "Kuponlarım",
+    value: 'kuponlarim',
+    searchValue: 'Kuponlarım',
   },
   {
     label: (
@@ -34,8 +35,8 @@ export const profileItems = [
         Değerlendirmelerim
       </Link>
     ),
-    value: "degerlendirmelerim",
-    searchValue: "Değerlendirmelerim",
+    value: 'degerlendirmelerim',
+    searchValue: 'Değerlendirmelerim',
   },
   {
     label: (
@@ -46,8 +47,8 @@ export const profileItems = [
         Favorilerim
       </Link>
     ),
-    value: "favorilerim",
-    searchValue: "Favorilerim",
+    value: 'favorilerim',
+    searchValue: 'Favorilerim',
   },
   {
     label: (
@@ -58,19 +59,14 @@ export const profileItems = [
         Üyelik Bilgilerim
       </Link>
     ),
-    value: "hesabim",
-    searchValue: "Üyelik Bilgilerim",
+    value: 'hesabim',
+    searchValue: 'Üyelik Bilgilerim',
   },
   {
     label: (
-      <Link
-        href="/api/auth/logout"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Çıkış Yap
-      </Link>
+      <LogoutButton />
     ),
-    value: "cikis",
-    searchValue: "Çıkış Yap",
+    value: 'cikis',
+    searchValue: 'Çıkış Yap',
   },
 ];

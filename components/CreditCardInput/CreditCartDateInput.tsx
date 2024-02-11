@@ -1,16 +1,16 @@
-import { useState } from "react";
-import TextField from "../TextField";
+import { useState } from 'react';
+import TextField from '../TextField';
 
 const CreditCardDateInput = ({
   onChange,
   ...props
 }: Partial<TextFieldProps>) => {
-  const [expiryDate, setExpiryDate] = useState("");
+  const [expiryDate, setExpiryDate] = useState('');
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, "");
+    const inputValue = e.target.value.replace(/\D/g, '');
 
-    const formattedDate = inputValue.replace(/^(\d{2})/, "$1/").slice(0, 5);
+    const formattedDate = inputValue.replace(/^(\d{2})/, '$1/').slice(0, 5);
 
     if (onChange) {
       setExpiryDate(formattedDate);

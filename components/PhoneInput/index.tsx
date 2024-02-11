@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ChangeEvent, FC, useEffect, useState } from "react";
-import TextField from "../TextField";
+import { ChangeEvent, FC, useEffect, useState } from 'react';
+import TextField from '../TextField';
 
 interface PhoneInputProps {
   value?: string;
@@ -24,15 +24,17 @@ const PhoneInput: FC<PhoneInputProps> = ({
   errorMessage,
   error: hasError,
 }) => {
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [error, setError] = useState<string>(errorMessage || "");
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [error, setError] = useState<string>(errorMessage || '');
 
   useEffect(() => {
     if (value) {
-      if (value.startsWith("+90")) {
-        value = value.replace("+90", "").trim();
+      if (value.startsWith('+90')) {
+        value = value.replace('+90', '').trim();
       }
-      handleChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
+      handleChange({
+        target: { value },
+      } as ChangeEvent<HTMLInputElement>);
     }
   }, [value]);
 
@@ -40,7 +42,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
     let inputPhoneNumber = event.target.value;
 
     // Sadece sayıları al
-    inputPhoneNumber = inputPhoneNumber.replace(/\D/g, "");
+    inputPhoneNumber = inputPhoneNumber.replace(/\D/g, '');
 
     // Telefon numarasını formatla (XXX) XXX-XXXX
 
@@ -54,7 +56,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
     } else if (inputPhoneNumber.length === 0) {
       setError(null);
     } else {
-      setError("Lütfen geçerli bir telefon numarası giriniz.");
+      setError('Lütfen geçerli bir telefon numarası giriniz.');
     }
 
     if (match) {
@@ -79,14 +81,14 @@ const PhoneInput: FC<PhoneInputProps> = ({
       setPhoneNumber(formattedNumber);
       onChange && onChange(formattedNumber, match.input);
     } else {
-      setPhoneNumber("");
+      setPhoneNumber('');
     }
   };
 
   return (
     <TextField
       type="text"
-      placeholder={placeholder ?? "(555) 555-5555"}
+      placeholder={placeholder ?? '(555) 555-5555'}
       value={phoneNumber}
       onChange={handleChange}
       label={label}

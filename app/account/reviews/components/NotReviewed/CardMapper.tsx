@@ -1,8 +1,12 @@
-"use client";
-import { OrderItemWithReview } from "@/common/types/Order/order";
-import NotReviewedCard from "./NotReviewedCard";
+'use client';
+import { OrderItemWithReview } from '@/common/types/Order/order';
+import NotReviewedCard from './NotReviewedCard';
 
-const NotReviewedCardMapper = ({ result }: { result: OrderItemWithReview[] }) =>
+const NotReviewedCardMapper = ({
+  result,
+}: {
+  result: OrderItemWithReview[];
+}) =>
   result.length > 0 ? (
     result?.map((item) => (
       <NotReviewedCard

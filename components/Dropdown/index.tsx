@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useClassname } from "../../hooks/useClassname";
-import { useClickAway } from "@uidotdev/usehooks";
-import clsx from "clsx";
-import { Children, ReactElement, cloneElement, memo, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import { useClassname } from '../../hooks/useClassname';
+import { useClickAway } from '@uidotdev/usehooks';
+import clsx from 'clsx';
+import { Children, ReactElement, cloneElement, memo, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
   value,
   onChange,
-  dropdownPlacement = "topLeft",
+  dropdownPlacement = 'topLeft',
   isSearchable = false,
   label,
   noOptionsMessage,
   fullWidth = false,
   loading = false,
-  className = "",
+  className = '',
   children,
   id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
     options?.find((option) => option.value === value) || null
   );
@@ -32,39 +32,29 @@ const Dropdown: React.FC<DropdownProps> = ({
     setSelectedOption(option);
     onChange?.(option.value, option);
     setIsOpen(false);
-    setSearchValue("");
+    setSearchValue('');
   };
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setIsOpen(false);
-    setSearchValue("");
+    setSearchValue('');
   });
-
-  const placementClases = {
-    // kapsayıcının sol altına yaslanmalı
-    bottomLeft: "-bottom-2 left-0 transform translate-y-full",
-    // kapsayıcının sağ altına yaslanmalı
-    bottomRight: "-bottom-2 right-0 transform translate-y-full",
-    // açılan  kısım yukarı doğru açılmalı
-    topLeft: "top-0 left-0 transform translate-x-0 -translate-y-full",
-    // açılan  kısım yukarı doğru açılmalı
-    topRight: "top-0 right-0 transform translate-x-0 -translate-y-full",
-  };
 
   const child = children ? (Children.only(children) as ReactElement) : null;
 
   const childTrigger = child
     ? cloneElement(child!, {
         onClick: () => setIsOpen(!isOpen),
-        key: "dropdown-trigger",
+        key: 'dropdown-trigger',
       })
     : null;
 
   return (
     <div
       className={`relative whitespace-nowrap flex items-center ${className} ${
-        fullWidth ? "w-full" : ""
+        fullWidth ? 'w-full' : ''
       }`}
+      ref={ref}
     >
       <input type="hidden" value={selectedOption?.value} id={id} name={id} />
 
@@ -77,9 +67,9 @@ const Dropdown: React.FC<DropdownProps> = ({
             setIsOpen(!isOpen);
           }}
           onFocus={(e) =>
-            toggleClass("border-primary", e.target as HTMLElement)
+            toggleClass('border-primary', e.target as HTMLElement)
           }
-          onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}
+          onBlur={(e) => toggleClass('border-primary', e.target as HTMLElement)}
         >
           {loading && (
             <svg
@@ -121,111 +111,110 @@ const Dropdown: React.FC<DropdownProps> = ({
       ) : (
         childTrigger
       )}
-      <CSSTransition
-        unmountOnExit
-        in={isOpen}
-        mountOnEnter
-        classNames={{
-          enter: "h-0 opacity-0",
-          enterActive: "h-auto opacity-100 transition-all duration-500",
-          enterDone: "h-auto opacity-100",
-          exit: "h-auto opacity-100",
-          exitActive: "h-0 opacity-0 transition-all duration-500",
-          exitDone: "h-0 opacity-0",
+      <motion.div
+        initial={false}
+        animate={isOpen ? 'open' : 'closed'}
+        variants={{
+          closed: {
+            scale: 0,
+            transition: {
+              delay: 0.15,
+            },
+          },
+          open: {
+            scale: 1,
+            transition: {
+              type: 'spring',
+              duration: 0.4,
+            },
+          },
         }}
-        timeout={100}
-        nodeRef={ref}
+        className={clsx(
+          'absolute z-10 rounded-sm shadow-lg bg-white focus:outline-none left-0 mt-2 top-full',
+          {
+            'w-full': fullWidth,
+          }
+        )}
       >
         <div
-          ref={ref}
-          className={clsx(
-            "absolute z-10 bg-white shadow-lg rounded-sm overflow-hidden",
-            placementClases[dropdownPlacement],
-            {
-              "w-full": fullWidth,
-            }
-          )}
+          className="py-1"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="options-menu"
         >
-          <div
-            className="py-1"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="options-menu"
-          >
-            {isSearchable && (
-              <div className="relative">
-                <input
-                  type="text"
-                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none"
-                  placeholder="Arama yapın"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    x-description="Heroicon name: solid/search"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      x-description="Search icon"
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M9 3a6 6 0 100 12 6 6 0 000-12zM7.707 9.293a1 1 0 00-1.414-1.414l-2 2a1 1 0 101.414 1.414l2-2z"
-                    />
-                  </svg>
-                </div>
+          {isSearchable && (
+            <div className="relative">
+              <input
+                type="text"
+                className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none"
+                placeholder="Arama yapın"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  x-description="Heroicon name: solid/search"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    x-description="Search icon"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M9 3a6 6 0 100 12 6 6 0 000-12zM7.707 9.293a1 1 0 00-1.414-1.414l-2 2a1 1 0 101.414 1.414l2-2z"
+                  />
+                </svg>
               </div>
-            )}
-            {options?.filter((option) =>
-              typeof option.label === "string"
-                ? option.label.toLowerCase().includes(searchValue.toLowerCase())
-                : option
-                    .searchValue!.toLowerCase()
-                    .includes(searchValue.toLowerCase())
-            ).length > 0 ? (
-              options
-                ?.filter((option) =>
-                  typeof option.label === "string"
-                    ? option.label
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase())
-                    : option
-                        .searchValue!.toLowerCase()
-                        .includes(searchValue.toLowerCase())
+            </div>
+          )}
+          {options?.filter((option) =>
+            typeof option.label === 'string'
+              ? option.label.toLowerCase().includes(searchValue.toLowerCase())
+              : option
+                  .searchValue!.toLowerCase()
+                  .includes(searchValue.toLowerCase())
+          ).length > 0 ? (
+            options
+              ?.filter((option) =>
+                typeof option.label === 'string'
+                  ? option.label
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase())
+                  : option
+                      .searchValue!.toLowerCase()
+                      .includes(searchValue.toLowerCase())
+              )
+              .map((option) =>
+                typeof option.label === 'string' ? (
+                  <button
+                    type="button"
+                    key={option.value}
+                    className={`${
+                      option.value === value
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-700'
+                    } block px-4 py-2 text-sm w-full text-left`}
+                    role="menuitem"
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option.label}
+                  </button>
+                ) : (
+                  <div role="menuitem" key={option.value}>
+                    {option.label}
+                  </div>
                 )
-                .map((option) =>
-                  typeof option.label === "string" ? (
-                    <button
-                      type="button"
-                      key={option.value}
-                      className={`${
-                        option.value === value
-                          ? "bg-gray-100 text-gray-900"
-                          : "text-gray-700"
-                      } block px-4 py-2 text-sm w-full text-left`}
-                      role="menuitem"
-                      onClick={() => handleOptionClick(option)}
-                    >
-                      {option.label}
-                    </button>
-                  ) : (
-                    <div role="menuitem" key={option.value}>
-                      {option.label}
-                    </div>
-                  )
-                )
-            ) : (
-              <p className="block px-4 py-2 text-sm text-gray-700">
-                {noOptionsMessage || "Arama sonucu bulunamadı"}
-              </p>
-            )}
-          </div>
+              )
+          ) : (
+            <p className="block px-4 py-2 text-sm text-gray-700">
+              {noOptionsMessage || 'Arama sonucu bulunamadı'}
+            </p>
+          )}
         </div>
-      </CSSTransition>
+      </motion.div>
     </div>
   );
 };

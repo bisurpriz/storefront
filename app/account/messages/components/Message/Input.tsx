@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
-import TextField from "@/components/TextField";
-import { IoSend } from "react-icons/io5";
+import Button from '@/components/Button';
+import TextField from '@/components/TextField';
+import { IoSend } from 'react-icons/io5';
 
 const Input = ({
   onMessageSend,
@@ -19,7 +19,7 @@ const Input = ({
           onChange={(e, value) => onChange(e)}
           placeholder="Mesajınızı yazın..."
           onKeyDown={(event) => {
-            if (event.key === "Enter" && !!value) {
+            if (event.key === 'Enter' && !!value) {
               onMessageSend();
             }
           }}

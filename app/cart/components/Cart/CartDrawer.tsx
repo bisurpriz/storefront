@@ -1,10 +1,10 @@
-import Button from "@/components/Button";
-import Drawer from "@/components/Drawer";
-import TextField from "@/components/TextField";
-import { useState } from "react";
+import Button from '@/components/Button';
+import Drawer from '@/components/Drawer';
+import TextField from '@/components/TextField';
+import { useState } from 'react';
 
-import { IoTicketOutline } from "react-icons/io5";
-import { MdKeyboardArrowUp } from "react-icons/md";
+import { IoTicketOutline } from 'react-icons/io5';
+import { MdKeyboardArrowUp } from 'react-icons/md';
 
 interface CartDrawerProps {
   totalPrice: number;
@@ -60,7 +60,7 @@ const CartDrawer = ({
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
                   <span className="font-semibold">
-                    {totalDiscount.toFixed(2)} ₺{" "}
+                    {totalDiscount.toFixed(2)} ₺{' '}
                   </span>
                 </div>
               </>

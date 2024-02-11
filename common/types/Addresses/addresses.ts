@@ -1,8 +1,8 @@
 export interface Address {
   id: number;
-  city_id: City["id"];
-  district_id: District["id"];
-  quarter_id: Quarter["id"];
+  city_id: City['id'];
+  district_id: District['id'];
+  quarter_id: Quarter['id'];
   address: string;
   address_title: string;
 }
@@ -24,8 +24,8 @@ export interface LocationCommonTypes {
   maxlatitude: string;
 }
 
-export type CityResponse = Pick<City, "id" | "name" | "code">;
+export type CityResponse = Pick<City, 'id' | 'name' | 'code'>;
 
-export type DistrictResponse = Pick<District, "id" | "name">;
+export type DistrictResponse = Pick<District, 'id' | 'name'>;
 
-export type QuarterResponse = Pick<Quarter, "id" | "name">;
+export type QuarterResponse = Pick<Quarter, 'id' | 'name'>;

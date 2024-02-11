@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_TENANT_ORDER_ITEM = gql`
   query getSingleTenantOrderItem($id: bigint!) {

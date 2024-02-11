@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_USER_ADDRESS_BY_ID = gql`
   query getUserAddressById($id: uuid = "") {
@@ -37,7 +37,6 @@ export const GET_USER_BY_ID = gql`
       picture
       phone
       reference_code
-      vkn_tckn
       user_addresses {
         address_title
         address

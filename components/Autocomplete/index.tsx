@@ -1,9 +1,9 @@
-import * as React from "react";
-import { useAutocomplete } from "@mui/base/useAutocomplete";
-import { MdClear } from "react-icons/md";
-import { BsChevronDown } from "react-icons/bs";
+import * as React from 'react';
+import { useAutocomplete } from '@mui/base/useAutocomplete';
+import { MdClear } from 'react-icons/md';
+import { BsChevronDown } from 'react-icons/bs';
 
-export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
+export type AutoCompleteOption = Pick<DropdownOption, 'label' | 'value'>;
 
 export interface AutoCompleteProps {
   options: AutoCompleteOption[];
@@ -40,7 +40,7 @@ export default function AutoComplete({
   disabled,
   readOnly,
   disableCloseOnSelect,
-  autoComplete = "off",
+  autoComplete = 'off',
   error,
   errorMessage,
 }: AutoCompleteProps) {
@@ -74,20 +74,20 @@ export default function AutoComplete({
   const hasClearIcon = !disabled && dirty && !readOnly;
 
   const hasErrorClass = error
-    ? "border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500"
-    : "";
+    ? 'border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500'
+    : '';
 
   return (
     <div className="relative">
       <label
         className={`text-sm font-medium text-gray-700 flex flex-col gap-1 
-      ${error ? "text-red-500" : ""}
+      ${error ? 'text-red-500' : ''}
       `}
       >
         {label ? <p>{label}</p> : null}
         <div
           {...getRootProps()}
-          className={` ${focused ? "ring-1 ring-primary" : ""} 
+          className={` ${focused ? 'ring-1 ring-primary' : ''} 
             rounded-md
             bg-white 
             border 
@@ -122,7 +122,7 @@ export default function AutoComplete({
             px-3 py-2
             outline-none
             flex-1
-            ${className ?? ""}`}
+            ${className ?? ''}`}
             placeholder={placeholder}
             aria-label={label}
             autoComplete={autoComplete}
@@ -141,10 +141,10 @@ export default function AutoComplete({
 
           <button
             {...getPopupIndicatorProps()}
-            className={`${popupOpen ? "rotate-180" : ""}
+            className={`${popupOpen ? 'rotate-180' : ''}
             flex items-center justify-center mr-2 p-1 text-gray-500 hover:text-gray-700 rounded-lg
             transition-transform duration-200 shadow-sm hover:bg-gray-50
-            ${error ? "text-red-500 hover:text-red-700" : ""}
+            ${error ? 'text-red-500 hover:text-red-700' : ''}
           `}
           >
             <BsChevronDown />
@@ -187,7 +187,7 @@ export default function AutoComplete({
               my-1
               rounded-sm
               cursor-pointer
-              ${index === groupedOptions.length - 1 ? "border-b-0" : ""}
+              ${index === groupedOptions.length - 1 ? 'border-b-0' : ''}
               hover:bg-primary-light hover:text-white
               aria-selected:bg-primary aria-selected:text-white
               `}

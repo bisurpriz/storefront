@@ -1,18 +1,16 @@
-import Button from "../Button";
-import Image from "next/image";
-import Dropdown from "../Dropdown";
-import { profileItems } from "./contants";
-import Link from "next/link";
-import { getSession } from "@auth0/nextjs-auth0";
+import { getUserById } from '@/app/account/actions'
+import Image from 'next/image'
+import Link from 'next/link'
+import Button from '../Button'
+import Dropdown from '../Dropdown'
+import { profileItems } from './contants'
 
 const HeaderProfile = async () => {
-  const session = await getSession();
-
-  const user = session?.user;
+  const { user } = await getUserById()
 
   return !user ? (
     <div className="flex items-center justify-end ml-2">
-      <Link href="/api/auth/login">
+      <Link href="/login">
         <Button type="button" size="small" label="Giriş Yap" />
       </Link>
     </div>
@@ -21,11 +19,10 @@ const HeaderProfile = async () => {
       <Dropdown
         dropdownPlacement="bottomRight"
         options={profileItems}
-        className="cursor-pointer"
-      >
+        className="cursor-pointer">
         <div className="flex items-center gap-2">
           <Image
-            src={user?.picture || ""}
+            src={user?.picture || '/avatar.png'}
             width={30}
             height={30}
             alt="User Picture"
@@ -33,12 +30,12 @@ const HeaderProfile = async () => {
             loading="lazy"
           />
           <span className="text-sm font-normal text-slate-500 max-lg:hidden">
-            {user?.name}
+            {user?.firstname + ' ' + user?.lastname}
           </span>
         </div>
       </Dropdown>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderProfile;
+export default HeaderProfile

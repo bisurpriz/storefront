@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useInput } from "@mui/base/useInput";
-import { forwardRef } from "react";
+import clsx from 'clsx';
+import { useInput } from '@mui/base/useInput';
+import { forwardRef } from 'react';
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
@@ -21,9 +21,9 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       value,
       className,
       fullWidth,
-      autoComplete = "off",
+      autoComplete = 'off',
       id,
-      type = "text",
+      type = 'text',
       icon,
       onKeyDown,
       ...rest
@@ -53,26 +53,26 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     });
 
     const isErrorClasses = isError
-      ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
-      : "";
+      ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
+      : '';
 
     const focusedClasses = focused
-      ? "focus-within:ring-1 focus-within:ring-primary focus-visible:outline-none"
-      : "";
+      ? 'focus-within:ring-1 focus-within:ring-primary focus-visible:outline-none'
+      : '';
 
     const disabledClasses = isDisabled
-      ? "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed"
-      : "";
+      ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
+      : '';
 
-    const fullWidthClasses = fullWidth ? "w-full" : "";
+    const fullWidthClasses = fullWidth ? 'w-full' : '';
 
-    const hasIconClasses = icon ? "pl-10" : "";
+    const hasIconClasses = icon ? 'pl-10' : '';
 
     return (
       <label
         {...getRootProps()}
         className={`${fullWidthClasses} flex flex-col gap-1 text-sm font-medium text-gray-700 relative
-          ${isError && "text-red-500"}
+          ${isError && 'text-red-500'}
           `}
       >
         {label ?? null}
@@ -94,7 +94,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           placeholder={placeholder}
           value={value as string}
           className={clsx(
-            "w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200 ",
+            'w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200 ',
             className,
             focusedClasses,
             disabledClasses,

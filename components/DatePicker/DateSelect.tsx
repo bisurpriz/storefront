@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { forwardRef, useState } from "react";
-import Button from "../Button";
-import { BsCalendar } from "react-icons/bs";
-import ReactDatePicker from "react-datepicker";
-import { add } from "date-fns";
-import { localeFormat } from "@/utils/format";
-import { tr } from "date-fns/locale";
+import { forwardRef, useState } from 'react';
+import Button from '../Button';
+import { BsCalendar } from 'react-icons/bs';
+import ReactDatePicker from 'react-datepicker';
+import { add } from 'date-fns';
+import { localeFormat } from '@/utils/format';
+import { tr } from 'date-fns/locale';
 
 type Props = {
   selectedDay: Date | null;
@@ -33,30 +33,30 @@ const CustomButton = forwardRef(
     return (
       <div ref={isSelectCalendar ? ref : null} {...props}>
         <Button
-          className='!p-2 flex items-center justify-center'
+          className="!p-2 flex items-center justify-center"
           fullWidth
           variant={
-            isSelectCalendar || selectedDay === null ? "fullfilled" : "outlined"
+            isSelectCalendar || selectedDay === null ? 'fullfilled' : 'outlined'
           }
           onClick={() => {
             handleSelect(null);
           }}
         >
-          <span className='min-h-[50px] flex items-center justify-center flex-col'>
+          <span className="min-h-[50px] flex items-center justify-center flex-col">
             {!isSelectCalendar ? (
               <>
-                <BsCalendar className='text-lg font-medium' />
-                <p className='text-sm font-normal mt-1'>Takvim</p>
+                <BsCalendar className="text-lg font-medium" />
+                <p className="text-sm font-normal mt-1">Takvim</p>
               </>
             ) : (
               <p className="text-sm font-medium">
                 {isSelectCalendar ? (
                   <span className="flex flex-wrap justify-center">
-                    <span>{localeFormat(isSelectCalendar, "d MMMM")}</span>{" "}
-                    <span>{localeFormat(isSelectCalendar, "HH:mm")}</span>
+                    <span>{localeFormat(isSelectCalendar, 'd MMMM')}</span>{' '}
+                    <span>{localeFormat(isSelectCalendar, 'HH:mm')}</span>
                   </span>
                 ) : (
-                  "Tarih seçiniz"
+                  'Tarih seçiniz'
                 )}
               </p>
             )}
@@ -72,15 +72,15 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
 
   return (
     <ReactDatePicker
-      className='relative'
+      className="relative"
       selected={selectedDate}
       onChange={(date) => {
         setSelectedDate(date);
         handleSelect(date);
       }}
-      timeFormat='p'
+      timeFormat="p"
       includeTimes={deliveryTimes.map((time) => {
-        const [hour, minute] = time.split(":");
+        const [hour, minute] = time.split(':');
         return add(new Date(), {
           hours: Number(hour),
           minutes: Number(minute),
@@ -101,16 +101,16 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
       }
       renderDayContents={(day, date) => {
         return (
-          <div className='text-center text-sm p-2'>
-            <p className='text-sm font-medium'>{localeFormat(date, "d")}</p>
-            <p className='text-sm font-normal'>
-              {localeFormat(date, "EEEE").slice(0, 3)}
+          <div className="text-center text-sm p-2">
+            <p className="text-sm font-medium">{localeFormat(date, 'd')}</p>
+            <p className="text-sm font-normal">
+              {localeFormat(date, 'EEEE').slice(0, 3)}
             </p>
           </div>
         );
       }}
     >
-      <p className='text-xs font-normal text-center'>
+      <p className="text-xs font-normal text-center">
         Sipariş teslim tarihi 7 gün sonrasına kadar seçilebilir.
       </p>
     </ReactDatePicker>

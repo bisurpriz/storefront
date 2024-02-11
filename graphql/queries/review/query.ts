@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const GET_ORDERS_WITH_REVIEW = gql`
   query getOrdersWithReviews($user_id: uuid!) {

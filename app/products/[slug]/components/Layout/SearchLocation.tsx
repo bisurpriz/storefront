@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import Dropdown from "@/components/Dropdown";
-import { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import { GoLocation } from "react-icons/go";
+import Dropdown from '@/components/Dropdown';
+import { useState } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
+import { GoLocation } from 'react-icons/go';
 
 type Props = {
   className?: string;
 };
 
-const SearchLocation = ({ className = "" }: Props) => {
+const SearchLocation = ({ className = '' }: Props) => {
   const [location, setLocation] = useState<{
     label: string | number;
     value: string | number;
   } | null>(null);
 
   const isSelectedLocationButtonClass = location
-    ? "bg-primary text-white hover:bg-primary-light focus:bg-primary-light"
-    : "";
+    ? 'bg-primary text-white hover:bg-primary-light focus:bg-primary-light'
+    : '';
 
   return (
     <Dropdown
       options={[
         {
-          label: "Ankara",
-          value: "ankara",
+          label: 'Ankara',
+          value: 'ankara',
         },
       ]}
       dropdownPlacement="bottomLeft"

@@ -2,9 +2,9 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/WALd6mN4Lpq
  */
-import Link from "next/link";
-import Image from "next/image";
-import Button from "@/components/Button";
+import Link from 'next/link';
+import Image from 'next/image';
+import Button from '@/components/Button';
 
 export default function ProductItem2() {
   return (
@@ -18,8 +18,8 @@ export default function ProductItem2() {
         height={300}
         src="/placeholder.svg"
         style={{
-          aspectRatio: "400/300",
-          objectFit: "cover",
+          aspectRatio: '400/300',
+          objectFit: 'cover',
         }}
         width={400}
       />

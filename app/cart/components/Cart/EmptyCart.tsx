@@ -1,7 +1,7 @@
-import Button from "@/components/Button";
-import Link from "next/link";
-import { memo } from "react";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import Button from '@/components/Button';
+import Link from 'next/link';
+import { memo } from 'react';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 const EmptyCart = () => {
   return (

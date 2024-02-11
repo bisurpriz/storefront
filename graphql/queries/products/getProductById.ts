@@ -1,7 +1,7 @@
-import { Category } from "@/common/types/Category/category";
-import { Product } from "@/common/types/Product/product";
-import { User } from "@/common/types/User/user";
-import { gql } from "@apollo/client";
+import { Category } from '@/common/types/Category/category';
+import { Product } from '@/common/types/Product/product';
+import { User } from '@/common/types/User/user';
+import { gql } from '@apollo/client';
 
 export const GET_PRODUCT_BY_ID = gql`
   query getProductById($id: bigint = 0) {
@@ -71,18 +71,18 @@ export const GET_PRODUCT_BY_ID = gql`
 export interface ProductForCartResponse {
   product: Pick<
     Product,
-    | "id"
-    | "name"
-    | "image_url"
-    | "price"
-    | "product_customizable_areas"
-    | "discount_price"
-    | "description"
+    | 'id'
+    | 'name'
+    | 'image_url'
+    | 'price'
+    | 'product_customizable_areas'
+    | 'discount_price'
+    | 'description'
   > & {
-    category: Pick<Category, "name">;
-    tenant: Pick<User, "id" | "nickname">;
+    category: Pick<Category, 'name'>;
+    tenant: Pick<User, 'id' | 'nickname'>;
   };
-  category: Pick<Category, "name">;
+  category: Pick<Category, 'name'>;
 }
 
 export const GET_PRODUCT_FOR_CART = gql`
@@ -115,7 +115,7 @@ export const GET_PRODUCT_FOR_CART = gql`
 `;
 
 export interface ProductPricesResponse {
-  product: Pick<Product, "id" | "price" | "discount_price">;
+  product: Pick<Product, 'id' | 'price' | 'discount_price'>;
 }
 
 export const GET_PRODUCTS_PRICE_BY_IDS = gql`

@@ -1,22 +1,22 @@
-import Link from "next/link";
-import { Suspense } from "react";
+import Link from 'next/link';
+import { Suspense } from 'react';
 
 const headerTopLeftMenu = [
   {
-    label: "Hakkımızda",
-    link: "about-us",
+    label: 'Hakkımızda',
+    link: 'about-us',
   },
   {
-    label: "Hesabım",
-    link: "my-account",
+    label: 'Hesabım',
+    link: 'my-account',
   },
   {
-    label: "İletişim",
-    link: "contact-us",
+    label: 'İletişim',
+    link: 'contact-us',
   },
   {
-    label: "Sipariş Takibi",
-    link: "order-tracking",
+    label: 'Sipariş Takibi',
+    link: 'order-tracking',
   },
 ];
 

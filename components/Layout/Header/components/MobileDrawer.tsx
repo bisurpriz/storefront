@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Category } from "@/common/types/Category/category";
-import Button from "@/components/Button";
-import Drawer from "@/components/Drawer";
-import MobileMenu from "@/components/Menu/MobileMenu";
-import { useState } from "react";
-import { MdMenu } from "react-icons/md";
+import { Category } from '@/common/types/Category/category';
+import Button from '@/components/Button';
+import Drawer from '@/components/Drawer';
+import MobileMenu from '@/components/Menu/MobileMenu';
+import { useState } from 'react';
+import { MdMenu } from 'react-icons/md';
 
 const MobileDrawer = ({
   categories,
@@ -23,7 +23,7 @@ const MobileDrawer = ({
         variant="outlined"
         size="small"
         iconSize={24}
-        className="max-sm:p-1"
+        className="max-sm:p-1 px-0 py-0"
         onClick={() => setIsOpen(true)}
       />
       <Drawer

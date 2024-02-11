@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
-import Link from "next/link";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import Button from '@/components/Button';
+import Link from 'next/link';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const CartHomePageButton = () => {
   return (

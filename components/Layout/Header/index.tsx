@@ -1,10 +1,8 @@
-import HeaderTop from "./Top";
-import HeaderMiddle from "./Middle";
-import HeaderBottom from "./Bottom";
-import { query } from "@/graphql/lib/client";
-import { GET_ALL_CATEGORIES } from "@/graphql/queries/categories/getCategories";
-import Divider from "@/components/Divider";
-import { memo } from "react";
+import HeaderMiddle from './Middle';
+import HeaderBottom from './Bottom';
+import { query } from '@/graphql/lib/client';
+import { GET_ALL_CATEGORIES } from '@/graphql/queries/categories/getCategories';
+import { memo } from 'react';
 
 const Header = async () => {
   const { data } = await query({
@@ -12,12 +10,9 @@ const Header = async () => {
   });
 
   return (
-    <div className="text-xs z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse px-12 max-sm:p-0 max-md:mx-0">
-      <HeaderTop />
+    <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
       <HeaderMiddle />
-      <Divider orientation="horizontal" />
       <HeaderBottom categories={data.category} />
-      <Divider orientation="horizontal" />
     </div>
   );
 };

@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { memo, useCallback, useEffect } from "react";
-import { clsx } from "clsx";
-import { AiOutlineClose } from "react-icons/ai";
-import { useLockScroll } from "@/hooks/useLockScroll";
-import { usePathname } from "next/navigation";
+import { memo, useCallback, useEffect } from 'react';
+import { clsx } from 'clsx';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useLockScroll } from '@/hooks/useLockScroll';
+import { usePathname } from 'next/navigation';
 
 const isOpenClassNames = {
-  right: "translate-x-0",
-  left: "translate-x-0",
-  top: "translate-y-0",
-  bottom: "translate-y-0",
+  right: 'translate-x-0',
+  left: 'translate-x-0',
+  top: 'translate-y-0',
+  bottom: 'translate-y-0',
 };
 
 const closeClassNames = {
-  right: "translate-x-full",
-  left: "-translate-x-full",
-  top: "-translate-y-full",
-  bottom: "translate-y-full",
+  right: 'translate-x-full',
+  left: '-translate-x-full',
+  top: '-translate-y-full',
+  bottom: 'translate-y-full',
 };
 
 const classNames = {
-  right: "inset-y-0 right-0",
-  left: "inset-y-0 left-0",
-  top: "inset-x-0 top-0",
-  bottom: "inset-x-0 bottom-0",
+  right: 'inset-y-0 right-0',
+  left: 'inset-y-0 left-0',
+  top: 'inset-x-0 top-0',
+  bottom: 'inset-x-0 bottom-0',
 };
 
 const Drawer: React.FC<DrawerProps> = ({
   isOpen,
   onClose,
-  placement = "right",
+  placement = 'right',
   children,
   title,
   lockScroll = false,
@@ -47,7 +47,7 @@ const Drawer: React.FC<DrawerProps> = ({
 
   const handleEsc = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         onClose?.();
       }
     },
@@ -61,12 +61,12 @@ const Drawer: React.FC<DrawerProps> = ({
   }, [onClose]);
 
   useEffect(() => {
-    window.addEventListener("keydown", handleEsc);
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('keydown', handleEsc);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("keydown", handleEsc);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('resize', handleResize);
     };
   }, [handleEsc, handleResize]);
 
@@ -81,24 +81,30 @@ const Drawer: React.FC<DrawerProps> = ({
     >
       <div
         className={clsx(
-          "fixed inset-0 bg-gray-500 bg-opacity-75 transition-all",
+          'fixed inset-0 bg-gray-500 bg-opacity-75 transition-all',
           {
-            "opacity-100 duration-500 ease-in-out visible": isOpen,
+            'opacity-100 duration-500 ease-in-out visible': isOpen,
           },
-          { "opacity-0 duration-500 ease-in-out invisible": !isOpen }
+          {
+            'opacity-0 duration-500 ease-in-out invisible': !isOpen,
+          }
         )}
       />
-      <div className={clsx({ "fixed inset-0 overflow-hidden": isOpen })}>
+      <div
+        className={clsx({
+          'fixed inset-0 overflow-hidden': isOpen,
+        })}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <div
             className={clsx(
-              "pointer-events-none fixed max-w-full max-sm:min-w-full max-md:min-w-[300px]",
+              'pointer-events-none fixed max-w-full max-sm:min-w-full max-md:min-w-[300px]',
               classNames[placement]
             )}
           >
             <div
               className={clsx(
-                "pointer-events-auto relative w-full h-full transform transition ease-in-out duration-500",
+                'pointer-events-auto relative w-full h-full transform transition ease-in-out duration-500',
                 { [closeClassNames[placement]]: !isOpen },
                 { [isOpenClassNames[placement]]: isOpen }
               )}
@@ -109,18 +115,22 @@ const Drawer: React.FC<DrawerProps> = ({
             >
               <div
                 className={clsx(
-                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full rounded-none",
-                  { "rounded-l-lg": placement === "right" },
-                  { "rounded-r-lg": placement === "left" },
-                  { "rounded-b-lg": placement === "top" },
-                  { "rounded-t-lg": placement === "bottom" }
+                  'flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full rounded-none',
+                  {
+                    'rounded-l-lg': placement === 'right',
+                  },
+                  { 'rounded-r-lg': placement === 'left' },
+                  { 'rounded-b-lg': placement === 'top' },
+                  {
+                    'rounded-t-lg': placement === 'bottom',
+                  }
                 )}
               >
                 <div
                   className={clsx(
-                    "relative flex items-center justify-between ",
+                    'relative flex items-center justify-between ',
                     {
-                      "mb-4": title,
+                      'mb-4': title,
                     }
                   )}
                 >

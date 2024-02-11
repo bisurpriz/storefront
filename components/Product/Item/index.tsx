@@ -1,13 +1,13 @@
-import Link from "next/link";
-import ProductItemSkeleton from "./ProductItemSkeleton";
-import { Product } from "@/common/types/Product/product";
-import clsx from "clsx";
-import ProductItemImage from "../ProductItemImage/ProductItemImage";
-import Rating from "@/components/Rating/Rating";
-import AddCartButton from "./components/AddCartButton";
-import AddToFavorite from "./components/AddToFavorite";
-import PriceTag from "@/components/PriceTag";
-import { Suspense } from "react";
+import Link from 'next/link';
+import ProductItemSkeleton from './ProductItemSkeleton';
+import { Product } from '@/common/types/Product/product';
+import clsx from 'clsx';
+import ProductItemImage from '../ProductItemImage/ProductItemImage';
+import Rating from '@/components/Rating/Rating';
+import AddCartButton from './components/AddCartButton';
+import AddToFavorite from './components/AddToFavorite';
+import PriceTag from '@/components/PriceTag';
+import { Suspense } from 'react';
 
 export interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -34,8 +34,8 @@ const ProductItem = ({
   tenant,
 }: ProductItemProps) => {
   const maxXsClasses = {
-    container: "overflow-hidden rounded-lg border relative flex flex-col",
-    image: "flex-1 grow",
+    container: 'overflow-hidden rounded-lg border relative flex flex-col',
+    image: 'flex-1 grow',
   };
 
   return (

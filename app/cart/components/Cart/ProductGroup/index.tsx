@@ -1,6 +1,6 @@
-import { ProductForCart } from "@/common/types/Cart/cart";
-import CartProductGroupListItem from "./CartProductGroupListItem";
-import EmptyCart from "../EmptyCart";
+import { ProductForCart } from '@/common/types/Cart/cart';
+import CartProductGroupListItem from './CartProductGroupListItem';
+import EmptyCart from '../EmptyCart';
 
 const ProductGroup = ({
   products,
@@ -14,7 +14,7 @@ const ProductGroup = ({
   return tenantIds?.map((id) => (
     <div className="rounded-lg border relative mb-4" key={id}>
       <span className="text-sm font-semibold text-slate-500 py-1 px-2 bg-purple-200 rounded-lg font-mono absolute left-0 top-0 -translate-y-1/2 translate-x-8 max-xs:translate-x-4">
-        {products[id][0].tenant.nickname} satıcısından {products[id].length}{" "}
+        {products[id][0].tenant.nickname} satıcısından {products[id].length}{' '}
         Ürün
       </span>
       <ul key={id} role="list">

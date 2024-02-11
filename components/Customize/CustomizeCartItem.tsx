@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import TextField from "../TextField";
-import ImageUpload from "../ImageUpload";
-import { memo } from "react";
-import { CustomizableArea } from "@/common/types/Order/order";
+import TextField from '../TextField';
+import ImageUpload from '../ImageUpload';
+import { memo } from 'react';
+import { CustomizableArea } from '@/common/types/Order/order';
 
 interface Area extends Partial<CustomizableArea> {
   count: number;
@@ -11,7 +11,7 @@ interface Area extends Partial<CustomizableArea> {
 
 const CustomizeCartItem = ({ type, count, values }: Area) => {
   switch (type) {
-    case "special_text":
+    case 'special_text':
       return Array(count)
         .fill(0)
         .map((_, i) => (
@@ -28,7 +28,7 @@ const CustomizeCartItem = ({ type, count, values }: Area) => {
             />
           </div>
         ));
-    case "special_image":
+    case 'special_image':
       return Array(count)
         .fill(0)
         .map((_, i) => (

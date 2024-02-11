@@ -1,4 +1,4 @@
-import { Product } from "../Product/product";
+import { Product } from '../Product/product';
 
 export interface ICoupon {
   id: string;

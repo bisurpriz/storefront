@@ -1,14 +1,19 @@
-import ProfileForm from "./components/ProfileForm";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
-import { getUserById } from "./actions";
-import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
+import ProfileForm from './components/ProfileForm';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { getUserById } from './actions';
+import ProfileFormSkeleton from './components/ProfileForm/ProfileFormSkeleton';
 
 const Account = async () => {
   let error = null;
 
   const { user, loading, id } = await getUserById().catch((err) => {
     error = err;
-    return { user: null, loading: false, id: null, error: err };
+    return {
+      user: null,
+      loading: false,
+      id: null,
+      error: err,
+    };
   });
 
   return (

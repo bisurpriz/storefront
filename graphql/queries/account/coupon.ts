@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const GET_ALL_COUPONS = gql`
   query getAllCoupons {
@@ -16,15 +16,6 @@ const GET_ALL_COUPONS = gql`
       end_date
       minimum_cost
       amount
-      product {
-        name
-        slug
-        id
-        image_url
-        tenant {
-          nickname
-        }
-      }
     }
   }
 `;

@@ -1,36 +1,46 @@
-"use client";
-import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import { SUBSCRIBE_TO_CHATS } from "@/graphql/queries/chat/subscription";
-import useChatStore from "@/store";
-import { useSubscription } from "@apollo/client";
-import { useUser } from "@auth0/nextjs-auth0/client";
+'use client'
+import { ApolloWrapper } from '@/graphql/lib/apollo-wrapper'
+import { SUBSCRIBE_TO_CHATS } from '@/graphql/queries/chat/subscription'
+import useChatStore from '@/store'
+import { useSubscription } from '@apollo/client'
+import { useEffect, useState } from 'react'
+import { getUserById } from '../../actions'
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic'
 
 const SocketListener = () => {
-  const { setChats } = useChatStore((state) => state);
+  const { setChats } = useChatStore((state) => state)
 
   const { error } = useSubscription(SUBSCRIBE_TO_CHATS, {
     onData(options: any) {
-      setChats(options?.data?.data?.chat_thread);
+      setChats(options?.data?.data?.chat_thread)
     },
-  });
+  })
 
   if (error) {
-    console.log(error);
+    console.log(error)
   }
 
-  return <div></div>;
-};
+  return <div></div>
+}
 
 const Listener = () => {
-  const { user } = useUser();
-  if (!user) return null;
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { user } = await getUserById()
+      setUser(user)
+    }
+    getUser()
+  }, [])
+
+  if (!user) return null
   return (
     <ApolloWrapper>
       <SocketListener />
     </ApolloWrapper>
-  );
-};
+  )
+}
 
-export default Listener;
+export default Listener

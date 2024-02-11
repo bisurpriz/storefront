@@ -1,12 +1,12 @@
-import TextField from "@/components/TextField";
-import { localeDistanceFormat } from "@/utils/format";
-import Image from "next/image";
-import { updateUserById } from "../../actions";
-import PhoneInput from "@/components/PhoneInput";
-import SubmitButton from "@/components/Button/SubmitButton";
-import { revalidatePath } from "next/cache";
-import Button from "@/components/Button";
-import Link from "next/link";
+import Button from '@/components/Button';
+import SubmitButton from '@/components/Button/SubmitButton';
+import PhoneInput from '@/components/PhoneInput';
+import TextField from '@/components/TextField';
+import { localeDistanceFormat } from '@/utils/format';
+import { revalidatePath } from 'next/cache';
+import Image from 'next/image';
+import Link from 'next/link';
+import { updateUserById } from '../../actions';
 
 const ProfileForm = ({
   user,
@@ -21,13 +21,12 @@ const ProfileForm = ({
     picture: string;
     phone: string;
     reference_code: string | null;
-    vkn_tckn: string | null;
   };
   id: string;
   error: any;
 }) => {
   async function updateUser(formData: FormData) {
-    "use server";
+    'use server';
 
     const values = Object.fromEntries(formData.entries());
     const variables = {
@@ -43,10 +42,6 @@ const ProfileForm = ({
         (values.phone as string)?.length > 0
           ? (values.phone as string)
           : user.phone,
-      vkn_tckn:
-        (values.vkn_tckn as string)?.length > 0
-          ? (values.vkn_tckn as string)
-          : user.vkn_tckn,
       email:
         (values.email as string)?.length > 0
           ? (values.email as string)
@@ -63,7 +58,7 @@ const ProfileForm = ({
         ...variables,
       });
 
-      revalidatePath("/account");
+      revalidatePath('/account');
     } catch (err) {
       console.error(err);
     }
@@ -76,7 +71,7 @@ const ProfileForm = ({
           {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
         </p>
         <Image
-          src={user.picture}
+          src={user.picture || '/avatar.png'}
           alt="Profil resmi"
           className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
           width={200}
@@ -86,36 +81,30 @@ const ProfileForm = ({
       <TextField
         label="İsim"
         id="firstname"
-        placeholder={user.firstname || "Adınız"}
+        placeholder={user.firstname || 'Adınız'}
         type="text"
       />
       <TextField
         label="Soyisim"
         id="lastname"
-        placeholder={user.lastname || "Soyadınız"}
+        placeholder={user.lastname || 'Soyadınız'}
         type="text"
       />
       <TextField
         label="E-posta"
         id="email"
-        placeholder={user.email || "E-posta adresiniz"}
+        placeholder={user.email || 'E-posta adresiniz'}
         type="email"
         disabled
       />
       <PhoneInput
         label="Telefon"
-        placeholder={user.phone || "Telefon numaranız"}
-      />
-      <TextField
-        label="VKN/TCKN"
-        id="vkn_tckn"
-        placeholder={user.vkn_tckn || "VKN/TCKN"}
-        type="text"
+        placeholder={user.phone || 'Telefon numaranız'}
       />
       <TextField
         label="Referans Kodu"
         id="reference_code"
-        placeholder={user.reference_code || "Referans kodunuz"}
+        placeholder={user.reference_code || 'Referans kodunuz'}
         type="text"
         disabled
       />
@@ -128,11 +117,11 @@ const ProfileForm = ({
         Kullanıcı verileri alınıken bir hata oluştu.
       </h1>
       <p className="text-sm text-slate-400 capitalize">
-        {error?.message || "Lütfen daha sonra tekrar deneyin."}
+        {error?.message || 'Lütfen daha sonra tekrar deneyin.'}
       </p>
 
       <p>
-        Tekrar giriş yapmak sorununuzu çözebilir.{" "}
+        Tekrar giriş yapmak sorununuzu çözebilir.{' '}
         <Link href="/api/auth/logout">
           <Button>Çıkış yap</Button>
         </Link>

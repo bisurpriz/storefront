@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 export const checkExpire = (token) => {
   try {
@@ -8,7 +8,7 @@ export const checkExpire = (token) => {
 
     return decoded.exp && decoded.exp < currentTime;
   } catch (error) {
-    console.log(error, "error");
+    console.log(error, 'error');
 
     return false;
   }

@@ -1,8 +1,8 @@
-import { getDiscrits } from "@/app/account/actions";
-import { District } from "@/common/types/Addresses/addresses";
-import { useEffect, useState } from "react";
+import { getDiscrits } from '@/app/account/actions';
+import { District } from '@/common/types/Addresses/addresses';
+import { useEffect, useState } from 'react';
 
-type DistrictResponse = Pick<District, "id" | "name">[];
+type DistrictResponse = Pick<District, 'id' | 'name'>[];
 
 export const useDiscrits = (cityId: number | string) => {
   const [districts, setDiscrits] = useState<DistrictResponse>([]);
@@ -12,7 +12,7 @@ export const useDiscrits = (cityId: number | string) => {
 
     const fetchDiscrits = async () => {
       const { districts } = await getDiscrits(
-        typeof cityId === "string" ? cityId : cityId.toString()
+        typeof cityId === 'string' ? cityId : cityId.toString()
       );
 
       setDiscrits(districts);

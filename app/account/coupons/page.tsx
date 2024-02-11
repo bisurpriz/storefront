@@ -1,8 +1,10 @@
-import CouponCard from "../components/CouponCard";
-import { getUserCoupons } from "./actions";
+import CouponCard from '../components/CouponCard';
+import { getUserCoupons } from './actions';
 
 const CouponsPage = async () => {
-  const { coupons } = (await getUserCoupons()) || { coupons: null };
+  const { coupons } = (await getUserCoupons()) || {
+    coupons: null,
+  };
 
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2">

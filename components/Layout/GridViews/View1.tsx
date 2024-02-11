@@ -1,6 +1,6 @@
-import { getPaginatedProducts } from "@/app/products/actions";
-import { Product } from "@/common/types/Product/product";
-import InfinityScroll from "@/components/InfinityScroll";
+import { getPaginatedProducts } from '@/app/products/actions';
+import { Product } from '@/common/types/Product/product';
+import InfinityScroll from '@/components/InfinityScroll';
 
 export interface ProductResponse {
   products: Product[];

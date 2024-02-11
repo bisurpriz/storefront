@@ -1,11 +1,10 @@
-import Rating from "../../../../../components/Rating/Rating";
-import Popover from "@/components/Popover";
-import RatingDetail from "./RatingDetail";
-import { RatingProps } from "./RatingDetail";
-import Link from "next/link";
-import Promotions from "./Promotions";
-import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
-import HourSelect from "@/components/DatePicker/HourSelect";
+import HourSelect from '@/components/DatePicker/HourSelect';
+import Popover from '@/components/Popover';
+import Link from 'next/link';
+import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
+import Rating from '../../../../../components/Rating/Rating';
+import Promotions from './Promotions';
+import RatingDetail, { RatingProps } from './RatingDetail';
 
 type ProductInformationProps = {
   name: string;
@@ -14,7 +13,7 @@ type ProductInformationProps = {
   rating: number;
   reviewCount: number;
   promotion?: string;
-  rateCounts: RatingProps["rateCounts"];
+  rateCounts: RatingProps['rateCounts'];
   discountRate?: number;
   vendor?: {
     name: string;
@@ -63,7 +62,7 @@ const ProductInformation = ({
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (
-              <span className="text-xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
+              <span className="text-2xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
                 {discountRate}%
               </span>
             ) : null}
@@ -74,8 +73,8 @@ const ProductInformation = ({
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
-                <h1 className="text-2xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
-                  {discountPrice ? discountPrice : price}
+                <h1 className="text-3xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
+                  {discountPrice ? discountPrice : price}₺
                 </h1>
                 {promotion && (
                   <p className="text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap">
@@ -112,16 +111,16 @@ const ProductInformation = ({
         <Promotions
           promotions={[
             {
-              description: shippingType?.includes("SAME_DAY")
-                ? "Gün içi teslimat"
-                : "Aynı gün kargo",
+              description: shippingType?.includes('SAME_DAY')
+                ? 'Gün içi teslimat'
+                : 'Aynı gün kargo',
               icon: <HiOutlineTicket />,
-              filterKey: "SAME_DAY",
+              filterKey: 'SAME_DAY',
             },
             {
-              description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
+              description: freeShipping ? 'Ücretsiz kargo' : 'Ücretli gönderim',
               icon: <HiOutlineArchive />,
-              filterKey: "FREE_SHIPPING",
+              filterKey: 'FREE_SHIPPING',
             },
           ]}
         />

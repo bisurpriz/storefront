@@ -1,29 +1,31 @@
-"use client";
+'use client';
 
-import CustomizeCartItem from "./CustomizeCartItem";
-import Button from "../Button";
-import { getBase64Image } from "@/utils/getBase64Image";
-import { ProductForCart } from "@/common/types/Cart/cart";
-import { updateCartItemWithRedis } from "@/app/cart/actions";
+import CustomizeCartItem from './CustomizeCartItem';
+import Button from '../Button';
+import { getBase64Image } from '@/utils/getBase64Image';
+import { ProductForCart } from '@/common/types/Cart/cart';
+import { useCart } from '@/contexts/CartContext';
 
 interface CustomizeGroupProps {
   index: number;
-  quantity: ProductForCart["quantity"];
+  quantity: ProductForCart['quantity'];
   product: ProductForCart;
 }
 
 const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
+  const { updateCartItem } = useCart();
+
   const handleFormSubmit = async (formData: FormData) => {
     const data = Object.fromEntries(formData.entries());
     const keys = Object.keys(data);
-    const hasImages = keys?.find((item) => item.includes("special_image"));
+    const hasImages = keys?.find((item) => item.includes('special_image'));
     const image = data[hasImages];
     if (image instanceof File) {
       const base64 = (await getBase64Image(image)) as string;
       if (image.name && base64) {
         data[hasImages] = base64;
       } else {
-        data[hasImages] = "";
+        data[hasImages] = '';
       }
     }
 
@@ -31,11 +33,11 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
     const images = [];
 
     keys.forEach((key) => {
-      if (key.includes("special_text")) {
+      if (key.includes('special_text')) {
         texts.push({
           [key]: data[key],
         });
-      } else if (key.includes("special_image")) {
+      } else if (key.includes('special_image')) {
         images.push({
           [key]: data[key],
         });
@@ -46,7 +48,7 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
       ...product,
       product_customizable_areas: product.product_customizable_areas?.map(
         (item) => {
-          if (item.customizable_area.type === "special_text") {
+          if (item.customizable_area.type === 'special_text') {
             return {
               ...item,
               customizable_area: {
@@ -54,7 +56,7 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
                 values: texts,
               },
             };
-          } else if (item.customizable_area.type === "special_image") {
+          } else if (item.customizable_area.type === 'special_image') {
             return {
               ...item,
               customizable_area: {
@@ -66,7 +68,7 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
         }
       ),
     };
-    updateCartItemWithRedis(newProd);
+    updateCartItem(newProd);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const SUBSCRIBE_TO_CHATS = gql`
   subscription subscribeToChats {

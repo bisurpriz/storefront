@@ -1,21 +1,22 @@
-import { getProductById } from "../actions";
-import { IMAGE_URL } from "@/contants/urls";
-import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
-import ProductInformation from "./components/Detail/ProductInformation";
-import { Metadata, ResolvingMetadata } from "next";
-import SearchLocation from "./components/Layout/SearchLocation";
-import HourSelect from "@/components/DatePicker/HourSelect";
-import Promotions from "./components/Detail/Promotions";
-import ProductActions from "./components/Detail/ProductActions";
-import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
-import ProductDescription from "./components/Detail/ProductDescription";
-import ProductComments from "./components/Detail/ProductComments";
-import { faker } from "@faker-js/faker";
-import PaymentMethods from "./components/Detail/PaymentMethods";
+import { getProductById } from '../actions';
+import { IMAGE_URL } from '@/contants/urls';
+import ProductImageCarousel from './components/Detail/ProductImageCarousel';
+import ProductInformation from './components/Detail/ProductInformation';
+import { Metadata, ResolvingMetadata } from 'next';
+import SearchLocation from './components/Layout/SearchLocation';
+import HourSelect from '@/components/DatePicker/HourSelect';
+import Promotions from './components/Detail/Promotions';
+import ProductActions from './components/Detail/ProductActions';
+import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
+import ProductDescription from './components/Detail/ProductDescription';
+import ProductComments from './components/Detail/ProductComments';
+import PaymentMethods from './components/Detail/PaymentMethods';
 
 type Props = {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
 export async function generateMetadata(
@@ -46,7 +47,9 @@ const ProductDetail = async ({
 }: {
   params: { slug: string | number };
 }) => {
-  const data = await getProductById({ id: Number(slug) });
+  const data = await getProductById({
+    id: Number(slug),
+  });
 
   const isFavoriteForCurrentUser = data.favorites.data.length > 0;
 
@@ -71,15 +74,15 @@ const ProductDetail = async ({
             promotions={[
               {
                 description:
-                  "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
+                  'Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.',
                 icon: <HiOutlineTicket />,
-                filterKey: "SAME_DAY",
+                filterKey: 'SAME_DAY',
               },
               {
                 description:
-                  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
+                  'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.',
                 icon: <HiOutlineArchive />,
-                filterKey: "SAME_DAY",
+                filterKey: 'SAME_DAY',
               },
             ]}
           />
@@ -116,8 +119,9 @@ const ProductDetail = async ({
       <section className="mt-6" id="reviews">
         <ProductDescription
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
-          notes={Array.from({ length: 5 }).map((_, index) =>
-            faker.commerce.productDescription()
+          notes={Array.from({ length: 5 }).map(
+            (_, index) =>
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
           )}
           specifications={data.product.properties}
         />
@@ -138,18 +142,16 @@ const ProductDetail = async ({
       >
         <ProductComments
           comments={Array.from({ length: 5 }).map((_, index) => ({
-            comment: faker.lorem.paragraph(),
-            createdAt: faker.date.past().toISOString(),
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
+            comment:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+            createdAt: '2021-08-10T12:00:00.000Z',
+            firstName: 'John',
+            lastName: 'Doe',
             user_id: index,
-            rate: faker.number.int({
-              min: 1,
-              max: 5,
-            }),
-            user_image_url: faker.image.avatar(),
+            rate: 5,
+            user_image_url: 'https://picsum.photos/200/300',
             comment_id: index,
-            email: faker.internet.email(),
+            email: 'john@doe.com',
           }))}
         />
       </section>

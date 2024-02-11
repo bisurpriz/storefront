@@ -1,5 +1,5 @@
-import { forwardRef } from "react";
-import Button from "../Button";
+import { forwardRef } from 'react';
+import Button from '../Button';
 
 export const IncrementButton = forwardRef(
   (

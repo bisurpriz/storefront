@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { getClient } from "@/graphql/lib/client";
-import { GET_VENDOR_PRODUCTS_WITH_PAGINATION } from "@/graphql/queries/vendors/getVendorProducstWithPagination";
+import { getClient } from '@/graphql/lib/client';
+import { GET_VENDOR_PRODUCTS_WITH_PAGINATION } from '@/graphql/queries/vendors/getVendorProducstWithPagination';
 
 export const getPaginatedVendorProducts = async <T>({
   offset,
