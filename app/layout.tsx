@@ -10,6 +10,7 @@ import 'swiper/css/zoom'
 import Header from '../components/Layout/Header'
 import './globals.css'
 
+import { AuthProvider } from '@/contexts/AuthContext'
 import { CartProvider } from '@/contexts/CartContext'
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -18,6 +19,7 @@ import tr from 'date-fns/locale/tr'
 import setDefaultOptions from 'date-fns/setDefaultOptions'
 import { ReactNode } from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
+import { getUserById } from './account/actions'
 import Listener from './account/messages/components/Listener'
 
 setDefaultOptions({
@@ -101,6 +103,8 @@ export default async function RootLayout({
     loadErrorMessages()
   }
 
+  const { user } = await getUserById()
+
   return (
     <html lang="tr">
       <body
@@ -108,14 +112,16 @@ export default async function RootLayout({
         ${manrope.variable}
         font-manrope relative scroll-smooth overflow-hidden mb-10`}
         id="root">
-        <CartProvider>
-          <Header />
-          <Content>
-            {children}
-            {auth}
-          </Content>
-          <Listener />
-        </CartProvider>
+        <AuthProvider user={user}>
+          <CartProvider>
+            <Header />
+            <Content>
+              {children}
+              {auth}
+            </Content>
+            <Listener />
+          </CartProvider>
+        </AuthProvider>
       </body>
       <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>

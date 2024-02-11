@@ -69,15 +69,15 @@ export const createOrderAction = async (
           order_item_special_texts: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction),
-                )
+                getTexts(instruction),
+              )
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction),
-                )
+                getImages(instruction),
+              )
               : [],
           },
         })),
@@ -115,7 +115,7 @@ export const createOrderAction = async (
     ],
   }
 
-  const token = await cookies().get('access_token')
+  const token = await cookies().get('access_token').value
 
   const response = await fetch(
     'https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws',

@@ -1,4 +1,4 @@
-import { getUserFromCookies } from '@/app/actions'
+import { readIdFromCookies } from '@/app/actions'
 import { User } from '@/common/types/User/user'
 import Empty from '@/components/Empty'
 import { localeFormat } from '@/utils/format'
@@ -19,7 +19,8 @@ const ChatList = ({
   onMessageSelect: IChatItem['onMessageSelect']
   chats: any[] | null
 }) => {
-  const { id } = getUserFromCookies() as unknown as User
+
+  const { id } = readIdFromCookies() as unknown as User
 
   if (chats && chats.length === 0)
     return (
@@ -37,11 +38,11 @@ const ChatList = ({
         chats.map((item) => {
           const date = item?.messages?.[0]?.created_at
             ? localeFormat(
-                item?.messages.length > 0
-                  ? new Date(item.messages[0].created_at)
-                  : undefined,
-                'PPP',
-              )
+              item?.messages.length > 0
+                ? new Date(item.messages[0].created_at)
+                : undefined,
+              'PPP',
+            )
             : ''
           const unread = calculateUnread(item.messages, id)
           return (

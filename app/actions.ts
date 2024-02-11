@@ -1,6 +1,5 @@
 'use server'
 
-import { User } from '@/common/types/User/user'
 import { query } from '@/graphql/lib/client'
 import { GET_ALL_BANNERS } from '@/graphql/queries/banners/banners'
 import { GET_VENDOR_BY_ID } from '@/graphql/queries/vendors/getVendorById'
@@ -18,7 +17,7 @@ export async function readIdFromCookies() {
 }
 
 export async function getIdToken() {
-  const token = await cookies().get('access_token')
+  const token = await cookies().get('access_token').value
 
   if (!token) return new Promise((resolve, reject) => reject('Session is null'))
 
@@ -86,12 +85,3 @@ export async function getBanners() {
   }
 }
 
-export async function getUserFromCookies() {
-  const cooks = await cookies()
-
-  const user = cooks.get('user')
-
-  if (!user) return null
-
-  return JSON.parse(user.value) as User
-}

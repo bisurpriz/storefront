@@ -1,6 +1,6 @@
 'use client'
 
-import SubmitButton from '@/components/Button/SubmitButton'
+import Button from '@/components/Button'
 import TextField from '@/components/TextField'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,13 +12,13 @@ import { AuthErrorMessages } from '../../contants'
 
 const LoginForm: FC = () => {
   const [error, setError] = useState('')
-
+  const [loading, setLoading] = useState(false)
 
   const handleClientLogin = async (event:
     React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault()
-
+    setLoading(true)
     const [email, password] = Array.from(event.currentTarget.elements).map(
       (field: HTMLInputElement) => field.value
     )
@@ -41,18 +41,21 @@ const LoginForm: FC = () => {
         id: 'login-error',
         duration: 1500
       })
-    } else {
-      setError('')
-      toast.success('Giriş başarılı', {
-        position: 'bottom-right',
-        ariaProps: {
-          "aria-live": "polite",
-          role: "status"
-        },
-        id: 'login-success',
-        duration: 1500
-      })
+      setLoading(false)
+      return
     }
+
+    setError('')
+    toast.success('Giriş başarılı', {
+      position: 'bottom-right',
+      ariaProps: {
+        "aria-live": "polite",
+        role: "status"
+      },
+      id: 'login-success',
+      duration: 1500
+    })
+    setLoading(false)
   }
 
   return (
@@ -86,7 +89,7 @@ const LoginForm: FC = () => {
             />
             {error && <p className="text-red-500 mr-auto text-sm">{error}</p>}
           </div>
-          <SubmitButton icon={<IoLogIn className="mr-2" />} label="Giriş Yap" />
+          <Button type='submit' icon={<IoLogIn className="mr-2" />} label="Giriş Yap" loading={loading} />
           <p className='flex gap-2'>
             Hesabınız yok mu?
             <Link href="/register" className="text-center text-blue-500" replace>

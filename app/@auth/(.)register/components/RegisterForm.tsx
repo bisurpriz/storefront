@@ -5,6 +5,7 @@ import TextField from '@/components/TextField';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 const RegisterForm = () => {
     return (
         <div className="flex flex-col items-center justify-center bg-white w-[500px] rounded-lg p-12 m-auto gap-4 font-mono">
@@ -17,17 +18,10 @@ const RegisterForm = () => {
                     </p>
                 </div>
                 <div className="space-y-4">
-                    <div className="space-y-2">
-                        <TextField autoComplete='off' id="name" label="İsim" placeholder="İsim" fullWidth />
-
-                    </div>
-                    <div className="space-y-2">
-                        <TextField autoComplete='off' id="email" label="Email" type="email" placeholder="Mail adresiniz" fullWidth />
-
-                    </div>
-                    <div className="space-y-2">
-                        <TextField autoComplete='off' id="password" label="Şifre" type="password" placeholder="Şifre" fullWidth />
-                    </div>
+                    <TextField autoComplete='off' id="firstname" label="Adınız" placeholder="Adınız" fullWidth />
+                    <TextField autoComplete='off' id="lastname" label="Soyadınız" placeholder="Soyadınız" fullWidth />
+                    <TextField autoComplete='off' id="email" label="Email" type="email" placeholder="Mail adresiniz" fullWidth />
+                    <TextField autoComplete='off' id="password" label="Şifre" type="password" placeholder="Şifre" fullWidth />
                     <Button className='m-auto'>
                         Kayıt Ol
                     </Button>

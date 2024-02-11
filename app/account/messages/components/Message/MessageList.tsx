@@ -1,5 +1,5 @@
 'use client'
-import { getUserFromCookies } from '@/app/actions'
+import { readIdFromCookies } from '@/app/actions'
 import { User } from '@/common/types/User/user'
 import { localeFormat } from '@/utils/format'
 import { memo, useEffect, useRef } from 'react'
@@ -30,7 +30,7 @@ const MessageList = ({
   }[]
   threadId: string
 }) => {
-  const { id } = getUserFromCookies() as unknown as User
+  const { id } = readIdFromCookies() as unknown as User
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -49,24 +49,24 @@ const MessageList = ({
     <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
       {!messages
         ? [1, 2, 3, 4, 5, 6, 7]?.map((item) => (
-            <MessageItemSkeleton
-              key={item}
-              type={item % 2 === 0 ? 'sent' : 'received'}
-            />
-          ))
+          <MessageItemSkeleton
+            key={item}
+            type={item % 2 === 0 ? 'sent' : 'received'}
+          />
+        ))
         : messages?.map((item) => (
-            <MessageItem
-              key={item.id}
-              message={item.message}
-              date={
-                item?.created_at
-                  ? localeFormat(new Date(item.created_at), 'PPP')
-                  : ''
-              }
-              picture={item?.sender?.picture}
-              type={item?.sender?.id === id ? 'sent' : 'received'}
-            />
-          ))}
+          <MessageItem
+            key={item.id}
+            message={item.message}
+            date={
+              item?.created_at
+                ? localeFormat(new Date(item.created_at), 'PPP')
+                : ''
+            }
+            picture={item?.sender?.picture}
+            type={item?.sender?.id === id ? 'sent' : 'received'}
+          />
+        ))}
     </div>
   )
 }

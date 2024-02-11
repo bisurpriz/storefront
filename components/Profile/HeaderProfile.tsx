@@ -1,5 +1,4 @@
-import { User } from '@/common/types/User/user'
-import { cookies } from 'next/headers'
+import { getUserById } from '@/app/account/actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '../Button'
@@ -7,7 +6,7 @@ import Dropdown from '../Dropdown'
 import { profileItems } from './contants'
 
 const HeaderProfile = async () => {
-  const user = (await cookies().get('user')) as unknown as User
+  const { user } = await getUserById()
 
   return !user ? (
     <div className="flex items-center justify-end ml-2">
@@ -23,7 +22,7 @@ const HeaderProfile = async () => {
         className="cursor-pointer">
         <div className="flex items-center gap-2">
           <Image
-            src={user?.picture || ''}
+            src={user?.picture || '/avatar.png'}
             width={30}
             height={30}
             alt="User Picture"

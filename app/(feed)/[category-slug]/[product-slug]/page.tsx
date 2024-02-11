@@ -1,3 +1,4 @@
+import { getUserById } from '@/app/account/actions'
 import PaymentMethods from '@/app/products/[slug]/components/Detail/PaymentMethods'
 import ProductActions from '@/app/products/[slug]/components/Detail/ProductActions'
 import ProductComments from '@/app/products/[slug]/components/Detail/ProductComments'
@@ -10,7 +11,6 @@ import { IMAGE_URL } from '@/contants/urls'
 import { createJSONLd } from '@/utils/createJSONLd'
 import { destructClaims } from '@/utils/getClaims'
 import { Metadata } from 'next'
-import { cookies } from 'next/headers'
 
 export async function generateMetadata({ params, searchParams }) {
   const data = await getProductById({
@@ -64,7 +64,7 @@ export default async function ProductExample({
     type: 'Product',
   })
 
-  const user = await cookies().get('user')
+  const { user } = await getUserById()
   const claims = destructClaims(user)
   const isFavoriteForCurrentUser = data.favorites.data.some(
     (favorite) => favorite.user_id === claims?.id,

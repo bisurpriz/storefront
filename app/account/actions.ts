@@ -107,7 +107,6 @@ export const getUserById = async (id?: string) => {
         id: userId,
       },
     })
-
     const { user_by_pk: user } = data
     return {
       user: user ?? null,

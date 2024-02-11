@@ -1,7 +1,6 @@
 'use client'
-import { getUserFromCookies } from '@/app/actions'
-import { User } from '@/common/types/User/user'
 import Button from '@/components/Button'
+import { useUser } from '@/contexts/AuthContext'
 import useDelayUnmount from '@/hooks/useDelayUnmount'
 import useChatStore from '@/store'
 import { useState } from 'react'
@@ -15,7 +14,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
   const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId))
   const [tenantIdState, setTenantIdState] = useState(tenantId)
   const [text, setText] = useState('')
-  const user = getUserFromCookies() as unknown as User
+  const { user } = useUser()
 
   const shouldRenderChild = useDelayUnmount(isMessageOpen, 500)
 
@@ -50,9 +49,8 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
     <>
       <div className="flex-1 flex relative h-full">
         <div
-          className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${
-            !isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
-          }`}>
+          className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${!isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
+            }`}>
           {
             <ChatList
               onMessageSelect={(tenantId) => {
@@ -66,9 +64,8 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
 
         {shouldRenderChild && thread && (
           <div
-            className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${
-              isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
-            }`}>
+            className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${isMessageOpen ? 'translate-x-0' : '-translate-x-[110%]'
+              }`}>
             <div className="flex items-center">
               <Button
                 icon={<IoArrowBackCircleSharp />}

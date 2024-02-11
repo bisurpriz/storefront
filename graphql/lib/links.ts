@@ -20,31 +20,32 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
 const wsLink =
   typeof window !== 'undefined'
     ? new WebSocketLink({
-        uri: 'wss://bisurprizdev.hasura.app/v1/graphql',
-        options: {
-          reconnect: true,
-          connectionParams: async () => {
-            const token = cookies().get('access_token')
+      uri: 'wss://bisurprizdev.hasura.app/v1/graphql',
+      options: {
+        reconnect: true,
+        connectionParams: async () => {
+          const token = cookies().get('access_token')?.value
 
-            return {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          },
+          return {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         },
-      })
+      },
+    })
     : null
 
 export const authLink = setContext(async (_, { headers }) => {
   let token = null
   try {
     // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get('refresh_token')
+    const ntoken = await cookies().get('refresh_token')?.value
     token = ntoken
   } catch (e) {
     console.error(e, 'error getting session')
   }
+
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {}
 
@@ -63,16 +64,16 @@ export const httpLink = new HttpLink({
 const _httpLink =
   typeof window !== 'undefined'
     ? split(
-        ({ query }) => {
-          const definition = getMainDefinition(query)
-          return (
-            definition.kind === 'OperationDefinition' &&
-            definition.operation === 'subscription'
-          )
-        },
-        wsLink as any,
-        httpLink,
-      )
+      ({ query }) => {
+        const definition = getMainDefinition(query)
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        )
+      },
+      wsLink as any,
+      httpLink,
+    )
     : httpLink
 
 export const links = from([removeTypenameLink, authLink, errorLink, _httpLink])
