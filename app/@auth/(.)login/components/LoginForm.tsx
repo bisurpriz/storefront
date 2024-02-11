@@ -4,6 +4,7 @@ import Button from '@/components/Button'
 import TextField from '@/components/TextField'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoLogIn } from 'react-icons/io5'
@@ -13,6 +14,7 @@ import { AuthErrorMessages } from '../../contants'
 const LoginForm: FC = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const { back } = useRouter()
 
   const handleClientLogin = async (event:
     React.FormEvent<HTMLFormElement>
@@ -53,14 +55,15 @@ const LoginForm: FC = () => {
         role: "status"
       },
       id: 'login-success',
-      duration: 1500
+      duration: 1500,
     })
+
     setLoading(false)
+    back()
   }
 
   return (
     <div>
-
       <form onSubmit={handleClientLogin}>
         <div className="flex flex-col items-center justify-center bg-white w-[500px] rounded-lg p-12 m-auto gap-4 font-mono">
           <Image src="/logo.svg" width={300} height={300} alt="Login" />
@@ -68,8 +71,6 @@ const LoginForm: FC = () => {
           <p className="text-center text-gray-500">
             Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası için giriş yapın.
           </p>
-
-
           <div className='w-full flex flex-col gap-2'>
             <TextField
               id="email"
@@ -97,7 +98,6 @@ const LoginForm: FC = () => {
             </Link>
           </p>
         </div>
-
       </form>
     </div>
   )

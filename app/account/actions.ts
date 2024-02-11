@@ -100,6 +100,9 @@ export const getUserAddressById = async (id?: string) => {
 export const getUserById = async (id?: string) => {
   const userId = id || (await readIdFromCookies())
 
+  if (!userId) return { user: null, loading: false, id: null }
+
+
   try {
     const { data, loading } = await query({
       query: GET_USER_BY_ID,

@@ -9,7 +9,6 @@ import { getProductById } from '@/app/products/actions'
 import AccordionItem from '@/components/Accordion/AccordionItem'
 import { IMAGE_URL } from '@/contants/urls'
 import { createJSONLd } from '@/utils/createJSONLd'
-import { destructClaims } from '@/utils/getClaims'
 import { Metadata } from 'next'
 
 export async function generateMetadata({ params, searchParams }) {
@@ -65,9 +64,8 @@ export default async function ProductExample({
   })
 
   const { user } = await getUserById()
-  const claims = destructClaims(user)
   const isFavoriteForCurrentUser = data.favorites.data.some(
-    (favorite) => favorite.user_id === claims?.id,
+    (favorite) => favorite.user_id === user?.id,
   )
 
   const shippingType = data.product.delivery_type

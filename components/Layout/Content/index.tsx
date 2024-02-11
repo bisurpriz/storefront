@@ -1,3 +1,4 @@
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 
@@ -9,9 +10,11 @@ const Content = ({ children }: ContentProps) => {
   return (
     <Suspense fallback={<>Loading ...</>}>
       <Toaster />
-      <main className="content-height max-sm:content-height-sm h-full md:container pt-6 p-0 px-4 mx-auto scroll-smooth">
-        {children}
-      </main>
+      <ErrorBoundary fallback={<>Error...</>}>
+        <main className="content-height max-sm:content-height-sm h-full md:container pt-6 p-0 px-4 mx-auto scroll-smooth">
+          {children}
+        </main>
+      </ErrorBoundary>
     </Suspense>
   );
 };

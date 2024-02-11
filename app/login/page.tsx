@@ -10,7 +10,7 @@ export type LoginResponse = {
   }
 }
 
-const LoginPage = () => {
+const LoginPage = async () => {
   return <LoginForm />
 }
 
