@@ -1,39 +1,20 @@
-import { getSession } from '@auth0/nextjs-auth0/edge';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { v4 as uuid } from 'uuid';
+import { NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const config = {
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
-  };
-  const hasUserId = request.cookies.has('user_id');
-  const hasFingerPrint = request.cookies.has('fingerPrint');
-
-  const session = await getSession();
-  const response = NextResponse.next();
-  if (session?.user) {
-    const userId =
-      session.user['https://hasura.io/jwt/claims']['x-hasura-user-id'];
-
-    if (!hasUserId) {
-      response.cookies.set('user_id', userId, config);
-    }
-
-    return response;
+export function middleware(request) {
+  const path = request.nextUrl.pathname;
+  const isPublicPath = path === "/login" || path === "/register";
+  const token = request.cookies.get("access_token")?.value || "";
+  if (isPublicPath && token.length > 0) {
+    return NextResponse.redirect(new URL("/account", request.nextUrl));
   }
 
-  if (!session && !hasFingerPrint) {
-    const id = uuid();
-
-    response.cookies.set('fingerPrint', id, config);
-    return response;
+  if (!isPublicPath && !(token.length > 0)) {
+    return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
 
-  if (hasUserId && hasFingerPrint) {
-    response.cookies.delete('fingerPrint');
-  }
-
-  return response;
+  console.log('middleware', request.nextUrl.pathname);
 }
+
+export const config = {
+  matcher: ['/account/:path*', "/login", "/register",],
+};

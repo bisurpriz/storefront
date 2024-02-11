@@ -1,34 +1,30 @@
-'use client';
+'use client'
 import {
   addToFavorites,
   removeFromFavorites,
-} from '@/app/account/favorites/actions';
-import Button from '@/components/Button';
-import useAuthRedirect from '@/hooks/useAuthRedirect';
-import { useState } from 'react';
-import { MdFavoriteBorder } from 'react-icons/md';
+} from '@/app/account/favorites/actions'
+import Button from '@/components/Button'
+import { useState } from 'react'
+import { MdFavoriteBorder } from 'react-icons/md'
 
 interface Props {
-  productId: number;
+  productId: number
   favorite: {
-    isFavorite: boolean;
-    id: number; // primary key
-  };
-  favoriteCount?: number;
+    isFavorite: boolean
+    id: number // primary key
+  }
+  favoriteCount?: number
 }
 
 const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
-  const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
-  const { handleRedirect } = useAuthRedirect({
-    lazy: true,
-  });
+  const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite)
+
   return (
     <div className="flex items-center justify-start gap-4 py-4 md:mt-4 font-mono">
       <Button
         size="large"
         color="primary"
-        className="text-xl max-sm:w-full max-sm:justify-center"
-      >
+        className="text-xl max-sm:w-full max-sm:justify-center">
         Sepete Ekle
       </Button>
       <div className="flex items-end gap-2">
@@ -46,21 +42,18 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
               }`}
             />
           }
-          onClick={() =>
-            handleRedirect(() => {
-              favorite?.isFavorite
-                ? removeFromFavorites({ productId })
-                : addToFavorites({ productId });
-              setIsFavoriteState((prev) => !prev);
-            })
-          }
-        ></Button>
+          onClick={() => {
+            favorite?.isFavorite
+              ? removeFromFavorites({ productId })
+              : addToFavorites({ productId })
+            setIsFavoriteState((prev) => !prev)
+          }}></Button>
         <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
           <strong>{favoriteCount ?? 0}</strong> Favori
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductActions;
+export default ProductActions

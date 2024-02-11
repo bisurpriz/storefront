@@ -1,12 +1,12 @@
+import Button from '@/components/Button';
+import SubmitButton from '@/components/Button/SubmitButton';
+import PhoneInput from '@/components/PhoneInput';
 import TextField from '@/components/TextField';
 import { localeDistanceFormat } from '@/utils/format';
-import Image from 'next/image';
-import { updateUserById } from '../../actions';
-import PhoneInput from '@/components/PhoneInput';
-import SubmitButton from '@/components/Button/SubmitButton';
 import { revalidatePath } from 'next/cache';
-import Button from '@/components/Button';
+import Image from 'next/image';
 import Link from 'next/link';
+import { updateUserById } from '../../actions';
 
 const ProfileForm = ({
   user,
@@ -71,7 +71,7 @@ const ProfileForm = ({
           {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
         </p>
         <Image
-          src={user.picture}
+          src={user.picture || '/avatar.png'}
           alt="Profil resmi"
           className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
           width={200}

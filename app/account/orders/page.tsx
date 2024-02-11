@@ -1,17 +1,16 @@
-import { getUserOrders } from './actions';
-import Button from '@/components/Button';
-import TenantOrders from './components/TenantOrders';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import Button from '@/components/Button'
+import { getUserOrders } from './actions'
+import TenantOrders from './components/TenantOrders'
 
 const OrdersPage = async () => {
-  const { orders } = await getUserOrders();
+  const { orders } = await getUserOrders()
   return (
     <ul>
       {orders?.map((order) => {
         const totalProducts = order?.tenant_orders.reduce(
           (acc, to) => acc + to.order_items.length,
-          0
-        );
+          0,
+        )
 
         return (
           <li className="py-4" key={order.id}>
@@ -58,10 +57,10 @@ const OrdersPage = async () => {
               </p>
             </div>
           </li>
-        );
+        )
       })}
     </ul>
-  );
-};
+  )
+}
 
-export default withPageAuthRequired(OrdersPage);
+export default OrdersPage

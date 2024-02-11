@@ -1,22 +1,21 @@
-import ProductItem from '@/components/Product/Item';
-import { IMAGE_URL } from '@/contants/urls';
-import { getUserFavorites } from './actions';
-import { Product } from '@/common/types/Product/product';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { Product } from '@/common/types/Product/product'
+import ProductItem from '@/components/Product/Item'
+import { IMAGE_URL } from '@/contants/urls'
+import { getUserFavorites } from './actions'
 
 interface FavoritesResponse {
   user_favorite: {
-    id: number;
-    product: Product;
-  }[];
-  totalCount: number;
+    id: number
+    product: Product
+  }[]
+  totalCount: number
 }
 
 const FavoritesPage = async () => {
   const { user_favorite, totalCount } =
     await getUserFavorites<FavoritesResponse>({
       offset: 0,
-    });
+    })
 
   return (
     <div>
@@ -38,7 +37,7 @@ const FavoritesPage = async () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default withPageAuthRequired(FavoritesPage);
+export default FavoritesPage

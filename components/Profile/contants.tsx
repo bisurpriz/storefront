@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LogoutButton from '../LogoutButton';
 
 export const profileItems = [
   {
@@ -63,12 +64,7 @@ export const profileItems = [
   },
   {
     label: (
-      <Link
-        href="/api/auth/logout"
-        className="block p-4 text-sm font-normal text-gray-500 hover:bg-gray-50 whitespace-normal"
-      >
-        Çıkış Yap
-      </Link>
+      <LogoutButton />
     ),
     value: 'cikis',
     searchValue: 'Çıkış Yap',

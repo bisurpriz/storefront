@@ -1,30 +1,27 @@
-import PaymentMethods from '@/app/products/[slug]/components/Detail/PaymentMethods';
-import ProductActions from '@/app/products/[slug]/components/Detail/ProductActions';
-import ProductComments from '@/app/products/[slug]/components/Detail/ProductComments';
-import ProductDescription from '@/app/products/[slug]/components/Detail/ProductDescription';
-import ProductImageCarousel from '@/app/products/[slug]/components/Detail/ProductImageCarousel';
-import ProductInformation from '@/app/products/[slug]/components/Detail/ProductInformation';
-import { getProductById } from '@/app/products/actions';
-import AccordionItem from '@/components/Accordion/AccordionItem';
-import { IMAGE_URL } from '@/contants/urls';
-import { createJSONLd } from '@/utils/createJSONLd';
-import { destructClaims } from '@/utils/getClaims';
-import { getSession } from '@auth0/nextjs-auth0';
-import { Metadata } from 'next';
+import { getUserById } from '@/app/account/actions'
+import PaymentMethods from '@/app/products/[slug]/components/Detail/PaymentMethods'
+import ProductActions from '@/app/products/[slug]/components/Detail/ProductActions'
+import ProductComments from '@/app/products/[slug]/components/Detail/ProductComments'
+import ProductDescription from '@/app/products/[slug]/components/Detail/ProductDescription'
+import ProductImageCarousel from '@/app/products/[slug]/components/Detail/ProductImageCarousel'
+import ProductInformation from '@/app/products/[slug]/components/Detail/ProductInformation'
+import { getProductById } from '@/app/products/actions'
+import AccordionItem from '@/components/Accordion/AccordionItem'
+import { IMAGE_URL } from '@/contants/urls'
+import { createJSONLd } from '@/utils/createJSONLd'
+import { Metadata } from 'next'
 
 export async function generateMetadata({ params, searchParams }) {
   const data = await getProductById({
     id: Number(searchParams.pid),
-  });
-
-
+  })
 
   return {
     title: data.product.name,
     description: data.product.description,
     image: data.product.image_url[0],
     category: data.category.name,
-  } as Metadata;
+  } as Metadata
 }
 
 export default async function ProductExample({
@@ -32,19 +29,17 @@ export default async function ProductExample({
   params,
 }: {
   params: {
-    'category-slug': string;
-    'product-slug': string;
-  };
+    'category-slug': string
+    'product-slug': string
+  }
   searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+    [key: string]: string | string[] | undefined
+  }
 }) {
-
-
-  const productId = searchParams['pid'];
+  const productId = searchParams['pid']
   const data = await getProductById({
     id: Number(productId),
-  });
+  })
 
   const jsonld = createJSONLd({
     data: {
@@ -63,19 +58,18 @@ export default async function ProductExample({
         name: data.tenant.name,
         url: `https://www.bonnmarse.com/vendor/${data.tenant.id}`,
         rating: `${IMAGE_URL}/${data.tenant.rate}`,
-      }
+      },
     },
     type: 'Product',
-  });
+  })
 
-  const session = await getSession();
-  const claims = destructClaims(session?.user);
+  const { user } = await getUserById()
   const isFavoriteForCurrentUser = data.favorites.data.some(
-    (favorite) => favorite.user_id === claims?.id
-  );
+    (favorite) => favorite.user_id === user?.id,
+  )
 
-  const shippingType = data.product.delivery_type;
-  const freeShipping = data.product.is_service_free;
+  const shippingType = data.product.delivery_type
+  const freeShipping = data.product.is_service_free
 
   return (
     <div className="h-full">
@@ -83,8 +77,7 @@ export default async function ProductExample({
         className="flex items-start justify-start max-sm:flex-col gap-6 flex-nowrap"
         id="detail"
         aria-labelledby="detail"
-        aria-describedby="Ürün detayları"
-      >
+        aria-describedby="Ürün detayları">
         <div className="w-1/2 max-md:w-1/4 max-sm:w-full">
           <ProductImageCarousel
             images={data.product.image_url?.map((url: string) => ({
@@ -129,8 +122,7 @@ export default async function ProductExample({
         className="mt-6"
         aria-labelledby="product-detail"
         aria-describedby="Ürün Detayları"
-        id="product-detail"
-      >
+        id="product-detail">
         <AccordionItem
           content={
             <ProductDescription
@@ -149,16 +141,14 @@ export default async function ProductExample({
         className="mt-6"
         id="payment-methods"
         aria-labelledby="payment-methods"
-        aria-describedby="Ödeme yöntemleri"
-      >
+        aria-describedby="Ödeme yöntemleri">
         <PaymentMethods />
       </section>
       <section
         className="mt-6"
         id="reviews"
         aria-labelledby="reviews"
-        aria-describedby="Yorumlar"
-      >
+        aria-describedby="Yorumlar">
         <ProductComments
           comments={data.reviews.data.map((cm) => ({
             createdAt: cm.created_at,
@@ -174,5 +164,5 @@ export default async function ProductExample({
         />
       </section>
     </div>
-  );
+  )
 }

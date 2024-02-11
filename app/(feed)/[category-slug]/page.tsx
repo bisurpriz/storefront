@@ -1,23 +1,23 @@
-import { Product } from '@/common/types/Product/product';
-import { getPaginatedProducts } from '../products/actions';
-import InfinityScroll from '@/components/InfinityScroll';
+import { Product } from '@/common/types/Product/product'
+import InfinityScroll from '@/components/InfinityScroll'
+import { getPaginatedProducts } from '../../products/actions'
 
 export interface ProductResponse {
-  products: Product[];
-  totalCount: number;
+  products: Product[]
+  totalCount: number
 }
 
 export default async function CategoryPage({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string }
 }) {
-  const slug = params['category-slug'];
+  const slug = params['category-slug']
 
   const { products, totalCount } = await getPaginatedProducts<ProductResponse>({
     offset: 0,
     category_slug: slug,
-  });
+  })
 
   return (
     <InfinityScroll
@@ -26,5 +26,5 @@ export default async function CategoryPage({
       dataKey="products"
       query={getPaginatedProducts}
     />
-  );
+  )
 }

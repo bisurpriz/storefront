@@ -26,7 +26,6 @@ export const reducer = (state: ProductForCart[], action: CartAction) => {
                         ..._state[isExist],
                         quantity: action.payload.quantity,
                     };
-
                     return _state;
                 }
 
