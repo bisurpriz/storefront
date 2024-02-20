@@ -1,20 +1,14 @@
 'use server';
 
 import { readIdFromCookies } from '@/app/actions';
-import { OrderItemWithReview } from '@/common/types/Order/order';
-import { ReviewWithProduct } from '@/common/types/Review/review';
+import { CreateReviewDocument, CreateReviewMutation, GetOrdersWithReviewsDocument, GetOrdersWithReviewsQuery } from '@/graphql/generated';
 import { mutate, query } from '@/graphql/lib/client';
-import { CREATE_REVIEW } from '@/graphql/queries/review/mutation';
-import { GET_ORDERS_WITH_REVIEW } from '@/graphql/queries/review/query';
 import { revalidatePath } from 'next/cache';
 
 export const getOrderWithReview = async () => {
   const userId = await readIdFromCookies();
-  const { data, loading } = await query<{
-    order_item: OrderItemWithReview[];
-    review: ReviewWithProduct[];
-  }>({
-    query: GET_ORDERS_WITH_REVIEW,
+  const { data, loading } = await query<GetOrdersWithReviewsQuery>({
+    query: GetOrdersWithReviewsDocument,
     fetchPolicy: 'no-cache',
     variables: { user_id: userId },
   });
@@ -22,20 +16,8 @@ export const getOrderWithReview = async () => {
   const { order_item, review } = data;
 
   return {
-    order_item: order_item.map(
-      (item) =>
-        ({
-          ...item,
-          reviews_count: item.product.reviews_aggregate.aggregate.count,
-        }) as OrderItemWithReview
-    ),
-    reviews: review.map((item) => ({
-      ...item,
-      product: {
-        ...item.product,
-        reviews_count: item.product.reviews_aggregate.aggregate.count,
-      },
-    })),
+    order_item: order_item,
+    reviews: review,
     loading,
   };
 };
@@ -49,10 +31,8 @@ export const createReview = async ({
   score: number;
   product_id: number;
 }) => {
-  const { data } = await mutate<{
-    created_at: string;
-  }>({
-    mutation: CREATE_REVIEW,
+  const { data } = await mutate<CreateReviewMutation>({
+    mutation: CreateReviewDocument,
     variables: {
       comment,
       score,
@@ -62,7 +42,7 @@ export const createReview = async ({
 
   revalidatePath('/account/reviews');
 
-  const { created_at } = data;
+  const { insert_review_one: { created_at } } = data;
 
   return {
     created_at,

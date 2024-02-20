@@ -1,14 +1,15 @@
-import type { OrderResponse } from '@/common/types/Order/order';
 import StatusBadge from '@/components/StatusBadge';
 import Link from 'next/link';
 import OrderItem from './OrderItem';
 import OrderMessage from './OrderMessage';
 import { User } from '@/common/types/User/user';
+import { GetUserOrdersQuery } from '@/graphql/generated';
+import { OrderItemStatus } from '@/common/enums/Order/product';
 
 const TenantOrders = ({
   tenants,
 }: {
-  tenants: OrderResponse['tenant_orders'];
+  tenants: GetUserOrdersQuery['order'][0]['tenant_orders'];
 }) => {
   return tenants?.map((to) => (
     <div key={to.id} className="flex items-start flex-col justify-start">
@@ -27,7 +28,7 @@ const TenantOrders = ({
               ({to.order_items.length} ürün)
             </span>
           </span>
-          <StatusBadge status={to.order_status.value} />
+          <StatusBadge status={OrderItemStatus[to.order_status.value]} />
         </div>
 
         <OrderMessage tenant={to.tenant as User} orderTenantId={to.id} />

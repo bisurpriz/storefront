@@ -1,28 +1,13 @@
 'use server'
-
-import {
-  CityResponse,
-  DistrictResponse,
-  QuarterResponse,
-} from '@/common/types/Addresses/addresses'
 import { User } from '@/common/types/User/user'
 import { mutate, query } from '@/graphql/lib/client'
-import {
-  CREATE_NEW_ADDRESS,
-  GET_CITIES,
-  GET_DISTRICTS,
-  GET_QUARTERS,
-  GET_USER_ADDRESS_BY_ID,
-  GET_USER_BY_ID,
-  UPDATE_USER_BY_ID,
-} from '@/graphql/queries/account/account'
+
 import { readIdFromCookies } from '../actions'
+import { CreateNewAddressDocument, CreateNewAddressMutation, GetCitiesDocument, GetCitiesQuery, GetDistrictsDocument, GetDistrictsQuery, GetQuartersDocument, GetQuartersQuery, GetUserAddressByIdDocument, GetUserAddressByIdQuery, GetUserByIdDocument, GetUserByIdQuery, UpdateUserByIdDocument, UpdateUserByIdMutation } from '@/graphql/generated'
 
 export const getQuarters = async (districtId: string) => {
-  const { data, loading } = await query<{
-    quarters: QuarterResponse[]
-  }>({
-    query: GET_QUARTERS,
+  const { data, loading } = await query<GetQuartersQuery>({
+    query: GetQuartersDocument,
     variables: {
       districtId,
     },
@@ -37,10 +22,8 @@ export const getQuarters = async (districtId: string) => {
 }
 
 export const getDiscrits = async (cityId: string) => {
-  const { data, loading } = await query<{
-    districts: DistrictResponse[]
-  }>({
-    query: GET_DISTRICTS,
+  const { data, loading } = await query<GetDistrictsQuery>({
+    query: GetDistrictsDocument,
     variables: {
       cityId,
     },
@@ -55,15 +38,13 @@ export const getDiscrits = async (cityId: string) => {
 }
 
 export const getCities = async () => {
-  const { data, loading } = await query<{
-    cities: CityResponse[]
-  }>({
-    query: GET_CITIES,
+  const { data, loading } = await query<GetCitiesQuery>({
+    query: GetCitiesDocument,
   })
 
   const { cities } = data
   return {
-    cities,
+    cities: cities,
     loading,
     error: null,
   }
@@ -79,8 +60,8 @@ export const getUserAddressById = async (id?: string) => {
     }
   }
 
-  const { data, loading } = await query({
-    query: GET_USER_ADDRESS_BY_ID,
+  const { data, loading } = await query<GetUserAddressByIdQuery>({
+    query: GetUserAddressByIdDocument,
     variables: {
       id: userId,
     },
@@ -104,8 +85,8 @@ export const getUserById = async (id?: string) => {
 
 
   try {
-    const { data, loading } = await query({
-      query: GET_USER_BY_ID,
+    const { data, loading } = await query<GetUserByIdQuery>({
+      query: GetUserByIdDocument,
       variables: {
         id: userId,
       },
@@ -135,16 +116,15 @@ export const updateUserById = async (
       | 'id'
       | 'phone'
       | 'picture'
-      | 'vkn_tckn'
     >
   >,
 ) => {
-  const { data: updatedData } = await mutate({
-    mutation: UPDATE_USER_BY_ID,
+  const { data: updatedData } = await mutate<UpdateUserByIdMutation>({
+    mutation: UpdateUserByIdDocument,
     awaitRefetchQueries: true,
     refetchQueries: [
       {
-        query: GET_USER_BY_ID,
+        query: GetUserByIdDocument,
         variables: {
           id: data.id,
         },
@@ -173,12 +153,12 @@ export const createNewUserAddress = async (data: {
   receiver_lastname: string
   receiver_phone: string
 }) => {
-  const { data: updatedData } = await mutate({
-    mutation: CREATE_NEW_ADDRESS,
+  const { data: updatedData } = await mutate<CreateNewAddressMutation>({
+    mutation: CreateNewAddressDocument,
     awaitRefetchQueries: true,
     refetchQueries: [
       {
-        query: GET_USER_BY_ID,
+        query: GetUserByIdDocument,
         variables: {
           id: data.user_id,
         },
@@ -190,7 +170,8 @@ export const createNewUserAddress = async (data: {
     },
   })
 
-  const { update_user_by_pk: user } = updatedData
+  const { insert_user_address_one: user } = updatedData
+
 
   return {
     user,

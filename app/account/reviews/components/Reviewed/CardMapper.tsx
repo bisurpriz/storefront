@@ -1,7 +1,8 @@
-import { ReviewWithProduct } from '@/common/types/Review/review';
 import ReviewedCard from './ReviewedCard';
+import { GetOrdersWithReviewsQuery } from '@/graphql/generated';
 
-const ReviewedCardMapper = ({ result }: { result: ReviewWithProduct[] }) =>
+const ReviewedCardMapper = ({ result }: {  result: GetOrdersWithReviewsQuery['review'];
+}) =>
   result?.map((item) => (
     <ReviewedCard
       key={item.id}
@@ -10,7 +11,7 @@ const ReviewedCardMapper = ({ result }: { result: ReviewWithProduct[] }) =>
       reviewDate={item.created_at}
       imageUrl={item.product.image_url[0]}
       rating={item.score}
-      reviewCount={item.product.review_count}
+      reviewCount={item.product.reviews_aggregate.aggregate.count}
       productId={item.product.id}
     />
   ));
