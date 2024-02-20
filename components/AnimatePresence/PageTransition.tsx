@@ -20,6 +20,7 @@ export default function PageTransition({
       initial="hidden"
       animate="enter"
       transition={{ type: "linear" }}
+      className="flex-1"
     >
       {children}
     </motion.main>

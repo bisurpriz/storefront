@@ -12,7 +12,6 @@ export function middleware(request) {
     return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
 
-  console.log('middleware', request.nextUrl.pathname);
 }
 
 export const config = {

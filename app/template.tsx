@@ -1,3 +1,5 @@
+'use client'
+
 import PageTransition from '@/components/AnimatePresence/PageTransition';
 import React from 'react';
 
