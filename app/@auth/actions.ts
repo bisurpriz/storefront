@@ -20,7 +20,6 @@ export const login = async ({ email, password }) => {
       id: decodedToken['https://hasura.io/jwt/claims']['x-hasura-user-id'],
     }
 
-    console.log(decodedToken)
 
 
     cookies().set('access_token', response.data.login.access_token)
