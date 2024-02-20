@@ -1,14 +1,12 @@
-import { ICoupon } from '@/common/types/Coupon/coupon';
+import { GetAllCouponsDocument, GetAllCouponsQuery } from '@/graphql/generated';
 import { query } from '@/graphql/lib/client';
-import { GET_ALL_COUPONS } from '@/graphql/queries/account/coupon';
 
 export const getUserCoupons = async () => {
-  const { data } = await query<{
-    coupon: ICoupon[];
-  }>({
-    query: GET_ALL_COUPONS,
+  const { data } = await query<GetAllCouponsQuery>({
+    query: GetAllCouponsDocument,
     fetchPolicy: 'no-cache',
   });
+
 
   return {
     coupons: data.coupon,

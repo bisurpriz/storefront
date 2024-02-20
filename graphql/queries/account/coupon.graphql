@@ -1,7 +1,4 @@
-import { gql } from '@apollo/client';
-
-const GET_ALL_COUPONS = gql`
-  query getAllCoupons {
+ query getAllCoupons {
     coupon(
       where: {
         user_coupons_aggregate: { count: { predicate: { _eq: 0 } } }
@@ -16,8 +13,11 @@ const GET_ALL_COUPONS = gql`
       end_date
       minimum_cost
       amount
+      tenant {
+       	firstname
+        lastname
+        nickname
+        id
+      }
     }
   }
-`;
-
-export { GET_ALL_COUPONS };

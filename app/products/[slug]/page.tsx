@@ -63,8 +63,8 @@ const ProductDetail = async ({
       >
         <div className="w-1/2 max-md:w-full">
           <ProductImageCarousel
-            images={data.product.image_url?.map((url: string) => ({
-              id: url,
+            images={data.product.image_url?.map((url: string,index) => ({
+              id: index,
               url: `${IMAGE_URL}/${url}`,
             }))}
           />
@@ -96,7 +96,10 @@ const ProductDetail = async ({
               4: 1,
               5: 1,
             }}
-            rating={data.reviews.data}
+            rating={data.reviews.data.reduce(
+              (acc, review) => acc + review.score,
+              0
+            ) / data.reviews.totalCount}
             reviewCount={data.reviews.totalCount}
             promotion="Kargo Bedava"
             discountPrice={data.product.price}

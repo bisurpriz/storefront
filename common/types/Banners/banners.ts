@@ -1,7 +1,7 @@
 export type Banner = {
-  expire_date: Date;
-  id: string;
-  name: string;
-  path: string;
+  expire_date?: any;
+  id: any;
+  name?: string;
+  path?: string;
   redirect_link: string;
 };

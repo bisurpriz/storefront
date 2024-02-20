@@ -20,7 +20,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
 const wsLink =
   typeof window !== 'undefined'
     ? new WebSocketLink({
-      uri: 'wss://bisurprizdev.hasura.app/v1/graphql',
+      uri: process.env.HASURA_WS_URL,
       options: {
         reconnect: true,
         connectionParams: async () => {
@@ -58,7 +58,7 @@ export const authLink = setContext(async (_, { headers }) => {
 })
 
 export const httpLink = new HttpLink({
-  uri: 'https://bisurprizdev.hasura.app/v1/graphql',
+  uri: process.env.HASURA_URL,
 })
 
 const _httpLink =

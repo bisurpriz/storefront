@@ -1,18 +1,18 @@
 import HeaderMiddle from './Middle';
 import HeaderBottom from './Bottom';
 import { query } from '@/graphql/lib/client';
-import { GET_ALL_CATEGORIES } from '@/graphql/queries/categories/getCategories';
 import { memo } from 'react';
+import { GetCategoriesDocument, GetCategoriesQuery } from '@/graphql/generated';
 
 const Header = async () => {
-  const { data } = await query({
-    query: GET_ALL_CATEGORIES,
+  const { data: {category} } = await query<GetCategoriesQuery>({
+    query: GetCategoriesDocument,
   });
 
   return (
     <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
       <HeaderMiddle />
-      <HeaderBottom categories={data.category} />
+      <HeaderBottom categories={category} />
     </div>
   );
 };

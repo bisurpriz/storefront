@@ -1,6 +1,5 @@
 'use client'
 import Button from '@/components/Button'
-import { useUser } from '@/contexts/AuthContext'
 import useDelayUnmount from '@/hooks/useDelayUnmount'
 import useChatStore from '@/store'
 import { useState } from 'react'
@@ -9,12 +8,12 @@ import { sendMessage } from '../action'
 import ChatList from './ChatList'
 import Input from './Message/Input'
 import MessageList from './Message/MessageList'
+import { readIdFromCookies } from '@/app/actions'
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
   const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId))
   const [tenantIdState, setTenantIdState] = useState(tenantId)
   const [text, setText] = useState('')
-  const { user } = useUser()
 
   const shouldRenderChild = useDelayUnmount(isMessageOpen, 500)
 
@@ -26,7 +25,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
       message: text,
       created_at: new Date().toISOString(),
       sender: {
-        id: user.id,
+        id: readIdFromCookies(),
       },
       receiver: {
         id: tenantId,

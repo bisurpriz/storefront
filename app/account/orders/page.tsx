@@ -46,7 +46,7 @@ const OrdersPage = async () => {
 
               <div className="h-px border my-3"></div>
 
-              <TenantOrders tenants={order?.tenant_orders} />
+              <TenantOrders tenants={order.tenant_orders} />
 
               <p className="text-sm text-right">
                 Siparişinizde toplam{' '}

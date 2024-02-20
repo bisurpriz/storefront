@@ -1,8 +1,7 @@
 'use server'
 
+import { GetBannersDocument, GetBannersQuery, GetVendorByIdDocument, GetVendorByIdQuery } from '@/graphql/generated'
 import { query } from '@/graphql/lib/client'
-import { GET_ALL_BANNERS } from '@/graphql/queries/banners/banners'
-import { GET_VENDOR_BY_ID } from '@/graphql/queries/vendors/getVendorById'
 import { cookies } from 'next/headers'
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
@@ -45,9 +44,9 @@ export async function readFingerPrintFromCookies() {
   return fingerprint?.value
 }
 
-export const getVendorById = async <T>({ id }: { id: number }) => {
-  const { data, loading } = await query({
-    query: GET_VENDOR_BY_ID,
+export const getVendorById = async ({ id }: { id: number }) => {
+  const { data, loading } = await query<GetVendorByIdQuery>({
+    query: GetVendorByIdDocument,
     variables: {
       id,
     },
@@ -75,8 +74,8 @@ export const getVendorById = async <T>({ id }: { id: number }) => {
 }
 
 export async function getBanners() {
-  const { data, loading } = await query({
-    query: GET_ALL_BANNERS,
+  const { data, loading } = await query<GetBannersQuery>({
+    query: GetBannersDocument,
   })
 
   return {

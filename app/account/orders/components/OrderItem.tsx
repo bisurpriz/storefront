@@ -1,9 +1,9 @@
-import type { OrderItemResponse } from '@/common/types/Order/order';
 import { IMAGE_URL } from '@/contants/urls';
+import { GetUserOrdersQuery } from '@/graphql/generated';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const OrderItem = ({ order_items }: { order_items: OrderItemResponse[] }) => {
+const OrderItem = ({ order_items }: { order_items: GetUserOrdersQuery['order'][0]['tenant_orders'][0]['order_items'] }) => {
   return (
     <div className="flex items-center justify-start gap-4 max-xs:flex-wrap max-xs:items-center max-xs:w-full">
       {order_items.map((oi) => (

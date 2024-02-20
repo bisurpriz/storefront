@@ -80,9 +80,9 @@ export default async function ProductExample({
         aria-describedby="Ürün detayları">
         <div className="w-1/2 max-md:w-1/4 max-sm:w-full">
           <ProductImageCarousel
-            images={data.product.image_url?.map((url: string) => ({
-              id: url,
-              url: `${IMAGE_URL}/${url}`,
+            images={data.product.image_url?.map((url: string,index) => ({
+              id: index,
+              url: `${IMAGE_URL}/${url}` as string,
             }))}
           />
         </div>
@@ -97,7 +97,10 @@ export default async function ProductExample({
               4: 1,
               5: 1,
             }}
-            rating={data.reviews.data}
+            rating={data.reviews.data.reduce(
+              (acc, review) => acc + review.score,
+              0,
+            ) / data.reviews.totalCount}
             reviewCount={data.reviews.totalCount}
             promotion="Kargo Bedava"
             discountPrice={data.product.price}
@@ -151,10 +154,14 @@ export default async function ProductExample({
         aria-describedby="Yorumlar">
         <ProductComments
           comments={data.reviews.data.map((cm) => ({
-            createdAt: cm.created_at,
-            comment_id: cm.id,
-            rate: cm.score,
             comment: cm.comment,
+            comment_id: cm.id,
+            createdAt: cm.created_at,
+            email: cm.user.email,
+            firstName: cm.user.firstname,
+            lastName: cm.user.lastname,
+            rate: cm.score,
+            user_id: cm.user.id,
             user_image_url: cm.user.picture,
           }))}
         />
