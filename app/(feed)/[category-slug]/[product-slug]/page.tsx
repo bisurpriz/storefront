@@ -7,6 +7,7 @@ import ProductImageCarousel from '@/app/products/[slug]/components/Detail/Produc
 import ProductInformation from '@/app/products/[slug]/components/Detail/ProductInformation'
 import { getProductById } from '@/app/products/actions'
 import AccordionItem from '@/components/Accordion/AccordionItem'
+import RecommendedProducts from '@/components/RecommendedProducts'
 import { IMAGE_URL } from '@/contants/urls'
 import { createJSONLd } from '@/utils/createJSONLd'
 import { Metadata } from 'next'
@@ -146,6 +147,13 @@ export default async function ProductExample({
         aria-labelledby="payment-methods"
         aria-describedby="Ödeme yöntemleri">
         <PaymentMethods />
+      </section>
+      <section
+        className='mt-6'
+        id='recommended-products'
+        aria-labelledby='recommended-products'
+        aria-describedby='Önerilen Ürünler'>
+        <RecommendedProducts />
       </section>
       <section
         className="mt-6"

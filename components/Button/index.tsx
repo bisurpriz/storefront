@@ -131,9 +131,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantClass = (() => {
       switch (variant) {
         case 'outlined':
-          return 'border border-gray-400';
+          return 'border';
         case 'dashed':
-          return 'border-dashed border-gray-400';
+          return 'border-dashed';
         case 'link':
           return 'border-0 underline';
         case 'fullfilled':
