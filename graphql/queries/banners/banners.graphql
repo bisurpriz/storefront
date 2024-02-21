@@ -1,0 +1,9 @@
+query getBanners {
+  system_banner {
+    expire_date
+    id
+    name
+    path
+    redirect_link
+  }
+}

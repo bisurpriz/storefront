@@ -1,33 +1,30 @@
 'use server';
 
 import { IProductFilter } from '@/common/types/Filter/productFilter';
+import { GetProductByIdDocument, GetProductByIdQuery, GetProductsWithPaginationDocument, GetProductsWithPaginationQuery } from '@/graphql/generated';
 import { getClient } from '@/graphql/lib/client';
-import { GET_PRODUCT_BY_ID } from '@/graphql/queries/products/getProductById';
-import { GET_PRODUCTS_WITH_PAGINATION } from '@/graphql/queries/products/getProductsWithPagination';
 import { parseJson } from '@/utils/format';
 
 const client = getClient();
 
-export const getPaginatedProducts = async <T>(params: IProductFilter) => {
-  const { data } = await client.query({
-    query: GET_PRODUCTS_WITH_PAGINATION,
+export const getPaginatedProducts = async (params: IProductFilter) => {
+  const { data } = await client.query<GetProductsWithPaginationQuery>({
+    query: GetProductsWithPaginationDocument,
     variables: {
       ...params,
     },
   });
 
+
   return {
-    products: data.product.map((product: any) => ({
-      ...product,
-      totalReviewCount: product.reviews_aggregate.aggregate.count,
-    })),
+    products: data.product,
     totalCount: data.product_aggregate.aggregate.count,
-  } as T;
+  };
 };
 
 export const getProductById = async <T>({ id }: { id: number }) => {
-  const { data, loading } = await client.query({
-    query: GET_PRODUCT_BY_ID,
+  const { data, loading } = await client.query<GetProductByIdQuery>({
+    query: GetProductByIdDocument,
     variables: {
       id,
     },

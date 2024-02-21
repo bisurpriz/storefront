@@ -1,0 +1,15 @@
+query getAllProducts {
+  product {
+    id
+    image_url
+    description
+    name
+    price
+    quantity
+  }
+  product_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

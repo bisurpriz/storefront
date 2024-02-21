@@ -1,0 +1,103 @@
+query getProductById($id: bigint = 0) {
+  product: product_by_pk(id: $id) {
+    category {
+      name
+    }
+    description
+    id
+    image_url
+    name
+    price
+    quantity
+    is_service_free
+    delivery_type
+    properties
+    questions {
+      created_at
+      id
+      question
+      updated_at
+      user {
+        firstname
+        lastname
+    
+      }
+    }
+    reviews {
+      id
+      comment
+      created_at
+      score
+      user {
+        firstname
+        lastname
+        picture
+        id
+        email
+      }
+    }
+    reviews_aggregate {
+      aggregate {
+        count(columns: id)
+      }
+    }
+    category {
+      name
+      id
+      slug
+    }
+    tenant {
+      id
+      firstname
+      lastname
+      nickname
+    }
+    user_favorites {
+      user_id
+      id
+    }
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+
+
+query getProductForCart($id: bigint = 0) {
+  product: product_by_pk(id: $id) {
+    description
+    id
+    image_url
+    name
+    price
+    discount_price
+    product_customizable_areas {
+      customizable_area {
+        type
+      }
+      count
+    }
+    category {
+      name
+    }
+    tenant {
+      id
+      nickname
+    }
+  }
+  category {
+    name
+  }
+}
+
+
+query getProductPricesById($id: bigint
+= 0) {
+  product: product_by_pk(id: $id) {
+    id
+    price
+    discount_price
+  }
+}

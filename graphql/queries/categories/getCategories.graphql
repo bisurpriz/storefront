@@ -1,0 +1,8 @@
+query getCategories {
+  category {
+    id
+    image_url
+    name
+    slug
+  }
+}

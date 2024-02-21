@@ -1,13 +1,13 @@
 'use server'
 
+import { LoginMutationDocument } from '@/graphql/generated';
 import { mutate, } from '@/graphql/lib/client';
-import { LOGIN_WITH_EMAIL } from '@/graphql/queries/auth/login';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 export const login = async ({ email, password }) => {
   const response = await mutate({
-    mutation: LOGIN_WITH_EMAIL,
+    mutation: LoginMutationDocument,
     variables: {
       email,
       password,
@@ -19,6 +19,8 @@ export const login = async ({ email, password }) => {
     const user = {
       id: decodedToken['https://hasura.io/jwt/claims']['x-hasura-user-id'],
     }
+
+
 
     cookies().set('access_token', response.data.login.access_token)
     cookies().set('refresh_token', response.data.login.refresh_token)

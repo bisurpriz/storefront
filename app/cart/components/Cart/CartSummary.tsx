@@ -1,6 +1,6 @@
 'use client';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { IoTicketOutline } from 'react-icons/io5/';
+import { IoTicketOutline } from 'react-icons/io5';
 import Button from '@/components/Button';
 import TextField from '@/components/TextField';
 import { usePathname, useRouter } from 'next/navigation';

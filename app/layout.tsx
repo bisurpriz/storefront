@@ -117,11 +117,12 @@ export default async function RootLayout({
             <Header />
             <Content>
               {children}
-              {auth}
             </Content>
+            {auth}
             <Listener />
           </CartProvider>
         </AuthProvider>
+        
       </body>
       <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>

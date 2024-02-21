@@ -1,15 +1,11 @@
 'use server';
 
-import { TenantOrderItem } from '@/common/types/Order/order';
+import { GetSingleTenantOrderItemDocument, GetSingleTenantOrderItemQuery, MarkAsReadDocument, MarkAsReadMutation, SendMessageDocument, SendMessageMutation } from '@/graphql/generated';
 import { mutate, query } from '@/graphql/lib/client';
-import { MARK_AS_READ, SEND_MESSAGE } from '@/graphql/queries/chat/mutation';
-import { GET_TENANT_ORDER_ITEM } from '@/graphql/queries/order/query';
 
 export const getTenantOrderItem = async (orderId: number) => {
-  const response = await query<{
-    order_tenant: TenantOrderItem[];
-  }>({
-    query: GET_TENANT_ORDER_ITEM,
+  const response = await query<GetSingleTenantOrderItemQuery>({
+    query: GetSingleTenantOrderItemDocument,
     fetchPolicy: 'no-cache',
     variables: {
       id: orderId,
@@ -30,10 +26,8 @@ export const sendMessage = async ({
   receiver_id: string;
   chat_thread_id: number;
 }) => {
-  const { data } = await mutate<{
-    insert_message_one;
-  }>({
-    mutation: SEND_MESSAGE,
+  const { data } = await mutate<SendMessageMutation>({
+    mutation: SendMessageDocument,
     variables: {
       message,
       receiver_id,
@@ -47,10 +41,8 @@ export const sendMessage = async ({
 };
 
 export const markAsRead = async (chat_thread_id: string) => {
-  const { data } = await mutate<{
-    update_message_many;
-  }>({
-    mutation: MARK_AS_READ,
+  const { data } = await mutate<MarkAsReadMutation>({
+    mutation: MarkAsReadDocument,
     variables: {
       chat_thread_id,
     },

@@ -2,20 +2,18 @@ import CouponCard from '../components/CouponCard';
 import { getUserCoupons } from './actions';
 
 const CouponsPage = async () => {
-  const { coupons } = (await getUserCoupons()) || {
-    coupons: null,
-  };
+  const { coupons } = await getUserCoupons()
 
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2">
-      {coupons.map((item, i) => (
+      {coupons.map((coupon, i) => (
         <CouponCard
-          key={item.id}
-          title={item.product.tenant.nickname}
-          description={item.product.name}
-          endDate={item.end_date}
-          minimumAmount={item.minimum_cost}
-          discountAmount={item.amount}
+          key={coupon.id}
+          title={coupon.tenant.nickname}
+          description={coupon.description}
+          endDate={coupon.end_date}
+          minimumAmount={coupon.minimum_cost}
+          discountAmount={coupon.amount}
         />
       ))}
     </div>

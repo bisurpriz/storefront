@@ -1,6 +1,3 @@
-import { gql } from '@apollo/client';
-
-export const GET_PRODUCTS_WITH_PAGINATION = gql`
   query getProductsWithPagination(
     $limit: Int = 15
     $offset: Int = 0
@@ -56,4 +53,3 @@ export const GET_PRODUCTS_WITH_PAGINATION = gql`
       }
     }
   }
-`;
