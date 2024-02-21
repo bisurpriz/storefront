@@ -9,7 +9,13 @@ const ModalLoginPage = () => {
 
   return (
     <Modal handleClose={back}>
-      <LoginForm />
+      <LoginForm
+        onSuccessfulLogin={(status) => {
+          if (status) {
+            back()
+          }
+        }}
+      />
     </Modal>
   )
 }

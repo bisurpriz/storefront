@@ -1,3 +1,5 @@
+'use client';
+
 import LoginForm from '../@auth/(.)login/components/LoginForm'
 
 export type LoginResponse = {
@@ -10,8 +12,16 @@ export type LoginResponse = {
   }
 }
 
-const LoginPage = async () => {
-  return <LoginForm />
+const LoginPage = () => {
+  return (
+    <LoginForm
+      onSuccessfulLogin={(status) => {
+        if (status) {
+          console.log('login successful')
+        }
+      }}
+    />
+  )
 }
 
 export default LoginPage
