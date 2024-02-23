@@ -33,7 +33,6 @@ query getProductById($id: bigint = 0) {
         lastname
         picture
         id
-        email
       }
     }
     reviews_aggregate {

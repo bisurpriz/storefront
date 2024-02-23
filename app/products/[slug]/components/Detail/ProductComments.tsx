@@ -1,11 +1,10 @@
-import Avatar from '@/components/Avatar';
-import Rating from '../../../../../components/Rating/Rating';
-import { localeFormat } from '@/utils/format';
-import { Suspense } from 'react';
+import Avatar from "@/components/Avatar";
+import Rating from "../../../../../components/Rating/Rating";
+import { localeFormat } from "@/utils/format";
+import { Suspense } from "react";
 
 type Comment = {
   comment_id: number;
-  email: string;
   comment: string;
   createdAt: string;
   firstName: string;
@@ -82,7 +81,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                       showReviewCount={false}
                     />
                     <span className="text-xs font-normal text-slate-500 whitespace-nowrap self-center">
-                      {localeFormat(new Date(comment.createdAt), 'd MMMM Y')}
+                      {localeFormat(new Date(comment.createdAt), "d MMMM Y")}
                     </span>
                   </div>
                 </div>
