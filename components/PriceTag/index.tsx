@@ -1,6 +1,6 @@
-import { getPriceTR } from '@/utils/getPriceTR';
-import clsx from 'clsx';
-import { memo, useMemo } from 'react';
+import { getPriceTR } from "@/utils/getPriceTR";
+import clsx from "clsx";
+import { memo, useMemo } from "react";
 
 interface PriceTagProps {
   price: number;
@@ -23,8 +23,8 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
   if (!discount)
     <span
       className={clsx([
-        'font-normal leading-none text-lg text-green-500',
-        discount > 0 ? '' : 'font-normal',
+        "font-normal leading-none text-lg text-green-500",
+        discount > 0 ? "" : "font-normal",
       ])}
     >
       {discount?.toFixed(2)} &#8378;
@@ -41,8 +41,8 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {discount > 0 && (
           <span
             className={clsx([
-              'font-normal leading-none text-lg text-green-500 max-md:text-xs whitespace-nowrap',
-              discount > 0 ? '' : 'font-normal',
+              "font-normal leading-none text-lg text-green-500 max-md:text-xs whitespace-nowrap",
+              discount > 0 ? "" : "font-normal",
             ])}
           >
             {getPriceTR(discount)}
@@ -51,10 +51,10 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {price && (
           <span
             className={clsx([
-              'decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap',
+              "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap",
               discount > 0
-                ? 'text-xs line-through'
-                : 'text-lg font-normal text-green-500',
+                ? "text-xs line-through"
+                : "text-lg font-normal text-green-500",
             ])}
           >
             {getPriceTR(price)}

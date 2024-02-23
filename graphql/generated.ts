@@ -19991,7 +19991,7 @@ export type GetProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any, email: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, firstname?: string | null, lastname?: string | null, nickname?: string | null }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, firstname?: string | null, lastname?: string | null, nickname?: string | null }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductForCartQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -20435,7 +20435,6 @@ export const GetProductByIdDocument = gql`
         lastname
         picture
         id
-        email
       }
     }
     reviews_aggregate {
