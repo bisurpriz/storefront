@@ -1,3 +1,4 @@
+"use client";
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
 import Link from "next/link";
@@ -44,8 +45,8 @@ const mobileHeader = [
   },
 ];
 
-const MobileMenu = async ({ items }: { items: MenuItem[] | undefined }) => {
-  const { user } = await getUserById();
+const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
+  const { user } = useUser();
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
