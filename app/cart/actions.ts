@@ -1,65 +1,68 @@
-'use server'
+"use server";
 
-import { ProductForCart } from '@/common/types/Cart/cart'
-import { cookies } from 'next/headers'
-import { readFingerPrintFromCookies, readIdFromCookies } from '../actions'
+import { ProductForCart } from "@/common/types/Cart/cart";
+import { cookies } from "next/headers";
+import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
+import { IPaymentToken } from "@/common/types/Payment/payment";
+import { paymentConfig } from "@/config";
+import crypto from "crypto";
 
 export const checkUserId = async () => {
-  const userId = await readIdFromCookies()
-  const fingerPrint = await readFingerPrintFromCookies()
+  const userId = await readIdFromCookies();
+  const fingerPrint = await readFingerPrintFromCookies();
 
   if (!userId) {
-    return fingerPrint
+    return fingerPrint;
   }
 
-  return userId
-}
+  return userId;
+};
 
 export const createOrderAction = async (
   cartItems: ProductForCart[],
-  orderDetail,
+  orderDetail
 ) => {
-  const userId = await checkUserId()
+  const userId = await checkUserId();
 
-  if (!userId) return null
+  if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.id
+    const tenantId = item.tenant.id;
     if (!acc[tenantId]) {
-      acc[tenantId] = []
+      acc[tenantId] = [];
     }
-    acc[tenantId].push(item)
-    return acc
-  }, {})
+    acc[tenantId].push(item);
+    return acc;
+  }, {});
 
   const getTexts = (specialInstructions) => {
     // will return an object of texts { content: "text"}
-    if (!specialInstructions) return []
+    if (!specialInstructions) return [];
     const texts = Object.keys(specialInstructions)
       .filter(
-        (key) => key.includes('text') && specialInstructions[key] !== null,
+        (key) => key.includes("text") && specialInstructions[key] !== null
       )
       .map((key) => ({
         content: specialInstructions[key],
-      }))
+      }));
 
-    return texts
-  }
+    return texts;
+  };
 
   const getImages = (specialInstructions) => {
     // will return an object of images { content: "image"}
-    if (!specialInstructions) return []
+    if (!specialInstructions) return [];
     const images = Object.keys(specialInstructions)
       .filter(
-        (key) => key.includes('image') && specialInstructions[key] !== null,
+        (key) => key.includes("image") && specialInstructions[key] !== null
       )
       .map((key) => ({
         image_url: specialInstructions[key],
-      }))
-    return images
-  }
+      }));
+    return images;
+  };
 
   const tenant_orders = Object.keys(tenantGrouped).map((key) => {
-    const tenantItems = tenantGrouped[key]
+    const tenantItems = tenantGrouped[key];
     return {
       tenant_id: key,
       order_items: {
@@ -69,21 +72,21 @@ export const createOrderAction = async (
           order_item_special_texts: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                getTexts(instruction),
-              )
+                  getTexts(instruction)
+                )
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                getImages(instruction),
-              )
+                  getImages(instruction)
+                )
               : [],
           },
         })),
       },
-    }
-  })
+    };
+  });
 
   const {
     address,
@@ -94,7 +97,7 @@ export const createOrderAction = async (
     receiver_phone,
     receiver_surname,
     receiver_firstname,
-  } = orderDetail
+  } = orderDetail;
 
   const variables = {
     user_id: userId,
@@ -113,21 +116,74 @@ export const createOrderAction = async (
         receiver_firstname,
       },
     ],
-  }
+  };
 
-  const token = await cookies().get('access_token').value
+  const token = await cookies().get("access_token").value;
 
   const response = await fetch(
-    'https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws',
+    "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(variables),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
       },
-    },
-  )
+    }
+  );
 
-  return response.json()
+  return response.json();
+};
+
+export async function getPaymentToken() {
+  "use server";
+
+  const payload: IPaymentToken = {
+    merchant_id: paymentConfig.merchant_id,
+    merchant_key: paymentConfig.merchant_key,
+    merchant_salt: paymentConfig.merchant_salt,
+    merchant_ok_url: "https://www.paytr.com/",
+    merchant_fail_url: "https://www.paytr.com/",
+    currency: "TL",
+    debug_on: 1,
+    email: "enes@enes.com",
+    max_installment: 0,
+    merchant_oid: Math.random().toString(36).substring(7).toString(),
+    no_installment: 1,
+    payment_amount: 100,
+    test_mode: 1,
+    user_basket: "Test",
+    user_ip: "94.54.30.25",
+    user_name: "Enes",
+    user_phone: "5555555555",
+    user_address: "Test address",
+    paytr_token: "123456",
+  };
+
+  const hashSTR = `${payload.merchant_id}${payload.user_ip}${payload.merchant_oid}${payload.email}${payload.payment_amount}${payload.user_basket}${payload.no_installment}${payload.max_installment}${payload.currency}${payload.test_mode}`;
+  const paytr_token = hashSTR + payload.merchant_salt;
+
+  const token = crypto
+    .createHmac("sha256", paymentConfig.merchant_key)
+    .update(paytr_token)
+    .digest("base64");
+
+  payload.paytr_token = token;
+
+  const formData = new FormData();
+
+  for (const key in payload) {
+    formData.append(key, payload[key]);
+  }
+
+  const response = await fetch(paymentConfig.request_url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams(payload as any).toString(),
+  });
+
+  const data = await response.json();
+  return data;
 }

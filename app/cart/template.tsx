@@ -12,7 +12,7 @@ const CartLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Suspense fallback={<CartSkeleton />}>
-      {count > 0 ? (
+      {true ? (
         <section
           id="cart"
           className="overflow-hidden bg-white rounded-xl border border-slate-200"
