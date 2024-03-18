@@ -150,8 +150,9 @@ export const createNewUserAddress = async (data: {
   quarter_id: string
   user_id: string
   receiver_firstname: string
-  receiver_lastname: string
+  receiver_surname: string
   receiver_phone: string
+  address_title: string
 }) => {
   const { data: updatedData } = await mutate<CreateNewAddressMutation>({
     mutation: CreateNewAddressDocument,
@@ -166,7 +167,7 @@ export const createNewUserAddress = async (data: {
     ],
     variables: {
       ...data,
-      id: data.user_id,
+      user_id: data.user_id,
     },
   })
 

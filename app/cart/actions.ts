@@ -72,15 +72,15 @@ export const createOrderAction = async (
           order_item_special_texts: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction)
-                )
+                getTexts(instruction)
+              )
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction)
-                )
+                getImages(instruction)
+              )
               : [],
           },
         })),
@@ -187,3 +187,46 @@ export async function getPaymentToken() {
   const data = await response.json();
   return data;
 }
+
+export const updateCart = async (cartItems: ProductForCart[]) => {
+  // TODO: Update cart items in the database
+  console.log("Güncelleniyor...")
+  const mock = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("success");
+    }, 1000);
+  });
+  console.log("Güncellendi", mock);
+  return mock;
+};
+
+export const getCart = async () => {
+  // TODO: Fetch cart items from the database
+  const mock: ProductForCart[] = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          category: {
+            name: "Çikolata",
+            slug: "cikolota",
+            id: 1,
+            image_url: "category/1.jpeg",
+          },
+          discount_price: 289,
+          id: 73,
+          image_url: ["product/mzxv9gmc7k-1706784371175.jpeg"],
+          name: "Lotuslu Hindistan Cevizli ve Fındıklı Lezzet Dünyası",
+          price: 300,
+          product_customizable_areas: [],
+          // @ts-ignore
+          tenant: {
+            nickname: "enessahindev",
+            id: "50af64f2-37a9-434f-b6eb-22f368cbff4d",
+          },
+          quantity: 1,
+        },
+      ]);
+    }, 1000);
+  });
+  return mock;
+};

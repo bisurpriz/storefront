@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import CartSteps from './components/Cart/CartSteps';
-import CartSummary from './components/Cart/CartSummary';
-import { Suspense } from 'react';
-import CartSkeleton from './components/Skeletons/CartSkeleton';
-import EmptyCart from './components/Cart/EmptyCart';
-import { useCart } from '@/contexts/CartContext';
+import CartSteps from "./components/Cart/CartSteps";
+import CartSummary from "./components/Cart/CartSummary";
+import { Suspense } from "react";
+import CartSkeleton from "./components/Skeletons/CartSkeleton";
+import EmptyCart from "./components/Cart/EmptyCart";
+import { useCart } from "@/contexts/CartContext";
 
 const CartLayout = ({ children }: { children: React.ReactNode }) => {
   const { count } = useCart();
 
   return (
     <Suspense fallback={<CartSkeleton />}>
-      {true ? (
+      {!(count < 1) ? (
         <section
           id="cart"
           className="overflow-hidden bg-white rounded-xl border border-slate-200"

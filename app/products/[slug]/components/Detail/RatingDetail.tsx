@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export type RatingProps = {
   rating: number;
@@ -40,7 +40,11 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
 
   return rateCounts ? (
     <div className="flex flex-col gap-2 items-start justify-center">
-      <p className="whitespace-nowrap mx-10">5 üzerinden {rating} yıldız</p>
+      {Boolean(rating) && (
+        <p className="whitespace-nowrap mx-10">
+          5 üzerinden {Number(rating)} yıldız
+        </p>
+      )}
       {Object.entries(rateCounts).map(([key, value]) => (
         <div key={key} className="flex items-center justify-start gap-2">
           <p
