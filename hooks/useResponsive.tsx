@@ -1,5 +1,5 @@
-import { breakpoints } from '@/contants/breakpoints';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { breakpoints } from "@/contants/breakpoints";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const useResponsive = () => {
   const [width, setWidth] = useState<number>(0);
@@ -13,16 +13,17 @@ const useResponsive = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);
 
+  const isSmallMobile = useMemo(() => width < breakpoints.xs, [width]);
   const isMobile = useMemo(() => width < breakpoints.sm, [width]);
   const isTablet = useMemo(() => width < breakpoints.md, [width]);
   const isDesktop = useMemo(() => width < breakpoints.lg, [width]);
   const isLargeDesktop = useMemo(() => width < breakpoints.xl, [width]);
   const isExtraLargeDesktop = useMemo(
-    () => width < breakpoints['2xl'],
+    () => width < breakpoints["2xl"],
     [width]
   );
 
@@ -32,6 +33,7 @@ const useResponsive = () => {
     isDesktop,
     isLargeDesktop,
     isExtraLargeDesktop,
+    isSmallMobile,
   };
 };
 

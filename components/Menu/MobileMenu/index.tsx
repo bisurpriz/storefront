@@ -10,7 +10,6 @@ import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiPathBold } from "react-icons/pi";
 import MenuItem from "./MenuItem";
-import { getUserById } from "@/app/account/actions";
 
 const mobileHeader = [
   {
@@ -38,7 +37,7 @@ const mobileHeader = [
     private: false,
   },
   {
-    link: "/api/auth/login",
+    link: "/login",
     text: "Giriş Yap",
     icon: LuLogIn,
     private: false,

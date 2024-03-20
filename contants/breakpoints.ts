@@ -1,6 +1,6 @@
 // tailwindcss breakpoints
 export const breakpoints = {
-  xs: 480,
+  xs: 375,
   sm: 576,
   md: 768,
   lg: 992,
