@@ -42,8 +42,8 @@ const MenuItem = ({
   );
 };
 
-const MobileBottomNav = () => {
-  const { isMobile, isSmallMobile } = useResponsive();
+const MobileBottomNav = ({ isMobile }: { isMobile: boolean }) => {
+  const { isSmallMobile } = useResponsive();
   const { count } = useCart();
   const pathname = usePathname();
 
@@ -60,10 +60,13 @@ const MobileBottomNav = () => {
 
   return isMobile ? (
     <div className="fixed bottom-0 left-0 right-0 bg-white z-50 border-t border-gray-200">
-      <div className="flex justify-between py-2 px-1">
+      <div
+        className="
+        grid grid-cols-5 gap-0 py-2 px-1"
+      >
         {mobileBottomMenu.map((item, index) => {
           return item.href === "/cart" ? (
-            <Badge badgeContent={count}>
+            <Badge badgeContent={count} key={index}>
               <MenuItem
                 item={item}
                 isSmallMobile={isSmallMobile}
@@ -72,6 +75,7 @@ const MobileBottomNav = () => {
             </Badge>
           ) : (
             <MenuItem
+              key={index}
               item={item}
               isSmallMobile={isSmallMobile}
               selected={selected === index}

@@ -1,10 +1,10 @@
-import CampaignGrid from '@/components/Grids/CampaignGrid/CampaignGrid'
-import View1 from '@/components/Layout/GridViews/View1'
-import { Suspense } from 'react'
-import { getBanners } from './actions'
+import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
+import View1 from "@/components/Layout/GridViews/View1";
+import { Suspense } from "react";
+import { getBanners } from "./actions";
 
 export default async function Page() {
-  const { banners } = await getBanners()
+  const { banners } = await getBanners();
   return (
     <Suspense
       fallback={
@@ -16,9 +16,10 @@ export default async function Page() {
             />
           ))}
         </div>
-      }>
+      }
+    >
       <CampaignGrid banners={banners} />
       <View1 />
     </Suspense>
-  )
+  );
 }
