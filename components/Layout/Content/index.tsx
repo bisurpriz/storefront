@@ -16,6 +16,9 @@ const Content = ({ children }: ContentProps) => {
     <Suspense fallback={<>Loading ...</>}>
       <Toaster />
       <main className="content-height max-sm:content-height-sm h-full md:container pt-6 p-0 px-4 mx-auto scroll-smooth flex flex-col max-sm:mb-[78px]">
+        {isMobile ? "Şu an mobil cihazdasınız" : "Şu an masaüstü cihazdasınız"}
+        <br />
+        {JSON.stringify(userAgent, null, 2)}
         {children}
         <MobileBottomNav isMobile={isMobile} />
       </main>
