@@ -2,7 +2,6 @@ import Menu from "@/components/Menu";
 import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
 import Image from "next/image";
 import Link from "next/link";
-import CartButton from "./components/CartButton";
 import MobileDrawer from "./components/MobileDrawer";
 import { Category } from "@/common/types/Category/category";
 
