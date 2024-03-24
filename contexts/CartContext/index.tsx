@@ -47,7 +47,6 @@ export const CartProvider = ({
   );
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
-    console.log("Güncelleme isteği geldi");
     await updateCart(cartItems);
 
     setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));

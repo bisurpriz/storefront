@@ -1,7 +1,6 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import useResponsive from "@/hooks/useResponsive";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
@@ -17,11 +16,9 @@ import clsx from "clsx";
 
 const MenuItem = ({
   item,
-  isSmallMobile,
   selected,
 }: {
   item: (typeof mobileBottomMenu)[0];
-  isSmallMobile: boolean;
   selected: boolean;
 }) => {
   return (
@@ -35,15 +32,12 @@ const MenuItem = ({
       )}
     >
       <span className="text-2xl">{item.icon}</span>
-      {!isSmallMobile && (
-        <span className="text-xs font-medium">{item.name}</span>
-      )}
+      <span className="text-xs font-medium max-xs:hidden">{item.name}</span>
     </Link>
   );
 };
 
-const MobileBottomNav = ({ isMobile }: { isMobile: boolean }) => {
-  const { isSmallMobile } = useResponsive();
+const MobileBottomNav = () => {
   const { count } = useCart();
   const pathname = usePathname();
 
@@ -58,8 +52,8 @@ const MobileBottomNav = ({ isMobile }: { isMobile: boolean }) => {
     setSelected(getSelectedMenuItem());
   }, [pathname]);
 
-  return isMobile ? (
-    <div className="fixed bottom-0 left-0 right-0 bg-white z-50 border-t border-gray-200">
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-white z-50 border-t border-gray-200 sm:hidden">
       <div
         className="
         grid grid-cols-5 gap-0 py-2 px-1"
@@ -67,24 +61,15 @@ const MobileBottomNav = ({ isMobile }: { isMobile: boolean }) => {
         {mobileBottomMenu.map((item, index) => {
           return item.href === "/cart" ? (
             <Badge badgeContent={count} key={index}>
-              <MenuItem
-                item={item}
-                isSmallMobile={isSmallMobile}
-                selected={selected === index}
-              />
+              <MenuItem item={item} selected={selected === index} />
             </Badge>
           ) : (
-            <MenuItem
-              key={index}
-              item={item}
-              isSmallMobile={isSmallMobile}
-              selected={selected === index}
-            />
+            <MenuItem key={index} item={item} selected={selected === index} />
           );
         })}
       </div>
     </div>
-  ) : null;
+  );
 };
 export default MobileBottomNav;
 
