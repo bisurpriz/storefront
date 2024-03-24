@@ -46,10 +46,11 @@ query getProductById($id: bigint = 0) {
       slug
     }
     tenant {
-      id
-      firstname
-      lastname
-      nickname
+     tenants {
+       id
+       name
+       logo
+      }
     }
     user_favorites {
       user_id

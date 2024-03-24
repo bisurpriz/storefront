@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import CreditCardInput from '@/components/CreditCardInput';
-import CreditCardDateInput from '@/components/CreditCardInput/CreditCartDateInput';
-import TextField from '@/components/TextField';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
-import { createOrderAction } from '../../actions';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import { useCart } from '@/contexts/CartContext';
+import CreditCardInput from "@/components/CreditCardInput";
+import CreditCardDateInput from "@/components/CreditCardInput/CreditCartDateInput";
+import TextField from "@/components/TextField";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string } from "yup";
+import { createOrderAction } from "../../actions";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/contexts/CartContext";
 
 const schema = object().shape({
   creditCartNumber: string().test(
-    'test-number',
-    'Geçersiz kart numarası',
+    "test-number",
+    "Geçersiz kart numarası",
     (value) => {
       if (value) {
-        return value.replace(/\s+/g, '').length === 16;
+        return value.replace(/\s+/g, "").length === 16;
       } else {
         return false;
       }
     }
   ),
-  creditCartName: string().required('Kart üzerindeki isim zorunludur'),
-  creditCartDate: string().test('test-date', 'Geçersiz tarih', (value) => {
-    const splitted = value?.split('/');
+  creditCartName: string().required("Kart üzerindeki isim zorunludur"),
+  creditCartDate: string().test("test-date", "Geçersiz tarih", (value) => {
+    const splitted = value?.split("/");
     if (splitted) {
       const month = parseInt(splitted[0]);
       const year = parseInt(splitted[1]);
@@ -39,10 +39,10 @@ const schema = object().shape({
     }
   }),
   creditCartCvv: string()
-    .required('CVV zorunludur')
-    .test('test-cvv', 'Geçersiz CVV', (value) => {
+    .required("CVV zorunludur")
+    .test("test-cvv", "Geçersiz CVV", (value) => {
       if (value) {
-        return value.replace(/\s+/g, '').length === 3;
+        return value.replace(/\s+/g, "").length === 3;
       } else {
         return false;
       }
@@ -52,39 +52,37 @@ const schema = object().shape({
 const CreditCartForm = () => {
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: "onChange",
   });
 
-  const { clearCart } = useCart();
+  const { clearCart, cartItems } = useCart();
 
   const { push } = useRouter();
 
   const onSubmit = async (data: any) => {
     if (data) {
-      const serialize = localStorage.getItem('detail-data');
-
+      const serialize = localStorage.getItem("detail-data");
       const detailData = JSON.parse(serialize);
-      // TODO: cartItems
-      const cartItems = [];
+
       toast
         .promise(
           createOrderAction(cartItems, detailData),
           {
-            loading: 'Ödeme yapılıyor...',
-            success: 'Ödeme başarılı',
-            error: 'Ödeme başarısız',
+            loading: "Ödeme yapılıyor...",
+            success: "Ödeme başarılı",
+            error: "Ödeme başarısız",
           },
           {
-            icon: '💳',
+            icon: "💳",
             style: {
-              minWidth: '250px',
+              minWidth: "250px",
             },
           }
         )
         .then(() => {
-          localStorage.removeItem('detail-data');
+          localStorage.removeItem("detail-data");
           clearCart();
-          push('/cart/complete');
+          push("/cart/complete");
         });
     }
   };
@@ -142,7 +140,7 @@ const CreditCartForm = () => {
               placeholder="123"
               maxLength={3}
               onChange={(e) => {
-                const inputValue = e.target.value.replace(/\D/g, '');
+                const inputValue = e.target.value.replace(/\D/g, "");
                 onChange(inputValue);
               }}
               error={!!error}

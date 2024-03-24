@@ -55,9 +55,10 @@ export const getProductById = async <T>({ id }: { id: number }) => {
       totalCount: data.product.reviews_aggregate.aggregate.count,
     },
     tenant: {
-      id: data.product.tenant.id,
-      name: data.product.tenant.nickname,
+      id: data.product.tenant.tenants[0]?.id,
+      name: data.product.tenant.tenants[0]?.name,
       rate: 8.2,
+      logo: data.product.tenant.tenants[0]?.logo,
     },
     loading,
     favorites: {

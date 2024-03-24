@@ -36,7 +36,9 @@ const MenuItem = ({
       onClick={onSelect}
     >
       <span className="text-2xl">{item.icon}</span>
-      <span className="text-xs font-medium max-xs:hidden">{item.name}</span>
+      <span className="text-xs font-medium inline-block max-xs:hidden">
+        {item.name}
+      </span>
     </Link>
   );
 };
