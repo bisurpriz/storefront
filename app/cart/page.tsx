@@ -1,10 +1,14 @@
-'use client';
+import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import CartWrapper from "./components/Cart/CartWrapper/index";
 
-import { useCart } from '@/contexts/CartContext';
-import CartWrapper from './components/Cart/CartWrapper/index';
+export const generateMetadata = async () => {
+  return {
+    title: getBrandWithTitle("Sepetim"),
+    description: "Sepetimdeki ürünlerin listesi",
+  };
+};
 
-const Cart = () => {
-  const { cartItems } = useCart();
+const Cart = async () => {
   return (
     <div
       className="w-full relative"
@@ -12,7 +16,7 @@ const Cart = () => {
       aria-describedby="Sepetimdeki ürünlerin listesi"
     >
       <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
-        <CartWrapper initialCartItems={cartItems} />
+        <CartWrapper />
       </div>
     </div>
   );

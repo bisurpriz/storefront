@@ -54,7 +54,7 @@ const quickSand = Quicksand({
 });
 
 export const metadata: Metadata = {
-  title: "Bonnmarşe",
+  title: "Bonnmarşe | Sevdiklerinize sürpriz yapın",
   description: "Sevdiklerinize sürpriz yapın",
   creator: "Bonnmarşe",
   icons: {

@@ -1,5 +1,13 @@
-import Button from '@/components/Button';
-import Link from 'next/link';
+import Button from "@/components/Button";
+import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import Link from "next/link";
+
+export const generateMetadata = async () => {
+  return {
+    title: getBrandWithTitle("Sipariş Tamamlandı"),
+    description: "Sipariş tamamlandı sayfası",
+  };
+};
 
 const OrderCompletePage: React.FC = async () => {
   return (
@@ -8,10 +16,10 @@ const OrderCompletePage: React.FC = async () => {
       <p className="text-lg text-gray-600 mb-8">
         Siparişiniz en kısa sürede hazırlanıp yola çıkacaktır.
       </p>
-      <Link href={'/'}>
+      <Link href={"/"}>
         <Button>Alışverişe Devam Et</Button>
       </Link>
-      <Link href={'/account/orders'}>
+      <Link href={"/account/orders"}>
         <Button color="secondary">Siparişlerim</Button>
       </Link>
     </div>

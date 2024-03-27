@@ -72,15 +72,15 @@ export const createOrderAction = async (
           order_item_special_texts: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                getTexts(instruction)
-              )
+                  getTexts(instruction)
+                )
               : [],
           },
           order_item_special_images: {
             data: item.specialInstructions
               ? item.specialInstructions.flatMap((instruction) =>
-                getImages(instruction)
-              )
+                  getImages(instruction)
+                )
               : [],
           },
         })),
@@ -190,13 +190,11 @@ export async function getPaymentToken() {
 
 export const updateCart = async (cartItems: ProductForCart[]) => {
   // TODO: Update cart items in the database
-  console.log("Güncelleniyor...")
   const mock = await new Promise((resolve) => {
     setTimeout(() => {
       resolve("success");
     }, 1000);
   });
-  console.log("Güncellendi", mock);
   return mock;
 };
 
@@ -235,7 +233,7 @@ export const getCart = async () => {
             tenant_address: "",
             reference_code: "",
             is_active_tenant: false,
-            is_active_user: false
+            is_active_user: false,
           },
           quantity: 1,
         },
