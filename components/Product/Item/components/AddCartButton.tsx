@@ -1,23 +1,16 @@
-'use client';
-import Button from '@/components/Button';
-import { useCallback } from 'react';
-import { ProductForCart } from '@/common/types/Cart/cart';
+"use client";
+import Button from "@/components/Button";
+import { useCallback } from "react";
+import { ProductForOrder } from "@/common/types/Cart/cart";
 
-interface AddCartButtonProps extends ProductForCart {
+interface AddCartButtonProps extends ProductForOrder {
   className?: string;
   loading?: boolean;
 }
 
 const AddCartButton = ({
-  category,
-  discount_price,
   id,
-  image_url,
-  name,
-  price,
   product_customizable_areas,
-  quantity,
-  tenant,
   className,
   loading,
 }: AddCartButtonProps) => {
@@ -36,7 +29,7 @@ const AddCartButton = ({
       rounded
       className={
         className ??
-        'justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm'
+        "justify-center text-lg rounded-3xl max-xs:p-2 max-xs:text-sm"
       }
       onClick={handleAddToCart}
     >

@@ -1,0 +1,13 @@
+mutation updateUserCart($payload:[cart_insert_input!]!) {
+  insert_cart(objects:$payload,
+  on_conflict:{
+    constraint:cart_pkey
+    update_columns:[content]
+  }
+  ){
+    returning {
+      id
+    }
+    affected_rows
+  }
+}

@@ -1,16 +1,30 @@
-import { Product } from '../Product/product';
+import { GetCartProductsByIdsQuery, Product } from "@/graphql/generated";
+import { CustomizableArea } from "../Order/order";
 
-export interface ProductForCart
+export interface ProductForOrder
   extends Pick<
-    Product,
-    | 'id'
-    | 'image_url'
-    | 'name'
-    | 'price'
-    | 'category'
-    | 'tenant'
-    | 'discount_price'
-    | 'product_customizable_areas'
+    GetCartProductsByIdsQuery["product"][0],
+    | "category"
+    | "description"
+    | "discount_price"
+    | "id"
+    | "image_url"
+    | "name"
+    | "price"
+    | "stock"
+    | "tenant"
   > {
   quantity: number;
+  product_customizable_areas: {
+    customizable_area: CustomizableArea;
+    id: number;
+    quantity: number;
+    count: number;
+  }[] &
+    Product["product_customizable_areas"];
 }
+
+export type ProductForCart = Pick<
+  ProductForOrder,
+  "id" | "product_customizable_areas" | "quantity"
+>;

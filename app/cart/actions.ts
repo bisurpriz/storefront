@@ -1,11 +1,19 @@
 "use server";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { ProductForOrder } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
 import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
 import { IPaymentToken } from "@/common/types/Payment/payment";
 import { paymentConfig } from "@/config";
 import crypto from "crypto";
+import { mutate, query } from "@/graphql/lib/client";
+import {
+  GetCartProductsByIdsDocument,
+  GetCartProductsByIdsQuery,
+  UpdateUserCartDocument,
+  UpdateUserCartMutation,
+  UpdateUserCartMutationVariables,
+} from "@/graphql/generated";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -19,14 +27,14 @@ export const checkUserId = async () => {
 };
 
 export const createOrderAction = async (
-  cartItems: ProductForCart[],
+  cartItems: ProductForOrder[],
   orderDetail
 ) => {
   const userId = await checkUserId();
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.id;
+    const tenantId = item.tenant.tenants[0].id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }
@@ -188,57 +196,23 @@ export async function getPaymentToken() {
   return data;
 }
 
-export const updateCart = async (cartItems: ProductForCart[]) => {
-  // TODO: Update cart items in the database
-  const mock = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("success");
-    }, 1000);
+export const updateCart = async (
+  cartItems: UpdateUserCartMutationVariables["payload"]
+) => {
+  if (!cartItems) return;
+  await mutate<UpdateUserCartMutation>({
+    mutation: UpdateUserCartDocument,
+    variables: { payload: cartItems },
   });
-  return mock;
 };
 
-export const getCart = async () => {
-  // TODO: Fetch cart items from the database
-  const mock: ProductForCart[] = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          category: {
-            name: "Çikolata",
-            slug: "cikolota",
-            id: 1,
-            image_url: "category/1.jpeg",
-          },
-          discount_price: 289,
-          id: 73,
-          image_url: ["product/mzxv9gmc7k-1706784371175.jpeg"],
-          name: "Lotuslu Hindistan Cevizli ve Fındıklı Lezzet Dünyası",
-          price: 300,
-          product_customizable_areas: [],
-          tenant: {
-            nickname: "enessahindev",
-            id: "50af64f2-37a9-434f-b6eb-22f368cbff4d",
-            firstname: "",
-            lastname: "",
-            email: "",
-            phone: "",
-            role: "User",
-            company_type: "",
-            picture: "",
-            email_verified: false,
-            phone_verified: false,
-            created_at: "",
-            updated_at: "",
-            tenant_address: "",
-            reference_code: "",
-            is_active_tenant: false,
-            is_active_user: false,
-          },
-          quantity: 1,
-        },
-      ]);
-    }, 1000);
+export const getProductsForCartWithIds = async (ids: number[]) => {
+  const { data } = await query<GetCartProductsByIdsQuery>({
+    query: GetCartProductsByIdsDocument,
+    variables: {
+      ids,
+    },
   });
-  return mock;
+
+  return data.product;
 };
