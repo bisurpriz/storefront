@@ -44,7 +44,7 @@ const CartSummary = () => {
     (nextPath: string) => {
       if (cartItems.length > 0) {
         const isCustomizable = cartItems.find(
-          (item) => item.product_customizable_areas.length > 0
+          (item) => item.product_customizable_areas?.length > 0
         );
         if (isCustomizable) {
           const isCustomizableAreaEmpty =

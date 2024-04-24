@@ -713,7 +713,9 @@ export type Cart_Bool_Exp = {
 /** unique or primary key constraints on table "cart" */
 export type Cart_Constraint =
   /** unique or primary key constraint on columns "id" */
-  | 'cart_pkey';
+  | 'cart_pkey'
+  /** unique or primary key constraint on columns "user_id" */
+  | 'cart_user_id_key';
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Cart_Delete_At_Path_Input = {
@@ -20620,7 +20622,7 @@ export const UpdateDbCartDocument = gql`
     mutation updateDbCart($payload: [cart_insert_input!]!) {
   insert_cart(
     objects: $payload
-    on_conflict: {constraint: cart_pkey, update_columns: [content]}
+    on_conflict: {constraint: cart_user_id_key, update_columns: [content]}
   ) {
     returning {
       id
