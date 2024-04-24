@@ -1,6 +1,6 @@
-import { formatDistance } from 'date-fns';
-import format from 'date-fns/format';
-import tr from 'date-fns/locale/tr';
+import { formatDistance } from "date-fns";
+import format from "date-fns/format";
+import tr from "date-fns/locale/tr";
 
 export const localeFormat = (value: Date, naming: string) => {
   const formatted = format(value, naming, {
@@ -16,9 +16,9 @@ export const localeDistanceFormat = (value: Date) => {
   return formatted;
 };
 
-export const parseJson = (json: any) => {
+export const parseJson = (string: any) => {
   try {
-    return JSON.parse(json);
+    return JSON.parse(string);
   } catch (e) {
     return null;
   }

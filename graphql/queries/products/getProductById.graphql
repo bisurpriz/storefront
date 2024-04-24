@@ -65,7 +65,7 @@ query getProductById($id: bigint = 0) {
 }
 
 
-query getProductForCart($id: bigint = 0) {
+query getProductForOrder($id: bigint = 0) {
   product: product_by_pk(id: $id) {
     description
     id

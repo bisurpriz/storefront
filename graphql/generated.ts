@@ -664,6 +664,17 @@ export type Cart_Aggregate_Bool_Exp_Count = {
   predicate: Int_Comparison_Exp;
 };
 
+export type Cart_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Cart_Aggregate_Bool_Exp_Count>;
+};
+
+export type Cart_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Cart_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Cart_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "cart" */
 export type Cart_Aggregate_Fields = {
   count: Scalars['Int']['output'];
@@ -685,9 +696,23 @@ export type Cart_Aggregate_Order_By = {
   min?: InputMaybe<Cart_Min_Order_By>;
 };
 
+/** order by aggregate values of table "cart" */
+export type Cart_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Cart_Max_Order_By>;
+  min?: InputMaybe<Cart_Min_Order_By>;
+};
+
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Cart_Append_Input = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** input type for inserting array relation for remote table "cart" */
+export type Cart_Arr_Rel_Insert_Input = {
+  data: Array<Cart_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Cart_On_Conflict>;
 };
 
 /** input type for inserting array relation for remote table "cart" */
@@ -762,6 +787,14 @@ export type Cart_Min_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "cart" */
+export type Cart_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** order by min() on columns of table "cart" */
@@ -20172,7 +20205,7 @@ export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> }
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { nickname?: string | null, id: any }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
 
 export type CreateNewAddressMutationVariables = Exact<{
   address?: InputMaybe<Scalars['String']['input']>;
@@ -20192,7 +20225,7 @@ export type CreateNewAddressMutation = { insert_user_address_one?: { address_tit
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCouponsQuery = { coupon: Array<{ id: any, code: string, description?: string | null, created_at?: any | null, start_date?: any | null, end_date?: any | null, minimum_cost?: number | null, amount: number, tenant: { firstname?: string | null, lastname?: string | null, nickname?: string | null, id: any } }> };
+export type GetAllCouponsQuery = { coupon: Array<{ id: any, code: string, description?: string | null, created_at?: any | null, start_date?: any | null, end_date?: any | null, minimum_cost?: number | null, amount: number, tenant: { tenants: Array<{ logo?: string | null, name?: string | null, id: any }> } }> };
 
 export type GetUserFavoritesQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -20232,20 +20265,6 @@ export type GetBannersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBannersQuery = { system_banner: Array<{ expire_date?: any | null, id: any, name?: string | null, path?: string | null, redirect_link: string }> };
-
-export type UpdateDbCartMutationVariables = Exact<{
-  payload: Array<Cart_Insert_Input> | Cart_Insert_Input;
-}>;
-
-
-export type UpdateDbCartMutation = { insert_cart?: { affected_rows: number, returning: Array<{ id: any }> } | null };
-
-export type GetDbCartQueryVariables = Exact<{
-  user_id: Scalars['uuid']['input'];
-}>;
-
-
-export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20311,12 +20330,12 @@ export type GetProductByIdQueryVariables = Exact<{
 
 export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
-export type GetProductForCartQueryVariables = Exact<{
+export type GetProductForOrderQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
 }>;
 
 
-export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { id: any, nickname?: string | null } } | null, category: Array<{ name: string }> };
+export type GetProductForOrderQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { id: any, nickname?: string | null } } | null, category: Array<{ name: string }> };
 
 export type GetProductPricesByIdQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -20324,13 +20343,6 @@ export type GetProductPricesByIdQueryVariables = Exact<{
 
 
 export type GetProductPricesByIdQuery = { product?: { id: any, price: number, discount_price?: number | null } | null };
-
-export type GetProductsForInitialCartQueryVariables = Exact<{
-  ids?: InputMaybe<Array<Scalars['bigint']['input']> | Scalars['bigint']['input']>;
-}>;
-
-
-export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } }> };
 
 export type GetProductsWithPaginationQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20340,7 +20352,7 @@ export type GetProductsWithPaginationQueryVariables = Exact<{
 }>;
 
 
-export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { nickname?: string | null, id: any }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ logo?: string | null, name?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 export type GetOrdersWithReviewsQueryVariables = Exact<{
   user_id: Scalars['uuid']['input'];
@@ -20472,8 +20484,11 @@ export const GetUserOrdersDocument = gql`
     tenant_orders {
       id
       tenant {
-        nickname
-        id
+        tenants {
+          name
+          logo
+          id
+        }
       }
       order_items {
         id
@@ -20526,10 +20541,11 @@ export const GetAllCouponsDocument = gql`
     minimum_cost
     amount
     tenant {
-      firstname
-      lastname
-      nickname
-      id
+      tenants {
+        logo
+        name
+        id
+      }
     }
   }
 }
@@ -20609,27 +20625,6 @@ export const GetBannersDocument = gql`
     name
     path
     redirect_link
-  }
-}
-    `;
-export const UpdateDbCartDocument = gql`
-    mutation updateDbCart($payload: [cart_insert_input!]!) {
-  insert_cart(
-    objects: $payload
-    on_conflict: {constraint: cart_pkey, update_columns: [content]}
-  ) {
-    returning {
-      id
-    }
-    affected_rows
-  }
-}
-    `;
-export const GetDbCartDocument = gql`
-    query getDbCart($user_id: uuid!) {
-  cart(where: {user_id: {_eq: $user_id}}) {
-    id
-    content
   }
 }
     `;
@@ -20816,8 +20811,8 @@ export const GetProductByIdDocument = gql`
   }
 }
     `;
-export const GetProductForCartDocument = gql`
-    query getProductForCart($id: bigint = 0) {
+export const GetProductForOrderDocument = gql`
+    query getProductForOrder($id: bigint = 0) {
   product: product_by_pk(id: $id) {
     description
     id
@@ -20850,31 +20845,6 @@ export const GetProductPricesByIdDocument = gql`
     id
     price
     discount_price
-  }
-}
-    `;
-export const GetProductsForInitialCartDocument = gql`
-    query getProductsForInitialCart($ids: [bigint!]) {
-  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
-    name
-    description
-    id
-    price
-    discount_price
-    stock
-    image_url
-    category {
-      id
-      name
-      slug
-    }
-    tenant {
-      tenants {
-        id
-        name
-        logo
-      }
-    }
   }
 }
     `;
@@ -20913,8 +20883,11 @@ export const GetProductsWithPaginationDocument = gql`
       }
     }
     tenant {
-      nickname
-      id
+      tenants {
+        logo
+        name
+        id
+      }
     }
     reviews_aggregate {
       aggregate {
@@ -21105,12 +21078,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getBanners(variables?: GetBannersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetBannersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetBannersQuery>(GetBannersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBanners', 'query', variables);
     },
-    updateDbCart(variables: UpdateDbCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateDbCartMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDbCartMutation>(UpdateDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDbCart', 'mutation', variables);
-    },
-    getDbCart(variables: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
-    },
     getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
     },
@@ -21138,14 +21105,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getProductById(variables?: GetProductByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdQuery>(GetProductByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductById', 'query', variables);
     },
-    getProductForCart(variables?: GetProductForCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductForCartQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetProductForCartQuery>(GetProductForCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductForCart', 'query', variables);
+    getProductForOrder(variables?: GetProductForOrderQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductForOrderQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductForOrderQuery>(GetProductForOrderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductForOrder', 'query', variables);
     },
     getProductPricesById(variables?: GetProductPricesByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductPricesByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductPricesByIdQuery>(GetProductPricesByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductPricesById', 'query', variables);
-    },
-    getProductsForInitialCart(variables?: GetProductsForInitialCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsForInitialCartQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsForInitialCartQuery>(GetProductsForInitialCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsForInitialCart', 'query', variables);
     },
     getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithPaginationQuery>(GetProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithPagination', 'query', variables);

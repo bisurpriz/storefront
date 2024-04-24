@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { User } from '@/common/types/User/user';
-import Button from '@/components/Button';
-import Modal from '@/components/Modal';
-import Link from 'next/link';
-import { useState } from 'react';
-import { GrChatOption } from 'react-icons/gr';
-import { startMessageForOrder } from '../actions';
-import { useRouter } from 'next/navigation';
+import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import Link from "next/link";
+import { useState } from "react";
+import { GrChatOption } from "react-icons/gr";
+import { startMessageForOrder } from "../actions";
+import { useRouter } from "next/navigation";
+import { Tenant } from "@/graphql/generated";
 
 const OrderMessage = ({
   tenant,
   orderTenantId,
 }: {
-  tenant: User;
+  tenant: Pick<Tenant, "id" | "name" | "logo">;
   orderTenantId: number;
 }) => {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
@@ -58,12 +58,12 @@ const OrderMessage = ({
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >
-              {tenant.nickname}
+              {tenant.name}
             </Link>
             <span className="text-sm text-gray-500">
-              {' '}
+              {" "}
               satıcısı ile iletişime geçin
-            </span>{' '}
+            </span>{" "}
           </span>
         }
       >

@@ -21,7 +21,6 @@ import { ReactNode } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
-import { getCart } from "./cart/actions";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -111,8 +110,6 @@ export default async function RootLayout({
   }
 
   const { user } = await getUserById();
-  const data = await getCart();
-
   return (
     <html lang="tr">
       <body
@@ -122,7 +119,7 @@ export default async function RootLayout({
         id="root"
       >
         <AuthProvider user={user}>
-          <CartProvider cartDbItems={data}>
+          <CartProvider cartDbItems={user?.carts[0]?.content as string}>
             <Header />
             <Content>{children}</Content>
             {auth}
