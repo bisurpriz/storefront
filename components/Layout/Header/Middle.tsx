@@ -1,27 +1,27 @@
-import Button from '@/components/Button';
-import HeaderProfile from '@/components/Profile/HeaderProfile';
-import Search from '@/components/Search';
+import Button from "@/components/Button";
+import HeaderProfile from "@/components/Profile/HeaderProfile";
+import Search from "@/components/Search";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { BsTruck } from 'react-icons/bs';
-import { MdOutlineFavoriteBorder } from 'react-icons/md';
-import CartButton from './components/CartButton';
-import Tooltip from '@/components/Tooltip';
+import Image from "next/image";
+import Link from "next/link";
+import { BsTruck } from "react-icons/bs";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import CartButton from "./components/CartButton";
+import Tooltip from "@/components/Tooltip";
 
 const HeaderMiddle = async () => {
   return (
-    <div className="w-full flex items-end justify-between gap-4 lg:gap-12 my-4 max-md:px-4 ">
+    <div className="w-full flex items-end justify-between gap-4 lg:gap-12 my-4 max-md:px-4 max-sm:hidden">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
         <Image
-          src={'/logo.svg'}
+          src={"/logo.svg"}
           width={180}
           height={55}
           alt="BiSürpriz Logo"
           priority
         />
       </Link>
-      <Search />
+          <Search />
 
       <div className="float-right flex items-center max-sm:hidden">
         <Tooltip text="Favorilerim">

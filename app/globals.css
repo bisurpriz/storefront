@@ -4,7 +4,9 @@
 
 * {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 @layer components {
   .content-height {
@@ -12,7 +14,7 @@
   }
 
   .content-height-sm {
-    min-height: calc(100vh - 137px);
+    min-height: calc(100vh - 215px);
   }
 }
 

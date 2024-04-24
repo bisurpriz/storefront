@@ -1,10 +1,9 @@
-import Menu from '@/components/Menu';
-import OfflineStatus from '@/components/OfflineStatus/OfflineStatus';
-import Image from 'next/image';
-import Link from 'next/link';
-import CartButton from './components/CartButton';
-import MobileDrawer from './components/MobileDrawer';
-import { Category } from '@/common/types/Category/category';
+import Menu from "@/components/Menu";
+import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
+import Image from "next/image";
+import Link from "next/link";
+import MobileDrawer from "./components/MobileDrawer";
+import { Category } from "@/common/types/Category/category";
 
 interface Props {
   categories: Category[];
@@ -21,7 +20,7 @@ const HeaderBottom = ({ categories }: Props) => {
       <Menu items={menuData} className="max-sm:hidden" />
       <Link href="/" className="sm:hidden max-sm:mr-auto">
         <Image
-          src={'/logo.svg'}
+          src={"/logo.svg"}
           width={180}
           height={55}
           alt="Bonnmarşe Logo"
@@ -30,7 +29,6 @@ const HeaderBottom = ({ categories }: Props) => {
         />
       </Link>
       <div className="sm:hidden flex items-end">
-        <CartButton />
         <MobileDrawer categories={categories} menuData={menuData} />
       </div>
       <OfflineStatus />

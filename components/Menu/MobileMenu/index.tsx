@@ -1,3 +1,4 @@
+"use client";
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
 import Link from "next/link";
@@ -9,7 +10,6 @@ import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiPathBold } from "react-icons/pi";
 import MenuItem from "./MenuItem";
-import { getUserById } from "@/app/account/actions";
 
 const mobileHeader = [
   {
@@ -37,15 +37,15 @@ const mobileHeader = [
     private: false,
   },
   {
-    link: "/api/auth/login",
+    link: "/login",
     text: "Giriş Yap",
     icon: LuLogIn,
     private: false,
   },
 ];
 
-const MobileMenu = async ({ items }: { items: MenuItem[] | undefined }) => {
-  const { user } = await getUserById();
+const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
+  const { user } = useUser();
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">

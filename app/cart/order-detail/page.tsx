@@ -1,5 +1,13 @@
-import ReceiverForm from '../components/OrderDetail/ReceiverForm';
-import { getCities } from '@/app/account/actions';
+import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import ReceiverForm from "../components/OrderDetail/ReceiverForm";
+import { getCities } from "@/app/account/actions";
+
+export const generateMetadata = async () => {
+  return {
+    title: getBrandWithTitle("Sipariş Detayı"),
+    description: "Sipariş detayı sayfası",
+  };
+};
 
 const OrderDetail = async () => {
   const { cities } = await getCities();

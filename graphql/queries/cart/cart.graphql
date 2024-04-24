@@ -1,0 +1,20 @@
+mutation updateDbCart($payload: [cart_insert_input!]!) {
+  insert_cart(
+    objects: $payload
+    on_conflict: { constraint: cart_user_id_key, update_columns: [content] }
+  ) {
+    returning {
+      id
+    }
+    affected_rows
+  }
+}
+
+
+
+query getDbCart($user_id: uuid!) {
+  cart(where: { user_id: { _eq: $user_id } }) {
+    id
+    content
+  }
+}

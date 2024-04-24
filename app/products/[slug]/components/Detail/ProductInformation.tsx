@@ -1,10 +1,10 @@
-import HourSelect from '@/components/DatePicker/HourSelect';
-import Popover from '@/components/Popover';
-import Link from 'next/link';
-import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
-import Rating from '../../../../../components/Rating/Rating';
-import Promotions from './Promotions';
-import RatingDetail, { RatingProps } from './RatingDetail';
+import HourSelect from "@/components/DatePicker/HourSelect";
+import Popover from "@/components/Popover";
+import Link from "next/link";
+import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
+import Rating from "../../../../../components/Rating/Rating";
+import Promotions from "./Promotions";
+import RatingDetail, { RatingProps } from "./RatingDetail";
 
 type ProductInformationProps = {
   name: string;
@@ -13,7 +13,7 @@ type ProductInformationProps = {
   rating: number;
   reviewCount: number;
   promotion?: string;
-  rateCounts: RatingProps['rateCounts'];
+  rateCounts: RatingProps["rateCounts"];
   discountRate?: number;
   vendor?: {
     name: string;
@@ -111,16 +111,16 @@ const ProductInformation = ({
         <Promotions
           promotions={[
             {
-              description: shippingType?.includes('SAME_DAY')
-                ? 'Gün içi teslimat'
-                : 'Aynı gün kargo',
+              description: shippingType?.includes("SAME_DAY")
+                ? "Gün içi teslimat"
+                : "Aynı gün kargo",
               icon: <HiOutlineTicket />,
-              filterKey: 'SAME_DAY',
+              filterKey: "SAME_DAY",
             },
             {
-              description: freeShipping ? 'Ücretsiz kargo' : 'Ücretli gönderim',
+              description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
               icon: <HiOutlineArchive />,
-              filterKey: 'FREE_SHIPPING',
+              filterKey: "FREE_SHIPPING",
             },
           ]}
         />

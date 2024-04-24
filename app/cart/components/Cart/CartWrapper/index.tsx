@@ -1,21 +1,24 @@
-import CartHomePageButton from '../CartHomePageButton';
-import ProductGroup from '../ProductGroup';
-import { ProductForCart } from '@/common/types/Cart/cart';
+"use client";
 
-const CartWrapper = ({
-  initialCartItems,
-}: {
-  initialCartItems: ProductForCart[];
-}) => {
-  const tenantGroupedProducts = initialCartItems?.reduce((acc, item) => {
-    const tenantId = item.tenant?.id;
-    if (acc[tenantId]) {
-      acc[tenantId].push(item);
-    } else {
-      acc[tenantId] = [item];
-    }
-    return acc;
-  }, {});
+import { useCart } from "@/contexts/CartContext";
+import CartHomePageButton from "../CartHomePageButton";
+import ProductGroup from "../ProductGroup";
+import { useMemo } from "react";
+
+const CartWrapper = () => {
+  const { cartItems } = useCart();
+
+  const tenantGroupedProducts = useMemo(() => {
+    return cartItems?.reduce((acc, item) => {
+      const tenantId = item.tenant?.id;
+      if (acc[tenantId]) {
+        acc[tenantId].push(item);
+      } else {
+        acc[tenantId] = [item];
+      }
+      return acc;
+    }, {});
+  }, [cartItems]);
 
   return (
     <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
