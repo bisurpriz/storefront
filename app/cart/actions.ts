@@ -204,18 +204,20 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     quantity: item.quantity,
     tenant_id: item.tenant.id,
   }));
-  console.log(content);
+
   const { data } = await mutate<UpdateDbCartMutation>({
     mutation: UpdateDbCartDocument,
     variables: {
-      payload: {
-        user_id: await checkUserId(),
-        content: JSON.stringify(content),
-      },
+      payload: [
+        {
+          user_id: await checkUserId(),
+          content: JSON.stringify(content),
+        },
+      ],
     },
   });
 
-  console.log(data.insert_cart.returning);
+  return data;
 };
 
 export const getCart = async () => {
@@ -227,9 +229,10 @@ export const getCart = async () => {
       variables: {
         user_id: await checkUserId(),
       },
+      fetchPolicy: "no-cache",
     });
-
-    const parsedContent = parseJson(cart[1].content);
+    console.log(cart, "dbden gelen cart");
+    const parsedContent = parseJson(cart[0].content);
     if (parsedContent.length === 0) return [];
 
     const {
