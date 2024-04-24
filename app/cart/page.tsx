@@ -4,7 +4,7 @@ import CartWrapper from "./components/Cart/CartWrapper/index";
 export const generateMetadata = async () => {
   return {
     title: getBrandWithTitle("Sepetim"),
-    description: "Sepetimdeki ürünlerin listesi",
+    description: "Sepetim",
   };
 };
 
@@ -13,7 +13,7 @@ const Cart = async () => {
     <div
       className="w-full relative"
       aria-label="Sepetim"
-      aria-describedby="Sepetimdeki ürünlerin listesi"
+      aria-describedby="Sepetim"
     >
       <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
         <CartWrapper />

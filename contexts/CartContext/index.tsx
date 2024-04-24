@@ -47,8 +47,11 @@ export const CartProvider = ({
   );
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
+    console.log("Update cart items");
     await updateCart(cartItems);
-
+    // cartItems.forEach((item) => {
+    //   updateCartItem(item);
+    // });
     setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
   };
 

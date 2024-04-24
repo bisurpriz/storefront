@@ -6,6 +6,16 @@ import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
 import { IPaymentToken } from "@/common/types/Payment/payment";
 import { paymentConfig } from "@/config";
 import crypto from "crypto";
+import { mutate, query } from "@/graphql/lib/client";
+import {
+  GetDbCartDocument,
+  GetDbCartQuery,
+  GetProductsForInitialCartDocument,
+  GetProductsForInitialCartQuery,
+  UpdateDbCartDocument,
+  UpdateDbCartMutation,
+} from "@/graphql/generated";
+import { parseJson } from "@/utils/format";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -189,56 +199,62 @@ export async function getPaymentToken() {
 }
 
 export const updateCart = async (cartItems: ProductForCart[]) => {
-  // TODO: Update cart items in the database
-  const mock = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("success");
-    }, 1000);
+  const content = cartItems.map((item) => ({
+    product_id: item.id,
+    quantity: item.quantity,
+    tenant_id: item.tenant.id,
+  }));
+  console.log(content);
+  const { data } = await mutate<UpdateDbCartMutation>({
+    mutation: UpdateDbCartDocument,
+    variables: {
+      payload: {
+        user_id: await checkUserId(),
+        content: JSON.stringify(content),
+      },
+    },
   });
-  return mock;
+
+  console.log(data.insert_cart.returning);
 };
 
 export const getCart = async () => {
-  // TODO: Fetch cart items from the database
-  const mock: ProductForCart[] = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          category: {
-            name: "Çikolata",
-            slug: "cikolota",
-            id: 1,
-            image_url: "category/1.jpeg",
-          },
-          discount_price: 289,
-          id: 73,
-          image_url: ["product/mzxv9gmc7k-1706784371175.jpeg"],
-          name: "Lotuslu Hindistan Cevizli ve Fındıklı Lezzet Dünyası",
-          price: 300,
-          product_customizable_areas: [],
-          tenant: {
-            nickname: "enessahindev",
-            id: "50af64f2-37a9-434f-b6eb-22f368cbff4d",
-            firstname: "",
-            lastname: "",
-            email: "",
-            phone: "",
-            role: "User",
-            company_type: "",
-            picture: "",
-            email_verified: false,
-            phone_verified: false,
-            created_at: "",
-            updated_at: "",
-            tenant_address: "",
-            reference_code: "",
-            is_active_tenant: false,
-            is_active_user: false,
-          },
-          quantity: 1,
-        },
-      ]);
-    }, 1000);
-  });
-  return mock;
+  try {
+    const {
+      data: { cart },
+    } = await query<GetDbCartQuery>({
+      query: GetDbCartDocument,
+      variables: {
+        user_id: await checkUserId(),
+      },
+    });
+
+    const parsedContent = parseJson(cart[1].content);
+    if (parsedContent.length === 0) return [];
+
+    const {
+      data: { product },
+    } = await query<GetProductsForInitialCartQuery>({
+      query: GetProductsForInitialCartDocument,
+      variables: {
+        ids: parsedContent.map((item) => item.product_id),
+      },
+    });
+
+    const cartItems = parsedContent.map((item) => {
+      const hasProduct = product.find((p) => p.id === item.product_id);
+      return {
+        ...item,
+        ...hasProduct,
+        quantity: item.quantity,
+      };
+    });
+
+    return cartItems;
+  } catch (error) {
+    console.log(
+      "Sepet bilgisine ulaşılamadı. Hata: getCart fonksiyonu içerisinde."
+    );
+    return [];
+  }
 };

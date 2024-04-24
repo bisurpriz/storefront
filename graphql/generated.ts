@@ -653,6 +653,17 @@ export type Cart_Aggregate = {
   nodes: Array<Cart>;
 };
 
+export type Cart_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Cart_Aggregate_Bool_Exp_Count>;
+};
+
+export type Cart_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Cart_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Cart_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "cart" */
 export type Cart_Aggregate_Fields = {
   count: Scalars['Int']['output'];
@@ -667,9 +678,23 @@ export type Cart_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "cart" */
+export type Cart_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Cart_Max_Order_By>;
+  min?: InputMaybe<Cart_Min_Order_By>;
+};
+
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Cart_Append_Input = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** input type for inserting array relation for remote table "cart" */
+export type Cart_Arr_Rel_Insert_Input = {
+  data: Array<Cart_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Cart_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "cart". All fields are combined with a logical 'AND'. */
@@ -723,12 +748,28 @@ export type Cart_Max_Fields = {
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
+/** order by max() on columns of table "cart" */
+export type Cart_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Cart_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "cart" */
+export type Cart_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "cart" */
@@ -7149,6 +7190,7 @@ export type Order = {
   order_addresses: Array<Order_Address>;
   /** An aggregate relationship */
   order_addresses_aggregate: Order_Address_Aggregate;
+  order_no?: Maybe<Scalars['bigint']['output']>;
   /** An array relationship */
   tenant_orders: Array<Order_Tenant>;
   /** An aggregate relationship */
@@ -7711,11 +7753,13 @@ export type Order_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Order_Avg_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "order" */
 export type Order_Avg_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
@@ -7728,6 +7772,7 @@ export type Order_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   order_addresses?: InputMaybe<Order_Address_Bool_Exp>;
   order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Bool_Exp>;
+  order_no?: InputMaybe<Bigint_Comparison_Exp>;
   tenant_orders?: InputMaybe<Order_Tenant_Bool_Exp>;
   tenant_orders_aggregate?: InputMaybe<Order_Tenant_Aggregate_Bool_Exp>;
   total_amount?: InputMaybe<Numeric_Comparison_Exp>;
@@ -7753,11 +7798,14 @@ export type Order_By =
 
 /** unique or primary key constraints on table "order" */
 export type Order_Constraint =
+  /** unique or primary key constraint on columns "order_no" */
+  | 'order_order_no_key'
   /** unique or primary key constraint on columns "id" */
   | 'order_pkey';
 
 /** input type for incrementing numeric columns in table "order" */
 export type Order_Inc_Input = {
+  order_no?: InputMaybe<Scalars['bigint']['input']>;
   total_amount?: InputMaybe<Scalars['numeric']['input']>;
 };
 
@@ -7766,6 +7814,7 @@ export type Order_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   order_addresses?: InputMaybe<Order_Address_Arr_Rel_Insert_Input>;
+  order_no?: InputMaybe<Scalars['bigint']['input']>;
   tenant_orders?: InputMaybe<Order_Tenant_Arr_Rel_Insert_Input>;
   total_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8834,6 +8883,7 @@ export type Order_Item_Variance_Order_By = {
 export type Order_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  order_no?: Maybe<Scalars['bigint']['output']>;
   total_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -8843,6 +8893,7 @@ export type Order_Max_Fields = {
 export type Order_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -8852,6 +8903,7 @@ export type Order_Max_Order_By = {
 export type Order_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  order_no?: Maybe<Scalars['bigint']['output']>;
   total_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -8861,6 +8913,7 @@ export type Order_Min_Fields = {
 export type Order_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -8893,6 +8946,7 @@ export type Order_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Order_By>;
+  order_no?: InputMaybe<Order_By>;
   tenant_orders_aggregate?: InputMaybe<Order_Tenant_Aggregate_Order_By>;
   total_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -8912,6 +8966,8 @@ export type Order_Select_Column =
   /** column name */
   | 'id'
   /** column name */
+  | 'order_no'
+  /** column name */
   | 'total_amount'
   /** column name */
   | 'updated_at'
@@ -8922,6 +8978,7 @@ export type Order_Select_Column =
 export type Order_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  order_no?: InputMaybe<Scalars['bigint']['input']>;
   total_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -9116,31 +9173,37 @@ export type Order_Status_Updates = {
 
 /** aggregate stddev on columns */
 export type Order_Stddev_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "order" */
 export type Order_Stddev_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Order_Stddev_Pop_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "order" */
 export type Order_Stddev_Pop_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Order_Stddev_Samp_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "order" */
 export type Order_Stddev_Samp_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
@@ -9156,6 +9219,7 @@ export type Order_Stream_Cursor_Input = {
 export type Order_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  order_no?: InputMaybe<Scalars['bigint']['input']>;
   total_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -9163,11 +9227,13 @@ export type Order_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type Order_Sum_Fields = {
+  order_no?: Maybe<Scalars['bigint']['output']>;
   total_amount?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** order by sum() on columns of table "order" */
 export type Order_Sum_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
@@ -9950,6 +10016,8 @@ export type Order_Update_Column =
   /** column name */
   | 'id'
   /** column name */
+  | 'order_no'
+  /** column name */
   | 'total_amount'
   /** column name */
   | 'updated_at'
@@ -9967,31 +10035,37 @@ export type Order_Updates = {
 
 /** aggregate var_pop on columns */
 export type Order_Var_Pop_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "order" */
 export type Order_Var_Pop_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Order_Var_Samp_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "order" */
 export type Order_Var_Samp_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Order_Variance_Fields = {
+  order_no?: Maybe<Scalars['Float']['output']>;
   total_amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "order" */
 export type Order_Variance_Order_By = {
+  order_no?: InputMaybe<Order_By>;
   total_amount?: InputMaybe<Order_By>;
 };
 
@@ -18214,6 +18288,10 @@ export type Transaction_Variance_Fields = {
 export type User = {
   auth0_id?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
+  carts: Array<Cart>;
+  /** An aggregate relationship */
+  carts_aggregate: Cart_Aggregate;
+  /** An array relationship */
   chat_threads_tenant: Array<Chat_Thread>;
   /** An aggregate relationship */
   chat_threads_tenant_aggregate: Chat_Thread_Aggregate;
@@ -18286,6 +18364,26 @@ export type User = {
   /** An object relationship */
   user_role?: Maybe<Role>;
   verify_token?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserCartsArgs = {
+  distinct_on?: InputMaybe<Array<Cart_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Cart_Order_By>>;
+  where?: InputMaybe<Cart_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserCarts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cart_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Cart_Order_By>>;
+  where?: InputMaybe<Cart_Bool_Exp>;
 };
 
 
@@ -19065,6 +19163,8 @@ export type User_Bool_Exp = {
   _not?: InputMaybe<User_Bool_Exp>;
   _or?: InputMaybe<Array<User_Bool_Exp>>;
   auth0_id?: InputMaybe<String_Comparison_Exp>;
+  carts?: InputMaybe<Cart_Bool_Exp>;
+  carts_aggregate?: InputMaybe<Cart_Aggregate_Bool_Exp>;
   chat_threads_tenant?: InputMaybe<Chat_Thread_Bool_Exp>;
   chat_threads_tenant_aggregate?: InputMaybe<Chat_Thread_Aggregate_Bool_Exp>;
   chat_threads_user?: InputMaybe<Chat_Thread_Bool_Exp>;
@@ -19663,6 +19763,7 @@ export type User_Favorite_Variance_Order_By = {
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
   auth0_id?: InputMaybe<Scalars['String']['input']>;
+  carts?: InputMaybe<Cart_Arr_Rel_Insert_Input>;
   chat_threads_tenant?: InputMaybe<Chat_Thread_Arr_Rel_Insert_Input>;
   chat_threads_user?: InputMaybe<Chat_Thread_Arr_Rel_Insert_Input>;
   companies?: InputMaybe<Company_Arr_Rel_Insert_Input>;
@@ -19803,6 +19904,7 @@ export type User_On_Conflict = {
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
   auth0_id?: InputMaybe<Order_By>;
+  carts_aggregate?: InputMaybe<Cart_Aggregate_Order_By>;
   chat_threads_tenant_aggregate?: InputMaybe<Chat_Thread_Aggregate_Order_By>;
   chat_threads_user_aggregate?: InputMaybe<Chat_Thread_Aggregate_Order_By>;
   companies_aggregate?: InputMaybe<Company_Aggregate_Order_By>;
@@ -20035,7 +20137,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email: string, firstname?: string | null, lastname?: string | null, picture?: string | null, phone: string, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }> } | null };
+export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email: string, firstname?: string | null, lastname?: string | null, picture?: string | null, phone: string, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
 
 export type UpdateUserByIdMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -20131,6 +20233,20 @@ export type GetBannersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetBannersQuery = { system_banner: Array<{ expire_date?: any | null, id: any, name?: string | null, path?: string | null, redirect_link: string }> };
 
+export type UpdateDbCartMutationVariables = Exact<{
+  payload: Array<Cart_Insert_Input> | Cart_Insert_Input;
+}>;
+
+
+export type UpdateDbCartMutation = { insert_cart?: { affected_rows: number, returning: Array<{ id: any }> } | null };
+
+export type GetDbCartQueryVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
+
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20208,6 +20324,13 @@ export type GetProductPricesByIdQueryVariables = Exact<{
 
 
 export type GetProductPricesByIdQuery = { product?: { id: any, price: number, discount_price?: number | null } | null };
+
+export type GetProductsForInitialCartQueryVariables = Exact<{
+  ids?: InputMaybe<Array<Scalars['bigint']['input']> | Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } }> };
 
 export type GetProductsWithPaginationQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20293,6 +20416,10 @@ export const GetUserByIdDocument = gql`
     user_addresses {
       address_title
       address
+    }
+    carts {
+      id
+      content
     }
   }
 }
@@ -20482,6 +20609,27 @@ export const GetBannersDocument = gql`
     name
     path
     redirect_link
+  }
+}
+    `;
+export const UpdateDbCartDocument = gql`
+    mutation updateDbCart($payload: [cart_insert_input!]!) {
+  insert_cart(
+    objects: $payload
+    on_conflict: {constraint: cart_pkey, update_columns: [content]}
+  ) {
+    returning {
+      id
+    }
+    affected_rows
+  }
+}
+    `;
+export const GetDbCartDocument = gql`
+    query getDbCart($user_id: uuid!) {
+  cart(where: {user_id: {_eq: $user_id}}) {
+    id
+    content
   }
 }
     `;
@@ -20702,6 +20850,31 @@ export const GetProductPricesByIdDocument = gql`
     id
     price
     discount_price
+  }
+}
+    `;
+export const GetProductsForInitialCartDocument = gql`
+    query getProductsForInitialCart($ids: [bigint!]) {
+  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
+    name
+    description
+    id
+    price
+    discount_price
+    stock
+    image_url
+    category {
+      id
+      name
+      slug
+    }
+    tenant {
+      tenants {
+        id
+        name
+        logo
+      }
+    }
   }
 }
     `;
@@ -20932,6 +21105,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getBanners(variables?: GetBannersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetBannersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetBannersQuery>(GetBannersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBanners', 'query', variables);
     },
+    updateDbCart(variables: UpdateDbCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateDbCartMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDbCartMutation>(UpdateDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDbCart', 'mutation', variables);
+    },
+    getDbCart(variables: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
+    },
     getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
     },
@@ -20964,6 +21143,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getProductPricesById(variables?: GetProductPricesByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductPricesByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductPricesByIdQuery>(GetProductPricesByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductPricesById', 'query', variables);
+    },
+    getProductsForInitialCart(variables?: GetProductsForInitialCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsForInitialCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsForInitialCartQuery>(GetProductsForInitialCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsForInitialCart', 'query', variables);
     },
     getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithPaginationQuery>(GetProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithPagination', 'query', variables);

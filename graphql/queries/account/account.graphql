@@ -37,6 +37,10 @@ query getUserById($id: uuid = "") {
       address_title
       address
     }
+    carts {
+      id
+      content
+    }
   }
 }
 

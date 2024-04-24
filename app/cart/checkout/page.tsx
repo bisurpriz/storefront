@@ -10,7 +10,6 @@ const CartCheckout = () => {
 
   const handlePayment = async () => {
     const result = await getPaymentToken();
-    console.log(result, "result");
     setToken(result.token);
   };
 

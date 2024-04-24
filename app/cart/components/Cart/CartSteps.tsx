@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Stepper from '@/components/Stepper';
-import { useEffect, useState } from 'react';
-import { cartStepperPaths } from '../../constants';
-import { usePathname } from 'next/navigation';
+import Stepper from "@/components/Stepper";
+import { useEffect, useState } from "react";
+import { cartStepperPaths } from "../../constants";
+import { usePathname } from "next/navigation";
 
 const CartSteps = () => {
   const pathname = usePathname();
@@ -16,7 +16,7 @@ const CartSteps = () => {
   }, [pathname]);
 
   return (
-    <div className="p-4 rounded-t-xl bg-slate-50 border-b border-slate-200">
+    <div className="p-4 rounded-xl border border-primary-light">
       <Stepper
         activeStep={activeStep}
         steps={cartStepperPaths.map((step, i) => ({

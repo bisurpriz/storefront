@@ -101,3 +101,27 @@ query getProductPricesById($id: bigint
     discount_price
   }
 }
+
+query getProductsForInitialCart($ids:[bigint!]) {
+  product(where:{id:{_in:$ids}, is_active:{_eq:true} }){
+    name
+    description
+    id
+    price
+    discount_price
+    stock
+    image_url
+    category{
+      id
+      name
+      slug
+    }
+    tenant{
+      tenants{
+        id
+        name
+        logo
+      }
+    }
+  }
+}
