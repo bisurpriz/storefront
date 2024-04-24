@@ -664,17 +664,6 @@ export type Cart_Aggregate_Bool_Exp_Count = {
   predicate: Int_Comparison_Exp;
 };
 
-export type Cart_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Cart_Aggregate_Bool_Exp_Count>;
-};
-
-export type Cart_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Cart_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Cart_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
-};
-
 /** aggregate fields of "cart" */
 export type Cart_Aggregate_Fields = {
   count: Scalars['Int']['output'];
@@ -696,23 +685,9 @@ export type Cart_Aggregate_Order_By = {
   min?: InputMaybe<Cart_Min_Order_By>;
 };
 
-/** order by aggregate values of table "cart" */
-export type Cart_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Cart_Max_Order_By>;
-  min?: InputMaybe<Cart_Min_Order_By>;
-};
-
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Cart_Append_Input = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
-};
-
-/** input type for inserting array relation for remote table "cart" */
-export type Cart_Arr_Rel_Insert_Input = {
-  data: Array<Cart_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Cart_On_Conflict>;
 };
 
 /** input type for inserting array relation for remote table "cart" */
@@ -787,14 +762,6 @@ export type Cart_Min_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
-};
-
-/** order by min() on columns of table "cart" */
-export type Cart_Min_Order_By = {
-  created_at?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-  user_id?: InputMaybe<Order_By>;
 };
 
 /** order by min() on columns of table "cart" */
@@ -20266,6 +20233,20 @@ export type GetBannersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetBannersQuery = { system_banner: Array<{ expire_date?: any | null, id: any, name?: string | null, path?: string | null, redirect_link: string }> };
 
+export type UpdateDbCartMutationVariables = Exact<{
+  payload: Array<Cart_Insert_Input> | Cart_Insert_Input;
+}>;
+
+
+export type UpdateDbCartMutation = { insert_cart?: { affected_rows: number, returning: Array<{ id: any }> } | null };
+
+export type GetDbCartQueryVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
+
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20343,6 +20324,13 @@ export type GetProductPricesByIdQueryVariables = Exact<{
 
 
 export type GetProductPricesByIdQuery = { product?: { id: any, price: number, discount_price?: number | null } | null };
+
+export type GetProductsForInitialCartQueryVariables = Exact<{
+  ids?: InputMaybe<Array<Scalars['bigint']['input']> | Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } }> };
 
 export type GetProductsWithPaginationQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20628,6 +20616,27 @@ export const GetBannersDocument = gql`
   }
 }
     `;
+export const UpdateDbCartDocument = gql`
+    mutation updateDbCart($payload: [cart_insert_input!]!) {
+  insert_cart(
+    objects: $payload
+    on_conflict: {constraint: cart_pkey, update_columns: [content]}
+  ) {
+    returning {
+      id
+    }
+    affected_rows
+  }
+}
+    `;
+export const GetDbCartDocument = gql`
+    query getDbCart($user_id: uuid!) {
+  cart(where: {user_id: {_eq: $user_id}}) {
+    id
+    content
+  }
+}
+    `;
 export const GetCategoriesDocument = gql`
     query getCategories {
   category {
@@ -20845,6 +20854,31 @@ export const GetProductPricesByIdDocument = gql`
     id
     price
     discount_price
+  }
+}
+    `;
+export const GetProductsForInitialCartDocument = gql`
+    query getProductsForInitialCart($ids: [bigint!]) {
+  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
+    name
+    description
+    id
+    price
+    discount_price
+    stock
+    image_url
+    category {
+      id
+      name
+      slug
+    }
+    tenant {
+      tenants {
+        id
+        name
+        logo
+      }
+    }
   }
 }
     `;
@@ -21078,6 +21112,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getBanners(variables?: GetBannersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetBannersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetBannersQuery>(GetBannersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBanners', 'query', variables);
     },
+    updateDbCart(variables: UpdateDbCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateDbCartMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDbCartMutation>(UpdateDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDbCart', 'mutation', variables);
+    },
+    getDbCart(variables: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
+    },
     getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
     },
@@ -21110,6 +21150,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getProductPricesById(variables?: GetProductPricesByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductPricesByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductPricesByIdQuery>(GetProductPricesByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductPricesById', 'query', variables);
+    },
+    getProductsForInitialCart(variables?: GetProductsForInitialCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsForInitialCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsForInitialCartQuery>(GetProductsForInitialCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsForInitialCart', 'query', variables);
     },
     getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithPaginationQuery>(GetProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithPagination', 'query', variables);
