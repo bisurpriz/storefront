@@ -23,6 +23,7 @@ interface CartContextType {
   clearCart: () => void;
   updateCartItem: (item: ProductForCart) => void;
   count: number;
+  cost: number;
 }
 
 export const CartContext = createContext<CartContextType>({
@@ -32,26 +33,27 @@ export const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   updateCartItem: () => {},
   count: 0,
+  cost: 0,
 });
 
 export const CartProvider = ({
   children,
   cartDbItems,
+  dbCost,
 }: {
   children: ReactNode;
   cartDbItems: ProductForCart[];
+  dbCost: number;
 }) => {
   const [cartItems, dispatch] = useReducer(reducer, cartDbItems ?? []);
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => acc + item.quantity, 0)
   );
+  const [cost, setCost] = useState(dbCost ?? 0);
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
-    console.log("Update cart items");
-    await updateCart(cartItems);
-    // cartItems.forEach((item) => {
-    //   updateCartItem(item);
-    // });
+    const { costData } = await updateCart(cartItems);
+    if (!!costData) setCost(costData);
     setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
   };
 
@@ -106,6 +108,7 @@ export const CartProvider = ({
       clearCart,
       updateCartItem,
       count,
+      cost,
     };
   }, [cartItems, count]);
 

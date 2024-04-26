@@ -111,7 +111,7 @@ export default async function RootLayout({
   }
 
   const { user } = await getUserById();
-  const data = await getCart();
+  const { cartItems, costData } = await getCart();
 
   return (
     <html lang="tr">
@@ -122,7 +122,7 @@ export default async function RootLayout({
         id="root"
       >
         <AuthProvider user={user}>
-          <CartProvider cartDbItems={data}>
+          <CartProvider cartDbItems={cartItems} dbCost={costData}>
             <Header />
             <Content>{children}</Content>
             {auth}
