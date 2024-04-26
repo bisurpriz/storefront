@@ -1,16 +1,17 @@
-import { getProductById } from '../actions';
-import { IMAGE_URL } from '@/contants/urls';
-import ProductImageCarousel from './components/Detail/ProductImageCarousel';
-import ProductInformation from './components/Detail/ProductInformation';
-import { Metadata, ResolvingMetadata } from 'next';
-import SearchLocation from './components/Layout/SearchLocation';
-import HourSelect from '@/components/DatePicker/HourSelect';
-import Promotions from './components/Detail/Promotions';
-import ProductActions from './components/Detail/ProductActions';
-import { HiOutlineArchive, HiOutlineTicket } from 'react-icons/hi';
-import ProductDescription from './components/Detail/ProductDescription';
-import ProductComments from './components/Detail/ProductComments';
-import PaymentMethods from './components/Detail/PaymentMethods';
+import { getProductById } from "../actions";
+import { IMAGE_URL } from "@/contants/urls";
+import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
+import ProductInformation from "./components/Detail/ProductInformation";
+import { Metadata, ResolvingMetadata } from "next";
+import SearchLocation from "./components/Layout/SearchLocation";
+import HourSelect from "@/components/DatePicker/HourSelect";
+import Promotions from "./components/Detail/Promotions";
+import ProductActions from "./components/Detail/ProductActions";
+import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
+import ProductDescription from "./components/Detail/ProductDescription";
+import ProductComments from "./components/Detail/ProductComments";
+import PaymentMethods from "./components/Detail/PaymentMethods";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
 
 type Props = {
   params: { slug: string };
@@ -25,20 +26,19 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const id = Number(params.slug);
 
-  const product = await getProductById({ id });
+  const { product } = await getProductById({ id });
   const previousImages = (await parent).openGraph?.images || [];
-
-  const imgs = product.product.image_url?.length
-    ? product.product.image_url?.map((url: string) => `${IMAGE_URL}/${url}`)
+  const imgs = product.image_url?.length
+    ? product.image_url?.map((url: string) => `${IMAGE_URL}/${url}`)
     : [];
 
   return {
-    title: product.product.name,
+    title: product.name,
     openGraph: {
       images: [...previousImages, ...imgs],
     },
-    description: product.product.description,
-    category: product.category.name,
+    description: product.description,
+    category: product.category?.name,
   };
 }
 
@@ -47,11 +47,11 @@ const ProductDetail = async ({
 }: {
   params: { slug: string | number };
 }) => {
-  const data = await getProductById({
+  const { product } = await getProductById({
     id: Number(slug),
   });
 
-  const isFavoriteForCurrentUser = data.favorites.data.length > 0;
+  const isFavoriteForCurrentUser = product.user_favorites.length > 0;
 
   return (
     <div className="h-full">
@@ -63,7 +63,7 @@ const ProductDetail = async ({
       >
         <div className="w-1/2 max-md:w-full">
           <ProductImageCarousel
-            images={data.product.image_url?.map((url: string,index) => ({
+            images={product.image_url?.map((url: string, index) => ({
               id: index,
               url: `${IMAGE_URL}/${url}`,
             }))}
@@ -74,20 +74,20 @@ const ProductDetail = async ({
             promotions={[
               {
                 description:
-                  'Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.',
+                  "Promosyon mesajları bu kısımda görünecek, bold kısımlar strong olacak ve HTML olarak serverdan gelecek.",
                 icon: <HiOutlineTicket />,
-                filterKey: 'SAME_DAY',
+                filterKey: "SAME_DAY",
               },
               {
                 description:
-                  'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.',
+                  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores quisquam commodi nulla provident ea dolore asperiores minima quae, perspiciatis est.",
                 icon: <HiOutlineArchive />,
-                filterKey: 'SAME_DAY',
+                filterKey: "SAME_DAY",
               },
             ]}
           />
           <ProductInformation
-            name={data.product.name}
+            name={product.name}
             price={250}
             rateCounts={{
               1: 1,
@@ -96,23 +96,42 @@ const ProductDetail = async ({
               4: 1,
               5: 1,
             }}
-            rating={data.reviews.data.reduce(
-              (acc, review) => acc + review.score,
-              0
-            ) / data.reviews.totalCount}
-            reviewCount={data.reviews.totalCount}
+            rating={
+              product.reviews.reduce((acc, review) => acc + review.score, 0) /
+              product.reviews_aggregate.aggregate.count
+            }
+            reviewCount={product.reviews_aggregate.aggregate.count}
             promotion="Kargo Bedava"
-            discountPrice={data.product.price}
+            discountPrice={product.price}
             discountRate={10}
-            key={data.product.id}
-            vendor={data.tenant}
+            key={product.id}
+            vendor={product.tenant.tenants[0]}
           />
           <SearchLocation className="mt-6" />
           <HourSelect className="mt-6" />
           <ProductActions
-            productId={data.product.id}
+            product={{
+              category: product.category,
+              discount_price: product.price,
+              id: product.id,
+              image_url: product.image_url[0],
+              name: product.name,
+              price: product.price,
+              product_customizable_areas:
+                product.product_customizable_areas.map((it) => ({
+                  count: it.customizable_area.count,
+                  customizable_area: {
+                    id: it.customizable_area.id,
+                    type: it.customizable_area.type as
+                      | CustomizableAreaType.IMAGE
+                      | CustomizableAreaType.TEXT,
+                  },
+                })),
+              quantity: 1,
+              tenant: product.tenant,
+            }}
             favorite={{
-              id: data.favorites[0]?.id ?? null,
+              id: product.user_favorites[0]?.id ?? null,
               isFavorite: isFavoriteForCurrentUser ?? false,
             }}
           />
@@ -124,9 +143,9 @@ const ProductDetail = async ({
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis, cumque. Facere quae nulla quo libero dolorem inventore! Numquam voluptate magni incidunt earum nobis molestiae ducimus aspernatur sapiente deleniti ratione, enim architecto reiciendis repellendus voluptatibus sunt harum, dolore beatae illum alias, error a. Enim iste sequi atque cumque nihil dicta ducimus fugiat voluptatum accusamus odio quisquam, quasi cum voluptates optio consequatur esse molestiae veritatis expedita numquam eveniet dolores tempore. Saepe dolores aspernatur fugit, tempora eius, quidem assumenda, dolor eum facere esse ducimus cupiditate obcaecati illo autem! Quae ex est dignissimos earum, corporis dolorem repellendus laboriosam aut officiis aspernatur corrupti laborum! Temporibus."
           notes={Array.from({ length: 5 }).map(
             (_, index) =>
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem."
           )}
-          specifications={data.product.properties}
+          specifications={product.properties}
         />
       </section>
       <section
@@ -146,15 +165,15 @@ const ProductDetail = async ({
         <ProductComments
           comments={Array.from({ length: 5 }).map((_, index) => ({
             comment:
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-            createdAt: '2021-08-10T12:00:00.000Z',
-            firstName: 'John',
-            lastName: 'Doe',
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+            createdAt: "2021-08-10T12:00:00.000Z",
+            firstName: "John",
+            lastName: "Doe",
             user_id: index,
             rate: 5,
-            user_image_url: 'https://picsum.photos/200/300',
+            user_image_url: "https://picsum.photos/200/300",
             comment_id: index,
-            email: 'john@doe.com',
+            email: "john@doe.com",
           }))}
         />
       </section>

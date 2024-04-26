@@ -20,7 +20,6 @@ query getProductById($id: bigint = 0) {
       user {
         firstname
         lastname
-    
       }
     }
     reviews {
@@ -35,6 +34,13 @@ query getProductById($id: bigint = 0) {
         id
       }
     }
+    product_customizable_areas {
+      customizable_area {
+        count
+        id
+        type
+      }
+    }
     reviews_aggregate {
       aggregate {
         count(columns: id)
@@ -46,10 +52,10 @@ query getProductById($id: bigint = 0) {
       slug
     }
     tenant {
-     tenants {
-       id
-       name
-       logo
+      tenants {
+        id
+        name
+        logo
       }
     }
     user_favorites {
@@ -63,7 +69,6 @@ query getProductById($id: bigint = 0) {
     }
   }
 }
-
 
 query getProductForCart($id: bigint = 0) {
   product: product_by_pk(id: $id) {
@@ -83,8 +88,11 @@ query getProductForCart($id: bigint = 0) {
       name
     }
     tenant {
-      id
-      nickname
+      tenants {
+        id
+        name
+        logo
+      }
     }
   }
   category {
@@ -92,9 +100,7 @@ query getProductForCart($id: bigint = 0) {
   }
 }
 
-
-query getProductPricesById($id: bigint
-= 0) {
+query getProductPricesById($id: bigint = 0) {
   product: product_by_pk(id: $id) {
     id
     price
@@ -102,8 +108,8 @@ query getProductPricesById($id: bigint
   }
 }
 
-query getProductsForInitialCart($ids:[bigint!]) {
-  product(where:{id:{_in:$ids}, is_active:{_eq:true} }){
+query getProductsForInitialCart($ids: [bigint!]) {
+  product(where: { id: { _in: $ids }, is_active: { _eq: true } }) {
     name
     description
     id
@@ -111,13 +117,13 @@ query getProductsForInitialCart($ids:[bigint!]) {
     discount_price
     stock
     image_url
-    category{
+    category {
       id
       name
       slug
     }
-    tenant{
-      tenants{
+    tenant {
+      tenants {
         id
         name
         logo

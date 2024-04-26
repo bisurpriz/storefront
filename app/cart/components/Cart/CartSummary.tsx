@@ -5,11 +5,15 @@ import Button from "@/components/Button";
 import TextField from "@/components/TextField";
 
 import { useCart } from "@/contexts/CartContext";
+import { usePathname } from "next/navigation";
 
 const CartSummary = () => {
   const { cost } = useCart();
+
+  const pathname = usePathname();
+
   return (
-    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary-light rounded-xl">
+    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
       <div className="hidden md:block">
         <div className="p-4">
           <span className="block text-xl w-full text-center mb-3 font-normal">
@@ -48,6 +52,14 @@ const CartSummary = () => {
             </div>
           </div>
         </div>
+        <Button
+          type="button"
+          size="large"
+          color="primary"
+          fullWidth
+          label={pathname === "/checkout" ? "Ödeme Yap" : "Onayla ve Devam Et"}
+          className="flex justify-center rounded-t-none"
+        />
       </div>
     </div>
   );

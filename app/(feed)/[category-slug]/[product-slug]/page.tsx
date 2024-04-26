@@ -12,14 +12,16 @@ import { createJSONLd } from "@/utils/createJSONLd";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params, searchParams }) {
-  const { product, category } = await getProductById({
+  const {
+    product: { name, description, image_url, category },
+  } = await getProductById({
     id: Number(searchParams.pid),
   });
 
   return {
-    title: product.name,
-    description: product.description,
-    image: product.image_url[0],
+    title: name,
+    description: description,
+    image: image_url[0],
     category: category.name,
   } as Metadata;
 }
@@ -37,10 +39,17 @@ export default async function ProductExample({
   };
 }) {
   const productId = searchParams["pid"];
-  const { category, favorites, loading, product, questions, reviews, tenant } =
-    await getProductById({
-      id: Number(productId),
-    });
+  const {
+    product: {
+      category,
+      user_favorites: favorites,
+      reviews,
+      tenant,
+      ...product
+    },
+  } = await getProductById({
+    id: Number(productId),
+  });
 
   const { products: categoryProducts } = await getPaginatedProducts({
     offset: 0,
@@ -61,9 +70,9 @@ export default async function ProductExample({
       },
       seller: {
         "@type": "Organization",
-        name: tenant.name,
-        url: `https://www.bonnmarse.com/vendor/${tenant.id}`,
-        rating: `${IMAGE_URL}/${tenant.rate}`,
+        name: tenant.tenants[0].name,
+        url: `https://www.bonnmarse.com/vendor/${tenant.tenants[0].id}`,
+        logo: tenant.tenants[0].logo,
       },
     },
     type: "Product",
@@ -72,7 +81,7 @@ export default async function ProductExample({
   const shippingType = product.delivery_type;
   const freeShipping = product.is_service_free;
 
-  const isFavorite = favorites.data.some((fav) => fav.id === product.id);
+  const isFavorite = favorites.some((fav) => fav.id === product.id);
 
   return (
     <div className="h-full">
@@ -102,25 +111,25 @@ export default async function ProductExample({
               5: 1,
             }}
             rating={
-              reviews.data.reduce((acc, review) => acc + review.score, 0) /
-              reviews.totalCount
+              reviews.reduce((acc, review) => acc + review.score, 0) /
+              product.reviews_aggregate.aggregate.count
             }
-            reviewCount={reviews.totalCount}
+            reviewCount={product.reviews_aggregate.aggregate.count}
             promotion="Kargo Bedava"
             discountPrice={product.price}
             discountRate={10}
             key={product.id}
-            vendor={tenant}
+            vendor={tenant.tenants[0]}
             freeShipping={freeShipping}
             shippingType={shippingType}
           />
           <ProductActions
-            productId={product.id}
+            product={product.id}
             favorite={{
-              id: favorites.data[0]?.id,
+              id: favorites[0]?.id,
               isFavorite,
             }}
-            favoriteCount={favorites.totalCount}
+            favoriteCount={product.user_favorites_aggregate.aggregate.count}
           />
         </div>
       </section>
@@ -136,7 +145,12 @@ export default async function ProductExample({
             <ProductDescription
               description={product.description}
               notes={[]}
-              specifications={product.properties}
+              specifications={[
+                {
+                  name: "Renk",
+                  value: "Siyah",
+                },
+              ]}
             />
           }
           title="Ürün Detayları"
@@ -168,7 +182,7 @@ export default async function ProductExample({
         aria-describedby="Yorumlar"
       >
         <ProductComments
-          comments={reviews?.data?.map((cm) => ({
+          comments={reviews?.map((cm) => ({
             comment: cm.comment,
             comment_id: cm.id,
             createdAt: cm.created_at,

@@ -37,7 +37,7 @@ export const createOrderAction = async (
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.id;
+    const tenantId = item.tenant.tenants[0].id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }
@@ -220,7 +220,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     const content = cartItems.map((item) => ({
       product_id: item.id,
       quantity: item.quantity,
-      tenant_id: item.tenant.id,
+      tenant_id: item.tenant.tenants[0].id,
     }));
 
     const { data: cartData } = await mutate<UpdateDbCartMutation>({
