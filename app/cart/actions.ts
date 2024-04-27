@@ -220,7 +220,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     const content = cartItems.map((item) => ({
       product_id: item.id,
       quantity: item.quantity,
-      tenant_id: item.tenant.tenants[0].id,
+      tenant_id: item.tenant?.tenants?.[0].id,
     }));
 
     const { data: cartData } = await mutate<UpdateDbCartMutation>({
