@@ -13,7 +13,7 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import { ADD_TO_CART, CLEAR_CART, REMOVE_FROM_CART } from "./constants";
-import { reducer } from "./reducer";
+import { cartReducer } from "./reducer";
 import { updateCart } from "@/app/cart/actions";
 
 interface CartContextType {
@@ -45,7 +45,7 @@ export const CartProvider = ({
   cartDbItems: ProductForCart[];
   dbCost: number;
 }) => {
-  const [cartItems, dispatch] = useReducer(reducer, cartDbItems ?? []);
+  const [cartItems, dispatch] = useReducer(cartReducer, cartDbItems ?? []);
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => acc + item.quantity, 0)
   );

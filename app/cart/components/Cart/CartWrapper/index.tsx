@@ -11,7 +11,7 @@ const CartWrapper = () => {
 
   const tenantGroupedProducts = useMemo(() => {
     return cartItems?.reduce((acc, item) => {
-      const tenantId = item.tenant?.tenants[0].id;
+      const tenantId = item.tenant?.tenants?.[0]?.id;
       if (acc[tenantId]) {
         acc[tenantId].push(item);
       } else {

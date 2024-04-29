@@ -70,9 +70,9 @@ export default async function ProductExample({
       },
       seller: {
         "@type": "Organization",
-        name: tenant.tenants[0].name,
-        url: `https://www.bonnmarse.com/vendor/${tenant.tenants[0].id}`,
-        logo: tenant.tenants[0].logo,
+        name: tenant.tenants[0]?.name,
+        url: `https://www.bonnmarse.com/vendor/${tenant.tenants[0]?.id}`,
+        logo: tenant.tenants[0]?.logo,
       },
     },
     type: "Product",
@@ -182,15 +182,17 @@ export default async function ProductExample({
         aria-describedby="Yorumlar"
       >
         <ProductComments
-          comments={reviews?.map((cm) => ({
-            comment: cm.comment,
-            comment_id: cm.id,
-            createdAt: cm.created_at,
-            firstName: cm.user.firstname,
-            lastName: cm.user.lastname,
-            rate: cm.score,
-            user_id: cm.user.id,
-            user_image_url: cm.user.picture,
+          comments={Array.from({ length: 5 }).map((_, index) => ({
+            comment:
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+            createdAt: "2021-08-10T12:00:00.000Z",
+            firstName: "John",
+            lastName: "Doe",
+            user_id: index,
+            rate: 5,
+            user_image_url: "https://picsum.photos/200/300",
+            comment_id: index,
+            email: "john@doe.com",
           }))}
         />
         <script

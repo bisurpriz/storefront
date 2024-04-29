@@ -11,7 +11,6 @@ const AddCartButton2 = ({ product, loading }: AddCartButton2Props) => {
   const { addToCart } = useCart();
 
   const handleAddToCart = () => addToCart(product);
-  console.log(product);
   return (
     <Button
       loading={loading}

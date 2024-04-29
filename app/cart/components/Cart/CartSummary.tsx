@@ -6,11 +6,12 @@ import TextField from "@/components/TextField";
 
 import { useCart } from "@/contexts/CartContext";
 import { usePathname } from "next/navigation";
+import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 
 const CartSummary = () => {
   const { cost } = useCart();
-
   const pathname = usePathname();
+  const { handleChangeStep } = useCartStep();
 
   return (
     <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
@@ -59,6 +60,7 @@ const CartSummary = () => {
           fullWidth
           label={pathname === "/checkout" ? "Ödeme Yap" : "Onayla ve Devam Et"}
           className="flex justify-center rounded-t-none"
+          onClick={() => handleChangeStep(pathname)}
         />
       </div>
     </div>

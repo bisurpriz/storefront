@@ -22,6 +22,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
+import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -122,12 +123,14 @@ export default async function RootLayout({
         id="root"
       >
         <AuthProvider user={user}>
-          <CartProvider cartDbItems={cartItems} dbCost={costData}>
-            <Header />
-            <Content>{children}</Content>
-            {auth}
-            <Listener />
-          </CartProvider>
+          <ApolloWrapper>
+            <CartProvider cartDbItems={cartItems} dbCost={costData}>
+              <Header />
+              <Content>{children}</Content>
+              {auth}
+              <Listener />
+            </CartProvider>
+          </ApolloWrapper>
         </AuthProvider>
       </body>
       <GoogleAnalytics gaId="G-WWEREE808L" />

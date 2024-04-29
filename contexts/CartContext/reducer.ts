@@ -15,7 +15,7 @@ export type CartAction =
       payload: ProductForCart;
     };
 
-export const reducer = (state: ProductForCart[], action: CartAction) => {
+export const cartReducer = (state: ProductForCart[], action: CartAction) => {
   switch (action.type) {
     case "ADD_TO_CART":
       const isExist = state.findIndex((item) => item.id === action.payload.id);
