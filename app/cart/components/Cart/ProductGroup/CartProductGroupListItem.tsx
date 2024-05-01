@@ -22,7 +22,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     discount_price,
     category,
   } = product;
-
+  console.log(customize);
   const image = useMemo(() => getImageUrlFromPath(image_url[0]), [image_url]);
 
   return (
@@ -50,40 +50,38 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             </div>
           </div>
 
-          {customize?.length ? (
-            <div className="flex-1 max-2xl:w-full min-w-[300px]">
-              {Array(quantity)
-                .fill(0)
-                .map((_, i) => (
-                  <AccordionItem
-                    key={i}
-                    title={`Ürün Özelleştirmeleri ${i + 1}`}
-                    className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
-                    content={
-                      <CustomizeGroup
-                        key={i}
-                        index={i}
-                        quantity={quantity}
-                        product={product}
-                      />
-                    }
-                  />
-                ))}
-            </div>
-          ) : null}
           <ProductGroupListItemInfo customize={customize} id={id} />
         </div>
-        <div className="mt-4">
-          <Promotions
-            promotions={[
-              {
-                description: "Kategori İndirimi",
-                icon: <IoAccessibility />,
-                filterKey: "category",
-              },
-            ]}
-          />
-        </div>
+        <Promotions
+          promotions={[
+            {
+              description: "Kategori İndirimi",
+              icon: <IoAccessibility />,
+              filterKey: "category",
+            },
+          ]}
+        />
+        {customize?.length ? (
+          <div className="flex-1 max-2xl:w-full min-w-[300px] mb-4">
+            {Array(quantity)
+              .fill(0)
+              .map((_, i) => (
+                <AccordionItem
+                  key={i}
+                  title={`Ürün Özelleştirmeleri ${i + 1}`}
+                  className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
+                  content={
+                    <CustomizeGroup
+                      key={i}
+                      index={i}
+                      quantity={quantity}
+                      product={product}
+                    />
+                  }
+                />
+              ))}
+          </div>
+        ) : null}
       </div>
     </li>
   );

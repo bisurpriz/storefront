@@ -16,7 +16,6 @@ const CartStepContext = createContext<CartStepContextType>({
 export const CartStepProvider = ({ children }) => {
   const [step, setStep] = useState(0);
   const { replace } = useRouter();
-  const { cartItems } = useCart();
 
   const forward = (current: number) => {
     setStep((prev) => prev + 1);

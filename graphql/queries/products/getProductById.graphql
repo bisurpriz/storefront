@@ -129,5 +129,13 @@ query getProductsForInitialCart($ids: [bigint!]) {
         logo
       }
     }
+    product_customizable_areas {
+      customizable_area {
+        id
+        type
+      }
+      count
+      max_character
+    }
   }
 }

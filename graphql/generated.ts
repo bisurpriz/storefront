@@ -10393,6 +10393,7 @@ export type Product_Customizable_Area = {
   customizable_area: Customizable_Area;
   customizable_area_id: Scalars['Int']['output'];
   id: Scalars['bigint']['output'];
+  max_character?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   product: Product;
   product_id: Scalars['Int']['output'];
@@ -10464,6 +10465,7 @@ export type Product_Customizable_Area_Avg_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10472,6 +10474,7 @@ export type Product_Customizable_Area_Avg_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10484,6 +10487,7 @@ export type Product_Customizable_Area_Bool_Exp = {
   customizable_area?: InputMaybe<Customizable_Area_Bool_Exp>;
   customizable_area_id?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Bigint_Comparison_Exp>;
+  max_character?: InputMaybe<Int_Comparison_Exp>;
   product?: InputMaybe<Product_Bool_Exp>;
   product_id?: InputMaybe<Int_Comparison_Exp>;
 };
@@ -10498,6 +10502,7 @@ export type Product_Customizable_Area_Inc_Input = {
   count?: InputMaybe<Scalars['Int']['input']>;
   customizable_area_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  max_character?: InputMaybe<Scalars['Int']['input']>;
   product_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -10507,6 +10512,7 @@ export type Product_Customizable_Area_Insert_Input = {
   customizable_area?: InputMaybe<Customizable_Area_Obj_Rel_Insert_Input>;
   customizable_area_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  max_character?: InputMaybe<Scalars['Int']['input']>;
   product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
   product_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -10516,6 +10522,7 @@ export type Product_Customizable_Area_Max_Fields = {
   count?: Maybe<Scalars['Int']['output']>;
   customizable_area_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  max_character?: Maybe<Scalars['Int']['output']>;
   product_id?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -10524,6 +10531,7 @@ export type Product_Customizable_Area_Max_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10532,6 +10540,7 @@ export type Product_Customizable_Area_Min_Fields = {
   count?: Maybe<Scalars['Int']['output']>;
   customizable_area_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  max_character?: Maybe<Scalars['Int']['output']>;
   product_id?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -10540,6 +10549,7 @@ export type Product_Customizable_Area_Min_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10564,6 +10574,7 @@ export type Product_Customizable_Area_Order_By = {
   customizable_area?: InputMaybe<Customizable_Area_Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product?: InputMaybe<Product_Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
@@ -10582,6 +10593,8 @@ export type Product_Customizable_Area_Select_Column =
   /** column name */
   | 'id'
   /** column name */
+  | 'max_character'
+  /** column name */
   | 'product_id';
 
 /** input type for updating data in table "product_customizable_area" */
@@ -10589,6 +10602,7 @@ export type Product_Customizable_Area_Set_Input = {
   count?: InputMaybe<Scalars['Int']['input']>;
   customizable_area_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  max_character?: InputMaybe<Scalars['Int']['input']>;
   product_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -10597,6 +10611,7 @@ export type Product_Customizable_Area_Stddev_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10605,6 +10620,7 @@ export type Product_Customizable_Area_Stddev_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10613,6 +10629,7 @@ export type Product_Customizable_Area_Stddev_Pop_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10621,6 +10638,7 @@ export type Product_Customizable_Area_Stddev_Pop_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10629,6 +10647,7 @@ export type Product_Customizable_Area_Stddev_Samp_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10637,6 +10656,7 @@ export type Product_Customizable_Area_Stddev_Samp_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10653,6 +10673,7 @@ export type Product_Customizable_Area_Stream_Cursor_Value_Input = {
   count?: InputMaybe<Scalars['Int']['input']>;
   customizable_area_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  max_character?: InputMaybe<Scalars['Int']['input']>;
   product_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -10661,6 +10682,7 @@ export type Product_Customizable_Area_Sum_Fields = {
   count?: Maybe<Scalars['Int']['output']>;
   customizable_area_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  max_character?: Maybe<Scalars['Int']['output']>;
   product_id?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -10669,6 +10691,7 @@ export type Product_Customizable_Area_Sum_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10680,6 +10703,8 @@ export type Product_Customizable_Area_Update_Column =
   | 'customizable_area_id'
   /** column name */
   | 'id'
+  /** column name */
+  | 'max_character'
   /** column name */
   | 'product_id';
 
@@ -10697,6 +10722,7 @@ export type Product_Customizable_Area_Var_Pop_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10705,6 +10731,7 @@ export type Product_Customizable_Area_Var_Pop_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10713,6 +10740,7 @@ export type Product_Customizable_Area_Var_Samp_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10721,6 +10749,7 @@ export type Product_Customizable_Area_Var_Samp_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -10729,6 +10758,7 @@ export type Product_Customizable_Area_Variance_Fields = {
   count?: Maybe<Scalars['Float']['output']>;
   customizable_area_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  max_character?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -10737,6 +10767,7 @@ export type Product_Customizable_Area_Variance_Order_By = {
   count?: InputMaybe<Order_By>;
   customizable_area_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  max_character?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
 };
 
@@ -20318,7 +20349,7 @@ export type GetProductForCartQueryVariables = Exact<{
 }>;
 
 
-export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { id: any, nickname?: string | null } } | null, category: Array<{ name: string }> };
+export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } } | null, category: Array<{ name: string }> };
 
 export type GetProductPricesByIdQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -20332,7 +20363,7 @@ export type GetProductsForInitialCartQueryVariables = Exact<{
 }>;
 
 
-export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } }> };
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
 
 export type GetProductsWithPaginationQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20844,8 +20875,11 @@ export const GetProductForCartDocument = gql`
       name
     }
     tenant {
-      id
-      nickname
+      tenants {
+        id
+        name
+        logo
+      }
     }
   }
   category {
@@ -20883,6 +20917,14 @@ export const GetProductsForInitialCartDocument = gql`
         name
         logo
       }
+    }
+    product_customizable_areas {
+      customizable_area {
+        id
+        type
+      }
+      count
+      max_character
     }
   }
 }
