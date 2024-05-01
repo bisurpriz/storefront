@@ -3,45 +3,44 @@
 import CustomizeCartItem from "./CustomizeCartItem";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { useCart } from "@/contexts/CartContext";
+import { useCallback } from "react";
 
 interface CustomizeGroupProps {
   index: number;
-  quantity: ProductForCart["quantity"];
   product: ProductForCart;
 }
 
-const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
+const CustomizeGroup = ({ product, index }: CustomizeGroupProps) => {
   const { updateCartItem } = useCart();
 
-  const handleInputsChange = (type, value) => {
-    console.log(product, type, value);
-    const newProduct = {
-      ...product,
-      product_customizable_areas: product.product_customizable_areas.map(
-        (area) => {
-          return {
-            ...area,
-            customizable_area:
-              area.customizable_area.type === type
-                ? {
-                    ...area.customizable_area,
-                    values: area.customizable_area?.values?.map((v) => {
-                      return {
-                        ...v,
-                        [type]: [value],
-                      };
-                    }),
-                  }
-                : {
-                    ...area.customizable_area,
+  const handleInputsChange = useCallback(
+    (inputIndex, type, value) => {
+      const newProduct = {
+        ...product,
+        product_customizable_areas: product.product_customizable_areas.map(
+          (area) => {
+            if (area.customizable_area.type === type) {
+              return {
+                ...area,
+                customizable_area: {
+                  ...area.customizable_area,
+                  values: {
+                    ...area.customizable_area.values,
+                    [`${index}_${type}_${inputIndex}`]: value,
                   },
-          };
-        }
-      ),
-    };
-    console.log(newProduct);
-    // updateCartItem(newProduct);
-  };
+                },
+              };
+            }
+
+            return area;
+          }
+        ),
+      };
+
+      updateCartItem(newProduct);
+    },
+    [product, updateCartItem]
+  );
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -55,6 +54,7 @@ const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
               values={values}
               onChange={handleInputsChange}
               maxCharacter={max_character}
+              keyIndex={index}
             />
           );
         }

@@ -22,13 +22,12 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     discount_price,
     category,
   } = product;
-  console.log(customize);
   const image = useMemo(() => getImageUrlFromPath(image_url[0]), [image_url]);
 
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col">
+        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col mb-4">
           <Image
             src={image}
             alt="image"
@@ -71,12 +70,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
                   title={`Ürün Özelleştirmeleri ${i + 1}`}
                   className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
                   content={
-                    <CustomizeGroup
-                      key={i}
-                      index={i}
-                      quantity={quantity}
-                      product={product}
-                    />
+                    <CustomizeGroup key={i} index={i} product={product} />
                   }
                 />
               ))}

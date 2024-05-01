@@ -12,7 +12,12 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { ADD_TO_CART, CLEAR_CART, REMOVE_FROM_CART } from "./constants";
+import {
+  ADD_TO_CART,
+  CLEAR_CART,
+  REMOVE_FROM_CART,
+  UPDATE_CART,
+} from "./constants";
 import { cartReducer } from "./reducer";
 import { updateCart } from "@/app/cart/actions";
 
@@ -94,8 +99,9 @@ export const CartProvider = ({
   }, []);
 
   const updateCartItem = useCallback((item: ProductForCart) => {
+    console.log(item);
     dispatch({
-      type: "UPDATE_CART_ITEM",
+      type: UPDATE_CART,
       payload: item,
     });
   }, []);

@@ -4,6 +4,7 @@ import { cartStepperPaths } from "@/app/cart/constants";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCart } from ".";
+import toast from "react-hot-toast";
 
 type CartStepContextType = {
   handleChangeStep: (pathname: string) => void;
@@ -15,21 +16,46 @@ const CartStepContext = createContext<CartStepContextType>({
 
 export const CartStepProvider = ({ children }) => {
   const [step, setStep] = useState(0);
-  const { replace } = useRouter();
+  const { push } = useRouter();
+  const { cartItems } = useCart();
 
   const forward = (current: number) => {
     setStep((prev) => prev + 1);
-    replace(cartStepperPaths[current + 1].path);
+    push(cartStepperPaths[current + 1].path);
   };
 
   const checkCustomAreas = () => {
-    console.log("Özelleştirme alanları kontrol ediliyor...");
+    // map every item and check customizable area values
+    const isDone = cartItems.every((item) => {
+      return item.product_customizable_areas?.every((area) => {
+        if (
+          area.customizable_area?.values &&
+          Object.values(area.customizable_area?.values)?.length ===
+            area.count * item.quantity &&
+          Object.values(area.customizable_area?.values)?.every(
+            (value) => !!value && !!value.length
+          )
+        ) {
+          return true;
+        }
+        area.customizable_area?.values &&
+          console.log(Object.values(area.customizable_area?.values));
+        return false;
+      });
+    });
+
+    if (!isDone) {
+      toast.error(
+        "Lütfen tüm ürünlerin özelleştirilebilir alanlarını doldurun."
+      );
+      return;
+    }
+
     forward(step);
   };
 
   const checkOrderDetail = () => {
-    console.log("Sipariş detayları kontrol ediliyor...");
-    forward(step);
+    // Burada ki işlemler order detail sayfasında form submitte yapılıyor !
   };
 
   const checkoutCheck = () => {
@@ -44,7 +70,6 @@ export const CartStepProvider = ({ children }) => {
 
   const handleChangeStep = (pathname) => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
-    console.log(index);
     switch (index) {
       case 0:
         checkCustomAreas();

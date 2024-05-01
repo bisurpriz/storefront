@@ -28,7 +28,7 @@ export interface CustomizableArea {
 export interface ProductCustomizableArea {
   customizable_area: CustomizableArea;
   count: number;
-  max_character: number;
+  max_character?: number;
 }
 
 export interface OrderItemSpecial {

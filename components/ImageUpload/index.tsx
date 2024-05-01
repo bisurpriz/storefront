@@ -31,9 +31,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     if (files.length === 0) return;
 
     const images = Array.from(files).map((file) => URL.createObjectURL(file));
+    const data = selectedImages ? [...selectedImages, ...images] : images;
 
-    setSelectedImages(selectedImages ? [...selectedImages, ...images] : images);
-    onChange(selectedImages ? [...selectedImages, ...images] : images);
+    if (data.length > count) {
+      data.splice(count, data.length - count);
+    }
+
+    setSelectedImages(data);
+    onChange(data);
   };
 
   return (
@@ -78,11 +83,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <Button
                 type="button"
                 onClick={() => {
-                  setSelectedImages((prev) => {
-                    const newImages = [...prev];
-                    newImages.splice(index, 1);
-                    return newImages;
-                  });
+                  const data = selectedImages?.filter((_, i) => i !== index);
+                  setSelectedImages(data);
+                  onChange(data);
                 }}
                 color="secondary"
                 variant="outlined"

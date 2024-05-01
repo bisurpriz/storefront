@@ -20,6 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import Checkbox from "@/components/Checkbox";
 import toast from "react-hot-toast";
+import { CartStepPaths } from "../../constants";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -158,8 +159,6 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const onSubmit = async (values) => {
     if (values) {
-      localStorage.setItem("detail-data", JSON.stringify(values));
-      push("/cart/checkout");
       if (values.wantToSaveAddress) {
         try {
           await createNewUserAddress({
@@ -177,8 +176,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
+          return;
         }
       }
+      localStorage.setItem("detail-data", JSON.stringify(values));
+      push(CartStepPaths.CHECKOUT);
     }
   };
 
