@@ -1,19 +1,19 @@
 import {
   CustomizableAreaType,
   OrderItemStatus,
-} from '@/common/enums/Order/product';
-import { Product } from '../Product/product';
-import { Address } from '../Addresses/addresses';
-import { User } from '../User/user';
+} from "@/common/enums/Order/product";
+import { Product } from "../Product/product";
+import { Address } from "../Addresses/addresses";
+import { User } from "../User/user";
 
 export interface OrderItem {
   id: number;
-  product_id: Product['id'];
-  quantity: Product['quantity'];
+  product_id: Product["id"];
+  quantity: Product["quantity"];
   created_at: string;
   updated_at: string;
   user_id: string;
-  order_tenant_id: Product['tenant_id'];
+  order_tenant_id: Product["tenant_id"];
   product: Product;
 }
 
@@ -28,11 +28,12 @@ export interface CustomizableArea {
 export interface ProductCustomizableArea {
   customizable_area: CustomizableArea;
   count: number;
+  max_character?: number;
 }
 
 export interface OrderItemSpecial {
   id: number;
-  order_item_id: OrderItem['id'];
+  order_item_id: OrderItem["id"];
 }
 
 export interface OrderItemSpecialText extends OrderItemSpecial {
@@ -44,7 +45,7 @@ export interface OrderItemSpecialImage extends OrderItemSpecial {
 }
 
 export interface OrderDetailFormData extends Address {
-  user_id: User['id'];
+  user_id: User["id"];
   receiver_firstname: string;
   receiver_surname: string;
   receiver_phone: string;
@@ -66,7 +67,7 @@ export interface OrderResponse {
   updated_at: string;
   tenant_orders: {
     id: number;
-    tenant: Pick<User, 'nickname' | 'id'>;
+    tenant: Pick<User, "nickname" | "id">;
     order_items: OrderItemResponse[];
     order_status: {
       value: OrderItemStatus;

@@ -1,12 +1,13 @@
 "use client";
 
 import { cartStepperPaths } from "@/app/cart/constants";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCart } from ".";
+import toast from "react-hot-toast";
 
 type CartStepContextType = {
-  handleChangeStep: (pathname: string) => void;
+  handleChangeStep: () => void;
 };
 
 const CartStepContext = createContext<CartStepContextType>({
@@ -14,38 +15,68 @@ const CartStepContext = createContext<CartStepContextType>({
 });
 
 export const CartStepProvider = ({ children }) => {
-  const [step, setStep] = useState(0);
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const { cartItems } = useCart();
+  const pathname = usePathname();
+  const forward = () => {
+    const index = cartStepperPaths.findIndex((item) => item.path === pathname);
+    if (index < cartStepperPaths.length - 1) {
+      push(cartStepperPaths[index + 1].path);
+    }
 
-  const forward = (current: number) => {
-    setStep((prev) => prev + 1);
-    replace(cartStepperPaths[current + 1].path);
+    return;
   };
 
+  console.log(
+    pathname,
+    cartStepperPaths.findIndex((item) => item.path === pathname)
+  );
+
   const checkCustomAreas = () => {
-    console.log("Özelleştirme alanları kontrol ediliyor...");
-    forward(step);
+    // map every item and check customizable area values
+    const isDone = cartItems.every((item) => {
+      return item.product_customizable_areas?.every((area) => {
+        if (
+          area.customizable_area?.values &&
+          Object.values(area.customizable_area?.values)?.length ===
+            area.count * item.quantity &&
+          Object.values(area.customizable_area?.values)?.every(
+            (value) => !!value && !!value.length
+          )
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+    });
+
+    if (!isDone) {
+      toast.error(
+        "Lütfen tüm ürünlerin özelleştirilebilir alanlarını doldurun."
+      );
+      return;
+    }
+
+    forward();
   };
 
   const checkOrderDetail = () => {
-    console.log("Sipariş detayları kontrol ediliyor...");
-    forward(step);
+    forward();
   };
 
   const checkoutCheck = () => {
     console.log("Ödeme işlemi kontrol ediliyor...");
-    forward(step);
+    forward();
   };
 
   const checkComplete = () => {
     console.log("Sipariş tamamlandı...");
-    forward(step);
+    forward();
   };
 
-  const handleChangeStep = (pathname) => {
+  const handleChangeStep = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
-    console.log(index);
     switch (index) {
       case 0:
         checkCustomAreas();

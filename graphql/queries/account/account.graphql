@@ -98,8 +98,11 @@ query getUserOrders {
     tenant_orders {
       id
       tenant {
-        nickname
-        id
+        tenants {
+          name
+          logo
+          id
+        }
       }
       order_items {
         id

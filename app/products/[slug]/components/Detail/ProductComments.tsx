@@ -40,7 +40,6 @@ const ProductCommentSkeleton = () => {
 };
 
 const ProductComments = ({ comments }: ProductCommentsProps) => {
-  console.log(comments);
   return (
     <Suspense fallback={<ProductCommentSkeleton />}>
       <div className="mt-4 w-full rounded-lg px-4 py-8 font-sans">

@@ -1,26 +1,33 @@
-import { FaCartPlus } from 'react-icons/fa';
-import { IoInformationCircle } from 'react-icons/io5';
-import { MdOutlineConfirmationNumber, MdPayments } from 'react-icons/md';
+import { FaCartPlus } from "react-icons/fa";
+import { IoInformationCircle } from "react-icons/io5";
+import { MdOutlineConfirmationNumber, MdPayments } from "react-icons/md";
+
+export enum CartStepPaths {
+  CART = "/cart",
+  ORDER_DETAIL = "/cart/order-detail",
+  CHECKOUT = "/cart/checkout",
+  COMPLETE = "/cart/complete",
+}
 
 export const cartStepperPaths = [
   {
-    path: '/cart',
-    label: 'Sepet',
+    path: CartStepPaths.CART,
+    label: "Sepet",
     icon: <FaCartPlus />,
   },
   {
-    path: '/cart/order-detail',
-    label: 'Teslimat Bilgileri',
+    path: CartStepPaths.ORDER_DETAIL,
+    label: "Teslimat Bilgileri",
     icon: <IoInformationCircle />,
   },
   {
-    path: '/cart/checkout',
-    label: 'Ödeme',
+    path: CartStepPaths.CHECKOUT,
+    label: "Ödeme",
     icon: <MdPayments />,
   },
   {
-    path: '/cart/complete',
-    label: 'Onay',
+    path: CartStepPaths.COMPLETE,
+    label: "Onay",
     icon: <MdOutlineConfirmationNumber />,
   },
 ];

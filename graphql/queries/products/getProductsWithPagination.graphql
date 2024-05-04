@@ -43,8 +43,11 @@
         }
       }
       tenant {
-        nickname
-        id
+         tenants {
+          name
+          logo
+          id
+        }
       }
       reviews_aggregate {
         aggregate {

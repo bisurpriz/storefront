@@ -12,7 +12,12 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { ADD_TO_CART, CLEAR_CART, REMOVE_FROM_CART } from "./constants";
+import {
+  ADD_TO_CART,
+  CLEAR_CART,
+  REMOVE_FROM_CART,
+  UPDATE_CART,
+} from "./constants";
 import { cartReducer } from "./reducer";
 import { updateCart } from "@/app/cart/actions";
 
@@ -52,34 +57,43 @@ export const CartProvider = ({
   const [cost, setCost] = useState(dbCost ?? 0);
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
+    toast.promise(
+      updateCart(cartItems)
+        .then(({ costData }) => {
+          if (!!costData) setCost(costData);
+          setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
+        })
+        .catch((error) => {
+          console.error(error);
+        }),
+      {
+        loading: "Ürün sepete ekleniyor.",
+        success: "Ürün sepete eklendi.",
+        error: "Ürün sepete eklenirken bir hata oluştu.",
+      },
+      {
+        position: "bottom-right",
+      }
+    );
     const { costData } = await updateCart(cartItems);
-    if (!!costData) setCost(costData);
-    setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
   };
 
   useEffect(() => {
-    const cartItemsString = JSON.stringify(cartItems);
-    const cartDbItemsString = JSON.stringify(cartDbItems);
-    if (cartItemsString !== cartDbItemsString) {
+    const cartDbIds = cartDbItems.map((item) => item.id);
+    const cartIds = cartItems.map((item) => item.id);
+
+    if (cartDbIds.length !== cartIds.length) {
       handleChangeDb(cartItems);
+    } else {
+      const isSame = cartIds.every((id) => cartDbIds.includes(id));
+      if (!isSame) {
+        handleChangeDb(cartItems);
+      }
     }
   }, [cartItems, cartDbItems]);
 
   const addToCart = useCallback((item: ProductForCart) => {
     dispatch({ type: ADD_TO_CART, payload: item });
-    toast.success("Ürün sepete eklendi", {
-      icon: "🛒",
-      id: item.id.toString(),
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-      position: "bottom-right",
-    });
   }, []);
 
   const removeFromCart = useCallback((itemId: number | string) => {
@@ -94,8 +108,9 @@ export const CartProvider = ({
   }, []);
 
   const updateCartItem = useCallback((item: ProductForCart) => {
+    console.log(item);
     dispatch({
-      type: "UPDATE_CART_ITEM",
+      type: UPDATE_CART,
       payload: item,
     });
   }, []);

@@ -11,7 +11,7 @@ export type CartAction =
     }
   | { type: "CLEAR_CART" }
   | {
-      type: "UPDATE_CART_ITEM";
+      type: "UPDATE_CART";
       payload: ProductForCart;
     };
 
@@ -24,6 +24,16 @@ export const cartReducer = (state: ProductForCart[], action: CartAction) => {
           const _state = [...state];
           _state[isExist] = {
             ..._state[isExist],
+            product_customizable_areas:
+              action.payload.product_customizable_areas.map((area) => {
+                return {
+                  ...area,
+                  customizable_area: {
+                    ...area.customizable_area,
+                    values: [],
+                  },
+                };
+              }),
             quantity: action.payload.quantity,
           };
           return _state;
@@ -42,7 +52,7 @@ export const cartReducer = (state: ProductForCart[], action: CartAction) => {
     case "REMOVE_FROM_CART":
       return state.filter((item) => item.id !== action.payload);
 
-    case "UPDATE_CART_ITEM":
+    case "UPDATE_CART":
       const _state = [...state];
       const index = _state.findIndex((item) => item.id === action.payload.id);
       if (index === -1) return state;

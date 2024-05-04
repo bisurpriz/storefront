@@ -114,7 +114,8 @@ export default async function RootLayout({
   }
 
   const { user } = await getUserById();
-  const { cartItems, costData } = await getCart();
+
+  const { cartItems, costData } = await getCart(user?.id);
 
   return (
     <html lang="tr">

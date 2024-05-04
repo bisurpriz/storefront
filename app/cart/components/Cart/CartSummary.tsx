@@ -7,11 +7,22 @@ import TextField from "@/components/TextField";
 import { useCart } from "@/contexts/CartContext";
 import { usePathname } from "next/navigation";
 import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
+import { CartStepPaths } from "../../constants";
 
 const CartSummary = () => {
   const { cost } = useCart();
   const pathname = usePathname();
   const { handleChangeStep } = useCartStep();
+
+  const changeStep = () => {
+    if (pathname !== CartStepPaths.ORDER_DETAIL) {
+      handleChangeStep();
+    }
+  };
+
+  if (pathname === CartStepPaths.COMPLETE) {
+    return null;
+  }
 
   return (
     <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
@@ -54,13 +65,22 @@ const CartSummary = () => {
           </div>
         </div>
         <Button
-          type="button"
+          type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
           size="large"
           color="primary"
           fullWidth
-          label={pathname === "/checkout" ? "Ödeme Yap" : "Onayla ve Devam Et"}
+          form={
+            pathname === CartStepPaths.ORDER_DETAIL
+              ? "order-detail-form"
+              : undefined
+          }
+          label={
+            pathname === CartStepPaths.CHECKOUT
+              ? "Ödeme Yap"
+              : "Onayla ve Devam Et"
+          }
           className="flex justify-center rounded-t-none"
-          onClick={() => handleChangeStep(pathname)}
+          onClick={changeStep}
         />
       </div>
     </div>

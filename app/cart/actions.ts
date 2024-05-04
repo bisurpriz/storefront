@@ -252,14 +252,23 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
   }
 };
 
-export const getCart = async () => {
+export const getCart = async (user_id: string) => {
+  if (!user_id || !(await checkUserId()))
+    return {
+      cartItems: [],
+      costData: 0,
+    } as {
+      cartItems: ProductForCart[];
+      costData: number;
+    };
+
   try {
     const {
       data: { cart },
     } = await query<GetDbCartQuery>({
       query: GetDbCartDocument,
       variables: {
-        user_id: await checkUserId(),
+        user_id: user_id ?? (await checkUserId()),
       },
       fetchPolicy: "no-cache",
     });
