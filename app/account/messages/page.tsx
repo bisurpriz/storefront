@@ -15,7 +15,7 @@ const MessagesPage = async ({
     Number(orderTenantId)
   );
 
-  const orderItem = orderTenants[0];
+  const orderItem = orderTenants?.[0];
   const tenantId = orderItem?.tenant?.id;
 
   return <Main tenantId={tenantId} />;

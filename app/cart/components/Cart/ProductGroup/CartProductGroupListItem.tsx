@@ -22,7 +22,8 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     discount_price,
     category,
   } = product;
-  const image = useMemo(() => getImageUrlFromPath(image_url[0]), [image_url]);
+
+  const image = useMemo(() => getImageUrlFromPath(image_url?.[0]), [image_url]);
 
   return (
     <li className="py-4" key={id}>
