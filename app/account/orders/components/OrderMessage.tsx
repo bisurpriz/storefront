@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import { User } from '@/common/types/User/user';
-import Button from '@/components/Button';
-import Modal from '@/components/Modal';
-import Link from 'next/link';
-import { useState } from 'react';
-import { GrChatOption } from 'react-icons/gr';
-import { startMessageForOrder } from '../actions';
-import { useRouter } from 'next/navigation';
+import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import Link from "next/link";
+import { useState } from "react";
+import { GrChatOption } from "react-icons/gr";
+import { startMessageForOrder } from "../actions";
+import { useRouter } from "next/navigation";
+import { GetUserOrdersQuery } from "@/graphql/generated";
 
 const OrderMessage = ({
   tenant,
   orderTenantId,
 }: {
-  tenant: User;
+  tenant: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["tenant"];
   orderTenantId: number;
 }) => {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
     const response = await startMessageForOrder({
       message,
-      receiver_id: tenant.id,
+      receiver_id: tenant.tenants[0].id,
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
@@ -54,16 +54,16 @@ const OrderMessage = ({
         title={
           <span>
             <Link
-              href={`/vendor/${tenant.id}`}
+              href={`/vendor/${tenant.tenants[0].id}`}
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >
-              {tenant.nickname}
+              {tenant.tenants[0].name}
             </Link>
             <span className="text-sm text-gray-500">
-              {' '}
+              {" "}
               satıcısı ile iletişime geçin
-            </span>{' '}
+            </span>{" "}
           </span>
         }
       >

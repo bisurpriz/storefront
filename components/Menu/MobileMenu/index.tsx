@@ -10,6 +10,8 @@ import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiPathBold } from "react-icons/pi";
 import MenuItem from "./MenuItem";
+import { logout } from "@/app/@auth/actions";
+import { useRouter } from "next/navigation";
 
 const mobileHeader = [
   {
@@ -46,6 +48,11 @@ const mobileHeader = [
 
 const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
   const { user } = useUser();
+  const { refresh } = useRouter();
+  const handleLogout = () => {
+    logout();
+    refresh();
+  };
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
@@ -90,8 +97,8 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
             <FiPhoneCall className="w-4 h-4" />
             <span className="text-xs">İletişim</span>
           </Link>
-          <Link
-            href={"/api/auth/logout"}
+          <span
+            onClick={handleLogout}
             className={clsx([
               "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
               !user && "hidden",
@@ -99,7 +106,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
           >
             <LuLogOut className="w-4 h-4" />
             <span className="text-xs">Çıkış Yap</span>
-          </Link>
+          </span>
         </>
       </div>
     </div>

@@ -1,13 +1,13 @@
 "use client";
 
 import { cartStepperPaths } from "@/app/cart/constants";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCart } from ".";
 import toast from "react-hot-toast";
 
 type CartStepContextType = {
-  handleChangeStep: (pathname: string) => void;
+  handleChangeStep: () => void;
 };
 
 const CartStepContext = createContext<CartStepContextType>({
@@ -15,14 +15,22 @@ const CartStepContext = createContext<CartStepContextType>({
 });
 
 export const CartStepProvider = ({ children }) => {
-  const [step, setStep] = useState(0);
   const { push } = useRouter();
   const { cartItems } = useCart();
+  const pathname = usePathname();
+  const forward = () => {
+    const index = cartStepperPaths.findIndex((item) => item.path === pathname);
+    if (index < cartStepperPaths.length - 1) {
+      push(cartStepperPaths[index + 1].path);
+    }
 
-  const forward = (current: number) => {
-    setStep((prev) => prev + 1);
-    push(cartStepperPaths[current + 1].path);
+    return;
   };
+
+  console.log(
+    pathname,
+    cartStepperPaths.findIndex((item) => item.path === pathname)
+  );
 
   const checkCustomAreas = () => {
     // map every item and check customizable area values
@@ -38,8 +46,7 @@ export const CartStepProvider = ({ children }) => {
         ) {
           return true;
         }
-        area.customizable_area?.values &&
-          console.log(Object.values(area.customizable_area?.values));
+
         return false;
       });
     });
@@ -51,24 +58,24 @@ export const CartStepProvider = ({ children }) => {
       return;
     }
 
-    forward(step);
+    forward();
   };
 
   const checkOrderDetail = () => {
-    // Burada ki işlemler order detail sayfasında form submitte yapılıyor !
+    forward();
   };
 
   const checkoutCheck = () => {
     console.log("Ödeme işlemi kontrol ediliyor...");
-    forward(step);
+    forward();
   };
 
   const checkComplete = () => {
     console.log("Sipariş tamamlandı...");
-    forward(step);
+    forward();
   };
 
-  const handleChangeStep = (pathname) => {
+  const handleChangeStep = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
     switch (index) {
       case 0:

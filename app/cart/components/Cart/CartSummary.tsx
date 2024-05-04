@@ -13,7 +13,17 @@ const CartSummary = () => {
   const { cost } = useCart();
   const pathname = usePathname();
   const { handleChangeStep } = useCartStep();
-  console.log(pathname);
+
+  const changeStep = () => {
+    if (pathname !== CartStepPaths.ORDER_DETAIL) {
+      handleChangeStep();
+    }
+  };
+
+  if (pathname === CartStepPaths.COMPLETE) {
+    return null;
+  }
+
   return (
     <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
       <div className="hidden md:block">
@@ -70,7 +80,7 @@ const CartSummary = () => {
               : "Onayla ve Devam Et"
           }
           className="flex justify-center rounded-t-none"
-          onClick={() => handleChangeStep(pathname)}
+          onClick={changeStep}
         />
       </div>
     </div>

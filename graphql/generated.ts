@@ -83,8 +83,12 @@ export type RegisterInput = {
   email: Scalars['String']['input'];
   firstname?: InputMaybe<Scalars['String']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
-  password: Scalars['String']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
   platform?: InputMaybe<Scalars['String']['input']>;
+  provider?: InputMaybe<Scalars['String']['input']>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type RegisterOutput = {
@@ -18319,7 +18323,7 @@ export type Transaction_Variance_Fields = {
 
 /** columns and relationships of "user" */
 export type User = {
-  auth0_id?: Maybe<Scalars['String']['output']>;
+  auth_provider?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   carts: Array<Cart>;
   /** An aggregate relationship */
@@ -18347,7 +18351,6 @@ export type User = {
   id: Scalars['uuid']['output'];
   is_active_user?: Maybe<Scalars['Boolean']['output']>;
   lastname?: Maybe<Scalars['String']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   orders: Array<Order>;
   /** An aggregate relationship */
@@ -18362,6 +18365,7 @@ export type User = {
   products: Array<Product>;
   /** An aggregate relationship */
   products_aggregate: Product_Aggregate;
+  provider_id?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   questions: Array<Question>;
   /** An aggregate relationship */
@@ -19195,7 +19199,7 @@ export type User_Bool_Exp = {
   _and?: InputMaybe<Array<User_Bool_Exp>>;
   _not?: InputMaybe<User_Bool_Exp>;
   _or?: InputMaybe<Array<User_Bool_Exp>>;
-  auth0_id?: InputMaybe<String_Comparison_Exp>;
+  auth_provider?: InputMaybe<String_Comparison_Exp>;
   carts?: InputMaybe<Cart_Bool_Exp>;
   carts_aggregate?: InputMaybe<Cart_Aggregate_Bool_Exp>;
   chat_threads_tenant?: InputMaybe<Chat_Thread_Bool_Exp>;
@@ -19213,7 +19217,6 @@ export type User_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   is_active_user?: InputMaybe<Boolean_Comparison_Exp>;
   lastname?: InputMaybe<String_Comparison_Exp>;
-  nickname?: InputMaybe<String_Comparison_Exp>;
   orders?: InputMaybe<Order_Bool_Exp>;
   orders_aggregate?: InputMaybe<Order_Aggregate_Bool_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
@@ -19224,6 +19227,7 @@ export type User_Bool_Exp = {
   picture?: InputMaybe<String_Comparison_Exp>;
   products?: InputMaybe<Product_Bool_Exp>;
   products_aggregate?: InputMaybe<Product_Aggregate_Bool_Exp>;
+  provider_id?: InputMaybe<String_Comparison_Exp>;
   questions?: InputMaybe<Question_Bool_Exp>;
   questions_aggregate?: InputMaybe<Question_Aggregate_Bool_Exp>;
   reference_code?: InputMaybe<String_Comparison_Exp>;
@@ -19248,8 +19252,6 @@ export type User_Bool_Exp = {
 
 /** unique or primary key constraints on table "user" */
 export type User_Constraint =
-  /** unique or primary key constraint on columns "auth0_id" */
-  | 'user_auth0_id_key'
   /** unique or primary key constraint on columns "email" */
   | 'user_email_key'
   /** unique or primary key constraint on columns "id" */
@@ -19795,7 +19797,7 @@ export type User_Favorite_Variance_Order_By = {
 
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
-  auth0_id?: InputMaybe<Scalars['String']['input']>;
+  auth_provider?: InputMaybe<Scalars['String']['input']>;
   carts?: InputMaybe<Cart_Arr_Rel_Insert_Input>;
   chat_threads_tenant?: InputMaybe<Chat_Thread_Arr_Rel_Insert_Input>;
   chat_threads_user?: InputMaybe<Chat_Thread_Arr_Rel_Insert_Input>;
@@ -19808,7 +19810,6 @@ export type User_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active_user?: InputMaybe<Scalars['Boolean']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
   orders?: InputMaybe<Order_Arr_Rel_Insert_Input>;
   password?: InputMaybe<Scalars['String']['input']>;
   password_reset_token?: InputMaybe<Scalars['String']['input']>;
@@ -19817,6 +19818,7 @@ export type User_Insert_Input = {
   phone_verified?: InputMaybe<Scalars['Boolean']['input']>;
   picture?: InputMaybe<Scalars['String']['input']>;
   products?: InputMaybe<Product_Arr_Rel_Insert_Input>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
   questions?: InputMaybe<Question_Arr_Rel_Insert_Input>;
   reference_code?: InputMaybe<Scalars['String']['input']>;
   reviews?: InputMaybe<Review_Arr_Rel_Insert_Input>;
@@ -19834,18 +19836,18 @@ export type User_Insert_Input = {
 
 /** aggregate max on columns */
 export type User_Max_Fields = {
-  auth0_id?: Maybe<Scalars['String']['output']>;
+  auth_provider?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firstname?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   lastname?: Maybe<Scalars['String']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
   password_reset_token?: Maybe<Scalars['String']['output']>;
   password_reset_token_exp?: Maybe<Scalars['timestamptz']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   picture?: Maybe<Scalars['String']['output']>;
+  provider_id?: Maybe<Scalars['String']['output']>;
   reference_code?: Maybe<Scalars['String']['output']>;
   session_id?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -19854,18 +19856,18 @@ export type User_Max_Fields = {
 
 /** order by max() on columns of table "user" */
 export type User_Max_Order_By = {
-  auth0_id?: InputMaybe<Order_By>;
+  auth_provider?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   firstname?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   lastname?: InputMaybe<Order_By>;
-  nickname?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   password_reset_token?: InputMaybe<Order_By>;
   password_reset_token_exp?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   picture?: InputMaybe<Order_By>;
+  provider_id?: InputMaybe<Order_By>;
   reference_code?: InputMaybe<Order_By>;
   session_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -19874,18 +19876,18 @@ export type User_Max_Order_By = {
 
 /** aggregate min on columns */
 export type User_Min_Fields = {
-  auth0_id?: Maybe<Scalars['String']['output']>;
+  auth_provider?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firstname?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   lastname?: Maybe<Scalars['String']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
   password_reset_token?: Maybe<Scalars['String']['output']>;
   password_reset_token_exp?: Maybe<Scalars['timestamptz']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   picture?: Maybe<Scalars['String']['output']>;
+  provider_id?: Maybe<Scalars['String']['output']>;
   reference_code?: Maybe<Scalars['String']['output']>;
   session_id?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -19894,18 +19896,18 @@ export type User_Min_Fields = {
 
 /** order by min() on columns of table "user" */
 export type User_Min_Order_By = {
-  auth0_id?: InputMaybe<Order_By>;
+  auth_provider?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   firstname?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   lastname?: InputMaybe<Order_By>;
-  nickname?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   password_reset_token?: InputMaybe<Order_By>;
   password_reset_token_exp?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   picture?: InputMaybe<Order_By>;
+  provider_id?: InputMaybe<Order_By>;
   reference_code?: InputMaybe<Order_By>;
   session_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -19936,7 +19938,7 @@ export type User_On_Conflict = {
 
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
-  auth0_id?: InputMaybe<Order_By>;
+  auth_provider?: InputMaybe<Order_By>;
   carts_aggregate?: InputMaybe<Cart_Aggregate_Order_By>;
   chat_threads_tenant_aggregate?: InputMaybe<Chat_Thread_Aggregate_Order_By>;
   chat_threads_user_aggregate?: InputMaybe<Chat_Thread_Aggregate_Order_By>;
@@ -19949,7 +19951,6 @@ export type User_Order_By = {
   id?: InputMaybe<Order_By>;
   is_active_user?: InputMaybe<Order_By>;
   lastname?: InputMaybe<Order_By>;
-  nickname?: InputMaybe<Order_By>;
   orders_aggregate?: InputMaybe<Order_Aggregate_Order_By>;
   password?: InputMaybe<Order_By>;
   password_reset_token?: InputMaybe<Order_By>;
@@ -19958,6 +19959,7 @@ export type User_Order_By = {
   phone_verified?: InputMaybe<Order_By>;
   picture?: InputMaybe<Order_By>;
   products_aggregate?: InputMaybe<Product_Aggregate_Order_By>;
+  provider_id?: InputMaybe<Order_By>;
   questions_aggregate?: InputMaybe<Question_Aggregate_Order_By>;
   reference_code?: InputMaybe<Order_By>;
   reviews_aggregate?: InputMaybe<Review_Aggregate_Order_By>;
@@ -19981,7 +19983,7 @@ export type User_Pk_Columns_Input = {
 /** select columns of table "user" */
 export type User_Select_Column =
   /** column name */
-  | 'auth0_id'
+  | 'auth_provider'
   /** column name */
   | 'created_at'
   /** column name */
@@ -19997,8 +19999,6 @@ export type User_Select_Column =
   /** column name */
   | 'lastname'
   /** column name */
-  | 'nickname'
-  /** column name */
   | 'password'
   /** column name */
   | 'password_reset_token'
@@ -20010,6 +20010,8 @@ export type User_Select_Column =
   | 'phone_verified'
   /** column name */
   | 'picture'
+  /** column name */
+  | 'provider_id'
   /** column name */
   | 'reference_code'
   /** column name */
@@ -20041,7 +20043,7 @@ export type User_Select_Column_User_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
 
 /** input type for updating data in table "user" */
 export type User_Set_Input = {
-  auth0_id?: InputMaybe<Scalars['String']['input']>;
+  auth_provider?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   email_verified?: InputMaybe<Scalars['Boolean']['input']>;
@@ -20049,13 +20051,13 @@ export type User_Set_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active_user?: InputMaybe<Scalars['Boolean']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   password_reset_token?: InputMaybe<Scalars['String']['input']>;
   password_reset_token_exp?: InputMaybe<Scalars['timestamptz']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   phone_verified?: InputMaybe<Scalars['Boolean']['input']>;
   picture?: InputMaybe<Scalars['String']['input']>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
   reference_code?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Role_Enum>;
   session_id?: InputMaybe<Scalars['String']['input']>;
@@ -20073,7 +20075,7 @@ export type User_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type User_Stream_Cursor_Value_Input = {
-  auth0_id?: InputMaybe<Scalars['String']['input']>;
+  auth_provider?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   email_verified?: InputMaybe<Scalars['Boolean']['input']>;
@@ -20081,13 +20083,13 @@ export type User_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active_user?: InputMaybe<Scalars['Boolean']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   password_reset_token?: InputMaybe<Scalars['String']['input']>;
   password_reset_token_exp?: InputMaybe<Scalars['timestamptz']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   phone_verified?: InputMaybe<Scalars['Boolean']['input']>;
   picture?: InputMaybe<Scalars['String']['input']>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
   reference_code?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Role_Enum>;
   session_id?: InputMaybe<Scalars['String']['input']>;
@@ -20098,7 +20100,7 @@ export type User_Stream_Cursor_Value_Input = {
 /** update columns of table "user" */
 export type User_Update_Column =
   /** column name */
-  | 'auth0_id'
+  | 'auth_provider'
   /** column name */
   | 'created_at'
   /** column name */
@@ -20114,8 +20116,6 @@ export type User_Update_Column =
   /** column name */
   | 'lastname'
   /** column name */
-  | 'nickname'
-  /** column name */
   | 'password'
   /** column name */
   | 'password_reset_token'
@@ -20127,6 +20127,8 @@ export type User_Update_Column =
   | 'phone_verified'
   /** column name */
   | 'picture'
+  /** column name */
+  | 'provider_id'
   /** column name */
   | 'reference_code'
   /** column name */
@@ -20205,7 +20207,7 @@ export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> }
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { nickname?: string | null, id: any }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
 
 export type CreateNewAddressMutationVariables = Exact<{
   address?: InputMaybe<Scalars['String']['input']>;
@@ -20225,7 +20227,7 @@ export type CreateNewAddressMutation = { insert_user_address_one?: { address_tit
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCouponsQuery = { coupon: Array<{ id: any, code: string, description?: string | null, created_at?: any | null, start_date?: any | null, end_date?: any | null, minimum_cost?: number | null, amount: number, tenant: { firstname?: string | null, lastname?: string | null, nickname?: string | null, id: any } }> };
+export type GetAllCouponsQuery = { coupon: Array<{ id: any, code: string, description?: string | null, created_at?: any | null, start_date?: any | null, end_date?: any | null, minimum_cost?: number | null, amount: number, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> } }> };
 
 export type GetUserFavoritesQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -20373,7 +20375,7 @@ export type GetProductsWithPaginationQueryVariables = Exact<{
 }>;
 
 
-export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { nickname?: string | null, id: any }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 export type GetOrdersWithReviewsQueryVariables = Exact<{
   user_id: Scalars['uuid']['input'];
@@ -20505,8 +20507,11 @@ export const GetUserOrdersDocument = gql`
     tenant_orders {
       id
       tenant {
-        nickname
-        id
+        tenants {
+          name
+          logo
+          id
+        }
       }
       order_items {
         id
@@ -20559,10 +20564,11 @@ export const GetAllCouponsDocument = gql`
     minimum_cost
     amount
     tenant {
-      firstname
-      lastname
-      nickname
-      id
+      tenants {
+        name
+        logo
+        id
+      }
     }
   }
 }
@@ -20964,8 +20970,11 @@ export const GetProductsWithPaginationDocument = gql`
       }
     }
     tenant {
-      nickname
-      id
+      tenants {
+        name
+        logo
+        id
+      }
     }
     reviews_aggregate {
       aggregate {

@@ -14,10 +14,11 @@
       minimum_cost
       amount
       tenant {
-       	firstname
-        lastname
-        nickname
-        id
+        tenants {
+          name
+          logo
+          id
+        }
       }
     }
   }
