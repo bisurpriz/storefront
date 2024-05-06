@@ -23,7 +23,6 @@ import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import { GoogleNextAuth } from "@/components/Google";
 
 
 setDefaultOptions({
@@ -129,7 +128,6 @@ export default async function RootLayout({
           <ApolloWrapper>
             <CartProvider cartDbItems={cartItems} dbCost={costData}>
               <Header />
-              <GoogleNextAuth />
               <Content>{children}</Content>
               {auth}
               <Listener />

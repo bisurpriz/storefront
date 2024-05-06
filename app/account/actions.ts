@@ -3,7 +3,7 @@ import { User } from '@/common/types/User/user'
 import { mutate, query } from '@/graphql/lib/client'
 
 import { readIdFromCookies } from '../actions'
-import { CreateNewAddressDocument, CreateNewAddressMutation, GetCitiesDocument, GetCitiesQuery, GetDistrictsDocument, GetDistrictsQuery, GetQuartersDocument, GetQuartersQuery, GetUserAddressByIdDocument, GetUserAddressByIdQuery, GetUserByIdDocument, GetUserByIdQuery, UpdateUserByIdDocument, UpdateUserByIdMutation } from '@/graphql/generated'
+import { CreateNewAddressDocument, CreateNewAddressMutation, GetCitiesDocument, GetCitiesQuery, GetDistrictsDocument, GetDistrictsQuery, GetQuartersDocument, GetQuartersQuery, GetUserAddressByIdDocument, GetUserAddressByIdQuery, GetUserByEmailDocument, GetUserByEmailQuery, GetUserByIdDocument, GetUserByIdQuery, RegisterDocument, RegisterMutation, RegisterMutationVariables, UpdateUserByIdDocument, UpdateUserByIdMutation } from '@/graphql/generated'
 
 export const getQuarters = async (districtId: string) => {
   const { data, loading } = await query<GetQuartersQuery>({
@@ -104,6 +104,41 @@ export const getUserById = async (id?: string) => {
       id: userId,
     }
   }
+}
+
+export const getUserByEmail = async (email: string) => {
+  if (!email) return { user: null, loading: false, id: null }
+
+  try {
+    const { data, loading } = await query<GetUserByEmailQuery>({
+      query: GetUserByEmailDocument,
+      variables: {
+        email,
+      },
+    })
+    const { user } = data
+    return {
+      user: user ?? null,
+      loading,
+      email: email,
+    }
+  } catch (error) {
+    return {
+      user: null,
+      loading: false,
+      email: email,
+    }
+  }
+}
+
+export const registerUser = async (newUser: RegisterMutationVariables) => {
+  const { data:{ register } } = await mutate<RegisterMutation>({
+    mutation: RegisterDocument,
+    variables: {
+      ...newUser,
+    },
+  })
+  return register;
 }
 
 export const updateUserById = async (

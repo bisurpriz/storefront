@@ -62,8 +62,8 @@ export type Int_Comparison_Exp = {
 };
 
 export type LoginInput = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LoginOutput = {
@@ -18358,7 +18358,7 @@ export type User = {
   password?: Maybe<Scalars['String']['output']>;
   password_reset_token?: Maybe<Scalars['String']['output']>;
   password_reset_token_exp?: Maybe<Scalars['timestamptz']['output']>;
-  phone: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
   phone_verified?: Maybe<Scalars['Boolean']['output']>;
   picture?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
@@ -20172,7 +20172,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email: string, firstname?: string | null, lastname?: string | null, picture?: string | null, phone: string, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
+export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email: string, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
 
 export type UpdateUserByIdMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -20183,7 +20183,7 @@ export type UpdateUserByIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserByIdMutation = { update_user_by_pk?: { email: string, firstname?: string | null, lastname?: string | null, phone: string, picture?: string | null } | null };
+export type UpdateUserByIdMutation = { update_user_by_pk?: { email: string, firstname?: string | null, lastname?: string | null, phone?: string | null, picture?: string | null } | null };
 
 export type GetCitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20224,6 +20224,13 @@ export type CreateNewAddressMutationVariables = Exact<{
 
 export type CreateNewAddressMutation = { insert_user_address_one?: { address_title: string, id: number } | null };
 
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByEmailQuery = { user: Array<{ id: any }> };
+
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20256,12 +20263,26 @@ export type GetUserAddressesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserAddressesQuery = { user_address: Array<{ address_title: string, address: string, id: number, city: { name: string, id: number }, quarter: { name: string, id: number }, district: { name: string, id: number } }> };
 
 export type LoginMutationMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
 export type LoginMutationMutation = { login?: { access_token?: string | null, refresh_token?: string | null, error?: string | null } | null };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
+  firstname?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  provider?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type RegisterMutation = { register?: { data?: any | null, body?: any | null, error?: string | null } | null };
 
 export type GetBannersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20550,6 +20571,13 @@ export const CreateNewAddressDocument = gql`
   }
 }
     `;
+export const GetUserByEmailDocument = gql`
+    query getUserByEmail($email: String!) {
+  user(where: {email: {_eq: $email}}) {
+    id
+  }
+}
+    `;
 export const GetAllCouponsDocument = gql`
     query getAllCoupons {
   coupon(
@@ -20632,10 +20660,21 @@ export const GetUserAddressesDocument = gql`
 }
     `;
 export const LoginMutationDocument = gql`
-    mutation loginMutation($email: String!, $password: String!) {
+    mutation loginMutation($email: String, $password: String) {
   login(args: {email: $email, password: $password}) {
     access_token
     refresh_token
+    error
+  }
+}
+    `;
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String, $firstname: String, $lastname: String, $provider: String, $picture: String, $provider_id: String, $phone: String) {
+  register(
+    args: {email: $email, password: $password, firstname: $firstname, lastname: $lastname, provider: $provider, picture: $picture, provider_id: $provider_id, phone: $phone}
+  ) {
+    data
+    body
     error
   }
 }
@@ -21144,6 +21183,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createNewAddress(variables?: CreateNewAddressMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateNewAddressMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNewAddressMutation>(CreateNewAddressDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNewAddress', 'mutation', variables);
     },
+    getUserByEmail(variables: GetUserByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByEmailQuery>(GetUserByEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserByEmail', 'query', variables);
+    },
     getAllCoupons(variables?: GetAllCouponsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllCouponsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllCouponsQuery>(GetAllCouponsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllCoupons', 'query', variables);
     },
@@ -21159,8 +21201,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getUserAddresses(variables?: GetUserAddressesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserAddressesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserAddressesQuery>(GetUserAddressesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserAddresses', 'query', variables);
     },
-    loginMutation(variables: LoginMutationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<LoginMutationMutation> {
+    loginMutation(variables?: LoginMutationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<LoginMutationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutationMutation>(LoginMutationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginMutation', 'mutation', variables);
+    },
+    register(variables: RegisterMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RegisterMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register', 'mutation', variables);
     },
     getBanners(variables?: GetBannersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetBannersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetBannersQuery>(GetBannersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBanners', 'query', variables);
