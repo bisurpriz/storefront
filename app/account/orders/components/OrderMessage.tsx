@@ -23,7 +23,7 @@ const OrderMessage = ({
   const sendMessage = async () => {
     const response = await startMessageForOrder({
       message,
-      receiver_id: tenant.tenants[0].id,
+      receiver_id: tenant.tenants?.[0].id,
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
@@ -54,11 +54,11 @@ const OrderMessage = ({
         title={
           <span>
             <Link
-              href={`/vendor/${tenant.tenants[0].id}`}
+              href={`/vendor/${tenant.tenants?.[0]?.id}`}
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >
-              {tenant.tenants[0].name}
+              {tenant.tenants?.[0]?.name}
             </Link>
             <span className="text-sm text-gray-500">
               {" "}

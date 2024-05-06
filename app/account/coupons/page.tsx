@@ -9,7 +9,7 @@ const CouponsPage = async () => {
       {coupons.map((coupon, i) => (
         <CouponCard
           key={coupon.id}
-          title={coupon.tenant.tenants[0].name}
+          title={coupon.tenant.tenants?.[0]?.name}
           description={coupon.description}
           endDate={coupon.end_date}
           minimumAmount={coupon.minimum_cost}

@@ -29,6 +29,7 @@ interface CartContextType {
   updateCartItem: (item: ProductForCart) => void;
   count: number;
   cost: number;
+  loading?: boolean;
 }
 
 export const CartContext = createContext<CartContextType>({
@@ -39,6 +40,7 @@ export const CartContext = createContext<CartContextType>({
   updateCartItem: () => {},
   count: 0,
   cost: 0,
+  loading: false,
 });
 
 export const CartProvider = ({
@@ -55,8 +57,10 @@ export const CartProvider = ({
     cartItems.reduce((acc, item) => acc + item.quantity, 0)
   );
   const [cost, setCost] = useState(dbCost ?? 0);
+  const [loading, setLoading] = useState(false);
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
+    setLoading(true);
     toast.promise(
       updateCart(cartItems)
         .then(({ costData }) => {
@@ -75,6 +79,7 @@ export const CartProvider = ({
         position: "bottom-right",
       }
     );
+    setLoading(false);
     const { costData } = await updateCart(cartItems);
   };
 
@@ -93,6 +98,7 @@ export const CartProvider = ({
   }, [cartItems, cartDbItems]);
 
   const addToCart = useCallback((item: ProductForCart) => {
+    console.log(item);
     dispatch({ type: ADD_TO_CART, payload: item });
   }, []);
 
@@ -108,7 +114,6 @@ export const CartProvider = ({
   }, []);
 
   const updateCartItem = useCallback((item: ProductForCart) => {
-    console.log(item);
     dispatch({
       type: UPDATE_CART,
       payload: item,
@@ -124,6 +129,7 @@ export const CartProvider = ({
       updateCartItem,
       count,
       cost,
+      loading,
     };
   }, [cartItems, count]);
 

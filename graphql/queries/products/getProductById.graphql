@@ -12,6 +12,7 @@ query getProductById($id: bigint = 0) {
     is_service_free
     delivery_type
     properties
+    discount_price
     questions {
       created_at
       id

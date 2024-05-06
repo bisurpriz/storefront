@@ -37,7 +37,7 @@ export const createOrderAction = async (
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.tenants[0]?.id;
+    const tenantId = item.tenant.tenants?.[0]?.id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }

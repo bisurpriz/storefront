@@ -1,12 +1,12 @@
-import React from 'react';
-import { ProductItemProps } from '.';
-import Image from 'next/image';
-import { getImageUrlFromPath } from '@/utils/getImageUrl';
-import PriceTag from '@/components/PriceTag';
-import Rating from '@/components/Rating/Rating';
-import AddCartButton2 from './components/AddCartButton2';
-import Link from 'next/link';
-import ProductCardStamps from './components/Stamps';
+import React from "react";
+import { ProductItemProps } from ".";
+import Image from "next/image";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import PriceTag from "@/components/PriceTag";
+import Rating from "@/components/Rating/Rating";
+import AddCartButton2 from "./components/AddCartButton2";
+import Link from "next/link";
+import ProductCardStamps from "./components/Stamps";
 
 const ProductItem5 = ({
   name,
@@ -14,16 +14,11 @@ const ProductItem5 = ({
   price,
   id,
   loading = false,
-  reviews,
-  delivery_type,
   discount_price,
-  isFavorite,
   product_customizable_areas,
   category,
   slug,
   totalReviewCount,
-  properties,
-  description,
   tenant,
 }: ProductItemProps) => {
   return (
@@ -64,9 +59,9 @@ const ProductItem5 = ({
       </Link>
       <AddCartButton2
         product={{
+          id,
           category,
           discount_price,
-          id,
           image_url: image,
           name,
           price,
@@ -74,7 +69,6 @@ const ProductItem5 = ({
           tenant,
           quantity: 1,
         }}
-        loading={loading}
       />
     </div>
   );

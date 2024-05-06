@@ -4,12 +4,10 @@ import { useCart } from "@/contexts/CartContext";
 
 interface AddCartButton2Props {
   product: ProductForCart;
-  loading?: boolean;
 }
 
-const AddCartButton2 = ({ product, loading }: AddCartButton2Props) => {
-  const { addToCart } = useCart();
-
+const AddCartButton2 = ({ product }: AddCartButton2Props) => {
+  const { addToCart, loading } = useCart();
   const handleAddToCart = () => addToCart(product);
   return (
     <Button

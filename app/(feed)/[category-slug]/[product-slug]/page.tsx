@@ -5,6 +5,7 @@ import ProductDescription from "@/app/products/[slug]/components/Detail/ProductD
 import ProductImageCarousel from "@/app/products/[slug]/components/Detail/ProductImageCarousel";
 import ProductInformation from "@/app/products/[slug]/components/Detail/ProductInformation";
 import { getPaginatedProducts, getProductById } from "@/app/products/actions";
+import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import { IMAGE_URL } from "@/contants/urls";
@@ -45,6 +46,7 @@ export default async function ProductExample({
       user_favorites: favorites,
       reviews,
       tenant,
+      product_customizable_areas,
       ...product
     },
   } = await getProductById({
@@ -70,9 +72,9 @@ export default async function ProductExample({
       },
       seller: {
         "@type": "Organization",
-        name: tenant.tenants[0]?.name,
-        url: `https://www.bonnmarse.com/vendor/${tenant.tenants[0]?.id}`,
-        logo: tenant.tenants[0]?.logo,
+        name: tenant.tenants?.[0]?.name,
+        url: `https://www.bonnmarse.com/vendor/${tenant.tenants?.[0]?.id}`,
+        logo: tenant.tenants?.[0]?.logo,
       },
     },
     type: "Product",
@@ -119,12 +121,23 @@ export default async function ProductExample({
             discountPrice={product.price}
             discountRate={10}
             key={product.id}
-            vendor={tenant.tenants[0]}
+            vendor={tenant.tenants?.[0]}
             freeShipping={freeShipping}
             shippingType={shippingType}
           />
           <ProductActions
-            product={product.id}
+            product={{
+              id: product.id,
+              category,
+              discount_price: product.discount_price,
+              image_url: product.image_url,
+              name: product.name,
+              price: product.price,
+              product_customizable_areas:
+                product_customizable_areas as ProductForCart["product_customizable_areas"],
+              quantity: 1,
+              tenant,
+            }}
             favorite={{
               id: favorites[0]?.id,
               isFavorite,

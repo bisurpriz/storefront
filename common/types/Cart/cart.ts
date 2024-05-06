@@ -1,16 +1,16 @@
-import { Product } from '../Product/product';
+import { Product } from "../Product/product";
 
 export interface ProductForCart
   extends Pick<
     Product,
-    | 'id'
-    | 'image_url'
-    | 'name'
-    | 'price'
-    | 'category'
-    | 'tenant'
-    | 'discount_price'
-    | 'product_customizable_areas'
+    | "id"
+    | "image_url"
+    | "name"
+    | "price"
+    | "category"
+    | "tenant"
+    | "discount_price"
+    | "product_customizable_areas"
   > {
   quantity: number;
 }
