@@ -24,6 +24,7 @@ import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 
+
 setDefaultOptions({
   weekStartsOn: 1,
   firstWeekContainsDate: 1,
@@ -138,3 +139,6 @@ export default async function RootLayout({
     </html>
   );
 }
+
+
+  

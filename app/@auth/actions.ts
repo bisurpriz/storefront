@@ -6,13 +6,21 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { CookieTokens } from "./contants";
 
-export const login = async ({ email, password }) => {
+export const login = async ({ email, password }, headers = {}) => {
+  console.log(headers, "headers");
   const response = await mutate({
     mutation: LoginMutationDocument,
     variables: {
       email,
       password,
     },
+    context: {
+      headers: {
+        ...headers,
+      },
+
+    },
+    
   });
 
   if (response.data.login.access_token && response.data.login.refresh_token) {

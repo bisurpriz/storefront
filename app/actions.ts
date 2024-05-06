@@ -3,6 +3,7 @@
 import { GetBannersDocument, GetBannersQuery, GetVendorByIdDocument, GetVendorByIdQuery } from '@/graphql/generated'
 import { query } from '@/graphql/lib/client'
 import { cookies } from 'next/headers'
+import { CookieTokens } from './@auth/contants'
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
@@ -16,7 +17,7 @@ export async function readIdFromCookies() {
 }
 
 export async function getIdToken() {
-  const token = await cookies().get('access_token').value
+  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value
 
   if (!token) return new Promise((resolve, reject) => reject('Session is null'))
 
