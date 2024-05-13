@@ -4,10 +4,7 @@ import { AuthProvider } from "@/common/enums/Auth";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-console.log(process.env.GOOGLE_CLIENT_ID, "cd");
-console.log(process.env.GOOGLE_CLIENT_SECRET, "cd");
-
-export const authOptions = {
+const authOptions = {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -17,8 +14,6 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log(user, account, "user");
-
       const { id, name, email, image, phone } = user;
       const nameArray = name?.split(" ");
 
@@ -35,8 +30,6 @@ export const authOptions = {
         if (error && error !== "USER_ALREADY_EXIST") {
           return false;
         }
-
-        console.log(body, "body", error, "error");
       }
 
       const { id_token } = account;
@@ -44,8 +37,6 @@ export const authOptions = {
         { email: null, password: null },
         { "id-token": `${id_token}` }
       );
-
-      console.log(loginResponse, "loginResponse");
 
       if (loginResponse.data.login.error) {
         return false;

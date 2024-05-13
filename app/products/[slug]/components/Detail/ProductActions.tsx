@@ -23,7 +23,7 @@ interface Props {
 const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
   const { user } = useUser();
-  console.log(product);
+
   const { addToCart } = useCart();
   const { push } = useRouter();
   const handleFavorite = () => {

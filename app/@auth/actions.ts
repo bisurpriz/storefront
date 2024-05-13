@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 import { CookieTokens } from "./contants";
 
 export const login = async ({ email, password }, headers = {}) => {
-  console.log(headers, "headers");
   const response = await mutate({
     mutation: LoginMutationDocument,
     variables: {
@@ -18,9 +17,7 @@ export const login = async ({ email, password }, headers = {}) => {
       headers: {
         ...headers,
       },
-
     },
-    
   });
 
   if (response.data.login.access_token && response.data.login.refresh_token) {
@@ -36,7 +33,6 @@ export const login = async ({ email, password }, headers = {}) => {
     );
     cookies().set(CookieTokens.USER_ID, user.id);
   }
-
   return response;
 };
 

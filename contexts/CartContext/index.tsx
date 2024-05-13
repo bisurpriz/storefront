@@ -69,6 +69,9 @@ export const CartProvider = ({
         })
         .catch((error) => {
           console.error(error);
+        })
+        .finally(() => {
+          setLoading(false);
         }),
       {
         loading: "Ürün sepete ekleniyor.",
@@ -79,8 +82,6 @@ export const CartProvider = ({
         position: "bottom-right",
       }
     );
-    setLoading(false);
-    const { costData } = await updateCart(cartItems);
   };
 
   useEffect(() => {
@@ -98,7 +99,6 @@ export const CartProvider = ({
   }, [cartItems, cartDbItems]);
 
   const addToCart = useCallback((item: ProductForCart) => {
-    console.log(item);
     dispatch({ type: ADD_TO_CART, payload: item });
   }, []);
 

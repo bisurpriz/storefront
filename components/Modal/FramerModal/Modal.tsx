@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Backdrop from "./Backdrop";
-import { useEffect } from "react";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 const dropIn = {
   hidden: {
@@ -32,13 +32,7 @@ const Modal = ({
   handleClose?: () => void;
   children: React.ReactNode;
 }) => {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
+  useLockScroll({ bool: true });
 
   return (
     <Backdrop onClick={handleClose}>

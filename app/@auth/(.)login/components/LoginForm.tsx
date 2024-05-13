@@ -130,11 +130,8 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
               Kayıt olun
             </Link>
           </p>
-          <div
-            // Sosyal medya giriş butonları kapsayıcısı
-            className="flex flex-col gap-2 w-full justify-center items-center mt-4"
-          >
-            {socialLogins.map(({ name, icon, signIn,color }) => (
+          <div className="flex flex-col gap-2 w-full justify-center items-center mt-4">
+            {socialLogins.map(({ name, icon, signIn, color }) => (
               <span
                 key={name}
                 onClick={signIn}
@@ -142,11 +139,13 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
                   "flex items-center justify-start w-full rounded-lg cursor-pointer text-lg",
                   "p-2 border border-gray-200",
                   color,
-                  "hover:bg-opacity-80",
+                  "hover:bg-opacity-80"
                 )}
               >
                 {icon}
-                <span className="flex-1 text-center text-base">{name} ile giriş yap</span>
+                <span className="flex-1 text-center text-base">
+                  {name} ile giriş yap
+                </span>
               </span>
             ))}
           </div>
@@ -154,9 +153,8 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             className="text-center text-gray-500 text-xs"
             style={{ maxWidth: "300px" }}
           >
-            Sosyal medya hesaplarınızla giriş yaparak daha hızlı ve kolay bir
-            şekilde giriş yapabilirsiniz.
-
+            Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
+            yapabilirsiniz.
           </span>
         </div>
       </form>

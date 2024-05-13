@@ -16,24 +16,19 @@ const CartStepContext = createContext<CartStepContextType>({
 
 export const CartStepProvider = ({ children }) => {
   const { push } = useRouter();
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const pathname = usePathname();
   const forward = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
     if (index < cartStepperPaths.length - 1) {
       push(cartStepperPaths[index + 1].path);
+      return;
     }
 
     return;
   };
 
-  console.log(
-    pathname,
-    cartStepperPaths.findIndex((item) => item.path === pathname)
-  );
-
   const checkCustomAreas = () => {
-    // map every item and check customizable area values
     const isDone = cartItems.every((item) => {
       return item.product_customizable_areas?.every((area) => {
         if (
@@ -66,12 +61,10 @@ export const CartStepProvider = ({ children }) => {
   };
 
   const checkoutCheck = () => {
-    console.log("Ödeme işlemi kontrol ediliyor...");
-    forward();
-  };
-
-  const checkComplete = () => {
-    console.log("Sipariş tamamlandı...");
+    // console.log("atadam");
+    // localStorage.removeItem("cart");
+    // localStorage.removeItem("detail-data");
+    // clearCart();
     forward();
   };
 
@@ -86,9 +79,6 @@ export const CartStepProvider = ({ children }) => {
         break;
       case 2:
         checkoutCheck();
-        break;
-      case 3:
-        checkComplete();
         break;
       default:
         break;

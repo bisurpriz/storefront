@@ -1,12 +1,12 @@
-import { getUserById } from '@/app/account/actions'
-import Image from 'next/image'
-import Link from 'next/link'
-import Button from '../Button'
-import Dropdown from '../Dropdown'
-import { profileItems } from './contants'
+import { getUserById } from "@/app/account/actions";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "../Button";
+import Dropdown from "../Dropdown";
+import { profileItems } from "./contants";
 
 const HeaderProfile = async () => {
-  const { user } = await getUserById()
+  const { user } = await getUserById();
 
   return !user ? (
     <div className="flex items-center justify-end ml-2">
@@ -19,10 +19,11 @@ const HeaderProfile = async () => {
       <Dropdown
         dropdownPlacement="bottomRight"
         options={profileItems}
-        className="cursor-pointer">
+        className="cursor-pointer"
+      >
         <div className="flex items-center gap-2">
           <Image
-            src={user?.picture || '/avatar.png'}
+            src={user?.picture || "/avatar.png"}
             width={30}
             height={30}
             alt="User Picture"
@@ -30,12 +31,12 @@ const HeaderProfile = async () => {
             loading="lazy"
           />
           <span className="text-sm font-normal text-slate-500 max-lg:hidden">
-            {user?.firstname + ' ' + user?.lastname}
+            {user?.firstname + " " + user?.lastname}
           </span>
         </div>
       </Dropdown>
     </div>
-  )
-}
+  );
+};
 
-export default HeaderProfile
+export default HeaderProfile;
