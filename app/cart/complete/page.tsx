@@ -20,15 +20,19 @@ const OrderCompletePage: FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center p-10 w-full h-full bg-gray-100 gap-8 rounded-md">
-      <h1 className="text-4xl font-bold mb-4">Siparişiniz Alındı</h1>
-      <p className="text-lg text-gray-600 mb-8">
-        Siparişiniz en kısa sürede hazırlanıp yola çıkacaktır.
+    <div className="flex flex-col items-center justify-center p-10 w-full h-full bg-gray-100 gap-4 text-center rounded-md">
+      <h1 className="text-4xl font-bold mb-4">Siparişiniz Alındı 🎉</h1>
+      <p className="text-lg text-gray-600 mb-2">
+        Siparişiniz en kısa sürede hazırlanıp kargoya verilecektir.
       </p>
-      <Link href={"/"}>Alışverişe Devam Et</Link>
-      <Link href={"/account/orders"}>
-        <Button color="secondary">Siparişlerim</Button>
-      </Link>
+      <div className="flex flex-col-reverse md:flex-row-reverse gap-4 w-full md:w-1/2 justify-center items-center">
+        <Link href={"/"}>
+          <Button>Alışverişe Devam Et</Button>
+        </Link>
+        <Link href={"/account/orders"}>
+          <Button color="secondary">Siparişlerim</Button>
+        </Link>
+      </div>
     </div>
   );
 };

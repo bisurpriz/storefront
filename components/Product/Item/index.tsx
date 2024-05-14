@@ -1,11 +1,13 @@
-import React from "react";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import PriceTag from "@/components/PriceTag";
-import Rating from "@/components/Rating/Rating";
-import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
-import ProductCardStamps from "./components/Stamps";
+import ProductItemSkeleton from "./ProductItemSkeleton";
+import { Product } from "@/common/types/Product/product";
+import clsx from "clsx";
+import ProductItemImage from "../ProductItemImage/ProductItemImage";
+import Rating from "@/components/Rating/Rating";
+import AddCartButton from "./components/AddCartButton";
+import AddToFavorite from "./components/AddToFavorite";
+import PriceTag from "@/components/PriceTag";
+import { Suspense } from "react";
 
 const ProductItem5 = ({
   name,
@@ -19,7 +21,12 @@ const ProductItem5 = ({
   slug,
   totalReviewCount,
   tenant,
-}) => {
+}: ProductItemProps) => {
+  const maxXsClasses = {
+    container: "overflow-hidden rounded-lg border relative flex flex-col",
+    image: "flex-1 grow",
+  };
+
   return (
     <div className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col">
       <Link href={`/${category.slug}/${slug}?pid=${id}`}>

@@ -7,13 +7,13 @@ import { useState } from "react";
 import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
-import { Tenant } from "@/graphql/generated";
+import { GetUserOrdersQuery } from "@/graphql/generated";
 
 const OrderMessage = ({
   tenant,
   orderTenantId,
 }: {
-  tenant: Pick<Tenant, "id" | "name" | "logo">;
+  tenant: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["tenant"];
   orderTenantId: number;
 }) => {
   const [open, setOpen] = useState(false);
@@ -23,7 +23,7 @@ const OrderMessage = ({
   const sendMessage = async () => {
     const response = await startMessageForOrder({
       message,
-      receiver_id: tenant.id,
+      receiver_id: tenant.tenants?.[0].id,
       order_tenant_id: orderTenantId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
@@ -54,11 +54,11 @@ const OrderMessage = ({
         title={
           <span>
             <Link
-              href={`/vendor/${tenant.id}`}
+              href={`/vendor/${tenant.tenants?.[0]?.id}`}
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >
-              {tenant.name}
+              {tenant.tenants?.[0]?.name}
             </Link>
             <span className="text-sm text-gray-500">
               {" "}

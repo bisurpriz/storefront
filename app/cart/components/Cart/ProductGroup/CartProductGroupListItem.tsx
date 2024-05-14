@@ -28,7 +28,7 @@ const CartProductGroupListItem = (product: ProductForOrder) => {
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col">
+        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col mb-4">
           <Image
             src={image}
             alt="image"
@@ -50,40 +50,33 @@ const CartProductGroupListItem = (product: ProductForOrder) => {
             </div>
           </div>
 
-          {customize?.length ? (
-            <div className="flex-1 max-2xl:w-full min-w-[300px]">
-              {Array(quantity)
-                .fill(0)
-                .map((_, i) => (
-                  <AccordionItem
-                    key={i}
-                    title={`Ürün Özelleştirmeleri ${i + 1}`}
-                    className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
-                    content={
-                      <CustomizeGroup
-                        key={i}
-                        index={i}
-                        quantity={quantity}
-                        product={product}
-                      />
-                    }
-                  />
-                ))}
-            </div>
-          ) : null}
           <ProductGroupListItemInfo customize={customize} id={id} />
         </div>
-        <div className="mt-4">
-          <Promotions
-            promotions={[
-              {
-                description: "Kategori İndirimi",
-                icon: <IoAccessibility />,
-                filterKey: "category",
-              },
-            ]}
-          />
-        </div>
+        <Promotions
+          promotions={[
+            {
+              description: "Kategori İndirimi",
+              icon: <IoAccessibility />,
+              filterKey: "category",
+            },
+          ]}
+        />
+        {customize?.length ? (
+          <div className="flex-1 max-2xl:w-full min-w-[300px] mb-4">
+            {Array(quantity)
+              .fill(0)
+              .map((_, i) => (
+                <AccordionItem
+                  key={i}
+                  title={`Ürün Özelleştirmeleri ${i + 1}`}
+                  className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
+                  content={
+                    <CustomizeGroup key={i} index={i} product={product} />
+                  }
+                />
+              ))}
+          </div>
+        ) : null}
       </div>
     </li>
   );

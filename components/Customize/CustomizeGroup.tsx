@@ -1,104 +1,65 @@
 "use client";
 
 import CustomizeCartItem from "./CustomizeCartItem";
-import Button from "../Button";
-import { getBase64Image } from "@/utils/getBase64Image";
-import { ProductForOrder } from "@/common/types/Cart/cart";
+import { ProductForCart } from "@/common/types/Cart/cart";
 import { useCart } from "@/contexts/CartContext";
+import { useCallback } from "react";
 
 interface CustomizeGroupProps {
   index: number;
-  quantity: ProductForOrder["quantity"];
-  product: ProductForOrder;
+  product: ProductForCart;
 }
 
-const CustomizeGroup = ({ product, index, quantity }: CustomizeGroupProps) => {
+const CustomizeGroup = ({ product, index }: CustomizeGroupProps) => {
   const { updateCartItem } = useCart();
 
-  const handleFormSubmit = async (formData: FormData) => {
-    const data = Object.fromEntries(formData.entries());
-    const keys = Object.keys(data);
-    const hasImages = keys?.find((item) => item.includes("special_image"));
-    const image = data[hasImages];
-    if (image instanceof File) {
-      const base64 = (await getBase64Image(image)) as string;
-      if (image.name && base64) {
-        data[hasImages] = base64;
-      } else {
-        data[hasImages] = "";
-      }
-    }
+  const handleInputsChange = useCallback(
+    (inputIndex, type, value) => {
+      const newProduct = {
+        ...product,
+        product_customizable_areas: product.product_customizable_areas.map(
+          (area) => {
+            if (area.customizable_area.type === type) {
+              return {
+                ...area,
+                customizable_area: {
+                  ...area.customizable_area,
+                  values: {
+                    ...area.customizable_area.values,
+                    [`${index}_${type}_${inputIndex}`]: value,
+                  },
+                },
+              };
+            }
 
-    const texts = [];
-    const images = [];
-
-    keys.forEach((key) => {
-      if (key.includes("special_text")) {
-        texts.push({
-          [key]: data[key],
-        });
-      } else if (key.includes("special_image")) {
-        images.push({
-          [key]: data[key],
-        });
-      }
-    });
-
-    const newProd = {
-      ...product,
-      product_customizable_areas: product.product_customizable_areas?.map(
-        (item) => {
-          if (item.customizable_area.type === "special_text") {
-            return {
-              ...item,
-              customizable_area: {
-                ...item.customizable_area,
-                values: texts,
-              },
-            };
-          } else if (item.customizable_area.type === "special_image") {
-            return {
-              ...item,
-              customizable_area: {
-                ...item.customizable_area,
-                values: images,
-              },
-            };
+            return area;
           }
-        }
-      ),
-    };
-    updateCartItem(newProd as any);
-  };
+        ),
+      };
+
+      updateCartItem(newProduct);
+    },
+    [product, updateCartItem]
+  );
 
   return (
-    <form
-      autoComplete="off"
-      className="flex flex-col gap-3 w-full"
-      action={handleFormSubmit}
-    >
+    <div className="flex flex-col gap-3 w-full">
       {product.product_customizable_areas?.map(
-        ({ count, customizable_area: { type, values } }, i) => {
+        ({ count, customizable_area: { type, values }, max_character }, i) => {
           return (
             <CustomizeCartItem
               key={i}
               type={type}
               count={count}
               values={values}
+              onChange={handleInputsChange}
+              maxCharacter={max_character}
+              keyIndex={index}
             />
           );
         }
       )}
-      <Button
-        type="submit"
-        className="mt-3 w-fit"
-        size="small"
-        variant="outlined"
-        color="secondary"
-      >
-        Kaydet
-      </Button>
-    </form>
+    </div>
   );
 };
 

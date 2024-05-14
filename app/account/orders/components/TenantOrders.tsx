@@ -16,11 +16,11 @@ const TenantOrders = ({
         <div className="flex items-start justify-start gap-4 max-sm:flex-col max-sm:gap-2">
           <span className="my-1">
             <Link
-              href={`/vendor/${to.tenant.tenants[0].id}`}
+              href={`/vendor/${to.tenant.tenants?.[0]?.id}`}
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >
-              {to.tenant.tenants[0].name}
+              {to.tenant.tenants?.[0]?.name}
             </Link>{" "}
             <span className="text-sm text-gray-500">satıcısından</span>{" "}
             <span className="text-sm text-gray-500">
@@ -30,7 +30,7 @@ const TenantOrders = ({
           <StatusBadge status={OrderItemStatus[to.order_status.value]} />
         </div>
 
-        <OrderMessage tenant={to.tenant.tenants[0]} orderTenantId={to.id} />
+        <OrderMessage tenant={to.tenant} orderTenantId={to.id} />
       </div>
 
       <OrderItem order_items={to.order_items} />

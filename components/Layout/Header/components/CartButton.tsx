@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import Badge from '@/components/Badge';
-import Button from '@/components/Button';
-import Tooltip from '@/components/Tooltip';
-import { useCart } from '@/contexts/CartContext';
-import Link from 'next/link';
-import { memo } from 'react';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { CartStepPaths } from "@/app/cart/constants";
+import Badge from "@/components/Badge";
+import Button from "@/components/Button";
+import Tooltip from "@/components/Tooltip";
+import { useCart } from "@/contexts/CartContext";
+import Link from "next/link";
+import { memo } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const CartButton = () => {
   const { count } = useCart();
@@ -14,7 +15,7 @@ const CartButton = () => {
   return (
     <Badge badgeContent={count}>
       <Tooltip text="Sepetim">
-        <Link href="/cart" className="relative">
+        <Link href={CartStepPaths.CART} className="relative">
           <Button
             icon={<AiOutlineShoppingCart />}
             type="button"

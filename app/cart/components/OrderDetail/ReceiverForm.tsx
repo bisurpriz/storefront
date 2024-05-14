@@ -1,25 +1,25 @@
 "use client";
 
-import Card from "@/components/Card";
-import { useEffect, useState } from "react";
-import { Controller, useWatch, useForm } from "react-hook-form";
-import { OrderDetailFormData } from "@/common/types/Order/order";
 import {
   createNewUserAddress,
   getUserAddressById,
 } from "@/app/account/actions";
+import { CityResponse } from "@/common/types/Addresses/addresses";
+import { OrderDetailFormData } from "@/common/types/Order/order";
+import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
+import Card from "@/components/Card";
+import Checkbox from "@/components/Checkbox";
+import PhoneInput from "@/components/PhoneInput";
+import TextField from "@/components/TextField";
+import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
-import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
-import TextField from "@/components/TextField";
-import PhoneInput from "@/components/PhoneInput";
-import { CityResponse } from "@/common/types/Addresses/addresses";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { boolean, number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import Checkbox from "@/components/Checkbox";
+import { useEffect, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
+import { boolean, number, object, string } from "yup";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -69,7 +69,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
   const [user_id, setUser_id] = useState(null);
-  const { push } = useRouter();
+  const { handleChangeStep } = useCartStep();
   const {
     control,
     reset,
@@ -158,8 +158,6 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const onSubmit = async (values) => {
     if (values) {
-      localStorage.setItem("detail-data", JSON.stringify(values));
-      push("/cart/checkout");
       if (values.wantToSaveAddress) {
         try {
           await createNewUserAddress({
@@ -177,8 +175,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
+          return;
         }
       }
+      localStorage.setItem("detail-data", JSON.stringify(values));
+      handleChangeStep();
     }
   };
 

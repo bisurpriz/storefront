@@ -16,9 +16,9 @@ type ProductInformationProps = {
   rateCounts: RatingProps["rateCounts"];
   discountRate?: number;
   vendor?: {
-    name: string;
-    id: string;
-    rate: number;
+    name?: string;
+    id: any;
+    logo?: string;
   };
   shippingType?: string;
   freeShipping?: boolean;
@@ -50,12 +50,6 @@ const ProductInformation = ({
             >
               {vendor.name}
             </Link>
-
-            {vendor.rate && (
-              <span className="h-full px-3 bg-primary rounded-lg text-white font-bold">
-                {vendor.rate}
-              </span>
-            )}
           </div>
         )}
 

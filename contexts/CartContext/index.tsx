@@ -16,14 +16,10 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   REMOVE_FROM_CART,
-  SET_ALL_CART,
   UPDATE_CART,
 } from "./constants";
-import { reducer } from "./reducer";
-import { getProductsForCartWithIds, updateCart } from "@/app/cart/actions";
-import { useUser } from "../AuthContext";
-import { parseJson } from "@/utils/format";
-import { UpdateUserCartMutationVariables } from "@/graphql/generated";
+import { cartReducer } from "./reducer";
+import { updateCart } from "@/app/cart/actions";
 
 interface CartContextType {
   cartItems: ProductForOrder[];
@@ -32,6 +28,8 @@ interface CartContextType {
   clearCart: () => void;
   updateCartItem: (item: ProductForCart) => void;
   count: number;
+  cost: number;
+  loading?: boolean;
 }
 
 export const CartContext = createContext<CartContextType>({
@@ -41,32 +39,64 @@ export const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   updateCartItem: () => {},
   count: 0,
+  cost: 0,
+  loading: false,
 });
 
 export const CartProvider = ({
   children,
   cartDbItems,
+  dbCost,
 }: {
   children: ReactNode;
-  cartDbItems: string | null;
+  cartDbItems: ProductForCart[];
+  dbCost: number;
 }) => {
-  const [cartItems, dispatch] = useReducer(reducer, []);
-  const [detailedDbItems] = useState<ProductForCart[]>(
-    parseJson(cartDbItems) ?? []
+  const [cartItems, dispatch] = useReducer(cartReducer, cartDbItems ?? []);
+  const [count, setCount] = useState(
+    cartItems.reduce((acc, item) => acc + item.quantity, 0)
   );
+  const [cost, setCost] = useState(dbCost ?? 0);
+  const [loading, setLoading] = useState(false);
 
   const handleChangeDb = async (cartItems: ProductForCart[]) => {
-    console.log("Update cart items");
-    await updateCart(cartItems);
-    // cartItems.forEach((item) => {
-    //   updateCartItem(item);
-    // });
-    setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
+    setLoading(true);
+    toast.promise(
+      updateCart(cartItems)
+        .then(({ costData }) => {
+          if (!!costData) setCost(costData);
+          setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        }),
+      {
+        loading: "Ürün sepete ekleniyor.",
+        success: "Ürün sepete eklendi.",
+        error: "Ürün sepete eklenirken bir hata oluştu.",
+      },
+      {
+        position: "bottom-right",
+      }
+    );
   };
 
   useEffect(() => {
-    if (!detailedDbItems) return;
-    const ids = detailedDbItems.map((item) => item.id);
+    const cartDbIds = cartDbItems.map((item) => item.id);
+    const cartIds = cartItems.map((item) => item.id);
+
+    if (cartDbIds.length !== cartIds.length) {
+      handleChangeDb(cartItems);
+    } else {
+      const isSame = cartIds.every((id) => cartDbIds.includes(id));
+      if (!isSame) {
+        handleChangeDb(cartItems);
+      }
+    }
+  }, [cartItems, cartDbItems]);
 
     if (!ids.length) return;
 
@@ -144,19 +174,6 @@ export const CartProvider = ({
 
   const addToCart = useCallback((item: ProductForOrder) => {
     dispatch({ type: ADD_TO_CART, payload: item });
-    toast.success("Ürün sepete eklendi", {
-      icon: "🛒",
-      id: item.id.toString(),
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-      position: "bottom-right",
-    });
   }, []);
 
   const removeFromCart = useCallback((itemId: number | string) => {
@@ -190,6 +207,8 @@ export const CartProvider = ({
       clearCart,
       updateCartItem,
       count,
+      cost,
+      loading,
     };
   }, [cartItems, count]);
 

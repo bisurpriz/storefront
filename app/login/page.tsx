@@ -1,27 +1,29 @@
-'use client';
+"use client";
 
-import LoginForm from '../@auth/(.)login/components/LoginForm'
+import { useRouter } from "next/navigation";
+import LoginForm from "../@auth/(.)login/components/LoginForm";
 
 export type LoginResponse = {
   data: {
     login: {
-      error: string
-      refresh_token: string | null
-      access_token: string | null
-    }
-  }
-}
+      error: string;
+      refresh_token: string | null;
+      access_token: string | null;
+    };
+  };
+};
 
 const LoginPage = () => {
+  const { replace } = useRouter();
   return (
     <LoginForm
       onSuccessfulLogin={(status) => {
         if (status) {
-          console.log('login successful')
+          replace("/");
         }
       }}
     />
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

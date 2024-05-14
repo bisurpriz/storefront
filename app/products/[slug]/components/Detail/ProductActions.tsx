@@ -3,14 +3,16 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
+import { ProductForCart } from "@/common/types/Cart/cart";
 import Button from "@/components/Button";
 import { useUser } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MdFavoriteBorder } from "react-icons/md";
 
 interface Props {
-  productId: number;
+  product: ProductForCart;
   favorite: {
     isFavorite: boolean;
     id: number;
@@ -18,9 +20,11 @@ interface Props {
   favoriteCount?: number;
 }
 
-const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
+const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
   const { user } = useUser();
+
+  const { addToCart } = useCart();
   const { push } = useRouter();
   const handleFavorite = () => {
     if (!user) {
@@ -29,13 +33,13 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
     }
 
     if (isFavoriteState) {
-      removeFromFavorites({ productId });
+      removeFromFavorites({ productId: product.id });
       setIsFavoriteState(false);
 
       return;
     }
 
-    addToFavorites({ productId });
+    addToFavorites({ productId: product.id });
     setIsFavoriteState(true);
   };
 
@@ -45,6 +49,7 @@ const ProductActions = ({ productId, favorite, favoriteCount }: Props) => {
         size="large"
         color="primary"
         className="text-xl max-sm:w-full max-sm:justify-center"
+        onClick={() => addToCart(product)}
       >
         Sepete Ekle
       </Button>

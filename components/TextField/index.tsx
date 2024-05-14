@@ -71,9 +71,13 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <label
         {...getRootProps()}
-        className={`${fullWidthClasses} flex flex-col gap-1 text-sm font-medium text-gray-700 relative whitespace-nowrap
-          ${isError && "text-red-500"}
-          `}
+        className={clsx(
+          "flex flex-col gap-1 text-sm font-medium text-gray-700 relative whitespace-nowrap",
+          {
+            "text-red-500": isError,
+          },
+          fullWidthClasses
+        )}
       >
         {label ?? null}
         {icon && (

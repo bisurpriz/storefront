@@ -16,6 +16,7 @@ import {
   UpdateDbCartMutation,
 } from "@/graphql/generated";
 import { parseJson } from "@/utils/format";
+import axios from "axios";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -36,7 +37,7 @@ export const createOrderAction = async (
 
   if (!userId) return null;
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.tenants[0].id;
+    const tenantId = item.tenant.tenants?.[0]?.id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }
@@ -198,51 +199,103 @@ export async function getPaymentToken() {
   return data;
 }
 
-export const updateCart = async (cartItems: ProductForCart[]) => {
-  const content = cartItems.map((item) => ({
-    product_id: item.id,
-    quantity: item.quantity,
-    tenant_id: item.tenant.id,
-  }));
+export const getCartCost = async (
+  cartItems: Pick<ProductForCart, "id" | "quantity">[]
+) => {
+  const { data: costData } = await axios.post(
+    "https://llt4tsk3fqsilcccjrst76njyq0eiqne.lambda-url.eu-north-1.on.aws/",
+    {
+      products: cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+    }
+  );
 
-  const { data } = await mutate<UpdateDbCartMutation>({
-    mutation: UpdateDbCartDocument,
-    variables: {
-      payload: [
-        {
-          user_id: await checkUserId(),
-          content: JSON.stringify(content),
-        },
-      ],
-    },
-  });
-
-  return data;
+  return costData.totalPrice;
 };
 
-export const getCart = async () => {
+export const updateCart = async (cartItems: ProductForCart[]) => {
+  try {
+    const content = cartItems.map((item) => ({
+      product_id: item.id,
+      quantity: item.quantity,
+      tenant_id: item.tenant?.tenants?.[0].id,
+    }));
+
+    const { data: cartData } = await mutate<UpdateDbCartMutation>({
+      mutation: UpdateDbCartDocument,
+      variables: {
+        payload: [
+          {
+            user_id: await checkUserId(),
+            content: JSON.stringify(content),
+          },
+        ],
+      },
+    });
+
+    const costData = await getCartCost(cartItems);
+
+    return {
+      cartData,
+      costData: costData,
+    };
+  } catch (error) {
+    console.log("Sepet güncellenirken bir hata oluştu.", error);
+    return {
+      data: null,
+      error: {
+        message: "Sepet güncellenirken bir hata oluştu.",
+      },
+    };
+  }
+};
+
+export const getCart = async (user_id: string) => {
+  if (!user_id || !(await checkUserId()))
+    return {
+      cartItems: [],
+      costData: 0,
+    } as {
+      cartItems: ProductForCart[];
+      costData: number;
+    };
+
   try {
     const {
       data: { cart },
     } = await query<GetDbCartQuery>({
       query: GetDbCartDocument,
       variables: {
-        user_id: await checkUserId(),
+        user_id: user_id ?? (await checkUserId()),
       },
       fetchPolicy: "no-cache",
     });
-    console.log(cart, "dbden gelen cart");
-    const parsedContent = parseJson(cart[0].content);
-    if (parsedContent.length === 0) return [];
 
+    const parsedContent = parseJson(cart[0].content);
+    if (parsedContent.length === 0)
+      return {
+        cartItems: [],
+        costData: 0,
+      } as {
+        cartItems: ProductForCart[];
+        costData: number;
+      };
+
+    const ids = parsedContent.map((item) => item.product_id);
     const {
       data: { product },
     } = await query<GetProductsForInitialCartQuery>({
       query: GetProductsForInitialCartDocument,
       variables: {
-        ids: parsedContent.map((item) => item.product_id),
+        ids,
       },
     });
+
+    const costData = await getCartCost(
+      parsedContent.map((_) => ({ id: _.product_id, quantity: _.quantity }))
+    );
 
     const cartItems = parsedContent.map((item) => {
       const hasProduct = product.find((p) => p.id === item.product_id);
@@ -253,11 +306,23 @@ export const getCart = async () => {
       };
     });
 
-    return cartItems;
+    return {
+      cartItems,
+      costData,
+    } as {
+      cartItems: ProductForCart[];
+      costData: number;
+    };
   } catch (error) {
     console.log(
       "Sepet bilgisine ulaşılamadı. Hata: getCart fonksiyonu içerisinde."
     );
-    return [];
+    return {
+      cartItems: [],
+      costData: 0,
+    } as {
+      cartItems: ProductForCart[];
+      costData: number;
+    };
   }
 };

@@ -1,65 +1,89 @@
-'use client'
+"use client";
 
-import Button from '@/components/Button'
-import TextField from '@/components/TextField'
-import Image from 'next/image'
-import Link from 'next/link'
-import { FC, useState } from 'react'
-import toast from 'react-hot-toast'
-import { IoLogIn } from 'react-icons/io5'
-import { login } from '../../actions'
-import { AuthErrorMessages } from '../../contants'
+import Button from "@/components/Button";
+import TextField from "@/components/TextField";
+import Image from "next/image";
+import Link from "next/link";
+import { FC, useState } from "react";
+import toast from "react-hot-toast";
+import { IoLogIn } from "react-icons/io5";
+import { login } from "../../actions";
+import { AuthErrorMessages } from "../../contants";
+import { signIn } from "next-auth/react";
+import clsx from "clsx";
+import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 
 type LoginFormProps = {
-  onSuccessfulLogin?: (status: boolean) => void
-}
+  onSuccessfulLogin?: (status: boolean) => void;
+};
+
+const socialLogins = [
+  {
+    name: "Google",
+    icon: <FaGoogle />,
+    signIn: () => signIn("google"),
+    color: "bg-red-500 text-white",
+  },
+  {
+    name: "Facebook",
+    icon: <FaFacebook />,
+    signIn: () => signIn("facebook"),
+    color: "bg-blue-500 text-white",
+  },
+  {
+    name: "Apple",
+    icon: <FaApple />,
+    signIn: () => signIn("apple"),
+    color: "bg-black text-white",
+  },
+];
 
 const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleClientLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setLoading(true)
+    event.preventDefault();
+    setLoading(true);
     const [email, password] = Array.from(event.currentTarget.elements).map(
-      (field: HTMLInputElement) => field.value,
-    )
+      (field: HTMLInputElement) => field.value
+    );
 
-    const response = await login({ email, password })
+    const response = await login({ email, password });
 
     if (response.data.login.error) {
       const errorMessage =
         AuthErrorMessages[
           response.data.login.error as keyof typeof AuthErrorMessages
-        ]
+        ];
 
-      setError(errorMessage)
+      setError(errorMessage);
       toast.error(errorMessage, {
-        position: 'bottom-right',
+        position: "bottom-right",
         ariaProps: {
-          'aria-live': 'polite',
-          role: 'status',
+          "aria-live": "polite",
+          role: "status",
         },
-        id: 'login-error',
+        id: "login-error",
         duration: 1500,
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
-    setError('')
-    toast.success('Giriş başarılı', {
-      position: 'bottom-right',
+    setError("");
+    toast.success("Giriş başarılı", {
+      position: "bottom-right",
       ariaProps: {
-        'aria-live': 'polite',
-        role: 'status',
+        "aria-live": "polite",
+        role: "status",
       },
-      id: 'login-success',
+      id: "login-success",
       duration: 1500,
-    })
-    onSuccessfulLogin?.(true)
-    setLoading(false)
-  }
+    });
+    onSuccessfulLogin?.(true);
+    setLoading(false);
+  };
 
   return (
     <div>
@@ -101,14 +125,41 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             <Link
               href="/register"
               className="text-center text-blue-500"
-              replace>
+              replace
+            >
               Kayıt olun
             </Link>
           </p>
+          <div className="flex flex-col gap-2 w-full justify-center items-center mt-4">
+            {socialLogins.map(({ name, icon, signIn, color }) => (
+              <span
+                key={name}
+                onClick={signIn}
+                className={clsx(
+                  "flex items-center justify-start w-full rounded-lg cursor-pointer text-lg",
+                  "p-2 border border-gray-200",
+                  color,
+                  "hover:bg-opacity-80"
+                )}
+              >
+                {icon}
+                <span className="flex-1 text-center text-base">
+                  {name} ile giriş yap
+                </span>
+              </span>
+            ))}
+          </div>
+          <span
+            className="text-center text-gray-500 text-xs"
+            style={{ maxWidth: "300px" }}
+          >
+            Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
+            yapabilirsiniz.
+          </span>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

@@ -2,8 +2,9 @@ import {
   CustomizableAreaType,
   OrderItemStatus,
 } from "@/common/enums/Order/product";
+import { Product } from "../Product/product";
 import { Address } from "../Addresses/addresses";
-import { Product, Tenant, User } from "@/graphql/generated";
+import { User } from "../User/user";
 
 export interface OrderItem {
   id: number;
@@ -27,6 +28,7 @@ export interface CustomizableArea {
 export interface ProductCustomizableArea {
   customizable_area: CustomizableArea;
   count: number;
+  max_character?: number;
 }
 
 export interface OrderItemSpecial {
@@ -65,7 +67,7 @@ export interface OrderResponse {
   updated_at: string;
   tenant_orders: {
     id: number;
-    tenant: Pick<Tenant, "name" | "id">;
+    tenant: Pick<User, "nickname" | "id">;
     order_items: OrderItemResponse[];
     order_status: {
       value: OrderItemStatus;

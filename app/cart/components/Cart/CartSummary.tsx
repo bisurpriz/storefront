@@ -1,101 +1,31 @@
 "use client";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo } from "react";
 import { IoTicketOutline } from "react-icons/io5";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import { usePathname, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { cartStepperPaths } from "../../constants";
-import CartDrawer from "./CartDrawer";
-import SubmitButton from "@/components/Button/SubmitButton";
-import { useCart } from "@/contexts/CartContext";
 
-interface Pricing {
-  total_discount: number;
-  total_discount_price: number;
-  total_price: number;
-}
+import { useCart } from "@/contexts/CartContext";
+import { usePathname } from "next/navigation";
+import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
+import { CartStepPaths } from "../../constants";
 
 const CartSummary = () => {
-  const { cartItems } = useCart();
-
-  const { push } = useRouter();
+  const { cost } = useCart();
   const pathname = usePathname();
-  const [pricing] = useState<Pricing>(() => {
-    let total_discount = 0;
-    let total_discount_price = 0;
-    let total_price = 0;
-    cartItems.forEach((item) => {
-      total_discount += item.price - item.discount_price;
-      total_discount_price += item.discount_price * item.quantity;
-      total_price += item.discount_price * item.quantity;
-    });
-    return {
-      total_discount,
-      total_discount_price,
-      total_price,
-    };
-  });
-  const [formTarget, setFormTarget] = useState<string | undefined>(undefined);
+  const { handleChangeStep } = useCartStep();
 
-  const paths = useMemo(() => cartStepperPaths.map((step) => step.path), []);
-
-  const isCartPage = useCallback(
-    (nextPath: string) => {
-      if (cartItems.length > 0) {
-        const isCustomizable = cartItems.find(
-          (item) => item.product_customizable_areas?.length > 0
-        );
-        if (isCustomizable) {
-          const isCustomizableAreaEmpty =
-            isCustomizable.product_customizable_areas.find((area) =>
-              area?.customizable_area.values?.find((value) => {
-                const keys = Object.keys(value);
-
-                if (keys.length === 1) {
-                  return value[keys[0]] === "";
-                }
-              })
-            );
-
-          if (isCustomizableAreaEmpty) {
-            toast.error("Özelleştirilebilir alanlar boş bırakılamaz.");
-            return;
-          } else {
-            push(nextPath);
-          }
-        } else {
-          push(nextPath);
-        }
-      }
-    },
-    [cartItems, push]
-  );
-
-  const handlePageChange = useCallback(() => {
-    if (pathname === paths[0]) {
-      isCartPage(paths[1]);
+  const changeStep = () => {
+    if (pathname !== CartStepPaths.ORDER_DETAIL) {
+      handleChangeStep();
     }
-  }, [pathname, paths, isCartPage]);
+  };
 
-  const { total_discount, total_discount_price, total_price } = pricing;
-
-  useEffect(() => {
-    switch (pathname) {
-      case paths[1]:
-        setFormTarget("order-detail-form");
-        break;
-      case paths[2]:
-        setFormTarget("credit-card-form");
-        break;
-      default:
-        setFormTarget(undefined);
-        break;
-    }
-  }, [pathname, paths]);
+  if (pathname === CartStepPaths.COMPLETE) {
+    return null;
+  }
 
   return (
-    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary-light rounded-xl">
+    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
       <div className="hidden md:block">
         <div className="p-4">
           <span className="block text-xl w-full text-center mb-3 font-normal">
@@ -104,22 +34,12 @@ const CartSummary = () => {
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">
-                {total_discount_price?.toFixed(2)} ₺
-              </span>
+              <span className="font-semibold">{cost} ₺</span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
               <span className="font-semibold">29.99 ₺</span>
             </div>
-            {total_discount ? (
-              <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
-                <span>Toplam kazancınız</span>
-                <span className="font-semibold">
-                  {total_discount?.toFixed(2)} ₺{" "}
-                </span>
-              </div>
-            ) : null}
 
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
               <TextField
@@ -139,27 +59,30 @@ const CartSummary = () => {
             <div className="flex justify-between items-center text-sm border-t py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                {total_price?.toFixed(2)} ₺
+                {cost} ₺
               </span>
             </div>
-            <SubmitButton
-              type={formTarget ? "submit" : "button"}
-              size="large"
-              color="primary"
-              className="flex justify-center w-full mt-3"
-              label="Onayla ve Devam Et"
-              onClick={handlePageChange}
-              form={formTarget}
-            />
           </div>
         </div>
+        <Button
+          type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
+          size="large"
+          color="primary"
+          fullWidth
+          form={
+            pathname === CartStepPaths.ORDER_DETAIL
+              ? "order-detail-form"
+              : undefined
+          }
+          label={
+            pathname === CartStepPaths.CHECKOUT
+              ? "Ödeme Yap"
+              : "Onayla ve Devam Et"
+          }
+          className="flex justify-center rounded-t-none"
+          onClick={changeStep}
+        />
       </div>
-
-      <CartDrawer
-        totalPrice={total_price}
-        totalDiscount={total_discount}
-        totalDiscountPrice={total_discount_price}
-      />
     </div>
   );
 };
