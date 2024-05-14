@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client';
+"use client";
 
-import { Suspense, useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
-import Loading from './Loading';
-import ProductItem5 from '../Product/Item/ProductItem5';
-import ProductItemSkeleton from '../Product/Item/ProductItemSkeleton';
+import { Suspense, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import Loading from "./Loading";
+import ProductItem5 from "../Product/Item";
+import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -53,7 +53,9 @@ const InfinityScroll = <T,>({
           <ProductItemSkeleton key={i} />
         ))}
       >
-        {data?.map((item: any) => <ProductItem5 key={item.id} {...item} />)}
+        {data?.map((item: any) => (
+          <ProductItem5 key={item.id} {...item} />
+        ))}
       </Suspense>
       {totalCount === 0 && <div className="text-center">Ürün bulunamadı</div>}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>

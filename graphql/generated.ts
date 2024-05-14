@@ -19904,7 +19904,7 @@ export type GetProductByIdQuery = {
   } | null;
 };
 
-export type GetProductForCartQueryVariables = Exact<{
+export type GetProductForOrderQueryVariables = Exact<{
   id?: InputMaybe<Scalars["bigint"]["input"]>;
 }>;
 
@@ -19955,6 +19955,11 @@ export type GetProductsForInitialCartQuery = {
     tenant: {
       tenants: Array<{ id: any; name?: string | null; logo?: string | null }>;
     };
+    product_customizable_areas: Array<{
+      count: number;
+      max_character?: number | null;
+      customizable_area: { id: number; type: string };
+    }>;
   }>;
 };
 
@@ -20401,7 +20406,7 @@ export const UpdateDbCartDocument = gql`
   mutation updateDbCart($payload: [cart_insert_input!]!) {
     insert_cart(
       objects: $payload
-      on_conflict: { constraint: cart_pkey, update_columns: [content] }
+      on_conflict: { constraint: cart_user_id_key, update_columns: [content] }
     ) {
       returning {
         id
@@ -20647,8 +20652,8 @@ export const GetProductByIdDocument = gql`
     }
   }
 `;
-export const GetProductForCartDocument = gql`
-  query getProductForCart($id: bigint = 0) {
+export const GetProductForOrderDocument = gql`
+  query getProductForOrder($id: bigint = 0) {
     product: product_by_pk(id: $id) {
       description
       id
@@ -20708,6 +20713,14 @@ export const GetProductsForInitialCartDocument = gql`
           name
           logo
         }
+      }
+      product_customizable_areas {
+        customizable_area {
+          id
+          type
+        }
+        count
+        max_character
       }
     }
   }
@@ -21372,18 +21385,18 @@ export function getSdk(
         variables
       );
     },
-    getProductForCart(
-      variables?: GetProductForCartQueryVariables,
+    getProductForOrder(
+      variables?: GetProductForOrderQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders
-    ): Promise<GetProductForCartQuery> {
+    ): Promise<GetProductForOrderQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductForCartQuery>(
-            GetProductForCartDocument,
+          client.request<GetProductForOrderQuery>(
+            GetProductForOrderDocument,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        "getProductForCart",
+        "getProductForOrder",
         "query",
         variables
       );

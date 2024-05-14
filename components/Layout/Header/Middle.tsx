@@ -11,7 +11,7 @@ import Tooltip from "@/components/Tooltip";
 
 const HeaderMiddle = async () => {
   return (
-    <div className="w-full flex items-end justify-between gap-4 lg:gap-12 my-4 max-md:px-4 ">
+    <div className="w-full flex items-end justify-between gap-4 lg:gap-12 my-4 max-md:px-4 max-sm:hidden">
       <Link href="/" className="max-sm:hidden min-w-[180px]">
         <Image
           src={"/logo.svg"}
@@ -21,7 +21,7 @@ const HeaderMiddle = async () => {
           priority
         />
       </Link>
-      <Search />
+          <Search />
 
       <div className="float-right flex items-center max-sm:hidden">
         <Tooltip text="Favorilerim">
