@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Backdrop from "./Backdrop";
-import { useLockScroll } from "@/hooks/useLockScroll";
 
 const dropIn = {
   hidden: {
@@ -32,8 +31,6 @@ const Modal = ({
   handleClose?: () => void;
   children: React.ReactNode;
 }) => {
-  useLockScroll({ bool: true });
-
   return (
     <Backdrop onClick={handleClose}>
       <motion.div

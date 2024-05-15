@@ -128,7 +128,7 @@ export default async function RootLayout({
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
-        font-manrope relative scroll-smooth overflow-hidden mb-10`}
+        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden mb-10`}
         id="root"
       >
         <AuthProvider user={user}>

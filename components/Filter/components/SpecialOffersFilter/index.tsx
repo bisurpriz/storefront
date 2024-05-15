@@ -1,17 +1,15 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { FC } from "react";
 import ButtonCheckbox from "../ButtonCheckbox";
-import { HandleFilterSubmit } from "../CategoryFilter";
+import { HandleFilterSubmit } from "../..";
 
 type SpecialOffersFilterProps = {
   specialOffers: boolean;
-  setSpecialOffers: Dispatch<SetStateAction<boolean>>;
   handleFilterSubmit: HandleFilterSubmit;
 };
 
 const SpecialOffersFilter: FC<SpecialOffersFilterProps> = ({
   handleFilterSubmit,
   specialOffers,
-  setSpecialOffers,
 }) => {
   return (
     <ButtonCheckbox
@@ -19,7 +17,6 @@ const SpecialOffersFilter: FC<SpecialOffersFilterProps> = ({
       checked={!!specialOffers}
       onChange={(check) => {
         handleFilterSubmit("specialOffers", check ? "true" : "");
-        setSpecialOffers((prev) => !prev);
       }}
     />
   );

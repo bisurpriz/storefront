@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState, useCallback, useMemo } from "react";
+import React, { FC, useState, useCallback, useMemo, useEffect } from "react";
 import { Variants, motion } from "framer-motion";
 import clsx from "clsx";
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
@@ -9,7 +9,6 @@ import FilterDropdownButton from "./FilterDropdownButton";
 import FilterDropdownList from "./FilterDropdownList";
 import FilterDropdownSearchBar from "./FilterDropdownSearchBar";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import { useLockScroll } from "@/hooks/useLockScroll";
 import FilterDropdownAcceptButton from "./FilterDropdownAcceptButton";
 import { TbCategory } from "react-icons/tb";
 
@@ -20,28 +19,27 @@ export type FilterInputOption = {
 
 type FilterInputProps = {
   title: string;
-  onItemSelect?: (item: FilterInputOption[]) => void;
   options: FilterInputOption[];
-  selectedItems?: FilterInputOption[];
-  handleFilterSubmit: () => void;
+  defaultSelectedItems?: FilterInputOption[];
+  handleFilterSubmit: (selectedItems: FilterInputOption[]) => void;
 };
 
 const FilterInput: FC<FilterInputProps> = ({
   title,
-  onItemSelect,
   options,
-  selectedItems = [],
+  defaultSelectedItems = [],
   handleFilterSubmit,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState("");
+  const [selectedItems, setSelectedItems] =
+    useState<FilterInputOption[]>(defaultSelectedItems);
 
-  const close = () => {
-    setFilter("");
+  const handleClose = () => {
     setIsOpen(false);
   };
 
-  const ref = useClickAway<HTMLDivElement>(close);
+  const ref = useClickAway<HTMLDivElement>(handleClose);
   const { isTablet } = useResponsive();
 
   const debouncedFilter = useDebounce(filter, 500);
@@ -55,17 +53,17 @@ const FilterInput: FC<FilterInputProps> = ({
   const handleItemSelect = useCallback(
     (item: FilterInputOption) => {
       if (selectedItems.some((i) => i.value === item.value)) {
-        onItemSelect(selectedItems.filter((i) => i.value !== item.value));
+        setSelectedItems(selectedItems.filter((i) => i.value !== item.value));
         return;
       }
 
-      onItemSelect([...selectedItems, item]);
+      setSelectedItems([...selectedItems, item]);
     },
     [selectedItems]
   );
 
   const handleClear = () => {
-    onItemSelect([]);
+    setSelectedItems([]);
     setFilter("");
   };
 
@@ -76,7 +74,6 @@ const FilterInput: FC<FilterInputProps> = ({
   const subMenuVariants: Variants = useMemo(() => {
     if (isTablet) {
       return {
-        // like accordion
         initial: { height: 0 },
         enter: { height: "auto" },
         exit: { height: 0 },
@@ -101,7 +98,12 @@ const FilterInput: FC<FilterInputProps> = ({
     };
   }, [isTablet]);
 
-  useLockScroll({ bool: isOpen });
+  useEffect(() => {
+    if (!isOpen) {
+      setFilter("");
+      setSelectedItems(defaultSelectedItems);
+    }
+  }, [isOpen, defaultSelectedItems]);
 
   return (
     <div className={clsx("relative min-w-[300px]")} ref={ref}>
@@ -116,7 +118,7 @@ const FilterInput: FC<FilterInputProps> = ({
         <motion.div
           key="backdrop"
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={close}
+          onClick={handleClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -127,8 +129,8 @@ const FilterInput: FC<FilterInputProps> = ({
         <motion.div
           key="submenu"
           className={clsx(
-            "absolute w-full min-w-fit bg-white border border-gray-200 rounded-md mt-2 max-h-96",
-            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-md:z-50 max-h-[65vh]"
+            "absolute w-full min-w-fit bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50",
+            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-h-[65vh]"
           )}
           variants={subMenuVariants}
           initial="initial"
@@ -145,8 +147,8 @@ const FilterInput: FC<FilterInputProps> = ({
           <FilterDropdownAcceptButton
             handleClear={handleClear}
             handleFilterSubmit={() => {
-              handleFilterSubmit();
-              close();
+              handleFilterSubmit(selectedItems);
+              handleClose();
             }}
           />
         </motion.div>
