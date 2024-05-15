@@ -64,7 +64,7 @@ export const CartProvider = ({
     toast.promise(
       updateCart(cartItems)
         .then(({ costData }) => {
-          if (!!costData) setCost(costData);
+          if (costData) setCost(costData);
           setCount(cartItems.reduce((acc, item) => acc + item.quantity, 0));
         })
         .catch((error) => {

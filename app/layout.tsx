@@ -23,6 +23,9 @@ import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
+import { GetCategoriesDocument, GetCategoriesQuery } from "@/graphql/generated";
+import { query } from "@/graphql/lib/client";
+import { CategoryProvider } from "@/contexts/CategoryContext";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -114,6 +117,12 @@ export default async function RootLayout({
   const { user } = await getUserById();
   const { cartItems, costData } = await getCart(user?.id);
 
+  const {
+    data: { category },
+  } = await query<GetCategoriesQuery>({
+    query: GetCategoriesDocument,
+  });
+
   return (
     <html lang="tr">
       <body
@@ -124,12 +133,14 @@ export default async function RootLayout({
       >
         <AuthProvider user={user}>
           <ApolloWrapper>
-            <CartProvider cartDbItems={cartItems} dbCost={costData}>
-              <Header />
-              <Content>{children}</Content>
-              {auth}
-              <Listener />
-            </CartProvider>
+            <CategoryProvider category={category}>
+              <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                <Header category={category} />
+                <Content>{children}</Content>
+                {auth}
+                <Listener />
+              </CartProvider>
+            </CategoryProvider>
           </ApolloWrapper>
         </AuthProvider>
       </body>

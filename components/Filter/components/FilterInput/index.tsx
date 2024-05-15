@@ -1,4 +1,6 @@
-import React, { FC, useState, useCallback, useMemo, useEffect } from "react";
+"use client";
+
+import React, { FC, useState, useCallback, useMemo } from "react";
 import { Variants, motion } from "framer-motion";
 import clsx from "clsx";
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
@@ -11,24 +13,27 @@ import { useLockScroll } from "@/hooks/useLockScroll";
 import FilterDropdownAcceptButton from "./FilterDropdownAcceptButton";
 import { TbCategory } from "react-icons/tb";
 
-type Option = {
+export type FilterInputOption = {
   key: string;
   value: string;
 };
 
 type FilterInputProps = {
   title: string;
-  onItemSelect?: (item: string | string[]) => void;
-  options: Option[];
+  onItemSelect?: (item: FilterInputOption[]) => void;
+  options: FilterInputOption[];
+  selectedItems?: FilterInputOption[];
+  handleFilterSubmit: () => void;
 };
 
 const FilterInput: FC<FilterInputProps> = ({
   title,
   onItemSelect,
   options,
+  selectedItems = [],
+  handleFilterSubmit,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [filter, setFilter] = useState("");
 
   const close = () => {
@@ -48,25 +53,19 @@ const FilterInput: FC<FilterInputProps> = ({
   }, [debouncedFilter, options]);
 
   const handleItemSelect = useCallback(
-    (item: string) => {
-      if (selectedItems.includes(item)) {
-        setSelectedItems((prev) => prev.filter((i) => i !== item));
+    (item: FilterInputOption) => {
+      if (selectedItems.some((i) => i.value === item.value)) {
+        onItemSelect(selectedItems.filter((i) => i.value !== item.value));
         return;
       }
 
-      setSelectedItems((prev) => [...prev, item]);
+      onItemSelect([...selectedItems, item]);
     },
     [selectedItems]
   );
 
-  useEffect(() => {
-    if (onItemSelect) {
-      onItemSelect(selectedItems);
-    }
-  }, [onItemSelect, selectedItems]);
-
   const handleClear = () => {
-    setSelectedItems([]);
+    onItemSelect([]);
     setFilter("");
   };
 
@@ -143,7 +142,13 @@ const FilterInput: FC<FilterInputProps> = ({
             handleItemSelect={handleItemSelect}
             selectedItems={selectedItems}
           />
-          <FilterDropdownAcceptButton handleClear={handleClear} />
+          <FilterDropdownAcceptButton
+            handleClear={handleClear}
+            handleFilterSubmit={() => {
+              handleFilterSubmit();
+              close();
+            }}
+          />
         </motion.div>
       </AnimationExitProvider>
     </div>

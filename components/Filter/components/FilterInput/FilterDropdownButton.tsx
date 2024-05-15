@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { FC } from "react";
+import { FilterInputOption } from ".";
 
 type FilterDropdownButtonProps = {
   toggle: () => void;
   isOpen: boolean;
-  selectedItems: string | string[];
+  selectedItems: FilterInputOption[];
   title: string;
   icon?: React.ReactNode;
 };
@@ -38,13 +39,13 @@ const FilterDropdownButton: FC<FilterDropdownButtonProps> = ({
           {selectedItems.length > 1 ? (
             <span>
               :{" "}
-              {Array.isArray(selectedItems)
-                ? selectedItems.slice(0, 2).join(", ")
-                : selectedItems}
-              ...
+              {selectedItems
+                .map((item) => item.key)
+                .slice(0, 2)
+                .join(", ")}
             </span>
           ) : (
-            <span>: {selectedItems[0]}</span>
+            <span>: {selectedItems[0].key}</span>
           )}
         </span>
       ) : (

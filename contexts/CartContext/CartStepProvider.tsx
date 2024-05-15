@@ -2,7 +2,7 @@
 
 import { cartStepperPaths } from "@/app/cart/constants";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { useCart } from ".";
 import toast from "react-hot-toast";
 
