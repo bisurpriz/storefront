@@ -9,6 +9,7 @@ import FilterDropdownSearchBar from "./FilterDropdownSearchBar";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import { useLockScroll } from "@/hooks/useLockScroll";
 import FilterDropdownAcceptButton from "./FilterDropdownAcceptButton";
+import { TbCategory } from "react-icons/tb";
 
 type Option = {
   key: string;
@@ -104,12 +105,13 @@ const FilterInput: FC<FilterInputProps> = ({
   useLockScroll({ bool: isOpen });
 
   return (
-    <div className={clsx("relative", "max-md:w-full")} ref={ref}>
+    <div className={clsx("relative min-w-[300px]")} ref={ref}>
       <FilterDropdownButton
         isOpen={isOpen}
         selectedItems={selectedItems}
         toggle={toggle}
         title={title}
+        icon={<TbCategory />}
       />
       {isOpen && isTablet && (
         <motion.div
@@ -141,7 +143,7 @@ const FilterInput: FC<FilterInputProps> = ({
             handleItemSelect={handleItemSelect}
             selectedItems={selectedItems}
           />
-          <FilterDropdownAcceptButton />
+          <FilterDropdownAcceptButton handleClear={handleClear} />
         </motion.div>
       </AnimationExitProvider>
     </div>
