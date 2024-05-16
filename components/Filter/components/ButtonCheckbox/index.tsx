@@ -34,10 +34,7 @@ const ButtonCheckbox: FC<ButtonCheckboxProps> = ({
         "font-manrope font-semibold whitespace-nowrap cursor-pointer relative",
         "flex items-center justify-between gap-2 text-sm bg-white border text-gray-500 border-gray-200 rounded-md p-2",
         {
-          "border-gray-300": checked,
-        },
-        {
-          "border-primary": checked,
+          "border-primary text-primary": checked,
         }
       )}
       variants={labelVariants}
