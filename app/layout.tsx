@@ -99,6 +99,8 @@ export const metadata: Metadata = {
     "çikolata çeşitleri fiyatları istanbul",
   ],
   robots: "index, follow",
+  manifest: "/manifest.json",
+  generator: "Bonnmarşe",
 };
 export const dynamic = "force-dynamic";
 
