@@ -1,8 +1,8 @@
 "use client";
 
-import { Product } from "@/common/types/Product/product";
 import Popover from "@/components/Popover";
 import { useCart } from "@/contexts/CartContext";
+import { Product } from "@/graphql/generated";
 import React from "react";
 import toast from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";

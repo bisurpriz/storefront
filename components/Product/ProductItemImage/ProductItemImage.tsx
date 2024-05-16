@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { ProductItemProps } from '../Item';
+import { Product } from "@/graphql/generated";
+import Image from "next/image";
+import Link from "next/link";
 
-interface ProductItemImageProps extends Pick<ProductItemProps, 'id'> {
+interface ProductItemImageProps extends Pick<Product, "id"> {
   style?: React.CSSProperties;
   className?: string;
   alt: string;
@@ -21,7 +21,7 @@ const ProductItemImage = ({
   id,
 }: ProductItemImageProps) => {
   const baseStyle =
-    'w-full object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300';
+    "w-full object-cover aspect-square cursor-pointer hover:opacity-90 hover:scale-105 transition-all duration-300";
 
   return (
     <Link href={`/products/${id}`} className="min-w-fit">

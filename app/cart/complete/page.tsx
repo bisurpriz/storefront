@@ -1,15 +1,24 @@
+"use client";
+
 import Button from "@/components/Button";
-import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
+import { FC, useCallback, useEffect } from "react";
 
-export const generateMetadata = async () => {
-  return {
-    title: getBrandWithTitle("Sipariş Tamamlandı"),
-    description: "Sipariş tamamlandı sayfası",
-  };
-};
+const OrderCompletePage: FC = () => {
+  const { clearCart } = useCart();
 
-const OrderCompletePage: React.FC = async () => {
+  const handleClearCart = useCallback(() => {
+    localStorage.removeItem("detail-data");
+    clearCart();
+  }, [clearCart]);
+
+  useEffect(() => {
+    return () => {
+      handleClearCart();
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center p-10 w-full h-full bg-gray-100 gap-4 text-center rounded-md">
       <h1 className="text-4xl font-bold mb-4">Siparişiniz Alındı 🎉</h1>

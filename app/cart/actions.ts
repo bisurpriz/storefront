@@ -1,6 +1,6 @@
 "use server";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { ProductForOrder } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
 import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
 import { IPaymentToken } from "@/common/types/Payment/payment";
@@ -30,7 +30,7 @@ export const checkUserId = async () => {
 };
 
 export const createOrderAction = async (
-  cartItems: ProductForCart[],
+  cartItems: ProductForOrder[],
   orderDetail
 ) => {
   const userId = await checkUserId();
