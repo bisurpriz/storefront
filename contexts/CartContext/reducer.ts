@@ -17,7 +17,7 @@ export type CartAction =
 
 export const cartReducer = (state: ProductForCart[], action: CartAction) => {
   switch (action.type) {
-    case "ADD_TO_CART":
+    case "ADD_TO_CART": {
       const isExist = state.findIndex((item) => item.id === action.payload.id);
       if (isExist !== -1) {
         if (action.payload.quantity < state[isExist].quantity) {
@@ -46,22 +46,23 @@ export const cartReducer = (state: ProductForCart[], action: CartAction) => {
         };
         return _state;
       }
-
       return [...state, { ...action.payload, quantity: 1 }];
+    }
 
-    case "REMOVE_FROM_CART":
+    case "REMOVE_FROM_CART": {
       return state.filter((item) => item.id !== action.payload);
+    }
 
-    case "UPDATE_CART":
+    case "UPDATE_CART": {
       const _state = [...state];
       const index = _state.findIndex((item) => item.id === action.payload.id);
       if (index === -1) return state;
       _state[index] = action.payload;
       return _state;
-
-    case "CLEAR_CART":
+    }
+    case "CLEAR_CART": {
       return [];
-
+    }
     default:
       return state;
   }

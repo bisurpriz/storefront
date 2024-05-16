@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC, useState, useCallback, useMemo, useEffect } from "react";
 import { Variants, motion } from "framer-motion";
 import clsx from "clsx";
@@ -7,35 +9,37 @@ import FilterDropdownButton from "./FilterDropdownButton";
 import FilterDropdownList from "./FilterDropdownList";
 import FilterDropdownSearchBar from "./FilterDropdownSearchBar";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import { useLockScroll } from "@/hooks/useLockScroll";
 import FilterDropdownAcceptButton from "./FilterDropdownAcceptButton";
+import { TbCategory } from "react-icons/tb";
 
-type Option = {
+export type FilterInputOption = {
   key: string;
   value: string;
 };
 
 type FilterInputProps = {
   title: string;
-  onItemSelect?: (item: string | string[]) => void;
-  options: Option[];
+  options: FilterInputOption[];
+  defaultSelectedItems?: FilterInputOption[];
+  handleFilterSubmit: (selectedItems: FilterInputOption[]) => void;
 };
 
 const FilterInput: FC<FilterInputProps> = ({
   title,
-  onItemSelect,
   options,
+  defaultSelectedItems = [],
+  handleFilterSubmit,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [filter, setFilter] = useState("");
+  const [selectedItems, setSelectedItems] =
+    useState<FilterInputOption[]>(defaultSelectedItems);
 
-  const close = () => {
-    setFilter("");
+  const handleClose = () => {
     setIsOpen(false);
   };
 
-  const ref = useClickAway<HTMLDivElement>(close);
+  const ref = useClickAway<HTMLDivElement>(handleClose);
   const { isTablet } = useResponsive();
 
   const debouncedFilter = useDebounce(filter, 500);
@@ -47,22 +51,16 @@ const FilterInput: FC<FilterInputProps> = ({
   }, [debouncedFilter, options]);
 
   const handleItemSelect = useCallback(
-    (item: string) => {
-      if (selectedItems.includes(item)) {
-        setSelectedItems((prev) => prev.filter((i) => i !== item));
+    (item: FilterInputOption) => {
+      if (selectedItems.some((i) => i.value === item.value)) {
+        setSelectedItems(selectedItems.filter((i) => i.value !== item.value));
         return;
       }
 
-      setSelectedItems((prev) => [...prev, item]);
+      setSelectedItems([...selectedItems, item]);
     },
     [selectedItems]
   );
-
-  useEffect(() => {
-    if (onItemSelect) {
-      onItemSelect(selectedItems);
-    }
-  }, [onItemSelect, selectedItems]);
 
   const handleClear = () => {
     setSelectedItems([]);
@@ -76,7 +74,6 @@ const FilterInput: FC<FilterInputProps> = ({
   const subMenuVariants: Variants = useMemo(() => {
     if (isTablet) {
       return {
-        // like accordion
         initial: { height: 0 },
         enter: { height: "auto" },
         exit: { height: 0 },
@@ -101,21 +98,27 @@ const FilterInput: FC<FilterInputProps> = ({
     };
   }, [isTablet]);
 
-  useLockScroll({ bool: isOpen });
+  useEffect(() => {
+    if (!isOpen) {
+      setFilter("");
+      setSelectedItems(defaultSelectedItems);
+    }
+  }, [isOpen, defaultSelectedItems]);
 
   return (
-    <div className={clsx("relative", "max-md:w-full")} ref={ref}>
+    <div className={clsx("relative")} ref={ref}>
       <FilterDropdownButton
         isOpen={isOpen}
         selectedItems={selectedItems}
         toggle={toggle}
         title={title}
+        icon={<TbCategory />}
       />
       {isOpen && isTablet && (
         <motion.div
           key="backdrop"
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={close}
+          onClick={handleClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -126,8 +129,8 @@ const FilterInput: FC<FilterInputProps> = ({
         <motion.div
           key="submenu"
           className={clsx(
-            "absolute w-full min-w-fit bg-white border border-gray-200 rounded-md mt-2 max-h-96",
-            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-md:z-50 max-h-[65vh]"
+            "absolute bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50 w-[300px]",
+            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-h-[65vh]"
           )}
           variants={subMenuVariants}
           initial="initial"
@@ -141,7 +144,13 @@ const FilterInput: FC<FilterInputProps> = ({
             handleItemSelect={handleItemSelect}
             selectedItems={selectedItems}
           />
-          <FilterDropdownAcceptButton />
+          <FilterDropdownAcceptButton
+            handleClear={handleClear}
+            handleFilterSubmit={() => {
+              handleFilterSubmit(selectedItems);
+              handleClose();
+            }}
+          />
         </motion.div>
       </AnimationExitProvider>
     </div>

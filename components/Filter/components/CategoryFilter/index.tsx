@@ -1,15 +1,31 @@
-"use client";
+import React, { FC } from "react";
+import FilterInput, { FilterInputOption } from "../FilterInput";
+import { HandleFilterSubmit } from "../..";
 
-import React from "react";
-import FilterInput from "../FilterInput";
-
-const CategoryFilterInput = () => {
-  const data = Array.from({ length: 15 }).map((_, i) => ({
-    key: `Category ${i}`,
-    value: `category-${i}`,
-  }));
-
-  return <FilterInput title="Kategori" options={data} />;
+type CategoryFilterProps = {
+  handleFilterSubmit: HandleFilterSubmit;
+  selectedCategories: FilterInputOption[];
+  categories: FilterInputOption[];
 };
 
-export default CategoryFilterInput;
+const CategoryFilter: FC<CategoryFilterProps> = ({
+  categories,
+  handleFilterSubmit,
+  selectedCategories,
+}) => {
+  return (
+    <FilterInput
+      title="Kategori"
+      options={categories}
+      defaultSelectedItems={selectedCategories}
+      handleFilterSubmit={(selectedItems) => {
+        handleFilterSubmit(
+          "category",
+          selectedItems.map((c) => c.value).join(",") || ""
+        );
+      }}
+    />
+  );
+};
+
+export default CategoryFilter;

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Backdrop from "./Backdrop";
-import { useLockScroll } from "@/hooks/useLockScroll";
+import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 
 const dropIn = {
   hidden: {
@@ -28,25 +28,26 @@ const dropIn = {
 const Modal = ({
   handleClose,
   children,
+  open,
 }: {
   handleClose?: () => void;
   children: React.ReactNode;
+  open: boolean;
 }) => {
-  useLockScroll({ bool: true });
-
   return (
-    <Backdrop onClick={handleClose}>
-      <motion.div
-        onClick={(e) => e.stopPropagation()}
-        variants={dropIn}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="absolute top-0 left-0 right-0 bottom-0 m-auto w-screen h-screen flex items-center justify-center md:w-1/2 md:h-fit"
-      >
-        {children}
-      </motion.div>
-    </Backdrop>
+    <AnimationExitProvider show={open}>
+      <Backdrop onClick={handleClose}>
+        <motion.div
+          onClick={(e) => e.stopPropagation()}
+          variants={dropIn}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          {children}
+        </motion.div>
+      </Backdrop>
+    </AnimationExitProvider>
   );
 };
 

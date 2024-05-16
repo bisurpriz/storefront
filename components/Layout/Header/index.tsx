@@ -1,14 +1,11 @@
-import HeaderMiddle from './Middle';
-import HeaderBottom from './Bottom';
-import { query } from '@/graphql/lib/client';
-import { memo } from 'react';
-import { GetCategoriesDocument, GetCategoriesQuery } from '@/graphql/generated';
+import HeaderMiddle from "./Middle";
+import HeaderBottom from "./Bottom";
+import { GetCategoriesQuery } from "@/graphql/generated";
+import { FC } from "react";
 
-const Header = async () => {
-  const { data: {category} } = await query<GetCategoriesQuery>({
-    query: GetCategoriesDocument,
-  });
-
+const Header: FC<{
+  category: GetCategoriesQuery["category"];
+}> = async ({ category }) => {
   return (
     <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
       <HeaderMiddle />
@@ -17,4 +14,4 @@ const Header = async () => {
   );
 };
 
-export default memo(Header);
+export default Header;

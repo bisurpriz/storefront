@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import clsx from "clsx";
 import Checkbox from "@/components/Checkbox";
+import { FilterInputOption } from ".";
 
 type FilterDropdownListProps = {
   filteredOptions: { key: string; value: string }[];
-  selectedItems: string[];
-  handleItemSelect: (item: string) => void;
+  selectedItems: FilterInputOption[];
+  handleItemSelect: (item: FilterInputOption) => void;
 };
 
 const FilterDropdownList: FC<FilterDropdownListProps> = ({
@@ -20,26 +21,29 @@ const FilterDropdownList: FC<FilterDropdownListProps> = ({
         maxHeight: "40vh",
       }}
     >
-      {filteredOptions.map(({ key, value }, index) => (
-        <label
-          key={index}
-          className={clsx(
-            "w-full cursor-pointer flex items-center justify-start gap-2 text-sm bg-white border border-gray-200 rounded-md p-2 last:mb-4",
-            {
-              "border-gray-300": selectedItems.includes(value),
-            },
-            {
-              "border-primary": selectedItems.includes(value),
-            }
-          )}
-        >
-          <Checkbox
-            label={key}
-            checked={selectedItems.includes(value)}
-            onChange={() => handleItemSelect(value)}
-          />
-        </label>
-      ))}
+      {filteredOptions.map((option, index) => {
+        const isSelected = selectedItems.some((x) => x.value === option.value);
+        return (
+          <label
+            key={index}
+            className={clsx(
+              "w-full cursor-pointer flex items-center justify-start gap-2 text-sm bg-white border border-gray-200 rounded-md px-2 last:mb-4",
+              {
+                "border-gray-300": isSelected,
+              },
+              {
+                "border-primary": isSelected,
+              }
+            )}
+          >
+            <Checkbox
+              label={option.key}
+              checked={isSelected}
+              onChange={() => handleItemSelect(option)}
+            />
+          </label>
+        );
+      })}
     </div>
   );
 };

@@ -23,6 +23,9 @@ import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
+import { GetCategoriesDocument, GetCategoriesQuery } from "@/graphql/generated";
+import { query } from "@/graphql/lib/client";
+import { CategoryProvider } from "@/contexts/CategoryContext";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -96,6 +99,8 @@ export const metadata: Metadata = {
     "çikolata çeşitleri fiyatları istanbul",
   ],
   robots: "index, follow",
+  manifest: "/manifest.json",
+  generator: "Bonnmarşe",
 };
 export const dynamic = "force-dynamic";
 
@@ -114,22 +119,30 @@ export default async function RootLayout({
   const { user } = await getUserById();
   const { cartItems, costData } = await getCart(user?.id);
 
+  const {
+    data: { category },
+  } = await query<GetCategoriesQuery>({
+    query: GetCategoriesDocument,
+  });
+
   return (
     <html lang="tr">
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
-        font-manrope relative scroll-smooth overflow-hidden mb-10`}
+        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden mb-10`}
         id="root"
       >
         <AuthProvider user={user}>
           <ApolloWrapper>
-            <CartProvider cartDbItems={cartItems} dbCost={costData}>
-              <Header />
-              <Content>{children}</Content>
-              {auth}
-              <Listener />
-            </CartProvider>
+            <CategoryProvider category={category}>
+              <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                <Header category={category} />
+                <Content>{children}</Content>
+                {auth}
+                <Listener />
+              </CartProvider>
+            </CategoryProvider>
           </ApolloWrapper>
         </AuthProvider>
       </body>
