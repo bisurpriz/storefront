@@ -37,7 +37,7 @@ const PriceFilter: FC<PriceFilterProps> = ({
   return (
     <FilterInput
       options={priceMapWithDash}
-      title="Price"
+      title="Fiyat Aralığı"
       defaultSelectedItems={defaultSelectedItems}
       handleFilterSubmit={(selectedItems) => {
         handleFilterSubmit(
