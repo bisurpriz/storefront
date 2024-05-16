@@ -10,6 +10,7 @@ import { FilterInputOption } from "./components/FilterInput";
 import SameDayFilter from "./components/SameDayFilter";
 import SpecialOffersFilter from "./components/SpecialOffersFilter";
 import SelectedFilters from "./components/SelectedFilters";
+import PriceFilter from "./components/PriceFilter";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
@@ -43,6 +44,36 @@ const Filter = () => {
     [searchParams, categories]
   );
 
+  const selectedPrice = useMemo(
+    () =>
+      searchParams
+        ?.get("price")
+        ?.split(",")
+        ?.map((p) => {
+          const [min, max] = p.split("-");
+
+          if (min === "0") {
+            return {
+              key: `${max} ve altı`,
+              value: `${min}-${max}`,
+            };
+          }
+
+          if (!max) {
+            return {
+              key: `${min} ve üstü`,
+              value: `${min}-`,
+            };
+          }
+
+          return {
+            key: `${min} - ${max}`,
+            value: `${min}-${max}`,
+          };
+        }) || [],
+    [searchParams]
+  );
+
   return (
     <div className={clsx("w-full max-md:overflow-auto")}>
       <div className={clsx("flex gap-2 items-center justify-start")}>
@@ -50,6 +81,11 @@ const Filter = () => {
           categories={categories}
           handleFilterSubmit={handleFilterSubmit}
           selectedCategories={selectedCategories}
+        />
+        <PriceFilter
+          prices={Array.from({ length: 10 }, (_, i) => (i + 1) * 100)}
+          defaultSelectedItems={selectedPrice}
+          handleFilterSubmit={handleFilterSubmit}
         />
         <SameDayFilter
           handleFilterSubmit={handleFilterSubmit}
@@ -64,6 +100,7 @@ const Filter = () => {
         sameDayDelivery={!!searchParams.get("sameDayDelivery")}
         selectedCategories={selectedCategories}
         specialOffers={!!searchParams.get("specialOffers")}
+        prices={selectedPrice}
         onClear={(name, value) => {
           switch (name) {
             case "category":
@@ -72,6 +109,15 @@ const Filter = () => {
                 selectedCategories
                   .filter((c) => c.value !== value)
                   .map((c) => c.value)
+                  .join(",") || ""
+              );
+              break;
+            case "price":
+              handleFilterSubmit(
+                name,
+                selectedPrice
+                  .filter((p) => p.value !== value)
+                  .map((p) => p.value)
                   .join(",") || ""
               );
               break;

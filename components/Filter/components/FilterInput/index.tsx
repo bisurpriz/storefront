@@ -106,7 +106,7 @@ const FilterInput: FC<FilterInputProps> = ({
   }, [isOpen, defaultSelectedItems]);
 
   return (
-    <div className={clsx("relative min-w-[300px]")} ref={ref}>
+    <div className={clsx("relative")} ref={ref}>
       <FilterDropdownButton
         isOpen={isOpen}
         selectedItems={selectedItems}
@@ -129,7 +129,7 @@ const FilterInput: FC<FilterInputProps> = ({
         <motion.div
           key="submenu"
           className={clsx(
-            "absolute w-full min-w-fit bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50",
+            "absolute bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50 w-[300px]",
             "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-h-[65vh]"
           )}
           variants={subMenuVariants}
