@@ -4737,6 +4737,10 @@ export type Mutation_Root = {
   delete_tenant_category?: Maybe<Tenant_Category_Mutation_Response>;
   /** delete single row from the table: "tenant_category" */
   delete_tenant_category_by_pk?: Maybe<Tenant_Category>;
+  /** delete data from the table: "tenant_shipping_place" */
+  delete_tenant_shipping_place?: Maybe<Tenant_Shipping_Place_Mutation_Response>;
+  /** delete single row from the table: "tenant_shipping_place" */
+  delete_tenant_shipping_place_by_pk?: Maybe<Tenant_Shipping_Place>;
   /** delete data from the table: "ticket" */
   delete_ticket?: Maybe<Ticket_Mutation_Response>;
   /** delete data from the table: "ticket_answer" */
@@ -4903,6 +4907,10 @@ export type Mutation_Root = {
   insert_tenant_category_one?: Maybe<Tenant_Category>;
   /** insert a single row into the table: "tenant" */
   insert_tenant_one?: Maybe<Tenant>;
+  /** insert data into the table: "tenant_shipping_place" */
+  insert_tenant_shipping_place?: Maybe<Tenant_Shipping_Place_Mutation_Response>;
+  /** insert a single row into the table: "tenant_shipping_place" */
+  insert_tenant_shipping_place_one?: Maybe<Tenant_Shipping_Place>;
   /** insert data into the table: "ticket" */
   insert_ticket?: Maybe<Ticket_Mutation_Response>;
   /** insert data into the table: "ticket_answer" */
@@ -5137,6 +5145,12 @@ export type Mutation_Root = {
   update_tenant_category_many?: Maybe<Array<Maybe<Tenant_Category_Mutation_Response>>>;
   /** update multiples rows of table: "tenant" */
   update_tenant_many?: Maybe<Array<Maybe<Tenant_Mutation_Response>>>;
+  /** update data of the table: "tenant_shipping_place" */
+  update_tenant_shipping_place?: Maybe<Tenant_Shipping_Place_Mutation_Response>;
+  /** update single row of the table: "tenant_shipping_place" */
+  update_tenant_shipping_place_by_pk?: Maybe<Tenant_Shipping_Place>;
+  /** update multiples rows of table: "tenant_shipping_place" */
+  update_tenant_shipping_place_many?: Maybe<Array<Maybe<Tenant_Shipping_Place_Mutation_Response>>>;
   /** update data of the table: "ticket" */
   update_ticket?: Maybe<Ticket_Mutation_Response>;
   /** update data of the table: "ticket_answer" */
@@ -5581,6 +5595,18 @@ export type Mutation_RootDelete_Tenant_CategoryArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Tenant_Category_By_PkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Tenant_Shipping_PlaceArgs = {
+  where: Tenant_Shipping_Place_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Tenant_Shipping_Place_By_PkArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -6145,6 +6171,20 @@ export type Mutation_RootInsert_Tenant_Category_OneArgs = {
 export type Mutation_RootInsert_Tenant_OneArgs = {
   object: Tenant_Insert_Input;
   on_conflict?: InputMaybe<Tenant_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Tenant_Shipping_PlaceArgs = {
+  objects: Array<Tenant_Shipping_Place_Insert_Input>;
+  on_conflict?: InputMaybe<Tenant_Shipping_Place_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Tenant_Shipping_Place_OneArgs = {
+  object: Tenant_Shipping_Place_Insert_Input;
+  on_conflict?: InputMaybe<Tenant_Shipping_Place_On_Conflict>;
 };
 
 
@@ -7003,6 +7043,28 @@ export type Mutation_RootUpdate_Tenant_Category_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Tenant_ManyArgs = {
   updates: Array<Tenant_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tenant_Shipping_PlaceArgs = {
+  _inc?: InputMaybe<Tenant_Shipping_Place_Inc_Input>;
+  _set?: InputMaybe<Tenant_Shipping_Place_Set_Input>;
+  where: Tenant_Shipping_Place_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tenant_Shipping_Place_By_PkArgs = {
+  _inc?: InputMaybe<Tenant_Shipping_Place_Inc_Input>;
+  _set?: InputMaybe<Tenant_Shipping_Place_Set_Input>;
+  pk_columns: Tenant_Shipping_Place_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tenant_Shipping_Place_ManyArgs = {
+  updates: Array<Tenant_Shipping_Place_Updates>;
 };
 
 
@@ -11896,6 +11958,12 @@ export type Query_Root = {
   tenant_category_aggregate: Tenant_Category_Aggregate;
   /** fetch data from the table: "tenant_category" using primary key columns */
   tenant_category_by_pk?: Maybe<Tenant_Category>;
+  /** fetch data from the table: "tenant_shipping_place" */
+  tenant_shipping_place: Array<Tenant_Shipping_Place>;
+  /** fetch aggregated fields from the table: "tenant_shipping_place" */
+  tenant_shipping_place_aggregate: Tenant_Shipping_Place_Aggregate;
+  /** fetch data from the table: "tenant_shipping_place" using primary key columns */
+  tenant_shipping_place_by_pk?: Maybe<Tenant_Shipping_Place>;
   /** fetch data from the table: "ticket" */
   ticket: Array<Ticket>;
   /** fetch aggregated fields from the table: "ticket" */
@@ -12723,6 +12791,29 @@ export type Query_RootTenant_Category_AggregateArgs = {
 
 export type Query_RootTenant_Category_By_PkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+
+export type Query_RootTenant_Shipping_PlaceArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+export type Query_RootTenant_Shipping_Place_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+export type Query_RootTenant_Shipping_Place_By_PkArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -14363,6 +14454,14 @@ export type Subscription_Root = {
   tenant_category_by_pk?: Maybe<Tenant_Category>;
   /** fetch data from the table in a streaming manner: "tenant_category" */
   tenant_category_stream: Array<Tenant_Category>;
+  /** fetch data from the table: "tenant_shipping_place" */
+  tenant_shipping_place: Array<Tenant_Shipping_Place>;
+  /** fetch aggregated fields from the table: "tenant_shipping_place" */
+  tenant_shipping_place_aggregate: Tenant_Shipping_Place_Aggregate;
+  /** fetch data from the table: "tenant_shipping_place" using primary key columns */
+  tenant_shipping_place_by_pk?: Maybe<Tenant_Shipping_Place>;
+  /** fetch data from the table in a streaming manner: "tenant_shipping_place" */
+  tenant_shipping_place_stream: Array<Tenant_Shipping_Place>;
   /** fetch data from the table in a streaming manner: "tenant" */
   tenant_stream: Array<Tenant>;
   /** fetch data from the table: "ticket" */
@@ -15435,6 +15534,36 @@ export type Subscription_RootTenant_Category_StreamArgs = {
 };
 
 
+export type Subscription_RootTenant_Shipping_PlaceArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+export type Subscription_RootTenant_Shipping_Place_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+export type Subscription_RootTenant_Shipping_Place_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Subscription_RootTenant_Shipping_Place_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Tenant_Shipping_Place_Stream_Cursor_Input>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
 export type Subscription_RootTenant_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Tenant_Stream_Cursor_Input>>;
@@ -15885,6 +16014,10 @@ export type Tenant = {
   tenant_addresses: Array<Tenant_Address>;
   /** An aggregate relationship */
   tenant_addresses_aggregate: Tenant_Address_Aggregate;
+  /** An array relationship */
+  tenant_shipping_places: Array<Tenant_Shipping_Place>;
+  /** An aggregate relationship */
+  tenant_shipping_places_aggregate: Tenant_Shipping_Place_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   vkn_tckn?: Maybe<Scalars['String']['output']>;
 };
@@ -15927,6 +16060,26 @@ export type TenantTenant_Addresses_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Tenant_Address_Order_By>>;
   where?: InputMaybe<Tenant_Address_Bool_Exp>;
+};
+
+
+/** columns and relationships of "tenant" */
+export type TenantTenant_Shipping_PlacesArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+/** columns and relationships of "tenant" */
+export type TenantTenant_Shipping_Places_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
 };
 
 /** columns and relationships of "tenant_address" */
@@ -16390,6 +16543,8 @@ export type Tenant_Bool_Exp = {
   tax_quarter_id?: InputMaybe<Int_Comparison_Exp>;
   tenant_addresses?: InputMaybe<Tenant_Address_Bool_Exp>;
   tenant_addresses_aggregate?: InputMaybe<Tenant_Address_Aggregate_Bool_Exp>;
+  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   vkn_tckn?: InputMaybe<String_Comparison_Exp>;
 };
@@ -16750,6 +16905,7 @@ export type Tenant_Insert_Input = {
   tax_quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
   tax_quarter_id?: InputMaybe<Scalars['Int']['input']>;
   tenant_addresses?: InputMaybe<Tenant_Address_Arr_Rel_Insert_Input>;
+  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   vkn_tckn?: InputMaybe<Scalars['String']['input']>;
 };
@@ -16865,6 +17021,7 @@ export type Tenant_Order_By = {
   tax_quarter?: InputMaybe<Quarter_Order_By>;
   tax_quarter_id?: InputMaybe<Order_By>;
   tenant_addresses_aggregate?: InputMaybe<Tenant_Address_Aggregate_Order_By>;
+  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   vkn_tckn?: InputMaybe<Order_By>;
 };
@@ -16934,6 +17091,350 @@ export type Tenant_Set_Input = {
   tax_quarter_id?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   vkn_tckn?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "tenant_shipping_place" */
+export type Tenant_Shipping_Place = {
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Boolean']['output']>;
+  /** An object relationship */
+  quarter: Quarter;
+  quarter_code: Scalars['Int']['output'];
+  /** An object relationship */
+  tenant: Tenant;
+  tenant_id: Scalars['uuid']['output'];
+};
+
+/** aggregated selection of "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Aggregate = {
+  aggregate?: Maybe<Tenant_Shipping_Place_Aggregate_Fields>;
+  nodes: Array<Tenant_Shipping_Place>;
+};
+
+export type Tenant_Shipping_Place_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp_Count>;
+};
+
+export type Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Tenant_Shipping_Place_Select_Column_Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Tenant_Shipping_Place_Select_Column_Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Tenant_Shipping_Place_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Aggregate_Fields = {
+  avg?: Maybe<Tenant_Shipping_Place_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Tenant_Shipping_Place_Max_Fields>;
+  min?: Maybe<Tenant_Shipping_Place_Min_Fields>;
+  stddev?: Maybe<Tenant_Shipping_Place_Stddev_Fields>;
+  stddev_pop?: Maybe<Tenant_Shipping_Place_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Tenant_Shipping_Place_Stddev_Samp_Fields>;
+  sum?: Maybe<Tenant_Shipping_Place_Sum_Fields>;
+  var_pop?: Maybe<Tenant_Shipping_Place_Var_Pop_Fields>;
+  var_samp?: Maybe<Tenant_Shipping_Place_Var_Samp_Fields>;
+  variance?: Maybe<Tenant_Shipping_Place_Variance_Fields>;
+};
+
+
+/** aggregate fields of "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Aggregate_Order_By = {
+  avg?: InputMaybe<Tenant_Shipping_Place_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Tenant_Shipping_Place_Max_Order_By>;
+  min?: InputMaybe<Tenant_Shipping_Place_Min_Order_By>;
+  stddev?: InputMaybe<Tenant_Shipping_Place_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Tenant_Shipping_Place_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Tenant_Shipping_Place_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Tenant_Shipping_Place_Sum_Order_By>;
+  var_pop?: InputMaybe<Tenant_Shipping_Place_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Tenant_Shipping_Place_Var_Samp_Order_By>;
+  variance?: InputMaybe<Tenant_Shipping_Place_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Arr_Rel_Insert_Input = {
+  data: Array<Tenant_Shipping_Place_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Tenant_Shipping_Place_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Tenant_Shipping_Place_Avg_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Avg_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "tenant_shipping_place". All fields are combined with a logical 'AND'. */
+export type Tenant_Shipping_Place_Bool_Exp = {
+  _and?: InputMaybe<Array<Tenant_Shipping_Place_Bool_Exp>>;
+  _not?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  _or?: InputMaybe<Array<Tenant_Shipping_Place_Bool_Exp>>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  is_active?: InputMaybe<Boolean_Comparison_Exp>;
+  quarter?: InputMaybe<Quarter_Bool_Exp>;
+  quarter_code?: InputMaybe<Int_Comparison_Exp>;
+  tenant?: InputMaybe<Tenant_Bool_Exp>;
+  tenant_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'tenant_shipping_place_pkey'
+  /** unique or primary key constraint on columns "quarter_code", "tenant_id" */
+  | 'tenant_shipping_place_tenant_id_quarter_code_key';
+
+/** input type for incrementing numeric columns in table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Inc_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  quarter_code?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Insert_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
+  quarter_code?: InputMaybe<Scalars['Int']['input']>;
+  tenant?: InputMaybe<Tenant_Obj_Rel_Insert_Input>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type Tenant_Shipping_Place_Max_Fields = {
+  id?: Maybe<Scalars['Int']['output']>;
+  quarter_code?: Maybe<Scalars['Int']['output']>;
+  tenant_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by max() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Max_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+  tenant_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Tenant_Shipping_Place_Min_Fields = {
+  id?: Maybe<Scalars['Int']['output']>;
+  quarter_code?: Maybe<Scalars['Int']['output']>;
+  tenant_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Min_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+  tenant_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Tenant_Shipping_Place>;
+};
+
+/** on_conflict condition type for table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_On_Conflict = {
+  constraint: Tenant_Shipping_Place_Constraint;
+  update_columns?: Array<Tenant_Shipping_Place_Update_Column>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "tenant_shipping_place". */
+export type Tenant_Shipping_Place_Order_By = {
+  id?: InputMaybe<Order_By>;
+  is_active?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Quarter_Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+  tenant?: InputMaybe<Tenant_Order_By>;
+  tenant_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: tenant_shipping_place */
+export type Tenant_Shipping_Place_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Select_Column =
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'is_active'
+  /** column name */
+  | 'quarter_code'
+  /** column name */
+  | 'tenant_id';
+
+/** select "tenant_shipping_place_aggregate_bool_exp_bool_and_arguments_columns" columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Select_Column_Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
+  /** column name */
+  | 'is_active';
+
+/** select "tenant_shipping_place_aggregate_bool_exp_bool_or_arguments_columns" columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Select_Column_Tenant_Shipping_Place_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
+  /** column name */
+  | 'is_active';
+
+/** input type for updating data in table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Set_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  quarter_code?: InputMaybe<Scalars['Int']['input']>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Tenant_Shipping_Place_Stddev_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Stddev_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Tenant_Shipping_Place_Stddev_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Stddev_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Tenant_Shipping_Place_Stddev_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Stddev_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Tenant_Shipping_Place_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Tenant_Shipping_Place_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  quarter_code?: InputMaybe<Scalars['Int']['input']>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Tenant_Shipping_Place_Sum_Fields = {
+  id?: Maybe<Scalars['Int']['output']>;
+  quarter_code?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Sum_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Update_Column =
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'is_active'
+  /** column name */
+  | 'quarter_code'
+  /** column name */
+  | 'tenant_id';
+
+export type Tenant_Shipping_Place_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Tenant_Shipping_Place_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Tenant_Shipping_Place_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Tenant_Shipping_Place_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Tenant_Shipping_Place_Var_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Var_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Tenant_Shipping_Place_Var_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Var_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Tenant_Shipping_Place_Variance_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  quarter_code?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "tenant_shipping_place" */
+export type Tenant_Shipping_Place_Variance_Order_By = {
+  id?: InputMaybe<Order_By>;
+  quarter_code?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev on columns */
@@ -20303,10 +20804,17 @@ export type GetDbCartQueryVariables = Exact<{
 
 export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
 
-export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetMainCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCategoriesQuery = { category: Array<{ id: number, image_url?: string | null, name: string, slug?: string | null }> };
+export type GetMainCategoriesQuery = { category: Array<{ id: number, image_url?: string | null, name: string, slug?: string | null }> };
+
+export type GetAllCategoriesQueryVariables = Exact<{
+  parent_category_id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetAllCategoriesQuery = { category: Array<{ id: number, image_url?: string | null, name: string, slug?: string | null }> };
 
 export type SendMessageAloneMutationVariables = Exact<{
   message: Scalars['String']['input'];
@@ -20711,9 +21219,19 @@ export const GetDbCartDocument = gql`
   }
 }
     `;
-export const GetCategoriesDocument = gql`
-    query getCategories {
-  category {
+export const GetMainCategoriesDocument = gql`
+    query getMainCategories {
+  category(where: {parent_category_id: {_is_null: true}}) {
+    id
+    image_url
+    name
+    slug
+  }
+}
+    `;
+export const GetAllCategoriesDocument = gql`
+    query getAllCategories($parent_category_id: Int) {
+  category(where: {parent_category_id: {_eq: $parent_category_id}}) {
     id
     image_url
     name
@@ -21217,8 +21735,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getDbCart(variables: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
     },
-    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
+    getMainCategories(variables?: GetMainCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetMainCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetMainCategoriesQuery>(GetMainCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMainCategories', 'query', variables);
+    },
+    getAllCategories(variables?: GetAllCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllCategoriesQuery>(GetAllCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllCategories', 'query', variables);
     },
     sendMessageAlone(variables: SendMessageAloneMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SendMessageAloneMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<SendMessageAloneMutation>(SendMessageAloneDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'sendMessageAlone', 'mutation', variables);

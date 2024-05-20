@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { CustomSwiperProps } from './Swiper';
-import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { CustomSwiperProps } from "./Swiper";
+import { Navigation } from "swiper/modules";
 
 const CustomSwiper = ({
   options,
   slideItems,
   onSwpier,
   onSlideChange,
-  direction = 'vertical',
+  direction = "vertical",
   slidePerView = 1,
   spaceBetween = 0,
   navigation,
@@ -29,7 +29,7 @@ const CustomSwiper = ({
       navigation={navigation}
     >
       {slideItems.map((item) => {
-        const className = item.className ? item.className : '';
+        const className = item.className ? item.className : "";
         return (
           <SwiperSlide
             className={`flex items-center justify-center ${className}`}
