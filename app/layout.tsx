@@ -23,7 +23,10 @@ import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
 import { getCart } from "./cart/actions";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import { GetCategoriesDocument, GetCategoriesQuery } from "@/graphql/generated";
+import {
+  GetMainCategoriesDocument,
+  GetMainCategoriesQuery,
+} from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
 
@@ -121,8 +124,8 @@ export default async function RootLayout({
 
   const {
     data: { category },
-  } = await query<GetCategoriesQuery>({
-    query: GetCategoriesDocument,
+  } = await query<GetMainCategoriesQuery>({
+    query: GetMainCategoriesDocument,
   });
 
   return (

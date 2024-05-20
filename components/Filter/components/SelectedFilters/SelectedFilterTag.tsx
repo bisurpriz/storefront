@@ -10,9 +10,13 @@ type SelectedFilterTagProps = {
 };
 
 const motionVariants = {
-  initial: { x: -10 },
-  animate: { x: 0 },
-  exit: { x: -10 },
+  initial: { y: 10 },
+  animate: { y: 0 },
+  exit: { y: 10 },
+  transition: {
+    type: "spring",
+    duration: 0.2,
+  },
 };
 
 const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
@@ -32,7 +36,7 @@ const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
         initial="initial"
         animate="animate"
         exit="exit"
-        transition={{ tpye: "spring", stiffness: 260, damping: 20 }}
+        transition={motionVariants.transition}
       >
         {label}
         <button

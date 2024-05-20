@@ -2,9 +2,21 @@ import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
 import { getBanners } from "./actions";
+import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
+import { query } from "@/graphql/lib/client";
+import {
+  GetAllCategoriesDocument,
+  GetAllCategoriesQuery,
+} from "@/graphql/generated";
 
 export default async function Page() {
   const { banners } = await getBanners();
+  const {
+    data: { category },
+  } = await query<GetAllCategoriesQuery>({
+    query: GetAllCategoriesDocument,
+  });
+
   return (
     <Suspense
       fallback={
@@ -18,6 +30,7 @@ export default async function Page() {
         </div>
       }
     >
+      <CategorySwiper categories={category} />
       <CampaignGrid banners={banners} />
       <View1 />
     </Suspense>
