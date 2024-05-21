@@ -24,7 +24,7 @@ const HeaderMiddle = async () => {
       <Search />
 
       <div className="float-right flex items-center max-sm:hidden">
-        <Tooltip text="Favorilerim">
+        <Tooltip content="Favorilerim">
           <Link href="/account/favorites">
             <Button
               icon={<MdOutlineFavoriteBorder />}
@@ -36,7 +36,7 @@ const HeaderMiddle = async () => {
             />
           </Link>
         </Tooltip>
-        <Tooltip text="Kargo Takip">
+        <Tooltip content="Kargo Takip">
           <Link href="/account/orders">
             <Button
               icon={<BsTruck />}

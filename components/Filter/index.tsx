@@ -44,47 +44,38 @@ const Filter = () => {
     [searchParams, categories]
   );
 
-  const selectedPrice = useMemo(
-    () =>
-      searchParams
-        ?.get("price")
-        ?.split(",")
-        ?.map((p) => {
-          const [min, max] = p.split("-");
+  const selectedPrice = useMemo((): FilterInputOption => {
+    const price = searchParams.get("price");
+    if (price) {
+      const [min, max] = price.split("-");
+      // with tl symbol
+      return {
+        key: `${min}₺ - ${max}₺`,
+        value: price,
+      };
+    }
 
-          if (min === "0") {
-            return {
-              key: `${max} ve altı`,
-              value: `${min}-${max}`,
-            };
-          }
-
-          if (!max) {
-            return {
-              key: `${min} ve üstü`,
-              value: `${min}-`,
-            };
-          }
-
-          return {
-            key: `${min} - ${max}`,
-            value: `${min}-${max}`,
-          };
-        }) || [],
-    [searchParams]
-  );
+    return {
+      key: "",
+      value: "",
+    };
+  }, [searchParams]);
 
   return (
-    <div className={clsx("w-full max-md:overflow-auto")}>
-      <div className={clsx("flex gap-2 items-center justify-start")}>
+    <div className={clsx("w-full")}>
+      <div
+        className={clsx(
+          "flex items-center justify-start gap-2 scroll-smooth max-md:overflow-auto"
+        )}
+      >
         <CategoryFilter
           categories={categories}
           handleFilterSubmit={handleFilterSubmit}
           selectedCategories={selectedCategories}
         />
         <PriceFilter
+          defaultPrice={searchParams.get("price") || ""}
           prices={Array.from({ length: 10 }, (_, i) => (i + 1) * 100)}
-          defaultSelectedItems={selectedPrice}
           handleFilterSubmit={handleFilterSubmit}
         />
         <SameDayFilter
@@ -100,7 +91,7 @@ const Filter = () => {
         sameDayDelivery={!!searchParams.get("sameDayDelivery")}
         selectedCategories={selectedCategories}
         specialOffers={!!searchParams.get("specialOffers")}
-        prices={selectedPrice}
+        price={selectedPrice}
         onClear={(name, value) => {
           switch (name) {
             case "category":
@@ -113,13 +104,7 @@ const Filter = () => {
               );
               break;
             case "price":
-              handleFilterSubmit(
-                name,
-                selectedPrice
-                  .filter((p) => p.value !== value)
-                  .map((p) => p.value)
-                  .join(",") || ""
-              );
+              handleFilterSubmit(name, "");
               break;
             default:
               handleFilterSubmit(name, value);
