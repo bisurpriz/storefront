@@ -5,7 +5,7 @@ import EmptyCart from "../EmptyCart";
 const ProductGroup = ({
   products,
 }: {
-  products: { [key: string]: ProductForCart[] };
+  products: { [key: string]: ProductForOrder[] };
 }) => {
   if (!products) return <EmptyCart />;
 

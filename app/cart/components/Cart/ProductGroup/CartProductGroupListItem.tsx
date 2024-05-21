@@ -1,5 +1,5 @@
 import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { ProductForOrder } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
 import PriceTag from "@/components/PriceTag";
@@ -11,7 +11,7 @@ import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInp
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
 import { useMemo } from "react";
 
-const CartProductGroupListItem = (product: ProductForCart) => {
+const CartProductGroupListItem = (product: ProductForOrder) => {
   const {
     id,
     name,

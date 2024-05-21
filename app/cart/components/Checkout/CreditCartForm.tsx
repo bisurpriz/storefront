@@ -80,8 +80,6 @@ const CreditCartForm = () => {
           }
         )
         .then(() => {
-          localStorage.removeItem("detail-data");
-          clearCart();
           push("/cart/complete");
         });
     }
