@@ -7,7 +7,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-
 @layer components {
   .content-height {
     min-height: calc(100vh - 197px);
@@ -15,6 +14,73 @@
 
   .content-height-sm {
     min-height: calc(100vh - 215px);
+  }
+
+  /* Multi Range Input */
+
+  .slider {
+    @apply relative p-4 bg-gray-50 rounded-lg border border-gray-200;
+  }
+
+  .slider__track,
+  .slider__range,
+  .slider__left-value,
+  .slider__right-value {
+    @apply absolute;
+  }
+
+  .slider__track,
+  .slider__range {
+    @apply h-[5px] rounded-[3px];
+  }
+
+  .slider__track {
+    @apply z-[1] w-full left-0 bg-gray-200;
+  }
+
+  .slider__range {
+    @apply z-[2];
+  }
+
+  .slider__left-value,
+  .slider__right-value {
+    @apply text-xs mt-5 text-gray-600;
+  }
+
+  .slider__left-value {
+    @apply left-1.5;
+  }
+
+  .slider__right-value {
+    @apply -right-1;
+  }
+
+  /* Removing the default appearance */
+  .thumb,
+  .thumb::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+
+  .thumb {
+    @apply absolute pointer-events-none h-0 outline-none top-1/2 bottom-0 w-full;
+  }
+
+  .thumb--left {
+    @apply z-[3] left-0;
+  }
+
+  .thumb--right {
+    @apply z-[4] right-0;
+  }
+
+  /* For Chrome browsers */
+  .thumb::-webkit-slider-thumb {
+    @apply bg-primary border-none rounded-full shadow-md cursor-pointer h-6 w-6 mt-1 relative pointer-events-auto;
+  }
+
+  /* For Firefox browsers */
+  .thumb::-moz-range-thumb {
+    @apply bg-primary border-none rounded-full shadow-md cursor-pointer h-6 w-6 mt-1 relative pointer-events-auto;
   }
 }
 
@@ -26,9 +92,7 @@
 .accordion-content-enter-active {
   opacity: 1;
   max-height: 1000px;
-  transition:
-    max-height 200ms ease-in-out,
-    opacity 200ms ease-in-out;
+  transition: max-height 200ms ease-in-out, opacity 200ms ease-in-out;
 }
 
 .accordion-content-exit {
@@ -39,9 +103,7 @@
 .accordion-content-exit-active {
   opacity: 0;
   max-height: 0;
-  transition:
-    max-height 200ms ease-in-out,
-    opacity 200ms ease-in-out;
+  transition: max-height 200ms ease-in-out, opacity 200ms ease-in-out;
 }
 
 ::-webkit-scrollbar-thumb:hover {

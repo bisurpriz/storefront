@@ -1,112 +1,82 @@
 "use client";
 
-import type { FC, ReactNode } from "react";
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
+import clsx from "clsx";
 
-enum TooltipPosition {
-  TOP = "top",
-  BOTTOM = "bottom",
-  LEFT = "left",
-  RIGHT = "right",
-}
+const tooltipVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+  },
+};
 
-interface TooltipProps {
-  text: string;
+type TooltipProps = {
+  content: string;
+  children: React.ReactNode;
   position?: "top" | "bottom" | "left" | "right";
-  children: ReactNode;
-  breakpoint?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  whiteSpace?: "normal" | "nowrap";
-}
+};
 
 const Tooltip: FC<TooltipProps> = ({
-  text,
-  position = TooltipPosition.BOTTOM,
+  content,
   children,
-  breakpoint,
-  whiteSpace = "nowrap",
+  position = "bottom",
 }) => {
-  const [isTooltipVisible, setTooltipVisible] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleMouseEnter = () => {
-    setTooltipVisible(true);
+  const handleMouseEnter = () => setShowTooltip(true);
+  const handleMouseLeave = () => setShowTooltip(false);
+
+  const positionClasses = {
+    top: "-translate-x-1/2 left-1/2 bottom-full",
+    bottom: "-translate-x-1/2 left-1/2 top-full",
+    left: "right-full -translate-y-full",
+    right: "left-full -translate-y-full",
   };
 
-  const handleMouseLeave = () => {
-    setTooltipVisible(false);
+  const arrowPositionClasses = {
+    top: "-bottom-1 left-1/2 -translate-x-1/2",
+    bottom: "-top-1 left-1/2 -translate-x-1/2",
+    left: "-right-1 top-1/2 -translate-y-1/2",
+    right: "-left-1 top-1/2 -translate-y-1/2",
   };
 
-  const getTooltipStyles = () => {
-    switch (position) {
-      case TooltipPosition.TOP:
-        return "left-1/2 transform -translate-x-1/2 -top-2 -translate-y-full";
+  const tooltipClasses = `absolute p-2 rounded-md z-10 ${positionClasses[position]} bg-gray-100 rounded-md text-gray-600 shadow-md`;
 
-      case TooltipPosition.BOTTOM:
-        return "left-1/2 transform -translate-x-1/2";
+  const contentClasses = "text-sm";
 
-      case TooltipPosition.LEFT:
-        return "top-1/2 transform -translate-y-1/2";
+  const arrowClasses = `absolute w-2 h-2 bg-7 ${arrowPositionClasses[position]} bg-gray-100 transform rotate-45`;
 
-      case TooltipPosition.RIGHT:
-        return "top-1/2 transform -translate-y-1/2 translate-x-full -right-2";
-
-      default:
-        return "left-1/2 transform -translate-x-1/2";
-    }
-  };
-
-  const ref = useRef<HTMLDivElement>(null);
-
-  const breakpointWithOpenTooltip = () => {
-    switch (breakpoint) {
-      case "xs":
-        return "xs:hidden";
-
-      case "sm":
-        return "sm:hidden";
-
-      case "md":
-        return "md:hidden";
-
-      case "lg":
-        return "lg:hidden";
-
-      case "xl":
-        return "xl:hidden";
-
-      case "2xl":
-        return "2xl:hidden";
-
-      default:
-        return "hidden";
-    }
-  };
-
-  const whiteSpaceClass = whiteSpace === "nowrap" ? "whitespace-nowrap" : "";
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      className="relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      className="relative whitespace-nowrap"
     >
-      <div className="cursor-pointer">{children}</div>
-      <div className={`${breakpointWithOpenTooltip()}`}>
+      {children}
+      <AnimationExitProvider show={showTooltip}>
         <motion.div
-          initial={false}
-          animate={isTooltipVisible ? "open" : "closed"}
-          variants={{
-            open: { opacity: 1 },
-            closed: { opacity: 0 },
-          }}
-          transition={{ duration: 0.2 }}
-          ref={ref}
-          role="tooltip"
-          className={`absolute z-20 inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip ${getTooltipStyles()} ${whiteSpaceClass}`}
+          ref={tooltipRef}
+          className={clsx(tooltipClasses)}
+          variants={tooltipVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          transformTemplate={(values, generated) =>
+            `translate(${values.x}px, ${values.y}px) scale(${values.scale})`
+          }
         >
-          {text}
+          <div className={contentClasses}>{content}</div>
+          <div className={arrowClasses} />
         </motion.div>
-      </div>
+      </AnimationExitProvider>
     </div>
   );
 };

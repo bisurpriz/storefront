@@ -30,7 +30,8 @@ const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
         key={label}
         className={clsx(
           "inline-flex items-center pl-2.5 pr-1.5 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mr-1",
-          "cursor-pointer"
+          "cursor-pointer",
+          "whitespace-nowrap"
         )}
         variants={motionVariants}
         initial="initial"

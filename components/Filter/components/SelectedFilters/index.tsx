@@ -5,7 +5,7 @@ import SelectedFilterTag from "./SelectedFilterTag";
 
 type SelectedFiltersProps = {
   selectedCategories: FilterInputOption[];
-  prices: FilterInputOption[];
+  price: FilterInputOption;
   sameDayDelivery: boolean;
   specialOffers: boolean;
   onClear: (
@@ -16,7 +16,7 @@ type SelectedFiltersProps = {
 
 const SelectedFilters: FC<SelectedFiltersProps> = ({
   selectedCategories,
-  prices,
+  price,
   sameDayDelivery,
   specialOffers,
   onClear,
@@ -32,14 +32,12 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
         />
       ))}
 
-      {prices.map((price) => (
-        <SelectedFilterTag
-          key={price.value}
-          label={price.key}
-          onClear={() => onClear("price", price.value)}
-          show={!!price.value}
-        />
-      ))}
+      <SelectedFilterTag
+        key={price.value}
+        label={price.key}
+        onClear={() => onClear("price", price.value)}
+        show={!!price.value}
+      />
 
       <SelectedFilterTag
         label="Aynı gün teslimat"

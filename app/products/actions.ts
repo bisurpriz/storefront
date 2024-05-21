@@ -7,12 +7,10 @@ import {
   GetProductsWithPaginationDocument,
   GetProductsWithPaginationQuery,
 } from "@/graphql/generated";
-import { getClient } from "@/graphql/lib/client";
-
-const client = getClient();
+import { query } from "@/graphql/lib/client";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
-  const { data } = await client.query<GetProductsWithPaginationQuery>({
+  const { data } = await query<GetProductsWithPaginationQuery>({
     query: GetProductsWithPaginationDocument,
     variables: {
       ...params,
@@ -26,7 +24,7 @@ export const getPaginatedProducts = async (params: IProductFilter) => {
 };
 
 export const getProductById = async ({ id }: { id: number }) => {
-  const { data } = await client.query<GetProductByIdQuery>({
+  const { data } = await query<GetProductByIdQuery>({
     query: GetProductByIdDocument,
     variables: {
       id,

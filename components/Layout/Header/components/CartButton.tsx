@@ -14,7 +14,7 @@ const CartButton = () => {
 
   return (
     <Badge badgeContent={count}>
-      <Tooltip text="Sepetim">
+      <Tooltip content="Sepetim">
         <Link href={CartStepPaths.CART} className="relative">
           <Button
             icon={<AiOutlineShoppingCart />}

@@ -4,7 +4,7 @@ import React, { FC } from "react";
 
 type FilterDropdownAcceptButtonProps = {
   handleClear: () => void;
-  handleFilterSubmit: () => void;
+  handleFilterSubmit?: () => void;
 };
 
 const FilterDropdownAcceptButton: FC<FilterDropdownAcceptButtonProps> = ({
@@ -25,7 +25,7 @@ const FilterDropdownAcceptButton: FC<FilterDropdownAcceptButtonProps> = ({
         variant="outlined"
         color="secondary"
         size="small"
-        onClick={handleFilterSubmit}
+        onClick={handleFilterSubmit && handleFilterSubmit}
       >
         Uygula
       </Button>
