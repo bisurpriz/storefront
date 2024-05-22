@@ -24,12 +24,9 @@ const FilterDropdownButton: FC<FilterDropdownButtonProps> = ({
       onClick={toggle}
       className={clsx(
         "flex items-center justify-between gap-2 text-sm bg-white border text-gray-500 border-gray-200 rounded-md p-2 w-full",
-        "font-manrope font-semibold whitespace-nowrap",
+        "font-manrope font-semibold whitespace-nowrap transition-colors duration-300 ease-in-out",
         {
-          "border-gray-300": isOpen,
-        },
-        {
-          "border-primary text-primary": selectedItems.length > 0,
+          "border-primary text-primary": selectedItems.length > 0 || isOpen,
         }
       )}
     >

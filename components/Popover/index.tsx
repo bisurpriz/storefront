@@ -89,7 +89,13 @@ const Popover: React.FC<PopoverProps> = ({
   }, [isOpen]);
 
   return (
-    <div className="relative inline-block">
+    <div
+      className="relative inline-block w-fit whitespace-nowrap"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onTouchStart={() => setIsOpen(true)}
+      onTouchEnd={() => setIsOpen(false)}
+    >
       {childTrigger}
       {isOpen && (
         <motion.div
@@ -98,10 +104,6 @@ const Popover: React.FC<PopoverProps> = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className={`absolute bg-white shadow-lg rounded p-4 z-50 ${getPositionClass()} ${contentClassName}`}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-          onTouchStart={() => setIsOpen(true)}
-          onTouchEnd={() => setIsOpen(false)}
           aria-hidden={!isOpen}
           ref={ref}
         >

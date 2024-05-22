@@ -2,16 +2,14 @@ import clsx from "clsx";
 import React, { FC } from "react";
 import { FilterInputOption } from "../FilterInput";
 import SelectedFilterTag from "./SelectedFilterTag";
+import { FilterTypes } from "../..";
 
 type SelectedFiltersProps = {
   selectedCategories: FilterInputOption[];
   price: FilterInputOption;
   sameDayDelivery: boolean;
   specialOffers: boolean;
-  onClear: (
-    name: "sameDayDelivery" | "specialOffers" | "category" | "price",
-    value: string
-  ) => void;
+  onClear: (name: FilterTypes, value: string) => void;
 };
 
 const SelectedFilters: FC<SelectedFiltersProps> = ({
@@ -35,7 +33,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
       <SelectedFilterTag
         key={price.value}
         label={price.key}
-        onClear={() => onClear("price", price.value)}
+        onClear={() => onClear("price", "")}
         show={!!price.value}
       />
 

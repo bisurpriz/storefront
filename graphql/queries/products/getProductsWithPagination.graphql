@@ -56,3 +56,49 @@
       }
     }
   }
+
+  query getProductsWithFilteredPagination($filter_payload: product_bool_exp){
+    product_aggregate(
+      where: $filter_payload
+    ) {
+      aggregate {
+        count
+      }
+    }
+    product(
+      where: $filter_payload
+    ) {
+      id
+      tenant_id
+      description
+      name
+      slug
+      category {
+        name
+        slug
+      }
+      image_url
+      price
+      quantity
+      properties
+      discount_price
+      product_customizable_areas {
+        count
+        customizable_area {
+          type
+        }
+      }
+      tenant {
+         tenants {
+          name
+          logo
+          id
+        }
+      }
+      reviews_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
