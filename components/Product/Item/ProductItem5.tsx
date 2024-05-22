@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -6,7 +6,7 @@ import PriceTag from "@/components/PriceTag";
 import Rating from "@/components/Rating/Rating";
 import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
-import ProductCardStamps from "./components/Stamps";
+import ProductCardStamps, { Stamp } from "./components/Stamps";
 
 const ProductItem5 = ({
   name,
@@ -21,8 +21,23 @@ const ProductItem5 = ({
   totalReviewCount,
   tenant,
 }: ProductItemProps) => {
+  const stamps = useMemo((): Stamp[] | null => {
+    if (!product_customizable_areas.length) return null;
+    return [
+      {
+        name: "Özelleştirilebilir",
+        // palette
+        icon: "🎨",
+        color: "orange",
+      },
+    ] as Stamp[];
+  }, [product_customizable_areas]);
+
   return (
-    <div className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col">
+    <div
+      className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col"
+      id={id.toString()}
+    >
       <Link href={`/${category.slug}/${slug}?pid=${id}`}>
         <Image
           src={getImageUrlFromPath(image[0])}
@@ -54,7 +69,7 @@ const ProductItem5 = ({
             <PriceTag price={price} discount={discount_price} />
           </article>
 
-          {false && <ProductCardStamps />}
+          <ProductCardStamps id={id.toString()} stamps={stamps} />
         </div>
       </Link>
       <AddCartButton2

@@ -20906,6 +20906,13 @@ export type GetProductsWithPaginationQueryVariables = Exact<{
 
 export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
+export type GetProductsWithFilteredPaginationQueryVariables = Exact<{
+  filter_payload?: InputMaybe<Product_Bool_Exp>;
+}>;
+
+
+export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+
 export type GetOrdersWithReviewsQueryVariables = Exact<{
   user_id: Scalars['uuid']['input'];
 }>;
@@ -21542,6 +21549,49 @@ export const GetProductsWithPaginationDocument = gql`
   }
 }
     `;
+export const GetProductsWithFilteredPaginationDocument = gql`
+    query getProductsWithFilteredPagination($filter_payload: product_bool_exp) {
+  product_aggregate(where: $filter_payload) {
+    aggregate {
+      count
+    }
+  }
+  product(where: $filter_payload) {
+    id
+    tenant_id
+    description
+    name
+    slug
+    category {
+      name
+      slug
+    }
+    image_url
+    price
+    quantity
+    properties
+    discount_price
+    product_customizable_areas {
+      count
+      customizable_area {
+        type
+      }
+    }
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+    reviews_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
 export const GetOrdersWithReviewsDocument = gql`
     query getOrdersWithReviews($user_id: uuid!) {
   order_item(
@@ -21776,6 +21826,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithPaginationQuery>(GetProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithPagination', 'query', variables);
+    },
+    getProductsWithFilteredPagination(variables?: GetProductsWithFilteredPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithFilteredPaginationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithFilteredPaginationQuery>(GetProductsWithFilteredPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithFilteredPagination', 'query', variables);
     },
     getOrdersWithReviews(variables: GetOrdersWithReviewsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrdersWithReviewsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrdersWithReviewsQuery>(GetOrdersWithReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrdersWithReviews', 'query', variables);

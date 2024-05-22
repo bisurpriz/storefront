@@ -1,12 +1,11 @@
 import { FC, useMemo, useState } from "react";
 import { HandleFilterSubmit } from "../..";
-import MultiRangeSliderInput from "@/components/SlideInput";
 import AnimatedFilterBox from "../FilterInput/AnimatedFilterBox";
 import FilterDropdownButton from "../FilterInput/FilterDropdownButton";
 import { TbCategory } from "react-icons/tb";
-import clsx from "clsx";
 import FilterDropdownAcceptButton from "../FilterInput/FilterDropdownAcceptButton";
 import FilterModalHeader from "../FilterInput/FilterModalHeader";
+import PriceInput from "@/components/PriceInput";
 
 type PriceFilterProps = {
   prices: number[];
@@ -20,21 +19,22 @@ const PriceFilter: FC<PriceFilterProps> = ({
   defaultPrice,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPrice, setSelectedPrice] = useState<string>(defaultPrice);
+  const [selectedPrice, setSelectedPrice] = useState<{
+    min: number;
+    max: number;
+  }>({
+    min: defaultPrice ? parseInt(defaultPrice.split("-")[0]) : prices[0],
+    max: defaultPrice
+      ? parseInt(defaultPrice.split("-")[1])
+      : prices[prices.length - 1],
+  });
 
   const toggle = () => setIsOpen(!isOpen);
-  const key = useMemo(
-    () => ({
-      min: parseInt(defaultPrice.split("-")[0]),
-      max: parseInt(defaultPrice.split("-")[1]),
-    }),
-    [defaultPrice, prices]
-  );
 
   const selectedItems = useMemo(() => {
     if (defaultPrice) {
       return {
-        key: `${key.min}₺ - ${key.max}₺`,
+        key: `${selectedPrice.min}₺ - ${selectedPrice.max}₺`,
         value: defaultPrice,
       };
     } else {
@@ -43,7 +43,7 @@ const PriceFilter: FC<PriceFilterProps> = ({
         value: "",
       };
     }
-  }, [defaultPrice, key]);
+  }, [defaultPrice]);
 
   return (
     <div className="w-fit">
@@ -56,36 +56,40 @@ const PriceFilter: FC<PriceFilterProps> = ({
       />
       <AnimatedFilterBox isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <FilterModalHeader
-          title={`Fiyat Aralığı ${selectedPrice ? `(${selectedPrice})` : ""}`}
+          title={`Fiyat Aralığı ${
+            selectedPrice
+              ? `: ${selectedPrice.min}₺ - ${selectedPrice.max}₺`
+              : ""
+          }`}
         />
         <div className="p-4">
-          <div
-            className={clsx(
-              "flex justify-between items-center text-gray-500 text-sm"
-            )}
-          >
-            <span>{`${prices[0]}₺`}</span>
-            <span>{`${prices[prices.length - 1]}₺`}</span>
-          </div>
-
-          <MultiRangeSliderInput
-            max={prices[prices.length - 1]}
+          <PriceInput
             min={prices[0]}
             step={100}
-            onChange={(min, max) => setSelectedPrice(`${min}-${max}`)}
-            defaultValues={key}
-          />
-          <FilterDropdownAcceptButton
-            handleClear={() => {
-              handleFilterSubmit("price", "");
-              setIsOpen(false);
-            }}
-            handleFilterSubmit={() => {
-              handleFilterSubmit("price", selectedPrice);
-              setIsOpen(false);
+            onChange={(val) => setSelectedPrice(val)}
+            values={{
+              min: selectedPrice.min,
+              max: selectedPrice.max,
             }}
           />
         </div>
+        <FilterDropdownAcceptButton
+          handleClear={() => {
+            handleFilterSubmit("price", "");
+            setSelectedPrice({
+              min: prices[0],
+              max: prices[prices.length - 1],
+            });
+            setIsOpen(false);
+          }}
+          handleFilterSubmit={() => {
+            handleFilterSubmit(
+              "price",
+              `${selectedPrice.min}-${selectedPrice.max}`
+            );
+            setIsOpen(false);
+          }}
+        />
       </AnimatedFilterBox>
     </div>
   );

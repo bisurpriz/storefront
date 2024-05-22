@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useCategory } from "@/contexts/CategoryContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -14,7 +14,17 @@ import PriceFilter from "./components/PriceFilter";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
-const Filter = () => {
+export type FilterTypes =
+  | "category"
+  | "price"
+  | "sameDayDelivery"
+  | "specialOffers";
+
+type FilterProps = {
+  filterTypes?: FilterTypes[];
+};
+
+const Filter: FC<FilterProps> = ({ filterTypes }) => {
   const { category } = useCategory();
   const searchParams = useSearchParams();
   const { push } = useRouter();
@@ -48,7 +58,6 @@ const Filter = () => {
     const price = searchParams.get("price");
     if (price) {
       const [min, max] = price.split("-");
-      // with tl symbol
       return {
         key: `${min}₺ - ${max}₺`,
         value: price,
@@ -68,24 +77,32 @@ const Filter = () => {
           "flex items-center justify-start gap-2 scroll-smooth max-md:overflow-auto"
         )}
       >
-        <CategoryFilter
-          categories={categories}
-          handleFilterSubmit={handleFilterSubmit}
-          selectedCategories={selectedCategories}
-        />
-        <PriceFilter
-          defaultPrice={searchParams.get("price") || ""}
-          prices={Array.from({ length: 10 }, (_, i) => (i + 1) * 100)}
-          handleFilterSubmit={handleFilterSubmit}
-        />
-        <SameDayFilter
-          handleFilterSubmit={handleFilterSubmit}
-          sameDayDelivery={!!searchParams.get("sameDayDelivery")}
-        />
-        <SpecialOffersFilter
-          specialOffers={!!searchParams.get("specialOffers")}
-          handleFilterSubmit={handleFilterSubmit}
-        />
+        <VisibleChecker filterType="category" filterTypes={filterTypes}>
+          <CategoryFilter
+            categories={categories}
+            handleFilterSubmit={handleFilterSubmit}
+            selectedCategories={selectedCategories}
+          />
+        </VisibleChecker>
+        <VisibleChecker filterType="price" filterTypes={filterTypes}>
+          <PriceFilter
+            defaultPrice={searchParams.get("price") || ""}
+            prices={Array.from({ length: 10 }, (_, i) => (i + 1) * 100)}
+            handleFilterSubmit={handleFilterSubmit}
+          />
+        </VisibleChecker>
+        <VisibleChecker filterType="sameDayDelivery" filterTypes={filterTypes}>
+          <SameDayFilter
+            handleFilterSubmit={handleFilterSubmit}
+            sameDayDelivery={!!searchParams.get("sameDayDelivery")}
+          />
+        </VisibleChecker>
+        <VisibleChecker filterType="specialOffers" filterTypes={filterTypes}>
+          <SpecialOffersFilter
+            specialOffers={!!searchParams.get("specialOffers")}
+            handleFilterSubmit={handleFilterSubmit}
+          />
+        </VisibleChecker>
       </div>
       <SelectedFilters
         sameDayDelivery={!!searchParams.get("sameDayDelivery")}
@@ -103,9 +120,6 @@ const Filter = () => {
                   .join(",") || ""
               );
               break;
-            case "price":
-              handleFilterSubmit(name, "");
-              break;
             default:
               handleFilterSubmit(name, value);
               break;
@@ -117,3 +131,10 @@ const Filter = () => {
 };
 
 export default Filter;
+
+const VisibleChecker = ({ filterType, filterTypes, children }) => {
+  if (filterTypes.includes(filterType)) {
+    return children;
+  }
+  return null;
+};

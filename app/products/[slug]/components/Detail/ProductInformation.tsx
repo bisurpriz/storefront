@@ -2,7 +2,7 @@ import HourSelect from "@/components/DatePicker/HourSelect";
 import Popover from "@/components/Popover";
 import Link from "next/link";
 import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
-import Rating from "../../../../../components/Rating/Rating";
+import Rating from "@/components/Rating/Rating";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 
