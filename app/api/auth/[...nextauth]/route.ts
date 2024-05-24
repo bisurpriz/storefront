@@ -51,6 +51,7 @@ const authOptions = {
       return "/social-login/callback?result=success";
     },
   },
+  secret: process.env.SECRET,
 };
 
 const handler = NextAuth(authOptions);
