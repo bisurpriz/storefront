@@ -66,10 +66,12 @@ export const createDynamicQueryMapper = (searchParams: {
           },
         };
       case FILTER_KEYS.PRICE:
+        const price = (searchParams[key] as string).split("-");
+
         return {
           discount_price: {
-            _gte: searchParams[key][0],
-            _lte: searchParams[key][1],
+            _gte: Number(price[0]),
+            _lte: Number(price[1]),
           },
         };
       case FILTER_KEYS.DELIVERY_TYPE:
@@ -79,14 +81,9 @@ export const createDynamicQueryMapper = (searchParams: {
           },
         };
       case FILTER_KEYS.CUSTOMIZABLE:
+        if (!(searchParams[key] === "true")) return {};
         return {
-          product_customizable_areas_aggregate: {
-            count: {
-              predicate: {
-                _gt: 0,
-              },
-            },
-          },
+          product_customizable_areas: { count: { _gt: 0 } },
         };
       case FILTER_KEYS.SAME_DAY_DELIVERY:
         return {
@@ -97,9 +94,21 @@ export const createDynamicQueryMapper = (searchParams: {
     }
   });
 
-  return {
-    filter_payload: {
-      _and: query,
+  const filter_payload = query.reduce(
+    (acc, curr) => {
+      return {
+        ...acc,
+        ...curr,
+      };
     },
+    {
+      is_active: {
+        _eq: true,
+      },
+    }
+  );
+
+  return {
+    filter_payload,
   };
 };

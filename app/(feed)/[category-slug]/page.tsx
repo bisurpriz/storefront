@@ -6,7 +6,6 @@ import {
   GetProductsWithFilteredPaginationDocument,
   GetProductsWithFilteredPaginationQuery,
 } from "@/graphql/generated";
-import { revalidatePath } from "next/cache";
 
 export default async function CategoryPage({
   params,
@@ -17,16 +16,13 @@ export default async function CategoryPage({
 }) {
   const queryMapper = createDynamicQueryMapper(searchParams);
   const slug = params["category-slug"];
+
   const data = await query<GetProductsWithFilteredPaginationQuery>({
     query: GetProductsWithFilteredPaginationDocument,
     variables: {
       slug,
       ...queryMapper,
     },
-  }).then((res) => {
-    revalidatePath("/", "layout");
-    console.log(res);
-    return res;
   });
 
   const {
@@ -41,7 +37,12 @@ export default async function CategoryPage({
   return (
     <>
       <Filter
-        filterTypes={["category", "price", "sameDayDelivery", "specialOffers"]}
+        filterTypes={[
+          "price",
+          "sameDayDelivery",
+          "specialOffers",
+          "customizable",
+        ]}
       />
       <InfinityScroll
         totalCount={totalCount}
