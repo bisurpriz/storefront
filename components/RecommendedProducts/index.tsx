@@ -50,7 +50,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             </div>
             <div className="aspect-w-1 aspect-h-1">
               <Image
-                src={getImageUrlFromPath(prod.image_url[0])}
+                src={getImageUrlFromPath(prod.image_url?.[0])}
                 alt={prod.name}
                 width={80}
                 height={80}

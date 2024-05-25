@@ -11,6 +11,7 @@ import SameDayFilter from "./components/SameDayFilter";
 import SpecialOffersFilter from "./components/SpecialOffersFilter";
 import SelectedFilters from "./components/SelectedFilters";
 import PriceFilter from "./components/PriceFilter";
+import CustomizableFilter from "./components/CustomizableFilter";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
@@ -18,7 +19,16 @@ export type FilterTypes =
   | "category"
   | "price"
   | "sameDayDelivery"
-  | "specialOffers";
+  | "specialOffers"
+  | "customizable";
+
+export enum FilterKeys {
+  CATEGORY = "category",
+  PRICE = "price",
+  SAME_DAY_DELIVERY = "sameDayDelivery",
+  SPECIAL_OFFERS = "specialOffers",
+  CUSTOMIZABLE = "customizable",
+}
 
 type FilterProps = {
   filterTypes?: FilterTypes[];
@@ -48,14 +58,14 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
   const selectedCategories = useMemo(
     () =>
       searchParams
-        ?.get("category")
+        ?.get(FilterKeys.CATEGORY)
         ?.split(",")
         ?.map((c) => categories.find((category) => category.value === c)) || [],
     [searchParams, categories]
   );
 
   const selectedPrice = useMemo((): FilterInputOption => {
-    const price = searchParams.get("price");
+    const price = searchParams.get(FilterKeys.PRICE);
     if (price) {
       const [min, max] = price.split("-");
       return {
@@ -84,34 +94,49 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
             selectedCategories={selectedCategories}
           />
         </VisibleChecker>
-        <VisibleChecker filterType="price" filterTypes={filterTypes}>
+        <VisibleChecker filterType={FilterKeys.PRICE} filterTypes={filterTypes}>
           <PriceFilter
-            defaultPrice={searchParams.get("price") || ""}
+            defaultPrice={searchParams.get(FilterKeys.PRICE) || ""}
             prices={Array.from({ length: 10 }, (_, i) => (i + 1) * 100)}
             handleFilterSubmit={handleFilterSubmit}
           />
         </VisibleChecker>
-        <VisibleChecker filterType="sameDayDelivery" filterTypes={filterTypes}>
-          <SameDayFilter
+        <VisibleChecker
+          filterType={FilterKeys.CUSTOMIZABLE}
+          filterTypes={filterTypes}
+        >
+          <CustomizableFilter
+            customizable={!!searchParams.get(FilterKeys.CUSTOMIZABLE)}
             handleFilterSubmit={handleFilterSubmit}
-            sameDayDelivery={!!searchParams.get("sameDayDelivery")}
           />
         </VisibleChecker>
-        <VisibleChecker filterType="specialOffers" filterTypes={filterTypes}>
+        <VisibleChecker
+          filterType={FilterKeys.SAME_DAY_DELIVERY}
+          filterTypes={filterTypes}
+        >
+          <SameDayFilter
+            handleFilterSubmit={handleFilterSubmit}
+            sameDayDelivery={!!searchParams.get(FilterKeys.SAME_DAY_DELIVERY)}
+          />
+        </VisibleChecker>
+        <VisibleChecker
+          filterType={FilterKeys.SPECIAL_OFFERS}
+          filterTypes={filterTypes}
+        >
           <SpecialOffersFilter
-            specialOffers={!!searchParams.get("specialOffers")}
+            specialOffers={!!searchParams.get(FilterKeys.SPECIAL_OFFERS)}
             handleFilterSubmit={handleFilterSubmit}
           />
         </VisibleChecker>
       </div>
       <SelectedFilters
-        sameDayDelivery={!!searchParams.get("sameDayDelivery")}
+        sameDayDelivery={!!searchParams.get(FilterKeys.SAME_DAY_DELIVERY)}
         selectedCategories={selectedCategories}
-        specialOffers={!!searchParams.get("specialOffers")}
+        specialOffers={!!searchParams.get(FilterKeys.SPECIAL_OFFERS)}
         price={selectedPrice}
         onClear={(name, value) => {
           switch (name) {
-            case "category":
+            case FilterKeys.CATEGORY:
               handleFilterSubmit(
                 name,
                 selectedCategories

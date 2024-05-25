@@ -22,7 +22,7 @@ export async function generateMetadata({ params, searchParams }) {
   return {
     title: name,
     description: description,
-    image: image_url[0],
+    image: image_url?.[0],
     category: category.name,
   } as Metadata;
 }
@@ -62,7 +62,7 @@ export default async function ProductExample({
     data: {
       name: product.name,
       description: product.description,
-      image: `${IMAGE_URL}/${product.image_url[0]}`,
+      image: `${IMAGE_URL}/${product.image_url?.[0]}`,
       offers: {
         "@type": "Offer",
         price: product.price,

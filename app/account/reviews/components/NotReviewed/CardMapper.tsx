@@ -1,10 +1,10 @@
-import NotReviewedCard from './NotReviewedCard';
-import { GetOrdersWithReviewsQuery } from '@/graphql/generated';
+import NotReviewedCard from "./NotReviewedCard";
+import { GetOrdersWithReviewsQuery } from "@/graphql/generated";
 
 const NotReviewedCardMapper = ({
   result,
 }: {
-  result: GetOrdersWithReviewsQuery['review'];
+  result: GetOrdersWithReviewsQuery["review"];
 }) =>
   result.length > 0 ? (
     result?.map((item) => (
@@ -12,7 +12,7 @@ const NotReviewedCardMapper = ({
         key={item.id}
         productName={item.product.name}
         deliveryDate={item.created_at}
-        imageUrl={item.product.image_url[0]}
+        imageUrl={item.product.image_url?.[0]}
         rating={3}
         reviewCount={item.product.reviews_aggregate.aggregate.count}
         productId={item.product.id}

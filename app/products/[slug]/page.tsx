@@ -114,7 +114,7 @@ const ProductDetail = async ({
               category: product.category,
               discount_price: product.price,
               id: product.id,
-              image_url: product.image_url[0],
+              image_url: product.image_url?.[0],
               name: product.name,
               price: product.price,
               product_customizable_areas:

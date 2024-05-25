@@ -40,7 +40,7 @@ const ProductItem5 = ({
     >
       <Link href={`/${category.slug}/${slug}?pid=${id}`}>
         <Image
-          src={getImageUrlFromPath(image[0])}
+          src={getImageUrlFromPath(image?.[0])}
           alt={name}
           width={500}
           height={500}

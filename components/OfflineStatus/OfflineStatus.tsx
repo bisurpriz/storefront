@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import useOnlineStatus from '@/hooks/useOnlineStatus';
+import useOnlineStatus from "@/hooks/useOnlineStatus";
 
 const OfflineStatus = () => {
   const handleReload = () => {
@@ -12,7 +12,7 @@ const OfflineStatus = () => {
   if (isOnline) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-red-500 text-white text-center py-2">
+    <div className="fixed bottom-0 left-0 w-full bg-red-500 text-white text-center py-2 z-50">
       <p className="text-sm">
         Şuan internet bağlantınız yok. Lütfen internet bağlantınızı kontrol
         edin.
