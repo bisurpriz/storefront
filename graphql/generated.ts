@@ -20730,7 +20730,7 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailQuery = { user: Array<{ id: any }> };
+export type GetUserByEmailQuery = { user: Array<{ id: any, provider_id?: string | null }> };
 
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21090,6 +21090,7 @@ export const GetUserByEmailDocument = gql`
     query getUserByEmail($email: String!) {
   user(where: {email: {_eq: $email}}) {
     id
+    provider_id
   }
 }
     `;

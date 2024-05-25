@@ -163,5 +163,6 @@ mutation createNewAddress(
 query getUserByEmail($email: String!) {
   user(where: { email: { _eq: $email } }) {
     id
+    provider_id
   }
 }
