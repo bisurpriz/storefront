@@ -1,3 +1,6 @@
+import { CookieTokens } from "@/app/@auth/contants";
+import { cookies } from "next/headers";
+
 export enum FILTER_KEYS {
   SEARCH = "search",
   QUARTER_CODE = "quarter_code",
@@ -45,18 +48,6 @@ export const createDynamicQueryMapper = (searchParams: {
             },
           ],
         };
-      case FILTER_KEYS.QUARTER_CODE:
-        return {
-          tenant: {
-            tenants: {
-              tenant_shipping_places: {
-                quarter_code: {
-                  _in: searchParams[key],
-                },
-              },
-            },
-          },
-        };
       case FILTER_KEYS.CATEGORY:
         return {
           category: {
@@ -74,25 +65,38 @@ export const createDynamicQueryMapper = (searchParams: {
             _lte: Number(price[1]),
           },
         };
-      case FILTER_KEYS.DELIVERY_TYPE:
-        return {
-          delivery_type: {
-            _in: searchParams[key],
-          },
-        };
+      // case FILTER_KEYS.DELIVERY_TYPE:
+      //   return {
+      //     delivery_type: {
+      //       _in: searchParams[key],
+      //     },
+      //   };
       case FILTER_KEYS.CUSTOMIZABLE:
         if (!(searchParams[key] === "true")) return {};
         return {
           product_customizable_areas: { count: { _gt: 0 } },
         };
       case FILTER_KEYS.SAME_DAY_DELIVERY:
+        if (!(searchParams[key] === "true")) return {};
         return {
-          same_day_delivery: {
-            _eq: true,
+          delivery_type: {
+            _in: searchParams[key] === "true" && ["SAME_DAY"],
           },
         };
     }
   });
+
+  const quarter_code = Number(cookies().get(CookieTokens.QUARTER_CODE)?.value);
+
+  const quarter_query = {
+    tenant: {
+      tenants: {
+        tenant_shipping_places: {
+          quarter_code: { _in: quarter_code ? [quarter_code] : undefined },
+        },
+      },
+    },
+  };
 
   const filter_payload = query.reduce(
     (acc, curr) => {
@@ -105,6 +109,7 @@ export const createDynamicQueryMapper = (searchParams: {
       is_active: {
         _eq: true,
       },
+      ...quarter_query,
     }
   );
 
