@@ -9,131 +9,148 @@ import {
 import { useMutation } from "@apollo/client";
 import clsx from "clsx";
 import Link from "next/link";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 enum ResultTypes {
   NO_USER_FOUND = "NO_USER_FOUND",
   EMAIL_RESENT = "EMAIL_RESENT",
   TOKEN_EXPIRED = "TOKEN_EXPIRED",
   EMAIL_VERIFIED = "EMAIL_VERIFIED",
+  ERROR = "ERROR",
+  ALREADY_VERIFIED = "ALREADY_VERIFIED",
 }
 
 const resultMessages = {
-  NO_USER_FOUND: "Kullanıcı bulunamadı.",
-  EMAIL_RESENT: "Email tekrar gönder",
-  TOKEN_EXPIRED: "Token süresi doldu.",
-  EMAIL_VERIFIED: "Email doğrulandı.",
+  NO_USER_FOUND: "Kullanıcı bulunamadı. Lütfen tekrar deneyin.",
+  EMAIL_RESENT:
+    "Aktivasyon maili tekrar gönderildi. Lütfen mail kutunuzu kontrol edin.",
+  TOKEN_EXPIRED: "Aktivasyon süresi dolmuş. Lütfen tekrar deneyin.",
+  EMAIL_VERIFIED: "Email doğrulandı. Giriş yapabilirsiniz.",
+  ERROR: "Geçersiz veya hatalı link olabilir. Lütfen tekrar deneyin.",
+  ALREADY_VERIFIED: "Email zaten doğrulanmış.",
 };
 
 type ResultType = keyof typeof ResultTypes;
 
 function VerifyPage() {
   const searchParams = useSearchParams();
-  const verifiedToken = searchParams["token"];
+  const verifiedToken = searchParams.get("token");
 
-  if (!verifiedToken) redirect("/");
+  const router = useRouter();
+  console.log(verifiedToken);
+  if (!verifiedToken) router.replace("/");
 
-  const [
-    mutate,
-    {
-      data: {
-        email_verify: { result },
-      },
-      loading,
-      error,
+  const [mutate, { data, loading, error }] = useMutation<
+    VerifyTokenMutation,
+    VerifyTokenMutationVariables
+  >(VerifyTokenDocument, {
+    variables: {
+      token: verifiedToken,
+      resend: false,
     },
-  ] = useMutation<VerifyTokenMutation, VerifyTokenMutationVariables>(
-    VerifyTokenDocument,
-    {
-      variables: {
-        token: verifiedToken,
-        resend: false,
-      },
-    }
-  );
+  });
 
-  // const data = {
-  //   email_verify: {
-  //     result: ResultTypes.EMAIL_RESENT,
-  //   },
-  // };
+  useEffect(() => {
+    if (verifiedToken) {
+      mutate();
+    }
+  }, [verifiedToken]);
+
+  const result = data?.email_verify?.result;
+
+  if (result === ResultTypes.ALREADY_VERIFIED) router.replace("/");
 
   return (
     <div
-      className={clsx("flex", "items-center", "justify-center font-manrope")}
+      className={clsx(
+        "flex flex-col items-center justify-center content-height bg-gray-100 max-md:bg-white"
+      )}
     >
-      <div className={clsx("text-center")}>
+      <div className={clsx("max-w-md w-full space-y-4")}>
         {(result === ResultTypes.TOKEN_EXPIRED ||
           result === ResultTypes.NO_USER_FOUND) && (
           <>
-            <p
-              className={clsx(
-                "text-red-500",
-                "text-lg",
-                "font-semibold",
-                "mb-4"
-              )}
-            >
-              {resultMessages[result]}
-            </p>
+            <div className="text-center flex flex-col items-center justify-center gap-4">
+              <h1 className="text-3xl font-bold">
+                {result === ResultTypes.TOKEN_EXPIRED
+                  ? "Aktivasyon Süresi Dolmuş"
+                  : "Kullanıcı Bulunamadı"}
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                {resultMessages[result]}
+              </p>
+            </div>
             {result === ResultTypes.TOKEN_EXPIRED && (
               <Button
-                onClick={() =>
+                variant="outlined"
+                onClick={() => {
                   mutate({
                     variables: {
                       token: verifiedToken,
                       resend: true,
                     },
-                  })
-                }
-                loading={loading}
+                  });
+                }}
+                loading={false}
+                className="mt-4 flex items-center justify-center"
+                fullWidth
               >
-                Email Tekrar Gönder
+                Tekrar Gönder
               </Button>
             )}
           </>
         )}
         {result === ResultTypes.EMAIL_VERIFIED && (
           <>
-            <p
-              className={clsx(
-                "text-green-500",
-                "text-lg",
-                "font-semibold",
-                "mb-4"
-              )}
-            >
-              Hesabınız başarıyla doğrulandı. Giriş yapabilirsiniz.
-            </p>
-
-            <Link
-              href="/login"
-              className={clsx(
-                "bg-blue-500",
-                "text-white",
-                "py-2",
-                "px-4",
-                "rounded",
-                "text-sm",
-                "font-semibold"
-              )}
-            >
-              Giriş Yap
-            </Link>
+            <div className="text-center flex flex-col items-center justify-center gap-4">
+              <h1 className="text-3xl font-bold">Email Doğrulandı</h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                {resultMessages[result]}
+              </p>
+              <Button
+                variant="outlined"
+                className="mt-4 flex items-center justify-center"
+                fullWidth
+              >
+                <Link href="/login">Giriş Yap</Link>
+              </Button>
+            </div>
           </>
         )}
 
         {result === ResultTypes.EMAIL_RESENT && (
-          <p
-            className={clsx(
-              "text-green-500",
-              "text-lg",
-              "font-semibold",
-              "mb-4"
-            )}
-          >
-            {resultMessages[result]}
-          </p>
+          <div className="text-center flex flex-col items-center justify-center gap-4">
+            <h1 className="text-3xl font-bold">Aktivasyon Maili Gönderildi</h1>
+            <p className="text-gray-500 dark:text-gray-400">
+              {resultMessages[result]}
+            </p>
+          </div>
+        )}
+
+        {result === ResultTypes.ERROR && (
+          <div className="text-center flex flex-col items-center justify-center gap-4">
+            <h1 className="text-3xl font-bold">Bir hata oluştu.</h1>
+            <p className="text-gray-500 dark:text-gray-400">
+              {resultMessages[result]}
+            </p>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                mutate({
+                  variables: {
+                    token: verifiedToken,
+                    resend: true,
+                  },
+                });
+              }}
+              loading={false}
+              className="mt-4 flex items-center justify-center"
+              fullWidth
+            >
+              Tekrar Gönder
+            </Button>
+          </div>
         )}
       </div>
     </div>

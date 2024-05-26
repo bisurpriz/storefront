@@ -5,6 +5,7 @@ import { query } from "@/graphql/lib/client";
 import {
   GetProductsWithFilteredPaginationDocument,
   GetProductsWithFilteredPaginationQuery,
+  GetProductsWithFilteredPaginationQueryVariables,
 } from "@/graphql/generated";
 
 export default async function CategoryPage({
@@ -17,11 +18,20 @@ export default async function CategoryPage({
   const queryMapper = createDynamicQueryMapper(searchParams);
   const slug = params["category-slug"];
 
-  const data = await query<GetProductsWithFilteredPaginationQuery>({
+  const data = await query<
+    GetProductsWithFilteredPaginationQuery,
+    GetProductsWithFilteredPaginationQueryVariables
+  >({
     query: GetProductsWithFilteredPaginationDocument,
     variables: {
-      slug,
-      ...queryMapper,
+      filter_payload: {
+        ...queryMapper.filter_payload,
+        category: {
+          slug: {
+            _eq: slug,
+          },
+        },
+      },
     },
   });
 
