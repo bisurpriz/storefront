@@ -38,6 +38,15 @@ export type Boolean_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
+export type EmailVerifyInput = {
+  resend?: InputMaybe<Scalars['Boolean']['input']>;
+  token: Scalars['String']['input'];
+};
+
+export type EmailVerifyOutput = {
+  result?: Maybe<Scalars['String']['output']>;
+};
+
 export type ForgotPasswordInput = {
   email: Scalars['String']['input'];
   platform?: InputMaybe<Scalars['String']['input']>;
@@ -4773,6 +4782,7 @@ export type Mutation_Root = {
   delete_user_favorite?: Maybe<User_Favorite_Mutation_Response>;
   /** delete single row from the table: "user_favorite" */
   delete_user_favorite_by_pk?: Maybe<User_Favorite>;
+  email_verify?: Maybe<EmailVerifyOutput>;
   /** forgot_password */
   forgot_password?: Maybe<ForgotPasswordOutput>;
   /** insert data into the table: "address_type" */
@@ -5703,6 +5713,12 @@ export type Mutation_RootDelete_User_FavoriteArgs = {
 /** mutation root */
 export type Mutation_RootDelete_User_Favorite_By_PkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootEmail_VerifyArgs = {
+  args: EmailVerifyInput;
 };
 
 
@@ -18902,6 +18918,7 @@ export type User = {
   /** An object relationship */
   user_role?: Maybe<Role>;
   verify_token?: Maybe<Scalars['String']['output']>;
+  verify_token_exp?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 
@@ -19749,6 +19766,7 @@ export type User_Bool_Exp = {
   user_coupons_aggregate?: InputMaybe<User_Coupon_Aggregate_Bool_Exp>;
   user_role?: InputMaybe<Role_Bool_Exp>;
   verify_token?: InputMaybe<String_Comparison_Exp>;
+  verify_token_exp?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user" */
@@ -20333,6 +20351,7 @@ export type User_Insert_Input = {
   user_coupons?: InputMaybe<User_Coupon_Arr_Rel_Insert_Input>;
   user_role?: InputMaybe<Role_Obj_Rel_Insert_Input>;
   verify_token?: InputMaybe<Scalars['String']['input']>;
+  verify_token_exp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
@@ -20353,6 +20372,7 @@ export type User_Max_Fields = {
   session_id?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   verify_token?: Maybe<Scalars['String']['output']>;
+  verify_token_exp?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "user" */
@@ -20373,6 +20393,7 @@ export type User_Max_Order_By = {
   session_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   verify_token?: InputMaybe<Order_By>;
+  verify_token_exp?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -20393,6 +20414,7 @@ export type User_Min_Fields = {
   session_id?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   verify_token?: Maybe<Scalars['String']['output']>;
+  verify_token_exp?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "user" */
@@ -20413,6 +20435,7 @@ export type User_Min_Order_By = {
   session_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   verify_token?: InputMaybe<Order_By>;
+  verify_token_exp?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "user" */
@@ -20474,6 +20497,7 @@ export type User_Order_By = {
   user_coupons_aggregate?: InputMaybe<User_Coupon_Aggregate_Order_By>;
   user_role?: InputMaybe<Role_Order_By>;
   verify_token?: InputMaybe<Order_By>;
+  verify_token_exp?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: user */
@@ -20522,7 +20546,9 @@ export type User_Select_Column =
   /** column name */
   | 'updated_at'
   /** column name */
-  | 'verify_token';
+  | 'verify_token'
+  /** column name */
+  | 'verify_token_exp';
 
 /** select "user_aggregate_bool_exp_bool_and_arguments_columns" columns of table "user" */
 export type User_Select_Column_User_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
@@ -20564,6 +20590,7 @@ export type User_Set_Input = {
   session_id?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   verify_token?: InputMaybe<Scalars['String']['input']>;
+  verify_token_exp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "user" */
@@ -20596,6 +20623,7 @@ export type User_Stream_Cursor_Value_Input = {
   session_id?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   verify_token?: InputMaybe<Scalars['String']['input']>;
+  verify_token_exp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "user" */
@@ -20639,7 +20667,9 @@ export type User_Update_Column =
   /** column name */
   | 'updated_at'
   /** column name */
-  | 'verify_token';
+  | 'verify_token'
+  /** column name */
+  | 'verify_token_exp';
 
 export type User_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -20945,6 +20975,14 @@ export type GetVendorProductsWithPaginationQueryVariables = Exact<{
 
 
 export type GetVendorProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, description?: string | null, name: string, image_url?: Array<string> | null, price: number, quantity?: number | null, category: { name: string, slug?: string | null } }> };
+
+export type VerifyTokenMutationVariables = Exact<{
+  token: Scalars['String']['input'];
+  resend?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
+
+
+export type VerifyTokenMutation = { email_verify?: { result?: string | null } | null };
 
 
 export const GetUserAddressByIdDocument = gql`
@@ -21721,6 +21759,13 @@ export const GetVendorProductsWithPaginationDocument = gql`
   }
 }
     `;
+export const VerifyTokenDocument = gql`
+    mutation verifyToken($token: String!, $resend: Boolean) {
+  email_verify(args: {token: $token, resend: $resend}) {
+    result
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -21842,6 +21887,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getVendorProductsWithPagination(variables: GetVendorProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetVendorProductsWithPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetVendorProductsWithPaginationQuery>(GetVendorProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getVendorProductsWithPagination', 'query', variables);
+    },
+    verifyToken(variables: VerifyTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<VerifyTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<VerifyTokenMutation>(VerifyTokenDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyToken', 'mutation', variables);
     }
   };
 }

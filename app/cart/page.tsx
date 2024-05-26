@@ -8,7 +8,7 @@ export const generateMetadata = async () => {
   };
 };
 
-const Cart = async () => {
+const Cart = () => {
   return (
     <div
       className="w-full relative"
