@@ -212,7 +212,7 @@ export const getCartCost = async (
     }
   );
 
-  return costData.totalPrice;
+  return costData.totalPrice as number;
 };
 
 export const updateCart = async (cartItems: ProductForCart[]) => {

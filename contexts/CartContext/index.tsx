@@ -32,6 +32,8 @@ interface CartContextType {
   loading?: boolean;
 }
 
+type Type = "add" | "remove" | "clear" | "update";
+
 export const CartContext = createContext<CartContextType>({
   cartItems: [],
   addToCart: () => {},
@@ -59,7 +61,42 @@ export const CartProvider = ({
   const [cost, setCost] = useState(dbCost ?? 0);
   const [loading, setLoading] = useState(false);
 
-  const handleChangeDb = async (cartItems: ProductForCart[]) => {
+  const messages = (type: Type) => {
+    switch (type) {
+      case "add":
+        return {
+          loading: "Ürün sepete ekleniyor.",
+          success: "Ürün sepete eklendi.",
+          error: "Ürün sepete eklenirken bir hata oluştu.",
+        };
+      case "remove":
+        return {
+          loading: "Ürün sepetten çıkarılıyor.",
+          success: "Ürün sepetten çıkarıldı.",
+          error: "Ürün sepetten çıkarılırken bir hata oluştu.",
+        };
+      case "clear":
+        return {
+          loading: "Sepet temizleniyor.",
+          success: "Sepet temizlendi.",
+          error: "Sepet temizlenirken bir hata oluştu.",
+        };
+      case "update":
+        return {
+          loading: "Ürün güncelleniyor.",
+          success: "Ürün güncellendi.",
+          error: "Ürün güncellenirken bir hata oluştu.",
+        };
+      default:
+        return {
+          loading: "Sepet güncelleniyor.",
+          success: "Sepet başarıyla güncellendi.",
+          error: "Sepet güncellenirken bir hata oluştu.",
+        };
+    }
+  };
+
+  const handleChangeDb = async (cartItems: ProductForCart[], type?: Type) => {
     setLoading(true);
     toast.promise(
       updateCart(cartItems)
@@ -73,11 +110,7 @@ export const CartProvider = ({
         .finally(() => {
           setLoading(false);
         }),
-      {
-        loading: "Ürün sepete ekleniyor.",
-        success: "Ürün sepete eklendi.",
-        error: "Ürün sepete eklenirken bir hata oluştu.",
-      },
+      messages(type),
       {
         position: "bottom-right",
       }
@@ -131,7 +164,16 @@ export const CartProvider = ({
       cost,
       loading,
     };
-  }, [cartItems, count]);
+  }, [
+    cartItems,
+    count,
+    loading,
+    cost,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    updateCartItem,
+  ]);
 
   return (
     <CartContext.Provider value={memoizedValue}>

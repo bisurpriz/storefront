@@ -26,12 +26,25 @@ export const login = async ({ email, password }, headers = {}) => {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
 
-    cookies().set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token);
+    cookies().set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
     cookies().set(
       CookieTokens.REFRESH_TOKEN,
-      response.data.login.refresh_token
+      response.data.login.refresh_token,
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      }
     );
-    cookies().set(CookieTokens.USER_ID, user.id);
+    cookies().set(CookieTokens.USER_ID, user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
   }
   return response;
 };
