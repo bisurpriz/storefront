@@ -17,7 +17,7 @@ type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
 };
 
-const socialLogins = [
+export const socialLogins = [
   {
     name: "Google",
     icon: <FaGoogle />,
