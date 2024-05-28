@@ -18,10 +18,11 @@ const ProductGroupListItemInfo = ({
 
   return (
     <span className="absolute top-2 right-2 flex gap-2 items-center">
-      {customize ? (
+      {customize.length ? (
         <Popover
-          contentClassName="w-[300px] shadow-md border rounded-sm"
-          position="top"
+          className="w-[300px] rounded-lg"
+          placement="top"
+          trigger="click"
           content={
             <p className="text-xs font-normal text-gray-800">
               Bu kısımda satıcının belirlediği ürün özelleştirmeleri yer alır.

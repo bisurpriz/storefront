@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { CustomSwiperProps } from "./Swiper";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 
 const CustomSwiper = ({
   options,
@@ -24,9 +24,9 @@ const CustomSwiper = ({
       onSwiper={onSwpier}
       slidesPerView={slidePerView}
       spaceBetween={spaceBetween}
-      className={`w-full h-full`}
-      modules={[Navigation]}
+      modules={[Navigation, Autoplay]}
       navigation={navigation}
+      autoplay={{ delay: 5000 }}
     >
       {slideItems.map((item) => {
         const className = item.className ? item.className : "";

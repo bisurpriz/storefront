@@ -3,12 +3,14 @@ import React, { FC } from "react";
 import { FilterInputOption } from "../FilterInput";
 import SelectedFilterTag from "./SelectedFilterTag";
 import { FilterTypes } from "../..";
+import { AnimatePresence } from "framer-motion";
 
 type SelectedFiltersProps = {
   selectedCategories: FilterInputOption[];
   price: FilterInputOption;
   sameDayDelivery: boolean;
   specialOffers: boolean;
+  customizable: boolean;
   onClear: (name: FilterTypes, value: string) => void;
 };
 
@@ -17,36 +19,52 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
   price,
   sameDayDelivery,
   specialOffers,
+  customizable,
   onClear,
 }) => {
   return (
     <div className={clsx("flex gap-2 items-center justify-start my-2")}>
-      {selectedCategories.map((category) => (
-        <SelectedFilterTag
-          key={category.value}
-          label={category.key}
-          onClear={() => onClear("category", category.value)}
-          show={!!category.value}
-        />
-      ))}
+      <AnimatePresence presenceAffectsLayout>
+        {selectedCategories.length > 0 &&
+          selectedCategories.map((category) => (
+            <SelectedFilterTag
+              id={`category-${category.value}`}
+              key={category.value}
+              label={category.key}
+              onClear={() => onClear("category", category.value)}
+            />
+          ))}
 
-      <SelectedFilterTag
-        key={price.value}
-        label={price.key}
-        onClear={() => onClear("price", "")}
-        show={!!price.value}
-      />
+        {!!price.value && (
+          <SelectedFilterTag
+            id={"price"}
+            label={price.key}
+            onClear={() => onClear("price", "")}
+          />
+        )}
 
-      <SelectedFilterTag
-        label="Aynı gün teslimat"
-        onClear={() => onClear("sameDayDelivery", "")}
-        show={sameDayDelivery}
-      />
-      <SelectedFilterTag
-        label="Özel teslimat"
-        onClear={() => onClear("specialOffers", "")}
-        show={specialOffers}
-      />
+        {!!sameDayDelivery && (
+          <SelectedFilterTag
+            id={"sameDayDelivery"}
+            label="Aynı gün teslimat"
+            onClear={() => onClear("sameDayDelivery", "")}
+          />
+        )}
+        {!!specialOffers && (
+          <SelectedFilterTag
+            id={"specialOffers"}
+            label="Özel teslimat"
+            onClear={() => onClear("specialOffers", "")}
+          />
+        )}
+        {!!customizable && (
+          <SelectedFilterTag
+            id={"customizable"}
+            label="Özelleştirilebilir"
+            onClear={() => onClear("customizable", "")}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

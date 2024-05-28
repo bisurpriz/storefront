@@ -57,11 +57,9 @@ const ButtonCheckbox: FC<ButtonCheckboxProps> = ({
           strokeWidth="1.5"
           stroke="currentColor"
           className="w-4 h-4 absolute right-2"
-          // padding geldiği zaman belirecek
-          initial={{ opacity: 0, paddingRight: 0 }}
-          animate={{ opacity: 1, paddingRight: 0.5 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          animate={{
+            rotate: checked ? 0 : 180,
+          }}
         >
           <path
             strokeLinecap="round"

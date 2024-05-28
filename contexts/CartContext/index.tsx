@@ -122,7 +122,7 @@ export const CartProvider = ({
         });
       });
     } else {
-      cartItems[hasItem].quantity += 1;
+      cartItems[hasItem].quantity = item.quantity;
       handleChangeDb(cartItems, "update").then(({ costData, error }) => {
         if (error) return;
         return {

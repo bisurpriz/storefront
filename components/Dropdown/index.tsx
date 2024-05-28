@@ -1,60 +1,61 @@
-'use client'
+"use client";
 
-import { useClickAway } from '@uidotdev/usehooks'
-import clsx from 'clsx'
-import { motion } from 'framer-motion'
-import { Children, ReactElement, cloneElement, memo, useState } from 'react'
-import { useClassname } from '../../hooks/useClassname'
+import { useClickAway } from "@uidotdev/usehooks";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import { Children, ReactElement, cloneElement, memo, useState } from "react";
+import { useClassname } from "../../hooks/useClassname";
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
   value,
   onChange,
-  dropdownPlacement = 'topLeft',
+  dropdownPlacement = "topLeft",
   isSearchable = false,
   label,
   noOptionsMessage,
   fullWidth = false,
   loading = false,
-  className = '',
+  className = "",
   children,
   id,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
-    options?.find((option) => option.value === value) || null,
-  )
+    options?.find((option) => option.value === value) || null
+  );
 
-  const { toggleClass } = useClassname()
+  const { toggleClass } = useClassname();
 
   const handleOptionClick = (option: DropdownOption) => {
-    setSelectedOption(option)
-    onChange?.(option.value, option)
-    setIsOpen(false)
-    setSearchValue('')
-  }
+    setSelectedOption(option);
+    onChange?.(option.value, option);
+    setIsOpen(false);
+    setSearchValue("");
+  };
 
   const ref = useClickAway<HTMLDivElement>(() => {
-    setIsOpen(false)
-    setSearchValue('')
-  })
+    setIsOpen(false);
+    setSearchValue("");
+  });
 
-  const child = children ? (Children.only(children) as ReactElement) : null
+  const child = children ? (Children.only(children) as ReactElement) : null;
 
   const childTrigger = child
     ? cloneElement(child!, {
         onClick: () => setIsOpen(!isOpen),
-        key: 'dropdown-trigger',
+        key: "dropdown-trigger",
       })
-    : null
+    : null;
 
   return (
     <div
       className={`relative whitespace-nowrap flex items-center ${className} ${
-        fullWidth ? 'w-full' : ''
+        fullWidth ? "w-full" : ""
       }`}
-      ref={ref}>
+      ref={ref}
+    >
       <input type="hidden" value={selectedOption?.value} id={id} name={id} />
 
       {!childTrigger ? (
@@ -62,21 +63,21 @@ const Dropdown: React.FC<DropdownProps> = ({
           type="button"
           className="relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
           onClick={(e) => {
-            e.preventDefault()
-            setIsOpen(!isOpen)
+            e.preventDefault();
+            setIsOpen(!isOpen);
           }}
           onFocus={(e) =>
-            toggleClass('border-primary', e.target as HTMLElement)
+            toggleClass("border-primary", e.target as HTMLElement)
           }
-          onBlur={(e) =>
-            toggleClass('border-primary', e.target as HTMLElement)
-          }>
+          onBlur={(e) => toggleClass("border-primary", e.target as HTMLElement)}
+        >
           {loading && (
             <svg
               className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <circle
                 className="opacity-25"
                 cx="12"
@@ -98,7 +99,8 @@ const Dropdown: React.FC<DropdownProps> = ({
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            aria-hidden="true">
+            aria-hidden="true"
+          >
             <path
               fillRule="evenodd"
               d="M10.707 14.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 11.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
@@ -111,33 +113,41 @@ const Dropdown: React.FC<DropdownProps> = ({
       )}
       <motion.div
         initial={false}
-        animate={isOpen ? 'open' : 'closed'}
+        animate={isOpen ? "open" : "closed"}
         variants={{
-          closed: {
-            scale: 0,
+          // Yukardan aşağı açılan dropdown
+          open: {
+            opacity: 1,
+            scale: 1,
+            y: 5,
             transition: {
-              delay: 0.15,
+              type: "tween",
+              duration: 0.1,
             },
           },
-          open: {
-            scale: 1,
+          closed: {
+            opacity: 0,
+            scale: 0.95,
+            y: 0,
             transition: {
-              type: 'spring',
-              duration: 0.4,
+              type: "tween",
+              duration: 0.1,
             },
           },
         }}
         className={clsx(
-          'absolute z-10 rounded-sm shadow-lg bg-white focus:outline-none left-0 mt-2 top-full',
+          "absolute z-10 rounded-sm shadow-lg bg-white focus:outline-none left-0 mt-2 top-full",
           {
-            'w-full': fullWidth,
-          },
-        )}>
+            "w-full": fullWidth,
+          }
+        )}
+      >
         <div
           className="py-1"
           role="menu"
           aria-orientation="vertical"
-          aria-labelledby="options-menu">
+          aria-labelledby="options-menu"
+        >
           {isSearchable && (
             <div className="relative">
               <input
@@ -154,7 +164,8 @@ const Dropdown: React.FC<DropdownProps> = ({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  aria-hidden="true">
+                  aria-hidden="true"
+                >
                   <path
                     x-description="Search icon"
                     fillRule="evenodd"
@@ -166,51 +177,52 @@ const Dropdown: React.FC<DropdownProps> = ({
             </div>
           )}
           {options?.filter((option) =>
-            typeof option.label === 'string'
+            typeof option.label === "string"
               ? option.label.toLowerCase().includes(searchValue.toLowerCase())
               : option
                   .searchValue!.toLowerCase()
-                  .includes(searchValue.toLowerCase()),
+                  .includes(searchValue.toLowerCase())
           ).length > 0 ? (
             options
               ?.filter((option) =>
-                typeof option.label === 'string'
+                typeof option.label === "string"
                   ? option.label
                       .toLowerCase()
                       .includes(searchValue.toLowerCase())
                   : option
                       .searchValue!.toLowerCase()
-                      .includes(searchValue.toLowerCase()),
+                      .includes(searchValue.toLowerCase())
               )
               .map((option) =>
-                typeof option.label === 'string' ? (
+                typeof option.label === "string" ? (
                   <button
                     type="button"
                     key={option.value}
                     className={`${
                       option.value === value
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-700'
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-700"
                     } block px-4 py-2 text-sm w-full text-left`}
                     role="menuitem"
-                    onClick={() => handleOptionClick(option)}>
+                    onClick={() => handleOptionClick(option)}
+                  >
                     {option.label}
                   </button>
                 ) : (
                   <div role="menuitem" key={option.value}>
                     {option.label}
                   </div>
-                ),
+                )
               )
           ) : (
             <p className="block px-4 py-2 text-sm text-gray-700">
-              {noOptionsMessage || 'Arama sonucu bulunamadı'}
+              {noOptionsMessage || "Arama sonucu bulunamadı"}
             </p>
           )}
         </div>
       </motion.div>
     </div>
-  )
-}
+  );
+};
 
-export default memo(Dropdown)
+export default memo(Dropdown);
