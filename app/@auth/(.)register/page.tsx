@@ -9,7 +9,13 @@ const ModalRegisterPage = () => {
 
   return (
     <Modal handleClose={back} open>
-      <RegisterForm />
+      <RegisterForm
+        onSuccessfulRegister={(status) => {
+          if (status) {
+            back();
+          }
+        }}
+      />
     </Modal>
   );
 };
