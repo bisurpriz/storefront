@@ -12,6 +12,7 @@ import SpecialOffersFilter from "./components/SpecialOffersFilter";
 import SelectedFilters from "./components/SelectedFilters";
 import PriceFilter from "./components/PriceFilter";
 import CustomizableFilter from "./components/CustomizableFilter";
+import { VisibleChecker } from "./components/FilterVisibleChecker";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
@@ -133,6 +134,7 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
         sameDayDelivery={!!searchParams.get(FilterKeys.SAME_DAY_DELIVERY)}
         selectedCategories={selectedCategories}
         specialOffers={!!searchParams.get(FilterKeys.SPECIAL_OFFERS)}
+        customizable={!!searchParams.get(FilterKeys.CUSTOMIZABLE)}
         price={selectedPrice}
         onClear={(name, value) => {
           switch (name) {
@@ -156,10 +158,3 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
 };
 
 export default Filter;
-
-const VisibleChecker = ({ filterType, filterTypes, children }) => {
-  if (filterTypes.includes(filterType)) {
-    return children;
-  }
-  return null;
-};

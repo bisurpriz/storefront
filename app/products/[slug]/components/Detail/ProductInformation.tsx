@@ -89,7 +89,7 @@ const ProductInformation = ({
                   />
                 </span>
               }
-              position="bottom"
+              placement="bottom"
             >
               <span>
                 <Rating

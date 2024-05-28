@@ -7,12 +7,12 @@ import clsx from "clsx";
 
 const tooltipVariants = {
   hidden: {
+    scale: 0.8,
     opacity: 0,
-    scale: 0.9,
   },
   visible: {
-    opacity: 1,
     scale: 1,
+    opacity: 1,
   },
 };
 
