@@ -10,7 +10,9 @@ import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { CartStepPaths } from "../../constants";
 
 const CartSummary = () => {
-  const { cost } = useCart();
+  const {
+    cartState: { cost },
+  } = useCart();
   const pathname = usePathname();
   const { handleChangeStep } = useCartStep();
 

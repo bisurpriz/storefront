@@ -239,7 +239,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     return {
       cartData,
-      costData: costData,
+      costData,
     };
   } catch (error) {
     console.log("Sepet güncellenirken bir hata oluştu.", error);

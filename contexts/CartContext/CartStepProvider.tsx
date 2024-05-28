@@ -16,7 +16,10 @@ const CartStepContext = createContext<CartStepContextType>({
 
 export const CartStepProvider = ({ children }) => {
   const { push } = useRouter();
-  const { cartItems, clearCart } = useCart();
+  const {
+    cartState: { cartItems },
+    clearCart,
+  } = useCart();
   const pathname = usePathname();
   const forward = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
@@ -61,10 +64,6 @@ export const CartStepProvider = ({ children }) => {
   };
 
   const checkoutCheck = () => {
-    // console.log("atadam");
-    // localStorage.removeItem("cart");
-    // localStorage.removeItem("detail-data");
-    // clearCart();
     forward();
   };
 

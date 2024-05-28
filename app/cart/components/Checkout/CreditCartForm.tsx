@@ -55,7 +55,10 @@ const CreditCartForm = () => {
     mode: "onChange",
   });
 
-  const { clearCart, cartItems } = useCart();
+  const {
+    clearCart,
+    cartState: { cartItems },
+  } = useCart();
 
   const { push } = useRouter();
 

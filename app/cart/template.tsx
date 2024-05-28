@@ -10,7 +10,9 @@ import { usePathname } from "next/navigation";
 import { CartStepPaths } from "./constants";
 
 const CartLayout = ({ children }: { children: React.ReactNode }) => {
-  const { count } = useCart();
+  const {
+    cartState: { count },
+  } = useCart();
   const pathname = usePathname();
   if (!count && pathname !== CartStepPaths.COMPLETE) {
     return <EmptyCart />;
