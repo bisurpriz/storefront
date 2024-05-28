@@ -44,7 +44,9 @@ const MenuItem = ({
 };
 
 const MobileBottomNav = () => {
-  const { count } = useCart();
+  const {
+    cartState: { count },
+  } = useCart();
   const pathname = usePathname();
 
   const getSelectedMenuItem = () => {

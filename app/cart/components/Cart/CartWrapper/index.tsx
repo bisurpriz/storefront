@@ -7,7 +7,9 @@ import { useMemo } from "react";
 import clsx from "clsx";
 
 const CartWrapper = () => {
-  const { cartItems } = useCart();
+  const {
+    cartState: { cartItems },
+  } = useCart();
 
   const tenantGroupedProducts = useMemo(() => {
     return cartItems?.reduce((acc, item) => {

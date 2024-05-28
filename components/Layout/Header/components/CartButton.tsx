@@ -10,7 +10,9 @@ import { memo } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const CartButton = () => {
-  const { count } = useCart();
+  const {
+    cartState: { count },
+  } = useCart();
 
   return (
     <Badge badgeContent={count}>

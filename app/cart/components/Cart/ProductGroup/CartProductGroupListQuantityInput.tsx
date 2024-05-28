@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import { Product } from '@/common/types/Product/product';
-import QuantityInput from '@/components/NumberInput/QuantityInput';
-import { useCart } from '@/contexts/CartContext';
-import React from 'react';
+import { Product } from "@/common/types/Product/product";
+import QuantityInput from "@/components/NumberInput/QuantityInput";
+import { useCart } from "@/contexts/CartContext";
+import React from "react";
 
 const CartProductGroupListQuantityInput = ({
   id,
   quantity,
 }: {
-  id: Product['id'];
-  quantity: Product['quantity'];
+  id: Product["id"];
+  quantity: Product["quantity"];
 }) => {
-  const { addToCart, cartItems } = useCart();
+  const {
+    addToCart,
+    cartState: { cartItems },
+  } = useCart();
 
   return (
     <div className="flex items-center justify-start gap-2">

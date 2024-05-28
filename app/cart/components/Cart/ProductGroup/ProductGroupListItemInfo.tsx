@@ -4,7 +4,6 @@ import { Product } from "@/common/types/Product/product";
 import Popover from "@/components/Popover";
 import { useCart } from "@/contexts/CartContext";
 import React from "react";
-import toast from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoInformation } from "react-icons/io5";
 
@@ -37,10 +36,6 @@ const ProductGroupListItemInfo = ({
       <AiOutlineClose
         onClick={() => {
           removeFromCart(id);
-          toast("Ürün sepetten kaldırıldı.", {
-            icon: "🗑️",
-            position: "bottom-right",
-          });
         }}
         className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"
       />
