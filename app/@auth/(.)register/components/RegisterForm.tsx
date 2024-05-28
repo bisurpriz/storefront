@@ -22,7 +22,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event.currentTarget.elements, "event.currentTarget.elements");
     setLoading(true);
     const [email, password, firstname, lastname] = Array.from(
       event.currentTarget.elements
@@ -34,8 +33,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       firstname,
       lastname,
     });
-
-    console.log(response, "response");
 
     if (response.error) {
       const errorMessage =
@@ -55,8 +52,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       return;
     } else if (response.body.insert_user.affected_rows) {
       const response = await login({ email, password });
-
-      console.log(response, "response login");
 
       if (response.data.login.error) {
         const errorMessage =
