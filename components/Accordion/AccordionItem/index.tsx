@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useRef, useState } from 'react';
-import { HiChevronDown } from 'react-icons/hi';
-import { motion } from 'framer-motion';
+import { useRef, useState } from "react";
+import { HiChevronDown } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 interface AccordionItemProps {
   title: React.ReactNode;
@@ -24,8 +24,8 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   const nodeRef = useRef(null);
   const [open, setOpen] = useState<boolean>(isOpen ?? false);
 
-  const isOpenClass = open ? 'border-b' : '';
-  const isBordered = bordered ? 'border border-b-0 last:border-b' : '';
+  const isOpenClass = open ? "border-b" : "";
+  const isBordered = bordered ? "border border-b-0 last:border-b" : "";
 
   const handleToggle = () => {
     if (onToggle) {
@@ -36,7 +36,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 
   return (
     <div
-      className={` transition-colors select-none ${isBordered} ${className} whitespace-nowrap`}
+      className={`transition-colors select-none ${isBordered} ${className} whitespace-nowrap`}
     >
       <div
         className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
@@ -45,16 +45,16 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         <h4 className="flex items-center">{title}</h4>
         <HiChevronDown
           className={`transition-transform transform ${
-            open ? '-rotate-180' : ''
+            open ? "-rotate-180" : ""
           }`}
         />
       </div>
       <motion.div
         ref={nodeRef}
         initial={false}
-        animate={open ? 'open' : 'closed'}
+        animate={open ? "open" : "closed"}
         variants={{
-          open: { height: 'auto', opacity: 1 },
+          open: { height: "auto", opacity: 1 },
           closed: { height: 0, opacity: 0 },
         }}
         className="overflow-hidden"

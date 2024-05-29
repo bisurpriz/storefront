@@ -1,18 +1,8 @@
-"use client";
-
-import { useState } from "react";
-import { getPaymentToken } from "../actions";
+import { getIpAddress } from "@/app/actions";
 import CreditCartForm from "../components/Checkout/CreditCartForm";
-import Script from "next/script";
 
-const CartCheckout = () => {
-  const [token, setToken] = useState<string>("");
-
-  const handlePayment = async () => {
-    const result = await getPaymentToken();
-    setToken(result.token);
-  };
-
+const CartCheckout = async () => {
+  console.log(await getIpAddress());
   return (
     <div className="w-full relative">
       <section
@@ -20,20 +10,6 @@ const CartCheckout = () => {
         aria-describedby="cart-checkout-description"
         aria-label="Ödeme Bilgileri"
       >
-        <form action={handlePayment}>
-          <button type="submit">Ödeme Yap</button>
-        </form>
-        {token && (
-          <>
-            <Script src="https://www.paytr.com/js/iframeResizer.min.js"></Script>
-            <Script id="resizer">{`iFrameResize({},'#paytriframe');`}</Script>
-            <iframe
-              src={`https://www.paytr.com/odeme/guvenli/${token}`}
-              id="paytriframe"
-              style={{ width: "100%", height: "100vh" }}
-            ></iframe>
-          </>
-        )}
         <CreditCartForm />
       </section>
     </div>

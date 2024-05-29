@@ -18,9 +18,7 @@ const ProductDescription = ({
       aria-labelledby="description"
       aria-describedby="Ürün açıklaması"
     >
-      <p className="text-sm font-light font-mono tracking-wide text-slate-700">
-        {description}
-      </p>
+      <div dangerouslySetInnerHTML={{ __html: description }} />
       {notes && notes.length > 0 && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-sans mb-2 text-slate-700">
@@ -39,14 +37,14 @@ const ProductDescription = ({
           <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
             Özellikler
           </h3>
-          <table className="table-auto text-sm font-light tracking-wide text-slate-700">
+          <table className="table text-sm font-light tracking-wide text-slate-700">
             <tbody>
               {specifications?.map((specification, index) => (
                 <tr key={`${specification.name}-${index}`}>
-                  <td className="border px-4 py-2 font-semibold capitalize">
+                  <td className="border px-4 py-2 font-semibold capitalize text-left w-20">
                     {specification.name}
                   </td>
-                  <td className="border px-4 py-2 capitalize">
+                  <td className="border px-4 py-2 capitalize w-20">
                     {specification.value}
                   </td>
                 </tr>

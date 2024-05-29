@@ -2,7 +2,7 @@
 
 import { cartStepperPaths } from "@/app/cart/constants";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { useCart } from ".";
 import toast from "react-hot-toast";
 
@@ -21,6 +21,11 @@ export const CartStepProvider = ({ children }) => {
     clearCart,
   } = useCart();
   const pathname = usePathname();
+
+  useEffect(() => {
+    console.log(pathname);
+  }, [pathname]);
+
   const forward = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
     if (index < cartStepperPaths.length - 1) {
