@@ -7,8 +7,9 @@ import {
   GetVendorByIdQuery,
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
+import axios from "axios";
 
 // Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
@@ -98,3 +99,20 @@ export async function getQuarterCodeFromCookies(): Promise<string | null> {
 
   return quarterCode;
 }
+
+export const getIpAddress = async () => {
+  const ipv6 = headers().get("X-Forwarded-For").split(":");
+  const ipv4 = ipv6[ipv6.length - 1];
+
+  if (ipv4) return ipv4;
+
+  const res = await axios.get("https://api.ipify.org/?format=json");
+
+  return res.data.ip;
+};
+
+export const getGeoLocation = async (ip: string) => {
+  const res = await axios.get(`https://ipapi.co/${ip}/json/`);
+
+  return res.data;
+};

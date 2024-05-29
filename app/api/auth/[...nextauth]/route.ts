@@ -4,6 +4,11 @@ import { AuthProvider } from "@/common/enums/Auth";
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+const CALLBACK = "/social-login/callback?result=success";
+const ID_TOKEN = "id_token";
+
+const USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+
 const authOptions: AuthOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -28,14 +33,14 @@ const authOptions: AuthOptions = {
           provider_id: account.providerAccountId,
         });
 
-        if (error && error !== "USER_ALREADY_EXIST") {
+        if (error && error !== USER_ALREADY_EXIST) {
           return false;
         }
 
         const { id_token } = account;
         const loginResponse = await login(
           { email: null, password: null },
-          { "id-token": `${id_token}` }
+          { [ID_TOKEN]: `${id_token}` }
         );
 
         if (loginResponse.data.login.error) {
@@ -49,8 +54,8 @@ const authOptions: AuthOptions = {
         }
       }
     },
-    async redirect({ url, baseUrl }) {
-      return "/social-login/callback?result=success";
+    async redirect() {
+      return CALLBACK;
     },
   },
   secret: process.env.SECRET,

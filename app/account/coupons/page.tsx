@@ -8,12 +8,12 @@ const CouponsPage = async () => {
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2">
       {coupons.map((coupon, i) => (
         <CouponCard
-          key={coupon.id}
-          title={coupon.tenant.tenants?.[0]?.name}
-          description={coupon.description}
-          endDate={coupon.end_date}
-          minimumAmount={coupon.minimum_cost}
-          discountAmount={coupon.amount}
+          key={coupon?.id}
+          title={coupon?.tenant.tenants?.[0]?.name}
+          description={coupon?.description}
+          endDate={coupon?.end_date}
+          minimumAmount={coupon?.minimum_cost}
+          discountAmount={coupon?.amount}
         />
       ))}
     </div>

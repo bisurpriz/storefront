@@ -49,7 +49,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-6 grid-rows-6 gap-2 max-h-[500px]">
+    <div className="grid grid-cols-6 grid-rows-6 gap-2 max-h-[500px] max-md:max-h-[720px]">
       <div
         className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-full 2xl:order-1 overflow-hidden rounded-lg"
         ref={ref}

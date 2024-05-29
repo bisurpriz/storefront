@@ -86,6 +86,10 @@ export const CartProvider = ({
           },
         });
       }
+    } else {
+      localStorage.removeItem("cart");
+      localStorage.removeItem("count");
+      localStorage.removeItem("cost");
     }
   }, [cartDbItems]);
 

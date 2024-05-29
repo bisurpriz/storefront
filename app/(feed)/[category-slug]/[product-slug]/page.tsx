@@ -84,7 +84,6 @@ export default async function ProductExample({
   const freeShipping = product.is_service_free;
 
   const isFavorite = favorites.some((fav) => fav.id === product.id);
-
   return (
     <div className="h-full">
       <section
@@ -158,12 +157,7 @@ export default async function ProductExample({
             <ProductDescription
               description={product.description}
               notes={[]}
-              specifications={[
-                {
-                  name: "Renk",
-                  value: "Siyah",
-                },
-              ]}
+              specifications={JSON.parse(product?.properties)}
             />
           }
           title="Ürün Detayları"
