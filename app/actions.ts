@@ -101,10 +101,12 @@ export async function getQuarterCodeFromCookies(): Promise<string | null> {
 }
 
 export const getIpAddress = async () => {
-  const ipv6 = headers().get("X-Forwarded-For").split(":");
+  const ipv6 = headers().get("X-Forwarded-For")?.split(":");
   const ipv4 = ipv6[ipv6.length - 1];
 
-  if (ipv4) return ipv4;
+  const ip = ipv4?.split(",")[0];
+
+  if (ip) return ip;
 
   const res = await axios.get("https://api.ipify.org/?format=json");
 
