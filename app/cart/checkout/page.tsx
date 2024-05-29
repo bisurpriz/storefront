@@ -2,7 +2,7 @@ import { getIpAddress } from "@/app/actions";
 import CreditCartForm from "../components/Checkout/CreditCartForm";
 
 const CartCheckout = async () => {
-  console.log(await getIpAddress());
+  const ip = await getIpAddress();
   return (
     <div className="w-full relative">
       <section
@@ -10,7 +10,7 @@ const CartCheckout = async () => {
         aria-describedby="cart-checkout-description"
         aria-label="Ödeme Bilgileri"
       >
-        <CreditCartForm />
+        <CreditCartForm ip={ip} />
       </section>
     </div>
   );
