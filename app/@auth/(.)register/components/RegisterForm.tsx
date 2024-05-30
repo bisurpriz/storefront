@@ -9,7 +9,6 @@ import { FC, useState } from "react";
 import { AuthErrorMessages } from "../../contants";
 import toast from "react-hot-toast";
 import { login } from "../../actions";
-import { socialLogins } from "../../(.)login/components/LoginForm";
 import clsx from "clsx";
 
 type RegisterFormProps = {
