@@ -18,7 +18,7 @@ const ProductDescription = ({
       aria-labelledby="description"
       aria-describedby="Ürün açıklaması"
     >
-      <div dangerouslySetInnerHTML={{ __html: description }} />
+      {description && <div dangerouslySetInnerHTML={{ __html: description }} />}
       {notes && notes.length > 0 && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-sans mb-2 text-slate-700">
@@ -32,7 +32,7 @@ const ProductDescription = ({
         </div>
       )}
 
-      {specifications && specifications !== undefined && (
+      {specifications?.length && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
             Özellikler

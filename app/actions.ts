@@ -9,9 +9,7 @@ import {
 import { query } from "@/graphql/lib/client";
 import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
-import axios from "axios";
 
-// Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
   const auth = cookies();
 
@@ -101,20 +99,32 @@ export async function getQuarterCodeFromCookies(): Promise<string | null> {
 }
 
 export const getIpAddress = async () => {
+  const checkValidIp = (ip: string) => {
+    if (!ip) return false;
+
+    const parts = ip.split(".");
+    if (parts.length !== 4) return false;
+    return parts.every((part) => parseInt(part) >= 0 && parseInt(part) <= 255);
+  };
+
   const ipv6 = headers().get("X-Forwarded-For")?.split(":");
   const ipv4 = ipv6[ipv6.length - 1];
 
   const ip = ipv4?.split(",")[0];
 
-  if (ip) return ip;
+  const isValidIp = checkValidIp(ip);
 
-  const res = await axios.get("https://api.ipify.org/?format=json");
-
-  return res.data.ip;
+  if (isValidIp) {
+    return ip;
+  } else {
+    throw new Error("Invalid IP");
+  }
 };
 
-export const getGeoLocation = async (ip: string) => {
-  const res = await axios.get(`https://ipapi.co/${ip}/json/`);
+export const getGeoLocation = async () => {
+  const geo = headers().get("X-Forwarded-For");
 
-  return res.data;
+  console.log(geo);
+
+  return geo;
 };

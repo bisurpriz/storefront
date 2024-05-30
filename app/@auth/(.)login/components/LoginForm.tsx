@@ -86,79 +86,76 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleClientLogin}>
-        <div className="flex flex-col items-center justify-center bg-white w-[500px] rounded-lg p-12 m-auto gap-4 font-mono">
-          <Image src="/logo.svg" width={300} height={300} alt="Login" />
-          <h1 className="text-3xl font-bold text-center">Giriş Yap</h1>
-          <p className="text-center text-gray-500">
-            Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası
-            için giriş yapın.
-          </p>
-          <div className="w-full flex flex-col gap-2">
-            <TextField
-              id="email"
-              label="Email"
-              type="email"
-              placeholder="Lütfen email adresinizi girin"
-              fullWidth
-              error={!!error}
-            />
-            <TextField
-              id="password"
-              label="Şifre"
-              type="password"
-              placeholder="Lütfen şifrenizi girin"
-              fullWidth
-              error={!!error}
-            />
-            {error && <p className="text-red-500 mr-auto text-sm">{error}</p>}
-          </div>
-          <Button
-            type="submit"
-            icon={<IoLogIn className="mr-2" />}
-            label="Giriş Yap"
-            loading={loading}
-          />
-          <p className="flex gap-2">
-            Hesabınız yok mu?
-            <Link
-              href="/register"
-              className="text-center text-blue-500"
-              replace
-            >
-              Kayıt olun
-            </Link>
-          </p>
-          <div className="flex flex-col gap-2 w-full justify-center items-center mt-4">
-            {socialLogins.map(({ name, icon, signIn, color }) => (
-              <span
-                key={name}
-                onClick={signIn}
-                className={clsx(
-                  "flex items-center justify-start w-full rounded-lg cursor-pointer text-lg",
-                  "p-2 border border-gray-200",
-                  color,
-                  "hover:bg-opacity-80"
-                )}
-              >
-                {icon}
-                <span className="flex-1 text-center text-base">
-                  {name} ile giriş yap
-                </span>
-              </span>
-            ))}
-          </div>
+    <form
+      onSubmit={handleClientLogin}
+      className={clsx(
+        "flex flex-col items-center justify-center rounded-lg p-12 m-auto gap-4 font-mono w-[500px] bg-white max-md:w-full max-md:h-full max-md:rounded-none"
+      )}
+    >
+      <Image src="/logo.svg" width={300} height={300} alt="Login" />
+      <h1 className="text-3xl font-bold text-center">Giriş Yap</h1>
+      <p className="text-center text-gray-500">
+        Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası için
+        giriş yapın.
+      </p>
+      <div className="w-full flex flex-col gap-2">
+        <TextField
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="Lütfen email adresinizi girin"
+          fullWidth
+          error={!!error}
+        />
+        <TextField
+          id="password"
+          label="Şifre"
+          type="password"
+          placeholder="Lütfen şifrenizi girin"
+          fullWidth
+          error={!!error}
+        />
+        {error && <p className="text-red-500 mr-auto text-sm">{error}</p>}
+      </div>
+      <Button
+        type="submit"
+        icon={<IoLogIn className="mr-2" />}
+        label="Giriş Yap"
+        loading={loading}
+      />
+      <p className="flex gap-2">
+        Hesabınız yok mu?
+        <Link href="/register" className="text-center text-blue-500" replace>
+          Kayıt olun
+        </Link>
+      </p>
+      <div className="flex flex-col gap-2 w-full justify-center items-center mt-4">
+        {socialLogins.map(({ name, icon, signIn, color }) => (
           <span
-            className="text-center text-gray-500 text-xs"
-            style={{ maxWidth: "300px" }}
+            key={name}
+            onClick={signIn}
+            className={clsx(
+              "flex items-center justify-start w-full rounded-lg cursor-pointer text-lg",
+              "p-2 border border-gray-200",
+              color,
+              "hover:bg-opacity-80"
+            )}
           >
-            Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
-            yapabilirsiniz.
+            {icon}
+            <span className="flex-1 text-center text-base">
+              {name} ile giriş yap
+            </span>
           </span>
-        </div>
-      </form>
-    </div>
+        ))}
+      </div>
+      <span
+        className="text-center text-gray-500 text-xs"
+        style={{ maxWidth: "300px" }}
+      >
+        Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
+        yapabilirsiniz.
+      </span>
+    </form>
   );
 };
 

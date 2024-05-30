@@ -44,7 +44,6 @@ const authOptions: AuthOptions = {
         );
 
         if (loginResponse.data.login.error) {
-          console.log("error", loginResponse.data.login.error);
           return false;
         } else if (
           loginResponse.data.login.access_token &&

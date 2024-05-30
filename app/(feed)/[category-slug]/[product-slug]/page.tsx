@@ -10,6 +10,7 @@ import AccordionItem from "@/components/Accordion/AccordionItem";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import { IMAGE_URL } from "@/contants/urls";
 import { createJSONLd } from "@/utils/createJSONLd";
+import { parseJson } from "@/utils/format";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params, searchParams }) {
@@ -157,7 +158,7 @@ export default async function ProductExample({
             <ProductDescription
               description={product.description}
               notes={[]}
-              specifications={JSON.parse(product?.properties)}
+              specifications={parseJson(product.properties)}
             />
           }
           title="Ürün Detayları"

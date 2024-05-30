@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 type Promotions = {
   icon: string | React.ReactElement;
@@ -14,8 +14,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
           <Link
             key={promotion?.description}
             className="flex items-start justify-start rounded-lg p-1 gap-1 bg-sky-50  border border-sky-600 text-sky-600"
-            // TODO: this link refactor for filtering and sorting
-            href={`/products?filter=${promotion.filterKey}&sort=bestSeller`}
+            href={`/products?filter=${promotion.filterKey}`}
           >
             <span aria-label="Kampanya ikonu" className="text-lg">
               {promotion.icon}
