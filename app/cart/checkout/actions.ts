@@ -130,7 +130,7 @@ export async function payment({
     non3d_test_failed: 1,
     token,
   };
-  console.log(requestPayload);
+
   try {
     const response = await axios.post(
       process.env.PAYTR_PAYMENT_URL,
