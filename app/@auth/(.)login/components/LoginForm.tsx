@@ -11,7 +11,7 @@ import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 import { signIn } from "next-auth/react";
 import clsx from "clsx";
-import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -20,21 +20,9 @@ type LoginFormProps = {
 export const socialLogins = [
   {
     name: "Google",
-    icon: <FaGoogle />,
+    icon: <FcGoogle />,
     signIn: () => signIn("google"),
-    color: "bg-red-500 text-white",
-  },
-  {
-    name: "Facebook",
-    icon: <FaFacebook />,
-    signIn: () => signIn("facebook"),
-    color: "bg-blue-500 text-white",
-  },
-  {
-    name: "Apple",
-    icon: <FaApple />,
-    signIn: () => signIn("apple"),
-    color: "bg-black text-white",
+    color: "bg-gray-100",
   },
 ];
 

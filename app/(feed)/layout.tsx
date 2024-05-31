@@ -1,9 +1,5 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
-const FeedLayout = ({
-    children,
-}: {
-    children: ReactNode
-}) => children
+const FeedLayout = ({ children }: { children: ReactNode }) => children;
 
-export default FeedLayout
+export default FeedLayout;

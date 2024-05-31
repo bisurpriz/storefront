@@ -13,7 +13,7 @@ import { CookieTokens } from "./@auth/contants";
 export async function readIdFromCookies() {
   const auth = cookies();
 
-  const id = auth.get("user_id");
+  const id = auth.get(CookieTokens.USER_ID);
 
   if (!id) null;
 
@@ -38,16 +38,6 @@ export async function writeIdToCookies(value: string) {
   });
 
   return auth;
-}
-
-export async function readFingerPrintFromCookies() {
-  const auth = cookies();
-
-  const fingerprint = auth.get("fingerPrint");
-
-  if (!fingerprint) null;
-
-  return fingerprint?.value;
 }
 
 export const getVendorById = async ({ id }: { id: number }) => {

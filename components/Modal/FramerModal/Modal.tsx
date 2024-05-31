@@ -37,8 +37,9 @@ const Modal = ({
 }) => {
   return (
     <AnimationExitProvider show={open}>
-      <Backdrop onClick={handleClose}>
+      <Backdrop onClick={handleClose} key={"backdrop"}>
         <motion.div
+          key={"modal"}
           onClick={(e) => e.stopPropagation()}
           variants={dropIn}
           initial="hidden"

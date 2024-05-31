@@ -6,6 +6,7 @@ const Backdrop = ({ children, onClick }) => {
 
   return (
     <motion.div
+      key={"backdrop"}
       onClick={onClick}
       className="backdrop"
       initial={{ opacity: 0 }}

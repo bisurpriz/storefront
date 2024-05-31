@@ -2,7 +2,7 @@
 
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
-import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
+import { readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
 import {
@@ -15,14 +15,10 @@ import {
 } from "@/graphql/generated";
 import { parseJson } from "@/utils/format";
 import axios from "axios";
+import { CookieTokens } from "../@auth/contants";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
-  const fingerPrint = await readFingerPrintFromCookies();
-
-  if (!userId) {
-    return fingerPrint;
-  }
 
   return userId;
 };
@@ -127,7 +123,7 @@ export const createOrderAction = async (
     ],
   };
 
-  const token = await cookies().get("access_token").value;
+  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value;
 
   const response = await fetch(
     "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
