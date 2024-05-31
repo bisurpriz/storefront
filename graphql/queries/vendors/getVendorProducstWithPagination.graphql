@@ -5,16 +5,27 @@ query getVendorProductsWithPagination(
   $tenant_id: uuid!
 ) {
   product_aggregate(
-    where: { is_active: { _eq: $is_active }, tenant_id: { _eq: $tenant_id } }
+    where: {
+      is_active: { _eq: $is_active }
+      tenant: { tenants: { id: { _eq: $tenant_id } } }
+    }
   ) {
     aggregate {
       count
     }
   }
+  tenant_by_pk(id: $tenant_id) {
+    name
+    logo
+    created_at
+  }
   product(
     limit: $limit
     offset: $offset
-    where: { is_active: { _eq: $is_active }, tenant_id: { _eq: $tenant_id } }
+    where: {
+      is_active: { _eq: $is_active }
+      tenant: { tenants: { id: { _eq: $tenant_id } } }
+    }
   ) {
     id
     description

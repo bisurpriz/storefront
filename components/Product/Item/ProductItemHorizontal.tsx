@@ -4,11 +4,10 @@ import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
 import Rating from "@/components/Rating/Rating";
-import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
 
-const ProductItem5 = ({
+const ProductItemHorizontal = ({
   name,
   image_url: image,
   price,
@@ -35,22 +34,22 @@ const ProductItem5 = ({
 
   return (
     <div
-      className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col"
+      className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex"
       id={id.toString()}
     >
-      <Link href={`/${category.slug}/${slug}?pid=${id}`}>
+      <Link href={`/${category.slug}/${slug}?pid=${id}`} className="flex">
         <Image
           src={getImageUrlFromPath(image?.[0])}
           alt={name}
-          width={500}
-          height={500}
-          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
+          width={250}
+          height={250}
+          className="aspect-square object-cover rounded-l-md cursor-pointer w-1/2"
           loading="eager"
           quality={70}
           priority
         />
-        <div className="p-2">
-          <article className="flex flex-col justify-between flex-grow">
+        <div className="p-4 flex flex-col justify-between w-1/2">
+          <article className="flex flex-col flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <Rating
                 value={4}
@@ -61,32 +60,18 @@ const ProductItem5 = ({
               {`(${4})`}
             </span>
             <h1
-              className="text-sm font-normal text-gray-800 h-10 line-clamp-2 mb-1 capitalize"
+              className="text-sm font-normal text-gray-800 line-clamp-2 mb-1 capitalize"
               title={name}
             >
               {name}
             </h1>
-            <PriceTag price={price} discount={discount_price} />
           </article>
-
+          <PriceTag price={price} discount={discount_price} />
           <ProductCardStamps id={id.toString()} stamps={stamps} />
         </div>
       </Link>
-      <AddCartButton2
-        product={{
-          id,
-          category,
-          discount_price,
-          image_url: image,
-          name,
-          price,
-          product_customizable_areas,
-          tenant,
-          quantity: 1,
-        }}
-      />
     </div>
   );
 };
 
-export default ProductItem5;
+export default ProductItemHorizontal;
