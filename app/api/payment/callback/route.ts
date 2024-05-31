@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 export async function POST(req: Request, res) {
   const callback: any = req.body;
-  console.log(callback);
+
   const merchant_key = process.env.MERCHANT_KEY;
   const merchant_salt = process.env.MERCHANT_SALT;
 
@@ -31,5 +31,5 @@ export async function POST(req: Request, res) {
     console.log("Payment failed");
   }
 
-  res.end("OK");
+  return res.send("OK");
 }

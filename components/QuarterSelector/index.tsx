@@ -37,9 +37,6 @@ const QuarterSelector = () => {
               value: i + 1,
               label: `202${i + 1} Q${i + 1}`,
             }))}
-            componentName="QuarterSelector"
-            autoComplete={true}
-            selectOnFocus={true}
             isOptionEqualToValue={(option, value) =>
               option.value === value.value
             }

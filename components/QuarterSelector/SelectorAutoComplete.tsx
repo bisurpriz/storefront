@@ -26,6 +26,7 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
     disabled = false,
     readOnly = false,
     options,
+    onInputChange,
     isOptionEqualToValue,
     ...other
   } = props;
@@ -45,6 +46,10 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
     setAnchorEl,
     groupedOptions,
   } = useAutocomplete({
+    selectOnFocus: true,
+    autoComplete: false,
+    onInputChange,
+    componentName: "SelectorAutoComplete",
     ...props,
   });
 

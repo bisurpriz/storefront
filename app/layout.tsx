@@ -119,6 +119,18 @@ export default async function RootLayout({
     loadErrorMessages();
   }
 
+  const res = await fetch("http://localhost:3000/api/payment/callback", {
+    method: "POST",
+    body: JSON.stringify({
+      merchant_oid: "123",
+      status: "success",
+      total_amount: "100",
+      hash: "hash",
+    }),
+  });
+
+  console.log(res);
+
   const { user } = await getUserById();
   const { cartItems, costData } = await getCart(user?.id);
 
