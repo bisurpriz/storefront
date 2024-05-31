@@ -3,6 +3,7 @@
 import CustomizeCartItem from "./CustomizeCartItem";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { useCart } from "@/contexts/CartContext";
+import useDebounce from "@/hooks/useDebounce";
 import { useCallback } from "react";
 
 interface CustomizeGroupProps {
@@ -39,8 +40,10 @@ const CustomizeGroup = ({ product, index }: CustomizeGroupProps) => {
 
       updateCartItem(newProduct);
     },
-    [product, updateCartItem]
+    [product, updateCartItem, index]
   );
+
+  const debouncedHandleInputsChange = useDebounce(handleInputsChange, 500);
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -52,7 +55,7 @@ const CustomizeGroup = ({ product, index }: CustomizeGroupProps) => {
               type={type}
               count={count}
               values={values}
-              onChange={handleInputsChange}
+              onChange={debouncedHandleInputsChange}
               maxCharacter={max_character}
               keyIndex={index}
             />

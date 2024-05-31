@@ -1,43 +1,34 @@
 import clsx from "clsx";
 import React, { FC } from "react";
 import { motion } from "framer-motion";
-import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import { selectedTagMotionVariants } from "../../constants";
 
 type SelectedFilterTagProps = {
   label: string;
   onClear: () => void;
-  show?: boolean;
-};
-
-const motionVariants = {
-  initial: { y: 10 },
-  animate: { y: 0 },
-  exit: { y: 10 },
-  transition: {
-    type: "spring",
-    duration: 0.2,
-  },
+  id: string;
 };
 
 const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
   label,
   onClear,
-  show,
+  id,
 }) => {
   return (
-    <AnimationExitProvider show={show}>
-      <motion.span
-        key={label}
+    <motion.div
+      key={id}
+      variants={selectedTagMotionVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.2 }}
+    >
+      <div
         className={clsx(
           "inline-flex items-center pl-2.5 pr-1.5 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mr-1",
           "cursor-pointer",
           "whitespace-nowrap"
         )}
-        variants={motionVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        transition={motionVariants.transition}
       >
         {label}
         <button
@@ -63,8 +54,8 @@ const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
             />
           </svg>
         </button>
-      </motion.span>
-    </AnimationExitProvider>
+      </div>
+    </motion.div>
   );
 };
 

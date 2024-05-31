@@ -1,116 +1,109 @@
 "use client";
-import useResponsive from "@/hooks/useResponsive";
-import {
-  useState,
-  useRef,
-  useEffect,
-  Children,
-  ReactElement,
-  cloneElement,
-} from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import clsx from "clsx";
 
 interface PopoverProps {
-  children: React.ReactElement;
-  content: React.ReactElement;
-  position?: "top" | "right" | "bottom" | "left";
-  contentClassName?: string;
+  children: React.ReactNode;
+  content: React.ReactNode;
+  className?: string;
+  placement?: "top" | "bottom" | "left" | "right";
+  trigger?: "click" | "hover";
 }
 
 const Popover: React.FC<PopoverProps> = ({
   children,
   content,
-  position = "top",
-  contentClassName,
+  className,
+  placement = "bottom",
+  trigger = "hover",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dynamicPosition, setDynamicPosition] = useState(position); // ["top", "right", "bottom", "left"]
-  const ref = useRef<HTMLDivElement>(null);
-  const { isMobile } = useResponsive();
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
-  const getPositionClass = () => {
-    switch (dynamicPosition) {
-      case "right":
-        return "left-full top-1/2 transform -translate-y-1/2 ml-3";
-      case "bottom":
-        return "top-full left-1/2 transform -translate-x-1/2 mt-3";
-      case "left":
-        return "right-full top-1/2 transform -translate-y-1/2 mr-3";
-      default:
-        return "bottom-full left-1/2 transform -translate-x-1/2 mt-3";
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      popoverRef.current &&
+      triggerRef.current &&
+      !popoverRef.current.contains(event.target as Node) &&
+      !triggerRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
     }
   };
-
-  const getCaretPosition = () => {
-    switch (dynamicPosition) {
-      case "top":
-        return "-bottom-2 left-1/2 transform -translate-x-1/2 border-b border-r";
-      case "right":
-        return "top-1/2 -left-2 transform -translate-y-1/2 border-t border-l";
-      case "bottom":
-        return "-top-2 left-1/2 transform -translate-x-1/2 border-t border-l";
-      case "left":
-        return "top-1/2 -right-2 transform -translate-y-1/2 border-t border-r";
-      default:
-        return "bottom-full left-1/2 transform -translate-x-1/2";
-    }
-  };
-
-  const child = children ? (Children?.only(children) as ReactElement) : null;
-
-  const childTrigger = child
-    ? cloneElement(children, {
-        onMouseEnter: () => setIsOpen(true),
-        onMouseLeave: () => setIsOpen(false),
-      })
-    : null;
 
   useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-      if (isMobile) {
-        setDynamicPosition("top");
-        return;
-      }
+  const togglePopover = () => {
+    setIsOpen(!isOpen);
+  };
 
-      if (rect.top < 0) {
-        setDynamicPosition("bottom");
-      } else if (rect.left < 0) {
-        setDynamicPosition("right");
-      } else if (rect.right > rect.x) {
-        setDynamicPosition("left");
-      } else if (rect.bottom > rect.y) {
-        setDynamicPosition("top");
-      } else {
-        setDynamicPosition(position);
-      }
+  const showPopover = () => {
+    setIsOpen(true);
+  };
+
+  const hidePopover = () => {
+    setIsOpen(false);
+  };
+
+  const popoverClasses = clsx(
+    "absolute z-[11] p-2 bg-white border rounded shadow-lg",
+    className,
+    {
+      "bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2":
+        placement === "top",
+      "top-full left-1/2 transform -translate-x-1/2 translate-y-2":
+        placement === "bottom",
+      "right-full top-1/2 transform -translate-x-4 -translate-y-1/2":
+        placement === "left",
+      "left-full top-1/2 transform translate-x-4 -translate-y-1/2":
+        placement === "right",
     }
-  }, [isOpen]);
+  );
+
+  const caretClasses = clsx(
+    "absolute z-10 w-3 h-3 bg-white transform rotate-45",
+    {
+      "top-full left-1/2 transform -translate-x-1/2 -translate-y-1/2":
+        placement === "top",
+      "bottom-full left-1/2 transform -translate-x-1/2 translate-y-1/2":
+        placement === "bottom",
+      "left-full top-1/2 transform -translate-x-1/2 -translate-y-1/2":
+        placement === "left",
+      "right-full top-1/2 transform translate-x-1/2 -translate-y-1/2":
+        placement === "right",
+    }
+  );
+
+  const triggerEvents =
+    trigger === "click"
+      ? { onClick: togglePopover }
+      : { onMouseEnter: showPopover, onMouseLeave: hidePopover };
 
   return (
-    <div
-      className="relative inline-block w-fit whitespace-nowrap"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-      onTouchStart={() => setIsOpen(true)}
-      onTouchEnd={() => setIsOpen(false)}
-    >
-      {childTrigger}
+    <div className="relative inline-block" ref={triggerRef} {...triggerEvents}>
+      {children}
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          className={popoverClasses}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className={`absolute bg-white shadow-lg rounded p-4 z-50 ${getPositionClass()} ${contentClassName}`}
-          aria-hidden={!isOpen}
-          ref={ref}
+          ref={popoverRef}
+          transformTemplate={({ scale, x, y }) =>
+            `scale(${scale}) translate(${x}, ${y})`
+          }
         >
+          <div className={caretClasses} />
           {content}
-          <div
-            className={`absolute w-4 h-4 bg-white transform rotate-45 ${getCaretPosition()}`}
-          />
         </motion.div>
       )}
     </div>

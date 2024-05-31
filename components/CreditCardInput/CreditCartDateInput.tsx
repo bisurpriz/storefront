@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TextField from "../TextField";
 
 const CreditCardDateInput = ({
@@ -7,25 +7,38 @@ const CreditCardDateInput = ({
 }: Partial<TextFieldProps>) => {
   const [expiryDate, setExpiryDate] = useState("");
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, "");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
 
-    const formattedDate = inputValue.replace(/^(\d{2})/, "$1/").slice(0, 5);
+    value = value.replace(/[^0-9/]/g, "");
 
-    if (onChange) {
-      setExpiryDate(formattedDate);
-      onChange(e, formattedDate);
+    if (value.length === 2 && !value.includes("/")) {
+      value = value + "/";
+    }
+
+    if (value.length <= 5) {
+      setExpiryDate(value);
+      onChange(e, value);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key } = e;
+    if (key === "Backspace" && expiryDate.length === 3) {
+      setExpiryDate(expiryDate.slice(0, 1));
+      onChange(null, expiryDate.slice(0, 1));
     }
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-start">
       <TextField
         label="Son Kullanma Tarihi"
+        id="expiry-date"
         type="text"
-        id="expiryDate"
         value={expiryDate}
-        onChange={handleInputChange}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         maxLength={5}
         placeholder="MM/YY"
         {...props}

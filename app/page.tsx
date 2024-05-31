@@ -8,6 +8,8 @@ import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
 } from "@/graphql/generated";
+import QuarterSelector from "@/components/QuarterSelector";
+import LandingSearchBanner from "@/components/LandingSearchBanner";
 
 export default async function Page() {
   const { banners } = await getBanners();
@@ -30,6 +32,10 @@ export default async function Page() {
         </div>
       }
     >
+      <div className="grid grid-cols-12 gap-6 w-full mb-4">
+        <QuarterSelector />
+        <LandingSearchBanner />
+      </div>
       <CategorySwiper categories={category} />
       <CampaignGrid banners={banners} />
       <View1 />

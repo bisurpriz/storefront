@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import { useMeasure } from '@uidotdev/usehooks';
-import Image from 'next/image';
-import { Pagination, Virtual, Zoom } from 'swiper/modules';
-import useResponsive from '@/hooks/useResponsive';
-import { Swiper as SwiperType } from 'swiper/types';
+import { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { useMeasure } from "@uidotdev/usehooks";
+import Image from "next/image";
+import { Pagination, Virtual, Zoom } from "swiper/modules";
+import useResponsive from "@/hooks/useResponsive";
+import { Swiper as SwiperType } from "swiper/types";
 
 type ProductDetailImageGalleryProps = {
   images: {
@@ -20,8 +20,8 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
   const swiperRef = useRef<SwiperRef>(null);
-  const [direction, setDirection] = useState<'horizontal' | 'vertical'>(
-    'horizontal'
+  const [direction, setDirection] = useState<"horizontal" | "vertical">(
+    "horizontal"
   );
   const { isExtraLargeDesktop } = useResponsive();
   const [ref, { width }] = useMeasure<HTMLDivElement>();
@@ -29,9 +29,9 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
 
   useEffect(() => {
     if (isExtraLargeDesktop) {
-      setDirection('horizontal');
+      setDirection("horizontal");
     } else {
-      setDirection('vertical');
+      setDirection("vertical");
     }
   }, [isExtraLargeDesktop]);
 
@@ -49,13 +49,13 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-6 grid-rows-6 gap-2">
+    <div className="grid grid-cols-6 grid-rows-6 gap-2 max-h-[500px] max-md:max-h-[720px]">
       <div
-        className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-6 2xl:order-1 overflow-hidden flex flex-col items-center justify-star rounded-lg max-h-[500px]"
+        className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-full 2xl:order-1 overflow-hidden rounded-lg"
         ref={ref}
       >
         <Swiper
-          slidesPerView={5}
+          slidesPerView={4}
           spaceBetween={10}
           direction={direction}
           className="h-full gallery-scroll-hide"
@@ -72,8 +72,8 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
                 height={100}
                 className={`rounded-lg cursor-pointer object-fill transition-all duration-300 ease-linear  ${
                   index === selected
-                    ? 'border border-2 border-primary border-solid'
-                    : 'border border-2 border-transparent'
+                    ? "border border-2 border-primary border-solid"
+                    : "border border-2 border-transparent"
                 }`}
               />
             </SwiperSlide>
@@ -86,7 +86,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           className={`h-full gallery-scroll-hide cursor-zoom-in`}
           pagination={{
             clickable: true,
-            bulletActiveClass: '!bg-primary !opacity-100',
+            bulletActiveClass: "!bg-primary !opacity-100",
           }}
           modules={[Zoom, Pagination]}
           zoom={{
@@ -103,7 +103,8 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
                   alt={`Product Image ${image.id}`}
                   width={1024}
                   height={1024}
-                  className={`rounded-lg w-full h-full transition-all duration-300 ease-linear`}
+                  objectFit="contain"
+                  className={`rounded-lg transition-all duration-300 ease-linear`}
                   priority={image.id === 0}
                 />
               </div>

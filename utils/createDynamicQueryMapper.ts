@@ -56,7 +56,7 @@ export const createDynamicQueryMapper = (searchParams: {
             },
           },
         };
-      case FILTER_KEYS.PRICE:
+      case FILTER_KEYS.PRICE: {
         const price = (searchParams[key] as string).split("-");
 
         return {
@@ -65,6 +65,7 @@ export const createDynamicQueryMapper = (searchParams: {
             _lte: Number(price[1]),
           },
         };
+      }
       // case FILTER_KEYS.DELIVERY_TYPE:
       //   return {
       //     delivery_type: {

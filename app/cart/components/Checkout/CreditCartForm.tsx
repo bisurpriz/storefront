@@ -6,8 +6,6 @@ import TextField from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { createOrderAction } from "../../actions";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 
@@ -27,15 +25,18 @@ const schema = object().shape({
   creditCartDate: string().test("test-date", "Geçersiz tarih", (value) => {
     const splitted = value?.split("/");
     if (splitted) {
-      const month = parseInt(splitted[0]);
-      const year = parseInt(splitted[1]);
-      const date = new Date();
-      const currentYear = date.getFullYear().toString().slice(-2);
-      if (year > parseInt(currentYear) && month <= 12) {
+      const month = splitted[0];
+      const year = splitted[1];
+      if (month && year) {
+        const currentYear = new Date().getFullYear().toString().slice(2);
+        if (Number(year) < Number(currentYear)) {
+          return false;
+        }
+        if (Number(month) > 12 || Number(month) < 1) {
+          return false;
+        }
         return true;
       }
-
-      return false;
     }
   }),
   creditCartCvv: string()
@@ -55,7 +56,10 @@ const CreditCartForm = () => {
     mode: "onChange",
   });
 
-  const { clearCart, cartItems } = useCart();
+  const {
+    clearCart,
+    cartState: { cartItems },
+  } = useCart();
 
   const { push } = useRouter();
 
@@ -63,27 +67,6 @@ const CreditCartForm = () => {
     if (data) {
       const serialize = localStorage.getItem("detail-data");
       const detailData = JSON.parse(serialize);
-
-      toast
-        .promise(
-          createOrderAction(cartItems, detailData),
-          {
-            loading: "Ödeme yapılıyor...",
-            success: "Ödeme başarılı",
-            error: "Ödeme başarısız",
-          },
-          {
-            icon: "💳",
-            style: {
-              minWidth: "250px",
-            },
-          }
-        )
-        .then(() => {
-          localStorage.removeItem("detail-data");
-          clearCart();
-          push("/cart/complete");
-        });
     }
   };
 

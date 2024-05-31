@@ -2,10 +2,8 @@
 
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
-import { readFingerPrintFromCookies, readIdFromCookies } from "../actions";
-import { IPaymentToken } from "@/common/types/Payment/payment";
-import { paymentConfig } from "@/config";
-import crypto from "crypto";
+import { readIdFromCookies } from "../actions";
+
 import { mutate, query } from "@/graphql/lib/client";
 import {
   GetDbCartDocument,
@@ -17,14 +15,10 @@ import {
 } from "@/graphql/generated";
 import { parseJson } from "@/utils/format";
 import axios from "axios";
+import { CookieTokens } from "../@auth/contants";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
-  const fingerPrint = await readFingerPrintFromCookies();
-
-  if (!userId) {
-    return fingerPrint;
-  }
 
   return userId;
 };
@@ -129,7 +123,7 @@ export const createOrderAction = async (
     ],
   };
 
-  const token = await cookies().get("access_token").value;
+  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value;
 
   const response = await fetch(
     "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
@@ -145,59 +139,6 @@ export const createOrderAction = async (
 
   return response.json();
 };
-
-export async function getPaymentToken() {
-  "use server";
-
-  const payload: IPaymentToken = {
-    merchant_id: paymentConfig.merchant_id,
-    merchant_key: paymentConfig.merchant_key,
-    merchant_salt: paymentConfig.merchant_salt,
-    merchant_ok_url: "https://www.paytr.com/",
-    merchant_fail_url: "https://www.paytr.com/",
-    currency: "TL",
-    debug_on: 1,
-    email: "enes@enes.com",
-    max_installment: 0,
-    merchant_oid: Math.random().toString(36).substring(7).toString(),
-    no_installment: 1,
-    payment_amount: 100,
-    test_mode: 1,
-    user_basket: "Test",
-    user_ip: "94.54.30.25",
-    user_name: "Enes",
-    user_phone: "5555555555",
-    user_address: "Test address",
-    paytr_token: "123456",
-  };
-
-  const hashSTR = `${payload.merchant_id}${payload.user_ip}${payload.merchant_oid}${payload.email}${payload.payment_amount}${payload.user_basket}${payload.no_installment}${payload.max_installment}${payload.currency}${payload.test_mode}`;
-  const paytr_token = hashSTR + payload.merchant_salt;
-
-  const token = crypto
-    .createHmac("sha256", paymentConfig.merchant_key)
-    .update(paytr_token)
-    .digest("base64");
-
-  payload.paytr_token = token;
-
-  const formData = new FormData();
-
-  for (const key in payload) {
-    formData.append(key, payload[key]);
-  }
-
-  const response = await fetch(paymentConfig.request_url, {
-    method: "POST",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams(payload as any).toString(),
-  });
-
-  const data = await response.json();
-  return data;
-}
 
 export const getCartCost = async (
   cartItems: Pick<ProductForCart, "id" | "quantity">[]
@@ -221,6 +162,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       product_id: item.id,
       quantity: item.quantity,
       tenant_id: item.tenant?.tenants?.[0].id,
+      product_customizable_areas: item.product_customizable_areas,
     }));
 
     const { data: cartData } = await mutate<UpdateDbCartMutation>({
@@ -239,7 +181,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     return {
       cartData,
-      costData: costData,
+      costData,
     };
   } catch (error) {
     console.log("Sepet güncellenirken bir hata oluştu.", error);
@@ -303,6 +245,7 @@ export const getCart = async (user_id: string) => {
         ...item,
         ...hasProduct,
         quantity: item.quantity,
+        product_customizable_areas: item.product_customizable_areas,
       };
     });
 

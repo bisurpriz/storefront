@@ -2,7 +2,7 @@
 
 import { cartStepperPaths } from "@/app/cart/constants";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { useCart } from ".";
 import toast from "react-hot-toast";
 
@@ -16,8 +16,16 @@ const CartStepContext = createContext<CartStepContextType>({
 
 export const CartStepProvider = ({ children }) => {
   const { push } = useRouter();
-  const { cartItems, clearCart } = useCart();
+  const {
+    cartState: { cartItems },
+    clearCart,
+  } = useCart();
   const pathname = usePathname();
+
+  useEffect(() => {
+    console.log(pathname);
+  }, [pathname]);
+
   const forward = () => {
     const index = cartStepperPaths.findIndex((item) => item.path === pathname);
     if (index < cartStepperPaths.length - 1) {
@@ -61,10 +69,6 @@ export const CartStepProvider = ({ children }) => {
   };
 
   const checkoutCheck = () => {
-    // console.log("atadam");
-    // localStorage.removeItem("cart");
-    // localStorage.removeItem("detail-data");
-    // clearCart();
     forward();
   };
 

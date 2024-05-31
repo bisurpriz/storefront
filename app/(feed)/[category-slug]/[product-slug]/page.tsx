@@ -10,6 +10,7 @@ import AccordionItem from "@/components/Accordion/AccordionItem";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import { IMAGE_URL } from "@/contants/urls";
 import { createJSONLd } from "@/utils/createJSONLd";
+import { parseJson } from "@/utils/format";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params, searchParams }) {
@@ -84,7 +85,6 @@ export default async function ProductExample({
   const freeShipping = product.is_service_free;
 
   const isFavorite = favorites.some((fav) => fav.id === product.id);
-
   return (
     <div className="h-full">
       <section
@@ -158,12 +158,7 @@ export default async function ProductExample({
             <ProductDescription
               description={product.description}
               notes={[]}
-              specifications={[
-                {
-                  name: "Renk",
-                  value: "Siyah",
-                },
-              ]}
+              specifications={parseJson(product.properties)}
             />
           }
           title="Ürün Detayları"

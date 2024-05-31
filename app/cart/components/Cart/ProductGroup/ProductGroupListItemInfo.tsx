@@ -4,7 +4,6 @@ import { Product } from "@/common/types/Product/product";
 import Popover from "@/components/Popover";
 import { useCart } from "@/contexts/CartContext";
 import React from "react";
-import toast from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoInformation } from "react-icons/io5";
 
@@ -19,10 +18,11 @@ const ProductGroupListItemInfo = ({
 
   return (
     <span className="absolute top-2 right-2 flex gap-2 items-center">
-      {customize ? (
+      {customize.length ? (
         <Popover
-          contentClassName="w-[300px] shadow-md border rounded-sm"
-          position="top"
+          className="w-[300px] rounded-lg"
+          placement="top"
+          trigger="click"
           content={
             <p className="text-xs font-normal text-gray-800">
               Bu kısımda satıcının belirlediği ürün özelleştirmeleri yer alır.
@@ -37,10 +37,6 @@ const ProductGroupListItemInfo = ({
       <AiOutlineClose
         onClick={() => {
           removeFromCart(id);
-          toast("Ürün sepetten kaldırıldı.", {
-            icon: "🗑️",
-            position: "bottom-right",
-          });
         }}
         className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"
       />

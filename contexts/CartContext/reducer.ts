@@ -1,67 +1,49 @@
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { CartState } from ".";
 
 export type CartAction =
   | {
       type: "ADD_TO_CART";
-      payload: ProductForCart;
+      payload: CartState;
     }
   | {
       type: "REMOVE_FROM_CART";
-      payload: number | string;
+      payload: CartState;
     }
-  | { type: "CLEAR_CART" }
+  | {
+      type: "CLEAR_CART";
+      payload: CartState;
+    }
   | {
       type: "UPDATE_CART";
-      payload: ProductForCart;
+      payload: CartState;
     };
 
-export const cartReducer = (state: ProductForCart[], action: CartAction) => {
+const setLocalStorage = (state: CartState) => {
+  localStorage.setItem("cart", JSON.stringify(state.cartItems));
+  localStorage.setItem("count", JSON.stringify(state.count));
+  localStorage.setItem("cost", JSON.stringify(state.cost));
+};
+
+export const cartReducer = (state: CartState, action: CartAction) => {
   switch (action.type) {
     case "ADD_TO_CART": {
-      const isExist = state.findIndex((item) => item.id === action.payload.id);
-      if (isExist !== -1) {
-        if (action.payload.quantity < state[isExist].quantity) {
-          const _state = [...state];
-          _state[isExist] = {
-            ..._state[isExist],
-            product_customizable_areas:
-              action.payload.product_customizable_areas.map((area) => {
-                return {
-                  ...area,
-                  customizable_area: {
-                    ...area.customizable_area,
-                    values: [],
-                  },
-                };
-              }),
-            quantity: action.payload.quantity,
-          };
-          return _state;
-        }
+      setLocalStorage(action.payload);
 
-        const _state = [...state];
-        _state[isExist] = {
-          ..._state[isExist],
-          quantity: _state[isExist].quantity + 1,
-        };
-        return _state;
-      }
-      return [...state, { ...action.payload, quantity: 1 }];
+      return action.payload;
     }
 
     case "REMOVE_FROM_CART": {
-      return state.filter((item) => item.id !== action.payload);
+      setLocalStorage(action.payload);
+      return action.payload;
     }
 
     case "UPDATE_CART": {
-      const _state = [...state];
-      const index = _state.findIndex((item) => item.id === action.payload.id);
-      if (index === -1) return state;
-      _state[index] = action.payload;
-      return _state;
+      setLocalStorage(action.payload);
+      return action.payload;
     }
     case "CLEAR_CART": {
-      return [];
+      setLocalStorage(action.payload);
+      return action.payload;
     }
     default:
       return state;

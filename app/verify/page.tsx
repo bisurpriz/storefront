@@ -38,7 +38,7 @@ function VerifyPage() {
   const verifiedToken = searchParams.get("token");
 
   const router = useRouter();
-  console.log(verifiedToken);
+
   if (!verifiedToken) router.replace("/");
 
   const [mutate, { data, loading, error }] = useMutation<

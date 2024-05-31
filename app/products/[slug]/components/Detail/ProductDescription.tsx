@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 type ProductDescriptionProps = {
   description: string;
   notes?: string[];
@@ -18,9 +20,7 @@ const ProductDescription = ({
       aria-labelledby="description"
       aria-describedby="Ürün açıklaması"
     >
-      <p className="text-sm font-light font-mono tracking-wide text-slate-700">
-        {description}
-      </p>
+      {description && <div dangerouslySetInnerHTML={{ __html: description }} />}
       {notes && notes.length > 0 && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-sans mb-2 text-slate-700">
@@ -34,25 +34,34 @@ const ProductDescription = ({
         </div>
       )}
 
-      {specifications && specifications !== undefined && (
+      {specifications?.length && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
             Özellikler
           </h3>
-          <table className="table-auto text-sm font-light tracking-wide text-slate-700">
-            <tbody>
-              {specifications?.map((specification, index) => (
-                <tr key={`${specification.name}-${index}`}>
-                  <td className="border px-4 py-2 font-semibold capitalize">
-                    {specification.name}
-                  </td>
-                  <td className="border px-4 py-2 capitalize">
-                    {specification.value}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+          <ul className="flex flex-col gap-1">
+            {specifications?.map((specification, index) => (
+              <li
+                key={`${specification.name}-${index}`}
+                className={clsx(
+                  "odd:bg-amber-50 list-none w-full p-2 rounded-md even:border border-amber-100 grid grid-cols-2 font-manrope text-sm font-normal text-slate-500 "
+                )}
+              >
+                <span
+                  className={clsx(
+                    "block w-full text-slate-800 relative font-semibold",
+                    "w-1/2 col-span-1"
+                  )}
+                >
+                  {specification.name}
+                </span>
+                <span className={clsx("block w-full", "w-1/2 col-span-1")}>
+                  {specification.value}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

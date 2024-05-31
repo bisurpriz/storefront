@@ -7,14 +7,13 @@ import {
   GetVendorByIdQuery,
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
 
-// Bu fonksiyon async olduğu için await ile kullanılmalı veya .then ile kullanılmalı
 export async function readIdFromCookies() {
   const auth = cookies();
 
-  const id = auth.get("user_id");
+  const id = auth.get(CookieTokens.USER_ID);
 
   if (!id) null;
 
@@ -39,16 +38,6 @@ export async function writeIdToCookies(value: string) {
   });
 
   return auth;
-}
-
-export async function readFingerPrintFromCookies() {
-  const auth = cookies();
-
-  const fingerprint = auth.get("fingerPrint");
-
-  if (!fingerprint) null;
-
-  return fingerprint?.value;
 }
 
 export const getVendorById = async ({ id }: { id: number }) => {
@@ -98,3 +87,34 @@ export async function getQuarterCodeFromCookies(): Promise<string | null> {
 
   return quarterCode;
 }
+
+export const getIpAddress = async () => {
+  const checkValidIp = (ip: string) => {
+    if (!ip) return false;
+
+    const parts = ip.split(".");
+    if (parts.length !== 4) return false;
+    return parts.every((part) => parseInt(part) >= 0 && parseInt(part) <= 255);
+  };
+
+  const ipv6 = headers().get("X-Forwarded-For")?.split(":");
+  const ipv4 = ipv6[ipv6.length - 1];
+
+  const ip = ipv4?.split(",")[0];
+
+  const isValidIp = checkValidIp(ip);
+
+  if (isValidIp) {
+    return ip;
+  } else {
+    throw new Error("Invalid IP");
+  }
+};
+
+export const getGeoLocation = async () => {
+  const geo = headers().get("X-Forwarded-For");
+
+  console.log(geo);
+
+  return geo;
+};

@@ -1,6 +1,6 @@
-import Button from '@/components/Button';
-import Card from '@/components/Card';
-import { differenceInDays, parseISO } from 'date-fns';
+import Button from "@/components/Button";
+import Card from "@/components/Card";
+import { differenceInDays, parseISO } from "date-fns";
 
 interface CouponCardProps {
   title: string;
@@ -28,18 +28,17 @@ const CouponCard = ({
           {title}
         </span>
         <span className="text-xs text-orange-500 p-2 bg-orange-100 rounded-md leading-none whitespace-nowrap">
-          ⚠️ Son {daysDifference + ' '}
+          ⚠️ Son {daysDifference + " "}
           gün
         </span>
       </div>
       <div className="flex items-center mt-2">
-        <p className="text-xs text-gray-500 w-1/2 whitespace-pre-line">
-          {description}
-        </p>
-        <div
-          // divider
-          className="border-r border-gray-300 h-14 mx-2"
-        />
+        {description && (
+          <p className="text-xs text-gray-500 w-1/2 whitespace-pre-line">
+            {description}
+          </p>
+        )}
+        <div className="border-r border-gray-300 h-14 mx-2" />
         <div className="w-1/2 flex">
           <div className="w-full h-full flex items-center justify-between my-auto">
             <h4 className="text-xl font-semibold text-orange-500">
@@ -63,7 +62,7 @@ const CouponCard = ({
         </span>
 
         <span className="text-[0.55rem] text-gray-500">
-          Skt: {new Date(endDate).toLocaleDateString('tr-TR')}
+          Skt: {new Date(endDate).toLocaleDateString("tr-TR")}
         </span>
       </div>
     </Card>
