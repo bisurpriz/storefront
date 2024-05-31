@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 type ProductDescriptionProps = {
   description: string;
   notes?: string[];
@@ -37,20 +39,29 @@ const ProductDescription = ({
           <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
             Özellikler
           </h3>
-          <table className="table text-sm font-light tracking-wide text-slate-700">
-            <tbody>
-              {specifications?.map((specification, index) => (
-                <tr key={`${specification.name}-${index}`}>
-                  <td className="border px-4 py-2 font-semibold capitalize text-left w-20">
-                    {specification.name}
-                  </td>
-                  <td className="border px-4 py-2 capitalize w-20">
-                    {specification.value}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+          <ul className="flex flex-col gap-1">
+            {specifications?.map((specification, index) => (
+              <li
+                key={`${specification.name}-${index}`}
+                className={clsx(
+                  "odd:bg-amber-50 list-none w-full p-2 rounded-md even:border border-amber-100 grid grid-cols-2 font-manrope text-sm font-normal text-slate-500 "
+                )}
+              >
+                <span
+                  className={clsx(
+                    "block w-full text-slate-800 relative font-semibold",
+                    "w-1/2 col-span-1"
+                  )}
+                >
+                  {specification.name}
+                </span>
+                <span className={clsx("block w-full", "w-1/2 col-span-1")}>
+                  {specification.value}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
