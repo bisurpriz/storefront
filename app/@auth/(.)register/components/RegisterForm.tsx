@@ -22,7 +22,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    const [email, password, firstname, lastname] = Array.from(
+    const [firstname, lastname, email, password] = Array.from(
       event.currentTarget.elements
     ).map((field: HTMLInputElement) => field.value);
 
