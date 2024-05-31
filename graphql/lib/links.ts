@@ -1,79 +1,79 @@
-import { HttpLink, from, split } from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
-import { onError } from '@apollo/client/link/error'
-import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename'
-import { getMainDefinition } from '@apollo/client/utilities'
-import { WebSocketLink } from 'apollo-link-ws'
-import { cookies } from 'next/headers'
+import { CookieTokens } from "@/app/@auth/contants";
+import { HttpLink, from, split } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
+import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "apollo-link-ws";
+import { cookies } from "next/headers";
 
-export const removeTypenameLink = removeTypenameFromVariables()
+export const removeTypenameLink = removeTypenameFromVariables();
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
       console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    )
-  if (networkError) console.log(`[Network error]: ${networkError}`)
-})
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 const wsLink =
-  typeof window !== 'undefined'
+  typeof window !== "undefined"
     ? new WebSocketLink({
-      uri: process.env.HASURA_WS_URL,
-      options: {
-        reconnect: true,
-        connectionParams: async () => {
-          const token = cookies().get('access_token')?.value
+        uri: process.env.HASURA_WS_URL,
+        options: {
+          reconnect: true,
+          connectionParams: async () => {
+            const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
 
-          return {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+            return {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+          },
         },
-      },
-    })
-    : null
+      })
+    : null;
 
 export const authLink = setContext(async (_, { headers }) => {
-  let token = null
+  let token = null;
   try {
     // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get('refresh_token')?.value
-    token = ntoken
+    const ntoken = await cookies().get(CookieTokens.REFRESH_TOKEN)?.value;
+    token = ntoken;
   } catch (e) {
-    console.error(e, 'error getting session')
+    console.error(e, "error getting session");
   }
 
-
-  const hasToken = token ? { authorization: `Bearer ${token}` } : {}
+  const hasToken = token ? { authorization: `Bearer ${token}` } : {};
 
   return {
     headers: {
       ...headers,
       ...hasToken,
     },
-  }
-})
+  };
+});
 
 export const httpLink = new HttpLink({
   uri: process.env.HASURA_URL,
-})
+});
 
 const _httpLink =
-  typeof window !== 'undefined'
+  typeof window !== "undefined"
     ? split(
-      ({ query }) => {
-        const definition = getMainDefinition(query)
-        return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        )
-      },
-      wsLink as any,
-      httpLink,
-    )
-    : httpLink
+        ({ query }) => {
+          const definition = getMainDefinition(query);
+          return (
+            definition.kind === "OperationDefinition" &&
+            definition.operation === "subscription"
+          );
+        },
+        wsLink as any,
+        httpLink
+      )
+    : httpLink;
 
-export const links = from([removeTypenameLink, authLink, errorLink, _httpLink])
+export const links = from([removeTypenameLink, authLink, errorLink, _httpLink]);

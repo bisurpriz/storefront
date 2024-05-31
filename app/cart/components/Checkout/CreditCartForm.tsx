@@ -50,8 +50,7 @@ const schema = object().shape({
     }),
 });
 
-const CreditCartForm = ({ ip }: { ip: string }) => {
-  console.log(ip);
+const CreditCartForm = () => {
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",

@@ -6,6 +6,10 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { CookieTokens } from "./contants";
 
+export const decodeToken = async (token: string) => {
+  return jwt.decode(token);
+};
+
 export const login = async ({ email, password }, headers = {}) => {
   const response = await mutate({
     mutation: LoginMutationDocument,
@@ -21,7 +25,7 @@ export const login = async ({ email, password }, headers = {}) => {
   });
 
   if (response.data.login.access_token && response.data.login.refresh_token) {
-    const decodedToken = await jwt.decode(response.data.login.access_token);
+    const decodedToken = await decodeToken(response.data.login.access_token);
     const user = {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
