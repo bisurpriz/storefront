@@ -48,7 +48,7 @@ const Vendor = async ({ params: { id } }: { params: { id: string } }) => {
             <FaCalendar className="text-primary" />
           </div>
           <div>
-            <div className="text-sm">Bonnmarşe'deki Süresi</div>
+            <div className="text-sm">Bonnmarşe&apos;deki Süresi</div>
             <div className="text-base font-bold">
               {getTimeDifference(vendor.created_at)}
             </div>
