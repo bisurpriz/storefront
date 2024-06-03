@@ -15,7 +15,7 @@ export default function PageTransition({
   children: React.ReactNode;
 }) {
   return (
-    <motion.main
+    <motion.div
       variants={variants}
       initial="hidden"
       animate="enter"
@@ -23,6 +23,6 @@ export default function PageTransition({
       className="flex-1"
     >
       {children}
-    </motion.main>
+    </motion.div>
   );
 }

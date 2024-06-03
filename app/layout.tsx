@@ -29,6 +29,8 @@ import {
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
+import StickyHeader from "@/components/Layout/Header/StickyHeader";
+import HeaderMiddle from "@/components/Layout/Header/Middle";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -140,7 +142,9 @@ export default async function RootLayout({
           <ApolloWrapper>
             <CategoryProvider category={category}>
               <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                <Header category={category} />
+                <StickyHeader secondChildren={<HeaderMiddle />}>
+                  <Header category={category} />
+                </StickyHeader>
                 <Content>{children}</Content>
                 {auth}
                 <Listener />

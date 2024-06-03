@@ -70,7 +70,7 @@ const MobileBottomNav = () => {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 bg-white z-40 border-t border-gray-200 sm:hidden"
+      className="fixed bottom-0 left-0 right-0 bg-white z-10 border-t border-gray-200 hidden max-md:block"
       id="mobile-bottom-nav"
     >
       <div className="grid grid-cols-5 gap-4 p-2">

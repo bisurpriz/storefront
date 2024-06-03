@@ -10,15 +10,13 @@ export const generateMetadata = async () => {
 
 const Cart = () => {
   return (
-    <div
-      className="w-full relative"
+    <section
       aria-label="Sepetim"
       aria-describedby="Sepetim"
+      className="w-full relative col-span-1 md:col-span-2 flex flex-col gap-3"
     >
-      <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
-        <CartWrapper />
-      </div>
-    </div>
+      <CartWrapper />
+    </section>
   );
 };
 

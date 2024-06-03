@@ -1,10 +1,9 @@
-import Button from '@/components/Button';
-import Drawer from '@/components/Drawer';
-import TextField from '@/components/TextField';
-import { useState } from 'react';
+import Button from "@/components/Button";
+import Drawer from "@/components/Drawer";
+import TextField from "@/components/TextField";
+import { useState } from "react";
 
-import { IoTicketOutline } from 'react-icons/io5';
-import { MdKeyboardArrowUp } from 'react-icons/md';
+import { IoTicketOutline } from "react-icons/io5";
 
 interface CartDrawerProps {
   totalPrice: number;
@@ -21,23 +20,6 @@ const CartDrawer = ({
 
   return (
     <>
-      <div className="bg-white w-full py-4 flex justify-between md:hidden">
-        <div className="flex">
-          <Button
-            icon={<MdKeyboardArrowUp />}
-            size="small"
-            iconSize={24}
-            className="p-2"
-            onClick={() => setIsOpen(true)}
-          />
-          <span className="flex flex-col justify-center ml-2">
-            <span className="text-xs">Toplam:</span>
-            <span className="text-md text-primary font-medium">
-              {totalPrice?.toFixed(2)} ₺
-            </span>
-          </span>
-        </div>
-      </div>
       <Drawer
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -60,7 +42,7 @@ const CartDrawer = ({
                 <div className="flex justify-between text-slate-100 mt-4 text-sm p-2 bg-red-300 rounded-md">
                   <span>Toplam kazancınız</span>
                   <span className="font-semibold">
-                    {totalDiscount.toFixed(2)} ₺{' '}
+                    {totalDiscount.toFixed(2)} ₺{" "}
                   </span>
                 </div>
               </>
