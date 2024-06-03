@@ -22,7 +22,7 @@ const ProductItem5 = ({
   tenant,
 }: ProductItemProps) => {
   const stamps = useMemo((): Stamp[] | null => {
-    if (!product_customizable_areas.length) return null;
+    if (!product_customizable_areas?.length) return null;
     return [
       {
         name: "Özelleştirilebilir",

@@ -1,35 +1,48 @@
 "use client";
-import { memo } from "react";
-import { IoTicketOutline } from "react-icons/io5";
+
+import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
+import React, { FC } from "react";
+import { IoTicketOutline } from "react-icons/io5";
+import { motion } from "framer-motion";
 
-import { useCart } from "@/contexts/CartContext";
-import { usePathname } from "next/navigation";
-import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
-import { CartStepPaths } from "../../constants";
+type SummaryDetailProps = {
+  cost: number;
+  isOpen: boolean;
+};
 
-const CartSummary = () => {
-  const {
-    cartState: { cost },
-  } = useCart();
-  const pathname = usePathname();
-  const { handleChangeStep } = useCartStep();
+const variant = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 50,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
 
-  const changeStep = () => {
-    if (pathname !== CartStepPaths.ORDER_DETAIL) {
-      handleChangeStep();
-    }
-  };
-
-  if (pathname === CartStepPaths.COMPLETE) {
-    return null;
-  }
-
+const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
   return (
-    <div className="max-md:fixed max-md:w-full max-md:left-0 bg-white max-md:px-4 md:h-fit max-md:bottom-0 col-span-1 md:relative max-md:shadow-lg border border-primary rounded-xl overflow-hidden">
-      <div className="hidden md:block">
-        <div className="p-4">
+    <AnimationExitProvider show={isOpen}>
+      <motion.div
+        variants={variant}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <div className="max-md:py-1 max-md:px-4 md:p-4 max-md:border-t">
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti
           </span>
@@ -66,27 +79,9 @@ const CartSummary = () => {
             </div>
           </div>
         </div>
-        <Button
-          type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
-          size="large"
-          color="primary"
-          fullWidth
-          form={
-            pathname === CartStepPaths.ORDER_DETAIL
-              ? "order-detail-form"
-              : undefined
-          }
-          label={
-            pathname === CartStepPaths.CHECKOUT
-              ? "Ödeme Yap"
-              : "Onayla ve Devam Et"
-          }
-          className="flex justify-center rounded-t-none"
-          onClick={changeStep}
-        />
-      </div>
-    </div>
+      </motion.div>
+    </AnimationExitProvider>
   );
 };
 
-export default memo(CartSummary);
+export default SummaryDetail;
