@@ -24,7 +24,8 @@ const TenantOrders = ({
             </Link>{" "}
             <span className="text-sm text-gray-500">satıcısından</span>{" "}
             <span className="text-sm text-gray-500">
-              ({to.order_items.length} ürün)
+              ({to.order_items.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+              ürün)
             </span>
           </span>
           <StatusBadge status={OrderItemStatus[to.order_status.value]} />

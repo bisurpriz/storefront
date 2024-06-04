@@ -16,6 +16,7 @@ import { createPortal } from "react-dom";
 const CartSummary = () => {
   const {
     cartState: { cost },
+    loading,
   } = useCart();
   const pathname = usePathname();
   const { handleChangeStep } = useCartStep();
@@ -88,6 +89,7 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
+          disabled={loading}
           type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
           size="large"
           color="primary"

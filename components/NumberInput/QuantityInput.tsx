@@ -13,6 +13,7 @@ export default function QuantityInput({ ...props }: QuantityInputProps) {
       max={99}
       color="secondary"
       readOnly
+      disabled={props.disabled}
       {...props}
     />
   );

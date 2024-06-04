@@ -166,3 +166,12 @@ query getUserByEmail($email: String!) {
     provider_id
   }
 }
+
+
+query GetLocationQuery($search: String = "") @cached {
+  search_locationv1(args: {search: $search}, limit: 100) {
+    name
+    id
+    type
+  }
+}
