@@ -3,12 +3,9 @@
 import React, { useMemo, useState } from "react";
 import SelectorAutoComplete, { Option } from "./SelectorAutoComplete";
 import { debounce } from "@/utils/debounce";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { getLocation } from "graphql";
+import { useLazyQuery } from "@apollo/client";
 import {
   GetLocationQueryDocument,
-  GetLocationQueryQuery,
-  GetLocationQueryQueryVariables,
 } from "@/graphql/generated";
 
 const QuarterSelector = () => {

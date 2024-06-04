@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, FC, useState, useEffect } from "react";
+import React, { ReactNode, FC, useState } from "react";
 import {
   AnimatePresence,
   motion,
