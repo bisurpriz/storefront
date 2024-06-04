@@ -12,7 +12,7 @@ import { GrClear } from "react-icons/gr";
 import { BsChevronDown } from "react-icons/bs";
 import { ForwardedRef, forwardRef } from "react";
 
-type Option = {
+export type Option = {
   label: string;
   value: string | number;
 };
@@ -44,7 +44,6 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
     focused,
     anchorEl,
     setAnchorEl,
-    groupedOptions,
   } = useAutocomplete({
     selectOnFocus: true,
     autoComplete: false,
@@ -63,10 +62,10 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
         {...getRootProps(other)}
         ref={rootRef}
         className={clsx(
-          "flex gap-1.5 pr-1.5 w-full h-full overflow-hidden rounded-lg bg-white border border-solid border-pink-100  hover:border-pink-400  focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
-          !focused && "shadow-[0_2px_2px_transparent] shadow-pink-50 ",
-          focused &&
-            "border-pink-400 shadow-[0_0_0_3px_transparent] shadow-pink-200"
+          "relative flex items-center w-full bg-white border border-solid border-pink-100  rounded-lg",
+          "transition-shadow duration-200 ease-in-out",
+          focused && "shadow-pink-100",
+          !focused && "shadow-[0_4px_30px_transparent]"
         )}
       >
         <input
@@ -75,15 +74,17 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
           readOnly={readOnly}
           {...getInputProps()}
           className={clsx(
-            "bg-inherit border-0 rounded-[inherit] px-3 py-2 outline-0 grow shrink-0 basis-auto",
-            "text-xl"
+            "w-full p-2 text-sm outline-0 bg-transparent",
+            "transition-shadow duration-200 ease-in-out",
+            focused && "shadow-pink-100",
+            !focused && "shadow-[0_4px_30px_transparent]"
           )}
           placeholder="Lütfen gönderim yapılacak ilçeyi seçin"
         />
         {hasClearIcon && (
           <Button
             {...getClearProps()}
-            className="self-center outline-0 shadow-none border-0 py-0 px-0.5 rounded-[4px] bg-transparent hover:bg-pink-100  hover:cursor-pointer"
+            className="self-center outline-0 shadow-none border-0 py-0 px-0.5 rounded-[4px] bg-transparent hover:bg-pink-100 hover:cursor-pointer"
           >
             <GrClear className="translate-y-[2px] scale-90" />
           </Button>
@@ -101,7 +102,7 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
           />
         </Button>
       </div>
-      {anchorEl && groupedOptions.length > 0 && (
+      {anchorEl && options.length > 0 && (
         <Popper
           open={popupOpen}
           anchorEl={anchorEl}
@@ -126,7 +127,7 @@ const SelectorAutoComplete = forwardRef(function Autocomplete(
             {...getListboxProps()}
             className="text-sm box-border p-1.5 my-3 mx-0  rounded-xl overflow-auto outline-0 max-h-[30vh] z-[1] bg-white w-full  border border-solid border-pink-100  text-gray-900  shadow-[0_4px_30px_transparent] shadow-pink-100 "
           >
-            {groupedOptions.map((option, index) => {
+            {options.map((option, index) => {
               const optionProps = getOptionProps({ option, index });
 
               return (

@@ -14,7 +14,7 @@ const ProductGroupListItemInfo = ({
   id: Product["id"];
   customize: Product["product_customizable_areas"];
 }) => {
-  const { removeFromCart } = useCart();
+  const { removeFromCart, loading } = useCart();
 
   return (
     <span className="absolute top-2 right-2 flex gap-2 items-center">
@@ -36,6 +36,7 @@ const ProductGroupListItemInfo = ({
       ) : null}
       <AiOutlineClose
         onClick={() => {
+          if (loading) return;
           removeFromCart(id);
         }}
         className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out"

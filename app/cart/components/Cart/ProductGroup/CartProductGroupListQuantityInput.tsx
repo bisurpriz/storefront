@@ -13,6 +13,7 @@ const CartProductGroupListQuantityInput = ({
   quantity: Product["quantity"];
 }) => {
   const {
+    loading,
     addToCart,
     cartState: { cartItems },
   } = useCart();
@@ -23,11 +24,12 @@ const CartProductGroupListQuantityInput = ({
         Adet:
       </span>
       <QuantityInput
+        disabled={loading}
         value={quantity}
         onChange={(e, quantity) => {
           const item = cartItems.find((item) => item.id === id);
           if (item) {
-            addToCart({ ...item, quantity });
+            addToCart({ ...item, quantity }, "updateq");
           }
         }}
         color="primary"
