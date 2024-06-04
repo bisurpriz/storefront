@@ -1,53 +1,46 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import SelectorAutoComplete, { Option } from "./SelectorAutoComplete";
-import { debounce } from "@/utils/debounce";
+import React, { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import {
   GetLocationQueryDocument,
+  GetLocationQueryQuery,
+  GetLocationQueryQueryVariables,
 } from "@/graphql/generated";
+import Autocomplete from "../Autocomplete/Autocomplete4Haz";
 
 const QuarterSelector = () => {
-  const [selectedLocation, setSelectedLocation] = useState<Option>(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
-  const [getLocations, { loading, data, error, refetch }] = useLazyQuery(
-    GetLocationQueryDocument
-  );
+  const [, { refetch }] = useLazyQuery<
+    GetLocationQueryQuery,
+    GetLocationQueryQueryVariables
+  >(GetLocationQueryDocument);
 
-  const locations = data?.search_locationv1;
-
-  const debounced = debounce((e, value) => {
-    if (value !== selectedLocation?.value) {
-      getLocations({
-        variables: {
-          search: value,
-        },
+  const fetchLocations = async (input: string) => {
+    try {
+      const {
+        data: { search_locationv1: locations },
+      } = await refetch({
+        search: input,
       });
-    }
-  }, 500);
 
-  const options = useMemo(
-    () =>
-      locations?.map((location) => ({
-        value: location.id,
-        label: location.name,
-      })) || [],
-    [locations]
-  );
+      return locations;
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
+  console.log(selectedLocation);
 
   return (
     <label className="flex-1 basis-full">
-      <SelectorAutoComplete
-        options={options}
-        isOptionEqualToValue={(option, value) => option?.value === value?.value}
-        onInputChange={(e, value) => {
-          debounced(e, value);
-        }}
-        onChange={(e, value) => {
-          setSelectedLocation(value);
-        }}
-        value={selectedLocation}
+      <Autocomplete
+        suggestions={fetchLocations}
+        onChange={({ selectedValue }) => setSelectedLocation(selectedValue)}
+        getOptionLabel={(option) => option.name}
+        placeholder="Gönderim yerini seçin"
+        onClear={(option) => console.log(option, "cleared")}
       />
     </label>
   );
