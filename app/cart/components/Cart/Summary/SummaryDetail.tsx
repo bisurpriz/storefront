@@ -50,7 +50,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
             alt="iyzico"
             width={500}
             height={500}
-            className="mb-8"
+            className="mb-8 max-md:hidden"
           />
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti

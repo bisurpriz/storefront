@@ -30,10 +30,6 @@ const StickyHeader: FC<StickyHeaderProps> = ({ children, secondChildren }) => {
     }
   });
 
-  useEffect(() => {
-    console.log("scrollY", scrollY);
-  }, [scrollY]);
-
   if (pathname !== "/")
     return (
       <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
