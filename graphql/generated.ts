@@ -14075,6 +14075,10 @@ export type Search_Location_Args = {
 
 /** columns and relationships of "search_location_result" */
 export type Search_Location_Result = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14110,6 +14114,8 @@ export type Search_Location_Result_Aggregate_FieldsCountArgs = {
 
 /** aggregate avg on columns */
 export type Search_Location_Result_Avg_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -14118,6 +14124,10 @@ export type Search_Location_Result_Bool_Exp = {
   _and?: InputMaybe<Array<Search_Location_Result_Bool_Exp>>;
   _not?: InputMaybe<Search_Location_Result_Bool_Exp>;
   _or?: InputMaybe<Array<Search_Location_Result_Bool_Exp>>;
+  city_id?: InputMaybe<Int_Comparison_Exp>;
+  city_name?: InputMaybe<String_Comparison_Exp>;
+  district_id?: InputMaybe<Int_Comparison_Exp>;
+  district_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   type?: InputMaybe<String_Comparison_Exp>;
@@ -14125,11 +14135,17 @@ export type Search_Location_Result_Bool_Exp = {
 
 /** input type for incrementing numeric columns in table "search_location_result" */
 export type Search_Location_Result_Inc_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "search_location_result" */
 export type Search_Location_Result_Insert_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14137,6 +14153,10 @@ export type Search_Location_Result_Insert_Input = {
 
 /** aggregate max on columns */
 export type Search_Location_Result_Max_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14144,6 +14164,10 @@ export type Search_Location_Result_Max_Fields = {
 
 /** aggregate min on columns */
 export type Search_Location_Result_Min_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14159,6 +14183,10 @@ export type Search_Location_Result_Mutation_Response = {
 
 /** Ordering options when selecting data from "search_location_result". */
 export type Search_Location_Result_Order_By = {
+  city_id?: InputMaybe<Order_By>;
+  city_name?: InputMaybe<Order_By>;
+  district_id?: InputMaybe<Order_By>;
+  district_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
@@ -14166,6 +14194,14 @@ export type Search_Location_Result_Order_By = {
 
 /** select columns of table "search_location_result" */
 export type Search_Location_Result_Select_Column =
+  /** column name */
+  | 'city_id'
+  /** column name */
+  | 'city_name'
+  /** column name */
+  | 'district_id'
+  /** column name */
+  | 'district_name'
   /** column name */
   | 'id'
   /** column name */
@@ -14175,6 +14211,10 @@ export type Search_Location_Result_Select_Column =
 
 /** input type for updating data in table "search_location_result" */
 export type Search_Location_Result_Set_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14182,16 +14222,22 @@ export type Search_Location_Result_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Search_Location_Result_Stddev_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Search_Location_Result_Stddev_Pop_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Search_Location_Result_Stddev_Samp_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -14205,6 +14251,10 @@ export type Search_Location_Result_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Search_Location_Result_Stream_Cursor_Value_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14212,6 +14262,8 @@ export type Search_Location_Result_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type Search_Location_Result_Sum_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -14226,16 +14278,22 @@ export type Search_Location_Result_Updates = {
 
 /** aggregate var_pop on columns */
 export type Search_Location_Result_Var_Pop_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Search_Location_Result_Var_Samp_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Search_Location_Result_Variance_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -21108,7 +21166,7 @@ export type GetLocationQueryQueryVariables = Exact<{
 }>;
 
 
-export type GetLocationQueryQuery = { search_locationv1: Array<{ name?: string | null, id?: number | null, type?: string | null }> };
+export type GetLocationQueryQuery = { search_locationv1: Array<{ id?: number | null, name?: string | null, type?: string | null, district_id?: number | null, district_name?: string | null, city_id?: number | null, city_name?: string | null }> };
 
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21483,9 +21541,13 @@ export const GetUserByEmailDocument = gql`
 export const GetLocationQueryDocument = gql`
     query GetLocationQuery($search: String = "") @cached {
   search_locationv1(args: {search: $search}, limit: 100) {
-    name
     id
+    name
     type
+    district_id
+    district_name
+    city_id
+    city_name
   }
 }
     `;

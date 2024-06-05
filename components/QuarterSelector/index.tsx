@@ -31,14 +31,26 @@ const QuarterSelector = () => {
     }
   };
 
-  console.log(selectedLocation);
+  const createLabel = (
+    option: GetLocationQueryQuery["search_locationv1"][0]
+  ) => {
+    let quarter, district, city;
+
+    option?.name ? (quarter = option.name) : "";
+
+    option?.district_name ? (district = `/ ${option.district_name} `) : "";
+
+    option?.city_name ? (city = `/ ${option.city_name}`) : "";
+
+    return `${quarter} ${district} ${city}`;
+  };
 
   return (
     <label className="flex-1 basis-full">
       <Autocomplete
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => setSelectedLocation(selectedValue)}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={createLabel}
         placeholder="Gönderim yerini seçin"
         onClear={(option) => console.log(option, "cleared")}
       />
