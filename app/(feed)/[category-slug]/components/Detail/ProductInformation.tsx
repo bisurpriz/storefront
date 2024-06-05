@@ -22,6 +22,7 @@ type ProductInformationProps = {
   };
   shippingType?: string;
   freeShipping?: boolean;
+  deliveryTimeRanges: string;
 };
 
 const ProductInformation = ({
@@ -36,6 +37,7 @@ const ProductInformation = ({
   vendor,
   freeShipping,
   shippingType,
+  deliveryTimeRanges,
 }: ProductInformationProps) => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
@@ -118,7 +120,7 @@ const ProductInformation = ({
             },
           ]}
         />
-        <HourSelect />
+        <HourSelect deliveryTimeRanges={deliveryTimeRanges} />
       </div>
     </div>
   );

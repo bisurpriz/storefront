@@ -7,11 +7,15 @@ import { query } from "@/graphql/lib/client";
 import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
+  GetQuarterByIdDocument,
+  GetQuarterByIdQuery,
+  GetQuarterByIdQueryVariables,
 } from "@/graphql/generated";
 import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
 import clsx from "clsx";
-import { FcShipped } from "react-icons/fc";
+import { cookies } from "next/headers";
+import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 
 export default async function Page() {
   const { banners } = await getBanners();
@@ -19,6 +23,26 @@ export default async function Page() {
     data: { category },
   } = await query<GetAllCategoriesQuery>({
     query: GetAllCategoriesDocument,
+  });
+
+  const quarterId = await cookies().get("selectedLocation")?.value;
+
+  const { data } = await query<
+    GetQuarterByIdQuery,
+    GetQuarterByIdQueryVariables
+  >({
+    query: GetQuarterByIdDocument,
+    variables: {
+      id: quarterId && Number(quarterId),
+    },
+    fetchPolicy: "no-cache",
+  });
+
+  const value = createQuarterSelectorLabel({
+    id: data.quarter_by_pk?.id,
+    city_name: data.quarter_by_pk?.district.city.name,
+    name: data.quarter_by_pk?.name,
+    district_name: data.quarter_by_pk?.district.name,
   });
 
   return (
@@ -35,21 +59,11 @@ export default async function Page() {
       }
     >
       <div className="grid grid-cols-12 gap-4 w-full mb-4">
-        <div
-          className={clsx(
-            "col-span-8 max-xl:col-span-full flex items-center flex-wrap-reverse"
-          )}
-        >
-          <div className="flex flex-col items-center justify-center gap-4">
-            <FcShipped className="flex-auto " size={48} />
-            <span className={clsx("text-xs font-normal text-pink-400")}>
-              Sizin için en uygun ürünleri listelemek için lokasyonunuzu
-              belirtin
-            </span>
-          </div>
-          <div className="p-4 bg-secondary-light w-full rounded-lg">
-            <QuarterSelector />
-          </div>
+        <div className={clsx("col-span-full text-left")}>
+          <span className={clsx("text-xs font-normal text-pink-400")}>
+            Sizin için en uygun ürünleri listelemek için lokasyonunuzu belirtin
+          </span>
+          <QuarterSelector value={value} />
         </div>
         <LandingSearchBanner />
       </div>

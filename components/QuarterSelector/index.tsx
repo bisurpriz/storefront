@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { FC } from "react";
 import { useLazyQuery } from "@apollo/client";
 import {
   GetLocationQueryDocument,
@@ -8,11 +8,15 @@ import {
   GetLocationQueryQueryVariables,
 } from "@/graphql/generated";
 import Autocomplete from "../Autocomplete/Autocomplete4Haz";
+import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
+import Cookies from "js-cookie";
 
-const QuarterSelector = () => {
-  const [selectedLocation, setSelectedLocation] = useState(null);
+type QuarterSelectorProps = {
+  value: any;
+};
 
-  const [, { refetch }] = useLazyQuery<
+const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
+  const [query, { refetch }] = useLazyQuery<
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
   >(GetLocationQueryDocument);
@@ -31,26 +35,16 @@ const QuarterSelector = () => {
     }
   };
 
-  const createLabel = (
-    option: GetLocationQueryQuery["search_locationv1"][0]
-  ) => {
-    let quarter, district, city;
-
-    option?.name ? (quarter = option.name) : "";
-
-    option?.district_name ? (district = `/ ${option.district_name} `) : "";
-
-    option?.city_name ? (city = `/ ${option.city_name}`) : "";
-
-    return `${quarter} ${district} ${city}`;
-  };
-
   return (
     <label className="flex-1 basis-full">
       <Autocomplete
+        value={value}
         suggestions={fetchLocations}
-        onChange={({ selectedValue }) => setSelectedLocation(selectedValue)}
-        getOptionLabel={createLabel}
+        onChange={({ selectedValue }) => {
+          if (selectedValue?.id)
+            Cookies.set("selectedLocation", selectedValue.id);
+        }}
+        getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"
         onClear={(option) => console.log(option, "cleared")}
       />

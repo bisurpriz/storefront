@@ -1,7 +1,6 @@
-import InfinityScroll from '@/components/InfinityScroll';
-import { Metadata } from 'next';
-import { getPaginatedVendorProducts } from '@/app/vendor/actions';
-import SearchLocation from '@/app/products/[slug]/components/Layout/SearchLocation';
+import InfinityScroll from "@/components/InfinityScroll";
+import { Metadata } from "next";
+import { getPaginatedVendorProducts } from "@/app/vendor/actions";
 
 type Props = {
   products: any;
@@ -26,12 +25,7 @@ const Vendor = async ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <div>
-      <div className="w-full flex max-md:flex-col md:gap-8 md:items-center justify-between bg-white rounded-lg p-4 border mb-6 ">
-        <span className="text-center border-primary border text-primary text-sm font-semibold max-md:mb-2 p-2 rounded-lg">
-          BURADAN BAŞLAYIN
-        </span>
-        <SearchLocation />
-      </div>
+      <div className="w-full flex max-md:flex-col md:gap-8 md:items-center justify-between bg-white rounded-lg p-4 border mb-6 "></div>
 
       <InfinityScroll
         totalCount={totalCount}

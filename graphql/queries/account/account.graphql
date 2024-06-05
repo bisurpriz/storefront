@@ -90,6 +90,20 @@ query getQuarters($districtId: Int = 1) {
   }
 }
 
+query GetQuarterById($id: Int!) {
+  quarter_by_pk(id: $id) {
+    name
+    code
+    id
+    district {
+      city {
+        name
+      }
+      name
+    }
+  }
+}
+
 query getUserOrders {
   order {
     created_at

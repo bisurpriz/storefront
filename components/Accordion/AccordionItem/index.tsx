@@ -42,7 +42,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
         onClick={handleToggle}
       >
-        <h4 className="flex items-center">{title}</h4>
+        <h4 className="flex items-center font-medium">{title}</h4>
         <HiChevronDown
           className={`transition-transform transform ${
             open ? "-rotate-180" : ""

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { forwardRef, useState } from 'react';
-import Button from '../Button';
-import { BsCalendar } from 'react-icons/bs';
-import ReactDatePicker from 'react-datepicker';
-import { add } from 'date-fns';
-import { localeFormat } from '@/utils/format';
-import { tr } from 'date-fns/locale';
+import { forwardRef, useState } from "react";
+import Button from "../Button";
+import { BsCalendar } from "react-icons/bs";
+import ReactDatePicker from "react-datepicker";
+import { add } from "date-fns";
+import { localeFormat } from "@/utils/format";
+import { tr } from "date-fns/locale";
 
 type Props = {
   selectedDay: Date | null;
   handleSelect: (val: Date | null) => void;
-  deliveryTimes: string[];
+  deliveryTimes: Date[];
 };
 
 type CustomButtonProps = {
@@ -36,7 +36,7 @@ const CustomButton = forwardRef(
           className="!p-2 flex items-center justify-center"
           fullWidth
           variant={
-            isSelectCalendar || selectedDay === null ? 'fullfilled' : 'outlined'
+            isSelectCalendar || selectedDay === null ? "fullfilled" : "outlined"
           }
           onClick={() => {
             handleSelect(null);
@@ -52,11 +52,11 @@ const CustomButton = forwardRef(
               <p className="text-sm font-medium">
                 {isSelectCalendar ? (
                   <span className="flex flex-wrap justify-center">
-                    <span>{localeFormat(isSelectCalendar, 'd MMMM')}</span>{' '}
-                    <span>{localeFormat(isSelectCalendar, 'HH:mm')}</span>
+                    <span>{localeFormat(isSelectCalendar, "d MMMM")}</span>{" "}
+                    <span>{localeFormat(isSelectCalendar, "HH:mm")}</span>
                   </span>
                 ) : (
-                  'Tarih seçiniz'
+                  "Tarih seçiniz"
                 )}
               </p>
             )}
@@ -79,13 +79,7 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
         handleSelect(date);
       }}
       timeFormat="p"
-      includeTimes={deliveryTimes.map((time) => {
-        const [hour, minute] = time.split(':');
-        return add(new Date(), {
-          hours: Number(hour),
-          minutes: Number(minute),
-        });
-      })}
+      includeTimes={deliveryTimes}
       locale={tr}
       minDate={new Date()}
       maxDate={new Date(add(new Date(), { days: 6 }))}
@@ -102,9 +96,9 @@ function DateSelect({ selectedDay, handleSelect, deliveryTimes }: Props) {
       renderDayContents={(day, date) => {
         return (
           <div className="text-center text-sm p-2">
-            <p className="text-sm font-medium">{localeFormat(date, 'd')}</p>
+            <p className="text-sm font-medium">{localeFormat(date, "d")}</p>
             <p className="text-sm font-normal">
-              {localeFormat(date, 'EEEE').slice(0, 3)}
+              {localeFormat(date, "EEEE").slice(0, 3)}
             </p>
           </div>
         );

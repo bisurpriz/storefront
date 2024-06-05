@@ -18,6 +18,7 @@ interface AutocompleteProps {
   getOptionLabel?: (option: any) => string;
   onClear?: (option: any) => void;
   placeholder?: string;
+  value?: any;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -26,17 +27,24 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   getOptionLabel,
   onClear,
   placeholder,
+  value,
 }) => {
   const [activeSuggestion, setActiveSuggestion] = useState(0);
   const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [userInput, setUserInput] = useState("");
+  const [userInput, setUserInput] = useState(value || "");
   const [selectedValue, setSelectedValue] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const suggestionsListRef = useRef<HTMLUListElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelectedValue(value);
+    }
+  }, [value]);
 
   const fetchSuggestions = async (input: string) => {
     if (input.trim() === "") {

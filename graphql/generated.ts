@@ -21134,6 +21134,13 @@ export type GetQuartersQueryVariables = Exact<{
 
 export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> };
 
+export type GetQuarterByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type GetQuarterByIdQuery = { quarter_by_pk?: { name: string, code: number, id: number, district: { name: string, city: { name: string } } } | null };
+
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21309,7 +21316,7 @@ export type GetProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { count?: number | null, id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { count?: number | null, id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductForCartQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -21475,6 +21482,21 @@ export const GetQuartersDocument = gql`
   quarters: quarter(where: {district: {id: {_eq: $districtId}}}) {
     name
     id
+  }
+}
+    `;
+export const GetQuarterByIdDocument = gql`
+    query GetQuarterById($id: Int!) {
+  quarter_by_pk(id: $id) {
+    name
+    code
+    id
+    district {
+      city {
+        name
+      }
+      name
+    }
   }
 }
     `;
@@ -21824,6 +21846,7 @@ export const GetProductByIdDocument = gql`
     price
     quantity
     is_service_free
+    delivery_time_ranges
     delivery_type
     properties
     discount_price
@@ -22210,6 +22233,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getQuarters(variables?: GetQuartersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuartersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetQuartersQuery>(GetQuartersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuarters', 'query', variables);
+    },
+    GetQuarterById(variables: GetQuarterByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuarterByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetQuarterByIdQuery>(GetQuarterByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetQuarterById', 'query', variables);
     },
     getUserOrders(variables?: GetUserOrdersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserOrdersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserOrdersQuery>(GetUserOrdersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserOrders', 'query', variables);
