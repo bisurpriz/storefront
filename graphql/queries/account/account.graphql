@@ -170,8 +170,12 @@ query getUserByEmail($email: String!) {
 
 query GetLocationQuery($search: String = "") @cached {
   search_locationv1(args: {search: $search}, limit: 100) {
-    name
     id
+    name
     type
+    district_id
+    district_name
+    city_id
+    city_name
   }
 }

@@ -105,7 +105,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
       }
       setActiveSuggestion(activeSuggestion - 1);
     } else if (e.key === "ArrowDown") {
-      if (activeSuggestion + 1 === filteredSuggestions.length) {
+      if (activeSuggestion + 1 === filteredSuggestions?.length) {
         return;
       }
       setActiveSuggestion(activeSuggestion + 1);
@@ -178,7 +178,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               <div className="p-2 flex items-center justify-center">
                 <PiSpinner className="animate-spin h-5 w-5 mr-3 inline-block" />
               </div>
-            ) : filteredSuggestions.length ? (
+            ) : filteredSuggestions?.length ? (
               filteredSuggestions.map((suggestion, index) => {
                 return (
                   <li

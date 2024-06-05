@@ -36,7 +36,9 @@ export default async function Page() {
     >
       <div className="grid grid-cols-12 gap-4 w-full mb-4">
         <div
-          className={clsx("col-span-8 max-xl:col-span-full flex items-center")}
+          className={clsx(
+            "col-span-8 max-xl:col-span-full flex items-center flex-wrap-reverse"
+          )}
         >
           <div className="flex flex-col items-center justify-center gap-4">
             <FcShipped className="flex-auto " size={48} />
