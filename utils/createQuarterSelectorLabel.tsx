@@ -20,5 +20,5 @@ export const createQuarterSelectorLabel = (
     city = option.city_name;
   }
 
-  return [quarter, district, city].filter(Boolean).join("/ ");
+  return [quarter, district, city].filter(Boolean).join(" / ");
 };
