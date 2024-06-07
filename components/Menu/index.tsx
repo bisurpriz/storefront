@@ -1,13 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useMeasure } from '@uidotdev/usehooks';
+import Link from "next/link";
+import { useMeasure } from "@uidotdev/usehooks";
+import clsx from "clsx";
 
-const Menu: React.FC<MenuProps> = ({
-  items,
-  orientation = 'horizontal',
-  className = '',
-}) => {
+const Menu: React.FC<MenuProps> = ({ items, className = "" }) => {
   const [listRef] = useMeasure<HTMLElement>();
 
   const emptyItemSkeleton = (
@@ -16,22 +13,17 @@ const Menu: React.FC<MenuProps> = ({
 
   return (
     <nav
-      className={`font-mono bg-transparent font-medium w-full border-y ${className}`}
+      className={`font-mono bg-white font-medium ${className}`}
       ref={listRef}
     >
       {items ? (
-        <ul
-          className={`${
-            orientation === 'horizontal' ? 'inline-flex' : 'block'
-          }  text-base leading-4 w-full py-2`}
-        >
-          {items?.map((item, index) => (
-            <li key={index} className="relative group cursor-pointer">
+        <ul className={clsx("flex justify-center gap-4 w-fit")}>
+          {items.map((item, index) => (
+            <li key={index}>
               <Link
-                href={item.link ?? '#'}
-                className="flex items-center justify-center h-full w-full p-2 px-4 font-semibold hover:text-gray-600 transition-colors duration-200 ease-in-out hover:bg-gray-100 rounded-md"
+                href={item.link}
+                className="text-base text-gray-500 hover:text-gray-700"
               >
-                {item.icon && <span className="mr-2">{item.icon}</span>}
                 {item.text}
               </Link>
             </li>
