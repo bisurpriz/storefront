@@ -1,20 +1,22 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
-import { getBanners } from "./actions";
+import {
+  getBanners,
+  getCityById,
+  getDistrictById,
+  getLocationFromCookie,
+  getQuarterById,
+} from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { query } from "@/graphql/lib/client";
 import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
-  GetQuarterByIdDocument,
-  GetQuarterByIdQuery,
-  GetQuarterByIdQueryVariables,
 } from "@/graphql/generated";
 import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
 import clsx from "clsx";
-import { cookies } from "next/headers";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 
 export default async function Page() {
@@ -25,25 +27,55 @@ export default async function Page() {
     query: GetAllCategoriesDocument,
   });
 
-  const quarterId = await cookies().get("selectedLocation")?.value;
+  const location = await getLocationFromCookie();
 
-  const { data } = await query<
-    GetQuarterByIdQuery,
-    GetQuarterByIdQueryVariables
-  >({
-    query: GetQuarterByIdDocument,
-    variables: {
-      id: quarterId && Number(quarterId),
-    },
-    fetchPolicy: "no-cache",
-  });
+  const getAvailableLocation = async () => {
+    if (!location) return null;
+    const { type, id } = location;
 
-  const value = createQuarterSelectorLabel({
-    id: data.quarter_by_pk?.id,
-    city_name: data.quarter_by_pk?.district.city.name,
-    name: data.quarter_by_pk?.name,
-    district_name: data.quarter_by_pk?.district.name,
-  });
+    switch (type) {
+      case "city": {
+        const data = await getCityById({
+          id: id,
+        });
+        return createQuarterSelectorLabel({
+          city_name: data.city[0].name,
+          city_id: data.city[0].id,
+          type: "city",
+        });
+      }
+      case "district": {
+        const data = await getDistrictById({
+          id: id,
+        });
+        return createQuarterSelectorLabel({
+          district_name: data.district[0].name,
+          district_id: data.district[0].id,
+          city_name: data.district[0].city.name,
+          city_id: data.district[0].city.id,
+          type: "district",
+        });
+      }
+      case "quarter": {
+        const data = await getQuarterById({
+          id: id,
+        });
+        return createQuarterSelectorLabel({
+          name: data.quarter[0].name,
+          id: data.quarter[0].id,
+          district_name: data.quarter[0].district.name,
+          district_id: data.quarter[0].district.id,
+          city_name: data.quarter[0].district.city.name,
+          city_id: data.quarter[0].district.city.id,
+          type: "quarter",
+        });
+      }
+      default:
+        return null;
+    }
+  };
+
+  const value = await getAvailableLocation();
 
   return (
     <Suspense
@@ -59,10 +91,26 @@ export default async function Page() {
       }
     >
       <div className="grid grid-cols-12 gap-4 w-full mb-4">
-        <div className={clsx("col-span-full text-left")}>
-          <span className={clsx("text-xs font-normal text-pink-400")}>
-            Sizin için en uygun ürünleri listelemek için lokasyonunuzu belirtin
-          </span>
+        <div
+          className={clsx(
+            "col-span-8 max-xl:col-span-full text-left",
+            "w-full flex flex-col gap-3",
+            "bg-purple-50 rounded-xl shadow-sm p-4",
+            "border border-purple-100"
+          )}
+        >
+          <h1
+            className={clsx(
+              "text-2xl font-semibold text-lime-500",
+              "max-xl:text-lg",
+              "font-sans"
+            )}
+          >
+            Gönderim Yapmak İstediğiniz Bölgeyi Seçin,{" "}
+            <span className="text-secondary-light">
+              en güzel hediyeleri keşfedin.
+            </span>
+          </h1>
           <QuarterSelector value={value} />
         </div>
         <LandingSearchBanner />

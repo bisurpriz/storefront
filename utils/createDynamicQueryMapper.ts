@@ -1,5 +1,6 @@
 import { CookieTokens } from "@/app/@auth/contants";
 import { cookies } from "next/headers";
+import { parseJson } from "./format";
 
 export enum FILTER_KEYS {
   SEARCH = "search",
@@ -87,7 +88,9 @@ export const createDynamicQueryMapper = (searchParams: {
     }
   });
 
-  const quarter_code = Number(cookies().get(CookieTokens.QUARTER_CODE)?.value);
+  // TODO: burası location olarak düzenlenecek
+  const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
+  const quarter_code = parseJson(cookie)?.id;
 
   const quarter_query = {
     tenant: {

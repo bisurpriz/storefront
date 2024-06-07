@@ -90,17 +90,41 @@ query getQuarters($districtId: Int = 1) {
   }
 }
 
-query GetQuarterById($id: Int!) {
-  quarter_by_pk(id: $id) {
-    name
+query GetQuarterById($id: Int) @cached {
+  quarter(where: { id: { _eq: $id } }) {
     code
     id
+    name
     district {
+      id
+      code
+      name
       city {
+        code
+        id
         name
       }
-      name
     }
+  }
+}
+
+query getDistrictById($id: Int) @cached {
+  district(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    city {
+      name
+      id
+    }
+  }
+}
+
+query getCityById($id: Int) {
+  city(where: { id: { _eq: $id } }) {
+    code
+    id
+    name
   }
 }
 
@@ -181,9 +205,8 @@ query getUserByEmail($email: String!) {
   }
 }
 
-
 query GetLocationQuery($search: String = "") @cached {
-  search_locationv1(args: {search: $search}, limit: 100) {
+  search_locationv1(args: { search: $search }, limit: 100) {
     id
     name
     type

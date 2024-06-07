@@ -5,11 +5,20 @@ export const createQuarterSelectorLabel = (
 ) => {
   let quarter, district, city;
 
-  option?.name ? (quarter = option.name) : "";
+  if (option.type === "quarter") {
+    quarter = option.name;
+    district = option.district_name;
+    city = option.city_name;
+  }
 
-  option?.district_name ? (district = `/ ${option.district_name} `) : "";
+  if (option.type === "district") {
+    district = option.name;
+    city = option.city_name;
+  }
 
-  option?.city_name ? (city = `/ ${option.city_name}`) : "";
+  if (option.type === "city") {
+    city = option.city_name;
+  }
 
-  return `${quarter} ${district} ${city}`;
+  return [quarter, district, city].filter(Boolean).join("/ ");
 };

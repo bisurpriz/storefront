@@ -11,6 +11,7 @@ import clsx from "clsx";
 import { VscSearchStop } from "react-icons/vsc";
 import { CiSquareRemove } from "react-icons/ci";
 import { IoChevronDownOutline } from "react-icons/io5";
+import { SlLocationPin } from "react-icons/sl";
 
 interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
@@ -177,7 +178,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             transition={{ duration: 0.2 }}
             className={clsx(
               "absolute w-full mt-1 max-h-60 overflow-y-auto z-10 font-mono",
-              "border border-gray-300 rounded-lg bg-white shadow-md",
+              "border border-purple-300 rounded-lg bg-white shadow-md",
               "transition duration-200 ease-in-out"
             )}
             ref={suggestionsListRef}
@@ -204,7 +205,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             ) : (
               <div
                 className={clsx(
-                  "p-2 flex items-center justify-center text-gray-500 text-base gap-2"
+                  "p-2 flex items-center justify-center text-purple-500 text-base gap-2"
                 )}
               >
                 <VscSearchStop size={24} />
@@ -232,19 +233,27 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   return (
     <div className="relative" ref={wrapperRef}>
       <div className="w-full">
+        <div
+          className={clsx(
+            "absolute top-1/2 left-2 -translate-y-1/2",
+            "text-purple-500",
+            "transition duration-200 ease-in-out",
+            { "animate-pulse": isLoading }
+          )}
+        >
+          <SlLocationPin size={24} />
+        </div>
         <input
           type="text"
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={userInput}
           className={clsx(
-            "w-full p-3 pr-16 border rounded-lg shadow-sm cursor-pointer",
-            "focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent",
-            "hover:shadow-md transition duration-200",
-            "placeholder:opacity-50 placeholder-primary-dark placeholder:text-xl",
-            selectedValue
-              ? "bg-gray-200 font-semibold text-xl font-manrope"
-              : "bg-white"
+            "w-full p-3 pl-10 pr-16 border rounded-lg shadow-sm shadow-purple-100 cursor-pointer text-xl font-manrope",
+            "focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-transparent",
+            "hover:shadow-md transition duration-200 hover:shadow-purple-100",
+            "placeholder:opacity-50 placeholder-purple-700 placeholder:text-xl",
+            { "border-2 border-purple-300": selectedValue }
           )}
           placeholder={placeholder}
         />
@@ -255,7 +264,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
         >
           {selectedValue && (
             <button
-              className={clsx("text-gray-500 hover:text-gray-700")}
+              className={clsx("text-purple-500 hover:text-purple-700")}
               onClick={() => {
                 setUserInput("");
                 setSelectedValue(null);
@@ -269,7 +278,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           )}
           <button
             className={clsx(
-              "text-gray-500 hover:text-gray-700",
+              "text-purple-500 hover:text-purple-700",
               "transition duration-200 ease-in-out",
               { "transform rotate-180": showSuggestions }
             )}
