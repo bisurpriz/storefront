@@ -21,30 +21,29 @@ const data = [
 
 const LandingSearchBanner = () => {
   return (
-    <div className="col-span-4 max-md:hidden max-xl:col-span-full self-center">
-      <div
-        className={clsx(
-          "w-full flex items-center justify-between gap-3",
-          "bg-gray-50 rounded-xl shadow-sm p-4",
-          "border border-gray-100"
-        )}
-      >
-        {Array.from({ length: 3 }, (_, i) => (
+    <div className="col-span-5 max-xl:col-span-full self-center">
+      <div className="grid grid-cols-3">
+        {data.map((item, index) => (
           <div
-            key={i}
+            key={index}
             className={clsx(
-              "w-1/3 group p-4 rounded-lg select-none",
-              "transition-transform duration-500 ease-in-out",
-              "hover:bg-gray-100",
-              "border-2 border-gray-200"
+              "flex items-center justify-center gap-2 px-4 my-4 group select-none",
+              "border-r border-gray-200 last:border-r-0 first:border-l",
+              "max-xl:first:border-l-0 max-xl:m-0"
             )}
           >
-            <div className="flex items-center justify-center group-hover:text-pink-400 text-4xl transition-colors duration-300 ease-in-out">
-              {data[i].icon}
-            </div>
-            <p className="text-center text-sm mt-2 text-gray-400 font-light w-full">
-              {data[i].title.toUpperCase()}
-            </p>
+            <span
+              className={clsx(
+                "text-5xl text-gray-400",
+                "transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-emerald-400",
+                "max-lg:text-4xl max-md:text-3xl"
+              )}
+            >
+              {item.icon}
+            </span>
+            <h5 className="text-sm font-thin text-gray-500 uppercase group-hover:font-normal max-sm:hidden">
+              {item.title}
+            </h5>
           </div>
         ))}
       </div>

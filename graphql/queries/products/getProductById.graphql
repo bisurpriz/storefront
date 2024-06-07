@@ -10,6 +10,7 @@ query getProductById($id: bigint = 0) {
     price
     quantity
     is_service_free
+    delivery_time_ranges
     delivery_type
     properties
     discount_price

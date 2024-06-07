@@ -1,0 +1,21 @@
+import AccordionItem from "@/components/Accordion/AccordionItem";
+import Image from "next/image";
+import iyzico from "@/public/payment/iyzico.png";
+
+const PaymentMethods = () => {
+  return (
+    <AccordionItem
+      isOpen={false}
+      title="Ödeme Yöntemleri"
+      bordered
+      content={
+        <div className="flex items-center justify-center w-full">
+          <Image src={iyzico} alt="iyzico" width={1024} height={1024} />
+        </div>
+      }
+      className="rounded-lg"
+    />
+  );
+};
+
+export default PaymentMethods;

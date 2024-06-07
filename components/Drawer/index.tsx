@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable react-hooks/exhaustive-deps */
 import { memo, useCallback, useEffect } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";

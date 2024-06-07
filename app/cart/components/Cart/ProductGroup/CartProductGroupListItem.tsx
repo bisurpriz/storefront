@@ -1,4 +1,4 @@
-import Promotions from "@/app/products/[slug]/components/Detail/Promotions";
+import Promotions from "@/app/(feed)/[category-slug]/components/Detail/Promotions";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";

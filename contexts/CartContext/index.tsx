@@ -21,8 +21,10 @@ import toast from "react-hot-toast";
 import { updateCart } from "@/app/cart/actions";
 import useResponsive from "@/hooks/useResponsive";
 
+type AddToCart = (item: ProductForCart, type: "updateq" | "add") => void;
+
 interface CartContextType {
-  addToCart: (item: ProductForCart) => void;
+  addToCart: AddToCart;
   removeFromCart: (itemId: number) => void;
   clearCart: () => void;
   updateCartItem: (item: ProductForCart) => void;
@@ -107,7 +109,7 @@ export const CartProvider = ({
     return response;
   };
 
-  const addToCart = async (item: ProductForCart) => {
+  const addToCart: AddToCart = async (item, type) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === item.id);
 
@@ -126,16 +128,35 @@ export const CartProvider = ({
         });
       });
     } else {
-      cartItems[hasItem].quantity = item.quantity;
-      handleChangeDb(cartItems, "update").then(({ costData, error }) => {
-        if (error) return;
-        return {
-          ...cartState,
-          cartItems,
-          cost: costData,
-          count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
-        };
-      });
+      if (type === "updateq") {
+        cartItems[hasItem].quantity = item.quantity;
+        handleChangeDb(cartItems, "update").then(({ costData, error }) => {
+          if (error) return;
+          return {
+            ...cartState,
+            cartItems,
+            cost: costData,
+            count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+          };
+        });
+        return;
+      }
+
+      if (type === "add") {
+        cartItems[hasItem].quantity += 1;
+        handleChangeDb(cartItems, "update").then(({ costData, error }) => {
+          if (error) return;
+
+          dispatch({
+            type: UPDATE_CART,
+            payload: {
+              cartItems,
+              count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+              cost: costData,
+            },
+          });
+        });
+      }
     }
   };
 
@@ -175,9 +196,8 @@ export const CartProvider = ({
 
   const updateCartItem = async (item: ProductForCart) => {
     const cartItems = [...cartState.cartItems];
-    const index = cartItems.findIndex(
-      (item) => item.id === (item as ProductForCart).id
-    );
+    const index = cartItems.findIndex((t) => t.id === item.id);
+
     if (index === -1) return cartState;
     cartItems[index] = item as ProductForCart;
 

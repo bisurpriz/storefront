@@ -3,7 +3,6 @@
 import { useCart } from "@/contexts/CartContext";
 import CartHomePageButton from "../CartHomePageButton";
 import ProductGroup from "../ProductGroup";
-import { useMemo } from "react";
 import clsx from "clsx";
 
 const CartWrapper = () => {
@@ -11,17 +10,15 @@ const CartWrapper = () => {
     cartState: { cartItems },
   } = useCart();
 
-  const tenantGroupedProducts = useMemo(() => {
-    return cartItems?.reduce((acc, item) => {
-      const tenantId = item.tenant?.tenants?.[0]?.id;
-      if (acc[tenantId]) {
-        acc[tenantId].push(item);
-      } else {
-        acc[tenantId] = [item];
-      }
-      return acc;
-    }, {});
-  }, [cartItems]);
+  const tenantGroupedProducts = cartItems?.reduce((acc, item) => {
+    const tenantId = item.tenant?.tenants?.[0]?.id;
+    if (acc[tenantId]) {
+      acc[tenantId].push(item);
+    } else {
+      acc[tenantId] = [item];
+    }
+    return acc;
+  }, {});
 
   const greaterThanOne = Object.keys(tenantGroupedProducts).length > 1;
 

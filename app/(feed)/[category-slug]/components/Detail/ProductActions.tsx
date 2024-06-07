@@ -49,7 +49,7 @@ const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
         size="large"
         color="primary"
         className="text-xl max-sm:w-full max-sm:justify-center"
-        onClick={() => addToCart(product)}
+        onClick={() => addToCart(product, "add")}
       >
         Sepete Ekle
       </Button>

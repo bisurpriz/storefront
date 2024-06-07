@@ -1,5 +1,5 @@
-import { forwardRef } from 'react';
-import Button from '../Button';
+import { forwardRef } from "react";
+import Button from "../Button";
 
 export const IncrementButton = forwardRef(
   (
@@ -13,6 +13,7 @@ export const IncrementButton = forwardRef(
         className="order-1 rounded-l-none border-l-0"
         color={props.color}
         size="small"
+        disabled={props.disabled}
       />
     );
   }
@@ -30,6 +31,7 @@ export const DecrementButton = forwardRef(
         color={props.color}
         size="small"
         className="rounded-r-none border-r-0"
+        disabled={props.disabled}
       />
     );
   }

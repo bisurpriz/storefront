@@ -1,14 +1,9 @@
-import PaymentMethods from "@/app/products/[slug]/components/Detail/PaymentMethods";
-import ProductActions from "@/app/products/[slug]/components/Detail/ProductActions";
-import ProductComments from "@/app/products/[slug]/components/Detail/ProductComments";
-import ProductDescription from "@/app/products/[slug]/components/Detail/ProductDescription";
-import ProductImageCarousel from "@/app/products/[slug]/components/Detail/ProductImageCarousel";
-import ProductInformation from "@/app/products/[slug]/components/Detail/ProductInformation";
-import {
-  getPaginatedProducts,
-  getProductById,
-  getProductReviews,
-} from "@/app/products/actions";
+import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
+import ProductActions from "@/app/(feed)/[category-slug]/components/Detail/ProductActions";
+import ProductComments from "@/app/(feed)/[category-slug]/components/Detail/ProductComments";
+import ProductDescription from "@/app/(feed)/[category-slug]/components/Detail/ProductDescription";
+import ProductImageCarousel from "@/app/(feed)/[category-slug]/components/Detail/ProductImageCarousel";
+import ProductInformation from "@/app/(feed)/[category-slug]/components/Detail/ProductInformation";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import RecommendedProducts from "@/components/RecommendedProducts";
@@ -16,6 +11,11 @@ import { IMAGE_URL } from "@/contants/urls";
 import { createJSONLd } from "@/utils/createJSONLd";
 import { parseJson } from "@/utils/format";
 import { Metadata } from "next";
+import {
+  getPaginatedProducts,
+  getProductById,
+  getProductReviews,
+} from "../../actions";
 
 export async function generateMetadata({ params, searchParams }) {
   const {
@@ -95,6 +95,7 @@ export default async function ProductExample({
 
   const shippingType = product.delivery_type;
   const freeShipping = product.is_service_free;
+  const deliveryTimeRanges = product.delivery_time_ranges;
 
   const isFavorite = favorites.some((fav) => fav.id === product.id);
   return (
@@ -136,6 +137,7 @@ export default async function ProductExample({
             vendor={tenant.tenants?.[0]}
             freeShipping={freeShipping}
             shippingType={shippingType}
+            deliveryTimeRanges={deliveryTimeRanges}
           />
           <ProductActions
             product={{

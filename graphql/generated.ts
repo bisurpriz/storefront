@@ -14075,6 +14075,10 @@ export type Search_Location_Args = {
 
 /** columns and relationships of "search_location_result" */
 export type Search_Location_Result = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14110,6 +14114,8 @@ export type Search_Location_Result_Aggregate_FieldsCountArgs = {
 
 /** aggregate avg on columns */
 export type Search_Location_Result_Avg_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -14118,6 +14124,10 @@ export type Search_Location_Result_Bool_Exp = {
   _and?: InputMaybe<Array<Search_Location_Result_Bool_Exp>>;
   _not?: InputMaybe<Search_Location_Result_Bool_Exp>;
   _or?: InputMaybe<Array<Search_Location_Result_Bool_Exp>>;
+  city_id?: InputMaybe<Int_Comparison_Exp>;
+  city_name?: InputMaybe<String_Comparison_Exp>;
+  district_id?: InputMaybe<Int_Comparison_Exp>;
+  district_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   type?: InputMaybe<String_Comparison_Exp>;
@@ -14125,11 +14135,17 @@ export type Search_Location_Result_Bool_Exp = {
 
 /** input type for incrementing numeric columns in table "search_location_result" */
 export type Search_Location_Result_Inc_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "search_location_result" */
 export type Search_Location_Result_Insert_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14137,6 +14153,10 @@ export type Search_Location_Result_Insert_Input = {
 
 /** aggregate max on columns */
 export type Search_Location_Result_Max_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14144,6 +14164,10 @@ export type Search_Location_Result_Max_Fields = {
 
 /** aggregate min on columns */
 export type Search_Location_Result_Min_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
+  district_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -14159,6 +14183,10 @@ export type Search_Location_Result_Mutation_Response = {
 
 /** Ordering options when selecting data from "search_location_result". */
 export type Search_Location_Result_Order_By = {
+  city_id?: InputMaybe<Order_By>;
+  city_name?: InputMaybe<Order_By>;
+  district_id?: InputMaybe<Order_By>;
+  district_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
@@ -14166,6 +14194,14 @@ export type Search_Location_Result_Order_By = {
 
 /** select columns of table "search_location_result" */
 export type Search_Location_Result_Select_Column =
+  /** column name */
+  | 'city_id'
+  /** column name */
+  | 'city_name'
+  /** column name */
+  | 'district_id'
+  /** column name */
+  | 'district_name'
   /** column name */
   | 'id'
   /** column name */
@@ -14175,6 +14211,10 @@ export type Search_Location_Result_Select_Column =
 
 /** input type for updating data in table "search_location_result" */
 export type Search_Location_Result_Set_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14182,16 +14222,22 @@ export type Search_Location_Result_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Search_Location_Result_Stddev_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Search_Location_Result_Stddev_Pop_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Search_Location_Result_Stddev_Samp_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -14205,6 +14251,10 @@ export type Search_Location_Result_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Search_Location_Result_Stream_Cursor_Value_Input = {
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  district_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -14212,6 +14262,8 @@ export type Search_Location_Result_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type Search_Location_Result_Sum_Fields = {
+  city_id?: Maybe<Scalars['Int']['output']>;
+  district_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -14226,16 +14278,22 @@ export type Search_Location_Result_Updates = {
 
 /** aggregate var_pop on columns */
 export type Search_Location_Result_Var_Pop_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Search_Location_Result_Var_Samp_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Search_Location_Result_Variance_Fields = {
+  city_id?: Maybe<Scalars['Float']['output']>;
+  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -21076,6 +21134,27 @@ export type GetQuartersQueryVariables = Exact<{
 
 export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> };
 
+export type GetQuarterByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetQuarterByIdQuery = { quarter: Array<{ code: number, id: number, name: string, district: { id: number, code: number, name: string, city: { code: number, id: number, name: string } } }> };
+
+export type GetDistrictByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetDistrictByIdQuery = { district: Array<{ code: number, id: number, name: string, city: { name: string, id: number } }> };
+
+export type GetCityByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: string }> };
+
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21102,6 +21181,13 @@ export type GetUserByEmailQueryVariables = Exact<{
 
 
 export type GetUserByEmailQuery = { user: Array<{ id: any, provider_id?: string | null }> };
+
+export type GetLocationQueryQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetLocationQueryQuery = { search_locationv1: Array<{ id?: number | null, name?: string | null, type?: string | null, district_id?: number | null, district_name?: string | null, city_id?: number | null, city_name?: string | null }> };
 
 export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21245,7 +21331,7 @@ export type GetProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { count?: number | null, id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { count?: number | null, id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductForCartQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -21423,6 +21509,47 @@ export const GetQuartersDocument = gql`
   }
 }
     `;
+export const GetQuarterByIdDocument = gql`
+    query GetQuarterById($id: Int) @cached {
+  quarter(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    district {
+      id
+      code
+      name
+      city {
+        code
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const GetDistrictByIdDocument = gql`
+    query getDistrictById($id: Int) @cached {
+  district(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    city {
+      name
+      id
+    }
+  }
+}
+    `;
+export const GetCityByIdDocument = gql`
+    query getCityById($id: Int) {
+  city(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+  }
+}
+    `;
 export const GetUserOrdersDocument = gql`
     query getUserOrders {
   order {
@@ -21480,6 +21607,19 @@ export const GetUserByEmailDocument = gql`
   user(where: {email: {_eq: $email}}) {
     id
     provider_id
+  }
+}
+    `;
+export const GetLocationQueryDocument = gql`
+    query GetLocationQuery($search: String = "") @cached {
+  search_locationv1(args: {search: $search}, limit: 100) {
+    id
+    name
+    type
+    district_id
+    district_name
+    city_id
+    city_name
   }
 }
     `;
@@ -21756,6 +21896,7 @@ export const GetProductByIdDocument = gql`
     price
     quantity
     is_service_free
+    delivery_time_ranges
     delivery_type
     properties
     discount_price
@@ -22162,6 +22303,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getQuarters(variables?: GetQuartersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuartersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetQuartersQuery>(GetQuartersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuarters', 'query', variables);
     },
+    GetQuarterById(variables?: GetQuarterByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuarterByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetQuarterByIdQuery>(GetQuarterByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetQuarterById', 'query', variables);
+    },
+    getDistrictById(variables?: GetDistrictByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDistrictByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDistrictByIdQuery>(GetDistrictByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDistrictById', 'query', variables);
+    },
+    getCityById(variables?: GetCityByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCityByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCityByIdQuery>(GetCityByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCityById', 'query', variables);
+    },
     getUserOrders(variables?: GetUserOrdersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserOrdersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserOrdersQuery>(GetUserOrdersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserOrders', 'query', variables);
     },
@@ -22170,6 +22320,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getUserByEmail(variables: GetUserByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserByEmailQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserByEmailQuery>(GetUserByEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserByEmail', 'query', variables);
+    },
+    GetLocationQuery(variables?: GetLocationQueryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetLocationQueryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLocationQueryQuery>(GetLocationQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetLocationQuery', 'query', variables);
     },
     getAllCoupons(variables?: GetAllCouponsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllCouponsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllCouponsQuery>(GetAllCouponsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllCoupons', 'query', variables);

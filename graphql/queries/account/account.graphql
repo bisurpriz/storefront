@@ -90,6 +90,44 @@ query getQuarters($districtId: Int = 1) {
   }
 }
 
+query GetQuarterById($id: Int) @cached {
+  quarter(where: { id: { _eq: $id } }) {
+    code
+    id
+    name
+    district {
+      id
+      code
+      name
+      city {
+        code
+        id
+        name
+      }
+    }
+  }
+}
+
+query getDistrictById($id: Int) @cached {
+  district(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    city {
+      name
+      id
+    }
+  }
+}
+
+query getCityById($id: Int) {
+  city(where: { id: { _eq: $id } }) {
+    code
+    id
+    name
+  }
+}
+
 query getUserOrders {
   order {
     created_at
@@ -164,5 +202,17 @@ query getUserByEmail($email: String!) {
   user(where: { email: { _eq: $email } }) {
     id
     provider_id
+  }
+}
+
+query GetLocationQuery($search: String = "") @cached {
+  search_locationv1(args: { search: $search }, limit: 100) {
+    id
+    name
+    type
+    district_id
+    district_name
+    city_id
+    city_name
   }
 }

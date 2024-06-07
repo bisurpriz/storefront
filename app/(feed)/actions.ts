@@ -2,6 +2,8 @@
 
 import { IProductFilter } from "@/common/types/Filter/productFilter";
 import {
+  GetLocationQueryDocument,
+  GetLocationQueryQuery,
   GetProductByIdDocument,
   GetProductByIdQuery,
   GetProductReviewsDocument,
@@ -62,6 +64,28 @@ export const getProductReviews = async ({
       },
     },
   });
-  console.log(data, "data bu");
   return data;
+};
+
+export const searchLocation = async (location: string) => {
+  try {
+    const {
+      data: { search_locationv1: locations },
+    } = await query<GetLocationQueryQuery>({
+      query: GetLocationQueryDocument,
+      variables: {
+        location,
+      },
+    });
+
+    return {
+      locations,
+      message: "Success",
+    };
+  } catch (error) {
+    return {
+      locations: [],
+      message: error.message,
+    };
+  }
 };
