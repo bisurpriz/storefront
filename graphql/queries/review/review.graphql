@@ -70,3 +70,25 @@ mutation createReview($comment: String!, $score: Int!, $product_id: Int!) {
     created_at
   }
 }
+
+query getProductReviews($productId: Int, $limit: Int = 10, $offset: Int = 0) {
+  review(
+    where: { product_id: { _eq: $productId } }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    comment
+    score
+    created_at
+    user {
+      firstname
+      lastname
+    }
+  }
+  review_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

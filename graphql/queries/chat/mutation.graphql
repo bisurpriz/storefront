@@ -1,5 +1,5 @@
-mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!) {
-  insert_message_one(object: { receiver_id: $receiver_id, message: $message, chat_thread: { data: { order_tenant_id: $order_tenant_id, tenat_id: $receiver_id }, on_conflict: { constraint: chat_thread_order_tenant_id_key, update_columns: [user_id] } } }) {
+mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!, $user_id: uuid!) {
+  insert_message_one(object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id, user_id: $user_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: []}}}) {
     created_at
     chat_thread {
       tenat_id
@@ -7,6 +7,7 @@ mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_
     }
   }
 }
+
 
 mutation sendMessage($message: String!, $receiver_id: uuid!, $chat_thread_id: uuid!) {
   insert_message_one(object: { receiver_id: $receiver_id, message: $message, chat_thread_id: $chat_thread_id }) {

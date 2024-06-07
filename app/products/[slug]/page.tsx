@@ -1,4 +1,4 @@
-import { getProductById } from "../actions";
+import { getProductById, getProductReviews } from "../actions";
 import { IMAGE_URL } from "@/contants/urls";
 import ProductImageCarousel from "./components/Detail/ProductImageCarousel";
 import ProductInformation from "./components/Detail/ProductInformation";
@@ -50,6 +50,14 @@ const ProductDetail = async ({
   const { product } = await getProductById({
     id: Number(slug),
   });
+
+  const { review, review_aggregate } = await getProductReviews({
+    productId: product.id,
+    limit: 10,
+    offset: 0,
+  });
+
+  console.log(review, review_aggregate, "aaa");
 
   const isFavoriteForCurrentUser = product.user_favorites.length > 0;
 

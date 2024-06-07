@@ -19,10 +19,12 @@ export const startMessageForOrder = async ({
   message,
   receiver_id,
   order_tenant_id,
+  user_id
 }: {
   message: string;
   receiver_id: string;
   order_tenant_id: number;
+  user_id: string;
 }) => {
   const { data } = await mutate<SendMessageAloneMutation>({
     mutation: SendMessageAloneDocument,
@@ -30,6 +32,7 @@ export const startMessageForOrder = async ({
       message,
       receiver_id,
       order_tenant_id,
+      user_id,
     },
   });
   const { insert_message_one } = data;
