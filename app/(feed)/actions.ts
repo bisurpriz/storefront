@@ -6,6 +6,9 @@ import {
   GetLocationQueryQuery,
   GetProductByIdDocument,
   GetProductByIdQuery,
+  GetProductReviewsDocument,
+  GetProductReviewsQuery,
+  GetProductReviewsQueryVariables,
   GetProductsWithPaginationDocument,
   GetProductsWithPaginationQuery,
 } from "@/graphql/generated";
@@ -40,6 +43,28 @@ export const getProductById = async ({ id }: { id: number }) => {
   return {
     product: data.product,
   };
+};
+
+export const getProductReviews = async ({
+  productId,
+  limit = 10,
+  offset = 0,
+}: GetProductReviewsQueryVariables) => {
+  const { data } = await query<GetProductReviewsQuery>({
+    query: GetProductReviewsDocument,
+    variables: {
+      productId,
+      limit,
+      offset,
+    },
+    fetchPolicy: "no-cache",
+    context: {
+      fetchOptions: {
+        next: { revalidate: 5 },
+      },
+    },
+  });
+  return data;
 };
 
 export const searchLocation = async (location: string) => {

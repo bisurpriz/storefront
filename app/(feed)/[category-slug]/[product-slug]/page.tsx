@@ -11,7 +11,11 @@ import { IMAGE_URL } from "@/contants/urls";
 import { createJSONLd } from "@/utils/createJSONLd";
 import { parseJson } from "@/utils/format";
 import { Metadata } from "next";
-import { getPaginatedProducts, getProductById } from "../../actions";
+import {
+  getPaginatedProducts,
+  getProductById,
+  getProductReviews,
+} from "../../actions";
 
 export async function generateMetadata({ params, searchParams }) {
   const {
@@ -53,6 +57,14 @@ export default async function ProductExample({
   } = await getProductById({
     id: Number(productId),
   });
+
+  const { review, review_aggregate } = await getProductReviews({
+    productId: parseInt(productId as string, 10),
+    limit: 10,
+    offset: 0,
+  });
+
+  console.log(review, review_aggregate, "aaa");
 
   const { products: categoryProducts } = await getPaginatedProducts({
     offset: 0,
@@ -192,17 +204,15 @@ export default async function ProductExample({
         aria-describedby="Yorumlar"
       >
         <ProductComments
-          comments={Array.from({ length: 5 }).map((_, index) => ({
-            comment:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-            createdAt: "2021-08-10T12:00:00.000Z",
-            firstName: "John",
-            lastName: "Doe",
-            user_id: index,
-            rate: 5,
+          comments={review.map((rw, index) => ({
+            comment: rw.comment,
+            createdAt: rw.created_at,
+            firstName: rw.user.firstname.slice(0, 1) + "***",
+            lastName: rw.user.lastname.slice(0, 1) + "***",
+            user_id: 0,
+            rate: rw.score,
             user_image_url: "https://picsum.photos/200/300",
-            comment_id: index,
-            email: "john@doe.com",
+            comment_id: rw.id,
           }))}
         />
         <script
