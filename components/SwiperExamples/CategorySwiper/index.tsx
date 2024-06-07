@@ -7,6 +7,7 @@ import { useMeasure } from "@uidotdev/usehooks";
 import Card from "../../Card";
 import { GetMainCategoriesQuery } from "@/graphql/generated";
 import Link from "next/link";
+import clsx from "clsx";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
@@ -22,7 +23,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       <Card bordered={false} contentClass="!p-0">
         <CustomSwiper
           direction="horizontal"
-          slidePerView={Math.floor(width / 90) || 10}
+          slidePerView={Math.floor(width / 180) || 10}
           spaceBetween={20}
           navigation={true}
           slideItems={categories.map((item, i) => ({
@@ -31,13 +32,16 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
               <div className="flex-shrink-0 group">
                 <Link className="block w-full" href={`/${item.slug}`}>
                   <Image
-                    src="https://source.unsplash.com/random/80x80"
+                    src="https://source.unsplash.com/random/200x200"
                     alt={item.name}
-                    width={80}
-                    height={80}
-                    className="rounded-full object-contain w-full aspect-square group-hover:opacity-80 transition-opacity"
+                    width={160}
+                    height={160}
+                    className={clsx(
+                      "w-40 h-40 mx-auto rounded-xl",
+                      "group-hover:shadow-lg transition-shadow duration-200"
+                    )}
                   />
-                  <p className="mt-2 text-center font-normal text-xs leading-none font-monrope">
+                  <p className="mt-2 text-center font-normal text-sm leading-none font-monrope">
                     {item.name}
                   </p>
                 </Link>

@@ -3,12 +3,23 @@
 import {
   GetBannersDocument,
   GetBannersQuery,
+  GetCityByIdDocument,
+  GetCityByIdQuery,
+  GetCityByIdQueryVariables,
+  GetDistrictByIdDocument,
+  GetDistrictByIdQuery,
+  GetDistrictByIdQueryVariables,
+  GetQuarterByIdDocument,
+  GetQuarterByIdQuery,
+  GetQuarterByIdQueryVariables,
   GetVendorByIdDocument,
   GetVendorByIdQuery,
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
 import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
+import { parseJson } from "@/utils/format";
+import { Location } from "@/common/types/Addresses/addresses";
 
 export async function readIdFromCookies() {
   const auth = cookies();
@@ -80,12 +91,12 @@ export async function getBanners() {
   };
 }
 
-export async function getQuarterCodeFromCookies(): Promise<string | null> {
-  const quarterCode = await cookies().get(CookieTokens.QUARTER_CODE).value;
+export async function getLocationFromCookie(): Promise<Location | null> {
+  const value = await cookies().get(CookieTokens.LOCATION_ID)?.value;
 
-  if (!quarterCode) null;
+  if (!value) return null;
 
-  return quarterCode;
+  return parseJson(value);
 }
 
 export const getIpAddress = async () => {
@@ -117,4 +128,46 @@ export const getGeoLocation = async () => {
   console.log(geo);
 
   return geo;
+};
+
+export const getQuarterById = async ({ id }) => {
+  if (!id) return;
+
+  const { data } = await query<
+    GetQuarterByIdQuery,
+    GetQuarterByIdQueryVariables
+  >({
+    query: GetQuarterByIdDocument,
+    variables: {
+      id: id && Number(id),
+    },
+  });
+  return data;
+};
+
+export const getDistrictById = async ({ id }) => {
+  if (!id) return;
+
+  const { data } = await query<
+    GetDistrictByIdQuery,
+    GetDistrictByIdQueryVariables
+  >({
+    query: GetDistrictByIdDocument,
+    variables: {
+      id: id && Number(id),
+    },
+  });
+  return data;
+};
+
+export const getCityById = async ({ id }) => {
+  if (!id) return;
+
+  const { data } = await query<GetCityByIdQuery, GetCityByIdQueryVariables>({
+    query: GetCityByIdDocument,
+    variables: {
+      id: id && Number(id),
+    },
+  });
+  return data;
 };

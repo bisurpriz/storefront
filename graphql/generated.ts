@@ -21135,11 +21135,25 @@ export type GetQuartersQueryVariables = Exact<{
 export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> };
 
 export type GetQuarterByIdQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
+  id?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetQuarterByIdQuery = { quarter_by_pk?: { name: string, code: number, id: number, district: { name: string, city: { name: string } } } | null };
+export type GetQuarterByIdQuery = { quarter: Array<{ code: number, id: number, name: string, district: { id: number, code: number, name: string, city: { code: number, id: number, name: string } } }> };
+
+export type GetDistrictByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetDistrictByIdQuery = { district: Array<{ code: number, id: number, name: string, city: { name: string, id: number } }> };
+
+export type GetCityByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: string }> };
 
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21486,17 +21500,43 @@ export const GetQuartersDocument = gql`
 }
     `;
 export const GetQuarterByIdDocument = gql`
-    query GetQuarterById($id: Int!) {
-  quarter_by_pk(id: $id) {
-    name
+    query GetQuarterById($id: Int) @cached {
+  quarter(where: {id: {_eq: $id}}) {
     code
     id
+    name
     district {
+      id
+      code
+      name
       city {
+        code
+        id
         name
       }
-      name
     }
+  }
+}
+    `;
+export const GetDistrictByIdDocument = gql`
+    query getDistrictById($id: Int) @cached {
+  district(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    city {
+      name
+      id
+    }
+  }
+}
+    `;
+export const GetCityByIdDocument = gql`
+    query getCityById($id: Int) {
+  city(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
   }
 }
     `;
@@ -22234,8 +22274,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getQuarters(variables?: GetQuartersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuartersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetQuartersQuery>(GetQuartersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuarters', 'query', variables);
     },
-    GetQuarterById(variables: GetQuarterByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuarterByIdQuery> {
+    GetQuarterById(variables?: GetQuarterByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuarterByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetQuarterByIdQuery>(GetQuarterByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetQuarterById', 'query', variables);
+    },
+    getDistrictById(variables?: GetDistrictByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDistrictByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDistrictByIdQuery>(GetDistrictByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDistrictById', 'query', variables);
+    },
+    getCityById(variables?: GetCityByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCityByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCityByIdQuery>(GetCityByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCityById', 'query', variables);
     },
     getUserOrders(variables?: GetUserOrdersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserOrdersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserOrdersQuery>(GetUserOrdersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserOrders', 'query', variables);

@@ -10,9 +10,11 @@ import {
 import Autocomplete from "../Autocomplete/Autocomplete4Haz";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 import Cookies from "js-cookie";
+import { CookieTokens } from "@/app/@auth/contants";
+import clsx from "clsx";
 
 type QuarterSelectorProps = {
-  value: any;
+  value?: any;
 };
 
 const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
@@ -36,13 +38,19 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
   };
 
   return (
-    <label className="flex-1 basis-full">
+    <label className={clsx("max-xl:col-span-full")}>
       <Autocomplete
         value={value}
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => {
-          if (selectedValue?.id)
-            Cookies.set("selectedLocation", selectedValue.id);
+          if (selectedValue?.id && selectedValue?.type)
+            Cookies.set(
+              CookieTokens.LOCATION_ID,
+              JSON.stringify({
+                id: selectedValue.id,
+                type: selectedValue.type,
+              })
+            );
         }}
         getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"
