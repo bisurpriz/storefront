@@ -90,27 +90,18 @@ export default async function Page() {
         </div>
       }
     >
-      <div className="grid grid-cols-12 gap-4 w-full mb-4">
+      <div
+        className={clsx(
+          "grid grid-cols-12 gap-4 w-full mb-4",
+          "bg-white p-4 rounded-md border border-gray-100"
+        )}
+      >
         <div
           className={clsx(
-            "col-span-8 max-xl:col-span-full text-left",
-            "w-full flex flex-col gap-3",
-            "bg-purple-50 rounded-xl shadow-sm p-4",
-            "border border-purple-100"
+            "col-span-7 max-xl:col-span-full self-center",
+            "text-2xl font-semibold text-gray-800"
           )}
         >
-          <h1
-            className={clsx(
-              "text-2xl font-semibold text-lime-500",
-              "max-xl:text-lg",
-              "font-sans"
-            )}
-          >
-            Gönderim Yapmak İstediğiniz Bölgeyi Seçin,{" "}
-            <span className="text-secondary-light">
-              en güzel hediyeleri keşfedin.
-            </span>
-          </h1>
           <QuarterSelector value={value} />
         </div>
         <LandingSearchBanner />
