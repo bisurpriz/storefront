@@ -1,8 +1,8 @@
-'use client';
-import { useRef } from 'react';
-import { BsSearch } from 'react-icons/bs';
-import Button from '../Button';
-import TextField from '../TextField';
+"use client";
+import { useRef } from "react";
+import { BsSearch } from "react-icons/bs";
+import Button from "../Button";
+import TextField from "../TextField";
 
 const Search = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -11,16 +11,19 @@ const Search = () => {
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative max-w-xl w-full mx-auto">
       <TextField
         type="text"
-        className="!w-full !h-10 !pl-4 !pr-10 !text-sm !rounded-full"
+        className=""
         placeholder="Çiçek, hediye, süprizler..."
         ref={ref}
       />
       <Button
-        className="!absolute !top-0 !right-0 !w-10 !h-10 !mt-0 !mr-0 !rounded-full !p-0 !justify-center z-0"
+        className={
+          "!absolute !top-0 !right-0  !text-white !h-full !rounded-l-none"
+        }
         onFocus={handleFocus}
+        variant="fullfilled"
       >
         <BsSearch />
       </Button>

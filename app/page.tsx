@@ -90,6 +90,7 @@ export default async function Page() {
         </div>
       }
     >
+      <CategorySwiper categories={category} />
       <div
         className={clsx(
           "grid grid-cols-12 gap-4 w-full mb-4",
@@ -106,7 +107,6 @@ export default async function Page() {
         </div>
         <LandingSearchBanner />
       </div>
-      <CategorySwiper categories={category} />
       <CampaignGrid banners={banners} />
       <View1 />
     </Suspense>
