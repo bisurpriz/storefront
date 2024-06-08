@@ -23,7 +23,7 @@ const AltTextWithData = ({
       break;
     case "account": {
       const user = data as User;
-      if (user.firstname) {
+      if (user?.firstname) {
         altText = getUsernameWithSurname(user);
       } else altText = "Giriş Yap";
       break;
