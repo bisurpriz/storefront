@@ -32,7 +32,7 @@ const StickyHeader: FC<StickyHeaderProps> = ({ children, secondChildren }) => {
 
   if (pathname !== "/")
     return (
-      <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
+      <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start">
         {children}
       </div>
     );
@@ -41,7 +41,7 @@ const StickyHeader: FC<StickyHeaderProps> = ({ children, secondChildren }) => {
     <>
       {/* Küçük sticky header çıkacak */}
       <motion.header style={{ y: transform }}>
-        <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
+        <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start">
           {children}
         </div>
       </motion.header>
@@ -56,7 +56,7 @@ const StickyHeader: FC<StickyHeaderProps> = ({ children, secondChildren }) => {
             transition={{ duration: 0.2 }}
             className="sticky top-0 z-10 bg-white"
           >
-            <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start max-sm:flex-col-reverse">
+            <div className="md:container mx-auto z-10 leading-none flex flex-col items-center justify-start">
               {secondChildren}
             </div>
           </motion.header>

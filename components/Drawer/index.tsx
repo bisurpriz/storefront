@@ -70,7 +70,7 @@ const Drawer: React.FC<DrawerProps> = ({
   return (
     <div
       id={`dialog-${placement}`}
-      className="relative z-10"
+      className="relative z-[13]"
       aria-labelledby="slide-over"
       role="dialog"
       aria-modal="true"
