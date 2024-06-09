@@ -264,7 +264,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           value={userInput}
           className={clsx(
             "w-full p-3 pl-10 pr-16 border rounded-lg shadow-sm shadow-gray-100 cursor-pointer text-lg font-normal font-manrope",
-            "focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent",
             "hover:shadow-md transition duration-200 hover:shadow-gray-100",
             "placeholder:opacity-50 placeholder-gray-700 placeholder:text-lg",
             { "border border-2 text-primary border-primary": selectedValue }

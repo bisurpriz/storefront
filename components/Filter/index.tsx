@@ -85,7 +85,8 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
     <div className={clsx("w-full")}>
       <div
         className={clsx(
-          "flex items-center justify-start gap-2 scroll-smooth max-md:overflow-auto"
+          "flex items-center justify-start gap-2 scroll-smooth max-md:overflow-x-auto",
+          "scroll-smooth snap-x snap-mandatory no-scrollbar"
         )}
       >
         <VisibleChecker filterType="category" filterTypes={filterTypes}>
