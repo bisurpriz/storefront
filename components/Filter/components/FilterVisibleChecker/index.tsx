@@ -1,6 +1,5 @@
 export const VisibleChecker = ({ filterType, filterTypes, children }) => {
   if (filterTypes.includes(filterType)) {
-    return children;
+    return <span className="snap-start">{children}</span>;
   }
-  return null;
 };

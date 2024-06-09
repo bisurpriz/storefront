@@ -1,10 +1,10 @@
 "use client";
 
-import { User } from "next-auth";
+import { GetUserByIdQuery } from "@/graphql/generated";
 import { ReactNode, createContext, useContext, useMemo } from "react";
 
 interface AuthContextType {
-  user: User | null;
+  user: GetUserByIdQuery["user_by_pk"] | null;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -16,7 +16,7 @@ export const AuthProvider = ({
   user,
 }: {
   children: ReactNode;
-  user: User;
+  user: GetUserByIdQuery["user_by_pk"];
 }) => {
   const memoized = useMemo(() => ({ user }), [user]);
 

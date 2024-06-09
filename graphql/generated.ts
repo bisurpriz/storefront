@@ -21277,6 +21277,7 @@ export type SendMessageAloneMutationVariables = Exact<{
   message: Scalars['String']['input'];
   receiver_id: Scalars['uuid']['input'];
   order_tenant_id: Scalars['bigint']['input'];
+  user_id: Scalars['uuid']['input'];
 }>;
 
 
@@ -21385,6 +21386,15 @@ export type CreateReviewMutationVariables = Exact<{
 
 
 export type CreateReviewMutation = { insert_review_one?: { created_at: any } | null };
+
+export type GetProductReviewsQueryVariables = Exact<{
+  productId?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, user: { firstname?: string | null, lastname?: string | null } }>, review_aggregate: { aggregate?: { count: number } | null } };
 
 export type GetVendorByIdQueryVariables = Exact<{
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -21767,9 +21777,9 @@ export const GetAllCategoriesDocument = gql`
 }
     `;
 export const SendMessageAloneDocument = gql`
-    mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!) {
+    mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!, $user_id: uuid!) {
   insert_message_one(
-    object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: [user_id]}}}
+    object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id, user_id: $user_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: []}}}
   ) {
     created_at
     chat_thread {
@@ -22175,6 +22185,25 @@ export const CreateReviewDocument = gql`
   }
 }
     `;
+export const GetProductReviewsDocument = gql`
+    query getProductReviews($productId: Int, $limit: Int = 10, $offset: Int = 0) {
+  review(where: {product_id: {_eq: $productId}}, limit: $limit, offset: $offset) {
+    id
+    comment
+    score
+    created_at
+    user {
+      firstname
+      lastname
+    }
+  }
+  review_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
 export const GetVendorByIdDocument = gql`
     query getVendorById($id: bigint = 0) {
   product: product_by_pk(id: $id) {
@@ -22375,6 +22404,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     createReview(variables: CreateReviewMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateReviewMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateReviewMutation>(CreateReviewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createReview', 'mutation', variables);
+    },
+    getProductReviews(variables?: GetProductReviewsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductReviewsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductReviewsQuery>(GetProductReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductReviews', 'query', variables);
     },
     getVendorById(variables?: GetVendorByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetVendorByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetVendorByIdQuery>(GetVendorByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getVendorById', 'query', variables);

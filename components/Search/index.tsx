@@ -1,29 +1,43 @@
-'use client';
-import { useRef } from 'react';
-import { BsSearch } from 'react-icons/bs';
-import Button from '../Button';
-import TextField from '../TextField';
+"use client";
 
-const Search = () => {
+import { FC, useRef } from "react";
+import { BsSearch } from "react-icons/bs";
+import TextField from "../TextField";
+import clsx from "clsx";
+
+type Props = {
+  className?: string;
+};
+
+const Search: FC<Props> = ({ className }) => {
   const ref = useRef<HTMLInputElement>(null);
   const handleFocus = () => {
     ref.current?.focus();
   };
 
   return (
-    <div className="relative w-full">
+    <div
+      className={clsx("relative max-w-xl w-full mx-auto", {
+        [className]: className,
+      })}
+    >
       <TextField
         type="text"
-        className="!w-full !h-10 !pl-4 !pr-10 !text-sm !rounded-full"
+        className=""
         placeholder="Çiçek, hediye, süprizler..."
         ref={ref}
       />
-      <Button
-        className="!absolute !top-0 !right-0 !w-10 !h-10 !mt-0 !mr-0 !rounded-full !p-0 !justify-center z-0"
+      <button
+        className={clsx(
+          "absolute right-0 top-0 h-full bg-primary text-white rounded-r-lg py-2 px-10",
+          "flex items-center justify-center outline-none",
+          "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
+          "transition-all duration-300 group"
+        )}
         onFocus={handleFocus}
       >
-        <BsSearch />
-      </Button>
+        <BsSearch className="group-hover:animate-bounce text-lg" />
+      </button>
     </div>
   );
 };

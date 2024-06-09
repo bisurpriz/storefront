@@ -8,6 +8,8 @@ import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import { GetUserOrdersQuery } from "@/graphql/generated";
+import { readIdFromCookies } from "@/app/actions";
+import { User } from "@/common/types/User/user";
 
 const OrderMessage = ({
   tenant,
@@ -21,10 +23,13 @@ const OrderMessage = ({
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
+    const { id } = (await readIdFromCookies()) as unknown as User;
+    console.log("id", id);
     const response = await startMessageForOrder({
       message,
       receiver_id: tenant.tenants?.[0].id,
       order_tenant_id: orderTenantId,
+      user_id: id,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(

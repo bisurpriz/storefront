@@ -7,6 +7,5 @@ interface MenuItem {
 
 interface MenuProps {
   items: MenuItem[] | undefined;
-  orientation?: 'horizontal' | 'vertical';
   className?: string;
 }

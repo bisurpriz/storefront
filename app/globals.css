@@ -16,7 +16,15 @@
     min-height: calc(100vh - 215px);
   }
 
-  /* Multi Range Input */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
 
   .slider {
     @apply relative p-4 bg-gray-50 rounded-lg border border-gray-200;

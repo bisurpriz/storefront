@@ -1,6 +1,6 @@
 "use client";
 
-import Tooltip from "@/components/Tooltip";
+import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiOutlineUnlock, AiOutlineUser } from "react-icons/ai";
@@ -58,28 +58,34 @@ const AccountNavigation = () => {
 
   return (
     <nav
-      className="flex flex-col gap-2 sticky inset-y-5"
+      className={clsx(
+        "flex flex-col gap-2 sticky top-0 left-0 inset-y-5",
+        "max-md:flex-row max-md:justify-start max-md:items-start max-md:gap-4",
+        "max-md:overflow-x-auto max-md:text-sm no-scrollbar",
+        "snap-x snap-mandatory"
+      )}
       aria-label="Account Navigation"
       role="navigation"
     >
       {accountNavigationItems.map((item, index) => (
-        <Tooltip key={item.link} content={item.title} position="right">
-          <Link
-            key={index}
-            className={`flex items-center gap-2 p-2 rounded-md hover:bg-7 hover:text-white transition-all duration-200 max-md:justify-center ${
-              pathname === item.link
-                ? "bg-7 text-white"
-                : "bg-white text-gray-700"
-            }`}
-            as={item.link}
-            href={item.link}
-            aria-current={pathname === item.link ? "page" : undefined}
-            aria-label={item.title}
-          >
-            <item.icon size={24} />
-            <span className="max-md:hidden">{item.title}</span>
-          </Link>
-        </Tooltip>
+        <Link
+          key={index}
+          className={clsx(
+            "flex items-center gap-2 p-2 rounded-md  snap-start",
+            "max-md:flex-col",
+            {
+              "bg-primary text-white": pathname === item.link,
+              "hover:bg-gray-100": pathname !== item.link,
+            }
+          )}
+          as={item.link}
+          href={item.link}
+          aria-current={pathname === item.link ? "page" : undefined}
+          aria-label={item.title}
+        >
+          <item.icon size={24} />
+          <span>{item.title}</span>
+        </Link>
       ))}
     </nav>
   );

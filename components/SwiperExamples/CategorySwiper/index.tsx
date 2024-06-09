@@ -23,7 +23,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       <Card bordered={false} contentClass="!p-0">
         <CustomSwiper
           direction="horizontal"
-          slidePerView={Math.floor(width / 180) || 10}
+          slidePerView={Math.floor(width / 140) || 10}
           spaceBetween={20}
           navigation={true}
           slideItems={categories.map((item, i) => ({
@@ -34,8 +34,8 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
                   <Image
                     src="https://source.unsplash.com/random/200x200"
                     alt={item.name}
-                    width={160}
-                    height={160}
+                    width={120}
+                    height={120}
                     className={clsx(
                       "w-40 h-40 mx-auto rounded-xl",
                       "group-hover:shadow-lg transition-shadow duration-200"
