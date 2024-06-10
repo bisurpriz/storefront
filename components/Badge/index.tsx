@@ -1,48 +1,58 @@
+"use client";
+
 import clsx from "clsx";
-import { Badge as BaseBadge, BadgeProps } from "@mui/base/Badge";
-import { forwardRef } from "react";
+import React, { FC } from "react";
+import { motion } from "framer-motion";
+import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 
-const resolveSlotProps = (fn: any, args: any) =>
-  typeof fn === "function" ? fn(args) : fn;
+const badgeVariants = {
+  hidden: { scale: 0, right: 0, top: 0, translateY: "-50%", translateX: "50%" },
+  visible: {
+    scale: 1,
+    right: 0,
+    top: 0,
+    translateY: "-50%",
+    translateX: "50%",
+  },
+};
 
-const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
+export type BadgeProps = {
+  show?: boolean;
+  children?: React.ReactNode;
+  text: string | number;
+};
+
+const Badge: FC<BadgeProps> = ({ children, show, text }) => {
   return (
-    <BaseBadge
-      ref={ref}
-      {...props}
-      badgeContent={props.badgeContent}
-      slotProps={{
-        ...props.slotProps,
-        root: (ownerState) => {
-          const resolvedSlotProps = resolveSlotProps(
-            props.slotProps?.root,
-            ownerState
-          );
-          return {
-            ...resolvedSlotProps,
-            className: clsx(
-              "box-border m-0 p-0 text-xs list-none relative inline-block leading-none",
-              resolvedSlotProps?.className
-            ),
-          };
-        },
-        badge: (ownerState) => {
-          const resolvedSlotProps = resolveSlotProps(
-            props.slotProps?.badge,
-            ownerState
-          );
-          return {
-            ...resolvedSlotProps,
-            className: clsx(
-              "z-auto absolute flex items-center justify-center top-3 right-3 min-w-[22px] min-h-[22px] font-sans p-0 text-white font-semibold font-xs font-sans rounded-xl bg-secondary leading-5.5 whitespace-nowrap text-center translate-x-1/2 -translate-y-1/2 drop-shadow-lg origin-right",
-              resolvedSlotProps?.className,
-              props.badgeContent === 0 ? "hidden" : ""
-            ),
-          };
-        },
-      }}
-    />
+    <span
+      className={clsx(
+        "relative",
+        "flex",
+        "items-center",
+        "justify-center",
+        "gap-2",
+        "p-0"
+      )}
+    >
+      {children}
+      <AnimationExitProvider show={show}>
+        <motion.span
+          className={clsx(
+            "absolute right-0 top-0",
+            "flex items-center justify-center",
+            "w-4 h-4 rounded-full bg-primary",
+            "text-xs text-white font-mono"
+          )}
+          variants={badgeVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          {text}
+        </motion.span>
+      </AnimationExitProvider>
+    </span>
   );
-});
+};
 
 export default Badge;
