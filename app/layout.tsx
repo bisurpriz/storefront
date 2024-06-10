@@ -31,7 +31,6 @@ import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import HeaderMiddle from "@/components/Layout/Header/Middle";
-import Footer from "@/components/Layout/Footer";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -147,7 +146,6 @@ export default async function RootLayout({
                   <Header category={category} />
                 </StickyHeader>
                 <Content>{children}</Content>
-                <Footer />
                 {auth}
                 <Listener />
               </CartProvider>

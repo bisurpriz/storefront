@@ -97,6 +97,12 @@ const nextConfig = {
         pathname: "/**",
         port: "",
       },
+      {
+        hostname: "www.eticaret.gov.tr",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
     ],
   },
 };
