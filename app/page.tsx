@@ -94,7 +94,8 @@ export default async function Page() {
       <div
         className={clsx(
           "grid grid-cols-12 gap-4 w-full mb-4",
-          "bg-white p-4 rounded-md border border-gray-100"
+          "bg-white p-4 rounded-md border border-gray-100",
+          "max-md:p-0 max-md:border-none"
         )}
       >
         <div

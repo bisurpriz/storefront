@@ -21,7 +21,7 @@ const data = [
 
 const LandingSearchBanner = () => {
   return (
-    <div className="col-span-5 max-xl:col-span-full self-center">
+    <div className="col-span-5 max-xl:col-span-full self-center max-md:hidden">
       <div className="grid grid-cols-3">
         {data.map((item, index) => (
           <div
