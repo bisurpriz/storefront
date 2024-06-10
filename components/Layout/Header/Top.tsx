@@ -4,15 +4,15 @@ import { Suspense } from "react";
 const headerTopLeftMenu = [
   {
     label: "Hakkımızda",
-    link: "about-us",
+    link: "hakkimizda",
   },
   {
     label: "Hesabım",
-    link: "my-account",
+    link: "account",
   },
   {
     label: "İletişim",
-    link: "contact-us",
+    link: "iletisim",
   },
   {
     label: "Sipariş Takibi",

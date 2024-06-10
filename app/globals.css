@@ -9,11 +9,11 @@
 
 @layer components {
   .content-height {
-    min-height: calc(100vh - 197px);
+    min-height: calc(100vh - 130px);
   }
 
   .content-height-sm {
-    min-height: calc(100vh - 215px);
+    min-height: calc(100vh - 108px);
   }
 
   .no-scrollbar::-webkit-scrollbar {

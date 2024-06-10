@@ -7,7 +7,7 @@ import {
   GetLocationQueryQuery,
   GetLocationQueryQueryVariables,
 } from "@/graphql/generated";
-import Autocomplete from "../Autocomplete/Autocomplete4Haz";
+import Autocomplete from "../Autocomplete/Autocomplete";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
