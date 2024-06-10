@@ -17,7 +17,7 @@ const Content = ({ children }: ContentProps) => {
       }
     >
       <Toaster />
-      <main className="content-height max-sm:content-height-sm h-full md:container pt-4 mx-auto px-4 scroll-smooth overflow-hidden flex flex-col max-sm:mb-[78px]">
+      <main className="content-height max-sm:content-height-sm h-full md:container pt-4 mx-auto px-4 scroll-smooth overflow-hidden flex flex-col mb-10 max-md:mb-20 max-sm:mb-16">
         {children}
         <MobileBottomNav />
       </main>
