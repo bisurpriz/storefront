@@ -64,8 +64,6 @@ export default async function ProductExample({
     offset: 0,
   });
 
-  console.log(review, review_aggregate, "aaa");
-
   const { products: categoryProducts } = await getPaginatedProducts({
     offset: 0,
     category_slug: params["category-slug"],

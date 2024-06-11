@@ -29,7 +29,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
           selectedCategories.map((category) => (
             <SelectedFilterTag
               id={`category-${category.value}`}
-              key={category.value}
+              key={`category-${category.value}`}
               label={category.key}
               onClear={() => onClear("category", category.value)}
             />
@@ -38,6 +38,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
         {!!price.value && (
           <SelectedFilterTag
             id={"price"}
+            key={"price"}
             label={price.key}
             onClear={() => onClear("price", "")}
           />
@@ -45,6 +46,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
 
         {!!sameDayDelivery && (
           <SelectedFilterTag
+            key={"sameDayDelivery"}
             id={"sameDayDelivery"}
             label="Aynı gün teslimat"
             onClear={() => onClear("sameDayDelivery", "")}
@@ -52,6 +54,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
         )}
         {!!specialOffers && (
           <SelectedFilterTag
+            key={"specialOffers"}
             id={"specialOffers"}
             label="Özel teslimat"
             onClear={() => onClear("specialOffers", "")}
@@ -59,6 +62,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
         )}
         {!!customizable && (
           <SelectedFilterTag
+            key={"customizable"}
             id={"customizable"}
             label="Özelleştirilebilir"
             onClear={() => onClear("customizable", "")}
