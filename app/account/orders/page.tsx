@@ -26,7 +26,7 @@ const OrdersPage = async () => {
 
                   <p className="text-sm">
                     Toplam:{" "}
-                    <span className="text-sm font-bold font-sans text-primary">
+                    <span className="text-sm font-bold font-sans text-secondary">
                       {order?.total_amount?.toFixed(2)} ₺
                     </span>
                   </p>
@@ -36,7 +36,7 @@ const OrdersPage = async () => {
                   <Button
                     type="button"
                     size="small"
-                    color="primary"
+                    color="secondary"
                     className="xl:mt-0 xl:ml-3"
                     label="Detaylar"
                   />
@@ -49,7 +49,7 @@ const OrdersPage = async () => {
 
               <p className="text-sm text-right">
                 Siparişinizde toplam{" "}
-                <span className="text-base font-bold font-sans text-primary">
+                <span className="text-base font-bold font-sans text-secondary">
                   {totalProducts}
                 </span>{" "}
                 ürün bulunmaktadır.

@@ -43,7 +43,7 @@ const OrderMessage = ({
     <>
       <Button
         variant="outlined"
-        color="primary"
+        color="secondary"
         size="small"
         onClick={() => {
           setOpen(true);

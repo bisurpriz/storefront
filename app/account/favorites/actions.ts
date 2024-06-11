@@ -1,22 +1,36 @@
-'use server';
+"use server";
 
-import { AddToFavoritesDocument, AddToFavoritesMutation, GetUserFavoritesDocument, GetUserFavoritesQuery, RemoveFromFavoritesDocument, RemoveFromFavoritesMutation } from '@/graphql/generated';
-import { getClient, query } from '@/graphql/lib/client';
+import {
+  AddToFavoritesDocument,
+  AddToFavoritesMutation,
+  GetUserFavoritesDocument,
+  GetUserFavoritesQuery,
+  GetUserFavoritesQueryVariables,
+  RemoveFromFavoritesDocument,
+  RemoveFromFavoritesMutation,
+} from "@/graphql/generated";
+import { getClient, query } from "@/graphql/lib/client";
 
-
-export const getUserFavorites = async <T>({ offset }: { offset: number }) => {
-  const { data } = await query<GetUserFavoritesQuery>({
+export const getUserFavorites = async ({ offset }: { offset: number }) => {
+  const { data, error } = await query<
+    GetUserFavoritesQuery,
+    GetUserFavoritesQueryVariables
+  >({
     query: GetUserFavoritesDocument,
     variables: {
       offset,
     },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: "no-cache",
   });
 
+  if (error) {
+    return { user_favorite: [], totalCount: 0, message: error.message };
+  }
+
   return {
-    user_favorite: data.user_favorite,
+    user_favorite: data?.user_favorite,
     totalCount: data.user_favorite_aggregate.aggregate.count,
-  } as T;
+  };
 };
 
 export const removeFromFavorites = async ({
