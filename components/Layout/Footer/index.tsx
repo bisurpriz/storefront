@@ -59,17 +59,17 @@ const footerData = [
     links: [
       {
         name: "Facebook",
-        path: "/facebook",
+        path: process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK,
         icon: <FacebookIcon />,
       },
       {
         name: "Twitter",
-        path: "/twitter",
+        path: process.env.NEXT_PUBLIC_SOCIAL_TWITTER,
         icon: <TwitterIcon />,
       },
       {
         name: "Instagram",
-        path: "/instagram",
+        path: process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM,
         icon: <InstagramIcon />,
       },
     ],
@@ -103,6 +103,12 @@ const Footer = () => {
                   <li key={index} className="group ">
                     <Link
                       href={link.path}
+                      target={link.path.startsWith("http") ? "_blank" : "_self"}
+                      rel={
+                        link.path.startsWith("http")
+                          ? "noopener noreferrer"
+                          : ""
+                      }
                       className="text-sm flex items-center gap-1 group-hover:text-secondary transition-all ease-in-out duration-300"
                     >
                       <span className="text-2xl group-hover:scale-105">
