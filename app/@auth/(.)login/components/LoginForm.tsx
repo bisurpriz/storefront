@@ -2,7 +2,6 @@
 
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import Image from "next/image";
 import Link from "next/link";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
@@ -11,7 +10,8 @@ import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 import { signIn } from "next-auth/react";
 import clsx from "clsx";
-import { FcGoogle } from "react-icons/fc";
+import GoogleIcon from "@/components/Svgs/Google";
+import Image from "next/image";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -20,7 +20,7 @@ type LoginFormProps = {
 export const socialLogins = [
   {
     name: "Google",
-    icon: <FcGoogle />,
+    icon: <GoogleIcon />,
     signIn: () => signIn("google"),
     color: "bg-gray-100",
   },

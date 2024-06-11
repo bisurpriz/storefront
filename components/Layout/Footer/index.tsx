@@ -1,3 +1,6 @@
+import FacebookIcon from "@/components/Svgs/Facebook";
+import InstagramIcon from "@/components/Svgs/Instagram";
+import TwitterIcon from "@/components/Svgs/Twitter";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,10 +17,6 @@ const footerData = [
       {
         name: "İletişim",
         path: "/iletisim",
-      },
-      {
-        name: "Kariyer",
-        path: "/kariyer",
       },
     ],
   },
@@ -61,14 +60,17 @@ const footerData = [
       {
         name: "Facebook",
         path: "/facebook",
+        icon: <FacebookIcon />,
       },
       {
         name: "Twitter",
         path: "/twitter",
+        icon: <TwitterIcon />,
       },
       {
         name: "Instagram",
         path: "/instagram",
+        icon: <InstagramIcon />,
       },
     ],
   },
@@ -79,9 +81,9 @@ const Footer = () => {
     <footer
       aria-label="Alt Bilgi"
       aria-describedby="Alt bilgi"
-      className="flex items-center justify-center w-full max-md:hidden  mt-10 max-md:mt-20 max-sm:mt-16 bg-secondary"
+      className="flex items-center justify-center w-full max-md:hidden  mt-10 max-md:mt-20 max-sm:mt-16 bg-gray-50"
     >
-      <div className="w-full px-4 pt-4 pb-8 text-white md:container mx-auto">
+      <div className="w-full px-4 pt-4 pb-8 text-gray-700 md:container mx-auto">
         <div className="flex items-start justify-between w-full ">
           {footerData.map((item, index) => (
             <div
@@ -98,8 +100,14 @@ const Footer = () => {
               </h3>
               <ul className="flex flex-col items-start justify-center w-full space-y-2 font-mono">
                 {item.links.map((link, index) => (
-                  <li key={index}>
-                    <Link href={link.path} className="text-sm">
+                  <li key={index} className="group ">
+                    <Link
+                      href={link.path}
+                      className="text-sm flex items-center gap-1 group-hover:text-secondary transition-all ease-in-out duration-300"
+                    >
+                      <span className="text-2xl group-hover:scale-105">
+                        {link.icon && link.icon}
+                      </span>
                       {link.name}
                     </Link>
                   </li>
@@ -111,7 +119,7 @@ const Footer = () => {
         <div
           className={clsx(
             "flex items-center justify-start w-full mt-8",
-            "border-t border-white text-slate-600 font-manrope text-xs"
+            "border-t border-gray-300 text-slate-600 font-manrope text-xs"
           )}
         >
           <Link
