@@ -34,7 +34,7 @@ const footerData = [
       },
       {
         name: "Gizlilik Politikası",
-        path: "/gizlilik-politikasi",
+        path: "/gizlilik-sozlesmesi",
       },
     ],
   },
@@ -42,8 +42,8 @@ const footerData = [
     title: "YASAL",
     links: [
       {
-        name: "Tüketici Hakları",
-        path: "/tuketici-haklari",
+        name: "Teslim ve İade Politikası",
+        path: "/teslim-iade-politikamiz",
       },
       {
         name: "Mesafeli Satış Sözleşmesi",

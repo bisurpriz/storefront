@@ -12,7 +12,7 @@ const headerTopLeftMenu = [
   },
   {
     label: "İletişim",
-    link: "contact-us",
+    link: "iletisim",
   },
   {
     label: "Sipariş Takibi",
