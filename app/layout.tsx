@@ -13,7 +13,6 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import "@smastrom/react-rating/style.css";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
@@ -31,6 +30,8 @@ import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import HeaderMiddle from "@/components/Layout/Header/Middle";
+import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
+import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -132,12 +133,14 @@ export default async function RootLayout({
 
   return (
     <html lang="tr">
+      <GoogleTagManagerInjector />
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
         font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
         id="root"
       >
+        <TagManagerNoscript />
         <AuthProvider user={user}>
           <ApolloWrapper>
             <CategoryProvider category={category}>
@@ -153,7 +156,6 @@ export default async function RootLayout({
           </ApolloWrapper>
         </AuthProvider>
       </body>
-      <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>
   );
 }

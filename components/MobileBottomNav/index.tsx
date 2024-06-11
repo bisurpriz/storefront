@@ -88,6 +88,7 @@ const MobileBottomNav = () => {
         {mobileBottomMenu.map((item, index) => {
           return item.href === "/cart" ? (
             <MenuItem
+              key={item.href}
               item={item}
               selected={selected === index}
               onSelect={() => handleSelect(index)}
@@ -98,7 +99,7 @@ const MobileBottomNav = () => {
             />
           ) : (
             <MenuItem
-              key={index}
+              key={item.href}
               item={item}
               selected={selected === index}
               onSelect={() => handleSelect(index)}
