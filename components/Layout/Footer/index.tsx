@@ -33,7 +33,7 @@ const footerData = [
       },
       {
         name: "Gizlilik Politikası",
-        path: "/gizlilik-politikasi",
+        path: "/gizlilik-sozlesmesi",
       },
     ],
   },
@@ -41,8 +41,8 @@ const footerData = [
     title: "YASAL",
     links: [
       {
-        name: "Tüketici Hakları",
-        path: "/tuketici-haklari",
+        name: "Teslim ve İade Politikası",
+        path: "/teslim-iade-politikamiz",
       },
       {
         name: "Mesafeli Satış Sözleşmesi",
@@ -118,7 +118,7 @@ const Footer = () => {
         </div>
         <div
           className={clsx(
-            "flex items-center justify-start w-full mt-8",
+            "flex items-end justify-start gap-8 w-full mt-8",
             "border-t border-gray-300 text-slate-600 font-manrope text-xs"
           )}
         >
@@ -126,17 +126,31 @@ const Footer = () => {
             href="https://www.eticaret.gov.tr/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2 whitespace-nowrap h-24 mt-2"
+            className="flex flex-col items-center gap-2 whitespace-nowrap mt-2"
           >
             <Image
               src="https://www.eticaret.gov.tr/images/logo1.png"
               alt="ETBİS"
-              width={96}
-              height={96}
-              layout="responsive"
+              width={200}
+              height={200}
               quality={100}
             />
             Bonnmarşe ETBİS&apos;e üye bir firmadır.
+          </Link>
+          <Link
+            href="https://www.iyzico.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-2 whitespace-nowrap mt-2"
+          >
+            <Image
+              src="/payment/iyzico-ode.png"
+              alt="iyzico"
+              width={400}
+              height={200}
+              quality={100}
+            />
+            Ödeme işlemleri iyzico güvencesi ile sağlanmaktadır.
           </Link>
         </div>
       </div>
