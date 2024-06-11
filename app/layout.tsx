@@ -32,6 +32,7 @@ import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import HeaderMiddle from "@/components/Layout/Header/Middle";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
+import { NavigationEvents } from "@/components/NavigationEvents";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -141,6 +142,7 @@ export default async function RootLayout({
         id="root"
       >
         <TagManagerNoscript />
+        <NavigationEvents />
         <AuthProvider user={user}>
           <ApolloWrapper>
             <CategoryProvider category={category}>
