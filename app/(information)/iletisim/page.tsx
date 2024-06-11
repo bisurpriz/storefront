@@ -3,7 +3,7 @@ import React from "react";
 const Contact = () => {
   return (
     <div>
-      İnternette güvenli alışverişin adresi Osevio.com’a aşağıdaki iletişim
+      İnternette güvenli alışverişin adresi bonnmarse.com’a aşağıdaki iletişim
       adreslerinden kolayca ulaşabilirsiniz. Müşteri Hizmetleri departmanımız
       haftanın 7 günü aşağıda belirttiğimiz saat aralıklarında gönderdiğiniz
       sorulara en hızlı şekilde yanıt verir.
