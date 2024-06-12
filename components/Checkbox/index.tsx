@@ -66,9 +66,7 @@ const Checkbox = ({
         readOnly && "opacity-50 cursor-not-allowed"
       )}
     >
-      <p className="m-0 p-0 text-sm leading-5 font-medium text-gray-900">
-        {label}
-      </p>
+      <p className="m-0 p-0 text-sm leading-5 text-gray-900">{label}</p>
       <input
         className={clsx(
           "absolute opacity-0 cursor-pointer h-0 w-0",

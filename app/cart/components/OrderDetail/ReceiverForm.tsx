@@ -4,7 +4,11 @@ import {
   createNewUserAddress,
   getUserAddressById,
 } from "@/app/account/actions";
-import { CityResponse } from "@/common/types/Addresses/addresses";
+import {
+  CityResponse,
+  DistrictResponse,
+  QuarterResponse,
+} from "@/common/types/Addresses/addresses";
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import Card from "@/components/Card";
@@ -35,6 +39,9 @@ export interface OrderDetailPartialFormData
 
 interface ReceiverFormProps {
   cities: CityResponse[];
+  defaultCity?: CityResponse;
+  defaultDistrict?: DistrictResponse;
+  defaultQuarter?: QuarterResponse;
 }
 
 const OrderDetailSchema = object({
@@ -65,7 +72,12 @@ const defaultValues = {
   wantToSaveAddress: false,
 };
 
-const ReceiverForm = ({ cities }: ReceiverFormProps) => {
+const ReceiverForm = ({
+  cities,
+  defaultCity,
+  defaultDistrict,
+  defaultQuarter,
+}: ReceiverFormProps) => {
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
   const [user_id, setUser_id] = useState(null);
@@ -93,7 +105,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const [cityId, districtId] = useWatch({
     control,
-    name: ["city_id", "district_id"],
+    name: ["city_id", "district_id", "saved_address"],
   });
 
   useEffect(() => {
@@ -103,9 +115,10 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     if (localStorageData) {
       reset({
         ...getValues(),
-        city_id: localStorageData.city_id,
-        district_id: localStorageData.district_id,
-        quarter_id: localStorageData.quarter_id,
+        saved_address: localStorageData.saved_address,
+        city_id: defaultCity?.id ?? localStorageData.city_id,
+        district_id: defaultDistrict?.id ?? localStorageData.district_id,
+        quarter_id: defaultQuarter?.id ?? localStorageData.quarter_id,
         address: localStorageData.address,
         receiver_firstname: localStorageData.receiver_firstname,
         receiver_surname: localStorageData.receiver_surname,
@@ -125,8 +138,20 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
       return;
     }
 
+    if (defaultCity && defaultDistrict && defaultQuarter) {
+      reset({
+        ...getValues(),
+        city_id: defaultCity?.id,
+        district_id: defaultDistrict?.id,
+        quarter_id: defaultQuarter?.id,
+        user_id,
+      });
+
+      return;
+    }
+
     if (selectedSavedAddress) {
-      const formattedPhone = formatPhoneNumber(
+      const receiver_phone = formatPhoneNumber(
         selectedSavedAddress.receiver_phone
       );
       reset({
@@ -137,10 +162,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         address: selectedSavedAddress.address,
         receiver_firstname: selectedSavedAddress.receiver_firstname,
         receiver_surname: selectedSavedAddress.receiver_surname,
-        receiver_phone: formattedPhone,
+        receiver_phone,
         user_id,
         address_title: selectedSavedAddress.address_title,
       });
+      return;
     } else {
       reset({
         ...getValues(),
@@ -158,7 +184,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
   const onSubmit = async (values) => {
     if (values) {
-      if (values.wantToSaveAddress) {
+      if (values.wantToSaveAddress && !values.saved_address) {
         try {
           await createNewUserAddress({
             address: values.address,
@@ -168,7 +194,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
             receiver_firstname: values.receiver_firstname,
             receiver_surname: values.receiver_surname,
             receiver_phone: values.receiver_phone,
-            user_id: user_id,
+            user_id,
             address_title: values.address_title,
           });
         } catch {
@@ -218,12 +244,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   const savedAddress = userAddresses.find(
                     (address) => address.id === option?.value
                   );
-
-                  setSelectedSavedAddress(savedAddress);
                   reset({
-                    ...watch(),
                     saved_address: option?.value as string,
                   });
+
+                  setSelectedSavedAddress(savedAddress);
                 }}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
@@ -290,7 +315,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         id="order-detail-form"
         name="order-detail-form"
         autoComplete="off"
-        className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col"
+        className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col font-manrope"
         onSubmit={handleSubmit(onSubmit, onError)}
       >
         <div className="flex flex-col gap-3 flex-1 ">
@@ -336,6 +361,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   error={!!error}
                   errorMessage={error?.message}
                   autoComplete="off"
+                  disabled={!!defaultCity}
                 />
               );
             }}
@@ -378,6 +404,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   id="district"
                   error={!!error}
                   errorMessage={error?.message}
+                  disabled={!!defaultDistrict}
                 />
               );
             }}
@@ -416,6 +443,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   id="quarter"
                   error={!!error}
                   errorMessage={error?.message}
+                  disabled={!!defaultQuarter}
                 />
               );
             }}
@@ -488,10 +516,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
           <Controller
             control={control}
             name="receiver_phone"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <PhoneInput
                 label="Telefon Numarası"
                 errorMessage={error?.message}

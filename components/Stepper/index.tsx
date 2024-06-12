@@ -25,9 +25,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
           <div
             key={step.value}
             className={clsx([
-              `flex items-center space-x-4 w-full ${
-                index === 0 ? "text-primary" : ""
-              }`,
+              `flex items-center space-x-4 w-full`,
               "transition-all duration-500 ease-in-out",
               index === steps.length - 1 ? "justify-content !w-fit" : "",
             ])}
@@ -36,8 +34,8 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
               key={step.label}
               className={clsx([
                 `flex items-center justify-center w-10 h-10 rounded-full`,
-                activeStep === index ? "bg-lime-300" : "bg-gray-200",
-                activeStep > index ? "bg-lime-500" : "bg-gray-200",
+                activeStep === index ? "bg-slate-300" : "bg-gray-200",
+                activeStep > index ? "bg-slate-500" : "bg-gray-200",
               ])}
             >
               <span
@@ -53,8 +51,8 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
             <span
               className={clsx([
                 "text-base font-medium",
-                activeStep > index ? "text-lime-500" : "text-gray-500",
-                activeStep === index ? "text-lime-300" : "text-gray-500",
+                activeStep > index ? "text-slate-500" : "text-gray-500",
+                activeStep === index ? "text-slate-300" : "text-gray-500",
                 "max-sm:hidden",
               ])}
             >
@@ -64,7 +62,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
               className={clsx([
                 "flex-1 h-0.5",
                 index === steps.length - 1 ? "hidden" : "block",
-                activeStep > index ? "bg-lime-500" : "bg-gray-200",
+                activeStep > index ? "bg-slate-500" : "bg-gray-200",
               ])}
             />
           </div>

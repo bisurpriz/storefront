@@ -77,6 +77,8 @@ export default function AutoComplete({
     ? "border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500"
     : "";
 
+  const disabledClass = disabled ? "bg-gray-100 text-gray-500" : "";
+
   return (
     <div className="relative">
       <label
@@ -98,6 +100,7 @@ export default function AutoComplete({
             overflow-hidden
             flex items-center gap-2
             ${hasErrorClass}
+            ${disabledClass}
             `}
         >
           {multiple && (
@@ -115,17 +118,20 @@ export default function AutoComplete({
           <input
             {...getInputProps()}
             className={`
-            text-base  font-normal leading-normal
+            text-sm  font-normal leading-normal
             text-gray-900
             bg-inherit
             border-none
             px-3 py-2
             outline-none
             flex-1
+            ${disabledClass}
             ${className ?? ""}`}
             placeholder={placeholder}
             aria-label={label}
             autoComplete={autoComplete}
+            readOnly={readOnly}
+            disabled={disabled}
           />
 
           {hasClearIcon && (
@@ -146,6 +152,7 @@ export default function AutoComplete({
             transition-transform duration-200 shadow-sm hover:bg-gray-50
             ${error ? "text-red-500 hover:text-red-700" : ""}
           `}
+            disabled={disabled}
           >
             <BsChevronDown />
           </button>
@@ -158,7 +165,7 @@ export default function AutoComplete({
         <ul
           {...getListboxProps()}
           className={`
-            absolute
+            absolute text-sm
             left-0
             right-0
             z-10

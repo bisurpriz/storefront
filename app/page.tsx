@@ -18,6 +18,8 @@ import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
 import clsx from "clsx";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
+import { Location } from "@/common/types/Addresses/addresses";
+import { getAvailableLocation } from "./account/addresses/actions";
 
 export default async function Page() {
   const { banners } = await getBanners();
@@ -29,53 +31,9 @@ export default async function Page() {
 
   const location = await getLocationFromCookie();
 
-  const getAvailableLocation = async () => {
-    if (!location) return null;
-    const { type, id } = location;
+  const data = await getAvailableLocation(location);
 
-    switch (type) {
-      case "city": {
-        const data = await getCityById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          city_name: data.city[0].name,
-          city_id: data.city[0].id,
-          type: "city",
-        });
-      }
-      case "district": {
-        const data = await getDistrictById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          district_name: data.district[0].name,
-          district_id: data.district[0].id,
-          city_name: data.district[0].city.name,
-          city_id: data.district[0].city.id,
-          type: "district",
-        });
-      }
-      case "quarter": {
-        const data = await getQuarterById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          name: data.quarter[0].name,
-          id: data.quarter[0].id,
-          district_name: data.quarter[0].district.name,
-          district_id: data.quarter[0].district.id,
-          city_name: data.quarter[0].district.city.name,
-          city_id: data.quarter[0].district.city.id,
-          type: "quarter",
-        });
-      }
-      default:
-        return null;
-    }
-  };
-
-  const value = await getAvailableLocation();
+  const value = data?.value;
 
   return (
     <Suspense

@@ -1,3 +1,8 @@
+export enum Locale {
+  TR = "tr",
+  EN = "en",
+}
+
 export interface BinCheckRequest {
   binNumber: string;
   price: string;

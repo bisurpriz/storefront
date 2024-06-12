@@ -54,7 +54,9 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
         }}
         getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"
-        onClear={(option) => console.log(option, "cleared")}
+        onClear={() => {
+          Cookies.remove(CookieTokens.LOCATION_ID);
+        }}
       />
     </label>
   );
