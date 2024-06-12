@@ -109,6 +109,7 @@ export const getUserById = async (id?: string) => {
       variables: {
         id: userId,
       },
+      fetchPolicy: "cache-first",
     });
     const { user_by_pk: user } = data;
     return {
