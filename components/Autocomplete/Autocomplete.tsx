@@ -17,7 +17,7 @@ interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
   onChange?: (value: { inputValue: string; selectedValue: any }) => void;
   getOptionLabel?: (option: any) => string;
-  onClear?: (option: any) => void;
+  onClear?: () => void;
   placeholder?: string;
   value?: any;
 }
@@ -290,9 +290,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               onClick={() => {
                 setUserInput("");
                 setSelectedValue(null);
-                if (onClear) {
-                  onClear(selectedValue);
-                }
+                onClear?.();
               }}
             >
               <CiSquareRemove size={24} />
