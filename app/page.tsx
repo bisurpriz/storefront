@@ -3,10 +3,7 @@ import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
 import {
   getBanners,
-  getCityById,
-  getDistrictById,
   getLocationFromCookie,
-  getQuarterById,
 } from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { query } from "@/graphql/lib/client";
@@ -17,8 +14,6 @@ import {
 import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
 import clsx from "clsx";
-import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
-import { Location } from "@/common/types/Addresses/addresses";
 import { getAvailableLocation } from "./account/addresses/actions";
 
 export default async function Page() {

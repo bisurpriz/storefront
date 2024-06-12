@@ -11,4 +11,5 @@ export enum CookieTokens {
   REFRESH_TOKEN = "refresh_token",
   USER_ID = "user_id",
   LOCATION_ID = "location_id",
+  GUEST_ID = "guest_id",
 }

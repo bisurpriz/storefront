@@ -12,9 +12,9 @@ import {
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import Card from "@/components/Card";
-import Checkbox from "@/components/Checkbox";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
+import { useUser } from "@/contexts/AuthContext";
 import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
@@ -24,6 +24,8 @@ import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { boolean, number, object, string } from "yup";
+import RenderAddress from "./RenderAddress";
+import Textarea from "@/components/Textarea";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -53,7 +55,6 @@ const OrderDetailSchema = object({
   receiver_firstname: string().required("Alıcı adı zorunludur."),
   receiver_surname: string().required("Alıcı soyadı zorunludur."),
   receiver_phone: string().required("Alıcı telefonu zorunludur."),
-  user_id: string().optional().nullable(),
   saved_address: string().optional().nullable(),
   wantToSaveAddress: boolean().optional().nullable(),
 });
@@ -67,7 +68,6 @@ const defaultValues = {
   receiver_firstname: "",
   receiver_phone: "",
   receiver_surname: "",
-  user_id: "",
   saved_address: "",
   wantToSaveAddress: false,
 };
@@ -78,9 +78,9 @@ const ReceiverForm = ({
   defaultDistrict,
   defaultQuarter,
 }: ReceiverFormProps) => {
+  const { user } = useUser();
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
-  const [user_id, setUser_id] = useState(null);
   const { handleChangeStep } = useCartStep();
   const {
     control,
@@ -97,8 +97,7 @@ const ReceiverForm = ({
   });
 
   useEffect(() => {
-    getUserAddressById().then(({ userAddresses, user_id }) => {
-      setUser_id(user_id);
+    getUserAddressById().then(({ userAddresses }) => {
       setUserAddresses(userAddresses);
     });
   }, []);
@@ -123,7 +122,6 @@ const ReceiverForm = ({
         receiver_firstname: localStorageData.receiver_firstname,
         receiver_surname: localStorageData.receiver_surname,
         receiver_phone: localStorageData.receiver_phone,
-        user_id,
         address_title: localStorageData.address_title,
       });
 
@@ -144,7 +142,6 @@ const ReceiverForm = ({
         city_id: defaultCity?.id,
         district_id: defaultDistrict?.id,
         quarter_id: defaultQuarter?.id,
-        user_id,
       });
 
       return;
@@ -163,7 +160,6 @@ const ReceiverForm = ({
         receiver_firstname: selectedSavedAddress.receiver_firstname,
         receiver_surname: selectedSavedAddress.receiver_surname,
         receiver_phone,
-        user_id,
         address_title: selectedSavedAddress.address_title,
       });
       return;
@@ -174,7 +170,6 @@ const ReceiverForm = ({
         district_id: null,
         quarter_id: null,
         address: "",
-        user_id,
       });
     }
   }, [selectedSavedAddress]);
@@ -183,6 +178,9 @@ const ReceiverForm = ({
   const { quarters } = useQuarters(districtId);
 
   const onSubmit = async (values) => {
+    const cartId = user?.carts[0]?.id;
+    const user_id = user?.id;
+
     if (values) {
       if (values.wantToSaveAddress && !values.saved_address) {
         try {
@@ -201,9 +199,10 @@ const ReceiverForm = ({
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
-          return;
         }
       }
+
+      console.log(cartId, user_id);
       localStorage.setItem("detail-data", JSON.stringify(values));
       handleChangeStep();
     }
@@ -261,53 +260,6 @@ const ReceiverForm = ({
     return null;
   };
 
-  const renderAddressTitle = () => {
-    if (!selectedSavedAddress) {
-      return (
-        <>
-          <Controller
-            control={control}
-            name="address_title"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="Adres Başlığı"
-                placeholder="Ev Adresi"
-                fullWidth
-                id="address_title"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
-          {!selectedSavedAddress && (
-            <Controller
-              control={control}
-              name="wantToSaveAddress"
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <Checkbox
-                  checked={value}
-                  onChange={onChange}
-                  label="Sonraki alışverişlerimde bu adresi kullanmak istiyorum."
-                  id="wantToSaveAddress"
-                />
-              )}
-            />
-          )}
-        </>
-      );
-    }
-    return null;
-  };
-
   return (
     <Card>
       <Title>Teslimat Bilgileri</Title>
@@ -315,21 +267,22 @@ const ReceiverForm = ({
         id="order-detail-form"
         name="order-detail-form"
         autoComplete="off"
-        className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col font-manrope"
+        className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col max-md:gap-3 font-manrope"
         onSubmit={handleSubmit(onSubmit, onError)}
       >
         <div className="flex flex-col gap-3 flex-1 ">
           {renderSavedAddress()}
 
-          {renderAddressTitle()}
+          <RenderAddress
+            selectedSavedAddress={selectedSavedAddress}
+            control={control}
+            user={user}
+          />
 
           <Controller
             control={control}
             name="city_id"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => {
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
               const selectedCity = cities.find((city) => city.id === value);
 
               return (
@@ -420,7 +373,6 @@ const ReceiverForm = ({
               const selectedQuarter = quarters.find(
                 (quarter) => quarter.id === value
               );
-
               return (
                 <AutoComplete
                   value={
@@ -452,14 +404,10 @@ const ReceiverForm = ({
           <Controller
             control={control}
             name="address"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Textarea
                 label="Adres"
-                placeholder="Adres"
+                placeholder="Adresinizi giriniz."
                 fullWidth
                 id="address"
                 value={value}

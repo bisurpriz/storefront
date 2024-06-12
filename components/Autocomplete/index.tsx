@@ -129,7 +129,7 @@ export default function AutoComplete({
             ${className ?? ""}`}
             placeholder={placeholder}
             aria-label={label}
-            autoComplete={autoComplete}
+            autoComplete={"off"}
             readOnly={readOnly}
             disabled={disabled}
           />

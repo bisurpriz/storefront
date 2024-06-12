@@ -29,6 +29,7 @@ const HeaderMiddle = () => {
       <Link href="/" className="min-w-[180px]">
         <Image
           src={"/logo.svg"}
+          className="w-44 h-14"
           width={180}
           height={55}
           alt="BiSürpriz Logo"
