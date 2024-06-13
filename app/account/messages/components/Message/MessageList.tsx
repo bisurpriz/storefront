@@ -1,74 +1,79 @@
-'use client'
-import { readIdFromCookies } from '@/app/actions'
-import { User } from '@/common/types/User/user'
-import { localeFormat } from '@/utils/format'
-import { memo, useEffect, useRef } from 'react'
-import { markAsRead } from '../../action'
-import MessageItem from './MessageItem'
-import MessageItemSkeleton from './MessageItemSkeleton'
+"use client";
+import { localeFormat } from "@/utils/format";
+import { memo, useEffect, useRef } from "react";
+import { markAsRead } from "../../action";
+import MessageItem from "./MessageItem";
+import MessageItemSkeleton from "./MessageItemSkeleton";
+import { getCookie } from "@/utils/getCookie";
 
 const MessageList = ({
   messages,
   threadId,
 }: {
   messages: {
-    id: string
-    message: string
-    created_at: string
+    id: string;
+    message: string;
+    created_at: string;
     sender: {
-      id: string
-      firstname: string
-      lastname: string
-      picture: string
-    }
+      id: string;
+      firstname: string;
+      lastname: string;
+      picture: string;
+    };
     receiver: {
-      id: string
-      firstname: string
-      lastname: string
-      picture: string
-    }
-  }[]
-  threadId: string
+      id: string;
+      firstname: string;
+      lastname: string;
+      picture: string;
+    };
+  }[];
+  threadId: string;
 }) => {
-  const { id } = readIdFromCookies() as unknown as User
+  const id = getCookie("user_id");
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight
+      ref.current.scrollTop = ref.current.scrollHeight;
     }
-  }
+  };
 
   useEffect(() => {
-    markAsRead(threadId)
-    scrollToBottom()
-  }, [messages])
+    markAsRead(threadId);
+    scrollToBottom();
+  }, [messages]);
+
+  console.log(id, "id");
 
   return (
     <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
       {!messages
         ? [1, 2, 3, 4, 5, 6, 7]?.map((item) => (
-          <MessageItemSkeleton
-            key={item}
-            type={item % 2 === 0 ? 'sent' : 'received'}
-          />
-        ))
+            <MessageItemSkeleton
+              key={item}
+              type={item % 2 === 0 ? "sent" : "received"}
+            />
+          ))
         : messages?.map((item) => (
-          <MessageItem
-            key={item.id}
-            message={item.message}
-            date={
-              item?.created_at
-                ? localeFormat(new Date(item.created_at), 'PPP')
-                : ''
-            }
-            picture={item?.sender?.picture}
-            type={item?.sender?.id === id ? 'sent' : 'received'}
-          />
-        ))}
+            <MessageItem
+              key={item.id}
+              message={item.message}
+              date={
+                item?.created_at
+                  ? localeFormat(new Date(item.created_at), "PPP")
+                  : ""
+              }
+              picture={item?.sender?.picture}
+              type={
+                item?.sender?.id && id && item?.sender?.id === id
+                  ? "sent"
+                  : "received"
+              }
+            />
+          ))}
     </div>
-  )
-}
+  );
+};
 
-export default memo(MessageList)
+export default memo(MessageList);

@@ -10,6 +10,7 @@ const TenantOrders = ({
 }: {
   tenants: GetUserOrdersQuery["order"][0]["tenant_orders"];
 }) => {
+
   return tenants?.map((to) => (
     <div key={to.id} className="flex items-start flex-col justify-start">
       <div className="flex justify-between w-full  max-sm:items-baseline">
@@ -31,7 +32,7 @@ const TenantOrders = ({
           <StatusBadge status={OrderItemStatus[to.order_status.value]} />
         </div>
 
-        <OrderMessage tenant={to.tenant} orderTenantId={to.id} />
+        <OrderMessage tenant={to.tenant} orderTenantId={to.id} tenantId={to.id} />
       </div>
 
       <OrderItem order_items={to.order_items} />

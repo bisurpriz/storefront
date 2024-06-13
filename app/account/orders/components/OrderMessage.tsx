@@ -9,27 +9,35 @@ import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import { GetUserOrdersQuery } from "@/graphql/generated";
 import { readIdFromCookies } from "@/app/actions";
-import { User } from "@/common/types/User/user";
 
 const OrderMessage = ({
   tenant,
   orderTenantId,
+  tenantId
 }: {
   tenant: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["tenant"];
   orderTenantId: number;
+  tenantId: string;
 }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
-    const { id } = (await readIdFromCookies()) as unknown as User;
-    console.log("id", id);
+    const userId = await readIdFromCookies();
+
+    console.log({
+      message,
+      receiver_id: tenant.id,
+      order_tenant_id: orderTenantId,
+      user_id: userId
+    })
+
     const response = await startMessageForOrder({
       message,
-      receiver_id: tenant.tenants?.[0].id,
+      receiver_id: tenant.id,
       order_tenant_id: orderTenantId,
-      user_id: id,
+      user_id: userId
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(

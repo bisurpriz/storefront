@@ -18,7 +18,7 @@ const ReviewsPage = async () => {
       <Tab
         tabs={[
           {
-            content: <NotReviewedCardMapper result={reviews} />,
+            content: <NotReviewedCardMapper result={order_item} />,
             id: 'not-reviewed',
             label: 'Değerlendirme yapılmayanlar',
           },
