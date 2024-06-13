@@ -28,8 +28,6 @@ import {
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
-import StickyHeader from "@/components/Layout/Header/StickyHeader";
-import HeaderMiddle from "@/components/Layout/Header/Middle";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
 import { NavigationEvents } from "@/components/NavigationEvents";
@@ -147,9 +145,7 @@ export default async function RootLayout({
           <ApolloWrapper>
             <CategoryProvider category={category}>
               <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                <StickyHeader secondChildren={<HeaderMiddle />}>
-                  <Header category={category} />
-                </StickyHeader>
+                <Header category={category} />
                 <Content>{children}</Content>
                 {auth}
                 <Listener />

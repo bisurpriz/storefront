@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
+import { useEffect } from "react";
 
 const schema = object().shape({
   creditCartNumber: string().test(
@@ -56,6 +57,13 @@ const CreditCartForm = () => {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const serialize = localStorage.getItem("detail-data");
+    if (!serialize) {
+      push("/cart");
+    }
+  }, []);
+
   const {
     clearCart,
     cartState: { cartItems },
@@ -67,6 +75,7 @@ const CreditCartForm = () => {
     if (data) {
       const serialize = localStorage.getItem("detail-data");
       const detailData = JSON.parse(serialize);
+      console.log(detailData, data);
     }
   };
 
