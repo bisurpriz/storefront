@@ -21309,6 +21309,13 @@ export type GetProductsWithFilteredPaginationQueryVariables = Exact<{
 
 export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
+export type SearchProductsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type SearchProductsQuery = { product: Array<{ name: string }> };
+
 export type GetOrdersWithReviewsQueryVariables = Exact<{
   user_id: Scalars['uuid']['input'];
 }>;
@@ -22021,7 +22028,7 @@ export const GetProductsWithPaginationDocument = gql`
 }
     `;
 export const GetProductsWithFilteredPaginationDocument = gql`
-    query getProductsWithFilteredPagination($filter_payload: product_bool_exp) {
+    query getProductsWithFilteredPagination($filter_payload: product_bool_exp) @cached(ttl: 300) {
   product_aggregate(where: $filter_payload) {
     aggregate {
       count
@@ -22040,6 +22047,7 @@ export const GetProductsWithFilteredPaginationDocument = gql`
     image_url
     price
     quantity
+    slug
     properties
     discount_price
     product_customizable_areas {
@@ -22060,6 +22068,15 @@ export const GetProductsWithFilteredPaginationDocument = gql`
         count
       }
     }
+  }
+}
+    `;
+export const SearchProductsDocument = gql`
+    query searchProducts($search: String) {
+  product(
+    where: {_and: [{_or: [{name: {_ilike: $search}}, {name: {_similar: $search}}, {category: {name: {_similar: $search}}}, {category: {name: {_ilike: $search}}}]}, {is_active: {_eq: true}}]}
+  ) {
+    name
   }
 }
     `;
@@ -22338,6 +22355,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getProductsWithFilteredPagination(variables?: GetProductsWithFilteredPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithFilteredPaginationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithFilteredPaginationQuery>(GetProductsWithFilteredPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithFilteredPagination', 'query', variables);
+    },
+    searchProducts(variables?: SearchProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SearchProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchProductsQuery>(SearchProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchProducts', 'query', variables);
     },
     getOrdersWithReviews(variables: GetOrdersWithReviewsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrdersWithReviewsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrdersWithReviewsQuery>(GetOrdersWithReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrdersWithReviews', 'query', variables);

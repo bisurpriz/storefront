@@ -9,10 +9,13 @@ import {
   GetProductReviewsDocument,
   GetProductReviewsQuery,
   GetProductReviewsQueryVariables,
+  GetProductsWithFilteredPaginationDocument,
+  GetProductsWithFilteredPaginationQuery,
   GetProductsWithPaginationDocument,
   GetProductsWithPaginationQuery,
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
+import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
   const { data } = await query<GetProductsWithPaginationQuery>({
@@ -87,5 +90,28 @@ export const searchLocation = async (location: string) => {
       locations: [],
       message: error.message,
     };
+  }
+};
+
+export const searchProducts = async (input: string) => {
+  if(!input) return { products: [] };
+  const queryMapper = createDynamicQueryMapper({ search: input });
+  try {
+    const {
+      data: { product: products },
+    } = await query<GetProductsWithFilteredPaginationQuery>({
+      query: GetProductsWithFilteredPaginationDocument,
+      variables: {
+        filter_payload: {
+          ...queryMapper.filter_payload,
+        },
+      },
+    });
+    return {
+      products,
+      message: "Success",
+    };
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
   }
 };
