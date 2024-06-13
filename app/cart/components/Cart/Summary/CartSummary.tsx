@@ -46,6 +46,16 @@ const CartSummary = () => {
     return null;
   }
 
+  const pagePathForm = {
+    [CartStepPaths.CHECKOUT]: "credit-card-form",
+    [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
+  };
+
+  console.log(
+    pagePathForm[pathname as keyof typeof pagePathForm],
+    "Cart Summary Form Selector Object"
+  );
+
   return (
     <div
       className={clsx(
@@ -90,13 +100,15 @@ const CartSummary = () => {
         </span>
         <Button
           disabled={loading}
-          type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
+          type={
+            pagePathForm[pathname as keyof typeof pagePathForm]
+              ? "submit"
+              : "button"
+          }
           size="large"
           color="primary"
           form={
-            pathname === CartStepPaths.ORDER_DETAIL
-              ? "order-detail-form"
-              : undefined
+            pagePathForm[pathname as keyof typeof pagePathForm] || undefined
           }
           label={
             pathname === CartStepPaths.CHECKOUT

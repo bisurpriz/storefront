@@ -1,10 +1,7 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
-import {
-  getBanners,
-  getLocationFromCookie,
-} from "./actions";
+import { getBanners, getLocationFromCookie } from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { query } from "@/graphql/lib/client";
 import {
