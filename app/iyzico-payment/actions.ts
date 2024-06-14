@@ -1,9 +1,18 @@
 "use server";
 
 import axios, { AxiosResponse } from "axios";
-import { BIN_CHECK_URL, INSTALLMENT_URL } from "./constants";
+import {
+  BIN_CHECK_URL,
+  INITIALIZE_3DS_URL,
+  INSTALLMENT_URL,
+} from "./constants";
 import { generateAuthorizationHeaderV2 } from "./utils";
-import { BinCheckRequest, BinCheckResponse } from "./types";
+import {
+  BinCheckRequest,
+  BinCheckResponse,
+  Initialize3dsPaymentRequest,
+  Initialize3dsPaymentResponse,
+} from "./types";
 
 const iyzicoUrl = process.env.IYZICO_URL;
 
@@ -31,4 +40,13 @@ export const checkBin = async (data: BinCheckRequest) => {
 
 export const checkInstallment = async (data: BinCheckRequest) => {
   return await post(INSTALLMENT_URL, data);
+};
+
+export const initialize3dsPayment = async (
+  data: Initialize3dsPaymentRequest
+) => {
+  return await post<Initialize3dsPaymentRequest, Initialize3dsPaymentResponse>(
+    INITIALIZE_3DS_URL,
+    data
+  );
 };

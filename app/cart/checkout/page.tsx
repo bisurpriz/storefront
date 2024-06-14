@@ -1,7 +1,5 @@
 import CreditCartForm from "../components/Checkout/CreditCartForm";
 
-export const dynamic = "force-dynamic";
-
 const CartCheckout = async () => {
   return (
     <div className="w-full relative">
