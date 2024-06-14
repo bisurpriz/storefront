@@ -5,13 +5,18 @@ export enum Locale {
 
 export interface BinCheckRequest {
   binNumber: string;
-  price: string;
+  price?: string;
 }
 
+export type CardAssociation =
+  | "VISA"
+  | "MASTER_CARD"
+  | "TROY"
+  | "AMERICAN_EXPRESS";
 export interface BinCheckResponse {
   binNumber: string;
   cardType: string;
-  cardAssociation: string;
+  cardAssociation: CardAssociation;
   cardFamily: string;
   bankName: string;
   bankCode: number;
@@ -35,7 +40,7 @@ export interface ShippingOrBillingAddress {
   city: string;
   country: string;
   address: string;
-  zipCode: string;
+  zipCode?: string;
 }
 
 export interface Buyer {
@@ -48,9 +53,9 @@ export interface Buyer {
   surname: string;
   name: string;
   id: string;
-  zipCode: string;
-  lastLoginDate: string;
-  registrationDate: string;
+  zipCode?: string;
+  lastLoginDate?: string;
+  registrationDate?: string;
   gsmNumber: string;
 }
 

@@ -57,6 +57,8 @@ export async function getLocationFromCookie(): Promise<Location | null> {
 }
 
 export const getIpAddress = async () => {
+  if (process.env.NODE_ENV === "development") return "127.0.0.1";
+
   const checkValidIp = (ip: string) => {
     if (!ip) return false;
 

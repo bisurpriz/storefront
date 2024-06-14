@@ -3,8 +3,8 @@ import {
   OrderItemStatus,
 } from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
-import { Address } from "../Addresses/addresses";
 import { User } from "../User/user";
+import { City, District, Quarter } from "@/graphql/generated";
 
 export interface OrderItem {
   id: number;
@@ -44,11 +44,27 @@ export interface OrderItemSpecialImage extends OrderItemSpecial {
   image_url: string;
 }
 
-export interface OrderDetailFormData extends Address {
+export interface OrderDetailFormData {
   user_id: User["id"];
-  receiver_firstname: string;
-  receiver_surname: string;
+  receiver_name: string;
   receiver_phone: string;
+  sender_name: string;
+  sender_phone: string;
+  sender_email?: string;
+  invoice_type: "person" | "company";
+  invoice_address?: string;
+  invoice_company_name?: string;
+  invoice_company_tax_number?: string;
+  invoice_company_tax_office?: string;
+  invoice_company_address?: string;
+  invoice_company_city?: string;
+  invoice_company_district?: string;
+  id: number;
+  city: City;
+  district: District;
+  quarter: Quarter;
+  address: string;
+  address_title: string;
 }
 
 export interface OrderItemResponse {

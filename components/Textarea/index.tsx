@@ -41,7 +41,7 @@ const Textarea: FC<TextareaProps> = ({
 
   return (
     <div
-      className={clsx("inline-block text-sm", fullWidth && "w-full", className)}
+      className={clsx("inline-block text-xs", fullWidth && "w-full", className)}
     >
       {label ?? null}
       <TextareaAutosize
