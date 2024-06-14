@@ -130,7 +130,7 @@ const CreditCardForm = () => {
           category2: product.category.name,
           id: product.id.toString(),
           name: product.name,
-          price: product.discount_price.toString() || product.price.toString(),
+          price:( product.discount_price * product.quantity).toString() ||( product.price * product.quantity).toString(),
           itemType: "PHYSICAL",
         })),
         billingAddress: {

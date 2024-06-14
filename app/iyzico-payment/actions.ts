@@ -16,11 +16,11 @@ import {
 
 const iyzicoUrl = process.env.IYZICO_URL;
 
-const iyzico = axios.create({
+export const iyzico = axios.create({
   baseURL: iyzicoUrl,
 });
 
-const post = async <T, R>(url: string, data: T) => {
+export const post = async <T, R>(url: string, data: T) => {
   try {
     const response = await iyzico.post<T, AxiosResponse<R>>(url, data, {
       headers: {
