@@ -240,7 +240,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 
   return (
     <div className="relative" ref={wrapperRef}>
-      <div className="w-full">
+      <div className="w-full text-xs">
         <div
           className={clsx(
             "absolute top-1/2 left-2 -translate-y-1/2",

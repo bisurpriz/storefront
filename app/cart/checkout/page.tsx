@@ -1,4 +1,4 @@
-import CreditCartForm from "../components/Checkout/CreditCartForm";
+import CreditCardForm from "../components/Checkout/CreditCardForm";
 
 const CartCheckout = async () => {
   return (
@@ -8,7 +8,7 @@ const CartCheckout = async () => {
         aria-describedby="cart-checkout-description"
         aria-label="Ödeme Bilgileri"
       >
-        <CreditCartForm />
+        <CreditCardForm />
       </section>
     </div>
   );

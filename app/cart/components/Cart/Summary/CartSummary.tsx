@@ -51,11 +51,6 @@ const CartSummary = () => {
     [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
   };
 
-  console.log(
-    pagePathForm[pathname as keyof typeof pagePathForm],
-    "Cart Summary Form Selector Object"
-  );
-
   return (
     <div
       className={clsx(

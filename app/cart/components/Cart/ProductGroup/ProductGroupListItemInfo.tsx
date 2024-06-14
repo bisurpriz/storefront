@@ -22,7 +22,7 @@ const ProductGroupListItemInfo = ({
         <Popover
           className="w-[300px] rounded-lg"
           placement="top"
-          trigger="click"
+          trigger="hover"
           content={
             <p className="text-xs font-normal text-gray-800">
               Bu kısımda satıcının belirlediği ürün özelleştirmeleri yer alır.

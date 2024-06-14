@@ -82,7 +82,7 @@ export default function AutoComplete({
   return (
     <div className="relative">
       <label
-        className={`text-sm font-medium text-gray-700 flex flex-col gap-1 
+        className={`text-xs font-medium text-gray-700 flex flex-col gap-1 
       ${error ? "text-red-500" : ""}
       `}
       >
@@ -118,7 +118,7 @@ export default function AutoComplete({
           <input
             {...getInputProps()}
             className={`
-            text-sm  font-normal leading-normal
+            text-sm font-normal leading-normal
             text-gray-900
             bg-inherit
             border-none

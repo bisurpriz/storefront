@@ -3,7 +3,7 @@
 import { useCart } from "@/contexts/CartContext";
 import CartHomePageButton from "../CartHomePageButton";
 import ProductGroup from "../ProductGroup";
-import clsx from "clsx";
+import GreaterThanOneTenant from "./GreaterThanOneTenant";
 
 const CartWrapper = () => {
   const {
@@ -24,18 +24,12 @@ const CartWrapper = () => {
 
   return (
     <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
-      <span
-        className={clsx(
-          "text-sm text-red-500 bg-red-50 border border-red-200 p-2 rounded-md",
-          {
-            hidden: !greaterThanOne,
-          }
-        )}
-      >
-        Sepetinizde farklı mağazalardan ürünler bulunmaktadır. Siparişinizi
-        tamamlamadan önce, farklı mağazalardan ürünlerin ayrı ayrı
-        gönderileceğini unutmayın.
-      </span>
+      <GreaterThanOneTenant show={greaterThanOne}>
+        Sepetinizde farklı mağazalardan ürünler bulunmaktadır.
+        <br /> Siparişinizi tamamlamadan önce, farklı mağazalardan ürünlerin
+        ayrı ayrı gönderileceğini unutmayın.
+      </GreaterThanOneTenant>
+
       <ProductGroup products={tenantGroupedProducts} />
       <CartHomePageButton />
     </div>

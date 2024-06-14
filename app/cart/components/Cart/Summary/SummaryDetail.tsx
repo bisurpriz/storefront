@@ -6,8 +6,6 @@ import TextField from "@/components/TextField";
 import React, { FC } from "react";
 import { IoTicketOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import iyzico from "@/public/payment/iyzico-ode.png";
 
 type SummaryDetailProps = {
   cost: number;
@@ -16,22 +14,13 @@ type SummaryDetailProps = {
 
 const variant = {
   hidden: {
-    opacity: 0,
     y: 50,
   },
   visible: {
-    opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.3,
-    },
   },
   exit: {
-    opacity: 0,
     y: 50,
-    transition: {
-      duration: 0.3,
-    },
   },
 };
 
@@ -45,13 +34,6 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
         exit="exit"
       >
         <div className="max-md:py-1 max-md:px-4 md:p-4 max-md:border-t">
-          <Image
-            src={iyzico}
-            alt="iyzico"
-            width={500}
-            height={500}
-            className="mb-8 max-md:hidden"
-          />
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti
           </span>
