@@ -21304,6 +21304,8 @@ export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: 
 
 export type GetProductsWithFilteredPaginationQueryVariables = Exact<{
   filter_payload?: InputMaybe<Product_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -22028,13 +22030,18 @@ export const GetProductsWithPaginationDocument = gql`
 }
     `;
 export const GetProductsWithFilteredPaginationDocument = gql`
-    query getProductsWithFilteredPagination($filter_payload: product_bool_exp) @cached(ttl: 300) {
+    query getProductsWithFilteredPagination($filter_payload: product_bool_exp, $limit: Int = 10, $offset: Int = 0) {
   product_aggregate(where: $filter_payload) {
     aggregate {
       count
     }
   }
-  product(where: $filter_payload) {
+  product(
+    where: $filter_payload
+    limit: $limit
+    offset: $offset
+    order_by: {id: asc}
+  ) {
     id
     tenant_id
     description

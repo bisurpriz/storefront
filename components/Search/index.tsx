@@ -11,6 +11,7 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
+import { useRouter } from "next/navigation";
 
 type Props = {
   className?: string;
@@ -21,6 +22,7 @@ const Search: FC<Props> = ({ className }) => {
     GetProductsWithFilteredPaginationQuery["product"]
   >([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { push } = useRouter();
 
   const modalRef = useClickAway<HTMLInputElement>(() => {
     setIsOpen(false);
@@ -35,7 +37,11 @@ const Search: FC<Props> = ({ className }) => {
 
   const handleSearchProducts = async (input: string) => {
     try {
-      const response = await searchProducts(input);
+      if (!input) {
+        setProducts([]);
+        return;
+      }
+      const response = await searchProducts({}, { search: input });
       setProducts(response.products);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
@@ -48,6 +54,12 @@ const Search: FC<Props> = ({ className }) => {
     debounceTimeout.current = setTimeout(() => {
       handleSearchProducts(value);
     }, 500);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      push(`/?search=${ref.current?.value}`);
+    }
   };
 
   console.log(products, "products");
@@ -65,6 +77,7 @@ const Search: FC<Props> = ({ className }) => {
         ref={ref}
         onChange={onChange}
         onFocus={() => setIsOpen(true)}
+        onKeyDown={handleKeyDown}
       />
       <button
         className={clsx(

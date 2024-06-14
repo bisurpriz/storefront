@@ -12,6 +12,7 @@ interface InfinityScrollProps<T> {
   query: any;
   dataKey: string;
   totalCount: number;
+  params?: any;
 }
 
 const PER_REQUEST = 15;
@@ -21,6 +22,7 @@ const InfinityScroll = <T,>({
   totalCount,
   query,
   dataKey,
+  params,
 }: InfinityScrollProps<T>) => {
   const [data, setData] = useState<T[]>(() => initialData);
   const [offset, setOffset] = useState(0);
@@ -30,10 +32,16 @@ const InfinityScroll = <T,>({
 
   const loadMoreData = async () => {
     const next = offset + PER_REQUEST;
-    const response = await query({
-      offset: next,
-    });
+    console.log("next den gelen next ", next);
+    const response = await query(
+      {
+        offset: next,
+        limit: 2,
+      },
+      params
+    );
     setOffset(next);
+    console.log("response", response);
     setData((prev) => [...prev, ...response[dataKey]]);
   };
 
@@ -43,6 +51,7 @@ const InfinityScroll = <T,>({
 
   useEffect(() => {
     if (inView && totalCount > data?.length) {
+      console.log("loading more data");
       loadMoreData();
     }
   }, [inView]);

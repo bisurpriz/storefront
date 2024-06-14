@@ -93,23 +93,30 @@ export const searchLocation = async (location: string) => {
   }
 };
 
-export const searchProducts = async (input: string) => {
-  if(!input) return { products: [] };
-  const queryMapper = createDynamicQueryMapper({ search: input });
+export const searchProducts = async (
+  paginationParams,
+  payload: {
+    [key: string]: string | string[] | undefined;
+  }
+) => {
+  if (!payload) return { products: [] };
+  const queryMapper = createDynamicQueryMapper(payload);
   try {
     const {
-      data: { product: products },
+      data: { product: products, product_aggregate },
     } = await query<GetProductsWithFilteredPaginationQuery>({
       query: GetProductsWithFilteredPaginationDocument,
       variables: {
         filter_payload: {
           ...queryMapper.filter_payload,
         },
+        ...paginationParams,
       },
     });
     return {
       products,
       message: "Success",
+      totalCount: product_aggregate.aggregate.count,
     };
   } catch (error) {
     console.error("Error fetching suggestions:", error);

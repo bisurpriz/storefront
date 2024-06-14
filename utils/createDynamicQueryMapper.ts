@@ -90,14 +90,19 @@ export const createDynamicQueryMapper = (searchParams: {
 
   // TODO: burası location olarak düzenlenecek
   const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
-  const quarter_code = parseJson(cookie)?.id;
+  const locationId = parseJson(cookie)?.id;
+  const locationType = parseJson(cookie)?.type;
+
+  const locationWhereExpression = {
+    quarter: { quarter_code: { _in: locationId ? [locationId] : undefined } },
+    district: { quarter: { district: { id: { _in: [locationId] } } } },
+    city: { quarter: { district: { city: { id: { _in: [locationId] } } } } },
+  };
 
   const quarter_query = {
     tenant: {
       tenants: {
-        tenant_shipping_places: {
-          quarter_code: { _in: quarter_code ? [quarter_code] : undefined },
-        },
+        tenant_shipping_places: locationWhereExpression[locationType],
       },
     },
   };
