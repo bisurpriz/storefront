@@ -1,5 +1,5 @@
 import Content from "@/components/Layout/Content";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lato, Manrope, Quicksand } from "next/font/google";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -107,6 +107,15 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   generator: "Bonnmarşe",
 };
+
+export const viewport: Viewport = {
+  maximumScale: 1,
+  minimumScale: 1,
+  initialScale: 1,
+  width: "device-width",
+  userScalable: false,
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({

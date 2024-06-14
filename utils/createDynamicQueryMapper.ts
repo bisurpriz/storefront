@@ -36,13 +36,20 @@ export const createDynamicQueryMapper = (searchParams: {
               },
             },
             {
-              description: {
+              slug: {
                 _ilike: `%${searchParams[key]}%`,
               },
             },
             {
               category: {
                 name: {
+                  _ilike: `%${searchParams[key]}%`,
+                },
+              },
+            },
+            {
+              category: {
+                slug: {
                   _ilike: `%${searchParams[key]}%`,
                 },
               },

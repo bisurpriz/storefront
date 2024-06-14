@@ -32,11 +32,10 @@ const InfinityScroll = <T,>({
 
   const loadMoreData = async () => {
     const next = offset + PER_REQUEST;
-    console.log("next den gelen next ", next);
     const response = await query(
       {
         offset: next,
-        limit: 2,
+        limit: PER_REQUEST,
       },
       params
     );

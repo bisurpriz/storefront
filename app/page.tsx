@@ -1,5 +1,4 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
-import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
 import { getBanners, getLocationFromCookie } from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
@@ -15,6 +14,23 @@ import { getAvailableLocation } from "./account/addresses/actions";
 import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { searchProducts } from "./(feed)/actions";
+
+const RenderSuspense = ({ children }: { children: any }) => (
+  <Suspense
+    fallback={
+      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
+          />
+        ))}
+      </div>
+    }
+  >
+    {children}
+  </Suspense>
+);
 
 export default async function Page({
   searchParams,
@@ -43,38 +59,19 @@ export default async function Page({
 
   const value = data?.value;
 
-  return searchText ? (
-    <>
-      <Filter
-        filterTypes={[
-          "price",
-          "sameDayDelivery",
-          "specialOffers",
-          "customizable",
-        ]}
-      />
-      <InfinityScroll
-        totalCount={totalCount}
-        initialData={products}
-        dataKey="products"
-        query={searchProducts}
-        params={searchParams}
-      />
-    </>
-  ) : (
-    <Suspense
-      fallback={
-        <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
-            />
-          ))}
-        </div>
-      }
-    >
-      <CategorySwiper categories={category} />
+  return (
+    <RenderSuspense>
+      {searchText && (
+        <Filter
+          filterTypes={[
+            "price",
+            "sameDayDelivery",
+            "specialOffers",
+            "customizable",
+          ]}
+        />
+      )}
+      {!searchText && <CategorySwiper categories={category} />}
       <div
         className={clsx(
           "grid grid-cols-12 gap-4 w-full mb-4",
@@ -92,8 +89,14 @@ export default async function Page({
         </div>
         <LandingSearchBanner />
       </div>
-      <CampaignGrid banners={banners} />
-      <View1 />
-    </Suspense>
+      {!searchText && <CampaignGrid banners={banners} />}
+      <InfinityScroll
+        totalCount={totalCount}
+        initialData={products}
+        dataKey="products"
+        query={searchProducts}
+        params={searchParams}
+      />
+    </RenderSuspense>
   );
 }

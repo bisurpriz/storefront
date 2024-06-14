@@ -7,7 +7,7 @@ interface PriceTagProps {
   discount?: number;
 }
 
-const getDiscountRate = (price: number, discount: number) => {
+export const getDiscountRate = (price: number, discount: number) => {
   // indirim oranı hesaplanır
   const dif = price - discount;
 

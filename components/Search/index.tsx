@@ -17,11 +17,30 @@ type Props = {
   className?: string;
 };
 
+const Skeleton = () => (
+  <div
+    role="status"
+    className="max-w-md p-4 space-y-4 border divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6"
+  >
+    {[...Array(5)].map((_, i) => (
+      <div key={i} className="flex items-center justify-between pt-3">
+        <div>
+          <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+          <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+      </div>
+    ))}
+    <span className="sr-only">Yükleniyor...</span>
+  </div>
+);
+
 const Search: FC<Props> = ({ className }) => {
   const [products, setProducts] = useState<
     GetProductsWithFilteredPaginationQuery["product"]
   >([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
 
   const modalRef = useClickAway<HTMLInputElement>(() => {
@@ -41,8 +60,10 @@ const Search: FC<Props> = ({ className }) => {
         setProducts([]);
         return;
       }
+      setIsLoading(true);
       const response = await searchProducts({}, { search: input });
       setProducts(response.products);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
@@ -56,13 +77,16 @@ const Search: FC<Props> = ({ className }) => {
     }, 500);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      push(`/?search=${ref.current?.value}`);
-    }
+  const pushToSearch = () => {
+    setIsOpen(false);
+    push(`/?search=${ref.current?.value}`);
   };
 
-  console.log(products, "products");
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      pushToSearch();
+    }
+  };
 
   return (
     <div
@@ -87,6 +111,7 @@ const Search: FC<Props> = ({ className }) => {
           "transition-all duration-300 group"
         )}
         onFocus={handleFocus}
+        onClick={pushToSearch}
       >
         <BsSearch className="group-hover:animate-bounce text-lg" />
       </button>
@@ -107,6 +132,7 @@ const Search: FC<Props> = ({ className }) => {
                 id: product.id,
                 slug: product.slug,
               })}
+              onClick={() => setIsOpen(false)}
             >
               <div key={product.id} className="p-2 border-b">
                 <div className="flex items-center">
@@ -132,7 +158,10 @@ const Search: FC<Props> = ({ className }) => {
             </Link>
           ))}
 
-          {products.length === 0 && (
+          {/* spinner */}
+          {isLoading && <Skeleton />}
+
+          {products.length === 0 && !isLoading && (
             <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
           )}
         </div>

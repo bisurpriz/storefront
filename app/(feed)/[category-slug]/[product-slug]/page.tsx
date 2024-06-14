@@ -16,6 +16,7 @@ import {
   getProductById,
   getProductReviews,
 } from "../../actions";
+import { getDiscountRate } from "@/components/PriceTag";
 
 export async function generateMetadata({ params, searchParams }) {
   const {
@@ -95,7 +96,8 @@ export default async function ProductExample({
   const freeShipping = product.is_service_free;
   const deliveryTimeRanges = product.delivery_time_ranges;
 
-  const isFavorite = favorites.some((fav) => fav.id === product.id);
+
+  const isFavorite = favorites?.length > 0;
   return (
     <div className="h-full">
       <section
@@ -115,7 +117,7 @@ export default async function ProductExample({
         <div className="w-1/2 max-md:w-3/4 max-sm:w-full">
           <ProductInformation
             name={product.name}
-            price={250}
+            price={product.price}
             rateCounts={{
               1: 1,
               2: 1,
@@ -129,8 +131,11 @@ export default async function ProductExample({
             }
             reviewCount={product.reviews_aggregate.aggregate.count}
             promotion="Kargo Bedava"
-            discountPrice={product.price}
-            discountRate={10}
+            discountPrice={product.discount_price}
+            discountRate={getDiscountRate(
+              product.price,
+              product.discount_price
+            )}
             key={product.id}
             vendor={tenant.tenants?.[0]}
             freeShipping={freeShipping}

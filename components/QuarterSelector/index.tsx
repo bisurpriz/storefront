@@ -15,9 +15,10 @@ import clsx from "clsx";
 
 type QuarterSelectorProps = {
   value?: any;
+  onChange?: (value: any) => void;
 };
 
-const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
+const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   const [query, { refetch }] = useLazyQuery<
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
@@ -43,7 +44,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
         value={value}
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => {
-          if (selectedValue?.id && selectedValue?.type)
+          if (selectedValue?.id && selectedValue?.type) {
             Cookies.set(
               CookieTokens.LOCATION_ID,
               JSON.stringify({
@@ -51,6 +52,9 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
                 type: selectedValue.type,
               })
             );
+            location.reload();
+            onChange && onChange(selectedValue);
+          }
         }}
         getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"

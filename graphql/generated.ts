@@ -12048,6 +12048,10 @@ export type Query_Root = {
   search_locationv1: Array<Search_Location_Result>;
   /** execute function "search_locationv1" and query aggregates on result of table type "search_location_result" */
   search_locationv1_aggregate: Search_Location_Result_Aggregate;
+  /** execute function "search_products" which returns "product" */
+  search_products: Array<Product>;
+  /** execute function "search_products" and query aggregates on result of table type "product" */
+  search_products_aggregate: Product_Aggregate;
   /** fetch data from the table: "session" */
   session: Array<Session>;
   /** fetch aggregated fields from the table: "session" */
@@ -12834,6 +12838,26 @@ export type Query_RootSearch_Locationv1_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Search_Location_Result_Order_By>>;
   where?: InputMaybe<Search_Location_Result_Bool_Exp>;
+};
+
+
+export type Query_RootSearch_ProductsArgs = {
+  args: Search_Products_Args;
+  distinct_on?: InputMaybe<Array<Product_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Order_By>>;
+  where?: InputMaybe<Product_Bool_Exp>;
+};
+
+
+export type Query_RootSearch_Products_AggregateArgs = {
+  args: Search_Products_Args;
+  distinct_on?: InputMaybe<Array<Product_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Order_By>>;
+  where?: InputMaybe<Product_Bool_Exp>;
 };
 
 
@@ -14327,6 +14351,10 @@ export type Search_Locationv1_Args = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Search_Products_Args = {
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** User sessions */
 export type Session = {
   access_expiry?: Maybe<Scalars['timestamp']['output']>;
@@ -14812,6 +14840,10 @@ export type Subscription_Root = {
   search_locationv1: Array<Search_Location_Result>;
   /** execute function "search_locationv1" and query aggregates on result of table type "search_location_result" */
   search_locationv1_aggregate: Search_Location_Result_Aggregate;
+  /** execute function "search_products" which returns "product" */
+  search_products: Array<Product>;
+  /** execute function "search_products" and query aggregates on result of table type "product" */
+  search_products_aggregate: Product_Aggregate;
   /** fetch data from the table: "session" */
   session: Array<Session>;
   /** fetch aggregated fields from the table: "session" */
@@ -15829,6 +15861,26 @@ export type Subscription_RootSearch_Locationv1_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Search_Location_Result_Order_By>>;
   where?: InputMaybe<Search_Location_Result_Bool_Exp>;
+};
+
+
+export type Subscription_RootSearch_ProductsArgs = {
+  args: Search_Products_Args;
+  distinct_on?: InputMaybe<Array<Product_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Order_By>>;
+  where?: InputMaybe<Product_Bool_Exp>;
+};
+
+
+export type Subscription_RootSearch_Products_AggregateArgs = {
+  args: Search_Products_Args;
+  distinct_on?: InputMaybe<Array<Product_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Order_By>>;
+  where?: InputMaybe<Product_Bool_Exp>;
 };
 
 
@@ -21153,7 +21205,9 @@ export type RemoveFromFavoritesMutationVariables = Exact<{
 
 export type RemoveFromFavoritesMutation = { delete_user_favorite?: { affected_rows: number } | null };
 
-export type GetUserAddressesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUserAddressesQueryVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
 
 
 export type GetUserAddressesQuery = { user_address: Array<{ address_title: string, address: string, id: number, city: { name: string, id: number }, quarter: { name: string, id: number }, district: { name: string, id: number } }> };
@@ -21633,8 +21687,8 @@ export const RemoveFromFavoritesDocument = gql`
 }
     `;
 export const GetUserAddressesDocument = gql`
-    query getUserAddresses {
-  user_address {
+    query getUserAddresses($user_id: uuid!) {
+  user_address(where: {user_id: {_eq: $user_id}}) {
     address_title
     address
     id
@@ -22300,7 +22354,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     removeFromFavorites(variables: RemoveFromFavoritesMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RemoveFromFavoritesMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RemoveFromFavoritesMutation>(RemoveFromFavoritesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeFromFavorites', 'mutation', variables);
     },
-    getUserAddresses(variables?: GetUserAddressesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserAddressesQuery> {
+    getUserAddresses(variables: GetUserAddressesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserAddressesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserAddressesQuery>(GetUserAddressesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserAddresses', 'query', variables);
     },
     loginMutation(variables?: LoginMutationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<LoginMutationMutation> {
