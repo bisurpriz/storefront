@@ -15,14 +15,18 @@ export async function POST(request: Request) {
     conversationData: paramsObject["conversationData"],
   });
 
+  const host = request.headers.get("x-forwarded-host");
+  const port = request.headers.get("x-forwarded-port");
+  const protocol = request.headers.get("x-forwarded-proto");
+
+  const targetOrigin = `${protocol}://${host}`;
+
   if (response.status === "success") {
-    console.log("Ödeme başarılı");
     // return script
     return new Response(
-      `
-      <script>
+      `<script>
         document.addEventListener('DOMContentLoaded', function () {
-            window.parent.postMessage('success', '*'); 
+            window.parent.postMessage('success', '${targetOrigin}'); 
         });
       </script>
     `,
@@ -33,20 +37,19 @@ export async function POST(request: Request) {
       }
     );
   } else {
-    console.log("Ödeme başarısız");
-    return new Response(
-      `
+    const scriptData = `
       <script>
         document.addEventListener('DOMContentLoaded', function () {
-            window.parent.postMessage('failed', '*'); 
+            window.parent.postMessage(${JSON.stringify({
+              errorMessage: response.errorMessage,
+            })}, '${targetOrigin}');
         });
       </script>
-    `,
-      {
-        headers: {
-          "Content-Type": "text/html",
-        },
-      }
-    );
+    `;
+    return new Response(scriptData, {
+      headers: {
+        "Content-Type": "text/html",
+      },
+    });
   }
 }

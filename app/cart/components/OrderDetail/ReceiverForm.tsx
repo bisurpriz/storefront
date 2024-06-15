@@ -598,10 +598,7 @@ const ReceiverForm = ({
           <Controller
             control={control}
             name="quarter"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => {
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
               const selectedQuarter = quarters.find(
                 (quarter) => quarter.id === value?.id
               );
@@ -616,12 +613,15 @@ const ReceiverForm = ({
                       : null
                   }
                   label="Mahalle"
-                  options={quarters.map((quarter) => ({
-                    label: quarter.name,
-                    value: quarter.id,
+                  options={quarters.map((option) => ({
+                    label: option.name,
+                    value: option.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
-                    onChange(option);
+                    onChange({
+                      id: option.value as number,
+                      name: option.label as string,
+                    });
                   }}
                   placeholder="Mahalle Seçiniz"
                   id="quarter"

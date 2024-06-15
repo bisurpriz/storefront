@@ -23,6 +23,10 @@ import {
   Locale,
 } from "@/app/iyzico-payment/types";
 import clsx from "clsx";
+import usePopup from "@/hooks/usePopup";
+import Button from "@/components/Button";
+import { MdReportGmailerrorred } from "react-icons/md";
+import Modal from "@/components/Modal/FramerModal/Modal";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -88,6 +92,11 @@ const defaultValues: CreditCardForm = {
 const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { push, replace } = useRouter();
+  const userData = useUser();
+  const { isDesktop } = useResponsive();
+
   const { handleSubmit, control } = useForm({
     defaultValues,
     resolver: yupResolver(schema),
@@ -104,12 +113,6 @@ const CreditCardForm = () => {
   const {
     cartState: { cartItems, cost },
   } = useCart();
-
-  const userData = useUser();
-
-  const { push } = useRouter();
-
-  const { isDesktop } = useResponsive();
 
   const onSubmit = async (data: CreditCardForm) => {
     if (data) {
@@ -132,8 +135,10 @@ const CreditCardForm = () => {
           id: product.id.toString(),
           name: product.name,
           price:
-            (product.discount_price * product.quantity).toString() ||
-            (product.price * product.quantity).toString(),
+            (product.discount_price * product.quantity)
+              ?.toFixed(2)
+              .toString() ||
+            (product.price * product.quantity)?.toFixed(2).toString(),
           itemType: "PHYSICAL",
         })),
         billingAddress: {
@@ -182,102 +187,135 @@ const CreditCardForm = () => {
     }
   };
 
+  const { renderPopup, openPopup, closePopup } = usePopup();
+
   useEffect(() => {
-    window.addEventListener("message", (event) => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
+
       if (event.data === "success") {
-        push("/cart/complete");
-      } else if (event.data === "failed") {
-        push("/cart/failed");
+        replace("/cart/complete");
+      } else if (event.data.errorMessage) {
+        setErrorMessage(event.data.errorMessage);
+        openPopup();
       }
-    });
+    };
+
+    window.addEventListener("message", handleMessage);
 
     return () => {
-      window.removeEventListener("message", (event) => {
-        if (event.data === "success") {
-          push("/cart/complete");
-        } else if (event.data === "failed") {
-          push("/cart/failed");
-        }
-      });
+      window.removeEventListener("message", handleMessage);
     };
   }, []);
 
-  return base64PasswordHtml ? (
-    <iframe
-      src={`data:text/html;base64,${base64PasswordHtml}`}
-      className={clsx(
-        "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
+  const handleClosePopupWithClearStates = () => {
+    setBase64PasswordHtml("");
+    setErrorMessage("");
+    closePopup();
+  };
+
+  return (
+    <>
+      {renderPopup(
+        <div
+          className={clsx(
+            "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
+            "flex flex-col justify-center items-center gap-2",
+            "text-center"
+          )}
+        >
+          <MdReportGmailerrorred size={48} className="text-red-500" />
+          <h2 className="text-lg font-semibold text-gray-800 m-0">
+            Ödeme İşlemi Başarısız
+          </h2>
+          <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
+          <Button
+            onClick={handleClosePopupWithClearStates}
+            color="error"
+            className="mt-2"
+          >
+            Kapat
+          </Button>
+        </div>
       )}
-      onLoad={() => {
-        const iframeWindow = document.querySelector("iframe").contentWindow;
-        iframeWindow.postMessage("check-status", "*"); // 3DS işlemi tamamlandı mı kontrol edin
-      }}
-    />
-  ) : (
-    <form
-      id="credit-card-form"
-      name="credit-card-form"
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full relative flex flex-col justify-center items-center px-4 py-8 bg-white shadow-lg rounded-lg border border-gray-200 gap-4"
-    >
-      <Controller
-        name="creditCardNumber"
-        control={control}
-        render={({ field: { onChange }, fieldState: { error } }) => (
-          <CreditCardInput
-            onChange={onChange}
-            error={!!error}
-            errorMessage={error?.message}
-          />
-        )}
-      />
-      <div className="flex flex-col md:flex-row md:justify-start md:items-start w-full gap-4">
+
+      <form
+        id="credit-card-form"
+        name="credit-card-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full relative flex flex-col justify-center items-center px-4 py-8 bg-white shadow-lg rounded-lg border border-gray-200 gap-4"
+      >
         <Controller
-          name="creditCardName"
+          name="creditCardNumber"
           control={control}
           render={({ field: { onChange }, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="İsim Soyisim"
-              placeholder="Lütfen kart üzerindeki ismi soyismi giriniz"
+            <CreditCardInput
               onChange={onChange}
               error={!!error}
               errorMessage={error?.message}
-              icon={<LuUser size={20} />}
             />
           )}
         />
-        <Controller
-          name="creditCardDate"
-          control={control}
-          render={({ field: { onChange }, fieldState: { error } }) => (
-            <CreditCardDateInput
-              error={!!error}
-              errorMessage={error?.message}
-              onChange={(e, val) => onChange(val)}
-            />
+        <div className="flex flex-col md:flex-row md:justify-start md:items-start w-full gap-4">
+          <Controller
+            name="creditCardName"
+            control={control}
+            render={({ field: { onChange }, fieldState: { error } }) => (
+              <TextField
+                fullWidth
+                label="İsim Soyisim"
+                placeholder="Lütfen kart üzerindeki ismi soyismi giriniz"
+                onChange={onChange}
+                error={!!error}
+                errorMessage={error?.message}
+                icon={<LuUser size={20} />}
+              />
+            )}
+          />
+          <Controller
+            name="creditCardDate"
+            control={control}
+            render={({ field: { onChange }, fieldState: { error } }) => (
+              <CreditCardDateInput
+                error={!!error}
+                errorMessage={error?.message}
+                onChange={(e, val) => onChange(val)}
+              />
+            )}
+          />
+          <Controller
+            name="creditCardCvv"
+            control={control}
+            render={({ field: { onChange }, fieldState: { error } }) => (
+              <TextField
+                label="CVV"
+                placeholder="123"
+                maxLength={3}
+                onChange={(e) => {
+                  const inputValue = e.target.value.replace(/\D/g, "");
+                  onChange(inputValue);
+                }}
+                error={!!error}
+                errorMessage={error?.message}
+                icon={<LuCode size={20} />}
+              />
+            )}
+          />
+        </div>
+      </form>
+      <Modal open={!!base64PasswordHtml}>
+        <iframe
+          src={`data:text/html;base64,${base64PasswordHtml}`}
+          className={clsx(
+            "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
           )}
+          onLoad={() => {
+            const iframeWindow = document.querySelector("iframe").contentWindow;
+            iframeWindow.postMessage("check-status", "*");
+          }}
         />
-        <Controller
-          name="creditCardCvv"
-          control={control}
-          render={({ field: { onChange }, fieldState: { error } }) => (
-            <TextField
-              label="CVV"
-              placeholder="123"
-              maxLength={3}
-              onChange={(e) => {
-                const inputValue = e.target.value.replace(/\D/g, "");
-                onChange(inputValue);
-              }}
-              error={!!error}
-              errorMessage={error?.message}
-              icon={<LuCode size={20} />}
-            />
-          )}
-        />
-      </div>
-    </form>
+      </Modal>
+    </>
   );
 };
 
