@@ -28,6 +28,7 @@ import Button from "@/components/Button";
 import { MdReportGmailerrorred } from "react-icons/md";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createPortal } from "react-dom";
+import { createOrderAction } from "../../actions";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -97,6 +98,10 @@ const CreditCardForm = () => {
   const { push, replace } = useRouter();
   const userData = useUser();
   const { isDesktop } = useResponsive();
+  const {
+    cartState: { cartItems, cost },
+    clearCart,
+  } = useCart();
 
   const { handleSubmit, control } = useForm({
     defaultValues,
@@ -111,12 +116,9 @@ const CreditCardForm = () => {
     }
   }, []);
 
-  const {
-    cartState: { cartItems, cost },
-  } = useCart();
-
   const onSubmit = async (data: CreditCardForm) => {
     if (data) {
+      setLoading(true);
       const serialize = localStorage.getItem("detail-data");
       const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
       const senderNames = detailData.sender_name.split(" ");
@@ -184,6 +186,7 @@ const CreditCardForm = () => {
       } as Initialize3dsPaymentRequest;
       const response = await initialize3dsPayment(variables);
       if (response.errorMessage) {
+        setLoading(false);
         openPopup();
         setErrorMessage(response.errorMessage);
         return;
@@ -195,12 +198,26 @@ const CreditCardForm = () => {
   const { renderPopup, openPopup, closePopup } = usePopup();
 
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
+      const serialize = localStorage.getItem("detail-data");
+      const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
 
       if (event.data === "success") {
+        const res = await createOrderAction(cartItems, detailData);
+        if (res) {
+          console.log("Order created successfully");
+          clearCart();
+          localStorage.removeItem("detail-data");
+          localStorage.removeItem("cart");
+          localStorage.removeItem("count");
+          localStorage.removeItem("cost");
+        }
+
+        setLoading(false);
         replace("/cart/complete");
       } else if (event.data.errorMessage) {
+        setLoading(false);
         setErrorMessage(event.data.errorMessage);
         openPopup();
       }
@@ -258,6 +275,7 @@ const CreditCardForm = () => {
           control={control}
           render={({ field: { onChange }, fieldState: { error } }) => (
             <CreditCardInput
+              disabled={loading}
               onChange={onChange}
               error={!!error}
               errorMessage={error?.message}
@@ -270,6 +288,7 @@ const CreditCardForm = () => {
             control={control}
             render={({ field: { onChange }, fieldState: { error } }) => (
               <TextField
+                disabled={loading}
                 id="creditCardName"
                 fullWidth
                 label="İsim Soyisim"
@@ -297,6 +316,7 @@ const CreditCardForm = () => {
             control={control}
             render={({ field: { onChange }, fieldState: { error } }) => (
               <TextField
+                disabled={loading}
                 label="CVV"
                 placeholder="123"
                 id="creditCardCvv"
