@@ -53,8 +53,8 @@ const authOptions: AuthOptions = {
         }
       }
     },
-    async redirect() {
-      return CALLBACK;
+    async redirect({ baseUrl }) {
+      return baseUrl + CALLBACK;
     },
   },
   secret: process.env.SECRET,
