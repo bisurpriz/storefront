@@ -23,7 +23,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
-import { boolean, object, string } from "yup";
+import { AnyObject, ObjectSchema, boolean, object, string } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
 import clsx from "clsx";
@@ -149,7 +149,14 @@ const ReceiverForm = ({
       defaultValues,
       mode: "onChange",
       delayError: 500,
-      resolver: yupResolver(OrderDetailSchema),
+      resolver: yupResolver<OrderDetailPartialFormData>(
+        OrderDetailSchema as ObjectSchema<
+          OrderDetailPartialFormData,
+          AnyObject,
+          any,
+          ""
+        >
+      ),
     });
 
   useEffect(() => {
@@ -251,9 +258,9 @@ const ReceiverForm = ({
         try {
           await createNewUserAddress({
             address: values.address,
-            city: values.city,
-            district: values.district,
-            quarter: values.quarter,
+            city_id: values.city?.id,
+            district_id: values.district?.id,
+            quarter_id: values.quarter?.id,
             receiver_firstname: values.receiver_firstname,
             receiver_surname: values.receiver_surname,
             receiver_phone: values.receiver_phone,
@@ -522,7 +529,11 @@ const ReceiverForm = ({
                     onChange(option);
                     reset({
                       ...watch(),
-                      city: option,
+                      city: {
+                        code: null,
+                        name: option.label as string,
+                        id: option.value as number,
+                      },
                       district: null,
                       quarter: null,
                     });
@@ -567,7 +578,10 @@ const ReceiverForm = ({
                     onChange(option);
                     reset({
                       ...watch(),
-                      district: option as number,
+                      district: {
+                        id: option.value as number,
+                        name: option.label as string,
+                      },
                       quarter: null,
                     });
                   }}

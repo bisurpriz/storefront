@@ -1,5 +1,4 @@
 import { post } from "@/app/iyzico-payment/actions";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const url = await request.text();
@@ -11,18 +10,43 @@ export async function POST(request: Request) {
     paramsObject[key] = value;
   });
 
-  // post to https://api.iyzipay.com/payment/3dsecure/auth
-
   const response: any = await post("/payment/3dsecure/auth", {
     paymentId: paramsObject["paymentId"],
     conversationData: paramsObject["conversationData"],
   });
 
   if (response.status === "success") {
-    return NextResponse.redirect(request.url + "/cart/complete");
+    console.log("Ödeme başarılı");
+    // return script
+    return new Response(
+      `
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.parent.postMessage('success', '*'); 
+        });
+      </script>
+    `,
+      {
+        headers: {
+          "Content-Type": "text/html",
+        },
+      }
+    );
+  } else {
+    console.log("Ödeme başarısız");
+    return new Response(
+      `
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.parent.postMessage('failed', '*'); 
+        });
+      </script>
+    `,
+      {
+        headers: {
+          "Content-Type": "text/html",
+        },
+      }
+    );
   }
-
-  console.log(response, "response");
-
-  console.log(paramsObject, "paramsObject");
 }
