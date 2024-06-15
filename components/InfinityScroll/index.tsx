@@ -40,7 +40,6 @@ const InfinityScroll = <T,>({
       params
     );
     setOffset(next);
-    console.log("response", response);
     setData((prev) => [...prev, ...response[dataKey]]);
   };
 
@@ -50,7 +49,6 @@ const InfinityScroll = <T,>({
 
   useEffect(() => {
     if (inView && totalCount > data?.length) {
-      console.log("loading more data");
       loadMoreData();
     }
   }, [inView]);

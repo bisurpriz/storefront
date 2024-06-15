@@ -67,8 +67,6 @@ const HourSelect = ({ className = "", deliveryTimeRanges }: Props) => {
     return times;
   });
 
-  console.log(deliveryTimes);
-
   const buttonDays = [
     {
       label: todayDay ? "Bugün" : localeFormat(date, namingFormat),

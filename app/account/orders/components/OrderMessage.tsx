@@ -13,7 +13,7 @@ import { readIdFromCookies } from "@/app/actions";
 const OrderMessage = ({
   tenant,
   orderTenantId,
-  tenantId
+  tenantId,
 }: {
   tenant: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["tenant"];
   orderTenantId: number;
@@ -26,18 +26,11 @@ const OrderMessage = ({
   const sendMessage = async () => {
     const userId = await readIdFromCookies();
 
-    console.log({
-      message,
-      receiver_id: tenant.id,
-      order_tenant_id: orderTenantId,
-      user_id: userId
-    })
-
     const response = await startMessageForOrder({
       message,
       receiver_id: tenant.id,
       order_tenant_id: orderTenantId,
-      user_id: userId
+      user_id: userId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(

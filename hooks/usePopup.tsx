@@ -60,17 +60,14 @@ const usePopup = (props?: PopupHookProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openPopup = useCallback(() => {
-    console.log("Popup opened");
     setIsOpen(true);
   }, []);
 
   const closePopup = useCallback(() => {
-    console.log("Popup closed");
     setIsOpen(false);
   }, []);
 
   const togglePopup = () => {
-    console.log("togglePopup", isOpen);
     setIsOpen((prev) => !prev);
   };
 

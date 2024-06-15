@@ -27,6 +27,7 @@ import usePopup from "@/hooks/usePopup";
 import Button from "@/components/Button";
 import { MdReportGmailerrorred } from "react-icons/md";
 import Modal from "@/components/Modal/FramerModal/Modal";
+import toast from "react-hot-toast";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -181,9 +182,16 @@ const CreditCardForm = () => {
         },
         installment: 1,
       } as Initialize3dsPaymentRequest;
-      console.log(variables, "variables");
       const response = await initialize3dsPayment(variables);
-      console.log(response, "response");
+      if (!response)
+        toast.error(
+          "Ödeme başlatılırken bir hata oluştu, lütfen daha sonra tekrar deneyin.",
+          {
+            duration: 3000,
+            position: isDesktop ? "top-right" : "top-center",
+            id: "payment-error-toast",
+          }
+        );
       if (response) setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
@@ -195,10 +203,8 @@ const CreditCardForm = () => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
       if (event.data === "success") {
-        console.log("success");
         replace("/cart/complete");
       } else if (event.data.errorMessage) {
-        console.log("error", event.data.errorMessage);
         setErrorMessage(event.data.errorMessage);
         openPopup();
       }

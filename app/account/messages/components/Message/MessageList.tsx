@@ -44,8 +44,6 @@ const MessageList = ({
     scrollToBottom();
   }, [messages]);
 
-  console.log(id, "id");
-
   return (
     <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
       {!messages
