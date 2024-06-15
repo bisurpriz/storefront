@@ -35,7 +35,7 @@ const CreditCardDateInput = ({
     <div className="flex flex-col items-start">
       <TextField
         label="Son Kullanma Tarihi"
-        id="expiry-date"
+        id="creditCardDate"
         type="text"
         icon={<LuCalendar size={20} />}
         value={expiryDate}

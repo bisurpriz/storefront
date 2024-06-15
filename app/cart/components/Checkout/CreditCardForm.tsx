@@ -181,8 +181,9 @@ const CreditCardForm = () => {
         },
         installment: 1,
       } as Initialize3dsPaymentRequest;
-
+      console.log(variables, "variables");
       const response = await initialize3dsPayment(variables);
+      console.log(response, "response");
       if (response) setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
@@ -194,8 +195,10 @@ const CreditCardForm = () => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
       if (event.data === "success") {
+        console.log("success");
         replace("/cart/complete");
       } else if (event.data.errorMessage) {
+        console.log("error", event.data.errorMessage);
         setErrorMessage(event.data.errorMessage);
         openPopup();
       }
@@ -262,6 +265,7 @@ const CreditCardForm = () => {
             control={control}
             render={({ field: { onChange }, fieldState: { error } }) => (
               <TextField
+                id="creditCardName"
                 fullWidth
                 label="İsim Soyisim"
                 placeholder="Lütfen kart üzerindeki ismi soyismi giriniz"
@@ -290,6 +294,7 @@ const CreditCardForm = () => {
               <TextField
                 label="CVV"
                 placeholder="123"
+                id="creditCardCvv"
                 maxLength={3}
                 onChange={(e) => {
                   const inputValue = e.target.value.replace(/\D/g, "");

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import TextField from "../TextField";
 import clsx from "clsx";
@@ -11,7 +11,8 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CiSquareRemove } from "react-icons/ci";
 
 type Props = {
   className?: string;
@@ -42,6 +43,7 @@ const Search: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
+  const [inputVal, setInputVal] = useState("");
 
   const modalRef = useClickAway<HTMLInputElement>(() => {
     setIsOpen(false);
@@ -53,11 +55,21 @@ const Search: FC<Props> = ({ className }) => {
     ref.current?.focus();
   };
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const search = searchParams.get("search");
+    if (search) {
+      ref.current.value = search;
+      setInputVal(search);
+    }
+  }, [searchParams]);
 
   const handleSearchProducts = async (input: string) => {
     try {
       if (!input) {
         setProducts([]);
+        await searchProducts({}, {});
         return;
       }
       setIsLoading(true);
@@ -71,7 +83,7 @@ const Search: FC<Props> = ({ className }) => {
 
   const onChange = (e, value: string) => {
     clearTimeout(debounceTimeout.current);
-
+    setInputVal(value);
     debounceTimeout.current = setTimeout(() => {
       handleSearchProducts(value);
     }, 500);
@@ -86,6 +98,20 @@ const Search: FC<Props> = ({ className }) => {
     if (event.key === "Enter") {
       pushToSearch();
     }
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(debounceTimeout.current);
+    };
+  }, []);
+
+  const handleClear = () => {
+    setInputVal("");
+    setProducts([]);
+    ref.current.value = "";
+    onChange(null, "");
+    push("/?search=");
   };
 
   return (
@@ -103,18 +129,39 @@ const Search: FC<Props> = ({ className }) => {
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
       />
-      <button
+
+      <div
         className={clsx(
-          "absolute right-0 top-0 h-full bg-primary text-white rounded-r-lg py-2 px-10",
-          "flex items-center justify-center outline-none",
-          "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
+          "absolute right-0 top-0",
+          "h-full flex items-center justify-center gap-3",
           "transition-all duration-300 group"
         )}
-        onFocus={handleFocus}
-        onClick={pushToSearch}
       >
-        <BsSearch className="group-hover:animate-bounce text-lg" />
-      </button>
+        {inputVal && (
+          <button
+            className={clsx(
+              "text-primary ",
+              "flex items-center justify-center outline-none",
+              "transition-all duration-300 group"
+            )}
+            onClick={handleClear}
+          >
+            <CiSquareRemove size={24} />
+          </button>
+        )}
+        <button
+          className={clsx(
+            "h-full bg-primary text-white rounded-r-lg py-2 px-10",
+            "flex items-center justify-center outline-none",
+            "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
+            "transition-all duration-300 group"
+          )}
+          onFocus={handleFocus}
+          onClick={pushToSearch}
+        >
+          <BsSearch className="group-hover:animate-bounce text-lg" />
+        </button>
+      </div>
 
       {isOpen && (
         <div
