@@ -22,7 +22,7 @@ import {
   Initialize3dsPaymentRequest,
   Locale,
 } from "@/app/iyzico-payment/types";
-import Modal from "@/components/Modal/FramerModal/Modal";
+import clsx from "clsx";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -87,6 +87,7 @@ const defaultValues: CreditCardForm = {
 
 const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const { handleSubmit, control } = useForm({
     defaultValues,
     resolver: yupResolver(schema),
@@ -130,7 +131,9 @@ const CreditCardForm = () => {
           category2: product.category.name,
           id: product.id.toString(),
           name: product.name,
-          price:( product.discount_price * product.quantity).toString() ||( product.price * product.quantity).toString(),
+          price:
+            (product.discount_price * product.quantity).toString() ||
+            (product.price * product.quantity).toString(),
           itemType: "PHYSICAL",
         })),
         billingAddress: {
@@ -176,12 +179,41 @@ const CreditCardForm = () => {
 
       const response = await initialize3dsPayment(variables);
       if (response) setBase64PasswordHtml(response.threeDSHtmlContent);
-
-      console.log(variables, response);
     }
   };
 
-  return (
+  useEffect(() => {
+    window.addEventListener("message", (event) => {
+      if (event.data === "success") {
+        push("/cart/complete");
+      } else if (event.data === "failed") {
+        push("/cart/failed");
+      }
+    });
+
+    return () => {
+      window.removeEventListener("message", (event) => {
+        if (event.data === "success") {
+          push("/cart/complete");
+        } else if (event.data === "failed") {
+          push("/cart/failed");
+        }
+      });
+    };
+  }, []);
+
+  return base64PasswordHtml ? (
+    <iframe
+      src={`data:text/html;base64,${base64PasswordHtml}`}
+      className={clsx(
+        "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
+      )}
+      onLoad={() => {
+        const iframeWindow = document.querySelector("iframe").contentWindow;
+        iframeWindow.postMessage("check-status", "*"); // 3DS işlemi tamamlandı mı kontrol edin
+      }}
+    />
+  ) : (
     <form
       id="credit-card-form"
       name="credit-card-form"
@@ -245,17 +277,6 @@ const CreditCardForm = () => {
           )}
         />
       </div>
-      <Modal
-        handleClose={() => setBase64PasswordHtml("")}
-        open={!!base64PasswordHtml}
-      >
-        <div className="max-w-[90vw] max-h-[90vh] bg-white p-4 rounded-lg shadow-lg overflow-y-auto">
-          <iframe
-            src={`data:text/html;base64,${base64PasswordHtml}`}
-            className="w-[600px] h-[600px] border-none rounded-lg"
-          />
-        </div>
-      </Modal>
     </form>
   );
 };

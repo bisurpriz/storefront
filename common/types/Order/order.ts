@@ -4,7 +4,11 @@ import {
 } from "@/common/enums/Order/product";
 import { Product } from "../Product/product";
 import { User } from "../User/user";
-import { City, District, Quarter } from "@/graphql/generated";
+import {
+  CityResponse,
+  DistrictResponse,
+  QuarterResponse,
+} from "../Addresses/addresses";
 
 export interface OrderItem {
   id: number;
@@ -60,9 +64,9 @@ export interface OrderDetailFormData {
   invoice_company_city?: string;
   invoice_company_district?: string;
   id: number;
-  city: City;
-  district: District;
-  quarter: Quarter;
+  city: CityResponse;
+  district: DistrictResponse;
+  quarter: QuarterResponse;
   address: string;
   address_title: string;
 }
