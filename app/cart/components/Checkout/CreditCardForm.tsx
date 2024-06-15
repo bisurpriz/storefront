@@ -27,7 +27,7 @@ import usePopup from "@/hooks/usePopup";
 import Button from "@/components/Button";
 import { MdReportGmailerrorred } from "react-icons/md";
 import Modal from "@/components/Modal/FramerModal/Modal";
-import toast from "react-hot-toast";
+import { createPortal } from "react-dom";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -183,15 +183,11 @@ const CreditCardForm = () => {
         installment: 1,
       } as Initialize3dsPaymentRequest;
       const response = await initialize3dsPayment(variables);
-      if (!response)
-        toast.error(
-          "Ödeme başlatılırken bir hata oluştu, lütfen daha sonra tekrar deneyin.",
-          {
-            duration: 3000,
-            position: isDesktop ? "top-right" : "top-center",
-            id: "payment-error-toast",
-          }
-        );
+      if (response.errorMessage) {
+        openPopup();
+        setErrorMessage(response.errorMessage);
+        return;
+      }
       if (response) setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
@@ -225,27 +221,30 @@ const CreditCardForm = () => {
 
   return (
     <>
-      {renderPopup(
-        <div
-          className={clsx(
-            "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
-            "flex flex-col justify-center items-center gap-2",
-            "text-center"
-          )}
-        >
-          <MdReportGmailerrorred size={48} className="text-red-500" />
-          <h2 className="text-lg font-semibold text-gray-800 m-0">
-            Ödeme İşlemi Başarısız
-          </h2>
-          <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
-          <Button
-            onClick={handleClosePopupWithClearStates}
-            color="error"
-            className="mt-2"
+      {createPortal(
+        renderPopup(
+          <div
+            className={clsx(
+              "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
+              "flex flex-col justify-center items-center gap-2",
+              "text-center"
+            )}
           >
-            Kapat
-          </Button>
-        </div>
+            <MdReportGmailerrorred size={48} className="text-red-500" />
+            <h2 className="text-lg font-semibold text-gray-800 m-0">
+              Ödeme İşlemi Başarısız
+            </h2>
+            <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
+            <Button
+              onClick={handleClosePopupWithClearStates}
+              color="error"
+              className="mt-2"
+            >
+              Kapat
+            </Button>
+          </div>
+        ),
+        document?.body
       )}
 
       <form
