@@ -46,7 +46,7 @@ const Modal = ({
           animate="visible"
           exit="exit"
           className={clsx(
-            "max-md:fixed max-md:w-full max-md:h-full max-md:top-0 max-md:left-0 max-md:bottom-0 max-md:right-0 max-md:z-50 max-md:rounded-none"
+            "max-md:fixed max-md:w-full max-md:h-full max-md:top-0 max-md:left-0 max-md:bottom-0 max-md:right-0 max-md:z-40 max-md:rounded-none"
           )}
         >
           <span className="absolute top-4 right-4 md:hidden">
