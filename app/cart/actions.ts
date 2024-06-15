@@ -165,15 +165,21 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       product_customizable_areas: item.product_customizable_areas,
     }));
 
+    const userId = await checkUserId();
+
     const { data: cartData } = await mutate<UpdateDbCartMutation>({
       mutation: UpdateDbCartDocument,
       variables: {
         payload: [
           {
-            user_id: await checkUserId(),
+            user_id: userId,
             content: JSON.stringify(content),
+            guest_id: userId
+              ? undefined
+              : cookies().get(CookieTokens.GUEST_ID)?.value,
           },
         ],
+        CONSTRAINT: userId ? "cart_user_id_key" : "cart_guest_id_key",
       },
     });
 
@@ -195,24 +201,24 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 };
 
 export const getCart = async (user_id: string) => {
-  if (!user_id || !(await checkUserId()))
-    return {
-      cartItems: [],
-      costData: 0,
-    } as {
-      cartItems: ProductForCart[];
-      costData: number;
-    };
+  const userId = user_id || (await checkUserId());
+  const guestId = cookies().get(CookieTokens.GUEST_ID)?.value;
 
+  const headers =
+    !userId && guestId
+      ? {
+          headers: {
+            "x-hasura-guest-id": guestId,
+          },
+        }
+      : {};
   try {
     const {
       data: { cart },
     } = await query<GetDbCartQuery>({
       query: GetDbCartDocument,
-      variables: {
-        user_id: user_id ?? (await checkUserId()),
-      },
       fetchPolicy: "no-cache",
+      context: headers,
     });
 
     const parsedContent = parseJson(cart[0].content);

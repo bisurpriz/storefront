@@ -727,6 +727,8 @@ export type Cart_Bool_Exp = {
 
 /** unique or primary key constraints on table "cart" */
 export type Cart_Constraint =
+  /** unique or primary key constraint on columns "guest_id" */
+  | 'cart_guest_id_key'
   /** unique or primary key constraint on columns "id" */
   | 'cart_pkey'
   /** unique or primary key constraint on columns "user_id" */
@@ -19247,7 +19249,7 @@ export type User = {
   /** An aggregate relationship */
   companies_aggregate: Company_Aggregate;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  email: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']['output']>;
   email_verified?: Maybe<Scalars['Boolean']['output']>;
   /** An array relationship */
   favorites: Array<User_Favorite>;
@@ -21092,7 +21094,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email: string, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
+export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email?: string | null, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
 
 export type UpdateUserByIdMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -21103,7 +21105,7 @@ export type UpdateUserByIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserByIdMutation = { update_user_by_pk?: { email: string, firstname?: string | null, lastname?: string | null, phone?: string | null, picture?: string | null } | null };
+export type UpdateUserByIdMutation = { update_user_by_pk?: { email?: string | null, firstname?: string | null, lastname?: string | null, phone?: string | null, picture?: string | null } | null };
 
 export type GetCitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21241,14 +21243,13 @@ export type GetBannersQuery = { system_banner: Array<{ expire_date?: any | null,
 
 export type UpdateDbCartMutationVariables = Exact<{
   payload: Array<Cart_Insert_Input> | Cart_Insert_Input;
+  CONSTRAINT: Cart_Constraint;
 }>;
 
 
 export type UpdateDbCartMutation = { insert_cart?: { affected_rows: number, returning: Array<{ id: any }> } | null };
 
-export type GetDbCartQueryVariables = Exact<{
-  user_id: Scalars['uuid']['input'];
-}>;
+export type GetDbCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
@@ -21739,10 +21740,10 @@ export const GetBannersDocument = gql`
 }
     `;
 export const UpdateDbCartDocument = gql`
-    mutation updateDbCart($payload: [cart_insert_input!]!) {
+    mutation updateDbCart($payload: [cart_insert_input!]!, $CONSTRAINT: cart_constraint!) {
   insert_cart(
     objects: $payload
-    on_conflict: {constraint: cart_user_id_key, update_columns: [content]}
+    on_conflict: {constraint: $CONSTRAINT, update_columns: [content]}
   ) {
     returning {
       id
@@ -21752,8 +21753,8 @@ export const UpdateDbCartDocument = gql`
 }
     `;
 export const GetDbCartDocument = gql`
-    query getDbCart($user_id: uuid!) {
-  cart(where: {user_id: {_eq: $user_id}}) {
+    query getDbCart {
+  cart {
     id
     content
   }
@@ -22369,7 +22370,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     updateDbCart(variables: UpdateDbCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateDbCartMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateDbCartMutation>(UpdateDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDbCart', 'mutation', variables);
     },
-    getDbCart(variables: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
+    getDbCart(variables?: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
     },
     getMainCategories(variables?: GetMainCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetMainCategoriesQuery> {

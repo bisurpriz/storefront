@@ -10,7 +10,7 @@ import {
 } from "react";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
-import { randomBytes } from "crypto";
+import { uuidv4 } from "@/utils/uuidv4";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
@@ -32,7 +32,7 @@ export const AuthProvider = ({
   useEffect(() => {
     if (!user) {
       if (!Cookies.get(CookieTokens.GUEST_ID)) {
-        const guest_id = randomBytes(32).toString("hex");
+        const guest_id = uuidv4();
         Cookies.set(CookieTokens.GUEST_ID, guest_id);
       }
     } else {
