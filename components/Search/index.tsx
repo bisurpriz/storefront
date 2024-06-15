@@ -96,8 +96,8 @@ const Search: FC<Props> = ({ className }) => {
     >
       <TextField
         type="text"
-        className=""
-        placeholder="Çiçek, hediye, süprizler..."
+        clearButtonClassName="pr-[104px]"
+        placeholder="Çiçek, hediye, sürprizler..."
         ref={ref}
         onChange={onChange}
         onFocus={() => setIsOpen(true)}
