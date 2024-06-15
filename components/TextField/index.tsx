@@ -2,8 +2,9 @@
 
 import clsx from "clsx";
 import { useInput } from "@mui/base/useInput";
-import { forwardRef } from "react";
-import { motion } from "framer-motion";
+import { forwardRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { IoMdCloseCircle } from "react-icons/io";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
@@ -19,6 +20,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       onClick,
       onFocus,
       placeholder,
+      clearButtonClassName,
       required,
       value,
       className,
@@ -53,6 +55,21 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       required,
       value,
     });
+
+    const [inputValue, setInputValue] = useState<string>(defaultValue || "");
+
+    const handleClear = () => {
+      setInputValue("");
+      onChange?.(
+        { target: { value: "" } } as React.ChangeEvent<HTMLInputElement>,
+        ""
+      );
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+      onChange?.(e, e.target.value);
+    };
 
     const isErrorClasses = isError
       ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
@@ -107,7 +124,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             ref={inputRef}
             required={isRequired}
             placeholder={placeholder}
-            value={value as string}
+            value={inputValue}
+            onChange={handleInputChange}
             className={clsx(
               "w-full px-3 py-2 text-sm text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200",
               className,
@@ -118,6 +136,19 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             )}
             disabled={isDisabled}
           />
+          <AnimatePresence>
+            {inputValue && !isDisabled && (
+              <motion.span
+                className={`absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer ${clearButtonClassName}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={handleClear}
+              >
+                <IoMdCloseCircle className="text-primary hover:text-primary-light w-5 h-5" />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
         {isError && errorMessage && (
           <span className="text-xs text-red-500">{errorMessage}</span>
