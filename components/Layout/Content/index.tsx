@@ -2,6 +2,7 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
+import Footer from "../Footer";
 
 type ContentProps = {
   children: React.ReactNode;
@@ -17,10 +18,11 @@ const Content = ({ children }: ContentProps) => {
       }
     >
       <Toaster />
-      <main className="content-height max-sm:content-height-sm h-full md:container pt-6 mx-auto px-4 scroll-smooth overflow-hidden flex flex-col max-sm:mb-[78px]">
+      <main className="content-height max-sm:content-height-sm h-full md:container pt-4 mx-auto px-4 scroll-smooth overflow-hidden flex flex-col max-md:mb-16">
         {children}
         <MobileBottomNav />
       </main>
+      <Footer />
     </Suspense>
   );
 };

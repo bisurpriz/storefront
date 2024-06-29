@@ -10,18 +10,23 @@ import {
   RiUser3Line,
 } from "react-icons/ri";
 import { TbCategory } from "react-icons/tb";
-import Badge from "../Badge";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import Badge from "../Badge";
 
 const MenuItem = ({
   item,
   selected,
   onSelect,
+  hasBadge,
 }: {
   item: (typeof mobileBottomMenu)[0];
   selected: boolean;
   onSelect: () => void;
+  hasBadge?: {
+    badgeShow: boolean;
+    badgeText: string | number;
+  };
 }) => {
   return (
     <Link
@@ -29,13 +34,19 @@ const MenuItem = ({
       className={clsx(
         "flex flex-col items-center justify-center text-gray-600 rounded-md p-2 touch-auto",
         {
-          "outline-none ring-2 ring-primary-light text-white bg-primary":
-            selected,
+          "outline-none text-white bg-secondary": selected,
         }
       )}
       onClick={onSelect}
     >
-      <span className="text-2xl">{item.icon}</span>
+      {hasBadge?.badgeShow ? (
+        <Badge show={hasBadge.badgeShow} text={hasBadge.badgeText}>
+          <span className="text-2xl">{item.icon}</span>
+        </Badge>
+      ) : (
+        <span className="text-2xl">{item.icon}</span>
+      )}
+
       <span className="text-xs font-medium inline-block max-xs:hidden">
         {item.name}
       </span>
@@ -76,16 +87,19 @@ const MobileBottomNav = () => {
       <div className="grid grid-cols-5 gap-4 p-2">
         {mobileBottomMenu.map((item, index) => {
           return item.href === "/cart" ? (
-            <Badge badgeContent={count} key={index}>
-              <MenuItem
-                item={item}
-                selected={selected === index}
-                onSelect={() => handleSelect(index)}
-              />
-            </Badge>
+            <MenuItem
+              key={item.href}
+              item={item}
+              selected={selected === index}
+              onSelect={() => handleSelect(index)}
+              hasBadge={{
+                badgeShow: count > 0,
+                badgeText: count,
+              }}
+            />
           ) : (
             <MenuItem
-              key={index}
+              key={item.href}
               item={item}
               selected={selected === index}
               onSelect={() => handleSelect(index)}

@@ -28,7 +28,6 @@ export const cartReducer = (state: CartState, action: CartAction) => {
   switch (action.type) {
     case "ADD_TO_CART": {
       setLocalStorage(action.payload);
-
       return action.payload;
     }
 

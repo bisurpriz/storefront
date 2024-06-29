@@ -1,4 +1,4 @@
-import Divider from '../Divider';
+import Divider from "../Divider";
 
 const Card = ({
   children,
@@ -17,10 +17,10 @@ const Card = ({
   bordered?: boolean;
   onClick?: () => void;
 }) => {
-  const isBordered = bordered ? 'border rounded-md border-primary-light' : '';
-  const containerCls = wrapperClass ?? '';
-  const titleCls = titleClass ?? '';
-  const contentCls = contentClass ?? '';
+  const isBordered = bordered ? "border rounded-md border-slate-200" : "";
+  const containerCls = wrapperClass ?? "";
+  const titleCls = titleClass ?? "";
+  const contentCls = contentClass ?? "";
 
   return (
     <div className={`${isBordered} ${containerCls}`} onClick={onClick}>

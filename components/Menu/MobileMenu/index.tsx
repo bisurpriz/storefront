@@ -89,7 +89,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
       >
         <>
           <Link
-            href={"/contact"}
+            href={"/iletisim"}
             className={clsx([
               "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
             ])}

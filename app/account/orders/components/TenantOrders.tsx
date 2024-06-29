@@ -31,7 +31,11 @@ const TenantOrders = ({
           <StatusBadge status={OrderItemStatus[to.order_status.value]} />
         </div>
 
-        <OrderMessage tenant={to.tenant} orderTenantId={to.id} />
+        <OrderMessage
+          tenant={to.tenant}
+          orderTenantId={to.id}
+          tenantId={to.id}
+        />
       </div>
 
       <OrderItem order_items={to.order_items} />

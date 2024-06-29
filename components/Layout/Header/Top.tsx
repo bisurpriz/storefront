@@ -1,29 +1,29 @@
-import Link from 'next/link';
-import { Suspense } from 'react';
+import Link from "next/link";
+import { Suspense } from "react";
 
 const headerTopLeftMenu = [
   {
-    label: 'Hakkımızda',
-    link: 'about-us',
+    label: "Hakkımızda",
+    link: "hakkimizda",
   },
   {
-    label: 'Hesabım',
-    link: 'my-account',
+    label: "Hesabım",
+    link: "account",
   },
   {
-    label: 'İletişim',
-    link: 'contact-us',
+    label: "İletişim",
+    link: "iletisim",
   },
   {
-    label: 'Sipariş Takibi',
-    link: 'order-tracking',
+    label: "Sipariş Takibi",
+    link: "order-tracking",
   },
 ];
 
 const HeaderTop = () => {
   return (
     <Suspense>
-      <div className="w-full max-sm:hidden max-md:px-4 pt-2">
+      <div className="w-full max-sm:hidden px-4 mt-1 text-xs">
         <div className="flex items-center justify-between">
           <div className={`flex items-center gap-2 `}>
             {headerTopLeftMenu.map((item, index) => (
@@ -50,7 +50,8 @@ const HeaderTop = () => {
             <li>
               Bonnmarşe&apos;de satış yapmak ister misiniz?&nbsp;
               <Link
-                href="/campaign-details"
+                href={process.env.NEXT_PUBLIC_SELLER_PANEL_URL}
+                target="_blank"
                 className="text-primary hover:text-primary-dark"
               >
                 Satıcı Paneli

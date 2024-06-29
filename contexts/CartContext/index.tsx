@@ -132,12 +132,15 @@ export const CartProvider = ({
         cartItems[hasItem].quantity = item.quantity;
         handleChangeDb(cartItems, "update").then(({ costData, error }) => {
           if (error) return;
-          return {
-            ...cartState,
-            cartItems,
-            cost: costData,
-            count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
-          };
+
+          dispatch({
+            type: UPDATE_CART,
+            payload: {
+              cartItems,
+              count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+              cost: costData,
+            },
+          });
         });
         return;
       }

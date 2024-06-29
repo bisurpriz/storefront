@@ -1,5 +1,5 @@
 import Content from "@/components/Layout/Content";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lato, Manrope, Quicksand } from "next/font/google";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -13,7 +13,6 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import "@smastrom/react-rating/style.css";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
@@ -29,8 +28,9 @@ import {
 } from "@/graphql/generated";
 import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
-import StickyHeader from "@/components/Layout/Header/StickyHeader";
-import HeaderMiddle from "@/components/Layout/Header/Middle";
+import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
+import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
+import { NavigationEvents } from "@/components/NavigationEvents";
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -107,6 +107,15 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   generator: "Bonnmarşe",
 };
+
+export const viewport: Viewport = {
+  maximumScale: 1,
+  minimumScale: 1,
+  initialScale: 1,
+  width: "device-width",
+  userScalable: false,
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({
@@ -132,19 +141,20 @@ export default async function RootLayout({
 
   return (
     <html lang="tr">
+      <GoogleTagManagerInjector />
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
-        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden mb-10`}
+        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
         id="root"
       >
+        <TagManagerNoscript />
+        <NavigationEvents />
         <AuthProvider user={user}>
           <ApolloWrapper>
             <CategoryProvider category={category}>
               <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                <StickyHeader secondChildren={<HeaderMiddle />}>
-                  <Header category={category} />
-                </StickyHeader>
+                <Header category={category} />
                 <Content>{children}</Content>
                 {auth}
                 <Listener />
@@ -153,7 +163,6 @@ export default async function RootLayout({
           </ApolloWrapper>
         </AuthProvider>
       </body>
-      <GoogleAnalytics gaId="G-WWEREE808L" />
     </html>
   );
 }

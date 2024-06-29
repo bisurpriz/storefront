@@ -23,7 +23,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       <Card bordered={false} contentClass="!p-0">
         <CustomSwiper
           direction="horizontal"
-          slidePerView={Math.floor(width / 180) || 10}
+          slidePerView={Math.floor(width / 100) || 10}
           spaceBetween={20}
           navigation={true}
           slideItems={categories.map((item, i) => ({
@@ -32,12 +32,13 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
               <div className="flex-shrink-0 group">
                 <Link className="block w-full" href={`/${item.slug}`}>
                   <Image
-                    src="https://source.unsplash.com/random/200x200"
+                    // random images
+                    src={`https://picsum.photos/seed/${item.id}/120/120`}
                     alt={item.name}
-                    width={160}
-                    height={160}
+                    width={120}
+                    height={120}
                     className={clsx(
-                      "w-40 h-40 mx-auto rounded-xl",
+                      "w-24 h-24 mx-auto rounded-xl",
                       "group-hover:shadow-lg transition-shadow duration-200"
                     )}
                   />

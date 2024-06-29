@@ -12,7 +12,7 @@ const MessagesPage = async ({
 }) => {
   const orderTenantId = searchParams["oid"];
   const { order_tenant: orderTenants = [] } = await getTenantOrderItem(
-    Number(orderTenantId)
+    Number(orderTenantId ?? 0)
   );
 
   const orderItem = orderTenants?.[0];

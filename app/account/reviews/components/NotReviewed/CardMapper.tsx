@@ -4,7 +4,7 @@ import { GetOrdersWithReviewsQuery } from "@/graphql/generated";
 const NotReviewedCardMapper = ({
   result,
 }: {
-  result: GetOrdersWithReviewsQuery["review"];
+  result: GetOrdersWithReviewsQuery["order_item"];
 }) =>
   result.length > 0 ? (
     result?.map((item) => (

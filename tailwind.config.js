@@ -9,12 +9,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#828EF9",
-        ["primary-dark"]: "#5b6ee1",
-        ["primary-light"]: "#a5b4fc",
-        secondary: "#EF6497",
-        ["secondary-dark"]: "#d9467c",
-        ["secondary-light"]: "#f472b6",
+        primary: "#F075AA",
+        ["primary-dark"]: "#D6458D",
+        ["primary-light"]: "#BC5A94",
+        secondary: "#ADD899",
+        ["secondary-dark"]: "#8dbb6b",
+        ["secondary-light"]: "#c4e1b6",
+        tertiary: "#FFDE95",
+        ["tertiary-dark"]: "#e9c46a",
+        ["tertiary-light"]: "#ffedc1",
         error: "#dc2626",
         ["error-dark"]: "#b91c1c",
         ["error-light"]: "#ef4444",
@@ -48,6 +51,24 @@ module.exports = {
         "slider-2": "url('/slider/slider-2.png')",
         "slider-0": "url('/slider/slider-0.png')",
       },
+      keyframes: {
+        marqueeLeft: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        marqueeRight: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        marqueeUp: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(-100%)" },
+        },
+        marqueeDown: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+      },
       screens: {
         xs: "480px",
         sm: "576px",
@@ -64,6 +85,12 @@ module.exports = {
         sans: ["var(--font-lato)"],
         mono: ["var(--font-quicksand)"],
         manrope: ["var(--font-manrope)"],
+      },
+      animation: {
+        "marquee-left": "marqueeLeft linear infinite",
+        "marquee-right": "marqueeRight linear infinite",
+        "marquee-up": "marqueeUp linear infinite",
+        "marquee-down": "marqueeDown linear infinite",
       },
     },
   },

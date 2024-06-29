@@ -46,10 +46,15 @@ const CartSummary = () => {
     return null;
   }
 
+  const pagePathForm = {
+    [CartStepPaths.CHECKOUT]: "credit-card-form",
+    [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
+  };
+
   return (
     <div
       className={clsx(
-        "bg-white  col-span-1 md:h-fit border border-primary rounded-xl relative",
+        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-xl relative",
         "max-md:border-none md:overflow-hidden"
       )}
     >
@@ -90,13 +95,15 @@ const CartSummary = () => {
         </span>
         <Button
           disabled={loading}
-          type={pathname === CartStepPaths.ORDER_DETAIL ? "submit" : "button"}
+          type={
+            pagePathForm[pathname as keyof typeof pagePathForm]
+              ? "submit"
+              : "button"
+          }
           size="large"
           color="primary"
           form={
-            pathname === CartStepPaths.ORDER_DETAIL
-              ? "order-detail-form"
-              : undefined
+            pagePathForm[pathname as keyof typeof pagePathForm] || undefined
           }
           label={
             pathname === CartStepPaths.CHECKOUT

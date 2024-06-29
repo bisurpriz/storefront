@@ -1,5 +1,4 @@
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import { differenceInDays, parseISO } from "date-fns";
 
 interface CouponCardProps {
@@ -22,7 +21,7 @@ const CouponCard = ({
   const daysDifference = differenceInDays(parseISO(endDate), today);
 
   return (
-    <Card wrapperClass="border !border-gray-300">
+    <div>
       <div className="flex items-center justify-between">
         <span className="text-sm rounded-md flex gap-1 whitespace-nowrap items-center capitalize">
           {title}
@@ -65,7 +64,7 @@ const CouponCard = ({
           Skt: {new Date(endDate).toLocaleDateString("tr-TR")}
         </span>
       </div>
-    </Card>
+    </div>
   );
 };
 

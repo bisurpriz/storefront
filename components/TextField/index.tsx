@@ -74,7 +74,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <label
         {...getRootProps()}
         className={clsx(
-          "flex flex-col gap-1 text-sm font-medium text-gray-700 relative whitespace-nowrap",
+          "flex flex-col gap-1 text-xs font-normal text-gray-700 relative whitespace-nowrap",
           {
             "text-red-500": isError,
           },
@@ -86,11 +86,12 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           <AnimationExitProvider show={!!icon}>
             <motion.span
               className={clsx(
-                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none"
+                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none",
+                "object-fill"
               )}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
               {icon}
             </motion.span>
@@ -108,7 +109,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder={placeholder}
             value={value as string}
             className={clsx(
-              "w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200",
+              "w-full px-3 py-2 text-sm text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200",
               className,
               focusedClasses,
               disabledClasses,

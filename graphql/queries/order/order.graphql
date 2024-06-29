@@ -18,7 +18,7 @@ mutation createOrder(
   }
 }
 
-query getSingleTenantOrderItem($id: bigint!) {
+query getSingleTenantOrderItem($id: bigint) {
   order_tenant(where: { id: { _eq: $id } }) {
     id
     tenant {

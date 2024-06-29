@@ -1,73 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import TextField from "../TextField";
-import VisaSvg from "../Svgs/Visa";
-import MasterCard from "../Svgs/MasterCard";
-import AmexSvg from "../Svgs/Amex";
-
-const cardTypes = [
-  {
-    type: "Visa",
-    pattern: /^4/,
-  },
-  {
-    type: "MasterCard",
-    pattern: /^5[1-5]/,
-  },
-  {
-    type: "Amex",
-    pattern: /^3[47]/,
-  },
-  {
-    type: "Discover",
-    pattern: /^6(?:011|5)/,
-  },
-  {
-    type: "DinersClub",
-    pattern: /^3(?:0[0-5]|[68])/,
-  },
-  {
-    type: "JCB",
-    pattern: /^(?:2131|1800|35)/,
-  },
-  {
-    type: "UnionPay",
-    pattern: /^(62|88)/,
-  },
-  {
-    type: "Maestro",
-    pattern: /^(5018|5020|5038|6304|6759|6761|6763)/,
-  },
-  {
-    type: "Mir",
-    pattern: /^2200/,
-  },
-  {
-    type: "UATP",
-    pattern: /^(1)/,
-  },
-];
+import { checkBin } from "@/app/iyzico-payment/actions";
+import { getCardAssociationImageUrl } from "@/utils/getImageUrl";
+import Image from "next/image";
+import { LuCreditCard } from "react-icons/lu";
 
 const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
   const [creditCardNumber, setCreditCardNumber] = useState("");
-  const [cardType, setCardType] = useState("");
+  const [cardTypeImage, setCardTypeImage] = useState("");
 
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
-  const getCardType = useCallback((number) => {
-    let detectedCardType = "";
-
-    cardTypes.forEach((card) => {
-      if (card.pattern.test(number)) {
-        detectedCardType = card.type;
-      }
-    });
-
-    return detectedCardType;
-  }, []);
-
   const handleInputChange = (e) => {
     const { value } = e.target;
-    const number = value.replace(/\s/g, "");
+    const number = value.replace(/\D/g, "");
 
     setCreditCardNumber(formatCreditCardNumber(number));
 
@@ -75,8 +21,14 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
       clearTimeout(timeout.current);
     }
 
-    timeout.current = setTimeout(() => {
-      setCardType(getCardType(number));
+    timeout.current = setTimeout(async () => {
+      if (number.length > 5) {
+        const { cardAssociation } = await checkBin({
+          binNumber: number.slice(0, 6),
+        });
+        if (cardAssociation)
+          setCardTypeImage(getCardAssociationImageUrl(cardAssociation));
+      } else setCardTypeImage("");
       onChange(e, formatCreditCardNumber(number));
     }, 300);
   };
@@ -84,6 +36,7 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
   useEffect(() => {
     return () => {
       if (timeout.current) {
+        setCardTypeImage("");
         clearTimeout(timeout.current);
       }
     };
@@ -96,19 +49,6 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
       .trim();
   }, []);
 
-  const getIcon = () => {
-    switch (cardType) {
-      case "Visa":
-        return <VisaSvg />;
-      case "MasterCard":
-        return <MasterCard />;
-      case "Amex":
-        return <AmexSvg width={24} height={24} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <TextField
       type="text"
@@ -116,10 +56,16 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
       value={formatCreditCardNumber(creditCardNumber)}
       onChange={handleInputChange}
       maxLength={19}
-      placeholder="1234 5678 9012 3456"
-      icon={getIcon()}
+      placeholder="Lütfen kart numaranızı giriniz"
+      icon={
+        cardTypeImage ? (
+          <Image width={20} height={20} src={cardTypeImage} alt="card type" />
+        ) : (
+          <LuCreditCard size={20} />
+        )
+      }
       fullWidth
-      label="Kredi Kartı Numarası"
+      label="Kart Numarası"
       className="tracking-wider"
       {...props}
     />

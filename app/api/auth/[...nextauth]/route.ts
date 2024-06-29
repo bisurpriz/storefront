@@ -5,7 +5,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 const CALLBACK = "/social-login/callback?result=success";
-const ID_TOKEN = "id_token";
+const ID_TOKEN = "id-token";
 
 const USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
 
@@ -53,8 +53,8 @@ const authOptions: AuthOptions = {
         }
       }
     },
-    async redirect() {
-      return CALLBACK;
+    async redirect({ baseUrl }) {
+      return baseUrl + CALLBACK;
     },
   },
   secret: process.env.SECRET,

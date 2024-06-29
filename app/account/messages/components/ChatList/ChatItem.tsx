@@ -26,13 +26,13 @@ const ChatItem = ({
     >
       <div className="flex-2">
         <div className="w-12 h-12 relative">
-          <Image
+          { imgPath ? <Image
             className="w-12 h-12 rounded-full mx-auto"
             src={imgPath}
             alt="chat-user"
             width="48"
             height="48"
-          />
+          /> : null}
           <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
         </div>
       </div>

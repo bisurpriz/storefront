@@ -1,13 +1,6 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
-import View1 from "@/components/Layout/GridViews/View1";
 import { Suspense } from "react";
-import {
-  getBanners,
-  getCityById,
-  getDistrictById,
-  getLocationFromCookie,
-  getQuarterById,
-} from "./actions";
+import { getBanners, getLocationFromCookie } from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { query } from "@/graphql/lib/client";
 import {
@@ -17,9 +10,33 @@ import {
 import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
 import clsx from "clsx";
-import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
+import { getAvailableLocation } from "./account/addresses/actions";
+import Filter from "@/components/Filter";
+import InfinityScroll from "@/components/InfinityScroll";
+import { searchProducts } from "./(feed)/actions";
 
-export default async function Page() {
+const RenderSuspense = ({ children }: { children: any }) => (
+  <Suspense
+    fallback={
+      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
+          />
+        ))}
+      </div>
+    }
+  >
+    {children}
+  </Suspense>
+);
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const { banners } = await getBanners();
   const {
     data: { category },
@@ -27,97 +44,59 @@ export default async function Page() {
     query: GetAllCategoriesDocument,
   });
 
+  const { products, totalCount } = await searchProducts(
+    {
+      offset: 0,
+      limit: 15,
+    },
+    searchParams
+  );
+
+  const searchText = searchParams["search"];
   const location = await getLocationFromCookie();
 
-  const getAvailableLocation = async () => {
-    if (!location) return null;
-    const { type, id } = location;
+  const data = await getAvailableLocation(location);
 
-    switch (type) {
-      case "city": {
-        const data = await getCityById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          city_name: data.city[0].name,
-          city_id: data.city[0].id,
-          type: "city",
-        });
-      }
-      case "district": {
-        const data = await getDistrictById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          district_name: data.district[0].name,
-          district_id: data.district[0].id,
-          city_name: data.district[0].city.name,
-          city_id: data.district[0].city.id,
-          type: "district",
-        });
-      }
-      case "quarter": {
-        const data = await getQuarterById({
-          id: id,
-        });
-        return createQuarterSelectorLabel({
-          name: data.quarter[0].name,
-          id: data.quarter[0].id,
-          district_name: data.quarter[0].district.name,
-          district_id: data.quarter[0].district.id,
-          city_name: data.quarter[0].district.city.name,
-          city_id: data.quarter[0].district.city.id,
-          type: "quarter",
-        });
-      }
-      default:
-        return null;
-    }
-  };
-
-  const value = await getAvailableLocation();
+  const value = data?.value;
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
-            />
-          ))}
-        </div>
-      }
-    >
-      <div className="grid grid-cols-12 gap-4 w-full mb-4">
+    <RenderSuspense>
+      {searchText && (
+        <Filter
+          filterTypes={[
+            "price",
+            "sameDayDelivery",
+            "specialOffers",
+            "customizable",
+          ]}
+        />
+      )}
+      {!searchText && <CategorySwiper categories={category} />}
+      <div
+        className={clsx(
+          "grid grid-cols-12 gap-4 w-full mb-4",
+          "bg-white p-4 rounded-md border border-gray-100",
+          "max-md:p-0 max-md:border-none"
+        )}
+      >
         <div
           className={clsx(
-            "col-span-8 max-xl:col-span-full text-left",
-            "w-full flex flex-col gap-3",
-            "bg-purple-50 rounded-xl shadow-sm p-4",
-            "border border-purple-100"
+            "col-span-7 max-xl:col-span-full self-center",
+            "text-2xl font-semibold text-gray-800"
           )}
         >
-          <h1
-            className={clsx(
-              "text-2xl font-semibold text-lime-500",
-              "max-xl:text-lg",
-              "font-sans"
-            )}
-          >
-            Gönderim Yapmak İstediğiniz Bölgeyi Seçin,{" "}
-            <span className="text-secondary-light">
-              en güzel hediyeleri keşfedin.
-            </span>
-          </h1>
           <QuarterSelector value={value} />
         </div>
         <LandingSearchBanner />
       </div>
-      <CategorySwiper categories={category} />
-      <CampaignGrid banners={banners} />
-      <View1 />
-    </Suspense>
+      {!searchText && <CampaignGrid banners={banners} />}
+      <InfinityScroll
+        totalCount={totalCount}
+        initialData={products}
+        dataKey="products"
+        query={searchProducts}
+        params={searchParams}
+      />
+    </RenderSuspense>
   );
 }

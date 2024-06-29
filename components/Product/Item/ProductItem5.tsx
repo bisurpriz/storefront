@@ -7,6 +7,7 @@ import Rating from "@/components/Rating/Rating";
 import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
+import { goToProductDetail } from "@/utils/linkClickEvent";
 
 const ProductItem5 = ({
   name,
@@ -26,7 +27,6 @@ const ProductItem5 = ({
     return [
       {
         name: "Özelleştirilebilir",
-        // palette
         icon: "🎨",
         color: "orange",
       },
@@ -38,7 +38,15 @@ const ProductItem5 = ({
       className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col"
       id={id.toString()}
     >
-      <Link href={`/${category.slug}/${slug}?pid=${id}`}>
+      <Link
+        href={goToProductDetail({
+          category: {
+            slug: category.slug,
+          },
+          id,
+          slug,
+        })}
+      >
         <Image
           src={getImageUrlFromPath(image?.[0])}
           alt={name}

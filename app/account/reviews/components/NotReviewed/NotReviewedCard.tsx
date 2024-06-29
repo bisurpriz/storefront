@@ -1,3 +1,5 @@
+"use client";
+
 import Rating from '@/components/Rating/Rating';
 import { localeFormat } from '@/utils/format';
 import Image from 'next/image';

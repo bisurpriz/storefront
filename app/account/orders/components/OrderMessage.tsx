@@ -1,30 +1,36 @@
 "use client";
 
 import Button from "@/components/Button";
-import Modal from "@/components/Modal";
 import Link from "next/link";
 import { useState } from "react";
 import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import { GetUserOrdersQuery } from "@/graphql/generated";
+import { readIdFromCookies } from "@/app/actions";
+import Modal from "@/components/Modal/FramerModal/Modal";
 
 const OrderMessage = ({
   tenant,
   orderTenantId,
+  tenantId,
 }: {
   tenant: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["tenant"];
   orderTenantId: number;
+  tenantId: string;
 }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
+    const userId = await readIdFromCookies();
+
     const response = await startMessageForOrder({
       message,
-      receiver_id: tenant.tenants?.[0].id,
+      receiver_id: tenant.id,
       order_tenant_id: orderTenantId,
+      user_id: userId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(
@@ -38,7 +44,7 @@ const OrderMessage = ({
     <>
       <Button
         variant="outlined"
-        color="primary"
+        color="secondary"
         size="small"
         onClick={() => {
           setOpen(true);
@@ -47,11 +53,12 @@ const OrderMessage = ({
       />
 
       <Modal
-        isOpen={open}
-        onClose={() => {
+        open={open}
+        handleClose={() => {
           setOpen(false);
         }}
-        title={
+      >
+        <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto flex flex-col gap-4">
           <span>
             <Link
               href={`/vendor/${tenant.tenants?.[0]?.id}`}
@@ -65,30 +72,29 @@ const OrderMessage = ({
               satıcısı ile iletişime geçin
             </span>{" "}
           </span>
-        }
-      >
-        <div className="p-8 pt-4 font-mono">
-          <div className="flex items-start gap-4 border-b pb-4">
-            <textarea
-              name="review-comment"
-              id="review-comment"
-              rows={3}
-              className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-2"
-              placeholder="Mesajınızı yazın..."
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
+          <div className="font-mono">
+            <div className="flex items-start gap-4 border-b pb-4">
+              <textarea
+                name="review-comment"
+                id="review-comment"
+                rows={3}
+                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-2"
+                placeholder="Mesajınızı yazın..."
+                value={message}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+              />
+            </div>
+            <Button
+              label="Mesajı Gönder"
+              variant="fullfilled"
+              color="primary"
+              size="small"
+              className="w-full justify-center"
+              onClick={sendMessage}
             />
           </div>
-          <Button
-            label="Mesajı Gönder"
-            variant="fullfilled"
-            color="primary"
-            size="small"
-            className="w-full justify-center"
-            onClick={sendMessage}
-          />
         </div>
       </Modal>
     </>

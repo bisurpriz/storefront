@@ -60,15 +60,13 @@ const Checkbox = ({
     <label
       htmlFor={id}
       className={clsx(
-        "inline-flex items-center cursor-pointer select-none relative pl-6 pr-3 py-2 text-gray-700",
+        "inline-flex items-center cursor-pointer select-none relative pl-6 pr-3 py-2 text-gray-700 text-sm",
         className,
         disabled && "opacity-50 cursor-not-allowed",
         readOnly && "opacity-50 cursor-not-allowed"
       )}
     >
-      <p className="m-0 p-0 text-sm leading-5 font-medium text-gray-900">
-        {label}
-      </p>
+      <p className="m-0 p-0 leading-5 text-gray-900">{label}</p>
       <input
         className={clsx(
           "absolute opacity-0 cursor-pointer h-0 w-0",

@@ -1,55 +1,46 @@
-import Button from "@/components/Button";
-import HeaderProfile from "@/components/Profile/HeaderProfile";
 import Search from "@/components/Search";
-
 import Image from "next/image";
 import Link from "next/link";
-import { BsTruck } from "react-icons/bs";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import CartButton from "./components/CartButton";
-import Tooltip from "@/components/Tooltip";
+import HeaderButtons from "./components/HeaderButtons";
+import { FiHome } from "react-icons/fi";
+import MobileDrawer from "./components/MobileDrawer";
+import clsx from "clsx";
 
-const HeaderMiddle = async () => {
+const HeaderMiddle = () => {
   return (
-    <div className="w-full flex items-end justify-between gap-4 lg:gap-12 my-4 max-md:px-4 ">
-      <Link href="/" className="max-sm:hidden min-w-[180px]">
+    <div
+      className={clsx(
+        "w-full flex items-end justify-between gap-4 lg:gap-8 mt-4 mb-2 px-4",
+        "max-md:justify-start max-md:mt-2 max-md:mb-0"
+      )}
+    >
+      <span className="mb-1 md:hidden">
+        <MobileDrawer
+          menuData={[
+            {
+              text: "Anasayfa",
+              link: "/",
+              icon: <FiHome />,
+            },
+          ]}
+          categories={[]}
+        />
+      </span>
+      <Link href="/" className="min-w-[180px]">
         <Image
           src={"/logo.svg"}
+          className="w-44 h-14"
           width={180}
           height={55}
           alt="BiSürpriz Logo"
           priority
         />
       </Link>
-      <Search />
-
-      <div className="float-right flex items-center max-sm:hidden">
-        <Tooltip content="Favorilerim">
-          <Link href="/account/favorites">
-            <Button
-              icon={<MdOutlineFavoriteBorder />}
-              type="button"
-              size="small"
-              variant="link"
-              iconSize={28}
-              className="gap-2 py-0 px-0 max-lg:hidden"
-            />
-          </Link>
-        </Tooltip>
-        <Tooltip content="Kargo Takip">
-          <Link href="/account/orders">
-            <Button
-              icon={<BsTruck />}
-              type="button"
-              size="small"
-              variant="link"
-              iconSize={28}
-              className="gap-2 py-0 px-0 max-lg:hidden"
-            />
-          </Link>
-        </Tooltip>
-        <CartButton />
-        <HeaderProfile />
+      <div className="max-md:hidden w-full">
+        <Search />
+      </div>
+      <div className="max-md:hidden">
+        <HeaderButtons />
       </div>
     </div>
   );
