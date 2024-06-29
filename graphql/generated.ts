@@ -21222,6 +21222,11 @@ export type LoginMutationMutationVariables = Exact<{
 
 export type LoginMutationMutation = { login?: { access_token?: string | null, refresh_token?: string | null, error?: string | null } | null };
 
+export type ExpiredRefreshTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ExpiredRefreshTokenMutation = { refresh_token?: { access_token: string, body?: any | null, error?: string | null } | null };
+
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password?: InputMaybe<Scalars['String']['input']>;
@@ -21713,6 +21718,15 @@ export const LoginMutationDocument = gql`
   login(args: {email: $email, password: $password}) {
     access_token
     refresh_token
+    error
+  }
+}
+    `;
+export const ExpiredRefreshTokenDocument = gql`
+    mutation expiredRefreshToken {
+  refresh_token {
+    access_token
+    body
     error
   }
 }
@@ -22360,6 +22374,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     loginMutation(variables?: LoginMutationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<LoginMutationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutationMutation>(LoginMutationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginMutation', 'mutation', variables);
+    },
+    expiredRefreshToken(variables?: ExpiredRefreshTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ExpiredRefreshTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ExpiredRefreshTokenMutation>(ExpiredRefreshTokenDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'expiredRefreshToken', 'mutation', variables);
     },
     register(variables: RegisterMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RegisterMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register', 'mutation', variables);

@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import Loading from "./Loading";
 import ProductItem5 from "../Product/Item/ProductItem5";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
+import EmptyPage from "./EmptyPage";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -53,6 +54,8 @@ const InfinityScroll = <T,>({
     }
   }, [inView]);
 
+  if (totalCount === 0) return <EmptyPage />;
+
   return (
     <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
       <Suspense
@@ -66,7 +69,6 @@ const InfinityScroll = <T,>({
           <ProductItem5 key={item.id} {...item} />
         ))}
       </Suspense>
-      {totalCount === 0 && <div className="text-center">Ürün bulunamadı</div>}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>
     </div>
   );

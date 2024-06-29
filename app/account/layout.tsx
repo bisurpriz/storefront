@@ -16,6 +16,7 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
           "max-md:rounded-none",
           "max-md:shadow-none",
           "max-md:w-full",
+          "max-md:border-none",
           "max-md:p-0",
           "border border-secondary-light"
         )}

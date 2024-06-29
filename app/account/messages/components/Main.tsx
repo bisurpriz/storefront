@@ -46,21 +46,19 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
 
   return (
     <>
-      <div className="flex-1 flex relative h-full">
+      <div className="flex-1 flex relative overflow-hidden h-auto min-h-[50vh]">
         <div
           className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${
             !isMessageOpen ? "translate-x-0" : "-translate-x-[210%]"
           }`}
         >
-          {
-            <ChatList
-              onMessageSelect={(tenantId) => {
-                setTenantIdState(tenantId);
-                setIsMessageOpen(!isMessageOpen);
-              }}
-              chats={chats}
-            />
-          }
+          <ChatList
+            onMessageSelect={(tenantId) => {
+              setTenantIdState(tenantId);
+              setIsMessageOpen(!isMessageOpen);
+            }}
+            chats={chats}
+          />
         </div>
 
         {shouldRenderChild && thread && (
