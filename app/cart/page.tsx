@@ -8,7 +8,7 @@ export const generateMetadata = async () => {
   };
 };
 
-const Cart = () => {
+const Cart = async () => {
   return (
     <section
       aria-label="Sepetim"

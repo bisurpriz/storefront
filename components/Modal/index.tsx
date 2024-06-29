@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import ClientOnlyPortal from './ClientOnlyPortal';
-import { useClickAway } from '@uidotdev/usehooks';
-import { AiOutlineClose } from 'react-icons/ai';
-import { motion } from 'framer-motion';
+import { useEffect } from "react";
+import ClientOnlyPortal from "./ClientOnlyPortal";
+import { useClickAway } from "@uidotdev/usehooks";
+import { AiOutlineClose } from "react-icons/ai";
+import { motion } from "framer-motion";
+import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -13,17 +14,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose?.();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
 
@@ -39,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       <div
         className={`bg-white z-10 transform transition-all duration-300 
           rounded-md shadow-md max-sm:w-full max-sm:mx-auto max-sm:mt-4 max-w-screen-xl w-fit
-        ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+        ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
       >
         <AiOutlineClose
           className="absolute top-2 right-2 cursor-pointer"
@@ -57,16 +58,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   return (
     <ClientOnlyPortal selector="body">
-      <motion.div
-        initial={false}
-        animate={isOpen ? 'open' : 'closed'}
-        variants={{
-          open: { opacity: 1, scale: 1 },
-          closed: { opacity: 0, scale: 0.95 },
-        }}
-      >
-        {modalContent}
-      </motion.div>
+      <AnimationExitProvider show={isOpen}>
+        <motion.div
+          initial={false}
+          animate={isOpen ? "open" : "closed"}
+          variants={{
+            open: { opacity: 1, scale: 1 },
+            closed: { opacity: 0, scale: 0.95 },
+          }}
+        >
+          {modalContent}
+        </motion.div>
+      </AnimationExitProvider>
     </ClientOnlyPortal>
   );
 };

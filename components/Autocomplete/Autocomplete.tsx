@@ -17,7 +17,7 @@ interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
   onChange?: (value: { inputValue: string; selectedValue: any }) => void;
   getOptionLabel?: (option: any) => string;
-  onClear?: (option: any) => void;
+  onClear?: () => void;
   placeholder?: string;
   value?: any;
 }
@@ -195,7 +195,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                       "p-2 cursor-pointer",
                       "transition duration-200 ease-in-out text-base font-thin",
                       {
-                        "bg-primary text-white": activeSuggestion === index,
+                        "bg-secondary text-white": activeSuggestion === index,
                       },
                       {
                         "hover:bg-4 hover:text-white":
@@ -240,7 +240,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 
   return (
     <div className="relative" ref={wrapperRef}>
-      <div className="w-full">
+      <div className="w-full text-xs">
         <div
           className={clsx(
             "absolute top-1/2 left-2 -translate-y-1/2",
@@ -248,7 +248,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "transition duration-200 ease-in-out",
             { "animate-pulse": isLoading },
             {
-              "text-primary": selectedValue,
+              "text-secondary": selectedValue,
             },
             {
               "hover:text-gray-700": !selectedValue,
@@ -264,10 +264,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           value={userInput}
           className={clsx(
             "w-full p-3 pl-10 pr-16 border rounded-lg shadow-sm shadow-gray-100 cursor-pointer text-lg font-normal font-manrope",
-            "focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
             "hover:shadow-md transition duration-200 hover:shadow-gray-100",
             "placeholder:opacity-50 placeholder-gray-700 placeholder:text-lg",
-            { "border border-2 text-primary border-primary": selectedValue }
+            { "border border-2 text-secondary border-secondary": selectedValue }
           )}
           placeholder={placeholder}
         />
@@ -281,7 +281,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               className={clsx(
                 "text-gray-500 ",
                 {
-                  "text-primary": selectedValue,
+                  "text-secondary": selectedValue,
                 },
                 {
                   "hover:text-gray-700": !selectedValue,
@@ -290,9 +290,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               onClick={() => {
                 setUserInput("");
                 setSelectedValue(null);
-                if (onClear) {
-                  onClear(selectedValue);
-                }
+                onClear?.();
               }}
             >
               <CiSquareRemove size={24} />
@@ -302,7 +300,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             className={clsx(
               "text-gray-500 ",
               {
-                "text-primary": selectedValue,
+                "text-secondary": selectedValue,
               },
               {
                 "hover:text-gray-700": !selectedValue,

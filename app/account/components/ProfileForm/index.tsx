@@ -1,12 +1,30 @@
-import Button from '@/components/Button';
-import SubmitButton from '@/components/Button/SubmitButton';
-import PhoneInput from '@/components/PhoneInput';
-import TextField from '@/components/TextField';
-import { localeDistanceFormat } from '@/utils/format';
-import { revalidatePath } from 'next/cache';
-import Image from 'next/image';
-import Link from 'next/link';
-import { updateUserById } from '../../actions';
+"use client";
+
+import Button from "@/components/Button";
+import PhoneInput from "@/components/PhoneInput";
+import TextField from "@/components/TextField";
+import {
+  UpdateUserByIdDocument,
+  UpdateUserByIdMutation,
+  UpdateUserByIdMutationVariables,
+} from "@/graphql/generated";
+import { localeDistanceFormat } from "@/utils/format";
+import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { useMutation } from "@apollo/client";
+import { yupResolver } from "@hookform/resolvers/yup";
+import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+import { Controller, Form, useForm } from "react-hook-form";
+import { object, string } from "yup";
+
+const schema = object().shape({
+  firstname: string().required("Adınızı girin"),
+  lastname: string().required("Soyadınızı girin"),
+  email: string().email("Geçerli bir e-posta adresi girin"),
+  phone: string().required("Telefon numaranızı girin"),
+});
 
 const ProfileForm = ({
   user,
@@ -25,103 +43,187 @@ const ProfileForm = ({
   id: string;
   error: any;
 }) => {
-  async function updateUser(formData: FormData) {
-    'use server';
+  const [updateUser, { data, loading }] = useMutation<
+    UpdateUserByIdMutation,
+    UpdateUserByIdMutationVariables
+  >(UpdateUserByIdDocument);
 
-    const values = Object.fromEntries(formData.entries());
-    const variables = {
-      firstname:
-        (values.firstname as string)?.length > 0
-          ? (values.firstname as string)
-          : user.firstname,
-      lastname:
-        (values.lastname as string)?.length > 0
-          ? (values.lastname as string)
-          : user.lastname,
-      phone:
-        (values.phone as string)?.length > 0
-          ? (values.phone as string)
-          : user.phone,
-      email:
-        (values.email as string)?.length > 0
-          ? (values.email as string)
-          : user.email,
-      id,
-      picture:
-        (values.picture as string)?.length > 0
-          ? (values.picture as string)
-          : user.picture,
-    };
+  const handleSubmit = async ({ data }) => {
+    const { phone, ...rest } = data;
+    await updateUser({
+      variables: {
+        id,
+        firstname: rest.firstname,
+        lastname: rest.lastname,
+        phone: phone,
+      },
+    });
+  };
 
-    try {
-      await updateUserById({
-        ...variables,
+  const { control, reset } = useForm({
+    defaultValues: {
+      firstname: user?.firstname,
+      lastname: user?.lastname,
+      email: user?.email,
+      phone: formatPhoneNumber(user?.phone),
+    },
+    mode: "onBlur",
+    resolver: yupResolver(schema),
+    disabled: loading,
+  });
+
+  useEffect(() => {
+    if (data) {
+      reset({
+        firstname: data.update_user_by_pk.firstname,
+        lastname: data.update_user_by_pk?.lastname,
+        email: data.update_user_by_pk?.email,
+        phone: formatPhoneNumber(data.update_user_by_pk?.phone),
       });
-
-      revalidatePath('/account');
-    } catch (err) {
-      console.error(err);
+    } else {
+      reset({
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        email: user?.email,
+        phone: formatPhoneNumber(user?.phone),
+      });
     }
-  }
+
+    if (error) {
+      console.error(error);
+    }
+  }, [user, data]);
 
   return user ? (
-    <form className="flex flex-col gap-4 max-md:gap-2" action={updateUser}>
-      <div className="flex items-start flex-col justify-start gap-2">
+    <Form
+      className={clsx(
+        "flex items-start justify-start flex-wrap gap-12 max-lg:gap-6 max-lg:w-full"
+      )}
+      control={control}
+      onSubmit={handleSubmit}
+    >
+      <div
+        className={clsx(
+          "flex flex-col items-start justify-start gap-2",
+          "max-lg:gap-1 max-lg:w-full max-lg:my-2 max-lg:items-center",
+          "max-lg:flex-col-reverse"
+        )}
+      >
         <p className="text-xs text-slate-400">
           {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
         </p>
         <Image
-          src={user.picture || '/avatar.png'}
+          src={user.picture || "/avatar.png"}
           alt="Profil resmi"
-          className="rounded-lg w-36 h-36 max-sm:w-48 max-sm:h-48 shadow-sm shadow-7"
+          className="rounded-lg w-36 h-36 max-lg:w-48 max-lg:h-48 shadow-sm shadow-7"
           width={200}
           height={200}
         />
       </div>
-      <TextField
-        label="İsim"
-        id="firstname"
-        placeholder={user.firstname || 'Adınız'}
-        type="text"
-      />
-      <TextField
-        label="Soyisim"
-        id="lastname"
-        placeholder={user.lastname || 'Soyadınız'}
-        type="text"
-      />
-      <TextField
-        label="E-posta"
-        id="email"
-        placeholder={user.email || 'E-posta adresiniz'}
-        type="email"
-        disabled
-      />
-      <PhoneInput
-        label="Telefon"
-        placeholder={user.phone || 'Telefon numaranız'}
-      />
-      <TextField
-        label="Referans Kodu"
-        id="reference_code"
-        placeholder={user.reference_code || 'Referans kodunuz'}
-        type="text"
-        disabled
-      />
+      <div className={"flex flex-col gap-4 flex-1"}>
+        <Controller
+          name="firstname"
+          control={control}
+          defaultValue={user.firstname}
+          render={({
+            field: { onChange, name, ref, value, disabled },
+            fieldState: { error },
+          }) => (
+            <TextField
+              label="Ad"
+              placeholder="Adınızı girin"
+              onChange={onChange}
+              id={name}
+              ref={ref}
+              value={value}
+              disabled={disabled}
+              error={!!error}
+              errorMessage={error?.message}
+            />
+          )}
+        />
 
-      <SubmitButton className="w-fit">Kaydet</SubmitButton>
-    </form>
+        <Controller
+          name="lastname"
+          control={control}
+          defaultValue={user.lastname}
+          render={({
+            field: { onChange, name, ref, value, disabled },
+            fieldState: { error },
+          }) => (
+            <TextField
+              label="Soyad"
+              placeholder="Soyadınızı girin"
+              onChange={onChange}
+              id={name}
+              ref={ref}
+              value={value}
+              disabled={disabled}
+              error={!!error}
+              errorMessage={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="email"
+          control={control}
+          disabled
+          defaultValue={user.email}
+          render={({
+            field: { onChange, name, ref, value, disabled },
+            fieldState: { error },
+          }) => (
+            <TextField
+              label="E-posta"
+              placeholder="E-posta adresinizi girin"
+              onChange={onChange}
+              id={name}
+              ref={ref}
+              value={value}
+              disabled={true}
+              error={!!error}
+              errorMessage={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="phone"
+          control={control}
+          defaultValue={user.phone}
+          render={({
+            field: { onChange, name, value },
+            fieldState: { error },
+          }) => (
+            <PhoneInput
+              label="Telefon"
+              placeholder="Telefon numaranızı girin"
+              onChange={onChange}
+              id={name}
+              value={value}
+              error={!!error}
+              errorMessage={error?.message}
+            />
+          )}
+        />
+
+        <Button loading={loading} type="submit" className="w-fit">
+          Kaydet
+        </Button>
+      </div>
+    </Form>
   ) : (
     <div className="flex flex-col items-center justify-center gap-2 text-center my-auto">
       <h1 className="text-2xl font-semibold tracking-wide">
         Kullanıcı verileri alınıken bir hata oluştu.
       </h1>
       <p className="text-sm text-slate-400 capitalize">
-        {error?.message || 'Lütfen daha sonra tekrar deneyin.'}
+        {error?.message || "Lütfen daha sonra tekrar deneyin."}
       </p>
 
       <p>
-        Tekrar giriş yapmak sorununuzu çözebilir.{' '}
+        Tekrar giriş yapmak sorununuzu çözebilir.{" "}
         <Link href="/api/auth/logout">
           <Button>Çıkış yap</Button>
         </Link>

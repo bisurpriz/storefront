@@ -5,6 +5,7 @@ import { HeaderButtonData } from "./HeaderButtons";
 import { User } from "@/graphql/generated";
 
 const getUsernameWithSurname = (user: User) => {
+  if (!user.firstname) return user.lastname;
   return `${user.firstname} ${user.lastname.split("")[0]}.`;
 };
 
@@ -23,7 +24,7 @@ const AltTextWithData = ({
       break;
     case "account": {
       const user = data as User;
-      if (user?.firstname) {
+      if (user) {
         altText = getUsernameWithSurname(user);
       } else altText = "Giriş Yap";
       break;

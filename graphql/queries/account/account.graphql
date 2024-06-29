@@ -136,6 +136,7 @@ query getUserOrders {
     tenant_orders {
       id
       tenant {
+        id
         tenants {
           name
           logo

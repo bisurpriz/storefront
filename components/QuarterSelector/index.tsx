@@ -12,12 +12,15 @@ import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 type QuarterSelectorProps = {
   value?: any;
+  onChange?: (value: any) => void;
 };
 
-const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
+const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
+  const { refresh } = useRouter();
   const [query, { refetch }] = useLazyQuery<
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
@@ -43,7 +46,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
         value={value}
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => {
-          if (selectedValue?.id && selectedValue?.type)
+          if (selectedValue?.id && selectedValue?.type) {
             Cookies.set(
               CookieTokens.LOCATION_ID,
               JSON.stringify({
@@ -51,10 +54,16 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value }) => {
                 type: selectedValue.type,
               })
             );
+            refresh();
+            onChange && onChange(selectedValue);
+          }
         }}
         getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"
-        onClear={(option) => console.log(option, "cleared")}
+        onClear={() => {
+          Cookies.remove(CookieTokens.LOCATION_ID);
+          refresh();
+        }}
       />
     </label>
   );

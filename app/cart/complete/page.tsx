@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import clsx from "clsx";
 import Link from "next/link";
 
 export const generateMetadata = async () => {
@@ -11,19 +12,20 @@ export const generateMetadata = async () => {
 
 const OrderCompletePage: React.FC = async () => {
   return (
-    <div className="flex flex-col items-center justify-center p-10 w-full h-full bg-gray-100 gap-4 text-center rounded-md">
-      <h1 className="text-4xl font-bold mb-4">Siparişiniz Alındı 🎉</h1>
-      <p className="text-lg text-gray-600 mb-2">
-        Siparişiniz en kısa sürede hazırlanıp kargoya verilecektir.
+    <div
+      className={clsx(
+        "flex flex-col items-center justify-center h-full space-y-8",
+        "text-center font-mono"
+      )}
+    >
+      <h1 className="text-3xl font-semibold">Sipariş Tamamlandı</h1>
+      <p className="text-lg text-center">
+        Siparişiniz başarıyla alındı. <br />
+        Sipariş detaylarınızı mail adresinize gönderdik.
       </p>
-      <div className="flex flex-col-reverse md:flex-row-reverse gap-4 w-full md:w-1/2 justify-center items-center">
-        <Link href={"/"}>
-          <Button>Alışverişe Devam Et</Button>
-        </Link>
-        <Link href={"/account/orders"}>
-          <Button color="secondary">Siparişlerim</Button>
-        </Link>
-      </div>
+      <Link href="/">
+        <Button color="primary">Alışverişe Devam Et</Button>
+      </Link>
     </div>
   );
 };

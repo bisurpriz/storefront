@@ -1,12 +1,6 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import Filter from "@/components/Filter";
-import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
-import { query } from "@/graphql/lib/client";
-import {
-  GetProductsWithFilteredPaginationDocument,
-  GetProductsWithFilteredPaginationQuery,
-  GetProductsWithFilteredPaginationQueryVariables,
-} from "@/graphql/generated";
+import { searchProducts } from "../actions";
 
 export default async function CategoryPage({
   params,
@@ -15,34 +9,20 @@ export default async function CategoryPage({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const queryMapper = createDynamicQueryMapper(searchParams);
   const slug = params["category-slug"];
 
-  const data = await query<
-    GetProductsWithFilteredPaginationQuery,
-    GetProductsWithFilteredPaginationQueryVariables
-  >({
-    query: GetProductsWithFilteredPaginationDocument,
-    variables: {
-      filter_payload: {
-        ...queryMapper.filter_payload,
-        category: {
-          slug: {
-            _eq: slug,
-          },
-        },
-      },
+  const data = await searchProducts(
+    {
+      offset: 0,
+      limit: 15,
     },
-  });
+    {
+      ...searchParams,
+      category: slug,
+    }
+  );
 
-  const {
-    data: {
-      product: products,
-      product_aggregate: {
-        aggregate: { count: totalCount },
-      },
-    },
-  } = data;
+  const { products, totalCount } = data;
 
   return (
     <>
@@ -58,7 +38,8 @@ export default async function CategoryPage({
         totalCount={totalCount}
         initialData={products}
         dataKey="products"
-        query={data}
+        query={searchProducts}
+        params={searchParams}
       />
     </>
   );

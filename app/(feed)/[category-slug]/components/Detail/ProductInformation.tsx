@@ -1,10 +1,12 @@
-import HourSelect from "@/components/DatePicker/HourSelect";
+"use client";
+
 import Popover from "@/components/Popover";
 import Link from "next/link";
 import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 import Rating from "@/components/Rating/Rating";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
+import DaySelect from "@/components/DatePicker/DaySelect";
 
 type ProductInformationProps = {
   name: string;
@@ -120,7 +122,7 @@ const ProductInformation = ({
             },
           ]}
         />
-        <HourSelect deliveryTimeRanges={deliveryTimeRanges} />
+        <DaySelect />
       </div>
     </div>
   );

@@ -16,16 +16,14 @@ const CartSteps = () => {
   }, [pathname]);
 
   return (
-    <div className="p-4 rounded-xl border border-lime-200">
-      <Stepper
-        activeStep={activeStep}
-        steps={cartStepperPaths.map((step, i) => ({
-          ...step,
-          value: i,
-        }))}
-        key={activeStep}
-      />
-    </div>
+    <Stepper
+      activeStep={activeStep}
+      steps={cartStepperPaths.map((step, i) => ({
+        ...step,
+        value: i,
+      }))}
+      key={activeStep}
+    />
   );
 };
 

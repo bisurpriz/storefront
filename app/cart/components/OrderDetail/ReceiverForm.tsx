@@ -4,13 +4,17 @@ import {
   createNewUserAddress,
   getUserAddressById,
 } from "@/app/account/actions";
-import { CityResponse } from "@/common/types/Addresses/addresses";
+import {
+  CityResponse,
+  DistrictResponse,
+  QuarterResponse,
+} from "@/common/types/Addresses/addresses";
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import Card from "@/components/Card";
-import Checkbox from "@/components/Checkbox";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
+import { useUser } from "@/contexts/AuthContext";
 import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
@@ -19,12 +23,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
-import { boolean, number, object, string } from "yup";
+import { AnyObject, ObjectSchema, boolean, object, string } from "yup";
+import RenderAddress from "./RenderAddress";
+import Textarea from "@/components/Textarea";
+import clsx from "clsx";
+import { LuMail, LuPhone, LuUser } from "react-icons/lu";
+import RadioGroup from "@/components/Radio/RadioGroup";
+import CompanyDetail from "./CompanyDetail";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
     {children}
   </h3>
+);
+
+const SubTitle = ({ children }: { children: React.ReactNode }) => (
+  <h4 className="text-lg font-semibold font-mono text-zinc-600">{children}</h4>
 );
 
 export interface OrderDetailPartialFormData
@@ -35,65 +49,125 @@ export interface OrderDetailPartialFormData
 
 interface ReceiverFormProps {
   cities: CityResponse[];
+  defaultCity?: CityResponse;
+  defaultDistrict?: DistrictResponse;
+  defaultQuarter?: QuarterResponse;
 }
 
 const OrderDetailSchema = object({
-  city_id: number().required("İl alanı zorunludur."),
-  district_id: number().required("İlçe alanı zorunludur."),
-  quarter_id: number().required("Mahalle alanı zorunludur."),
-  address_title: string().required("Adres başlığı zorunludur."),
+  city: object().required("İl alanı zorunludur."),
+  district: object().required("İlçe alanı zorunludur."),
+  quarter: object().required("Mahalle alanı zorunludur."),
   address: string().required("Adres alanı zorunludur."),
-  receiver_firstname: string().required("Alıcı adı zorunludur."),
-  receiver_surname: string().required("Alıcı soyadı zorunludur."),
+  receiver_name: string().required("Alıcı adı zorunludur."),
   receiver_phone: string().required("Alıcı telefonu zorunludur."),
-  user_id: string().optional().nullable(),
+  sender_name: string().required("Gönderici adı zorunludur."),
+  sender_phone: string().required("Gönderici telefonu zorunludur."),
+  sender_email: string()
+    .required("Gönderici e-posta adresi zorunludur.")
+    .email("Geçerli bir e-posta adresi giriniz."),
+  address_title: string().optional().nullable(),
   saved_address: string().optional().nullable(),
   wantToSaveAddress: boolean().optional().nullable(),
+  invoice_type: string()
+    .default("person")
+    .equals(["person", "company"], "Invalid invoice type"),
+  invoice_address: string().when("invoice_type", {
+    is: "person",
+    then: (schema) => schema.required("Fatura adresi zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_name: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Firma adı zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_tax_number: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Vergi numarası zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_tax_office: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Vergi dairesi zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_address: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Firma adresi zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_city: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Firma adresi zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
+  invoice_company_district: string().when("invoice_type", {
+    is: "company",
+    then: (schema) => schema.required("Firma adresi zorunludur."),
+    otherwise: (schema) => schema.optional().nullable(),
+  }),
 });
 
-const defaultValues = {
+const defaultValues: OrderDetailPartialFormData = {
   address: "",
   address_title: "",
-  city_id: null,
-  district_id: null,
-  quarter_id: null,
-  receiver_firstname: "",
+  city: null,
+  district: null,
+  quarter: null,
+  receiver_name: "",
   receiver_phone: "",
-  receiver_surname: "",
-  user_id: "",
   saved_address: "",
   wantToSaveAddress: false,
+  sender_email: "",
+  sender_name: "",
+  sender_phone: "",
+  invoice_type: "person",
+  id: null,
+  invoice_address: "",
+  invoice_company_address: "",
+  invoice_company_city: "",
+  invoice_company_district: "",
+  invoice_company_name: "",
+  invoice_company_tax_number: "",
+  invoice_company_tax_office: "",
+  user_id: null,
 };
 
-const ReceiverForm = ({ cities }: ReceiverFormProps) => {
+const ReceiverForm = ({
+  cities,
+  defaultCity,
+  defaultDistrict,
+  defaultQuarter,
+}: ReceiverFormProps) => {
+  const { user } = useUser();
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
-  const [user_id, setUser_id] = useState(null);
   const { handleChangeStep } = useCartStep();
-  const {
-    control,
-    reset,
-    watch,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<OrderDetailPartialFormData>({
-    defaultValues,
-    mode: "onChange",
-    delayError: 500,
-    resolver: yupResolver(OrderDetailSchema),
-  });
+  const { control, reset, watch, getValues, handleSubmit } =
+    useForm<OrderDetailPartialFormData>({
+      defaultValues,
+      mode: "onChange",
+      delayError: 500,
+      resolver: yupResolver<OrderDetailPartialFormData>(
+        OrderDetailSchema as ObjectSchema<
+          OrderDetailPartialFormData,
+          AnyObject,
+          any,
+          ""
+        >
+      ),
+    });
 
   useEffect(() => {
-    getUserAddressById().then(({ userAddresses, user_id }) => {
-      setUser_id(user_id);
+    getUserAddressById().then(({ userAddresses }) => {
       setUserAddresses(userAddresses);
     });
   }, []);
 
-  const [cityId, districtId] = useWatch({
+  const [city, district, invoice_type] = useWatch({
     control,
-    name: ["city_id", "district_id"],
+    name: ["city", "district", "invoice_type"],
   });
 
   useEffect(() => {
@@ -103,15 +177,25 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     if (localStorageData) {
       reset({
         ...getValues(),
-        city_id: localStorageData.city_id,
-        district_id: localStorageData.district_id,
-        quarter_id: localStorageData.quarter_id,
+        saved_address: localStorageData.saved_address,
+        city: defaultCity ?? localStorageData.city,
+        district: defaultDistrict ?? localStorageData.district,
+        quarter: defaultQuarter ?? localStorageData.quarter,
         address: localStorageData.address,
-        receiver_firstname: localStorageData.receiver_firstname,
-        receiver_surname: localStorageData.receiver_surname,
+        receiver_name: localStorageData.receiver_name,
         receiver_phone: localStorageData.receiver_phone,
-        user_id,
         address_title: localStorageData.address_title,
+        sender_email: localStorageData.sender_email,
+        sender_phone: localStorageData.sender_phone,
+        sender_name: localStorageData.sender_name,
+        invoice_type: localStorageData.invoice_type,
+        invoice_address: localStorageData.invoice_address,
+        invoice_company_address: localStorageData.invoice_company_address,
+        invoice_company_city: localStorageData.invoice_company_city,
+        invoice_company_district: localStorageData.invoice_company_district,
+        invoice_company_name: localStorageData.invoice_company_name,
+        invoice_company_tax_number: localStorageData.invoice_company_tax_number,
+        invoice_company_tax_office: localStorageData.invoice_company_tax_office,
       });
 
       if (userAddresses?.length > 0) {
@@ -125,59 +209,71 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
       return;
     }
 
+    if (defaultCity && defaultDistrict && defaultQuarter) {
+      reset({
+        ...getValues(),
+        city: defaultCity,
+        district: defaultDistrict,
+        quarter: defaultQuarter,
+      });
+
+      return;
+    }
+
     if (selectedSavedAddress) {
-      const formattedPhone = formatPhoneNumber(
+      const receiver_phone = formatPhoneNumber(
         selectedSavedAddress.receiver_phone
       );
       reset({
         ...getValues(),
-        city_id: selectedSavedAddress.city.id,
-        district_id: selectedSavedAddress.district.id,
-        quarter_id: selectedSavedAddress.quarter.id,
+        city: selectedSavedAddress.city,
+        district: selectedSavedAddress.district,
+        quarter: selectedSavedAddress.quarter,
         address: selectedSavedAddress.address,
-        receiver_firstname: selectedSavedAddress.receiver_firstname,
-        receiver_surname: selectedSavedAddress.receiver_surname,
-        receiver_phone: formattedPhone,
-        user_id,
+        receiver_name: selectedSavedAddress.receiver_name,
+        receiver_phone,
         address_title: selectedSavedAddress.address_title,
       });
+      return;
     } else {
       reset({
         ...getValues(),
-        city_id: null,
-        district_id: null,
-        quarter_id: null,
+        city: null,
+        district: null,
+        quarter: null,
         address: "",
-        user_id,
       });
     }
   }, [selectedSavedAddress]);
 
-  const { districts } = useDiscrits(cityId);
-  const { quarters } = useQuarters(districtId);
+  const { districts } = useDiscrits(city?.id);
+  const { quarters } = useQuarters(district?.id);
 
   const onSubmit = async (values) => {
+    const cartId = user?.carts[0]?.id;
+    const user_id = user?.id;
+
     if (values) {
-      if (values.wantToSaveAddress) {
+      if (values.wantToSaveAddress && !values.saved_address) {
         try {
           await createNewUserAddress({
             address: values.address,
-            city_id: values.city_id,
-            district_id: values.district_id,
-            quarter_id: values.quarter_id,
+            city_id: values.city?.id,
+            district_id: values.district?.id,
+            quarter_id: values.quarter?.id,
             receiver_firstname: values.receiver_firstname,
             receiver_surname: values.receiver_surname,
             receiver_phone: values.receiver_phone,
-            user_id: user_id,
+            user_id,
             address_title: values.address_title,
           });
         } catch {
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
-          return;
         }
       }
+
       localStorage.setItem("detail-data", JSON.stringify(values));
       handleChangeStep();
     }
@@ -218,12 +314,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   const savedAddress = userAddresses.find(
                     (address) => address.id === option?.value
                   );
-
-                  setSelectedSavedAddress(savedAddress);
                   reset({
-                    ...watch(),
                     saved_address: option?.value as string,
                   });
+
+                  setSelectedSavedAddress(savedAddress);
                 }}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
@@ -236,23 +331,160 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     return null;
   };
 
-  const renderAddressTitle = () => {
-    if (!selectedSavedAddress) {
-      return (
-        <>
+  return (
+    <Card>
+      <Title>Teslimat Detay</Title>
+      <form
+        id="order-detail-form"
+        name="order-detail-form"
+        autoComplete="off"
+        className={clsx(
+          "grid grid-cols-2 w-full gap-6 max-md:grid-cols-1 max-md:gap-3",
+          "text-sm font-manrope"
+        )}
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <div
+          className={clsx(
+            "col-span-1 max-md:col-span-full",
+            "flex flex-col gap-3 flex-1"
+          )}
+        >
+          <SubTitle>Gönderici Bilgileri</SubTitle>
           <Controller
             control={control}
-            name="address_title"
+            name="sender_name"
             render={({
               field: { onChange, value, ref },
               fieldState: { error },
             }) => (
               <TextField
                 ref={ref}
-                label="Adres Başlığı"
-                placeholder="Ev Adresi"
+                label="Gönderici Adı Soyadı"
+                placeholder="Lütfen adınızı ve soyadınızı giriniz."
                 fullWidth
-                id="address_title"
+                id="sender_name"
+                value={value}
+                onChange={onChange}
+                icon={<LuUser size={20} />}
+                error={!!error}
+                errorMessage={error?.message}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="sender_phone"
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <PhoneInput
+                label="Telefon Numarası"
+                errorMessage={error?.message}
+                error={!!error}
+                onChange={(val, inputVal) => onChange(inputVal)}
+                value={value}
+                id="sender_phone"
+                icon={<LuPhone size={20} />}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="sender_email"
+            render={({
+              field: { onChange, value, ref },
+              fieldState: { error },
+            }) => (
+              <TextField
+                ref={ref}
+                label="E-posta Adresi"
+                placeholder="E-posta Adresi"
+                fullWidth
+                type="email"
+                id="sender_email"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                errorMessage={error?.message}
+                icon={<LuMail size={20} />}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="invoice_type"
+            render={({ field: { onChange, value } }) => (
+              <RadioGroup
+                options={[
+                  { label: "Kişi Adına", value: "person" },
+                  { label: "Firma Adına", value: "company" },
+                ]}
+                name="invoice_type"
+                onChange={onChange}
+                value={value}
+                className="flex items-center gap-4"
+              />
+            )}
+          />
+        </div>
+
+        <div
+          className={clsx(
+            "col-span-1 max-md:col-span-full",
+            "flex flex-col gap-3 flex-1"
+          )}
+        >
+          <SubTitle>Alıcı Bilgileri</SubTitle>
+          <Controller
+            control={control}
+            name="receiver_name"
+            render={({
+              field: { onChange, value, ref },
+              fieldState: { error },
+            }) => (
+              <TextField
+                ref={ref}
+                label="Alıcı Adı"
+                placeholder="Alıcı Adı"
+                fullWidth
+                id="receiver_name"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                errorMessage={error?.message}
+                icon={<LuUser size={20} />}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="receiver_phone"
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <PhoneInput
+                label="Telefon Numarası"
+                errorMessage={error?.message}
+                error={!!error}
+                onChange={(val, inputVal) => onChange(inputVal)}
+                value={value}
+                id="receiver_phone"
+                icon={<LuPhone size={20} />}
+              />
+            )}
+          />
+        </div>
+        {invoice_type !== "company" && (
+          <Controller
+            name="invoice_address"
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Textarea
+                label="Fatura Adresi"
+                placeholder="Fatura Adresi"
+                fullWidth
+                id="invoice_address"
                 value={value}
                 onChange={onChange}
                 error={!!error}
@@ -260,52 +492,23 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
               />
             )}
           />
-          {!selectedSavedAddress && (
-            <Controller
-              control={control}
-              name="wantToSaveAddress"
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <Checkbox
-                  checked={value}
-                  onChange={onChange}
-                  label="Sonraki alışverişlerimde bu adresi kullanmak istiyorum."
-                  id="wantToSaveAddress"
-                />
-              )}
-            />
-          )}
-        </>
-      );
-    }
-    return null;
-  };
-
-  return (
-    <Card>
-      <Title>Teslimat Bilgileri</Title>
-      <form
-        id="order-detail-form"
-        name="order-detail-form"
-        autoComplete="off"
-        className="col-span-1 md:col-span-2 flex gap-6 max-md:flex-col"
-        onSubmit={handleSubmit(onSubmit, onError)}
-      >
-        <div className="flex flex-col gap-3 flex-1 ">
+        )}
+        <CompanyDetail control={control} invoice_type={invoice_type} />
+        <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
+          <SubTitle>Alıcı Adres Bilgileri</SubTitle>
           {renderSavedAddress()}
 
-          {renderAddressTitle()}
+          <RenderAddress
+            selectedSavedAddress={selectedSavedAddress}
+            control={control}
+            user={user}
+          />
 
           <Controller
             control={control}
-            name="city_id"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => {
-              const selectedCity = cities.find((city) => city.id === value);
+            name="city"
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
+              const selectedCity = cities.find((city) => city.id === value?.id);
 
               return (
                 <AutoComplete
@@ -323,12 +526,16 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                     value: city.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
-                    onChange(option?.value);
+                    onChange(option);
                     reset({
                       ...watch(),
-                      city_id: option?.value as number,
-                      district_id: null,
-                      quarter_id: null,
+                      city: {
+                        code: null,
+                        name: option.label as string,
+                        id: option.value as number,
+                      },
+                      district: null,
+                      quarter: null,
                     });
                   }}
                   placeholder="İl Seçiniz"
@@ -336,6 +543,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   error={!!error}
                   errorMessage={error?.message}
                   autoComplete="off"
+                  disabled={!!defaultCity}
                 />
               );
             }}
@@ -343,13 +551,13 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
           <Controller
             control={control}
-            name="district_id"
+            name="district"
             render={({
               field: { onChange, value, ref },
               fieldState: { error },
             }) => {
               const selectedDistrict = districts.find(
-                (district) => district.id === value
+                (district) => district.id === value?.id
               );
               return (
                 <AutoComplete
@@ -367,17 +575,21 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                     value: district.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
-                    onChange(option?.value);
+                    onChange(option);
                     reset({
                       ...watch(),
-                      district_id: option?.value as number,
-                      quarter_id: null,
+                      district: {
+                        id: option.value as number,
+                        name: option.label as string,
+                      },
+                      quarter: null,
                     });
                   }}
                   placeholder="İlçe Seçiniz"
                   id="district"
                   error={!!error}
                   errorMessage={error?.message}
+                  disabled={!!defaultDistrict}
                 />
               );
             }}
@@ -385,15 +597,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
 
           <Controller
             control={control}
-            name="quarter_id"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => {
+            name="quarter"
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
               const selectedQuarter = quarters.find(
-                (quarter) => quarter.id === value
+                (quarter) => quarter.id === value?.id
               );
-
               return (
                 <AutoComplete
                   value={
@@ -405,17 +613,21 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                       : null
                   }
                   label="Mahalle"
-                  options={quarters.map((quarter) => ({
-                    label: quarter.name,
-                    value: quarter.id,
+                  options={quarters.map((option) => ({
+                    label: option.name,
+                    value: option.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
-                    onChange(option?.value);
+                    onChange({
+                      id: option.value as number,
+                      name: option.label as string,
+                    });
                   }}
                   placeholder="Mahalle Seçiniz"
                   id="quarter"
                   error={!!error}
                   errorMessage={error?.message}
+                  disabled={!!defaultQuarter}
                 />
               );
             }}
@@ -424,81 +636,16 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
           <Controller
             control={control}
             name="address"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Textarea
                 label="Adres"
-                placeholder="Adres"
+                placeholder="Adresinizi giriniz."
                 fullWidth
                 id="address"
                 value={value}
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-              />
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-3 flex-1">
-          <Controller
-            control={control}
-            name="receiver_firstname"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="Alıcı Adı"
-                placeholder="Alıcı Adı"
-                fullWidth
-                id="receiver_firstname"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="receiver_surname"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="Alıcı Soyadı"
-                placeholder="Alıcı Soyadı"
-                fullWidth
-                id="receiver_surname"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="receiver_phone"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <PhoneInput
-                label="Telefon Numarası"
-                errorMessage={error?.message}
-                error={!!error}
-                onChange={(val, inputVal) => onChange(inputVal)}
-                value={value}
-                id="receiver_phone"
               />
             )}
           />

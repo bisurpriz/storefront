@@ -6,12 +6,14 @@ import { useInView } from "react-intersection-observer";
 import Loading from "./Loading";
 import ProductItem5 from "../Product/Item/ProductItem5";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
+import EmptyPage from "./EmptyPage";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
   query: any;
   dataKey: string;
   totalCount: number;
+  params?: any;
 }
 
 const PER_REQUEST = 15;
@@ -21,6 +23,7 @@ const InfinityScroll = <T,>({
   totalCount,
   query,
   dataKey,
+  params,
 }: InfinityScrollProps<T>) => {
   const [data, setData] = useState<T[]>(() => initialData);
   const [offset, setOffset] = useState(0);
@@ -30,9 +33,13 @@ const InfinityScroll = <T,>({
 
   const loadMoreData = async () => {
     const next = offset + PER_REQUEST;
-    const response = await query({
-      offset: next,
-    });
+    const response = await query(
+      {
+        offset: next,
+        limit: PER_REQUEST,
+      },
+      params
+    );
     setOffset(next);
     setData((prev) => [...prev, ...response[dataKey]]);
   };
@@ -47,6 +54,8 @@ const InfinityScroll = <T,>({
     }
   }, [inView]);
 
+  if (totalCount === 0) return <EmptyPage />;
+
   return (
     <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
       <Suspense
@@ -60,7 +69,6 @@ const InfinityScroll = <T,>({
           <ProductItem5 key={item.id} {...item} />
         ))}
       </Suspense>
-      {totalCount === 0 && <div className="text-center">Ürün bulunamadı</div>}
       <div ref={ref}>{totalCount > data?.length && <Loading />}</div>
     </div>
   );

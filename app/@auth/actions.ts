@@ -45,7 +45,7 @@ export const login = async ({ email, password }, headers = {}) => {
       }
     );
     cookies().set(CookieTokens.USER_ID, user.id, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });

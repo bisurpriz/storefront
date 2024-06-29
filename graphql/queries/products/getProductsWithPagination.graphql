@@ -1,104 +1,110 @@
-  query getProductsWithPagination(
-    $limit: Int = 15
-    $offset: Int = 0
-    $is_active: Boolean = true
-    $category_slug: String
+query getProductsWithPagination(
+  $limit: Int = 15
+  $offset: Int = 0
+  $is_active: Boolean = true
+  $category_slug: String
+) {
+  product_aggregate(
+    where: {
+      is_active: { _eq: $is_active }
+      category: { slug: { _eq: $category_slug } }
+    }
   ) {
-    product_aggregate(
-      where: {
-        is_active: { _eq: $is_active }
-        category: { slug: { _eq: $category_slug } }
+    aggregate {
+      count
+    }
+  }
+  product(
+    limit: $limit
+    offset: $offset
+    where: {
+      is_active: { _eq: $is_active }
+      category: { slug: { _eq: $category_slug } }
+    }
+  ) {
+    id
+    tenant_id
+    description
+    name
+    slug
+    category {
+      name
+      slug
+    }
+    image_url
+    price
+    quantity
+    properties
+    discount_price
+    product_customizable_areas {
+      count
+      customizable_area {
+        type
       }
-    ) {
+    }
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+    reviews_aggregate {
       aggregate {
         count
       }
     }
-    product(
-      limit: $limit
-      offset: $offset
-      where: {
-        is_active: { _eq: $is_active }
-        category: { slug: { _eq: $category_slug } }
-      }
-    ) {
-      id
-      tenant_id
-      description
-      name
-      slug
-      category {
-        name
-        slug
-      }
-      image_url
-      price
-      quantity
-      properties
-      discount_price
-      product_customizable_areas {
-        count
-        customizable_area {
-          type
-        }
-      }
-      tenant {
-         tenants {
-          name
-          logo
-          id
-        }
-      }
-      reviews_aggregate {
-        aggregate {
-          count
-        }
-      }
-    }
   }
+}
 
-  query getProductsWithFilteredPagination($filter_payload: product_bool_exp){
-    product_aggregate(
-      where: $filter_payload
-    ) {
+query getProductsWithFilteredPagination(
+  $filter_payload: product_bool_exp
+  $limit: Int = 10
+  $offset: Int = 0
+) {
+  product_aggregate(where: $filter_payload) {
+    aggregate {
+      count
+    }
+  }
+  product(
+    where: $filter_payload
+    limit: $limit
+    offset: $offset
+    order_by: { id: asc }
+  ) {
+    id
+    tenant_id
+    description
+    name
+    slug
+    category {
+      name
+      slug
+    }
+    image_url
+    price
+    quantity
+    slug
+    properties
+    discount_price
+    product_customizable_areas {
+      count
+      customizable_area {
+        type
+      }
+    }
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+    reviews_aggregate {
       aggregate {
         count
       }
     }
-    product(
-      where: $filter_payload
-    ) {
-      id
-      tenant_id
-      description
-      name
-      slug
-      category {
-        name
-        slug
-      }
-      image_url
-      price
-      quantity
-      properties
-      discount_price
-      product_customizable_areas {
-        count
-        customizable_area {
-          type
-        }
-      }
-      tenant {
-         tenants {
-          name
-          logo
-          id
-        }
-      }
-      reviews_aggregate {
-        aggregate {
-          count
-        }
-      }
-    }
   }
+}

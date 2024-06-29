@@ -1,0 +1,19 @@
+query searchProducts($search: String) {
+  product(
+    where: {
+      _and: [
+        {
+          _or: [
+            { name: { _ilike: $search } }
+            { name: { _similar: $search } }
+            { category: { name: { _similar: $search } } }
+            { category: { name: { _ilike: $search } } }
+          ]
+        }
+        { is_active: { _eq: true } }
+      ]
+    }
+  ) {
+    name
+  }
+}
