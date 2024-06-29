@@ -13,8 +13,6 @@ import { setVerbosity } from "ts-invariant";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { getIdToken } from "@/app/actions";
 import { setContext } from "@apollo/client/link/context";
-import { CookieTokens } from "@/app/@auth/contants";
-import Cookies from "js-cookie";
 
 if (process.env.NODE_ENV === "development") {
   setVerbosity("debug");

@@ -1,5 +1,3 @@
-import clsx from "clsx";
-import { motion } from "framer-motion";
 import { FC, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { tr } from "date-fns/locale";
