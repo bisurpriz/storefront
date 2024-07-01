@@ -6,33 +6,39 @@ import Button from "@/components/Button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
+import { TimeRange } from "../HourSelect/utils";
 
-const CustomButton = ({ isSelected, selectedHour, children, ...props }) => {
+const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
       variant="outlined"
       color="secondary"
       className={clsx(
         { "bg-secondary text-white": isSelected },
-        "max-sm:px-0 flex flex-col justify-center items-center"
+        "max-sm:px-0 flex flex-col justify-center items-center",
+        "rounded-md p-2 w-full",
+        "text-sm",
+        "hover:bg-secondary hover:text-white",
+        "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
+        "transition-all duration-200 ease-in-out"
       )}
       {...props}
     >
       {children}
-      {selectedHour && isSelected && (
-        <span className="text-xs">{selectedHour}</span>
-      )}
     </Button>
   );
 };
 
-const DaySelect: React.FC = () => {
+type Props = {
+  deliveryTimes: TimeRange[] | null;
+  onSelect: (date: Date) => void;
+};
+
+const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedButton, setSelectedButton] = useState<number>(0);
-  const [selectedHour, setSelectedHour] = useState<string>(null);
+  const [selectedButton, setSelectedButton] = useState<number | null>(null);
 
   const handleButtonClick = (daysToAdd: number) => {
-    setSelectedHour(null);
     const date = addDays(new Date(), daysToAdd);
     setSelectedDate(date);
     setSelectedButton(daysToAdd);
@@ -40,7 +46,9 @@ const DaySelect: React.FC = () => {
 
   const handleSelectHour = (hour: Date) => {
     const text = `${hour.getHours()}:00 - ${hour.getHours() + 1}:00`;
-    setSelectedHour(text);
+    const date = selectedDate.setHours(hour.getHours(), 0, 0, 0);
+    onSelect(new Date(date));
+    return text;
   };
 
   return (
@@ -51,7 +59,6 @@ const DaySelect: React.FC = () => {
             key={index}
             isSelected={selectedButton === index}
             onClick={() => handleButtonClick(index)}
-            selectedHour={selectedHour}
           >
             <span>
               {index === 0
@@ -62,34 +69,27 @@ const DaySelect: React.FC = () => {
             </span>
           </CustomButton>
         ))}
-      </div>
-
-      <AnimatePresence>
         {selectedDate && (
           <motion.div
-            key={selectedDate?.toString()}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            key={selectedDate?.toString() || 0}
+            initial={{ x: 20 }}
+            animate={{ x: 0 }}
+            exit={{ x: 20 }}
             transition={{ duration: 0.2 }}
+            className={clsx(
+              { "col-start-1 col-end-2": selectedButton === 0 },
+              { "col-start-2 col-end-3": selectedButton === 1 },
+              { "col-start-3 col-span-1": selectedButton === 2 }
+            )}
           >
             <HourSelect
-              deliveryTimeRanges={[
-                {
-                  start_time: "09:00",
-                  end_time: "12:00",
-                },
-                {
-                  start_time: "19:00",
-                  end_time: "23:00",
-                },
-              ]}
+              deliveryTimeRanges={deliveryTimes}
               currentDate={selectedDate}
               onHourSelect={handleSelectHour}
             />
           </motion.div>
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 };
