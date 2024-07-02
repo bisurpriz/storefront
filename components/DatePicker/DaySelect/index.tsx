@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Button from "@/components/Button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
@@ -14,10 +14,10 @@ const CustomButton = ({ isSelected, children, ...props }) => {
       variant="outlined"
       color="secondary"
       className={clsx(
-        { "bg-secondary text-white": isSelected },
+        { "bg-secondary text-white ": isSelected },
         "max-sm:px-0 flex flex-col justify-center items-center",
-        "rounded-md p-2 w-full",
-        "text-sm",
+        "rounded-md px-2 py-6 w-full max-md:p-2",
+        "text-xl max-md:text-sm",
         "hover:bg-secondary hover:text-white",
         "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
         "transition-all duration-200 ease-in-out"
@@ -52,7 +52,7 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4  font-sans">
       <div className={clsx("grid grid-cols-3 gap-2")}>
         {Array.from({ length: 3 }).map((_, index) => (
           <CustomButton
