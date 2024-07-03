@@ -7,6 +7,8 @@ import Rating from "@/components/Rating/Rating";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
+import { parseJson } from "@/utils/format";
+import { DeliveryType } from "@/common/enums/Product/product";
 
 type ProductInformationProps = {
   name: string;
@@ -41,6 +43,13 @@ const ProductInformation = ({
   shippingType,
   deliveryTimeRanges,
 }: ProductInformationProps) => {
+  const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
+
+  const isSameDay = Boolean(shippingType?.includes(DeliveryType.SAME_DAY));
+
+  const showDaySelect = isSameDay && hasDeliveryTime;
+  const showExactTime = isSameDay && !hasDeliveryTime;
+
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
@@ -122,7 +131,19 @@ const ProductInformation = ({
             },
           ]}
         />
-        <DaySelect />
+        {showExactTime && (
+          <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
+            <p className="text-xs text-gray-500">
+              Ürün gün içinde herhangi bir saatte teslim edilecektir.
+            </p>
+          </div>
+        )}
+        {showDaySelect && (
+          <DaySelect
+            deliveryTimes={parseJson(deliveryTimeRanges)}
+            onSelect={(date) => console.log(date)}
+          />
+        )}
       </div>
     </div>
   );

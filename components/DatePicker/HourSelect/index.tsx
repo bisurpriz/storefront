@@ -2,10 +2,12 @@ import { FC, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { tr } from "date-fns/locale";
 import { TimeRange, filterPassedTime, getMinMaxTimes } from "./utils";
+import Button from "@/components/Button";
+import { localeFormat } from "@/utils/format";
 
 type HourSelectProps = {
-  deliveryTimeRanges: TimeRange[];
-  onHourSelect: (hour: Date) => void;
+  deliveryTimeRanges: TimeRange[] | null;
+  onHourSelect: (hour: Date) => string;
   currentDate: Date | null;
 };
 
@@ -30,8 +32,9 @@ const HourSelect: FC<HourSelectProps> = ({
   };
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className="w-full">
       <ReactDatePicker
+        wrapperClassName="w-full"
         selected={selectedHour}
         onChange={handleHourSelect}
         showTimeSelect
@@ -45,6 +48,11 @@ const HourSelect: FC<HourSelectProps> = ({
         dateFormat={"HH:mm"}
         placeholderText="Saat Seç"
         timeFormat="p"
+        customInput={
+          <Button fullWidth color="secondary" variant="fullfilled">
+            {selectedHour ? onHourSelect(selectedHour) : "Saat Seç"}
+          </Button>
+        }
       />
     </div>
   );

@@ -51,9 +51,6 @@ const Search: FC<Props> = ({ className }) => {
 
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleFocus = () => {
-    ref.current?.focus();
-  };
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
   const searchParams = useSearchParams();
 
@@ -156,7 +153,6 @@ const Search: FC<Props> = ({ className }) => {
             "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
             "transition-all duration-300 group"
           )}
-          onFocus={handleFocus}
           onClick={pushToSearch}
         >
           <BsSearch className="group-hover:animate-bounce text-lg" />
