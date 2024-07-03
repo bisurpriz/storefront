@@ -10,6 +10,7 @@ export enum FILTER_KEYS {
   DELIVERY_TYPE = "delivery_type",
   CUSTOMIZABLE = "customizable",
   SAME_DAY_DELIVERY = "sameDayDelivery",
+  TENANT = "tenant",
 }
 
 export type FilterSearchParams = {
@@ -20,6 +21,7 @@ export type FilterSearchParams = {
   [FILTER_KEYS.DELIVERY_TYPE]?: string[];
   [FILTER_KEYS.CUSTOMIZABLE]?: boolean;
   [FILTER_KEYS.SAME_DAY_DELIVERY]?: boolean;
+  [FILTER_KEYS.TENANT]?: string;
 };
 
 export const createDynamicQueryMapper = (searchParams: {
@@ -92,6 +94,10 @@ export const createDynamicQueryMapper = (searchParams: {
             _in: searchParams[key] === "true" && ["SAME_DAY"],
           },
         };
+      case FILTER_KEYS.TENANT:
+        return {
+          tenant: { tenants: { id: { _eq: searchParams[key] } } },
+        };
     }
   });
 
@@ -106,7 +112,7 @@ export const createDynamicQueryMapper = (searchParams: {
     city: { quarter: { district: { city: { id: { _in: [locationId] } } } } },
   };
 
-  const quarter_query = {
+  const quarter_query: any = {
     tenant: {
       tenants: {
         tenant_shipping_places: locationWhereExpression[locationType],

@@ -21862,3 +21862,1365 @@ export type Uuid_Comparison_Exp = {
   _neq?: InputMaybe<Scalars['uuid']['input']>;
   _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
+
+export type GetUserAddressByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type GetUserAddressByIdQuery = { user_by_pk?: { user_addresses: Array<{ address: string, address_title: string, receiver_firstname: string, receiver_phone: string, receiver_surname: string, id: number, city: { id: number, name: string }, district: { id: number, name: string }, quarter: { id: number, name: string } }> } | null };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email?: string | null, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
+
+export type UpdateUserByIdMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  firstname?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type UpdateUserByIdMutation = { update_user_by_pk?: { email?: string | null, firstname?: string | null, lastname?: string | null, phone?: string | null, picture?: string | null } | null };
+
+export type GetCitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCitiesQuery = { cities: Array<{ code: number, id: number, name: string }> };
+
+export type GetDistrictsQueryVariables = Exact<{
+  cityId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetDistrictsQuery = { districts: Array<{ name: string, id: number }> };
+
+export type GetQuartersQueryVariables = Exact<{
+  districtId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetQuartersQuery = { quarters: Array<{ name: string, id: number }> };
+
+export type GetQuarterByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetQuarterByIdQuery = { quarter: Array<{ code: number, id: number, name: string, district: { id: number, code: number, name: string, city: { code: number, id: number, name: string } } }> };
+
+export type GetDistrictByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetDistrictByIdQuery = { district: Array<{ code: number, id: number, name: string, city: { name: string, id: number } }> };
+
+export type GetCityByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: string }> };
+
+export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
+
+export type CreateNewAddressMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']['input']>;
+  address_title?: InputMaybe<Scalars['String']['input']>;
+  city_id?: InputMaybe<Scalars['Int']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  receiver_firstname?: InputMaybe<Scalars['String']['input']>;
+  receiver_phone?: InputMaybe<Scalars['String']['input']>;
+  receiver_surname?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type CreateNewAddressMutation = { insert_user_address_one?: { address_title: string, id: number } | null };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByEmailQuery = { user: Array<{ id: any, provider_id?: string | null }> };
+
+export type GetLocationQueryQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetLocationQueryQuery = { search_locationv1: Array<{ id?: number | null, name?: string | null, type?: string | null, district_id?: number | null, district_name?: string | null, city_id?: number | null, city_name?: string | null }> };
+
+export type GetAllCouponsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCouponsQuery = { coupon: Array<{ id: any, code: string, description?: string | null, created_at?: any | null, start_date?: any | null, end_date?: any | null, minimum_cost?: number | null, amount: number, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> } }> };
+
+export type GetUserFavoritesQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetUserFavoritesQuery = { user_favorite: Array<{ id: any, product: { name: string, id: any, image_url?: Array<string> | null, price: number, discount_price?: number | null, slug?: string | null, category: { name: string, slug?: string | null } } }>, user_favorite_aggregate: { aggregate?: { count: number } | null } };
+
+export type AddToFavoritesMutationVariables = Exact<{
+  productId: Scalars['bigint']['input'];
+}>;
+
+
+export type AddToFavoritesMutation = { insert_user_favorite_one?: { id: any } | null };
+
+export type RemoveFromFavoritesMutationVariables = Exact<{
+  productId: Scalars['bigint']['input'];
+}>;
+
+
+export type RemoveFromFavoritesMutation = { delete_user_favorite?: { affected_rows: number } | null };
+
+export type GetUserAddressesQueryVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetUserAddressesQuery = { user_address: Array<{ address_title: string, address: string, id: number, city: { name: string, id: number }, quarter: { name: string, id: number }, district: { name: string, id: number } }> };
+
+export type LoginMutationMutationVariables = Exact<{
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type LoginMutationMutation = { login?: { access_token?: string | null, refresh_token?: string | null, error?: string | null } | null };
+
+export type ExpiredRefreshTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ExpiredRefreshTokenMutation = { refresh_token?: { access_token: string, body?: any | null, error?: string | null } | null };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
+  firstname?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  provider?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
+  provider_id?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type RegisterMutation = { register?: { data?: any | null, body?: any | null, error?: string | null } | null };
+
+export type GetBannersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBannersQuery = { system_banner: Array<{ expire_date?: any | null, id: any, name?: string | null, path?: string | null, redirect_link: string }> };
+
+export type UpdateDbCartMutationVariables = Exact<{
+  payload: Array<Cart_Insert_Input> | Cart_Insert_Input;
+  CONSTRAINT: Cart_Constraint;
+}>;
+
+
+export type UpdateDbCartMutation = { insert_cart?: { affected_rows: number, returning: Array<{ id: any }> } | null };
+
+export type GetDbCartQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
+
+export type GetMainCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMainCategoriesQuery = { category: Array<{ id: number, image_url?: string | null, name: string, slug?: string | null }> };
+
+export type GetAllCategoriesQueryVariables = Exact<{
+  parent_category_id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetAllCategoriesQuery = { category: Array<{ id: number, image_url?: string | null, name: string, slug?: string | null }> };
+
+export type SendMessageAloneMutationVariables = Exact<{
+  message: Scalars['String']['input'];
+  receiver_id: Scalars['uuid']['input'];
+  order_tenant_id: Scalars['bigint']['input'];
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type SendMessageAloneMutation = { insert_message_one?: { created_at: any, chat_thread: { tenat_id: any, order_tenant_id: any } } | null };
+
+export type SendMessageMutationVariables = Exact<{
+  message: Scalars['String']['input'];
+  receiver_id: Scalars['uuid']['input'];
+  chat_thread_id: Scalars['uuid']['input'];
+}>;
+
+
+export type SendMessageMutation = { insert_message_one?: { created_at: any } | null };
+
+export type MarkAsReadMutationVariables = Exact<{
+  chat_thread_id: Scalars['uuid']['input'];
+}>;
+
+
+export type MarkAsReadMutation = { update_message_many?: Array<{ affected_rows: number } | null> | null };
+
+export type SubscribeToChatsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SubscribeToChatsSubscription = { chat_thread: Array<{ id: any, tenant: { id: any, picture?: string | null, firstname?: string | null, lastname?: string | null }, messages: Array<{ message: string, id: any, is_read?: boolean | null, created_at: any, sender: { picture?: string | null, id: any }, receiver: { picture?: string | null, id: any } }>, order_tenant: { id: any, order_items: Array<{ id: any, product: { image_url?: Array<string> | null, name: string, id: any } }> } }> };
+
+export type CreateOrderMutationVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+  total_amount: Scalars['numeric']['input'];
+  tenant_orders: Array<Order_Tenant_Insert_Input> | Order_Tenant_Insert_Input;
+  order_addresses: Array<Order_Address_Insert_Input> | Order_Address_Insert_Input;
+}>;
+
+
+export type CreateOrderMutation = { insert_order_one?: { id: any, created_at: any, total_amount: number } | null };
+
+export type GetSingleTenantOrderItemQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['bigint']['input']>;
+}>;
+
+
+export type GetSingleTenantOrderItemQuery = { order_tenant: Array<{ id: any, tenant: { id: any } }> };
+
+export type GetAllProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllProductsQuery = { product: Array<{ id: any, image_url?: Array<string> | null, description?: string | null, name: string, price: number, quantity?: number | null }>, product_aggregate: { aggregate?: { count: number } | null } };
+
+export type GetProductByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { count?: number | null, id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+
+export type GetProductForCartQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> } } | null, category: Array<{ name: string }> };
+
+export type GetProductPricesByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductPricesByIdQuery = { product?: { id: any, price: number, discount_price?: number | null } | null };
+
+export type GetProductsForInitialCartQueryVariables = Exact<{
+  ids?: InputMaybe<Array<Scalars['bigint']['input']> | Scalars['bigint']['input']>;
+}>;
+
+
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { tenants: Array<{ id: any, name?: string | null, logo?: string | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
+
+export type GetProductsWithPaginationQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  category_slug?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+
+export type GetProductsWithFilteredPaginationQueryVariables = Exact<{
+  filter_payload?: InputMaybe<Product_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+
+export type SearchProductsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type SearchProductsQuery = { product: Array<{ name: string }> };
+
+export type GetOrdersWithReviewsQueryVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetOrdersWithReviewsQuery = { order_item: Array<{ id: any, created_at?: any | null, order_tenant?: { updated_at: any, order_status?: { value: string } | null } | null, product: { slug?: string | null, id: any, name: string, image_url?: Array<string> | null, reviews_aggregate: { aggregate?: { count: number } | null } } }>, review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, product: { slug?: string | null, name: string, id: any, image_url?: Array<string> | null, category: { name: string, slug?: string | null, id: number }, tenant: { id: any, picture?: string | null }, reviews_aggregate: { aggregate?: { count: number } | null } } }> };
+
+export type CreateReviewMutationVariables = Exact<{
+  comment: Scalars['String']['input'];
+  score: Scalars['Int']['input'];
+  product_id: Scalars['Int']['input'];
+}>;
+
+
+export type CreateReviewMutation = { insert_review_one?: { created_at: any } | null };
+
+export type GetProductReviewsQueryVariables = Exact<{
+  productId?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, user: { firstname?: string | null, lastname?: string | null } }>, review_aggregate: { aggregate?: { count: number } | null } };
+
+export type GetVendorByIdQueryVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetVendorByIdQuery = { tenant_by_pk?: { id: any, name?: string | null, logo?: string | null, legal_company_title?: string | null, created_at: any, owner: { products_aggregate: { aggregate?: { count: number } | null }, reviews_aggregate: { aggregate?: { count: number } | null } } } | null };
+
+export type GetVendorProductsWithPaginationQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  tenant_id?: Scalars['uuid']['input'];
+}>;
+
+
+export type GetVendorProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, description?: string | null, name: string, image_url?: Array<string> | null, price: number, quantity?: number | null, category: { name: string, slug?: string | null } }> };
+
+export type VerifyTokenMutationVariables = Exact<{
+  token: Scalars['String']['input'];
+  resend?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
+
+
+export type VerifyTokenMutation = { email_verify?: { result?: string | null } | null };
+
+
+export const GetUserAddressByIdDocument = gql`
+    query getUserAddressById($id: uuid = "") {
+  user_by_pk(id: $id) {
+    user_addresses {
+      address
+      address_title
+      receiver_firstname
+      receiver_phone
+      receiver_surname
+      id
+      city {
+        id
+        name
+      }
+      district {
+        id
+        name
+      }
+      quarter {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const GetUserByIdDocument = gql`
+    query getUserById($id: uuid = "") {
+  user_by_pk(id: $id) {
+    id
+    created_at
+    email
+    firstname
+    lastname
+    picture
+    phone
+    reference_code
+    user_addresses {
+      address_title
+      address
+    }
+    carts {
+      id
+      content
+    }
+  }
+}
+    `;
+export const UpdateUserByIdDocument = gql`
+    mutation updateUserById($id: uuid!, $firstname: String, $lastname: String, $phone: String, $picture: String) {
+  update_user_by_pk(
+    pk_columns: {id: $id}
+    _set: {firstname: $firstname, lastname: $lastname, phone: $phone, picture: $picture}
+  ) {
+    email
+    firstname
+    lastname
+    phone
+    picture
+  }
+}
+    `;
+export const GetCitiesDocument = gql`
+    query getCities {
+  cities: city {
+    code
+    id
+    name
+  }
+}
+    `;
+export const GetDistrictsDocument = gql`
+    query getDistricts($cityId: Int = 10) {
+  districts: district(where: {city: {id: {_eq: $cityId}}}) {
+    name
+    id
+  }
+}
+    `;
+export const GetQuartersDocument = gql`
+    query getQuarters($districtId: Int = 1) {
+  quarters: quarter(where: {district: {id: {_eq: $districtId}}}) {
+    name
+    id
+  }
+}
+    `;
+export const GetQuarterByIdDocument = gql`
+    query GetQuarterById($id: Int) @cached {
+  quarter(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    district {
+      id
+      code
+      name
+      city {
+        code
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const GetDistrictByIdDocument = gql`
+    query getDistrictById($id: Int) @cached {
+  district(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+    city {
+      name
+      id
+    }
+  }
+}
+    `;
+export const GetCityByIdDocument = gql`
+    query getCityById($id: Int) {
+  city(where: {id: {_eq: $id}}) {
+    code
+    id
+    name
+  }
+}
+    `;
+export const GetUserOrdersDocument = gql`
+    query getUserOrders {
+  order {
+    created_at
+    id
+    total_amount
+    tenant_orders {
+      id
+      tenant {
+        id
+        tenants {
+          name
+          logo
+          id
+        }
+      }
+      order_items {
+        id
+        order_item_no
+        product_id
+        quantity
+        product {
+          category {
+            name
+            slug
+          }
+          id
+          slug
+          description
+          image_url
+          name
+          price
+          discount_price
+          quantity
+        }
+      }
+      order_status {
+        value
+      }
+    }
+  }
+}
+    `;
+export const CreateNewAddressDocument = gql`
+    mutation createNewAddress($address: String, $address_title: String, $city_id: Int, $district_id: Int, $quarter_id: Int, $receiver_firstname: String, $receiver_phone: String, $receiver_surname: String, $user_id: uuid) {
+  insert_user_address_one(
+    object: {address: $address, address_title: $address_title, city_id: $city_id, district_id: $district_id, quarter_id: $quarter_id, receiver_firstname: $receiver_firstname, receiver_phone: $receiver_phone, receiver_surname: $receiver_surname, user_id: $user_id}
+  ) {
+    address_title
+    id
+  }
+}
+    `;
+export const GetUserByEmailDocument = gql`
+    query getUserByEmail($email: String!) {
+  user(where: {email: {_eq: $email}}) {
+    id
+    provider_id
+  }
+}
+    `;
+export const GetLocationQueryDocument = gql`
+    query GetLocationQuery($search: String = "") @cached {
+  search_locationv1(args: {search: $search}, limit: 100) {
+    id
+    name
+    type
+    district_id
+    district_name
+    city_id
+    city_name
+  }
+}
+    `;
+export const GetAllCouponsDocument = gql`
+    query getAllCoupons {
+  coupon(
+    where: {user_coupons_aggregate: {count: {predicate: {_eq: 0}}}, end_date: {_gte: "now()"}}
+  ) {
+    id
+    code
+    description
+    created_at
+    start_date
+    end_date
+    minimum_cost
+    amount
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+  }
+}
+    `;
+export const GetUserFavoritesDocument = gql`
+    query getUserFavorites($offset: Int = 0) {
+  user_favorite(offset: $offset) {
+    id
+    product {
+      name
+      id
+      image_url
+      price
+      discount_price
+      slug
+      category {
+        name
+        slug
+      }
+    }
+  }
+  user_favorite_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const AddToFavoritesDocument = gql`
+    mutation addToFavorites($productId: bigint!) {
+  insert_user_favorite_one(object: {product_id: $productId}) {
+    id
+  }
+}
+    `;
+export const RemoveFromFavoritesDocument = gql`
+    mutation removeFromFavorites($productId: bigint!) {
+  delete_user_favorite(where: {product_id: {_eq: $productId}}) {
+    affected_rows
+  }
+}
+    `;
+export const GetUserAddressesDocument = gql`
+    query getUserAddresses($user_id: uuid!) {
+  user_address(where: {user_id: {_eq: $user_id}}) {
+    address_title
+    address
+    id
+    city {
+      name
+      id
+    }
+    quarter {
+      name
+      id
+    }
+    district {
+      name
+      id
+    }
+  }
+}
+    `;
+export const LoginMutationDocument = gql`
+    mutation loginMutation($email: String, $password: String) {
+  login(args: {email: $email, password: $password}) {
+    access_token
+    refresh_token
+    error
+  }
+}
+    `;
+export const ExpiredRefreshTokenDocument = gql`
+    mutation expiredRefreshToken {
+  refresh_token {
+    access_token
+    body
+    error
+  }
+}
+    `;
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String, $firstname: String, $lastname: String, $provider: String, $picture: String, $provider_id: String, $phone: String) {
+  register(
+    args: {email: $email, password: $password, firstname: $firstname, lastname: $lastname, provider: $provider, picture: $picture, provider_id: $provider_id, phone: $phone}
+  ) {
+    data
+    body
+    error
+  }
+}
+    `;
+export const GetBannersDocument = gql`
+    query getBanners {
+  system_banner {
+    expire_date
+    id
+    name
+    path
+    redirect_link
+  }
+}
+    `;
+export const UpdateDbCartDocument = gql`
+    mutation updateDbCart($payload: [cart_insert_input!]!, $CONSTRAINT: cart_constraint!) {
+  insert_cart(
+    objects: $payload
+    on_conflict: {constraint: $CONSTRAINT, update_columns: [content]}
+  ) {
+    returning {
+      id
+    }
+    affected_rows
+  }
+}
+    `;
+export const GetDbCartDocument = gql`
+    query getDbCart {
+  cart {
+    id
+    content
+  }
+}
+    `;
+export const GetMainCategoriesDocument = gql`
+    query getMainCategories {
+  category(where: {parent_category_id: {_is_null: true}}) {
+    id
+    image_url
+    name
+    slug
+  }
+}
+    `;
+export const GetAllCategoriesDocument = gql`
+    query getAllCategories($parent_category_id: Int) {
+  category(where: {parent_category_id: {_eq: $parent_category_id}}) {
+    id
+    image_url
+    name
+    slug
+  }
+}
+    `;
+export const SendMessageAloneDocument = gql`
+    mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!, $user_id: uuid!) {
+  insert_message_one(
+    object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id, user_id: $user_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: [order_tenant_id]}}}
+  ) {
+    created_at
+    chat_thread {
+      tenat_id
+      order_tenant_id
+    }
+  }
+}
+    `;
+export const SendMessageDocument = gql`
+    mutation sendMessage($message: String!, $receiver_id: uuid!, $chat_thread_id: uuid!) {
+  insert_message_one(
+    object: {receiver_id: $receiver_id, message: $message, chat_thread_id: $chat_thread_id}
+  ) {
+    created_at
+  }
+}
+    `;
+export const MarkAsReadDocument = gql`
+    mutation markAsRead($chat_thread_id: uuid!) {
+  update_message_many(
+    updates: {_set: {is_read: true}, where: {chat_thread_id: {_eq: $chat_thread_id}, is_read: {_eq: false}}}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const SubscribeToChatsDocument = gql`
+    subscription subscribeToChats {
+  chat_thread {
+    id
+    tenant {
+      id
+      picture
+      firstname
+      lastname
+    }
+    messages(order_by: {created_at: asc}) {
+      message
+      id
+      is_read
+      created_at
+      sender {
+        picture
+        id
+      }
+      receiver {
+        picture
+        id
+      }
+    }
+    order_tenant {
+      id
+      order_items {
+        id
+        product {
+          image_url
+          name
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+export const CreateOrderDocument = gql`
+    mutation createOrder($user_id: uuid!, $total_amount: numeric!, $tenant_orders: [order_tenant_insert_input!]!, $order_addresses: [order_address_insert_input!]!) {
+  insert_order_one(
+    object: {total_amount: $total_amount, user_id: $user_id, tenant_orders: {data: $tenant_orders}, order_addresses: {data: $order_addresses}}
+  ) {
+    id
+    created_at
+    total_amount
+  }
+}
+    `;
+export const GetSingleTenantOrderItemDocument = gql`
+    query getSingleTenantOrderItem($id: bigint) {
+  order_tenant(where: {id: {_eq: $id}}) {
+    id
+    tenant {
+      id
+    }
+  }
+}
+    `;
+export const GetAllProductsDocument = gql`
+    query getAllProducts {
+  product {
+    id
+    image_url
+    description
+    name
+    price
+    quantity
+  }
+  product_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const GetProductByIdDocument = gql`
+    query getProductById($id: bigint = 0) {
+  product: product_by_pk(id: $id) {
+    category {
+      name
+    }
+    description
+    id
+    image_url
+    name
+    price
+    quantity
+    is_service_free
+    delivery_time_ranges
+    delivery_type
+    properties
+    discount_price
+    questions {
+      created_at
+      id
+      question
+      updated_at
+      user {
+        firstname
+        lastname
+      }
+    }
+    reviews {
+      id
+      comment
+      created_at
+      score
+      user {
+        firstname
+        lastname
+        picture
+        id
+      }
+    }
+    product_customizable_areas {
+      customizable_area {
+        count
+        id
+        type
+      }
+    }
+    reviews_aggregate {
+      aggregate {
+        count(columns: id)
+      }
+    }
+    category {
+      name
+      id
+      slug
+    }
+    tenant {
+      tenants {
+        id
+        name
+        logo
+      }
+    }
+    user_favorites {
+      user_id
+      id
+    }
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export const GetProductForCartDocument = gql`
+    query getProductForCart($id: bigint = 0) {
+  product: product_by_pk(id: $id) {
+    description
+    id
+    image_url
+    name
+    price
+    discount_price
+    product_customizable_areas {
+      customizable_area {
+        type
+      }
+      count
+    }
+    category {
+      name
+    }
+    tenant {
+      tenants {
+        id
+        name
+        logo
+      }
+    }
+  }
+  category {
+    name
+  }
+}
+    `;
+export const GetProductPricesByIdDocument = gql`
+    query getProductPricesById($id: bigint = 0) {
+  product: product_by_pk(id: $id) {
+    id
+    price
+    discount_price
+  }
+}
+    `;
+export const GetProductsForInitialCartDocument = gql`
+    query getProductsForInitialCart($ids: [bigint!]) {
+  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
+    name
+    description
+    id
+    price
+    discount_price
+    stock
+    image_url
+    category {
+      id
+      name
+      slug
+    }
+    tenant {
+      tenants {
+        id
+        name
+        logo
+      }
+    }
+    product_customizable_areas {
+      customizable_area {
+        id
+        type
+      }
+      count
+      max_character
+    }
+  }
+}
+    `;
+export const GetProductsWithPaginationDocument = gql`
+    query getProductsWithPagination($limit: Int = 15, $offset: Int = 0, $is_active: Boolean = true, $category_slug: String) {
+  product_aggregate(
+    where: {is_active: {_eq: $is_active}, category: {slug: {_eq: $category_slug}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  product(
+    limit: $limit
+    offset: $offset
+    where: {is_active: {_eq: $is_active}, category: {slug: {_eq: $category_slug}}}
+  ) {
+    id
+    tenant_id
+    description
+    name
+    slug
+    category {
+      name
+      slug
+    }
+    image_url
+    price
+    quantity
+    properties
+    discount_price
+    product_customizable_areas {
+      count
+      customizable_area {
+        type
+      }
+    }
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+    reviews_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export const GetProductsWithFilteredPaginationDocument = gql`
+    query getProductsWithFilteredPagination($filter_payload: product_bool_exp, $limit: Int = 10, $offset: Int = 0) {
+  product_aggregate(where: $filter_payload) {
+    aggregate {
+      count
+    }
+  }
+  product(
+    where: $filter_payload
+    limit: $limit
+    offset: $offset
+    order_by: {id: asc}
+  ) {
+    id
+    tenant_id
+    description
+    name
+    slug
+    category {
+      name
+      slug
+    }
+    image_url
+    price
+    quantity
+    slug
+    properties
+    discount_price
+    product_customizable_areas {
+      count
+      customizable_area {
+        type
+      }
+    }
+    tenant {
+      tenants {
+        name
+        logo
+        id
+      }
+    }
+    reviews_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export const SearchProductsDocument = gql`
+    query searchProducts($search: String) {
+  product(
+    where: {_and: [{_or: [{name: {_ilike: $search}}, {name: {_similar: $search}}, {category: {name: {_similar: $search}}}, {category: {name: {_ilike: $search}}}]}, {is_active: {_eq: true}}]}
+  ) {
+    name
+  }
+}
+    `;
+export const GetOrdersWithReviewsDocument = gql`
+    query getOrdersWithReviews($user_id: uuid!) {
+  order_item(
+    where: {_and: [{product: {_or: [{reviews_aggregate: {count: {predicate: {_eq: 0}}}}, {reviews: {user_id: {_neq: $user_id}}}]}}, {order_tenant: {order_status: {value: {_eq: "Delivered"}}}}]}
+  ) {
+    id
+    order_tenant {
+      order_status {
+        value
+      }
+      updated_at
+    }
+    created_at
+    product {
+      slug
+      id
+      name
+      image_url
+      reviews_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+  review(where: {user_id: {_eq: $user_id}}) {
+    id
+    comment
+    score
+    created_at
+    product {
+      slug
+      name
+      id
+      image_url
+      category {
+        name
+        slug
+        id
+      }
+      tenant {
+        id
+        picture
+      }
+      reviews_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+}
+    `;
+export const CreateReviewDocument = gql`
+    mutation createReview($comment: String!, $score: Int!, $product_id: Int!) {
+  insert_review_one(
+    object: {comment: $comment, score: $score, product_id: $product_id}
+  ) {
+    created_at
+  }
+}
+    `;
+export const GetProductReviewsDocument = gql`
+    query getProductReviews($productId: Int, $limit: Int = 10, $offset: Int = 0) {
+  review(where: {product_id: {_eq: $productId}}, limit: $limit, offset: $offset) {
+    id
+    comment
+    score
+    created_at
+    user {
+      firstname
+      lastname
+    }
+  }
+  review_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const GetVendorByIdDocument = gql`
+    query getVendorById($id: uuid!) {
+  tenant_by_pk(id: $id) {
+    id
+    name
+    logo
+    legal_company_title
+    created_at
+    owner {
+      products_aggregate {
+        aggregate {
+          count
+        }
+      }
+      reviews_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetVendorProductsWithPaginationDocument = gql`
+    query getVendorProductsWithPagination($limit: Int = 10, $offset: Int = 0, $is_active: Boolean = true, $tenant_id: uuid! = "39d3f5ba-3029-48b2-ae57-d22b249ec6bd") {
+  product_aggregate(
+    where: {is_active: {_eq: $is_active}, tenant: {tenants: {id: {_eq: $tenant_id}}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  product(
+    limit: $limit
+    offset: $offset
+    where: {is_active: {_eq: $is_active}, tenant: {tenants: {id: {_eq: $tenant_id}}}}
+  ) {
+    id
+    description
+    name
+    image_url
+    price
+    quantity
+    category {
+      name
+      slug
+    }
+  }
+}
+    `;
+export const VerifyTokenDocument = gql`
+    mutation verifyToken($token: String!, $resend: Boolean) {
+  email_verify(args: {token: $token, resend: $resend}) {
+    result
+  }
+}
+    `;
+
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
+
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    getUserAddressById(variables?: GetUserAddressByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserAddressByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserAddressByIdQuery>(GetUserAddressByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserAddressById', 'query', variables);
+    },
+    getUserById(variables?: GetUserByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByIdQuery>(GetUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserById', 'query', variables);
+    },
+    updateUserById(variables: UpdateUserByIdMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateUserByIdMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserByIdMutation>(UpdateUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateUserById', 'mutation', variables);
+    },
+    getCities(variables?: GetCitiesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCitiesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCitiesQuery>(GetCitiesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCities', 'query', variables);
+    },
+    getDistricts(variables?: GetDistrictsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDistrictsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDistrictsQuery>(GetDistrictsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDistricts', 'query', variables);
+    },
+    getQuarters(variables?: GetQuartersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuartersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetQuartersQuery>(GetQuartersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuarters', 'query', variables);
+    },
+    GetQuarterById(variables?: GetQuarterByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetQuarterByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetQuarterByIdQuery>(GetQuarterByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetQuarterById', 'query', variables);
+    },
+    getDistrictById(variables?: GetDistrictByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDistrictByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDistrictByIdQuery>(GetDistrictByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDistrictById', 'query', variables);
+    },
+    getCityById(variables?: GetCityByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCityByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCityByIdQuery>(GetCityByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCityById', 'query', variables);
+    },
+    getUserOrders(variables?: GetUserOrdersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserOrdersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserOrdersQuery>(GetUserOrdersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserOrders', 'query', variables);
+    },
+    createNewAddress(variables?: CreateNewAddressMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateNewAddressMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateNewAddressMutation>(CreateNewAddressDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNewAddress', 'mutation', variables);
+    },
+    getUserByEmail(variables: GetUserByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByEmailQuery>(GetUserByEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserByEmail', 'query', variables);
+    },
+    GetLocationQuery(variables?: GetLocationQueryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetLocationQueryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLocationQueryQuery>(GetLocationQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetLocationQuery', 'query', variables);
+    },
+    getAllCoupons(variables?: GetAllCouponsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllCouponsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllCouponsQuery>(GetAllCouponsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllCoupons', 'query', variables);
+    },
+    getUserFavorites(variables?: GetUserFavoritesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserFavoritesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserFavoritesQuery>(GetUserFavoritesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserFavorites', 'query', variables);
+    },
+    addToFavorites(variables: AddToFavoritesMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AddToFavoritesMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AddToFavoritesMutation>(AddToFavoritesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToFavorites', 'mutation', variables);
+    },
+    removeFromFavorites(variables: RemoveFromFavoritesMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RemoveFromFavoritesMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RemoveFromFavoritesMutation>(RemoveFromFavoritesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeFromFavorites', 'mutation', variables);
+    },
+    getUserAddresses(variables: GetUserAddressesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUserAddressesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserAddressesQuery>(GetUserAddressesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserAddresses', 'query', variables);
+    },
+    loginMutation(variables?: LoginMutationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<LoginMutationMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutationMutation>(LoginMutationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginMutation', 'mutation', variables);
+    },
+    expiredRefreshToken(variables?: ExpiredRefreshTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ExpiredRefreshTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ExpiredRefreshTokenMutation>(ExpiredRefreshTokenDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'expiredRefreshToken', 'mutation', variables);
+    },
+    register(variables: RegisterMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RegisterMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register', 'mutation', variables);
+    },
+    getBanners(variables?: GetBannersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetBannersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetBannersQuery>(GetBannersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBanners', 'query', variables);
+    },
+    updateDbCart(variables: UpdateDbCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateDbCartMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDbCartMutation>(UpdateDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateDbCart', 'mutation', variables);
+    },
+    getDbCart(variables?: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
+    },
+    getMainCategories(variables?: GetMainCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetMainCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetMainCategoriesQuery>(GetMainCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMainCategories', 'query', variables);
+    },
+    getAllCategories(variables?: GetAllCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllCategoriesQuery>(GetAllCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllCategories', 'query', variables);
+    },
+    sendMessageAlone(variables: SendMessageAloneMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SendMessageAloneMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SendMessageAloneMutation>(SendMessageAloneDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'sendMessageAlone', 'mutation', variables);
+    },
+    sendMessage(variables: SendMessageMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SendMessageMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SendMessageMutation>(SendMessageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'sendMessage', 'mutation', variables);
+    },
+    markAsRead(variables: MarkAsReadMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<MarkAsReadMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<MarkAsReadMutation>(MarkAsReadDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'markAsRead', 'mutation', variables);
+    },
+    subscribeToChats(variables?: SubscribeToChatsSubscriptionVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SubscribeToChatsSubscription> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SubscribeToChatsSubscription>(SubscribeToChatsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'subscribeToChats', 'subscription', variables);
+    },
+    createOrder(variables: CreateOrderMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateOrderMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrderMutation>(CreateOrderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createOrder', 'mutation', variables);
+    },
+    getSingleTenantOrderItem(variables?: GetSingleTenantOrderItemQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetSingleTenantOrderItemQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetSingleTenantOrderItemQuery>(GetSingleTenantOrderItemDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSingleTenantOrderItem', 'query', variables);
+    },
+    getAllProducts(variables?: GetAllProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAllProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllProductsQuery>(GetAllProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllProducts', 'query', variables);
+    },
+    getProductById(variables?: GetProductByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdQuery>(GetProductByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductById', 'query', variables);
+    },
+    getProductForCart(variables?: GetProductForCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductForCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductForCartQuery>(GetProductForCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductForCart', 'query', variables);
+    },
+    getProductPricesById(variables?: GetProductPricesByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductPricesByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductPricesByIdQuery>(GetProductPricesByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductPricesById', 'query', variables);
+    },
+    getProductsForInitialCart(variables?: GetProductsForInitialCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsForInitialCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsForInitialCartQuery>(GetProductsForInitialCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsForInitialCart', 'query', variables);
+    },
+    getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithPaginationQuery>(GetProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithPagination', 'query', variables);
+    },
+    getProductsWithFilteredPagination(variables?: GetProductsWithFilteredPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithFilteredPaginationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsWithFilteredPaginationQuery>(GetProductsWithFilteredPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsWithFilteredPagination', 'query', variables);
+    },
+    searchProducts(variables?: SearchProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SearchProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchProductsQuery>(SearchProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchProducts', 'query', variables);
+    },
+    getOrdersWithReviews(variables: GetOrdersWithReviewsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOrdersWithReviewsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOrdersWithReviewsQuery>(GetOrdersWithReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOrdersWithReviews', 'query', variables);
+    },
+    createReview(variables: CreateReviewMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateReviewMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateReviewMutation>(CreateReviewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createReview', 'mutation', variables);
+    },
+    getProductReviews(variables?: GetProductReviewsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductReviewsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductReviewsQuery>(GetProductReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductReviews', 'query', variables);
+    },
+    getVendorById(variables: GetVendorByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetVendorByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetVendorByIdQuery>(GetVendorByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getVendorById', 'query', variables);
+    },
+    getVendorProductsWithPagination(variables?: GetVendorProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetVendorProductsWithPaginationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetVendorProductsWithPaginationQuery>(GetVendorProductsWithPaginationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getVendorProductsWithPagination', 'query', variables);
+    },
+    verifyToken(variables: VerifyTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<VerifyTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<VerifyTokenMutation>(VerifyTokenDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyToken', 'mutation', variables);
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

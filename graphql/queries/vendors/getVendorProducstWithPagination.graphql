@@ -2,10 +2,13 @@ query getVendorProductsWithPagination(
   $limit: Int = 10
   $offset: Int = 0
   $is_active: Boolean = true
-  $tenant_id: uuid!
+  $tenant_id: uuid! = "39d3f5ba-3029-48b2-ae57-d22b249ec6bd"
 ) {
   product_aggregate(
-    where: { is_active: { _eq: $is_active }, tenant_id: { _eq: $tenant_id } }
+    where: {
+      is_active: { _eq: $is_active }
+      tenant: { tenants: { id: { _eq: $tenant_id } } }
+    }
   ) {
     aggregate {
       count
@@ -14,7 +17,10 @@ query getVendorProductsWithPagination(
   product(
     limit: $limit
     offset: $offset
-    where: { is_active: { _eq: $is_active }, tenant_id: { _eq: $tenant_id } }
+    where: {
+      is_active: { _eq: $is_active }
+      tenant: { tenants: { id: { _eq: $tenant_id } } }
+    }
   ) {
     id
     description
