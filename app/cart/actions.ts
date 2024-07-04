@@ -6,6 +6,7 @@ import { readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
 import {
+  CreateOrderMutationVariables,
   GetDbCartDocument,
   GetDbCartQuery,
   GetProductsForInitialCartDocument,
@@ -16,6 +17,8 @@ import {
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
+import { createOrderDataMapper } from "./constants";
+import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -25,119 +28,53 @@ export const checkUserId = async () => {
 
 export const createOrderAction = async (
   cartItems: ProductForCart[],
-  orderDetail
+  orderDetail: OrderDetailPartialFormData
 ) => {
-  const userId = await checkUserId();
-
-  if (!userId) return null;
-  const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.tenants?.[0]?.id;
-    if (!acc[tenantId]) {
-      acc[tenantId] = [];
-    }
-    acc[tenantId].push(item);
-    return acc;
-  }, {});
-
-  const getTexts = (specialInstructions) => {
-    // will return an object of texts { content: "text"}
-    if (!specialInstructions) return [];
-    const texts = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("text") && specialInstructions[key] !== null
-      )
-      .map((key) => ({
-        content: specialInstructions[key],
-      }));
-
-    return texts;
-  };
-
-  const getImages = (specialInstructions) => {
-    // will return an object of images { content: "image"}
-    if (!specialInstructions) return [];
-    const images = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("image") && specialInstructions[key] !== null
-      )
-      .map((key) => ({
-        image_url: specialInstructions[key],
-      }));
-    return images;
-  };
-
-  const tenant_orders = Object.keys(tenantGrouped).map((key) => {
-    const tenantItems = tenantGrouped[key];
+  if (!orderDetail || !cartItems)
     return {
-      tenant_id: key,
-      order_items: {
-        data: tenantItems.map((item) => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          order_item_special_texts: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction)
-                )
-              : [],
-          },
-          order_item_special_images: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction)
-                )
-              : [],
-          },
-        })),
-      },
+      status: "error",
     };
-  });
+
+  const user_id = await readIdFromCookies();
+  const guestId = await cookies().get(CookieTokens.GUEST_ID)?.value;
 
   const {
-    address,
-    address_title,
-    city,
-    quarter,
-    district,
-    receiver_phone,
-    receiver_surname,
-    receiver_firstname,
-  } = orderDetail;
+    object: { tenant_orders, order_addresses },
+  } = createOrderDataMapper(cartItems, orderDetail);
 
-  const variables = {
-    user_id: userId,
-    tenantOrders: {
-      data: tenant_orders,
+  const variables: CreateOrderMutationVariables = {
+    object: {
+      user_id: user_id ?? guestId,
+      tenant_orders,
+      order_addresses,
+      sender_mail: orderDetail.sender_email,
+      sender_phone: orderDetail.sender_phone,
     },
-    order_addresses: [
-      {
-        address,
-        address_title,
-        city_id: city.id,
-        quarter_id: quarter.id,
-        district_id: district.id,
-        receiver_phone,
-        receiver_surname,
-        receiver_firstname,
-      },
-    ],
   };
-
-  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value;
 
   const response = await fetch(
     "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
     {
       method: "POST",
-      body: JSON.stringify(variables),
+      body: JSON.stringify({
+        ...variables.object,
+      }),
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
       },
     }
   );
+  console.log(JSON.stringify(response, null, 2));
 
-  return response.json();
+  if (!response) {
+    return {
+      status: "error",
+    };
+  } else {
+    return {
+      status: "success",
+    };
+  }
 };
 
 export const getCartCost = async (
@@ -263,9 +200,6 @@ export const getCart = async (user_id: string) => {
       costData: number;
     };
   } catch (error) {
-    console.log(
-      "Sepet bilgisine ulaşılamadı. Hata: getCart fonksiyonu içerisinde."
-    );
     return {
       cartItems: [],
       costData: 0,

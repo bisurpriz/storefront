@@ -3,7 +3,6 @@ import ReactDatePicker from "react-datepicker";
 import { tr } from "date-fns/locale";
 import { TimeRange, filterPassedTime, getMinMaxTimes } from "./utils";
 import Button from "@/components/Button";
-import { localeFormat } from "@/utils/format";
 
 type HourSelectProps = {
   deliveryTimeRanges: TimeRange[] | null;

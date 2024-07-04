@@ -55,7 +55,7 @@ const schema = object().shape({
   ),
   creditCardName: string().required("Kart üzerindeki isim zorunludur"),
   creditCardDate: string()
-    .required()
+    .required("Son kullanma tarihi geçersiz")
     .test("test-date", "Geçersiz tarih", (value) => {
       const splitted = value?.split("/");
       if (splitted) {
@@ -185,13 +185,16 @@ const CreditCardForm = () => {
         installment: 1,
       } as Initialize3dsPaymentRequest;
       const response = await initialize3dsPayment(variables);
-      if (response.errorMessage) {
+      const res = await createOrderAction(cartItems, detailData);
+      console.log(res, response);
+      if (response.errorMessage || res.status === "error") {
         setLoading(false);
         openPopup();
-        setErrorMessage(response.errorMessage);
+        setErrorMessage(
+          response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
+        );
         return;
-      }
-      if (response) setBase64PasswordHtml(response.threeDSHtmlContent);
+      } else setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
 
@@ -200,19 +203,13 @@ const CreditCardForm = () => {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
-      const serialize = localStorage.getItem("detail-data");
-      const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
 
       if (event.data === "success") {
-        const res = await createOrderAction(cartItems, detailData);
-        if (res) {
-          console.log("Order created successfully");
-          clearCart();
-          localStorage.removeItem("detail-data");
-          localStorage.removeItem("cart");
-          localStorage.removeItem("count");
-          localStorage.removeItem("cost");
-        }
+        clearCart();
+        localStorage.removeItem("detail-data");
+        localStorage.removeItem("cart");
+        localStorage.removeItem("count");
+        localStorage.removeItem("cost");
 
         setLoading(false);
         replace("/cart/complete");
@@ -340,7 +337,8 @@ const CreditCardForm = () => {
             "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
           )}
           onLoad={() => {
-            const iframeWindow = document.querySelector("iframe").contentWindow;
+            const iframeWindow =
+              document?.querySelector("iframe").contentWindow;
             iframeWindow.postMessage("check-status", "*");
           }}
         />

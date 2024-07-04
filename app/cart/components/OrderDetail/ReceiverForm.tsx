@@ -147,7 +147,7 @@ const ReceiverForm = ({
   const { control, reset, watch, getValues, handleSubmit } =
     useForm<OrderDetailPartialFormData>({
       defaultValues,
-      mode: "onChange",
+      mode: "all",
       delayError: 500,
       resolver: yupResolver<OrderDetailPartialFormData>(
         OrderDetailSchema as ObjectSchema<
@@ -224,13 +224,17 @@ const ReceiverForm = ({
       const receiver_phone = formatPhoneNumber(
         selectedSavedAddress.receiver_phone
       );
+      console.log(getValues());
       reset({
         ...getValues(),
         city: selectedSavedAddress.city,
         district: selectedSavedAddress.district,
         quarter: selectedSavedAddress.quarter,
         address: selectedSavedAddress.address,
-        receiver_name: selectedSavedAddress.receiver_name,
+        receiver_name:
+          selectedSavedAddress.receiver_firstname +
+          " " +
+          selectedSavedAddress.receiver_surname,
         receiver_phone,
         address_title: selectedSavedAddress.address_title,
       });
@@ -344,6 +348,9 @@ const ReceiverForm = ({
         )}
         onSubmit={handleSubmit(onSubmit, onError)}
       >
+        <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
+          {renderSavedAddress()}
+        </div>
         <div
           className={clsx(
             "col-span-1 max-md:col-span-full",
@@ -435,6 +442,7 @@ const ReceiverForm = ({
             "col-span-1 max-md:col-span-full",
             "flex flex-col gap-3 flex-1"
           )}
+          tabIndex={0}
         >
           <SubTitle>Alıcı Bilgileri</SubTitle>
           <Controller
@@ -496,7 +504,6 @@ const ReceiverForm = ({
         <CompanyDetail control={control} invoice_type={invoice_type} />
         <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
-          {renderSavedAddress()}
 
           <RenderAddress
             selectedSavedAddress={selectedSavedAddress}
