@@ -4,6 +4,10 @@ const nextConfig = {
   compiler: {
     // removeConsole: process.env.NODE_ENV !== "development",
   },
+  experimental: {
+    ppr: true,
+    reactCompiler: true,
+  },
   images: {
     loader: "default",
     remotePatterns: [

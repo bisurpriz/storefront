@@ -1,6 +1,6 @@
 "use client";
 import { localeFormat } from "@/utils/format";
-import { memo, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { markAsRead } from "../../action";
 import MessageItem from "./MessageItem";
 import MessageItemSkeleton from "./MessageItemSkeleton";
@@ -74,4 +74,4 @@ const MessageList = ({
   );
 };
 
-export default memo(MessageList);
+export default MessageList;

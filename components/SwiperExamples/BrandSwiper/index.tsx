@@ -1,36 +1,35 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import CustomSwiper from '../../Swiper';
-import Card from '../../Card';
-import Button from '@/components/Button';
-import { Autoplay } from 'swiper/modules';
-import { FiShoppingCart } from 'react-icons/fi';
+import CustomSwiper from "../../Swiper";
+import Card from "../../Card";
+import Button from "@/components/Button";
+import { Autoplay } from "swiper/modules";
+import { FiShoppingCart } from "react-icons/fi";
 
 const CategorySwiper = () => {
   const data = [
     {
       id: 1,
-      name: 'Yılbaşı',
-      image: 'bg-slider-0',
-      header: '',
-      subHeader: '',
+      name: "Yılbaşı",
+      image: "bg-slider-0",
+      header: "",
+      subHeader: "",
       button: false,
     },
     {
       id: 2,
-      name: 'Çiçekler',
-      image: 'bg-slider-1',
-      header: 'Çiçek siparişlerinizde %20 indirim',
-      subHeader: 'Günün fırsatını kaçırmayın',
+      name: "Çiçekler",
+      image: "bg-slider-1",
+      header: "Çiçek siparişlerinizde %20 indirim",
+      subHeader: "Günün fırsatını kaçırmayın",
       button: true,
     },
     {
       id: 3,
-      name: 'Çikolata',
-      image: 'bg-slider-2',
-      header: 'Çikolata siparişlerinizde %24 indirim',
-      subHeader: 'Hemen sipariş verin indirimden yararlanın',
+      name: "Çikolata",
+      image: "bg-slider-2",
+      header: "Çikolata siparişlerinizde %24 indirim",
+      subHeader: "Hemen sipariş verin indirimden yararlanın",
       button: true,
     },
   ];
@@ -79,4 +78,4 @@ const CategorySwiper = () => {
   );
 };
 
-export default memo(CategorySwiper);
+export default CategorySwiper;

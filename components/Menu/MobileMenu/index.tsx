@@ -2,7 +2,6 @@
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
 import Link from "next/link";
-import { memo } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsTruck } from "react-icons/bs";
 import { FiPhoneCall } from "react-icons/fi";
@@ -113,4 +112,4 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
   );
 };
 
-export default memo(MobileMenu);
+export default MobileMenu;

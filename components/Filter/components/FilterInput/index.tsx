@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState, useCallback, useMemo, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
 import FilterDropdownButton from "./FilterDropdownButton";
@@ -41,24 +41,18 @@ const FilterInput: FC<FilterInputProps> = ({
 
   const debouncedFilter = useDebounce(filter, 500);
 
-  const filteredOptions = useMemo(() => {
-    return options.filter(({ key }) =>
-      key.toLowerCase().includes(debouncedFilter.toLowerCase())
-    );
-  }, [debouncedFilter, options]);
-
-  const handleItemSelect = useCallback(
-    (item: FilterInputOption) => {
-      if (selectedItems.some((i) => i.value === item.value)) {
-        setSelectedItems(selectedItems.filter((i) => i.value !== item.value));
-        return;
-      }
-
-      setSelectedItems([...selectedItems, item]);
-    },
-    [selectedItems]
+  const filteredOptions = options.filter(({ key }) =>
+    key.toLowerCase().includes(debouncedFilter.toLowerCase())
   );
 
+  const handleItemSelect = (item: FilterInputOption) => {
+    if (selectedItems.some((i) => i.value === item.value)) {
+      setSelectedItems(selectedItems.filter((i) => i.value !== item.value));
+      return;
+    }
+
+    setSelectedItems([...selectedItems, item]);
+  };
   const handleClear = () => {
     handleFilterSubmit([]);
     setSelectedItems([]);

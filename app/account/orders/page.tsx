@@ -2,6 +2,8 @@ import Button from "@/components/Button";
 import { getUserOrders } from "./actions";
 import TenantOrders from "./components/TenantOrders";
 
+export const dynamic = "force-dynamic";
+
 const OrdersPage = async () => {
   const { orders } = await getUserOrders();
   return (

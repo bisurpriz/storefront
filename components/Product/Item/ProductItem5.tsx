@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -22,16 +22,15 @@ const ProductItem5 = ({
   totalReviewCount,
   tenant,
 }: ProductItemProps) => {
-  const stamps = useMemo((): Stamp[] | null => {
-    if (!product_customizable_areas?.length) return null;
-    return [
-      {
-        name: "Özelleştirilebilir",
-        icon: "🎨",
-        color: "orange",
-      },
-    ] as Stamp[];
-  }, [product_customizable_areas]);
+  const stamps = !product_customizable_areas?.length
+    ? null
+    : ([
+        {
+          name: "Özelleştirilebilir",
+          icon: "🎨",
+          color: "orange",
+        },
+      ] as Stamp[]);
 
   return (
     <div

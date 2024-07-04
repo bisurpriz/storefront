@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PiSpinner } from "react-icons/pi";
 import clsx from "clsx";
@@ -137,7 +131,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     };
   }, []);
 
-  const moveActiveSuggestions = useCallback(() => {
+  const moveActiveSuggestions = () => {
     if (activeItemRef.current && suggestionsListRef.current) {
       const activeElement = activeItemRef.current;
       const listElement = suggestionsListRef.current;
@@ -154,7 +148,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
         listElement.scrollTop = activeBottom - listHeight;
       }
     }
-  }, [activeItemRef, suggestionsListRef]);
+  };
 
   useEffect(() => {
     moveActiveSuggestions();
@@ -167,75 +161,62 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     return option;
   };
 
-  const suggestionsListComponent = useMemo(
-    () => (
-      <AnimatePresence>
-        {showSuggestions && userInput && (
-          <motion.ul
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className={clsx(
-              "absolute w-full mt-1 max-h-60 overflow-y-auto z-10 font-mono",
-              "bg-white border border-gray-300 rounded-lg shadow-md",
-              "transition-all duration-200 ease-in-out py-1"
-            )}
-            ref={suggestionsListRef}
-          >
-            {isLoading ? (
-              <div className="p-2 flex items-center justify-center">
-                <PiSpinner className="animate-spin h-5 w-5 mr-3 inline-block" />
-              </div>
-            ) : filteredSuggestions?.length ? (
-              filteredSuggestions.map((suggestion, index) => {
-                return (
-                  <li
-                    className={clsx(
-                      "p-2 cursor-pointer",
-                      "transition duration-200 ease-in-out text-base font-thin",
-                      {
-                        "bg-secondary text-white": activeSuggestion === index,
-                      },
-                      {
-                        "hover:bg-4 hover:text-white":
-                          activeSuggestion !== index,
-                      }
-                    )}
-                    key={index}
-                    onClick={() => handleClick(suggestion)}
-                    ref={index === activeSuggestion ? activeItemRef : null}
-                  >
-                    {renderOptionLabel(suggestion)}
-                  </li>
-                );
-              })
-            ) : (
-              <div
-                className={clsx(
-                  "p-2 flex items-center justify-center text-gray-500 text-base gap-2"
-                )}
-              >
-                <VscSearchStop size={24} />
-                <p className="m-0">
-                  &quot;{userInput}&quot; aramasına uygun mahalle bulunamadı.
-                </p>
-              </div>
-            )}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    ),
-    [
-      showSuggestions,
-      isLoading,
-      filteredSuggestions,
-      activeSuggestion,
-      activeItemRef,
-      suggestionsListRef,
-      handleClick,
-      renderOptionLabel,
-    ]
+  const suggestionsListComponent = (
+    <AnimatePresence>
+      {showSuggestions && userInput && (
+        <motion.ul
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.2 }}
+          className={clsx(
+            "absolute w-full mt-1 max-h-60 overflow-y-auto z-10 font-mono",
+            "bg-white border border-gray-300 rounded-lg shadow-md",
+            "transition-all duration-200 ease-in-out py-1"
+          )}
+          ref={suggestionsListRef}
+        >
+          {isLoading ? (
+            <div className="p-2 flex items-center justify-center">
+              <PiSpinner className="animate-spin h-5 w-5 mr-3 inline-block" />
+            </div>
+          ) : filteredSuggestions?.length ? (
+            filteredSuggestions.map((suggestion, index) => {
+              return (
+                <li
+                  className={clsx(
+                    "p-2 cursor-pointer",
+                    "transition duration-200 ease-in-out text-base font-thin",
+                    {
+                      "bg-secondary text-white": activeSuggestion === index,
+                    },
+                    {
+                      "hover:bg-4 hover:text-white": activeSuggestion !== index,
+                    }
+                  )}
+                  key={index}
+                  onClick={() => handleClick(suggestion)}
+                  ref={index === activeSuggestion ? activeItemRef : null}
+                >
+                  {renderOptionLabel(suggestion)}
+                </li>
+              );
+            })
+          ) : (
+            <div
+              className={clsx(
+                "p-2 flex items-center justify-center text-gray-500 text-base gap-2"
+              )}
+            >
+              <VscSearchStop size={24} />
+              <p className="m-0">
+                &quot;{userInput}&quot; aramasına uygun mahalle bulunamadı.
+              </p>
+            </div>
+          )}
+        </motion.ul>
+      )}
+    </AnimatePresence>
   );
 
   return (

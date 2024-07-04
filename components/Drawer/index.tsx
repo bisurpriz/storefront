@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { clsx } from "clsx";
 import { AiOutlineClose } from "react-icons/ai";
 import { usePathname } from "next/navigation";
@@ -42,20 +42,17 @@ const Drawer: React.FC<DrawerProps> = ({
     }
   }, [pathname]);
 
-  const handleEsc = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    },
-    [onClose]
-  );
+  const handleEsc = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose?.();
+    }
+  };
 
-  const handleResize = useCallback(() => {
+  const handleResize = () => {
     if (window.innerWidth > 640) {
       onClose?.();
     }
-  }, [onClose]);
+  };
 
   useEffect(() => {
     window.addEventListener("keydown", handleEsc);
@@ -149,4 +146,4 @@ const Drawer: React.FC<DrawerProps> = ({
   );
 };
 
-export default memo(Drawer);
+export default Drawer;

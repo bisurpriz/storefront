@@ -2,7 +2,6 @@
 
 import TextField from "../TextField";
 import ImageUpload from "../ImageUpload";
-import { memo } from "react";
 import { CustomizableArea } from "@/common/types/Order/order";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 
@@ -85,4 +84,4 @@ const CustomizeCartItem = ({
   }
 };
 
-export default memo(CustomizeCartItem);
+export default CustomizeCartItem;

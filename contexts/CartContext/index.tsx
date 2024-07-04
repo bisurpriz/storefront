@@ -6,7 +6,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
   useState,
 } from "react";
@@ -218,32 +217,16 @@ export const CartProvider = ({
     });
   };
 
-  const memoizedValue = useMemo(
-    () => ({
-      cartState,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-    }),
-    [
-      cartState.cartItems,
-      cartState.cost,
-      cartState.count,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-    ]
-  );
+  const value = {
+    cartState,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    updateCartItem,
+    loading,
+  };
 
-  return (
-    <CartContext.Provider value={memoizedValue}>
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => useContext(CartContext);

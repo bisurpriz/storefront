@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { HandleFilterSubmit } from "../..";
 import AnimatedFilterBox from "../FilterInput/AnimatedFilterBox";
 import FilterDropdownButton from "../FilterInput/FilterDropdownButton";
@@ -31,19 +31,15 @@ const PriceFilter: FC<PriceFilterProps> = ({
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const selectedItems = useMemo(() => {
-    if (defaultPrice) {
-      return {
+  const selectedItems = defaultPrice
+    ? {
         key: `${selectedPrice.min}₺ - ${selectedPrice.max}₺`,
         value: defaultPrice,
-      };
-    } else {
-      return {
+      }
+    : {
         key: "",
         value: "",
       };
-    }
-  }, [defaultPrice]);
 
   return (
     <div className="w-fit">

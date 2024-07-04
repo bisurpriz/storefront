@@ -9,7 +9,6 @@ import Link from "next/link";
 import { IoAccessibility } from "react-icons/io5";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
-import { useMemo } from "react";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -23,7 +22,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     category,
   } = product;
 
-  const image = useMemo(() => getImageUrlFromPath(image_url?.[0]), [image_url]);
+  const image = getImageUrlFromPath(image_url?.[0]);
 
   return (
     <li className="py-4" key={id}>

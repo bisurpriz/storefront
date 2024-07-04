@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import { motion } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 
@@ -59,13 +59,13 @@ const Popup: React.FC<PopupProps> = ({
 const usePopup = (props?: PopupHookProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const openPopup = useCallback(() => {
+  const openPopup = () => {
     setIsOpen(true);
-  }, []);
+  };
 
-  const closePopup = useCallback(() => {
+  const closePopup = () => {
     setIsOpen(false);
-  }, []);
+  };
 
   const togglePopup = () => {
     setIsOpen((prev) => !prev);

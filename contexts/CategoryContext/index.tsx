@@ -1,7 +1,7 @@
 "use client";
 
 import { GetMainCategoriesQuery } from "@/graphql/generated";
-import { ReactNode, createContext, useContext, useMemo } from "react";
+import { ReactNode, createContext, useContext } from "react";
 
 interface CategoryContextType {
   category: GetMainCategoriesQuery["category"];
@@ -18,10 +18,8 @@ export const CategoryProvider = ({
   children: ReactNode;
   category: GetMainCategoriesQuery["category"];
 }) => {
-  const memoized = useMemo(() => ({ category }), [category]);
-
   return (
-    <CategoryContext.Provider value={memoized}>
+    <CategoryContext.Provider value={{ category }}>
       {children}
     </CategoryContext.Provider>
   );

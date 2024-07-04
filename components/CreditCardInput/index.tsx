@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextField from "../TextField";
 import { checkBin } from "@/app/iyzico-payment/actions";
 import { getCardAssociationImageUrl } from "@/utils/getImageUrl";
@@ -42,12 +42,12 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
     };
   }, []);
 
-  const formatCreditCardNumber = useCallback((number) => {
+  const formatCreditCardNumber = (number) => {
     return number
       .replace(/\s/g, "")
       .replace(/(\d{4})/g, "$1 ")
       .trim();
-  }, []);
+  };
 
   return (
     <TextField

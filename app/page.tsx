@@ -15,22 +15,7 @@ import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { searchProducts } from "./(feed)/actions";
 
-const RenderSuspense = ({ children }: { children: any }) => (
-  <Suspense
-    fallback={
-      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div
-            key={i}
-            className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
-          />
-        ))}
-      </div>
-    }
-  >
-    {children}
-  </Suspense>
-);
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   searchParams,
@@ -60,7 +45,18 @@ export default async function Page({
   const value = data?.value;
 
   return (
-    <RenderSuspense>
+    <Suspense
+      fallback={
+        <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
+            />
+          ))}
+        </div>
+      }
+    >
       {searchText && (
         <Filter
           filterTypes={[
@@ -97,6 +93,6 @@ export default async function Page({
         query={searchProducts}
         params={searchParams}
       />
-    </RenderSuspense>
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo } from "react";
+import { FC } from "react";
 import CustomSwiper from "../../Swiper";
 import Image from "next/image";
 import { useMeasure } from "@uidotdev/usehooks";
@@ -55,4 +55,4 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   );
 };
 
-export default memo(CategorySwiper);
+export default CategorySwiper;

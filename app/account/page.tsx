@@ -4,6 +4,8 @@ import { getUserById } from "./actions";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 import clsx from "clsx";
 
+export const dynamic = "force-dynamic";
+
 const Account = async () => {
   let error = null;
 

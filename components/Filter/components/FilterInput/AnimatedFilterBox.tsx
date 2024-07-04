@@ -2,7 +2,7 @@ import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitPro
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import { Variants, motion } from "framer-motion";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 type AnimatedFilterBoxProps = {
   children: React.ReactNode;
@@ -17,32 +17,23 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
 }) => {
   const { isTablet } = useResponsive();
 
-  const subMenuVariants: Variants = useMemo(() => {
-    if (isTablet) {
-      return {
+  const subMenuVariants: Variants = isTablet
+    ? {
         initial: { height: 0 },
         enter: { height: "auto" },
         exit: { height: 0 },
         transition: {
           type: "easeInOut",
-          duration: 0.3,
+        },
+      }
+    : {
+        initial: { opacity: 0, y: 20 },
+        enter: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: 20 },
+        transition: {
+          type: "spring",
         },
       };
-    }
-
-    return {
-      initial: { opacity: 0, y: 20 },
-      enter: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: 20 },
-      transition: {
-        type: "spring",
-        stiffness: 500,
-        damping: 30,
-        mass: 0.5,
-        delay: 0.2,
-      },
-    };
-  }, [isTablet]);
 
   return (
     <>
