@@ -1,5 +1,4 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
-import { Suspense } from "react";
 import { getBanners, getLocationFromCookie } from "./actions";
 import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { query } from "@/graphql/lib/client";
@@ -14,6 +13,9 @@ import { getAvailableLocation } from "./account/addresses/actions";
 import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { searchProducts } from "./(feed)/actions";
+import FilterSuspense from "@/components/Filter/FilterSuspense";
+import { Suspense } from "react";
+import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
 
 export const dynamic = "force-dynamic";
 
@@ -45,29 +47,24 @@ export default async function Page({
   const value = data?.value;
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-full h-48 bg-gray-400 rounded-md shadow-md m-2 animate-pulse"
-            />
-          ))}
-        </div>
-      }
-    >
+    <>
       {searchText && (
-        <Filter
-          filterTypes={[
-            "price",
-            "sameDayDelivery",
-            "specialOffers",
-            "customizable",
-          ]}
-        />
+        <Suspense fallback={<FilterSuspense />}>
+          <Filter
+            filterTypes={[
+              "price",
+              "sameDayDelivery",
+              "specialOffers",
+              "customizable",
+            ]}
+          />
+        </Suspense>
       )}
-      {!searchText && <CategorySwiper categories={category} />}
+      {!searchText && (
+        <Suspense fallback={<CategorySwiperSuspense />}>
+          <CategorySwiper categories={category} />
+        </Suspense>
+      )}
       <div
         className={clsx(
           "grid grid-cols-12 gap-4 w-full mb-4",
@@ -93,6 +90,6 @@ export default async function Page({
         query={searchProducts}
         params={searchParams}
       />
-    </Suspense>
+    </>
   );
 }

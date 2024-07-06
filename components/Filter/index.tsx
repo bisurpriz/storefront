@@ -64,10 +64,15 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
 
   const price = searchParams.get(FilterKeys.PRICE);
 
-  const selectedPrice: FilterInputOption = {
-    key: price.split("-")[0] + "₺ - " + price.split("-")[1] + "₺",
-    value: price,
-  };
+  const selectedPrice: FilterInputOption = price
+    ? {
+        key: price.split("-")[0] + "₺ - " + price.split("-")[1] + "₺",
+        value: price,
+      }
+    : {
+        key: "",
+        value: "",
+      };
 
   return (
     <div className={clsx("w-full")}>
