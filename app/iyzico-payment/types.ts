@@ -33,6 +33,8 @@ export interface BasketItem {
   category2: string;
   itemType: string;
   price: string;
+  subMerchantKey: string;
+  subMerchantPrice: string;
 }
 
 export interface ShippingOrBillingAddress {

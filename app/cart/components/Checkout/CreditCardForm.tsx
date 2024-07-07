@@ -17,7 +17,6 @@ import { getIpAddress } from "@/app/actions";
 import useResponsive from "@/hooks/useResponsive";
 import { CookieTokens } from "@/app/@auth/contants";
 import Cookies from "js-cookie";
-import { randomBytes } from "crypto";
 import {
   Initialize3dsPaymentRequest,
   Locale,
@@ -29,6 +28,7 @@ import { MdReportGmailerrorred } from "react-icons/md";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createPortal } from "react-dom";
 import { createOrderAction } from "../../actions";
+import { createBasketItems } from "@/app/iyzico-payment/utils";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -122,28 +122,19 @@ const CreditCardForm = () => {
       const serialize = localStorage.getItem("detail-data");
       const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
       const senderNames = detailData.sender_name.split(" ");
+      const timeStamps = new Date().getTime();
+
       const conversationId =
-        userData.user?.carts[0].id ??
-        Cookies.get(CookieTokens.GUEST_ID) + randomBytes(16).toString("hex");
+        userData.user?.carts[0].id + "-" + timeStamps ??
+        Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
 
       const basketId =
-        userData.user?.carts[0].id ??
-        Cookies.get(CookieTokens.GUEST_ID) + "-" + new Date().getTime();
+        userData.user?.carts[0].id + "-" + timeStamps ??
+        Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
 
       const variables = {
         basketId,
-        basketItems: cartItems.map((product) => ({
-          category1: product.category.name,
-          category2: product.category.name,
-          id: product.id.toString(),
-          name: product.name,
-          price:
-            (product.discount_price * product.quantity)
-              ?.toFixed(2)
-              .toString() ||
-            (product.price * product.quantity)?.toFixed(2).toString(),
-          itemType: "PHYSICAL",
-        })),
+        basketItems: createBasketItems(cartItems),
         billingAddress: {
           address: detailData.address,
           city: detailData.invoice_address,
@@ -185,8 +176,11 @@ const CreditCardForm = () => {
         installment: 1,
       } as Initialize3dsPaymentRequest;
       const response = await initialize3dsPayment(variables);
-      const res = await createOrderAction(cartItems, detailData);
-      console.log(res, response);
+      const res = await createOrderAction(
+        cartItems,
+        detailData,
+        conversationId
+      );
       if (response.errorMessage || res.status === "error") {
         setLoading(false);
         openPopup();

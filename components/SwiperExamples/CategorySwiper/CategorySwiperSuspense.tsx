@@ -9,7 +9,7 @@ const CategorySwiperSuspense = () => {
       )}
     >
       {Array.from({ length: 15 }).map((_, i) => (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2" key={i}>
           <div key={i} className={clsx("w-24 h-20 bg-gray-200 rounded-lg")} />
           <div className={clsx("w-24 h-2 bg-gray-200 rounded-lg")} />
         </div>

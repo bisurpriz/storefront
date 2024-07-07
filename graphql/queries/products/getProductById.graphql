@@ -54,10 +54,13 @@ query getProductById($id: bigint = 0) {
       slug
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     user_favorites {
@@ -90,10 +93,13 @@ query getProductForCart($id: bigint = 0) {
       name
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
   }
@@ -125,10 +131,13 @@ query getProductsForInitialCart($ids: [bigint!]) {
       slug
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     product_customizable_areas {

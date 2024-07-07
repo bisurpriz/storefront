@@ -60,7 +60,6 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
             <div className="flex-shrink-0 group" key={item.slug}>
               <Link className="block w-full" href={`/${item.slug}`}>
                 <Image
-                  // random images
                   src={`https://picsum.photos/seed/${item.id}/120/120`}
                   alt={item.name}
                   width={100}

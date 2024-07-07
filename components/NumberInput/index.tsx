@@ -6,12 +6,8 @@ import { DecrementButton, IncrementButton } from "./NumberInputButtons";
 import { NumberInputRoot } from "./NumberInputRoot";
 import { NumberCustomInput } from "./NumberCustomInput";
 import { NumberInputProps } from "./NumberInputProps";
-import { ForwardedRef, forwardRef } from "react";
 
-const NumberInput = forwardRef(function CustomNumberInput(
-  props: NumberInputProps,
-  ref: ForwardedRef<HTMLDivElement>
-) {
+const NumberInput = (props: NumberInputProps) => {
   return (
     <BaseNumberInput
       slots={{
@@ -38,9 +34,9 @@ const NumberInput = forwardRef(function CustomNumberInput(
         },
       }}
       {...props}
-      ref={ref}
+      ref={props.ref}
     />
   );
-});
+};
 
 export default NumberInput;

@@ -86,14 +86,14 @@ const getTenantOrders = (
   cartItems: ProductForCart[]
 ): CreateOrderMutationVariables["object"]["tenant_orders"] => {
   const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.tenants?.[0]?.id;
+    // owner id from user table
+    const tenantId = item.tenant.id;
     if (!acc[tenantId]) {
       acc[tenantId] = [];
     }
     acc[tenantId].push(item);
     return acc;
   }, {});
-
   const getTexts = (specialInstructions) => {
     // will return an object of texts { content: "text"}
     if (!specialInstructions) return [];

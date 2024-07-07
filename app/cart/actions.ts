@@ -28,7 +28,8 @@ export const checkUserId = async () => {
 
 export const createOrderAction = async (
   cartItems: ProductForCart[],
-  orderDetail: OrderDetailPartialFormData
+  orderDetail: OrderDetailPartialFormData,
+  paymentConversationId: string
 ) => {
   if (!orderDetail || !cartItems)
     return {
@@ -44,11 +45,13 @@ export const createOrderAction = async (
 
   const variables: CreateOrderMutationVariables = {
     object: {
-      user_id: user_id ?? guestId,
+      user_id: user_id,
+      guest_id: user_id ? undefined : guestId,
       tenant_orders,
       order_addresses,
       sender_mail: orderDetail.sender_email,
       sender_phone: orderDetail.sender_phone,
+      paymentConversationId,
     },
   };
 
@@ -63,8 +66,7 @@ export const createOrderAction = async (
         "Content-Type": "application/json",
       },
     }
-  );
-  console.log(JSON.stringify(response, null, 2));
+  ).then((res) => res.json());
 
   if (!response) {
     return {
