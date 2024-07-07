@@ -140,6 +140,7 @@ const Footer = () => {
               width={200}
               height={200}
               quality={100}
+              className="w-auto h-auto"
             />
             Bonnmarşe ETBİS&apos;e üye bir firmadır.
           </Link>
@@ -152,6 +153,7 @@ const Footer = () => {
             <Image
               src="/payment/iyzico-ode.png"
               alt="iyzico"
+              className="w-auto h-auto"
               width={400}
               height={200}
               quality={100}

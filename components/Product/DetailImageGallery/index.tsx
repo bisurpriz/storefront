@@ -103,8 +103,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
                   alt={`Product Image ${image.id}`}
                   width={1024}
                   height={1024}
-                  objectFit="contain"
-                  className={`rounded-lg transition-all duration-300 ease-linear`}
+                  className={`rounded-lg transition-all duration-300 ease-linear object-contain`}
                   priority={image.id === 0}
                 />
               </div>

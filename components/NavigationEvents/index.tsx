@@ -14,6 +14,7 @@ export function NavigationEvents() {
       : `${pathname}?${searchParams.toString()}`;
 
   useEffect(() => {
+    console.log("NavigationEvents", pathname, searchParams.toString());
     gtmPageView(url);
   }, [pathname, searchParams]);
 

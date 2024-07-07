@@ -21,14 +21,14 @@ const data = [
 
 const LandingSearchBanner = () => {
   return (
-    <div className="col-span-5 max-xl:col-span-full self-center max-md:hidden">
+    <div className="col-span-5 max-xl:col-span-full self-center max-md:hidden py-4 w-full">
       <div className="grid grid-cols-3">
         {data.map((item, index) => (
           <div
             key={index}
             className={clsx(
               "flex items-center justify-center gap-2 px-4 my-4 group select-none",
-              "border-r border-gray-200 last:border-r-0 first:border-l",
+              "border-r border-gray-200 first:border-l",
               "max-xl:first:border-l-0 max-xl:m-0"
             )}
           >

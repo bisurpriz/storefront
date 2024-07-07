@@ -31,7 +31,7 @@ const HourSelect: FC<HourSelectProps> = ({
   };
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div ref={containerRef} className="w-full relative">
       <ReactDatePicker
         wrapperClassName="w-full"
         selected={selectedHour}
@@ -48,7 +48,12 @@ const HourSelect: FC<HourSelectProps> = ({
         placeholderText="Saat Seç"
         timeFormat="p"
         customInput={
-          <Button fullWidth color="secondary" variant="fullfilled">
+          <Button
+            fullWidth
+            color="secondary"
+            variant="fullfilled"
+            className="max-md:text-xs justify-center"
+          >
             {selectedHour ? onHourSelect(selectedHour) : "Saat Seç"}
           </Button>
         }

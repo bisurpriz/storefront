@@ -8,7 +8,6 @@ import {
 } from "@/graphql/generated";
 import QuarterSelector from "@/components/QuarterSelector";
 import LandingSearchBanner from "@/components/LandingSearchBanner";
-import clsx from "clsx";
 import { getAvailableLocation } from "./account/addresses/actions";
 import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
@@ -16,8 +15,12 @@ import { searchProducts } from "./(feed)/actions";
 import FilterSuspense from "@/components/Filter/FilterSuspense";
 import { Suspense } from "react";
 import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
+import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
+import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 
 export const dynamic = "force-dynamic";
+
+export const experimental_ppr = true;
 
 export default async function Page({
   searchParams,
@@ -60,36 +63,30 @@ export default async function Page({
           />
         </Suspense>
       )}
-      {!searchText && (
-        <Suspense fallback={<CategorySwiperSuspense />}>
-          <CategorySwiper categories={category} />
-        </Suspense>
-      )}
-      <div
-        className={clsx(
-          "grid grid-cols-12 gap-4 w-full mb-4",
-          "bg-white p-4 rounded-md border border-gray-100",
-          "max-md:p-0 max-md:border-none"
-        )}
+      <Suspense fallback={<CategorySwiperSuspense />}>
+        <CategorySwiper categories={category} />
+      </Suspense>
+
+      <QuarterSelector value={value} />
+      <LandingSearchBanner />
+      <Suspense fallback={<CampaignGridSuspense />}>
+        {!searchText && <CampaignGrid banners={banners} />}
+      </Suspense>
+      <Suspense
+        fallback={Array.from({
+          length: 15,
+        }).map((_, i) => (
+          <ProductItemSkeleton key={i} />
+        ))}
       >
-        <div
-          className={clsx(
-            "col-span-7 max-xl:col-span-full self-center",
-            "text-2xl font-semibold text-gray-800"
-          )}
-        >
-          <QuarterSelector value={value} />
-        </div>
-        <LandingSearchBanner />
-      </div>
-      {!searchText && <CampaignGrid banners={banners} />}
-      <InfinityScroll
-        totalCount={totalCount}
-        initialData={products}
-        dataKey="products"
-        query={searchProducts}
-        params={searchParams}
-      />
+        <InfinityScroll
+          totalCount={totalCount}
+          initialData={products}
+          dataKey="products"
+          query={searchProducts}
+          params={searchParams}
+        />
+      </Suspense>
     </>
   );
 }

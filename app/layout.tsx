@@ -16,7 +16,7 @@ import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import "@smastrom/react-rating/style.css";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { getUserById } from "./account/actions";
 import Listener from "./account/messages/components/Listener";
@@ -31,6 +31,9 @@ import { CategoryProvider } from "@/contexts/CategoryContext";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
 import { NavigationEvents } from "@/components/NavigationEvents";
+import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
+
+export const experimental_ppr = true;
 
 setDefaultOptions({
   weekStartsOn: 1,
@@ -42,7 +45,7 @@ const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
-  preload: true,
+  preload: false,
   adjustFontFallback: true,
 });
 
@@ -50,7 +53,7 @@ const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-manrope",
-  preload: true,
+  preload: false,
   adjustFontFallback: true,
 });
 
@@ -58,7 +61,7 @@ const quickSand = Quicksand({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-quicksand",
-  preload: true,
+  preload: false,
   adjustFontFallback: true,
 });
 
@@ -130,7 +133,6 @@ export default async function RootLayout({
 
   const { user } = await getUserById();
   const { cartItems, costData } = await getCart(user?.id);
-
   const {
     data: { category },
   } = await query<GetMainCategoriesQuery>({
@@ -152,7 +154,9 @@ export default async function RootLayout({
           <ApolloWrapper>
             <CategoryProvider category={category}>
               <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                <Header category={category} />
+                <Suspense fallback={<HeaderSuspense />}>
+                  <Header category={category} />
+                </Suspense>
                 <Content>{children}</Content>
                 {auth}
                 <Listener />

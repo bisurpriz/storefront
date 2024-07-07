@@ -80,7 +80,13 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
         "flex flex-col items-center justify-center rounded-lg p-12 m-auto gap-4 font-mono w-[500px] bg-white max-md:w-full max-md:h-full max-md:rounded-none"
       )}
     >
-      <Image src="/logo.svg" width={300} height={300} alt="Login" />
+      <Image
+        src="/logo.svg"
+        width={300}
+        height={300}
+        alt="Login"
+        className="w-auto h-auto"
+      />
       <h1 className="text-3xl font-bold text-center">Giriş Yap</h1>
       <p className="text-center text-gray-500">
         Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası için

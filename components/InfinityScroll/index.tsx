@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import Loading from "./Loading";
 import ProductItem5 from "../Product/Item/ProductItem5";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import EmptyPage from "./EmptyPage";
@@ -58,18 +57,10 @@ const InfinityScroll = <T,>({
 
   return (
     <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
-      <Suspense
-        fallback={Array.from({
-          length: PER_REQUEST,
-        }).map((_, i) => (
-          <ProductItemSkeleton key={i} />
-        ))}
-      >
-        {data?.map((item: any) => (
-          <ProductItem5 key={item.id} {...item} />
-        ))}
-      </Suspense>
-      <div ref={ref}>{totalCount > data?.length && <Loading />}</div>
+      {data?.map((item: any) => (
+        <ProductItem5 key={item.id} {...item} />
+      ))}
+      {totalCount > data?.length && <ProductItemSkeleton ref={ref} />}
     </div>
   );
 };

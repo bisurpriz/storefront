@@ -207,3 +207,7 @@
   justify-content: center;
   z-index: 49;
 }
+
+.react-multiple-carousel__arrow {
+  z-index: 2 !important;
+}

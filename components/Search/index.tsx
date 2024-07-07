@@ -201,7 +201,6 @@ const Search: FC<Props> = ({ className }) => {
             </Link>
           ))}
 
-          {/* spinner */}
           {isLoading && <Skeleton />}
 
           {products.length === 0 && !isLoading && (

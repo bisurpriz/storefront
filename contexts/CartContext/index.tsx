@@ -70,7 +70,6 @@ export const CartProvider = ({
 
   const { isTablet } = useResponsive();
 
-  // Get local storage data if cartDbItems is empty
   useEffect(() => {
     if (cartDbItems.length === 0) {
       const cartItems = localStorage.getItem("cart");

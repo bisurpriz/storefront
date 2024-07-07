@@ -10,7 +10,13 @@ const PaymentMethods = () => {
       bordered
       content={
         <div className="flex items-center justify-center w-full">
-          <Image src={iyzico} alt="iyzico" width={1024} height={1024} />
+          <Image
+            src={iyzico}
+            alt="iyzico"
+            width={500}
+            height={500}
+            className="w-full h-full"
+          />
         </div>
       }
       className="rounded-lg"
