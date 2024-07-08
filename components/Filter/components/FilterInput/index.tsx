@@ -7,8 +7,8 @@ import FilterDropdownButton from "./FilterDropdownButton";
 import FilterDropdownList from "./FilterDropdownList";
 import FilterDropdownSearchBar from "./FilterDropdownSearchBar";
 import FilterDropdownAcceptButton from "./FilterDropdownAcceptButton";
-import { TbCategory } from "react-icons/tb";
 import AnimatedFilterBox from "./AnimatedFilterBox";
+import Category from "@/components/Icons/Category";
 
 export type FilterInputOption = {
   key: string;
@@ -78,7 +78,7 @@ const FilterInput: FC<FilterInputProps> = ({
         selectedItems={selectedItems}
         toggle={toggle}
         title={title}
-        icon={<TbCategory />}
+        icon={<Category />}
       />
       <AnimatedFilterBox handleClose={handleClose} isOpen={isOpen}>
         <FilterDropdownSearchBar filter={filter} setFilter={setFilter} />

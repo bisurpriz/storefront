@@ -5,11 +5,11 @@ import {
 } from "@/app/account/favorites/actions";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import Button from "@/components/Button";
+import Heart from "@/components/Icons/Heart";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MdFavoriteBorder } from "react-icons/md";
 
 interface Props {
   product: ProductForCart;
@@ -62,7 +62,7 @@ const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
             isFavoriteState ? "bg-red-400" : ""
           }`}
           icon={
-            <MdFavoriteBorder
+            <Heart
               className={`text-red-300 group-hover:text-white group-hover:animate-bounce ${
                 isFavoriteState ? "text-white" : ""
               }`}

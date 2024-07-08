@@ -179,22 +179,6 @@
   max-width: 800px;
 }
 
-.swiper-button-next {
-  color: #a5b4fc !important;
-}
-
-.swiper-button-next::after {
-  font-size: 1.5rem !important;
-}
-
-.swiper-button-prev {
-  color: #a5b4fc !important;
-}
-
-.swiper-button-prev::after {
-  font-size: 1.5rem !important;
-}
-
 .backdrop {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;

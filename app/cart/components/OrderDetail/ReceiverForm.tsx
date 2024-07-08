@@ -27,9 +27,11 @@ import { AnyObject, ObjectSchema, boolean, object, string } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
 import clsx from "clsx";
-import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 import RadioGroup from "@/components/Radio/RadioGroup";
 import CompanyDetail from "./CompanyDetail";
+import User from "@/components/Icons/User";
+import Phone from "@/components/Icons/Phone";
+import Mail from "@/components/Icons/Mail";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -373,7 +375,7 @@ const ReceiverForm = ({
                 id="sender_name"
                 value={value}
                 onChange={onChange}
-                icon={<LuUser size={20} />}
+                icon={<User className="text-xl" />}
                 error={!!error}
                 errorMessage={error?.message}
               />
@@ -391,7 +393,7 @@ const ReceiverForm = ({
                 onChange={(val, inputVal) => onChange(inputVal)}
                 value={value}
                 id="sender_phone"
-                icon={<LuPhone size={20} />}
+                icon={<Phone className="text-xl" />}
               />
             )}
           />
@@ -414,7 +416,7 @@ const ReceiverForm = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuMail size={20} />}
+                icon={<Mail className="text-xl" />}
               />
             )}
           />
@@ -462,7 +464,7 @@ const ReceiverForm = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuUser size={20} />}
+                icon={<User className="text-xl" />}
               />
             )}
           />
@@ -478,7 +480,7 @@ const ReceiverForm = ({
                 onChange={(val, inputVal) => onChange(inputVal)}
                 value={value}
                 id="receiver_phone"
-                icon={<LuPhone size={20} />}
+                icon={<Phone className="text-xl" />}
               />
             )}
           />

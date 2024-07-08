@@ -1,4 +1,4 @@
-import { FaSpinner } from 'react-icons/fa';
+import SpinnerIcon from "../Icons/Spinner";
 
 const Spinner = ({
   style,
@@ -9,12 +9,12 @@ const Spinner = ({
 }) => {
   return (
     <div role="status" className={className}>
-      <FaSpinner
+      <SpinnerIcon
         className="animate-spin"
         style={{
           ...style,
-          width: '1em',
-          height: '1em',
+          width: "1em",
+          height: "1em",
         }}
       />
       <span className="sr-only">Loading...</span>

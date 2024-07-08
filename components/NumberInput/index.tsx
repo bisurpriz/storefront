@@ -1,11 +1,12 @@
 "use client";
 
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
-import { IoAdd, IoRemove } from "react-icons/io5";
 import { DecrementButton, IncrementButton } from "./NumberInputButtons";
 import { NumberInputRoot } from "./NumberInputRoot";
 import { NumberCustomInput } from "./NumberCustomInput";
 import { NumberInputProps } from "./NumberInputProps";
+import Add from "../Icons/Add";
+import Remove from "../Icons/Remove";
 
 const NumberInput = (props: NumberInputProps) => {
   return (
@@ -18,12 +19,12 @@ const NumberInput = (props: NumberInputProps) => {
       }}
       slotProps={{
         incrementButton: {
-          children: <IoAdd fontSize="small" />,
+          children: <Add />,
           color: props.color,
           disabled: props.disabled,
         },
         decrementButton: {
-          children: <IoRemove fontSize="small" />,
+          children: <Remove />,
           color: props.color,
           disabled: props.disabled,
         },

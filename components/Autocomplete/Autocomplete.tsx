@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PiSpinner } from "react-icons/pi";
 import clsx from "clsx";
-import { VscSearchStop } from "react-icons/vsc";
-import { CiSquareRemove } from "react-icons/ci";
-import { IoChevronDownOutline } from "react-icons/io5";
-import { SlLocationPin } from "react-icons/sl";
+import SearchStop from "../Icons/SearchStop";
+import Location from "../Icons/Location";
+import RemoveSquare from "../Icons/RemoveSquare";
+import ChevronDown from "../Icons/ChevronDown";
+import Spinner from "../Spinner";
 
 interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
@@ -178,7 +178,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
         >
           {isLoading ? (
             <div className="p-2 flex items-center justify-center">
-              <PiSpinner className="animate-spin h-5 w-5 mr-3 inline-block" />
+              <Spinner className="animate-spin h-5 w-5 mr-3 inline-block" />
             </div>
           ) : filteredSuggestions?.length ? (
             filteredSuggestions.map((suggestion, index) => {
@@ -208,7 +208,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 "p-2 flex items-center justify-center text-gray-500 text-base gap-2"
               )}
             >
-              <VscSearchStop size={24} />
+              <SearchStop className="text-2xl" />
               <p className="m-0">
                 &quot;{userInput}&quot; aramasına uygun mahalle bulunamadı.
               </p>
@@ -236,7 +236,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             }
           )}
         >
-          <SlLocationPin size={24} />
+          <Location className="text-2xl" />
         </div>
         <input
           type="text"
@@ -274,7 +274,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 onClear?.();
               }}
             >
-              <CiSquareRemove size={24} />
+              <RemoveSquare className="text-2xl" />
             </button>
           )}
           <button
@@ -289,7 +289,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               { "transform rotate-180": showSuggestions }
             )}
           >
-            <IoChevronDownOutline size={24} />
+            <ChevronDown className="text-2xl" />
           </button>
         </div>
       </div>

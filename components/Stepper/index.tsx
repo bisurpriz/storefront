@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { MdDone } from "react-icons/md";
+import Done from "../Icons/Done";
 
 type StepProps = {
   label: string;
@@ -15,7 +15,7 @@ interface StepperProps {
   steps: StepProps[];
 }
 
-const DoneIcon = () => <MdDone />;
+const DoneIcon = () => <Done />;
 
 export default function Stepper({ activeStep, steps }: StepperProps) {
   return (

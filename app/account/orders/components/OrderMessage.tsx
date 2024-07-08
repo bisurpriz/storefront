@@ -3,12 +3,12 @@
 import Button from "@/components/Button";
 import Link from "next/link";
 import { useState } from "react";
-import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import { GetUserOrdersQuery } from "@/graphql/generated";
 import { readIdFromCookies } from "@/app/actions";
 import Modal from "@/components/Modal/FramerModal/Modal";
+import Chat from "@/components/Icons/Chat";
 
 const OrderMessage = ({
   tenant,
@@ -49,7 +49,7 @@ const OrderMessage = ({
         onClick={() => {
           setOpen(true);
         }}
-        icon={<GrChatOption size={16} />}
+        icon={<Chat className="text-base" />}
       />
 
       <Modal

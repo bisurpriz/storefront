@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { clsx } from "clsx";
-import { AiOutlineClose } from "react-icons/ai";
 import { usePathname } from "next/navigation";
+import Close from "../Icons/Close";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -133,7 +133,7 @@ const Drawer: React.FC<DrawerProps> = ({
                     className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                     onClick={onClose}
                   >
-                    <AiOutlineClose size={24} />
+                    <Close className="text-2xl" />
                   </button>
                 </div>
                 {children}

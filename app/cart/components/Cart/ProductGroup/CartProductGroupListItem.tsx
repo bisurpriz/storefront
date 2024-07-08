@@ -6,9 +6,9 @@ import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
-import { IoAccessibility } from "react-icons/io5";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
+import Accesibility from "@/components/Icons/Accesibility";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -55,7 +55,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           promotions={[
             {
               description: "Kategori İndirimi",
-              icon: <IoAccessibility />,
+              icon: <Accesibility />,
               filterKey: "category",
             },
           ]}

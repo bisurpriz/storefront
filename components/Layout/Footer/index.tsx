@@ -1,10 +1,9 @@
-import FacebookIcon from "@/components/Svgs/Facebook";
-import InstagramIcon from "@/components/Svgs/Instagram";
-import TwitterIcon from "@/components/Svgs/Twitter";
+import FacebookIcon from "@/components/CustomIcons/Facebook";
+import InstagramIcon from "@/components/CustomIcons/Instagram";
+import TwitterIcon from "@/components/CustomIcons/Twitter";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const footerData = [
   {

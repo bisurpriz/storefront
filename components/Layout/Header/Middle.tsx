@@ -2,9 +2,9 @@ import Search from "@/components/Search";
 import Image from "next/image";
 import Link from "next/link";
 import HeaderButtons from "./components/HeaderButtons";
-import { FiHome } from "react-icons/fi";
 import MobileDrawer from "./components/MobileDrawer";
 import clsx from "clsx";
+import Home from "@/components/Icons/Home";
 
 const HeaderMiddle = () => {
   return (
@@ -20,7 +20,7 @@ const HeaderMiddle = () => {
             {
               text: "Anasayfa",
               link: "/",
-              icon: <FiHome />,
+              icon: <Home />,
             },
           ]}
           categories={[]}

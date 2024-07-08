@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/Button";
-import { BsCart3 } from "react-icons/bs";
 import { IMAGE_URL } from "@/contants/urls";
 import { ProductItemProps } from ".";
+import Basket from "@/components/Icons/Basket";
 
 export default function ProductItem3({
   description,
@@ -38,7 +38,7 @@ export default function ProductItem3({
         <h4 className="font-semibold text-base md:text-lg">
           {loading ? "Loading..." : price}
         </h4>
-        <Button className="mt-2" size="medium" icon={<BsCart3 />}>
+        <Button className="mt-2" size="medium" icon={<Basket />}>
           <span className="max-sm:hidden">Sepete Ekle</span>
         </Button>
       </div>

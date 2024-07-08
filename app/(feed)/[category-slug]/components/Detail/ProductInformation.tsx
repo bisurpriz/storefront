@@ -2,13 +2,14 @@
 
 import Popover from "@/components/Popover";
 import Link from "next/link";
-import { HiOutlineArchive, HiOutlineTicket } from "react-icons/hi";
 import Rating from "@/components/Rating/Rating";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
+import Ticket from "@/components/Icons/Ticket";
+import OutlineArchive from "@/components/Icons/OutlineArchive";
 
 type ProductInformationProps = {
   name: string;
@@ -121,12 +122,12 @@ const ProductInformation = ({
               description: shippingType?.includes("SAME_DAY")
                 ? "Gün içi teslimat"
                 : "Aynı gün kargo",
-              icon: <HiOutlineTicket />,
+              icon: <Ticket />,
               filterKey: "SAME_DAY",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <HiOutlineArchive />,
+              icon: <OutlineArchive />,
               filterKey: "FREE_SHIPPING",
             },
           ]}

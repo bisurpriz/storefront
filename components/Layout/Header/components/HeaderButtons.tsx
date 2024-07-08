@@ -3,11 +3,12 @@
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
-import { PiTruckLight, PiUserLight } from "react-icons/pi";
 import BasketButton from "./BasketButton";
 import AltTextWithData from "./AltTextWithData";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import Account from "@/components/Icons/Account";
+import Truck from "@/components/Icons/Truck";
 
 export type HeaderButtonData = {
   icon: React.ReactNode;
@@ -18,13 +19,13 @@ export type HeaderButtonData = {
 
 const headerButtonData: HeaderButtonData[] = [
   {
-    icon: <PiTruckLight />,
+    icon: <Truck />,
     title: "Siparişlerim",
     href: "/account/orders",
     type: "order",
   },
   {
-    icon: <PiUserLight />,
+    icon: <Account />,
     title: "Hesabım",
     href: "/account",
     type: "account",

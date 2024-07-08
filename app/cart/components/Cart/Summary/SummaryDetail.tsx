@@ -4,8 +4,8 @@ import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitPro
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
 import React, { FC } from "react";
-import { IoTicketOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
+import Ticket from "@/components/Icons/Ticket";
 
 type SummaryDetailProps = {
   cost: number;
@@ -49,7 +49,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
 
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
               <TextField
-                icon={<IoTicketOutline />}
+                icon={<Ticket />}
                 placeholder="İndirim Kodu Girin"
                 id="discountCode"
                 fullWidth

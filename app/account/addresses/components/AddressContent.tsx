@@ -1,8 +1,8 @@
-import { UserAddressesResponse } from '@/common/types/User/user';
-import Button from '@/components/Button';
-import TextField from '@/components/TextField';
-import { BsTrash } from 'react-icons/bs';
-import { FiEdit } from 'react-icons/fi';
+import { UserAddressesResponse } from "@/common/types/User/user";
+import Button from "@/components/Button";
+import Edit from "@/components/Icons/Edit";
+import Trash from "@/components/Icons/Trash";
+import TextField from "@/components/TextField";
 
 const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
   return (
@@ -41,11 +41,11 @@ const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
         <Button
           className="text-sm"
           color="error"
-          icon={<BsTrash size={20} className="mr-2" />}
+          icon={<Trash className="mr-2 text-xl" />}
         >
           Sil
         </Button>
-        <Button color="primary" icon={<FiEdit size={20} className="mr-2" />}>
+        <Button color="primary" icon={<Edit className="mr-2 text-xl" />}>
           Düzenle
         </Button>
       </div>

@@ -1,20 +1,20 @@
 import React from "react";
-import { AiOutlineSafety } from "react-icons/ai";
-import { MdOutlineSentimentSatisfiedAlt } from "react-icons/md";
-import { IoGiftOutline } from "react-icons/io5";
 import clsx from "clsx";
+import Safety from "../Icons/Safety";
+import Gift from "../Icons/Gift";
+import Sentiment from "../Icons/Sentiment";
 
 const data = [
   {
-    icon: <IoGiftOutline />,
+    icon: <Gift />,
     title: "En güzel hediyeler",
   },
   {
-    icon: <MdOutlineSentimentSatisfiedAlt />,
+    icon: <Sentiment />,
     title: "Yüzünüzde gülümseme",
   },
   {
-    icon: <AiOutlineSafety />,
+    icon: <Safety />,
     title: "Güvenli alışveriş",
   },
 ];

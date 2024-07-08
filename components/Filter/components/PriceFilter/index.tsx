@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import { HandleFilterSubmit } from "../..";
 import AnimatedFilterBox from "../FilterInput/AnimatedFilterBox";
 import FilterDropdownButton from "../FilterInput/FilterDropdownButton";
-import { TbCategory } from "react-icons/tb";
 import FilterDropdownAcceptButton from "../FilterInput/FilterDropdownAcceptButton";
 import FilterModalHeader from "../FilterInput/FilterModalHeader";
 import PriceInput from "@/components/PriceInput";
+import Category from "@/components/Icons/Category";
 
 type PriceFilterProps = {
   prices: number[];
@@ -48,7 +48,7 @@ const PriceFilter: FC<PriceFilterProps> = ({
         selectedItems={selectedItems.key ? [selectedItems] : []}
         toggle={toggle}
         title={"Fiyat"}
-        icon={<TbCategory />}
+        icon={<Category />}
       />
       <AnimatedFilterBox isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <FilterModalHeader

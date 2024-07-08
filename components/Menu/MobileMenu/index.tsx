@@ -2,45 +2,46 @@
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
 import Link from "next/link";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsTruck } from "react-icons/bs";
-import { FiPhoneCall } from "react-icons/fi";
-import { LuLogIn, LuLogOut } from "react-icons/lu";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { PiPathBold } from "react-icons/pi";
 import MenuItem from "./MenuItem";
 import { logout } from "@/app/@auth/actions";
 import { useRouter } from "next/navigation";
+import Heart from "@/components/Icons/Heart";
+import Truck from "@/components/Icons/Truck";
+import Basket from "@/components/Icons/Basket";
+import PathBold from "@/components/Icons/PathBold";
+import Login from "@/components/Icons/Login";
+import Phone from "@/components/Icons/Phone";
+import Logout from "@/components/Icons/Logout";
 
 const mobileHeader = [
   {
     link: "/account/favorites",
     text: "Favorilerim",
-    icon: MdOutlineFavoriteBorder,
+    icon: Heart,
     private: true,
   },
   {
     link: "/account/orders",
     text: "Siparişlerim",
-    icon: BsTruck,
+    icon: Truck,
     private: true,
   },
   {
     link: "/account",
     text: "Hesabım",
-    icon: AiOutlineShoppingCart,
+    icon: Basket,
     private: true,
   },
   {
     link: "/account/cargo-tracking",
     text: "Sipariş Takip",
-    icon: PiPathBold,
+    icon: PathBold,
     private: false,
   },
   {
     link: "/login",
     text: "Giriş Yap",
-    icon: LuLogIn,
+    icon: Login,
     private: false,
   },
 ];
@@ -93,7 +94,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
               "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
             ])}
           >
-            <FiPhoneCall className="w-4 h-4" />
+            <Phone className="w-4 h-4" />
             <span className="text-xs">İletişim</span>
           </Link>
           <span
@@ -103,7 +104,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
               !user && "hidden",
             ])}
           >
-            <LuLogOut className="w-4 h-4" />
+            <Logout className="w-4 h-4" />
             <span className="text-xs">Çıkış Yap</span>
           </span>
         </>

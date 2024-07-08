@@ -1,12 +1,6 @@
 import Content from "@/components/Layout/Content";
 import type { Metadata, Viewport } from "next";
 import { Lato, Manrope, Quicksand } from "next/font/google";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/thumbs";
-import "swiper/css/zoom";
 import Header from "../components/Layout/Header";
 import "./globals.css";
 

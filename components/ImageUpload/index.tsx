@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 import Button from "../Button";
 import clsx from "clsx";
+import Close from "../Icons/Close";
 
 interface ImageUploadProps {
   onChange: (files: string[] | null) => void;
@@ -91,7 +91,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 variant="outlined"
                 className="!absolute !top-1 !right-1 !p-[2px] rounded-full"
               >
-                <AiOutlineClose />
+                <Close />
               </Button>
             </div>
           ))}

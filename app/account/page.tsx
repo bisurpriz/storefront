@@ -1,8 +1,8 @@
 import ProfileForm from "./components/ProfileForm";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { getUserById } from "./actions";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 import clsx from "clsx";
+import Exclamation from "@/components/Icons/Exclamation";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +34,7 @@ const Account = async () => {
             "max-sm:gap-0.5"
           )}
         >
-          <AiOutlineExclamationCircle /> Bilgilerinizi güncelleyebilirsiniz
+          <Exclamation /> Bilgilerinizi güncelleyebilirsiniz
         </p>
       </div>
       {loading ? (

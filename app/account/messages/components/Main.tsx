@@ -3,12 +3,12 @@ import Button from "@/components/Button";
 import useDelayUnmount from "@/hooks/useDelayUnmount";
 import useChatStore from "@/store";
 import { useState } from "react";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { sendMessage } from "../action";
 import ChatList from "./ChatList";
 import Input from "./Message/Input";
 import MessageList from "./Message/MessageList";
 import Cookies from "js-cookie";
+import ArrowBackCircleSharp from "@/components/Icons/ArrowBackCircleSharp";
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
   const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId));
@@ -69,7 +69,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
           >
             <div className="flex items-center">
               <Button
-                icon={<IoArrowBackCircleSharp />}
+                icon={<ArrowBackCircleSharp />}
                 type="button"
                 size="small"
                 variant="link"

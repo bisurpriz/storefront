@@ -1,9 +1,10 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { CreateOrderMutationVariables } from "@/graphql/generated";
-import { FaCartPlus } from "react-icons/fa";
-import { IoInformationCircle } from "react-icons/io5";
-import { MdOutlineConfirmationNumber, MdPayments } from "react-icons/md";
 import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
+import CartPlus from "@/components/Icons/CartPlus";
+import InformationCircleFill from "@/components/Icons/InformationCircleFill";
+import PaymentOutline from "@/components/Icons/PaymentOutline";
+import Confirm from "@/components/Icons/Confirm";
 
 export enum CartStepPaths {
   CART = "/cart",
@@ -16,22 +17,22 @@ export const cartStepperPaths = [
   {
     path: CartStepPaths.CART,
     label: "Sepet",
-    icon: <FaCartPlus />,
+    icon: <CartPlus />,
   },
   {
     path: CartStepPaths.ORDER_DETAIL,
     label: "Teslimat Bilgileri",
-    icon: <IoInformationCircle />,
+    icon: <InformationCircleFill />,
   },
   {
     path: CartStepPaths.CHECKOUT,
     label: "Ödeme",
-    icon: <MdPayments />,
+    icon: <PaymentOutline />,
   },
   {
     path: CartStepPaths.COMPLETE,
     label: "Onay",
-    icon: <MdOutlineConfirmationNumber />,
+    icon: <Confirm />,
   },
 ];
 

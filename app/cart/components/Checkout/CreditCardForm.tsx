@@ -9,7 +9,6 @@ import { object, string } from "yup";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useEffect, useState } from "react";
-import { LuCode, LuUser } from "react-icons/lu";
 import { initialize3dsPayment } from "@/app/iyzico-payment/actions";
 import { useUser } from "@/contexts/AuthContext";
 import { OrderDetailPartialFormData } from "../OrderDetail/ReceiverForm";
@@ -24,11 +23,13 @@ import {
 import clsx from "clsx";
 import usePopup from "@/hooks/usePopup";
 import Button from "@/components/Button";
-import { MdReportGmailerrorred } from "react-icons/md";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createPortal } from "react-dom";
 import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
+import User from "@/components/Icons/User";
+import Code from "@/components/Icons/Code";
+import Report from "@/components/Icons/Report";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -238,7 +239,7 @@ const CreditCardForm = () => {
               "text-center"
             )}
           >
-            <MdReportGmailerrorred size={48} className="text-red-500" />
+            <Report className="text-red-500 text-5xl" />
             <h2 className="text-lg font-semibold text-gray-800 m-0">
               Ödeme İşlemi Başarısız
             </h2>
@@ -287,7 +288,7 @@ const CreditCardForm = () => {
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuUser size={20} />}
+                icon={<User className="text-xl" />}
               />
             )}
           />
@@ -318,7 +319,7 @@ const CreditCardForm = () => {
                 }}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuCode size={20} />}
+                icon={<Code className="text-xl" />}
               />
             )}
           />

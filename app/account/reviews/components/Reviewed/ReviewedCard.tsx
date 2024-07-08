@@ -1,9 +1,9 @@
-import Rating from '@/components/Rating/Rating';
-import { localeFormat } from '@/utils/format';
-import Image from 'next/image';
-import { getImageUrlFromPath } from '@/utils/getImageUrl';
-import Button from '@/components/Button';
-import { BsTrash } from 'react-icons/bs';
+import Rating from "@/components/Rating/Rating";
+import { localeFormat } from "@/utils/format";
+import Image from "next/image";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import Button from "@/components/Button";
+import Trash from "@/components/Icons/Trash";
 
 interface Props {
   imageUrl: string;
@@ -24,8 +24,8 @@ const ReviewedCard = async ({
   comment,
 }: Props) => {
   const handleDeleteReview = async () => {
-    'use server';
-    console.log('delete review');
+    "use server";
+    console.log("delete review");
   };
   return (
     <form
@@ -44,7 +44,7 @@ const ReviewedCard = async ({
           {productName}
         </h4>
         <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          Değerlendirme tarihi: {localeFormat(new Date(reviewDate), 'PPP')}
+          Değerlendirme tarihi: {localeFormat(new Date(reviewDate), "PPP")}
         </p>
         <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
           <Rating value={rating ?? 3} readOnly showReviewCount={false} />
@@ -60,7 +60,7 @@ const ReviewedCard = async ({
           color="secondary"
           size="small"
           type="submit"
-          icon={<BsTrash size={16} />}
+          icon={<Trash className="text-base" />}
         />
       </div>
     </form>

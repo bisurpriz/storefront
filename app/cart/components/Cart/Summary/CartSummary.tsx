@@ -9,9 +9,9 @@ import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { CartStepPaths } from "../../../constants";
 import SummaryDetail from "./SummaryDetail";
 import clsx from "clsx";
-import { BsChevronUp } from "react-icons/bs";
 import useResponsive from "@/hooks/useResponsive";
 import { createPortal } from "react-dom";
+import ChevronUp from "@/components/Icons/ChevronUp";
 
 const CartSummary = () => {
   const {
@@ -82,7 +82,7 @@ const CartSummary = () => {
           )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          <BsChevronUp
+          <ChevronUp
             className={clsx(
               "text-primary md:hidden transform transition-transform duration-300",
               isOpen ? "rotate-180" : ""

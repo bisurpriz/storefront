@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useEffect, useRef, useState } from "react";
-import { BsSearch } from "react-icons/bs";
 import TextField from "../TextField";
 import clsx from "clsx";
 import { searchProducts } from "@/app/(feed)/actions";
@@ -12,7 +11,8 @@ import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CiSquareRemove } from "react-icons/ci";
+import RemoveSquare from "../Icons/RemoveSquare";
+import SearchIcon from "../Icons/Search";
 
 type Props = {
   className?: string;
@@ -143,7 +143,7 @@ const Search: FC<Props> = ({ className }) => {
             )}
             onClick={handleClear}
           >
-            <CiSquareRemove size={24} />
+            <RemoveSquare className="text-2xl" />
           </button>
         )}
         <button
@@ -155,7 +155,7 @@ const Search: FC<Props> = ({ className }) => {
           )}
           onClick={pushToSearch}
         >
-          <BsSearch className="group-hover:animate-bounce text-lg" />
+          <SearchIcon className="group-hover:animate-bounce text-lg" />
         </button>
       </div>
 
