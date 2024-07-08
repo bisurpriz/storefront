@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "lint:fix": "eslint . --fix",
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts dotenv_config_path=./.env",
     "generate-icons": "node generate-icons.js"
   },
@@ -72,6 +72,7 @@
     "eslint": "latest",
     "eslint-config-next": "^15.0.0-rc.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-0998c1e-20240625",
     "eslint-plugin-unused-imports": "^3.0.0",
     "tailwindcss": "3.3.3",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
