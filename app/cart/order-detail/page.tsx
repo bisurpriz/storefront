@@ -5,6 +5,8 @@ import { getAvailableLocation } from "@/app/account/addresses/actions";
 import { getLocationFromCookie } from "@/app/actions";
 import { CityResponse } from "@/common/types/Addresses/addresses";
 
+export const dynamic = "force-dynamic";
+
 export const generateMetadata = async () => {
   return {
     title: getBrandWithTitle("Sipariş Detayı"),
