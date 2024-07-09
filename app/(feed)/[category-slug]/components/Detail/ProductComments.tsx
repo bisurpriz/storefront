@@ -85,7 +85,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     </span>
                   </div>
                 </div>
-                <div className="rounded-lg bg-4 ml-4 max-sm:ml-0 mb-2">
+                <div className="rounded-lg bg-4">
                   <p
                     className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
                     aria-label={`comment-${index}-comment`}

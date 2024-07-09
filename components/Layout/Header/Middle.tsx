@@ -5,6 +5,7 @@ import HeaderButtons from "./components/HeaderButtons";
 import MobileDrawer from "./components/MobileDrawer";
 import clsx from "clsx";
 import Home from "@/components/Icons/Home";
+import { IMAGE_URL } from "@/contants/urls";
 
 const HeaderMiddle = () => {
   return (
@@ -33,7 +34,6 @@ const HeaderMiddle = () => {
           width={180}
           height={55}
           alt="BiSürpriz Logo"
-          priority
         />
       </Link>
       <div className="max-md:hidden w-full">

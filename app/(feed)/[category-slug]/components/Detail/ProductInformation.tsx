@@ -23,7 +23,6 @@ type ProductInformationProps = {
   vendor?: {
     name?: string;
     id: any;
-    logo?: string;
   };
   shippingType?: string;
   freeShipping?: boolean;

@@ -26,7 +26,10 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createPortal } from "react-dom";
 import { createOrderAction } from "../../actions";
-import { createBasketItems } from "@/app/iyzico-payment/utils";
+import {
+  createBasketItems,
+  getConversationId,
+} from "@/app/iyzico-payment/utils";
 import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
@@ -125,9 +128,9 @@ const CreditCardForm = () => {
       const senderNames = detailData.sender_name.split(" ");
       const timeStamps = new Date().getTime();
 
-      const conversationId =
-        userData.user?.carts[0].id + "-" + timeStamps ??
-        Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
+      const conversationId = await getConversationId(timeStamps);
+
+      console.log("conversationId", conversationId);
 
       const basketId =
         userData.user?.carts[0].id + "-" + timeStamps ??
@@ -182,14 +185,14 @@ const CreditCardForm = () => {
         detailData,
         conversationId
       );
-      if (response.errorMessage || res.status === "error") {
-        setLoading(false);
-        openPopup();
-        setErrorMessage(
-          response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
-        );
-        return;
-      } else setBase64PasswordHtml(response.threeDSHtmlContent);
+      // if (response.errorMessage || res.status === "error") {
+      //   setLoading(false);
+      //   openPopup();
+      //   setErrorMessage(
+      //     response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
+      //   );
+      //   return;
+      // } else setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
 

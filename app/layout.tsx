@@ -7,7 +7,6 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
-import "@smastrom/react-rating/style.css";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
 import { ReactNode, Suspense } from "react";
@@ -63,9 +62,16 @@ export const metadata: Metadata = {
   title: "Bonnmarşe | Sevdiklerinize sürpriz yapın",
   description: "Sevdiklerinize sürpriz yapın",
   creator: "Bonnmarşe",
-  icons: {
-    icon: "./favicon.ico",
-  },
+  icons: [
+    {
+      rel: "icon",
+      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png",
+    },
+    {
+      rel: "apple-touch-icon",
+      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png",
+    },
+  ],
   keywords: [
     "sürpriz",
     "sevgiliye sürpriz",
@@ -143,7 +149,6 @@ export default async function RootLayout({
         id="root"
       >
         <TagManagerNoscript />
-        <NavigationEvents />
         <AuthProvider user={user}>
           <ApolloWrapper>
             <CategoryProvider category={category}>

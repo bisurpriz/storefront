@@ -12,16 +12,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
-  product: ProductForCart;
-  favorite: {
-    isFavorite: boolean;
-    id: number;
-  };
+  productId: number;
+  isFavorite: boolean;
   favoriteCount?: number;
 }
 
-const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
-  const [isFavoriteState, setIsFavoriteState] = useState(favorite?.isFavorite);
+const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
+  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const { user } = useUser();
 
   const { addToCart } = useCart();
@@ -33,13 +30,13 @@ const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
     }
 
     if (isFavoriteState) {
-      removeFromFavorites({ productId: product.id });
+      removeFromFavorites({ productId });
       setIsFavoriteState(false);
 
       return;
     }
 
-    addToFavorites({ productId: product.id });
+    addToFavorites({ productId });
     setIsFavoriteState(true);
   };
 
@@ -49,7 +46,7 @@ const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
         size="large"
         color="primary"
         className="text-xl max-sm:w-full max-sm:justify-center"
-        onClick={() => addToCart(product, "add")}
+        // onClick={() => addToCart(productId, "add")}
       >
         Sepete Ekle
       </Button>
@@ -70,9 +67,11 @@ const ProductActions = ({ product, favorite, favoriteCount }: Props) => {
           }
           onClick={handleFavorite}
         />
-        <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
-          <strong>{favoriteCount ?? 0}</strong> Favori
-        </p>
+        {favoriteCount > 0 && (
+          <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden">
+            <strong>{favoriteCount}</strong> Favori
+          </p>
+        )}
       </div>
     </div>
   );

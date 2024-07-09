@@ -10,6 +10,7 @@ import { AuthErrorMessages } from "../../contants";
 import toast from "react-hot-toast";
 import { login } from "../../actions";
 import clsx from "clsx";
+import { IMAGE_URL } from "@/contants/urls";
 
 type RegisterFormProps = {
   onSuccessfulRegister?: (status: boolean) => void;
@@ -97,7 +98,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       <div className="w-full">
         <div className="space-y-2 text-center">
           <Image
-            src="/logo.svg"
+            src={IMAGE_URL + "/system-assets/logo-orj.png"}
             width={300}
             height={300}
             alt="Login"

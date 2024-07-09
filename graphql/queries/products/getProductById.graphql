@@ -150,3 +150,82 @@ query getProductsForInitialCart($ids: [bigint!]) {
     }
   }
 }
+
+
+query getProductActionData($id: bigint) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+    user_favorites(where: {product: {id: {_eq: $id}}}) {
+      product_id
+    }
+  }
+}
+
+query getProductActionDataForAnonymous($id: bigint) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+
+query getProductInformation($id: bigint = 0) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    description
+    id
+    image_url
+    name
+    price
+    is_service_free
+    delivery_time_ranges
+    delivery_type
+    properties
+    discount_price
+    reviews_aggregate {
+      aggregate {
+        count(columns: id)
+      }
+    }
+    tenant {
+      tenants {
+        name
+        id
+      }
+    }
+  }
+}
+
+query getProductImages($id: bigint = 0) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    image_url
+  }
+}
+
+query getProductDescription($id: bigint = 0) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    description
+    properties
+  }
+}
+
+query getProductComments ($id: bigint = 0) @cached(ttl: 180) {
+  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    reviews {
+      id
+      comment
+      created_at
+      score
+      user {
+        firstname
+        lastname
+        picture
+      }
+    }
+  }
+}

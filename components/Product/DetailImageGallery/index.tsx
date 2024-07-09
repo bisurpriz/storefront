@@ -27,14 +27,14 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         {images.map((image) => (
           <div
             key={image.id}
-            className="rounded-lg cursor-pointer w-28 h-w-28"
+            className="flex items-center justify-center rounded-lg overflow-hidden w-36 touch-pan-y h-full"
             onClick={() => handleImageClick(image)}
             onMouseEnter={() => setSelectedImage(image)}
           >
             <Image
               src={image.url}
               alt="Product Image"
-              className="object-cover h-auto w-auto"
+              className="object-cover rounded-lg select-none w-full h-full"
               width={300}
               height={300}
             />
@@ -43,17 +43,24 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       </div>
       <div
         className={clsx(
-          "flex items-start justify-center relative",
+          "flex items-start justify-center relative overflow-hidden",
           "h-[500px] w-full object-contain border border-gray-200 rounded-lg"
         )}
       >
-        <ZoomableImage
+        {/* <ZoomableImage
           src={selectedImage.url}
           alt="Product Image"
           width={1200}
           height={1200}
           resultWidth={400}
           resultHeight={400}
+        /> */}
+        <Image
+          src={selectedImage.url}
+          alt="Product Image"
+          className="h-full w-full object-cover"
+          width={1200}
+          height={1200}
         />
       </div>
     </div>

@@ -86,7 +86,11 @@ const getOrderAddresses = (
 const getTenantOrders = (
   cartItems: ProductForCart[]
 ): CreateOrderMutationVariables["object"]["tenant_orders"] => {
-  const tenantGrouped = cartItems.reduce((acc, item) => {
+  const tenantGrouped = cartItems.reduce<
+    {
+      [key: string]: ProductForCart[];
+    }[]
+  >((acc, item) => {
     // owner id from user table
     const tenantId = item.tenant.id;
     if (!acc[tenantId]) {
@@ -94,7 +98,8 @@ const getTenantOrders = (
     }
     acc[tenantId].push(item);
     return acc;
-  }, {});
+  }, {} as { [key: string]: ProductForCart[] }[]);
+
   const getTexts = (specialInstructions) => {
     // will return an object of texts { content: "text"}
     if (!specialInstructions) return [];
@@ -105,7 +110,6 @@ const getTenantOrders = (
       .map((key) => ({
         content: specialInstructions[key],
       }));
-
     return texts;
   };
 
@@ -123,7 +127,7 @@ const getTenantOrders = (
   };
 
   const tenant_orders = Object.keys(tenantGrouped).map((key) => {
-    const tenantItems = tenantGrouped[key];
+    const tenantItems: ProductForCart[] = tenantGrouped[key];
     return {
       tenant_id: key,
       order_items: {
@@ -131,19 +135,20 @@ const getTenantOrders = (
           product_id: item.id,
           quantity: item.quantity,
           order_item_special_texts: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction)
+            data: item.product_customizable_areas
+              ? item.product_customizable_areas.flatMap((instruction) =>
+                  getTexts(instruction.customizable_area.values)
                 )
               : [],
           },
           order_item_special_images: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction)
+            data: item.product_customizable_areas
+              ? item.product_customizable_areas.flatMap((instruction) =>
+                  getImages(instruction.customizable_area.values)
                 )
               : [],
           },
+          amount: item.discount_price ?? item.price,
         })),
       },
     };

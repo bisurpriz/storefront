@@ -1,8 +1,8 @@
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Banner } from '@/common/types/Banners/banners';
-import { getImageUrlFromPath } from '@/utils/getImageUrl';
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Banner } from "@/common/types/Banners/banners";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 interface CampaignGridProps {
   banners: Banner[];
@@ -19,7 +19,6 @@ const CampaignGrid: FC<CampaignGridProps> = ({ banners }) => {
             height={500}
             className="rounded-lg w-full h-auto"
             alt={item.name}
-            priority
           />
         </Link>
       ))}

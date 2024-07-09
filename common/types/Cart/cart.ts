@@ -13,4 +13,6 @@ export interface ProductForCart
     | "product_customizable_areas"
   > {
   quantity: number;
+  delivery_date?: string;
+  delivery_time?: string;
 }
