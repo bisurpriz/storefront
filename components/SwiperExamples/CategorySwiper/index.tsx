@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import Card from "../../Card";
 import { GetMainCategoriesQuery } from "@/graphql/generated";
@@ -16,32 +16,41 @@ type CategorySwiperProps = {
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   if (!categories) return null;
 
-  const responsive: ResponsiveType = {
-    xxs: {
-      breakpoint: { max: 375, min: 0 },
-      items: 2,
-    },
+  const [responsive, setResponsive] = useState<ResponsiveType | null>({
     xs: {
       breakpoint: { max: 575, min: 376 },
       items: 3,
     },
-    sm: {
-      breakpoint: { max: 767, min: 576 },
-      items: 5,
-    },
-    md: {
-      breakpoint: { max: 991, min: 768 },
-      items: 6,
-    },
-    lg: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 8,
-    },
-    xl: {
-      breakpoint: { max: 1400, min: 1200 },
-      items: 10,
-    },
-  };
+  });
+
+  useEffect(() => {
+    setResponsive({
+      xxs: {
+        breakpoint: { max: 375, min: 0 },
+        items: 2,
+      },
+      xs: {
+        breakpoint: { max: 575, min: 376 },
+        items: 3,
+      },
+      sm: {
+        breakpoint: { max: 767, min: 576 },
+        items: 5,
+      },
+      md: {
+        breakpoint: { max: 991, min: 768 },
+        items: 6,
+      },
+      lg: {
+        breakpoint: { max: 1199, min: 992 },
+        items: 8,
+      },
+      xl: {
+        breakpoint: { max: 1400, min: 1200 },
+        items: 10,
+      },
+    });
+  }, [categories]);
 
   return (
     <div className="mb-8">

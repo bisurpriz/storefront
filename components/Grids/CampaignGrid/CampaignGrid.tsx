@@ -1,14 +1,12 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Banner } from "@/common/types/Banners/banners";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getBanners } from "@/app/actions";
 
-interface CampaignGridProps {
-  banners: Banner[];
-}
+const CampaignGrid: FC = async () => {
+  const { banners } = await getBanners();
 
-const CampaignGrid: FC<CampaignGridProps> = ({ banners }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-2">
       {banners.map((item, i) => (

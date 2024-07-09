@@ -1,22 +1,13 @@
 import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
-import { getBanners, getLocationFromCookie } from "./actions";
-import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
-import { query } from "@/graphql/lib/client";
-import {
-  GetAllCategoriesDocument,
-  GetAllCategoriesQuery,
-} from "@/graphql/generated";
-import QuarterSelector from "@/components/QuarterSelector";
-import LandingSearchBanner from "@/components/LandingSearchBanner";
-import { getAvailableLocation } from "./account/addresses/actions";
 import Filter from "@/components/Filter";
-import InfinityScroll from "@/components/InfinityScroll";
-import { searchProducts } from "./(feed)/actions";
 import FilterSuspense from "@/components/Filter/FilterSuspense";
 import { Suspense } from "react";
 import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
+import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
+import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
+import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 
 export const dynamic = "force-dynamic";
 
@@ -27,27 +18,7 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { banners } = await getBanners();
-  const {
-    data: { category },
-  } = await query<GetAllCategoriesQuery>({
-    query: GetAllCategoriesDocument,
-  });
-
-  const { products, totalCount } = await searchProducts(
-    {
-      offset: 0,
-      limit: 15,
-    },
-    searchParams
-  );
-
   const searchText = searchParams["search"];
-  const location = await getLocationFromCookie();
-
-  const data = await getAvailableLocation(location);
-
-  const value = data?.value;
 
   return (
     <>
@@ -64,13 +35,30 @@ export default async function Page({
         </Suspense>
       )}
       <Suspense fallback={<CategorySwiperSuspense />}>
-        <CategorySwiper categories={category} />
+        <ServerCategorySwiper />
       </Suspense>
 
-      <QuarterSelector value={value} />
-      <LandingSearchBanner />
+      <Suspense
+        fallback={
+          <>
+            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
+            <div className="my-4 flex items-center justify-between gap-6">
+              {Array.from({
+                length: 3,
+              }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
+                />
+              ))}
+            </div>
+          </>
+        }
+      >
+        <ServerQuerySelector />
+      </Suspense>
       <Suspense fallback={<CampaignGridSuspense />}>
-        {!searchText && <CampaignGrid banners={banners} />}
+        {!searchText && <CampaignGrid />}
       </Suspense>
       <Suspense
         fallback={Array.from({
@@ -79,13 +67,7 @@ export default async function Page({
           <ProductItemSkeleton key={i} />
         ))}
       >
-        <InfinityScroll
-          totalCount={totalCount}
-          initialData={products}
-          dataKey="products"
-          query={searchProducts}
-          params={searchParams}
-        />
+        <ServerInfinityScroll searchParams={searchParams} />
       </Suspense>
     </>
   );

@@ -34,6 +34,7 @@ const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
       variant="link"
       color="secondary"
       size="large"
+      name="favorite-button"
       icon={isFavoriteState ? <HeartFill /> : <Heart />}
       className={clsx([
         isFavoriteState ? "animate-pulse" : "",

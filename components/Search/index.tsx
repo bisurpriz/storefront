@@ -154,6 +154,7 @@ const Search: FC<Props> = ({ className }) => {
             "transition-all duration-300 group"
           )}
           onClick={pushToSearch}
+          name="search"
         >
           <SearchIcon className="group-hover:animate-bounce text-2xl" />
         </button>

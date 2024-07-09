@@ -21,7 +21,7 @@ type QuarterSelectorProps = {
 
 const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   const { refresh } = useRouter();
-  const [query, { refetch }] = useLazyQuery<
+  const [, { refetch }] = useLazyQuery<
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
   >(GetLocationQueryDocument);
