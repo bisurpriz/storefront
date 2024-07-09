@@ -4,6 +4,7 @@ import { GetProductsWithPaginationQuery } from "@/graphql/generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { AnimatePresence, useScroll, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useRef } from "react";
 
 type RecommendedProductsProps = {
@@ -41,9 +42,11 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
         ref={ref}
       >
         {products.map((prod) => (
-          <div
+          <Link
             key={prod.id}
             className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
+            href={`/${prod.category.slug}/${prod.slug}?pid=${prod.id}`}
+            prefetch={false}
           >
             <div className="absolute top-0 left-0 bg-primary text-white px-2 py-1 rounded-br-lg text-xs">
               5% indirim
@@ -62,7 +65,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
                 {prod.name}
               </h3>
             </div>
-          </div>
+          </Link>
         ))}
       </motion.div>
     </AnimatePresence>

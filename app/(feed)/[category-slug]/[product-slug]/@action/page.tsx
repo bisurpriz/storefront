@@ -1,6 +1,5 @@
 import ProductActions from "../../components/Detail/ProductActions";
 import { FC } from "react";
-import { query } from "@/graphql/lib/client";
 import { GetProductActionDataQuery } from "@/graphql/generated";
 import { getProductActions } from "./actions";
 

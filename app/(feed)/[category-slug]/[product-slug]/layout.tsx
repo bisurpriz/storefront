@@ -1,5 +1,6 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
-import { ReactNode } from "react";
+import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import { ReactNode, Suspense } from "react";
 
 // export async function generateMetadata({ params, searchParams }) {
 //   const {
@@ -61,7 +62,11 @@ export default async function ProductExample({
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-full">{children}</div>
+        <div className="w-1/2 max-md:w-full">
+          <Suspense fallback={<ProductImageGalleryLoading />}>
+            {children}
+          </Suspense>
+        </div>
         <div className="w-1/2 max-md:w-full">
           {information}
           {action}

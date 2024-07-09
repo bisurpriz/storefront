@@ -13,7 +13,7 @@ type ProductDetailImageGalleryProps = {
 const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [selectedImage, setSelectedImage] = useState(images?.[0]);
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -24,7 +24,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   return (
     <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
       <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto ">
-        {images.map((image) => (
+        {images?.map((image) => (
           <div
             key={image}
             className={clsx(

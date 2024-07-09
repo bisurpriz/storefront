@@ -30,7 +30,7 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
   return (
     <ImageZoomModalProvider>
       <ProductDetailImageGallery
-        images={product.image_url.map((image) => `${IMAGE_URL}/${image}`)}
+        images={product.image_url?.map((image) => `${IMAGE_URL}/${image}`)}
       />
     </ImageZoomModalProvider>
   );

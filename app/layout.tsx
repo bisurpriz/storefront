@@ -23,7 +23,6 @@ import { query } from "@/graphql/lib/client";
 import { CategoryProvider } from "@/contexts/CategoryContext";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
-import { NavigationEvents } from "@/components/NavigationEvents";
 import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 
 export const experimental_ppr = true;

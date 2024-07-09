@@ -35,7 +35,7 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
       key={product.id}
       vendor={product.tenant.tenants?.[0]}
       freeShipping={true}
-      shippingType={"Selamlar"}
+      shippingType={product.delivery_type}
       deliveryTimeRanges={product.delivery_time_ranges}
     />
   );

@@ -43,6 +43,7 @@ const ProductInformation = ({
   shippingType,
   deliveryTimeRanges,
 }: ProductInformationProps) => {
+  console.log(deliveryTimeRanges, shippingType);
   const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
 
   const isSameDay = Boolean(shippingType?.includes(DeliveryType.SAME_DAY));
