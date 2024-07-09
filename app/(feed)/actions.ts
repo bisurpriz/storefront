@@ -37,11 +37,6 @@ export const getProductById = async ({ id }: { id: number }) => {
     variables: {
       id,
     },
-    context: {
-      fetchOptions: {
-        next: { revalidate: 5 },
-      },
-    },
   });
   return {
     product: data.product,

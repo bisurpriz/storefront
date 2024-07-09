@@ -9,6 +9,9 @@ import {
   CreateOrderMutationVariables,
   GetDbCartDocument,
   GetDbCartQuery,
+  GetProductByIdForCartDocument,
+  GetProductByIdForCartQuery,
+  GetProductByIdForCartQueryVariables,
   GetProductsForInitialCartDocument,
   GetProductsForInitialCartQuery,
   UpdateDbCartDocument,
@@ -19,6 +22,8 @@ import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
 import { createOrderDataMapper } from "./constants";
 import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { CustomizableArea } from "@/common/types/Order/order";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -210,4 +215,42 @@ export const getCart = async (user_id: string) => {
       costData: number;
     };
   }
+};
+
+export const getProductByIdForCart = async (id: number) => {
+  const response = await query<
+    GetProductByIdForCartQuery,
+    GetProductByIdForCartQueryVariables
+  >({
+    query: GetProductByIdForCartDocument,
+    variables: {
+      id,
+    },
+  });
+
+  const product: ProductForCart = {
+    category: {
+      id: response.data.product_by_pk.category.id,
+      name: response.data.product_by_pk.category.name,
+      slug: response.data.product_by_pk.category.slug,
+    },
+    discount_price: response.data.product_by_pk.discount_price,
+    id: response.data.product_by_pk.id,
+    image_url: response.data.product_by_pk.image_url,
+    name: response.data.product_by_pk.name,
+    price: response.data.product_by_pk.price,
+    quantity: 1,
+    product_customizable_areas:
+      response.data.product_by_pk.product_customizable_areas.map((area) => ({
+        count: area.count,
+        customizable_area: {
+          id: area.customizable_area.id,
+          type: area.customizable_area.type as CustomizableArea["type"],
+        },
+        max_character: area.max_character,
+      })),
+    tenant: response.data.product_by_pk.tenant,
+  };
+
+  return product;
 };

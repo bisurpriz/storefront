@@ -82,7 +82,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       )}
     >
       <Image
-        src={IMAGE_URL + "/system-assets/logo-orj.png"}
+        src={"/logo.svg"}
         width={300}
         height={300}
         alt="Login"

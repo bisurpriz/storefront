@@ -6,9 +6,13 @@ interface AddCartButton2Props {
   product: ProductForCart;
 }
 
-const AddCartButton2 = ({ product }: AddCartButton2Props) => {
+const AddCartButton2 = ({ product: { id } }: AddCartButton2Props) => {
   const { addToCart, loading } = useCart();
-  const handleAddToCart = () => addToCart(product, "add");
+  const handleAddToCart = () =>
+    addToCart({
+      id,
+      type: "add",
+    });
   return (
     <Button
       loading={loading}

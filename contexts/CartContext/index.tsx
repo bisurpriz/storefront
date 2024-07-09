@@ -17,10 +17,19 @@ import {
 } from "./constants";
 import { cartReducer } from "./reducer";
 import toast from "react-hot-toast";
-import { updateCart } from "@/app/cart/actions";
+import { getProductByIdForCart, updateCart } from "@/app/cart/actions";
 import useResponsive from "@/hooks/useResponsive";
+import { getProductById } from "@/app/(feed)/actions";
 
-type AddToCart = (item: ProductForCart, type: "updateq" | "add") => void;
+type AddToCart = ({
+  id,
+  type,
+  quantity,
+}: {
+  id: number;
+  type: "updateq" | "add";
+  quantity?: number;
+}) => void;
 
 interface CartContextType {
   addToCart: AddToCart;
@@ -107,11 +116,21 @@ export const CartProvider = ({
     return response;
   };
 
-  const addToCart: AddToCart = async (item, type) => {
+  const addToCart: AddToCart = async ({
+    id,
+    type,
+    quantity,
+  }: {
+    id: number;
+    type: "updateq" | "add";
+    quantity?: number;
+  }) => {
     const cartItems = [...cartState.cartItems];
-    const hasItem = cartItems.findIndex((_item) => _item.id === item.id);
+    const hasItem = cartItems.findIndex((_item) => _item.id === id);
 
     if (hasItem === -1) {
+      const item = await getProductByIdForCart(id);
+
       cartItems.push(item);
       handleChangeDb(cartItems, "add").then(({ costData, error }) => {
         if (error) return;
@@ -125,9 +144,10 @@ export const CartProvider = ({
           },
         });
       });
+      return;
     } else {
       if (type === "updateq") {
-        cartItems[hasItem].quantity = item.quantity;
+        cartItems[hasItem].quantity = quantity;
         handleChangeDb(cartItems, "update").then(({ costData, error }) => {
           if (error) return;
 

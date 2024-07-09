@@ -19,3 +19,34 @@ query getDbCart {
     content
   }
 }
+
+
+query getProductByIdForCart($id: bigint!) {
+  product_by_pk(id: $id) {
+    id
+    image_url
+    name
+    price
+    category {
+      id
+      name
+      slug
+    }
+    tenant {
+      id
+      tenants {
+        id
+        name
+      }
+    }
+    discount_price
+    product_customizable_areas {
+      count
+      max_character
+      customizable_area {
+        id
+        type
+      }
+    }
+  }
+}

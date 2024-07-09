@@ -21745,6 +21745,13 @@ export type GetDbCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetDbCartQuery = { cart: Array<{ id: any, content?: any | null }> };
 
+export type GetProductByIdForCartQueryVariables = Exact<{
+  id: Scalars['bigint']['input'];
+}>;
+
+
+export type GetProductByIdForCartQuery = { product_by_pk?: { id: any, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, category: { id: number, name: string, slug?: string | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } | null };
+
 export type GetMainCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -22296,6 +22303,37 @@ export const GetDbCartDocument = gql`
   cart {
     id
     content
+  }
+}
+    `;
+export const GetProductByIdForCartDocument = gql`
+    query getProductByIdForCart($id: bigint!) {
+  product_by_pk(id: $id) {
+    id
+    image_url
+    name
+    price
+    category {
+      id
+      name
+      slug
+    }
+    tenant {
+      id
+      tenants {
+        id
+        name
+      }
+    }
+    discount_price
+    product_customizable_areas {
+      count
+      max_character
+      customizable_area {
+        id
+        type
+      }
+    }
   }
 }
     `;
@@ -23009,6 +23047,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDbCart(variables?: GetDbCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetDbCartQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDbCartQuery>(GetDbCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDbCart', 'query', variables);
+    },
+    getProductByIdForCart(variables: GetProductByIdForCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductByIdForCartQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdForCartQuery>(GetProductByIdForCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductByIdForCart', 'query', variables);
     },
     getMainCategories(variables?: GetMainCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetMainCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetMainCategoriesQuery>(GetMainCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMainCategories', 'query', variables);
