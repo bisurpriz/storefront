@@ -56,13 +56,13 @@ export default async function ProductExample({
   return (
     <div className="h-full">
       <section
-        className="flex items-start justify-start max-sm:flex-col gap-6 flex-nowrap"
+        className="flex items-start justify-start max-md:flex-col gap-6 flex-nowrap"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-1/4 max-sm:w-full">{children}</div>
-        <div className="w-1/2 max-md:w-3/4 max-sm:w-full">
+        <div className="w-1/2 max-md:w-full">{children}</div>
+        <div className="w-1/2 max-md:w-full">
           {information}
           {action}
         </div>

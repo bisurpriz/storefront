@@ -3,13 +3,11 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
-import ZoomableImage from "./ZoomableImage";
+import ZoomButton from "./ZoomButton";
+import { useImageZoomModal } from "@/contexts/ImageZoomModalContext";
 
 type ProductDetailImageGalleryProps = {
-  images: {
-    id: number;
-    url: string;
-  }[];
+  images: string[];
 };
 
 const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
@@ -21,30 +19,35 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
     setSelectedImage(image);
   };
 
+  const { open } = useImageZoomModal();
+
   return (
-    <div className="w-full flex items-start justify-center gap-2 max-h-[500px]">
-      <div className="flex flex-col gap-2 items-center justify-start max-h-[500px] h-full overflow-y-auto">
+    <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
+      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto ">
         {images.map((image) => (
           <div
-            key={image.id}
-            className="flex items-center justify-center rounded-lg overflow-hidden w-36 touch-pan-y h-full"
+            key={image}
+            className={clsx(
+              "flex items-center justify-center relative overflow-hidden",
+              "h-20 w-20 object-contain border border-gray-200 rounded-lg flex-1 aspect-square"
+            )}
             onClick={() => handleImageClick(image)}
-            onMouseEnter={() => setSelectedImage(image)}
+            onMouseEnter={() => handleImageClick(image)}
           >
             <Image
-              src={image.url}
+              src={image}
               alt="Product Image"
-              className="object-cover rounded-lg select-none w-full h-full"
-              width={300}
-              height={300}
+              className="h-full w-full object-cover"
+              width={100}
+              height={100}
             />
           </div>
         ))}
       </div>
       <div
         className={clsx(
-          "flex items-start justify-center relative overflow-hidden",
-          "h-[500px] w-full object-contain border border-gray-200 rounded-lg"
+          "flex flex-1 items-start justify-center overflow-hidden relative",
+          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-slate-500"
         )}
       >
         {/* <ZoomableImage
@@ -56,11 +59,16 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           resultHeight={400}
         /> */}
         <Image
-          src={selectedImage.url}
+          src={selectedImage}
           alt="Product Image"
-          className="h-full w-full object-cover"
-          width={1200}
-          height={1200}
+          className="h-full w-full object-contain"
+          width={500}
+          height={500}
+        />
+        <ZoomButton
+          onClick={() => {
+            open(selectedImage);
+          }}
         />
       </div>
     </div>

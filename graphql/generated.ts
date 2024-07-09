@@ -21836,46 +21836,46 @@ export type GetProductsForInitialCartQueryVariables = Exact<{
 export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
 
 export type GetProductActionDataQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductActionDataQuery = { product: Array<{ user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> }> };
+export type GetProductActionDataQuery = { product?: { user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> } | null };
 
 export type GetProductActionDataForAnonymousQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductActionDataForAnonymousQuery = { product: Array<{ user_favorites_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductActionDataForAnonymousQuery = { product?: { user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductInformationQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductInformationQuery = { product: Array<{ description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } }> };
+export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
 
 export type GetProductImagesQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductImagesQuery = { product: Array<{ image_url?: Array<string> | null }> };
+export type GetProductImagesQuery = { product?: { image_url?: Array<string> | null } | null };
 
 export type GetProductDescriptionQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductDescriptionQuery = { product: Array<{ description?: string | null, properties?: any | null }> };
+export type GetProductDescriptionQuery = { product?: { description?: string | null, properties?: any | null } | null };
 
 export type GetProductCommentsQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+  id: Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductCommentsQuery = { product: Array<{ reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null } }> }> };
+export type GetProductCommentsQuery = { product?: { reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null } }> } | null };
 
 export type GetProductsWithPaginationQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22580,8 +22580,8 @@ export const GetProductsForInitialCartDocument = gql`
 }
     `;
 export const GetProductActionDataDocument = gql`
-    query getProductActionData($id: bigint) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductActionData($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     user_favorites_aggregate {
       aggregate {
         count
@@ -22594,8 +22594,8 @@ export const GetProductActionDataDocument = gql`
 }
     `;
 export const GetProductActionDataForAnonymousDocument = gql`
-    query getProductActionDataForAnonymous($id: bigint) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     user_favorites_aggregate {
       aggregate {
         count
@@ -22605,8 +22605,8 @@ export const GetProductActionDataForAnonymousDocument = gql`
 }
     `;
 export const GetProductInformationDocument = gql`
-    query getProductInformation($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductInformation($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     description
     id
     image_url
@@ -22632,23 +22632,23 @@ export const GetProductInformationDocument = gql`
 }
     `;
 export const GetProductImagesDocument = gql`
-    query getProductImages($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductImages($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     image_url
   }
 }
     `;
 export const GetProductDescriptionDocument = gql`
-    query getProductDescription($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductDescription($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     description
     properties
   }
 }
     `;
 export const GetProductCommentsDocument = gql`
-    query getProductComments($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+    query getProductComments($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     reviews {
       id
       comment
@@ -23049,22 +23049,22 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getProductsForInitialCart(variables?: GetProductsForInitialCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsForInitialCartQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductsForInitialCartQuery>(GetProductsForInitialCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductsForInitialCart', 'query', variables);
     },
-    getProductActionData(variables?: GetProductActionDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductActionDataQuery> {
+    getProductActionData(variables: GetProductActionDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductActionDataQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductActionDataQuery>(GetProductActionDataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductActionData', 'query', variables);
     },
-    getProductActionDataForAnonymous(variables?: GetProductActionDataForAnonymousQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductActionDataForAnonymousQuery> {
+    getProductActionDataForAnonymous(variables: GetProductActionDataForAnonymousQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductActionDataForAnonymousQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductActionDataForAnonymousQuery>(GetProductActionDataForAnonymousDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductActionDataForAnonymous', 'query', variables);
     },
-    getProductInformation(variables?: GetProductInformationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductInformationQuery> {
+    getProductInformation(variables: GetProductInformationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductInformationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductInformationQuery>(GetProductInformationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductInformation', 'query', variables);
     },
-    getProductImages(variables?: GetProductImagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductImagesQuery> {
+    getProductImages(variables: GetProductImagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductImagesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductImagesQuery>(GetProductImagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductImages', 'query', variables);
     },
-    getProductDescription(variables?: GetProductDescriptionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductDescriptionQuery> {
+    getProductDescription(variables: GetProductDescriptionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductDescriptionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductDescriptionQuery>(GetProductDescriptionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductDescription', 'query', variables);
     },
-    getProductComments(variables?: GetProductCommentsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductCommentsQuery> {
+    getProductComments(variables: GetProductCommentsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductCommentsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductCommentsQuery>(GetProductCommentsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductComments', 'query', variables);
     },
     getProductsWithPagination(variables?: GetProductsWithPaginationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsWithPaginationQuery> {

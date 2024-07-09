@@ -152,8 +152,8 @@ query getProductsForInitialCart($ids: [bigint!]) {
 }
 
 
-query getProductActionData($id: bigint) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductActionData($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     user_favorites_aggregate {
       aggregate {
         count
@@ -165,8 +165,8 @@ query getProductActionData($id: bigint) @cached(ttl: 180) {
   }
 }
 
-query getProductActionDataForAnonymous($id: bigint) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     user_favorites_aggregate {
       aggregate {
         count
@@ -175,8 +175,8 @@ query getProductActionDataForAnonymous($id: bigint) @cached(ttl: 180) {
   }
 }
 
-query getProductInformation($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductInformation($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     description
     id
     image_url
@@ -201,21 +201,21 @@ query getProductInformation($id: bigint = 0) @cached(ttl: 180) {
   }
 }
 
-query getProductImages($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductImages($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     image_url
   }
 }
 
-query getProductDescription($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductDescription($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     description
     properties
   }
 }
 
-query getProductComments ($id: bigint = 0) @cached(ttl: 180) {
-  product(where: {id: {_eq: $id}, is_active: {_eq: true}}) {
+query getProductComments ($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
     reviews {
       id
       comment

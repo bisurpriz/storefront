@@ -148,14 +148,14 @@ const Search: FC<Props> = ({ className }) => {
         )}
         <button
           className={clsx(
-            "h-full bg-primary text-white rounded-r-lg py-2 px-10",
+            "h-full bg-primary text-white rounded-r-lg px-6",
             "flex items-center justify-center outline-none",
             "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
             "transition-all duration-300 group"
           )}
           onClick={pushToSearch}
         >
-          <SearchIcon className="group-hover:animate-bounce text-lg" />
+          <SearchIcon className="group-hover:animate-bounce text-2xl" />
         </button>
       </div>
 

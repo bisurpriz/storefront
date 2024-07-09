@@ -130,8 +130,6 @@ const CreditCardForm = () => {
 
       const conversationId = await getConversationId(timeStamps);
 
-      console.log("conversationId", conversationId);
-
       const basketId =
         userData.user?.carts[0].id + "-" + timeStamps ??
         Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;

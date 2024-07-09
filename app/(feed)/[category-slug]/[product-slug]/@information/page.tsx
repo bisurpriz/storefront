@@ -18,8 +18,8 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
 
   return (
     <ProductInformation
-      name={product[0].name}
-      price={product[0].price}
+      name={product.name}
+      price={product.price}
       rateCounts={{
         1: 1,
         2: 1,
@@ -27,19 +27,16 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         4: 1,
         5: 1,
       }}
-      rating={product[0].reviews_aggregate.aggregate.count}
-      reviewCount={product[0].reviews_aggregate.aggregate.count}
+      rating={product.reviews_aggregate.aggregate.count}
+      reviewCount={product.reviews_aggregate.aggregate.count}
       promotion="Kargo Bedava"
-      discountPrice={product[0].discount_price}
-      discountRate={getDiscountRate(
-        product[0].price,
-        product[0].discount_price
-      )}
-      key={product[0].id}
-      vendor={product[0].tenant.tenants?.[0]}
+      discountPrice={product.discount_price}
+      discountRate={getDiscountRate(product.price, product.discount_price)}
+      key={product.id}
+      vendor={product.tenant.tenants?.[0]}
       freeShipping={true}
       shippingType={"Selamlar"}
-      deliveryTimeRanges={product[0].delivery_time_ranges}
+      deliveryTimeRanges={product.delivery_time_ranges}
     />
   );
 };

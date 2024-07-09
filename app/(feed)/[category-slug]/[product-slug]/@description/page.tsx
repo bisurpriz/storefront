@@ -30,7 +30,7 @@ const ProductDescriptionPage: FC<Props> = async ({ searchParams }) => {
     },
   });
 
-  const { description, properties } = product[0];
+  const { description, properties } = product;
 
   return (
     <AccordionItem

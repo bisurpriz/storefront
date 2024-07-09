@@ -1,11 +1,7 @@
 import ProductActions from "../../components/Detail/ProductActions";
 import { FC } from "react";
 import { query } from "@/graphql/lib/client";
-import {
-  GetProductActionDataDocument,
-  GetProductActionDataQuery,
-  GetProductActionDataQueryVariables,
-} from "@/graphql/generated";
+import { GetProductActionDataQuery } from "@/graphql/generated";
 import { getProductActions } from "./actions";
 
 type Props = {
@@ -22,10 +18,10 @@ const ProductActionsPage: FC<Props> = async ({ searchParams }) => {
   } = await getProductActions(productId);
 
   const isFavorite = (
-    product[0] as GetProductActionDataQuery["product"][0]
+    product as GetProductActionDataQuery["product"]
   )?.user_favorites?.some((fav) => fav.product_id === productId);
 
-  const favoriteCount = product[0]?.user_favorites_aggregate.aggregate.count;
+  const favoriteCount = product.user_favorites_aggregate.aggregate.count;
 
   return (
     <ProductActions

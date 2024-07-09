@@ -1,5 +1,4 @@
 import { IMAGE_URL } from "@/contants/urls";
-import ProductImageCarousel from "../components/Detail/ProductImageCarousel";
 import { query } from "@/graphql/lib/client";
 import {
   GetProductImagesDocument,
@@ -7,6 +6,8 @@ import {
   GetProductImagesQueryVariables,
 } from "@/graphql/generated";
 import { FC } from "react";
+import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
+import { ImageZoomModalProvider } from "@/contexts/ImageZoomModalContext";
 
 type Props = {
   searchParams: {
@@ -27,12 +28,11 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
   });
 
   return (
-    <ProductImageCarousel
-      images={product[0].image_url?.map((url: string, index) => ({
-        id: index,
-        url: `${IMAGE_URL}/${url}` as string,
-      }))}
-    />
+    <ImageZoomModalProvider>
+      <ProductDetailImageGallery
+        images={product.image_url.map((image) => `${IMAGE_URL}/${image}`)}
+      />
+    </ImageZoomModalProvider>
   );
 };
 

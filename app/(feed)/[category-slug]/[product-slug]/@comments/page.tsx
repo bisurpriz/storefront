@@ -27,7 +27,7 @@ const ProductCommentsPage: FC<Props> = async ({ searchParams }) => {
 
   return (
     <ProductComments
-      comments={product[0].reviews.map((rw, index) => ({
+      comments={product.reviews.map((rw, index) => ({
         comment: rw.comment,
         createdAt: rw.created_at,
         firstName: rw.user.firstname.slice(0, 1) + "***",

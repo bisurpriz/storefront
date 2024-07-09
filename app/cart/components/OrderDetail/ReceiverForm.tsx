@@ -226,7 +226,6 @@ const ReceiverForm = ({
       const receiver_phone = formatPhoneNumber(
         selectedSavedAddress.receiver_phone
       );
-      console.log(getValues());
       reset({
         ...getValues(),
         city: selectedSavedAddress.city,
@@ -285,9 +284,7 @@ const ReceiverForm = ({
     }
   };
 
-  const onError = (errors) => {
-    console.log(errors);
-  };
+  const onError = (errors) => {};
 
   const renderSavedAddress = () => {
     if (userAddresses?.length > 0) {

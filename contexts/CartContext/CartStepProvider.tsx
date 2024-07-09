@@ -65,7 +65,6 @@ export const CartStepProvider = ({ children }) => {
   };
 
   const checkoutCheck = () => {
-    console.log("checkout check");
     // forward();
   };
 
