@@ -18,7 +18,6 @@ const OrderItem = ({
             className={`object-contain rounded-md aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center border px-0.5`}
             width={200}
             height={200}
-            loading="lazy"
           />
           <Link
             href={`/${oi?.product?.category?.slug}/${oi?.product?.slug}?pid=${oi.product_id}`}

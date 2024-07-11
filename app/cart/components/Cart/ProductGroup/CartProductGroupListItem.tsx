@@ -34,7 +34,6 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             className={`object-contain aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center`}
             width={500}
             height={500}
-            loading="lazy"
           />
           <div className="flex flex-col gap-4">
             <Link
