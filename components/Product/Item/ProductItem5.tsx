@@ -47,7 +47,13 @@ const ProductItem5 = ({
         })}
       >
         <Image
-          src={getImageUrlFromPath(image?.[0])}
+          src={
+            image?.[0]
+              ? `${getImageUrlFromPath(
+                  image?.[0]
+                )}?width=500&height=500&format=webp&quality=70`
+              : "https://via.placeholder.com/500"
+          }
           alt={name}
           width={500}
           height={500}

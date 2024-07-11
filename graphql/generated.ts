@@ -22275,7 +22275,7 @@ export const RegisterDocument = gql`
 }
     `;
 export const GetBannersDocument = gql`
-    query getBanners {
+    query getBanners @cached {
   system_banner {
     expire_date
     id

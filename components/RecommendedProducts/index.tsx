@@ -51,9 +51,12 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             <div className="absolute top-0 left-0 bg-primary text-white px-2 py-1 rounded-br-lg text-xs">
               5% indirim
             </div>
-            <div className="aspect-w-1 aspect-h-1">
+            <div className="aspect-square rounded-lg overflow-hidden">
               <Image
-                src={getImageUrlFromPath(prod.image_url?.[0])}
+                src={`${getImageUrlFromPath(
+                  prod.image_url?.[0]
+                )}?width=80&height=80&format=webp&quality=70`}
+                className="w-full h-full"
                 alt={prod.name}
                 width={80}
                 height={80}

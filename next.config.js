@@ -104,6 +104,12 @@ const nextConfig = {
         pathname: "/**",
         port: "",
       },
+      {
+        hostname: "via.placeholder.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
     ],
   },
 };

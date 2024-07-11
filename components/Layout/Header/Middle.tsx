@@ -5,7 +5,6 @@ import HeaderButtons from "./components/HeaderButtons";
 import MobileDrawer from "./components/MobileDrawer";
 import clsx from "clsx";
 import Home from "@/components/Icons/Home";
-import { IMAGE_URL } from "@/contants/urls";
 
 const HeaderMiddle = () => {
   return (

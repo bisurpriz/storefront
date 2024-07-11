@@ -64,11 +64,11 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png",
+      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png?width=32&height=32&quality=70",
     },
     {
       rel: "apple-touch-icon",
-      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png",
+      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png?width=180&height=180&quality=70",
     },
   ],
   keywords: [

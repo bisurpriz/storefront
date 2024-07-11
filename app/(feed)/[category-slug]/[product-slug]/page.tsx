@@ -1,4 +1,3 @@
-import { IMAGE_URL } from "@/contants/urls";
 import { query } from "@/graphql/lib/client";
 import {
   GetProductImagesDocument,
@@ -8,6 +7,7 @@ import {
 import { FC } from "react";
 import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
 import { ImageZoomModalProvider } from "@/contexts/ImageZoomModalContext";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 type Props = {
   searchParams: {
@@ -30,7 +30,7 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
   return (
     <ImageZoomModalProvider>
       <ProductDetailImageGallery
-        images={product.image_url?.map((image) => `${IMAGE_URL}/${image}`)}
+        images={product.image_url?.map((image) => getImageUrlFromPath(image))}
       />
     </ImageZoomModalProvider>
   );

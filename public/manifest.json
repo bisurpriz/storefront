@@ -9,7 +9,7 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png",
+      "src": "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png?width=192&height=192&format=webp&quality=100",
       "sizes": "192x192",
       "type": "image/png"
     }

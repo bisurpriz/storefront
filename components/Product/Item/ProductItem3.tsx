@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/Button";
-import { IMAGE_URL } from "@/contants/urls";
 import { ProductItemProps } from ".";
 import Basket from "@/components/Icons/Basket";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 export default function ProductItem3({
   description,
@@ -23,7 +23,7 @@ export default function ProductItem3({
         className="object-contain w-full h-64"
         height="500"
         width="400"
-        src={`${IMAGE_URL}/${image.toString()}`}
+        src={getImageUrlFromPath(image[0])}
         style={{
           aspectRatio: "400/500",
         }}

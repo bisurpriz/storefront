@@ -1,5 +1,5 @@
-import { IMAGE_URL } from "@/contants/urls";
 import { GetUserOrdersQuery } from "@/graphql/generated";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ const OrderItem = ({
       {order_items.map((oi) => (
         <div key={oi.id} className="py-2 capitalize">
           <Image
-            src={`${IMAGE_URL}/${oi.product.image_url?.[0]}`}
+            src={getImageUrlFromPath(oi.product.image_url?.[0])}
             alt="image"
             className={`object-contain rounded-md aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center border px-0.5`}
             width={200}

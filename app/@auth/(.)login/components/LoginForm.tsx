@@ -12,7 +12,6 @@ import clsx from "clsx";
 import GoogleIcon from "@/components/CustomIcons/Google";
 import Image from "next/image";
 import Login from "@/components/Icons/Login";
-import { IMAGE_URL } from "@/contants/urls";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;

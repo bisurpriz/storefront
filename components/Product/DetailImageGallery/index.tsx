@@ -35,7 +35,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
             onMouseEnter={() => handleImageClick(image)}
           >
             <Image
-              src={image}
+              src={`${image}?width=100&height=100&format=wepb&quality=75`}
               alt="Product Image"
               className="h-full w-full object-cover"
               width={100}

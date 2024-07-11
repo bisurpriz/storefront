@@ -10,7 +10,6 @@ import { AuthErrorMessages } from "../../contants";
 import toast from "react-hot-toast";
 import { login } from "../../actions";
 import clsx from "clsx";
-import { IMAGE_URL } from "@/contants/urls";
 
 type RegisterFormProps = {
   onSuccessfulRegister?: (status: boolean) => void;

@@ -36,7 +36,7 @@ export default async function ProductExample({
   //   data: {
   //     name: product.name,
   //     description: product.description,
-  //     image: `${IMAGE_URL}/${product.image_url?.[0]}`,
+  //     image: `getImageUrlFromPath(product.image_url?.[0])`,
   //     offers: {
   //       "@type": "Offer",
   //       price: product.price,
