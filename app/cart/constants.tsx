@@ -5,6 +5,7 @@ import CartPlus from "@/components/Icons/CartPlus";
 import InformationCircleFill from "@/components/Icons/InformationCircleFill";
 import PaymentOutline from "@/components/Icons/PaymentOutline";
 import Confirm from "@/components/Icons/Confirm";
+import { calculateCommissionedAmount } from "../iyzico-payment/utils";
 
 export enum CartStepPaths {
   CART = "/cart",
@@ -131,25 +132,34 @@ const getTenantOrders = (
     return {
       tenant_id: key,
       order_items: {
-        data: tenantItems.map((item) => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          order_item_special_texts: {
-            data: item.product_customizable_areas
-              ? item.product_customizable_areas.flatMap((instruction) =>
-                  getTexts(instruction.customizable_area.values)
-                )
-              : [],
-          },
-          order_item_special_images: {
-            data: item.product_customizable_areas
-              ? item.product_customizable_areas.flatMap((instruction) =>
-                  getImages(instruction.customizable_area.values)
-                )
-              : [],
-          },
-          amount: item.discount_price ?? item.price,
-        })),
+        data: tenantItems.map((item) => {
+          const { commission, commissionedAmount } =
+            calculateCommissionedAmount(
+              item.discount_price.toString(),
+              item.tenant.tenants[0].commision_rate
+            );
+          return {
+            product_id: item.id,
+            quantity: item.quantity,
+            order_item_special_texts: {
+              data: item.product_customizable_areas
+                ? item.product_customizable_areas.flatMap((instruction) =>
+                    getTexts(instruction.customizable_area.values)
+                  )
+                : [],
+            },
+            order_item_special_images: {
+              data: item.product_customizable_areas
+                ? item.product_customizable_areas.flatMap((instruction) =>
+                    getImages(instruction.customizable_area.values)
+                  )
+                : [],
+            },
+            amount: item.discount_price * item.quantity,
+            tenant_amount: Number(commissionedAmount),
+            commissioned_amount: Number(commission),
+          };
+        }),
       },
     };
   });
