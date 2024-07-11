@@ -1,7 +1,5 @@
 import Promotions from "@/app/(feed)/[category-slug]/components/Detail/Promotions";
 import { ProductForCart } from "@/common/types/Cart/cart";
-import AccordionItem from "@/components/Accordion/AccordionItem";
-import CustomizeGroup from "@/components/Customize/CustomizeGroup";
 import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
@@ -59,22 +57,6 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
           ]}
         />
-        {customize?.length ? (
-          <div className="flex-1 max-2xl:w-full min-w-[300px] mb-4">
-            {Array(quantity)
-              .fill(0)
-              .map((_, i) => (
-                <AccordionItem
-                  key={i}
-                  title={`Ürün Özelleştirmeleri ${i + 1}`}
-                  className="mt-3 block w-full border rounded-lg text-sm font-normal font-mono"
-                  content={
-                    <CustomizeGroup key={i} index={i} product={product} />
-                  }
-                />
-              ))}
-          </div>
-        ) : null}
       </div>
     </li>
   );

@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 const OrdersPage = async () => {
   const { orders } = await getUserOrders();
+
   return (
     <ul>
       {orders?.map((order) => {

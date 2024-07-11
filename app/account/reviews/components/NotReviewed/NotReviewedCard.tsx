@@ -1,11 +1,11 @@
 "use client";
 
-import Rating from '@/components/Rating/Rating';
-import { localeFormat } from '@/utils/format';
-import Image from 'next/image';
-import ClientModal from './ClientModal';
-import { getImageUrlFromPath } from '@/utils/getImageUrl';
-import { createReview } from '../../actions';
+import Rating from "@/components/Rating/Rating";
+import { localeFormat } from "@/utils/format";
+import Image from "next/image";
+import ClientModal from "./ClientModal";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { createReview } from "../../actions";
 
 interface Props {
   imageUrl: string;
@@ -33,7 +33,7 @@ const NotReviewedCard = ({
     score: number;
     comment: string;
   }) => {
-    await createReview({
+    createReview({
       product_id,
       score,
       comment,
@@ -54,7 +54,7 @@ const NotReviewedCard = ({
           {productName}
         </h4>
         <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          Teslim tarihi: {localeFormat(new Date(deliveryDate), 'PPP')}
+          Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
         </p>
         <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
           {/* 

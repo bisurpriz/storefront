@@ -20,15 +20,33 @@ import {
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
-import { createOrderDataMapper } from "./constants";
+import { createOrderDataMapper } from "./utils";
 import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
-import { CustomizableAreaType } from "@/common/enums/Order/product";
 import { CustomizableArea } from "@/common/types/Order/order";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
 
   return userId;
+};
+
+const uploadOrderItemImages = async () => {
+  const images = [];
+  const formData = new FormData();
+  images.map((file: File) => {
+    formData.append("items", file as Blob);
+  });
+  formData.append("order_item_id", "120");
+
+  axios.post(
+    "https://mmcvpm3nmlyqbt2uiyr5h5optm0pihfu.lambda-url.eu-north-1.on.aws",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };
 
 export const createOrderAction = async (
@@ -134,7 +152,6 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       costData,
     };
   } catch (error) {
-    console.log("Sepet güncellenirken bir hata oluştu.", error);
     return {
       data: null,
       error: {

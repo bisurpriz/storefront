@@ -1,56 +1,28 @@
 "use client";
 
+import { CustomizableAreaType } from "@/common/enums/Order/product";
 import CustomizeCartItem from "./CustomizeCartItem";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { useCart } from "@/contexts/CartContext";
+import { GetUserOrdersQuery } from "@/graphql/generated";
 import useDebounce from "@/hooks/useDebounce";
 
 interface CustomizeGroupProps {
   index: number;
-  product: ProductForCart;
+  product: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["order_items"][0]["product"];
 }
 
 const CustomizeGroup = ({ product, index }: CustomizeGroupProps) => {
-  const { updateCartItem } = useCart();
-
-  const handleInputsChange = (inputIndex, type, value) => {
-    const newProduct = {
-      ...product,
-      product_customizable_areas: product.product_customizable_areas.map(
-        (area) => {
-          if (area.customizable_area.type === type) {
-            return {
-              ...area,
-              customizable_area: {
-                ...area.customizable_area,
-                values: {
-                  ...area.customizable_area.values,
-                  [`${index}_${type}_${inputIndex}`]: value,
-                },
-              },
-            };
-          }
-
-          return area;
-        }
-      ),
-    };
-
-    updateCartItem(newProduct);
-  };
-
-  const debouncedHandleInputsChange = useDebounce(handleInputsChange, 500);
-
+  const debouncedHandleInputsChange = useDebounce(() => {}, 500);
   return (
     <div className="flex flex-col gap-3 w-full">
       {product.product_customizable_areas?.map(
-        ({ count, customizable_area: { type, values }, max_character }, i) => {
+        ({ count, customizable_area: { type }, max_character }, i) => {
           return (
             <CustomizeCartItem
               key={i}
-              type={type}
+              type={type as CustomizableAreaType}
               count={count}
-              values={values}
               onChange={debouncedHandleInputsChange}
               maxCharacter={max_character}
               keyIndex={index}

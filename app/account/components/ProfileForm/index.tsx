@@ -50,7 +50,7 @@ const ProfileForm = ({
 
   const handleSubmit = async ({ data }) => {
     const { phone, ...rest } = data;
-    await updateUser({
+    updateUser({
       variables: {
         id,
         firstname: rest.firstname,

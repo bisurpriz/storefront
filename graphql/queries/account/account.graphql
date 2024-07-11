@@ -161,6 +161,14 @@ query getUserOrders {
           price
           discount_price
           quantity
+           product_customizable_areas {
+            count
+            max_character
+            customizable_area {
+              id
+              type
+            }
+          }
         }
       }
       order_status {

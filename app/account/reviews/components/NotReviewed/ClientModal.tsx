@@ -36,7 +36,7 @@ const ClientModal = ({
   const [selectedRating, setSelectedRating] = useState(0);
 
   const handleSubmit = async () => {
-    await onSubmit({
+    onSubmit({
       product_id: productId,
       score: selectedRating,
       comment: comment,

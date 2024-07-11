@@ -261,7 +261,7 @@ const ReceiverForm = ({
     if (values) {
       if (values.wantToSaveAddress && !values.saved_address) {
         try {
-          await createNewUserAddress({
+          createNewUserAddress({
             address: values.address,
             city_id: values.city?.id,
             district_id: values.district?.id,

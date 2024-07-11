@@ -66,7 +66,7 @@ const Search: FC<Props> = ({ className }) => {
     try {
       if (!input) {
         setProducts([]);
-        await searchProducts({}, {});
+        searchProducts({}, {});
         return;
       }
       setIsLoading(true);

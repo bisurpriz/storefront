@@ -86,7 +86,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           <AnimationExitProvider show={!!icon}>
             <motion.span
               className={clsx(
-                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none",
+                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none text-sm",
                 "object-fill"
               )}
               initial={{ opacity: 0 }}

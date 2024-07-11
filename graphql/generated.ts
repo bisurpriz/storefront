@@ -8460,6 +8460,7 @@ export type Order_Item_Special_Image = {
   id: Scalars['bigint']['output'];
   image_url: Scalars['String']['output'];
   order_item_id: Scalars['bigint']['output'];
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "order_item_special_image" */
@@ -8527,12 +8528,14 @@ export type Order_Item_Special_Image_Arr_Rel_Insert_Input = {
 export type Order_Item_Special_Image_Avg_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Avg_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "order_item_special_image". All fields are combined with a logical 'AND'. */
@@ -8543,6 +8546,7 @@ export type Order_Item_Special_Image_Bool_Exp = {
   id?: InputMaybe<Bigint_Comparison_Exp>;
   image_url?: InputMaybe<String_Comparison_Exp>;
   order_item_id?: InputMaybe<Bigint_Comparison_Exp>;
+  quantity_index?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "order_item_special_image" */
@@ -8554,6 +8558,7 @@ export type Order_Item_Special_Image_Constraint =
 export type Order_Item_Special_Image_Inc_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "order_item_special_image" */
@@ -8561,6 +8566,7 @@ export type Order_Item_Special_Image_Insert_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
@@ -8568,6 +8574,7 @@ export type Order_Item_Special_Image_Max_Fields = {
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Scalars['String']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "order_item_special_image" */
@@ -8575,6 +8582,7 @@ export type Order_Item_Special_Image_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -8582,6 +8590,7 @@ export type Order_Item_Special_Image_Min_Fields = {
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Scalars['String']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "order_item_special_image" */
@@ -8589,6 +8598,7 @@ export type Order_Item_Special_Image_Min_Order_By = {
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "order_item_special_image" */
@@ -8611,6 +8621,7 @@ export type Order_Item_Special_Image_Order_By = {
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: order_item_special_image */
@@ -8625,49 +8636,58 @@ export type Order_Item_Special_Image_Select_Column =
   /** column name */
   | 'image_url'
   /** column name */
-  | 'order_item_id';
+  | 'order_item_id'
+  /** column name */
+  | 'quantity_index';
 
 /** input type for updating data in table "order_item_special_image" */
 export type Order_Item_Special_Image_Set_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Order_Item_Special_Image_Stddev_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Order_Item_Special_Image_Stddev_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Stddev_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Order_Item_Special_Image_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "order_item_special_image" */
@@ -8683,18 +8703,21 @@ export type Order_Item_Special_Image_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Order_Item_Special_Image_Sum_Fields = {
   id?: Maybe<Scalars['bigint']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Sum_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "order_item_special_image" */
@@ -8704,7 +8727,9 @@ export type Order_Item_Special_Image_Update_Column =
   /** column name */
   | 'image_url'
   /** column name */
-  | 'order_item_id';
+  | 'order_item_id'
+  /** column name */
+  | 'quantity_index';
 
 export type Order_Item_Special_Image_Updates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -8719,36 +8744,42 @@ export type Order_Item_Special_Image_Updates = {
 export type Order_Item_Special_Image_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Order_Item_Special_Image_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Order_Item_Special_Image_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "order_item_special_image" */
 export type Order_Item_Special_Image_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "order_item_special_text" */
@@ -8756,6 +8787,7 @@ export type Order_Item_Special_Text = {
   content: Scalars['String']['output'];
   id: Scalars['bigint']['output'];
   order_item_id: Scalars['bigint']['output'];
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "order_item_special_text" */
@@ -8823,12 +8855,14 @@ export type Order_Item_Special_Text_Arr_Rel_Insert_Input = {
 export type Order_Item_Special_Text_Avg_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Avg_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "order_item_special_text". All fields are combined with a logical 'AND'. */
@@ -8839,6 +8873,7 @@ export type Order_Item_Special_Text_Bool_Exp = {
   content?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Bigint_Comparison_Exp>;
   order_item_id?: InputMaybe<Bigint_Comparison_Exp>;
+  quantity_index?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "order_item_special_text" */
@@ -8850,6 +8885,7 @@ export type Order_Item_Special_Text_Constraint =
 export type Order_Item_Special_Text_Inc_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "order_item_special_text" */
@@ -8857,6 +8893,7 @@ export type Order_Item_Special_Text_Insert_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
@@ -8864,6 +8901,7 @@ export type Order_Item_Special_Text_Max_Fields = {
   content?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "order_item_special_text" */
@@ -8871,6 +8909,7 @@ export type Order_Item_Special_Text_Max_Order_By = {
   content?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -8878,6 +8917,7 @@ export type Order_Item_Special_Text_Min_Fields = {
   content?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "order_item_special_text" */
@@ -8885,6 +8925,7 @@ export type Order_Item_Special_Text_Min_Order_By = {
   content?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "order_item_special_text" */
@@ -8907,6 +8948,7 @@ export type Order_Item_Special_Text_Order_By = {
   content?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: order_item_special_text */
@@ -8921,49 +8963,58 @@ export type Order_Item_Special_Text_Select_Column =
   /** column name */
   | 'id'
   /** column name */
-  | 'order_item_id';
+  | 'order_item_id'
+  /** column name */
+  | 'quantity_index';
 
 /** input type for updating data in table "order_item_special_text" */
 export type Order_Item_Special_Text_Set_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Order_Item_Special_Text_Stddev_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Order_Item_Special_Text_Stddev_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Stddev_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Order_Item_Special_Text_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "order_item_special_text" */
@@ -8979,18 +9030,21 @@ export type Order_Item_Special_Text_Stream_Cursor_Value_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   order_item_id?: InputMaybe<Scalars['bigint']['input']>;
+  quantity_index?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Order_Item_Special_Text_Sum_Fields = {
   id?: Maybe<Scalars['bigint']['output']>;
   order_item_id?: Maybe<Scalars['bigint']['output']>;
+  quantity_index?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Sum_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "order_item_special_text" */
@@ -9000,7 +9054,9 @@ export type Order_Item_Special_Text_Update_Column =
   /** column name */
   | 'id'
   /** column name */
-  | 'order_item_id';
+  | 'order_item_id'
+  /** column name */
+  | 'quantity_index';
 
 export type Order_Item_Special_Text_Updates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -9015,36 +9071,42 @@ export type Order_Item_Special_Text_Updates = {
 export type Order_Item_Special_Text_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Order_Item_Special_Text_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Order_Item_Special_Text_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   order_item_id?: Maybe<Scalars['Float']['output']>;
+  quantity_index?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "order_item_special_text" */
 export type Order_Item_Special_Text_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
   order_item_id?: InputMaybe<Order_By>;
+  quantity_index?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev on columns */
@@ -21780,7 +21842,7 @@ export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: s
 export type GetUserOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null } } }>, order_status?: { value: string } | null }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null }> }> };
 
 export type CreateNewAddressMutationVariables = Exact<{
   address?: InputMaybe<Scalars['String']['input']>;
@@ -22267,6 +22329,14 @@ export const GetUserOrdersDocument = gql`
           price
           discount_price
           quantity
+          product_customizable_areas {
+            count
+            max_character
+            customizable_area {
+              id
+              type
+            }
+          }
         }
       }
       order_status {
