@@ -37,6 +37,7 @@ query getProductByIdForCart($id: bigint!) {
       tenants {
         id
         name
+        commision_rate
       }
     }
     discount_price

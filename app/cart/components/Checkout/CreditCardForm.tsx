@@ -177,20 +177,22 @@ const CreditCardForm = () => {
         },
         installment: 1,
       } as Initialize3dsPaymentRequest;
+
       const response = await initialize3dsPayment(variables);
       const res = await createOrderAction(
         cartItems,
         detailData,
         conversationId
       );
-      // if (response.errorMessage || res.status === "error") {
-      //   setLoading(false);
-      //   openPopup();
-      //   setErrorMessage(
-      //     response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
-      //   );
-      //   return;
-      // } else setBase64PasswordHtml(response.threeDSHtmlContent);
+
+      if (response.errorMessage || res.status === "error") {
+        setLoading(false);
+        openPopup();
+        setErrorMessage(
+          response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
+        );
+        return;
+      } else setBase64PasswordHtml(response.threeDSHtmlContent);
     }
   };
 
@@ -231,30 +233,27 @@ const CreditCardForm = () => {
 
   return (
     <>
-      {createPortal(
-        renderPopup(
-          <div
-            className={clsx(
-              "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
-              "flex flex-col justify-center items-center gap-2",
-              "text-center"
-            )}
+      {renderPopup(
+        <div
+          className={clsx(
+            "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
+            "flex flex-col justify-center items-center gap-2",
+            "text-center"
+          )}
+        >
+          <Report className="text-red-500 text-5xl" />
+          <h2 className="text-lg font-semibold text-gray-800 m-0">
+            Ödeme İşlemi Başarısız
+          </h2>
+          <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
+          <Button
+            onClick={handleClosePopupWithClearStates}
+            color="error"
+            className="mt-2"
           >
-            <Report className="text-red-500 text-5xl" />
-            <h2 className="text-lg font-semibold text-gray-800 m-0">
-              Ödeme İşlemi Başarısız
-            </h2>
-            <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
-            <Button
-              onClick={handleClosePopupWithClearStates}
-              color="error"
-              className="mt-2"
-            >
-              Kapat
-            </Button>
-          </div>
-        ),
-        document?.body
+            Kapat
+          </Button>
+        </div>
       )}
 
       <form
