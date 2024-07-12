@@ -2,8 +2,8 @@ import StatusBadge from "@/components/StatusBadge";
 import Link from "next/link";
 import OrderItem from "./OrderItem";
 import OrderMessage from "./OrderMessage";
-import { GetUserOrdersQuery } from "@/graphql/generated";
 import { OrderItemStatus } from "@/common/enums/Order/product";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 
 const TenantOrders = ({
   tenants,

@@ -2,17 +2,18 @@
 
 import React, { FC } from "react";
 import { useLazyQuery } from "@apollo/client";
-import {
-  GetLocationQueryDocument,
-  GetLocationQueryQuery,
-  GetLocationQueryQueryVariables,
-} from "@/graphql/generated";
+
 import Autocomplete from "../Autocomplete/Autocomplete";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import {
+  GetLocationQueryDocument,
+  GetLocationQueryQuery,
+  GetLocationQueryQueryVariables,
+} from "@/graphql/queries/account/account.generated";
 
 type QuarterSelectorProps = {
   value?: any;

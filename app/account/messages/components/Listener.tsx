@@ -1,46 +1,53 @@
-'use client'
-import { ApolloWrapper } from '@/graphql/lib/apollo-wrapper'
-import useChatStore from '@/store'
-import { useSubscription } from '@apollo/client'
-import { useEffect, useState } from 'react'
-import { getUserById } from '../../actions'
-import { SubscribeToChatsDocument } from '@/graphql/generated'
+"use client";
+import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
+import useChatStore from "@/store";
+import { useSubscription } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { getUserById } from "../../actions";
+import {
+  SubscribeToChatsDocument,
+  SubscribeToChatsSubscription,
+  SubscribeToChatsSubscriptionVariables,
+} from "@/graphql/queries/chat/subscription.generated";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const SocketListener = () => {
-  const { setChats } = useChatStore((state) => state)
+  const { setChats } = useChatStore((state) => state);
 
-  const { error } = useSubscription(SubscribeToChatsDocument, {
+  const { error } = useSubscription<
+    SubscribeToChatsSubscription,
+    SubscribeToChatsSubscriptionVariables
+  >(SubscribeToChatsDocument, {
     onData(options: any) {
-      setChats(options?.data?.data?.chat_thread)
+      setChats(options?.data?.data?.chat_thread);
     },
-  })
+  });
 
   if (error) {
-    console.log(error)
+    console.log(error);
   }
 
-  return <div></div>
-}
+  return <div></div>;
+};
 
 const Listener = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
-      const { user } = await getUserById()
-      setUser(user)
-    }
-    getUser()
-  }, [])
+      const { user } = await getUserById();
+      setUser(user);
+    };
+    getUser();
+  }, []);
 
-  if (!user) return null
+  if (!user) return null;
   return (
     <ApolloWrapper>
       <SocketListener />
     </ApolloWrapper>
-  )
-}
+  );
+};
 
-export default Listener
+export default Listener;

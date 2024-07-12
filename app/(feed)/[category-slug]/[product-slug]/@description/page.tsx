@@ -2,12 +2,13 @@ import AccordionItem from "@/components/Accordion/AccordionItem";
 import React, { FC } from "react";
 import ProductDescription from "../../components/Detail/ProductDescription";
 import { parseJson } from "@/utils/format";
+
+import { query } from "@/graphql/lib/client";
 import {
   GetProductDescriptionDocument,
   GetProductDescriptionQuery,
   GetProductDescriptionQueryVariables,
-} from "@/graphql/generated";
-import { query } from "@/graphql/lib/client";
+} from "@/graphql/queries/products/getProductById.generated";
 
 type Props = {
   searchParams: {

@@ -10,16 +10,18 @@ import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
-import {
-  GetMainCategoriesDocument,
-  GetMainCategoriesQuery,
-} from "@/graphql/generated";
+
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { query } from "@/graphql/lib/client";
 
 import { ReactNode, Suspense } from "react";
 import { getUserById } from "./account/actions";
 import { getCart } from "./cart/actions";
+import {
+  GetMainCategoriesDocument,
+  GetMainCategoriesQuery,
+  GetMainCategoriesQueryVariables,
+} from "@/graphql/queries/categories/getCategories.generated";
 
 export const experimental_ppr = true;
 
@@ -119,7 +121,7 @@ export default async function RootLayout({
   const { cartItems, costData } = await getCart(user?.id);
   const {
     data: { category },
-  } = await query<GetMainCategoriesQuery>({
+  } = await query<GetMainCategoriesQuery, GetMainCategoriesQueryVariables>({
     query: GetMainCategoriesDocument,
   });
 

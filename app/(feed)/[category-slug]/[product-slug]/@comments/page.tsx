@@ -5,7 +5,7 @@ import {
   GetProductCommentsDocument,
   GetProductCommentsQuery,
   GetProductCommentsQueryVariables,
-} from "@/graphql/generated";
+} from "@/graphql/queries/products/getProductById.generated";
 
 type Props = {
   searchParams: {

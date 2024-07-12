@@ -1,6 +1,6 @@
 import Checkbox from "@/components/Checkbox";
 import TextField from "@/components/TextField";
-import { GetUserByIdQuery } from "@/graphql/generated";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import React, { FC } from "react";
 import { Control, Controller, FieldValues } from "react-hook-form";
 

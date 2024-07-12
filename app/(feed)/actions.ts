@@ -1,24 +1,35 @@
 "use server";
 
 import { IProductFilter } from "@/common/types/Filter/productFilter";
+
+import { query } from "@/graphql/lib/client";
 import {
   GetLocationQueryDocument,
   GetLocationQueryQuery,
+} from "@/graphql/queries/account/account.generated";
+import {
   GetProductByIdDocument,
   GetProductByIdQuery,
-  GetProductReviewsDocument,
-  GetProductReviewsQuery,
-  GetProductReviewsQueryVariables,
+} from "@/graphql/queries/products/getProductById.generated";
+import {
   GetProductsWithFilteredPaginationDocument,
   GetProductsWithFilteredPaginationQuery,
   GetProductsWithPaginationDocument,
   GetProductsWithPaginationQuery,
-} from "@/graphql/generated";
-import { query } from "@/graphql/lib/client";
+  GetProductsWithPaginationQueryVariables,
+} from "@/graphql/queries/products/getProductsWithPagination.generated";
+import {
+  GetProductReviewsDocument,
+  GetProductReviewsQuery,
+  GetProductReviewsQueryVariables,
+} from "@/graphql/queries/review/review.generated";
 import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
-  const { data } = await query<GetProductsWithPaginationQuery>({
+  const { data } = await query<
+    GetProductsWithPaginationQuery,
+    GetProductsWithPaginationQueryVariables
+  >({
     query: GetProductsWithPaginationDocument,
     variables: {
       ...params,

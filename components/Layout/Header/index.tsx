@@ -1,10 +1,10 @@
 import HeaderMiddle from "./Middle";
 import HeaderBottom from "./Bottom";
-import { GetMainCategoriesQuery } from "@/graphql/generated";
 import { FC } from "react";
 import HeaderTop from "./Top";
 import tr from "date-fns/locale/tr";
 import setDefaultOptions from "date-fns/setDefaultOptions";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 
 setDefaultOptions({
   weekStartsOn: 1,

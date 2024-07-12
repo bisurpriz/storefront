@@ -1,6 +1,6 @@
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import CustomizeGroup from "@/components/Customize/CustomizeGroup";
-import { GetUserOrdersQuery } from "@/graphql/generated";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";

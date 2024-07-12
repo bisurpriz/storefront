@@ -5,24 +5,30 @@ import { cookies } from "next/headers";
 import { readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
-import {
-  CreateOrderMutationVariables,
-  GetDbCartDocument,
-  GetDbCartQuery,
-  GetProductByIdForCartDocument,
-  GetProductByIdForCartQuery,
-  GetProductByIdForCartQueryVariables,
-  GetProductsForInitialCartDocument,
-  GetProductsForInitialCartQuery,
-  UpdateDbCartDocument,
-  UpdateDbCartMutation,
-} from "@/graphql/generated";
+
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
 import { createOrderDataMapper } from "./utils";
 import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
 import { CustomizableArea } from "@/common/types/Order/order";
+import {
+  GetDbCartDocument,
+  GetDbCartQuery,
+  GetDbCartQueryVariables,
+  GetProductByIdForCartDocument,
+  GetProductByIdForCartQuery,
+  GetProductByIdForCartQueryVariables,
+  UpdateDbCartDocument,
+  UpdateDbCartMutation,
+  UpdateDbCartMutationVariables,
+} from "@/graphql/queries/cart/cart.generated";
+import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import {
+  GetProductsForInitialCartDocument,
+  GetProductsForInitialCartQuery,
+  GetProductsForInitialCartQueryVariables,
+} from "@/graphql/queries/products/getProductById.generated";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -129,7 +135,10 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     const userId = await checkUserId();
 
-    const { data: cartData } = await mutate<UpdateDbCartMutation>({
+    const { data: cartData } = await mutate<
+      UpdateDbCartMutation,
+      UpdateDbCartMutationVariables
+    >({
       mutation: UpdateDbCartDocument,
       variables: {
         payload: [
@@ -176,7 +185,7 @@ export const getCart = async (user_id: string) => {
   try {
     const {
       data: { cart },
-    } = await query<GetDbCartQuery>({
+    } = await query<GetDbCartQuery, GetDbCartQueryVariables>({
       query: GetDbCartDocument,
       fetchPolicy: "no-cache",
       context: headers,
@@ -195,7 +204,10 @@ export const getCart = async (user_id: string) => {
     const ids = parsedContent.map((item) => item.product_id);
     const {
       data: { product },
-    } = await query<GetProductsForInitialCartQuery>({
+    } = await query<
+      GetProductsForInitialCartQuery,
+      GetProductsForInitialCartQueryVariables
+    >({
       query: GetProductsForInitialCartDocument,
       variables: {
         ids,

@@ -2,10 +2,8 @@
 
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import CustomizeCartItem from "./CustomizeCartItem";
-import { ProductForCart } from "@/common/types/Cart/cart";
-import { useCart } from "@/contexts/CartContext";
-import { GetUserOrdersQuery } from "@/graphql/generated";
 import useDebounce from "@/hooks/useDebounce";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 
 interface CustomizeGroupProps {
   index: number;

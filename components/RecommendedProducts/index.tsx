@@ -1,6 +1,6 @@
 "use client";
 
-import { GetProductsWithPaginationQuery } from "@/graphql/generated";
+import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { AnimatePresence, useScroll, motion } from "framer-motion";
 import Image from "next/image";

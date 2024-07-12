@@ -2,7 +2,7 @@
 
 import React from "react";
 import { HeaderButtonData } from "./HeaderButtons";
-import { User } from "@/graphql/generated";
+import { User } from "@/graphql/generated-types";
 
 const getUsernameWithSurname = (user: User) => {
   if (!user.firstname) return user.lastname;

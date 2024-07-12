@@ -4,7 +4,6 @@ import { FC, useEffect, useRef, useState } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
 import { searchProducts } from "@/app/(feed)/actions";
-import { GetProductsWithFilteredPaginationQuery } from "@/graphql/generated";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
@@ -13,6 +12,7 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import { useRouter, useSearchParams } from "next/navigation";
 import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/Search";
+import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 
 type Props = {
   className?: string;

@@ -1,7 +1,7 @@
 import ProductActions from "../../components/Detail/ProductActions";
 import { FC } from "react";
-import { GetProductActionDataQuery } from "@/graphql/generated";
 import { getProductActions } from "./actions";
+import { GetProductActionDataQuery } from "@/graphql/queries/products/getProductById.generated";
 
 type Props = {
   searchParams: {

@@ -1,10 +1,10 @@
 "use client";
 
-import { GetUserByIdQuery } from "@/graphql/generated";
 import { ReactNode, createContext, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
 import { uuidv4 } from "@/utils/uuidv4";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;

@@ -1,20 +1,30 @@
 "use server";
 
+import { mutate, query } from "@/graphql/lib/client";
+import {
+  MarkAsReadDocument,
+  MarkAsReadMutation,
+  MarkAsReadMutationVariables,
+  SendMessageDocument,
+  SendMessageMutation,
+  SendMessageMutationVariables,
+} from "@/graphql/queries/chat/mutation.generated";
 import {
   GetSingleTenantOrderItemDocument,
   GetSingleTenantOrderItemQuery,
-  MarkAsReadDocument,
-  MarkAsReadMutation,
-  SendMessageDocument,
-  SendMessageMutation,
-} from "@/graphql/generated";
-import { mutate, query } from "@/graphql/lib/client";
+  GetSingleTenantOrderItemQueryVariables,
+} from "@/graphql/queries/order/order.generated";
 
-export const getTenantOrderItem = async (orderId: number) => {
-  const response = await query<GetSingleTenantOrderItemQuery>({
+export const getTenantOrderItem = async (
+  id: GetSingleTenantOrderItemQueryVariables["id"]
+) => {
+  const response = await query<
+    GetSingleTenantOrderItemQuery,
+    GetSingleTenantOrderItemQueryVariables
+  >({
     query: GetSingleTenantOrderItemDocument,
     variables: {
-      id: orderId,
+      id,
     },
   });
   return {
@@ -32,7 +42,10 @@ export const sendMessage = async ({
   receiver_id: string;
   chat_thread_id: number;
 }) => {
-  const { data } = await mutate<SendMessageMutation>({
+  const { data } = await mutate<
+    SendMessageMutation,
+    SendMessageMutationVariables
+  >({
     mutation: SendMessageDocument,
     variables: {
       message,
@@ -47,7 +60,10 @@ export const sendMessage = async ({
 };
 
 export const markAsRead = async (chat_thread_id: string) => {
-  const { data } = await mutate<MarkAsReadMutation>({
+  const { data } = await mutate<
+    MarkAsReadMutation,
+    MarkAsReadMutationVariables
+  >({
     mutation: MarkAsReadDocument,
     variables: {
       chat_thread_id,

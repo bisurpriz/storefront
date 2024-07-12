@@ -1,5 +1,5 @@
+import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
 import ReviewedCard from "./ReviewedCard";
-import { GetOrdersWithReviewsQuery } from "@/graphql/generated";
 
 const ReviewedCardMapper = ({
   result,

@@ -1,6 +1,8 @@
 "use server";
 
 import { readIdFromCookies } from "@/app/actions";
+
+import { query } from "@/graphql/lib/client";
 import {
   GetProductActionDataDocument,
   GetProductActionDataForAnonymousDocument,
@@ -8,8 +10,7 @@ import {
   GetProductActionDataForAnonymousQueryVariables,
   GetProductActionDataQuery,
   GetProductActionDataQueryVariables,
-} from "@/graphql/generated";
-import { query } from "@/graphql/lib/client";
+} from "@/graphql/queries/products/getProductById.generated";
 
 export const getProductActions = async (productId: number) => {
   const userId = await readIdFromCookies();

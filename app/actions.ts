@@ -1,8 +1,16 @@
 "use server";
 
+import { query } from "@/graphql/lib/client";
+import { cookies, headers } from "next/headers";
+import { CookieTokens } from "./@auth/contants";
+import { parseJson } from "@/utils/format";
+import { Location } from "@/common/types/Addresses/addresses";
 import {
   GetBannersDocument,
   GetBannersQuery,
+  GetBannersQueryVariables,
+} from "@/graphql/queries/banners/banners.generated";
+import {
   GetCityByIdDocument,
   GetCityByIdQuery,
   GetCityByIdQueryVariables,
@@ -12,12 +20,7 @@ import {
   GetQuarterByIdDocument,
   GetQuarterByIdQuery,
   GetQuarterByIdQueryVariables,
-} from "@/graphql/generated";
-import { query } from "@/graphql/lib/client";
-import { cookies, headers } from "next/headers";
-import { CookieTokens } from "./@auth/contants";
-import { parseJson } from "@/utils/format";
-import { Location } from "@/common/types/Addresses/addresses";
+} from "@/graphql/queries/account/account.generated";
 
 export async function readIdFromCookies() {
   const auth = cookies();
@@ -38,7 +41,10 @@ export async function getIdToken() {
 }
 
 export async function getBanners() {
-  const { data, loading } = await query<GetBannersQuery>({
+  const { data, loading } = await query<
+    GetBannersQuery,
+    GetBannersQueryVariables
+  >({
     query: GetBannersDocument,
   });
 

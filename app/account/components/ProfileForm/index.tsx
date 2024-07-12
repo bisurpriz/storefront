@@ -7,7 +7,7 @@ import {
   UpdateUserByIdDocument,
   UpdateUserByIdMutation,
   UpdateUserByIdMutationVariables,
-} from "@/graphql/generated";
+} from "@/graphql/queries/account/account.generated";
 import { localeDistanceFormat } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { useMutation } from "@apollo/client";

@@ -1,6 +1,6 @@
 "use client";
 
-import { GetMainCategoriesQuery } from "@/graphql/generated";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { ReactNode, createContext, useContext } from "react";
 
 interface CategoryContextType {

@@ -1,12 +1,24 @@
-'use server';
+"use server";
 
-import { GetUserOrdersDocument, GetUserOrdersQuery, SendMessageAloneDocument, SendMessageAloneMutation } from '@/graphql/generated';
-import { mutate, query } from '@/graphql/lib/client';
+import { mutate, query } from "@/graphql/lib/client";
+import {
+  GetUserOrdersDocument,
+  GetUserOrdersQuery,
+  GetUserOrdersQueryVariables,
+} from "@/graphql/queries/account/account.generated";
+import {
+  SendMessageAloneDocument,
+  SendMessageAloneMutation,
+  SendMessageAloneMutationVariables,
+} from "@/graphql/queries/chat/mutation.generated";
 
 export const getUserOrders = async () => {
-  const { data, loading } = await query<GetUserOrdersQuery>({
+  const { data, loading } = await query<
+    GetUserOrdersQuery,
+    GetUserOrdersQueryVariables
+  >({
     query: GetUserOrdersDocument,
-    fetchPolicy: 'no-cache',
+    fetchPolicy: "no-cache",
   });
   const { order } = data;
   return {
@@ -19,14 +31,17 @@ export const startMessageForOrder = async ({
   message,
   receiver_id,
   order_tenant_id,
-  user_id
+  user_id,
 }: {
   message: string;
   receiver_id: string;
   order_tenant_id: number;
   user_id: string;
 }) => {
-  const { data } = await mutate<SendMessageAloneMutation>({
+  const { data } = await mutate<
+    SendMessageAloneMutation,
+    SendMessageAloneMutationVariables
+  >({
     mutation: SendMessageAloneDocument,
     variables: {
       message,

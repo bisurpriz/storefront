@@ -3,11 +3,11 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import Card from "../../Card";
-import { GetMainCategoriesQuery } from "@/graphql/generated";
 import Link from "next/link";
 import clsx from "clsx";
 import Carousel, { ResponsiveType } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];

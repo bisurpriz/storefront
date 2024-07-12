@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
-import { GetUserOrdersQuery } from "@/graphql/generated";
 import { readIdFromCookies } from "@/app/actions";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import Chat from "@/components/Icons/Chat";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 
 const OrderMessage = ({
   tenant,

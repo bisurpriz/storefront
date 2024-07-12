@@ -1,13 +1,14 @@
 import { query } from "@/graphql/lib/client";
-import {
-  GetProductImagesDocument,
-  GetProductImagesQuery,
-  GetProductImagesQueryVariables,
-} from "@/graphql/generated";
+
 import { FC } from "react";
 import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
 import { ImageZoomModalProvider } from "@/contexts/ImageZoomModalContext";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import {
+  GetProductImagesDocument,
+  GetProductImagesQuery,
+  GetProductImagesQueryVariables,
+} from "@/graphql/queries/products/getProductById.generated";
 
 type Props = {
   searchParams: {
