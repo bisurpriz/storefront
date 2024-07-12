@@ -55,7 +55,6 @@ export const getProductReviews = async ({
       limit,
       offset,
     },
-    fetchPolicy: "no-cache",
     context: {
       fetchOptions: {
         next: { revalidate: 5 },

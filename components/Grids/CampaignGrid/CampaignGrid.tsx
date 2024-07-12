@@ -17,6 +17,7 @@ const CampaignGrid: FC = async () => {
             height={500}
             className="rounded-lg w-full h-auto"
             alt={item.name}
+            priority
           />
         </Link>
       ))}

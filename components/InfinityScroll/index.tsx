@@ -3,9 +3,9 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import ProductItem5 from "../Product/Item/ProductItem5";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import EmptyPage from "./EmptyPage";
+import dynamic from "next/dynamic";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -16,6 +16,10 @@ interface InfinityScrollProps<T> {
 }
 
 const PER_REQUEST = 15;
+
+const DynamicProductItem = dynamic(
+  () => import("../Product/Item/ProductItem5")
+);
 
 const InfinityScroll = <T,>({
   initialData,
@@ -58,7 +62,7 @@ const InfinityScroll = <T,>({
   return (
     <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 max-sm:gap-2">
       {data?.map((item: any) => (
-        <ProductItem5 key={item.id} {...item} />
+        <DynamicProductItem key={item.id} {...item} />
       ))}
       {totalCount > data?.length && <ProductItemSkeleton ref={ref} />}
     </div>

@@ -4,34 +4,24 @@ import { Lato, Manrope, Quicksand } from "next/font/google";
 import Header from "../components/Layout/Header";
 import "./globals.css";
 
+import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
+import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
+import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
-import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
-import tr from "date-fns/locale/tr";
-import setDefaultOptions from "date-fns/setDefaultOptions";
-import { ReactNode, Suspense } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import { getUserById } from "./account/actions";
-import Listener from "./account/messages/components/Listener";
-import { getCart } from "./cart/actions";
-import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
+import { CategoryProvider } from "@/contexts/CategoryContext";
 import {
   GetMainCategoriesDocument,
   GetMainCategoriesQuery,
 } from "@/graphql/generated";
+import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { query } from "@/graphql/lib/client";
-import { CategoryProvider } from "@/contexts/CategoryContext";
-import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
-import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
-import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
+
+import { ReactNode, Suspense } from "react";
+import { getUserById } from "./account/actions";
+import { getCart } from "./cart/actions";
 
 export const experimental_ppr = true;
-
-setDefaultOptions({
-  weekStartsOn: 1,
-  firstWeekContainsDate: 1,
-  locale: tr,
-});
 
 const lato = Lato({
   subsets: ["latin"],
@@ -125,11 +115,6 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  if (process.env.NODE_ENV === "development") {
-    loadDevMessages();
-    loadErrorMessages();
-  }
-
   const { user } = await getUserById();
   const { cartItems, costData } = await getCart(user?.id);
   const {
@@ -157,7 +142,6 @@ export default async function RootLayout({
                 </Suspense>
                 <Content>{children}</Content>
                 {auth}
-                <Listener />
               </CartProvider>
             </CategoryProvider>
           </ApolloWrapper>

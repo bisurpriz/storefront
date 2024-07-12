@@ -109,7 +109,6 @@ export const getUserById = async (id?: string) => {
       variables: {
         id: userId,
       },
-      fetchPolicy: "no-cache",
     });
     const { user_by_pk: user } = data;
     return {

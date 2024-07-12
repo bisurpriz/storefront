@@ -1,12 +1,18 @@
-'use server';
+"use server";
 
-import { GetSingleTenantOrderItemDocument, GetSingleTenantOrderItemQuery, MarkAsReadDocument, MarkAsReadMutation, SendMessageDocument, SendMessageMutation } from '@/graphql/generated';
-import { mutate, query } from '@/graphql/lib/client';
+import {
+  GetSingleTenantOrderItemDocument,
+  GetSingleTenantOrderItemQuery,
+  MarkAsReadDocument,
+  MarkAsReadMutation,
+  SendMessageDocument,
+  SendMessageMutation,
+} from "@/graphql/generated";
+import { mutate, query } from "@/graphql/lib/client";
 
 export const getTenantOrderItem = async (orderId: number) => {
   const response = await query<GetSingleTenantOrderItemQuery>({
     query: GetSingleTenantOrderItemDocument,
-    fetchPolicy: 'no-cache',
     variables: {
       id: orderId,
     },

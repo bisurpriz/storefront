@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import ZoomButton from "./ZoomButton";
 import { useImageZoomModal } from "@/contexts/ImageZoomModalContext";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 type ProductDetailImageGalleryProps = {
   images: string[];
@@ -35,7 +36,13 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
             onMouseEnter={() => handleImageClick(image)}
           >
             <Image
-              src={`${image}?width=100&height=100&format=wepb&quality=75`}
+              src={
+                image
+                  ? `${getImageUrlFromPath(
+                      image
+                    )}?width=100&height=100&format=wepb&quality=75`
+                  : "https://via.placeholder.com/100"
+              }
               alt="Product Image"
               className="h-full w-full object-cover"
               width={100}
@@ -59,7 +66,13 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           resultHeight={400}
         /> */}
         <Image
-          src={selectedImage}
+          src={
+            selectedImage
+              ? `${getImageUrlFromPath(
+                  selectedImage
+                )}?width=500&height=500&format=wepb&quality=75`
+              : "https://via.placeholder.com/500"
+          }
           alt="Product Image"
           className="h-full w-full object-contain"
           width={500}

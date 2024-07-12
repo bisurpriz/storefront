@@ -1,5 +1,6 @@
 import Main from "./components/Main";
 import { getTenantOrderItem } from "./action";
+import Listener from "./components/Listener";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,12 @@ const MessagesPage = async ({
   const orderItem = orderTenants?.[0];
   const tenantId = orderItem?.tenant?.id;
 
-  return <Main tenantId={tenantId} />;
+  return (
+    <>
+      <Main tenantId={tenantId} />;
+      <Listener />
+    </>
+  );
 };
 
 export default MessagesPage;

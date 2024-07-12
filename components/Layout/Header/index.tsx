@@ -3,6 +3,14 @@ import HeaderBottom from "./Bottom";
 import { GetMainCategoriesQuery } from "@/graphql/generated";
 import { FC } from "react";
 import HeaderTop from "./Top";
+import tr from "date-fns/locale/tr";
+import setDefaultOptions from "date-fns/setDefaultOptions";
+
+setDefaultOptions({
+  weekStartsOn: 1,
+  firstWeekContainsDate: 1,
+  locale: tr,
+});
 
 const Header: FC<{
   category: GetMainCategoriesQuery["category"];
