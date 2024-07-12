@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetVendorByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
 }>;
@@ -50,7 +49,4 @@ export const GetVendorByIdDocument = gql`
   }
 }
     `;
-
-export function useGetVendorByIdQuery(options?: Omit<Urql.UseQueryArgs<GetVendorByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetVendorByIdQuery, GetVendorByIdQueryVariables>({ query: GetVendorByIdDocument, ...options });
-};
+export type GetVendorByIdQueryResult = Apollo.QueryResult<GetVendorByIdQuery, GetVendorByIdQueryVariables>;

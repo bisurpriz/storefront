@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetOrdersWithReviewsQueryVariables = Types.Exact<{
   user_id: Types.Scalars['uuid']['input'];
 }>;
@@ -82,10 +81,7 @@ export const GetOrdersWithReviewsDocument = gql`
   }
 }
     `;
-
-export function useGetOrdersWithReviewsQuery(options: Omit<Urql.UseQueryArgs<GetOrdersWithReviewsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetOrdersWithReviewsQuery, GetOrdersWithReviewsQueryVariables>({ query: GetOrdersWithReviewsDocument, ...options });
-};
+export type GetOrdersWithReviewsQueryResult = Apollo.QueryResult<GetOrdersWithReviewsQuery, GetOrdersWithReviewsQueryVariables>;
 export const CreateReviewDocument = gql`
     mutation createReview($comment: String!, $score: Int!, $product_id: Int!) {
   insert_review_one(
@@ -95,10 +91,9 @@ export const CreateReviewDocument = gql`
   }
 }
     `;
-
-export function useCreateReviewMutation() {
-  return Urql.useMutation<CreateReviewMutation, CreateReviewMutationVariables>(CreateReviewDocument);
-};
+export type CreateReviewMutationFn = Apollo.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutation>;
+export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const GetProductReviewsDocument = gql`
     query getProductReviews($productId: Int, $limit: Int = 10, $offset: Int = 0) {
   review(where: {product_id: {_eq: $productId}}, limit: $limit, offset: $offset) {
@@ -118,7 +113,4 @@ export const GetProductReviewsDocument = gql`
   }
 }
     `;
-
-export function useGetProductReviewsQuery(options?: Omit<Urql.UseQueryArgs<GetProductReviewsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductReviewsQuery, GetProductReviewsQueryVariables>({ query: GetProductReviewsDocument, ...options });
-};
+export type GetProductReviewsQueryResult = Apollo.QueryResult<GetProductReviewsQuery, GetProductReviewsQueryVariables>;

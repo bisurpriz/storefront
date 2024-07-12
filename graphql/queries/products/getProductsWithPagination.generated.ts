@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetProductsWithPaginationQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
@@ -75,10 +74,7 @@ export const GetProductsWithPaginationDocument = gql`
   }
 }
     `;
-
-export function useGetProductsWithPaginationQuery(options?: Omit<Urql.UseQueryArgs<GetProductsWithPaginationQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductsWithPaginationQuery, GetProductsWithPaginationQueryVariables>({ query: GetProductsWithPaginationDocument, ...options });
-};
+export type GetProductsWithPaginationQueryResult = Apollo.QueryResult<GetProductsWithPaginationQuery, GetProductsWithPaginationQueryVariables>;
 export const GetProductsWithFilteredPaginationDocument = gql`
     query getProductsWithFilteredPagination($filter_payload: product_bool_exp, $limit: Int = 10, $offset: Int = 0) {
   product_aggregate(where: $filter_payload) {
@@ -131,7 +127,4 @@ export const GetProductsWithFilteredPaginationDocument = gql`
   }
 }
     `;
-
-export function useGetProductsWithFilteredPaginationQuery(options?: Omit<Urql.UseQueryArgs<GetProductsWithFilteredPaginationQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductsWithFilteredPaginationQuery, GetProductsWithFilteredPaginationQueryVariables>({ query: GetProductsWithFilteredPaginationDocument, ...options });
-};
+export type GetProductsWithFilteredPaginationQueryResult = Apollo.QueryResult<GetProductsWithFilteredPaginationQuery, GetProductsWithFilteredPaginationQueryVariables>;

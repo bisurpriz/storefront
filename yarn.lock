@@ -5,18 +5,6 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@0no-co/graphql.web@npm:^1.0.5":
-  version: 1.0.7
-  resolution: "@0no-co/graphql.web@npm:1.0.7"
-  peerDependencies:
-    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
-  peerDependenciesMeta:
-    graphql:
-      optional: true
-  checksum: 10c0/4744a6c327e0a2d564c8f4720ef08dcece6c3b8373f52208ff29f7086f90e18d211c59cc222c229f1e3241abd1fc6e30377dc1dadac491bbb25706f29dea626a
-  languageName: node
-  linkType: hard
-
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
@@ -1944,18 +1932,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript-urql@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@graphql-codegen/typescript-urql@npm:4.0.0"
+"@graphql-codegen/typescript-react-apollo@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "@graphql-codegen/typescript-react-apollo@npm:4.3.0"
   dependencies:
     "@graphql-codegen/plugin-helpers": "npm:^3.0.0"
     "@graphql-codegen/visitor-plugin-common": "npm:2.13.1"
     auto-bind: "npm:~4.0.0"
+    change-case-all: "npm:1.0.15"
     tslib: "npm:~2.6.0"
   peerDependencies:
     graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     graphql-tag: ^2.0.0
-  checksum: 10c0/83fbf3a0923962835ab9d525822a79c499735a27add06d93d04f15be165c64eca960ff4c121549e9e2fc45bcd5d3e069151dcdd8b762eaefa8e61d4a87deaa2d
+  checksum: 10c0/c5e58729367571867a8e2e17a640a6ff42070b8c7f498a2bfea35b0b4ae74b62245981feb5d26a03601db58967c54e74b341b681247bd9241b63327510c151e7
   languageName: node
   linkType: hard
 
@@ -3683,16 +3672,6 @@ __metadata:
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
   checksum: 10c0/181c43fb324dbe4fef9762c61ab4b8235efa48abedf39a9bfeab65872522c43dae789c4f85b82a1164ed7bb18ae7ff25c3a19e7c4e0eb944937ac7f8109cee9b
-  languageName: node
-  linkType: hard
-
-"@urql/core@npm:^5.0.0":
-  version: 5.0.4
-  resolution: "@urql/core@npm:5.0.4"
-  dependencies:
-    "@0no-co/graphql.web": "npm:^1.0.5"
-    wonka: "npm:^6.3.2"
-  checksum: 10c0/3aec9420ef930cfdb0dc4635588bb2727884f9691cb56e074440b225d7dbf7a1c0d60c9fd35b1dac53fe7e7ca9d5d4d3a33fd001734096f9dfacb404df919751
   languageName: node
   linkType: hard
 
@@ -6139,7 +6118,7 @@ __metadata:
     "@graphql-codegen/client-preset": "npm:^4.2.2"
     "@graphql-codegen/near-operation-file-preset": "npm:^3.0.0"
     "@graphql-codegen/typescript-graphql-request": "npm:^6.2.0"
-    "@graphql-codegen/typescript-urql": "npm:^4.0.0"
+    "@graphql-codegen/typescript-react-apollo": "npm:^4.3.0"
     "@graphql-typed-document-node/core": "npm:^3.2.0"
     "@hookform/resolvers": "npm:^3.3.2"
     "@mui/base": "npm:^5.0.0-beta.25"
@@ -6190,11 +6169,9 @@ __metadata:
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.2"
     subscriptions-transport-ws: "npm:^0.11.0"
-    swiper: "npm:^10.3.1"
     tailwindcss: "npm:3.3.3"
     tsconfig-paths-webpack-plugin: "npm:^4.1.0"
     typescript: "npm:latest"
-    urql: "npm:^4.1.0"
     uuid: "npm:^9.0.1"
     yup: "npm:^1.3.2"
     zustand: "npm:^4.4.6"
@@ -10528,13 +10505,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^10.3.1":
-  version: 10.3.1
-  resolution: "swiper@npm:10.3.1"
-  checksum: 10c0/1e9ad5480cbf451d99fab280553d5105eb314f381d98610771f0808cac03962d87967a190696686d62bce8e4ebcbf34962c369f9d502b34fef1582ced17f6f98
-  languageName: node
-  linkType: hard
-
 "symbol-observable@npm:^1.0.4":
   version: 1.2.0
   resolution: "symbol-observable@npm:1.2.0"
@@ -11135,19 +11105,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"urql@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "urql@npm:4.1.0"
-  dependencies:
-    "@urql/core": "npm:^5.0.0"
-    wonka: "npm:^6.3.2"
-  peerDependencies:
-    "@urql/core": ^5.0.0
-    react: ">= 16.8.0"
-  checksum: 10c0/135245bd9fcc74c0c7577115dd48a90104271b5351ff2936fdb9e14d5d974841daf90a48a1e2bfb3497a2bd44401c05bed90806eb475ab26dc5ae34eb4b5578f
-  languageName: node
-  linkType: hard
-
 "use-sync-external-store@npm:1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
@@ -11366,13 +11323,6 @@ __metadata:
   bin:
     node-which: bin/which.js
   checksum: 10c0/449fa5c44ed120ccecfe18c433296a4978a7583bf2391c50abce13f76878d2476defde04d0f79db8165bdf432853c1f8389d0485ca6e8ebce3bbcded513d5e6a
-  languageName: node
-  linkType: hard
-
-"wonka@npm:^6.3.2":
-  version: 6.3.4
-  resolution: "wonka@npm:6.3.4"
-  checksum: 10c0/77329eea673da07717476e1b8f1a22f1e1a4f261bb9a58fa446c03d3da13dbd5b254664f8aded5928d953f33ee5b399a17a4f70336e8b236e478209c0e78cda4
   languageName: node
   linkType: hard
 

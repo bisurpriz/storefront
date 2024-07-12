@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetUserAddressByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['uuid']['input']>;
 }>;
@@ -129,10 +128,7 @@ export const GetUserAddressByIdDocument = gql`
   }
 }
     `;
-
-export function useGetUserAddressByIdQuery(options?: Omit<Urql.UseQueryArgs<GetUserAddressByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserAddressByIdQuery, GetUserAddressByIdQueryVariables>({ query: GetUserAddressByIdDocument, ...options });
-};
+export type GetUserAddressByIdQueryResult = Apollo.QueryResult<GetUserAddressByIdQuery, GetUserAddressByIdQueryVariables>;
 export const GetUserByIdDocument = gql`
     query getUserById($id: uuid = "") {
   user_by_pk(id: $id) {
@@ -155,10 +151,7 @@ export const GetUserByIdDocument = gql`
   }
 }
     `;
-
-export function useGetUserByIdQuery(options?: Omit<Urql.UseQueryArgs<GetUserByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>({ query: GetUserByIdDocument, ...options });
-};
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const UpdateUserByIdDocument = gql`
     mutation updateUserById($id: uuid!, $firstname: String, $lastname: String, $phone: String, $picture: String) {
   update_user_by_pk(
@@ -173,10 +166,9 @@ export const UpdateUserByIdDocument = gql`
   }
 }
     `;
-
-export function useUpdateUserByIdMutation() {
-  return Urql.useMutation<UpdateUserByIdMutation, UpdateUserByIdMutationVariables>(UpdateUserByIdDocument);
-};
+export type UpdateUserByIdMutationFn = Apollo.MutationFunction<UpdateUserByIdMutation, UpdateUserByIdMutationVariables>;
+export type UpdateUserByIdMutationResult = Apollo.MutationResult<UpdateUserByIdMutation>;
+export type UpdateUserByIdMutationOptions = Apollo.BaseMutationOptions<UpdateUserByIdMutation, UpdateUserByIdMutationVariables>;
 export const GetCitiesDocument = gql`
     query getCities {
   cities: city {
@@ -186,10 +178,7 @@ export const GetCitiesDocument = gql`
   }
 }
     `;
-
-export function useGetCitiesQuery(options?: Omit<Urql.UseQueryArgs<GetCitiesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetCitiesQuery, GetCitiesQueryVariables>({ query: GetCitiesDocument, ...options });
-};
+export type GetCitiesQueryResult = Apollo.QueryResult<GetCitiesQuery, GetCitiesQueryVariables>;
 export const GetDistrictsDocument = gql`
     query getDistricts($cityId: Int = 10) {
   districts: district(where: {city: {id: {_eq: $cityId}}}) {
@@ -198,10 +187,7 @@ export const GetDistrictsDocument = gql`
   }
 }
     `;
-
-export function useGetDistrictsQuery(options?: Omit<Urql.UseQueryArgs<GetDistrictsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetDistrictsQuery, GetDistrictsQueryVariables>({ query: GetDistrictsDocument, ...options });
-};
+export type GetDistrictsQueryResult = Apollo.QueryResult<GetDistrictsQuery, GetDistrictsQueryVariables>;
 export const GetQuartersDocument = gql`
     query getQuarters($districtId: Int = 1) {
   quarters: quarter(where: {district: {id: {_eq: $districtId}}}) {
@@ -210,10 +196,7 @@ export const GetQuartersDocument = gql`
   }
 }
     `;
-
-export function useGetQuartersQuery(options?: Omit<Urql.UseQueryArgs<GetQuartersQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetQuartersQuery, GetQuartersQueryVariables>({ query: GetQuartersDocument, ...options });
-};
+export type GetQuartersQueryResult = Apollo.QueryResult<GetQuartersQuery, GetQuartersQueryVariables>;
 export const GetQuarterByIdDocument = gql`
     query GetQuarterById($id: Int) @cached {
   quarter(where: {id: {_eq: $id}}) {
@@ -233,10 +216,7 @@ export const GetQuarterByIdDocument = gql`
   }
 }
     `;
-
-export function useGetQuarterByIdQuery(options?: Omit<Urql.UseQueryArgs<GetQuarterByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetQuarterByIdQuery, GetQuarterByIdQueryVariables>({ query: GetQuarterByIdDocument, ...options });
-};
+export type GetQuarterByIdQueryResult = Apollo.QueryResult<GetQuarterByIdQuery, GetQuarterByIdQueryVariables>;
 export const GetDistrictByIdDocument = gql`
     query getDistrictById($id: Int) @cached {
   district(where: {id: {_eq: $id}}) {
@@ -250,10 +230,7 @@ export const GetDistrictByIdDocument = gql`
   }
 }
     `;
-
-export function useGetDistrictByIdQuery(options?: Omit<Urql.UseQueryArgs<GetDistrictByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetDistrictByIdQuery, GetDistrictByIdQueryVariables>({ query: GetDistrictByIdDocument, ...options });
-};
+export type GetDistrictByIdQueryResult = Apollo.QueryResult<GetDistrictByIdQuery, GetDistrictByIdQueryVariables>;
 export const GetCityByIdDocument = gql`
     query getCityById($id: Int) {
   city(where: {id: {_eq: $id}}) {
@@ -263,10 +240,7 @@ export const GetCityByIdDocument = gql`
   }
 }
     `;
-
-export function useGetCityByIdQuery(options?: Omit<Urql.UseQueryArgs<GetCityByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetCityByIdQuery, GetCityByIdQueryVariables>({ query: GetCityByIdDocument, ...options });
-};
+export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;
 export const GetUserOrdersDocument = gql`
     query getUserOrders {
   order {
@@ -318,10 +292,7 @@ export const GetUserOrdersDocument = gql`
   }
 }
     `;
-
-export function useGetUserOrdersQuery(options?: Omit<Urql.UseQueryArgs<GetUserOrdersQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserOrdersQuery, GetUserOrdersQueryVariables>({ query: GetUserOrdersDocument, ...options });
-};
+export type GetUserOrdersQueryResult = Apollo.QueryResult<GetUserOrdersQuery, GetUserOrdersQueryVariables>;
 export const CreateNewAddressDocument = gql`
     mutation createNewAddress($address: String, $address_title: String, $city_id: Int, $district_id: Int, $quarter_id: Int, $receiver_firstname: String, $receiver_phone: String, $receiver_surname: String, $user_id: uuid) {
   insert_user_address_one(
@@ -332,10 +303,9 @@ export const CreateNewAddressDocument = gql`
   }
 }
     `;
-
-export function useCreateNewAddressMutation() {
-  return Urql.useMutation<CreateNewAddressMutation, CreateNewAddressMutationVariables>(CreateNewAddressDocument);
-};
+export type CreateNewAddressMutationFn = Apollo.MutationFunction<CreateNewAddressMutation, CreateNewAddressMutationVariables>;
+export type CreateNewAddressMutationResult = Apollo.MutationResult<CreateNewAddressMutation>;
+export type CreateNewAddressMutationOptions = Apollo.BaseMutationOptions<CreateNewAddressMutation, CreateNewAddressMutationVariables>;
 export const GetUserByEmailDocument = gql`
     query getUserByEmail($email: String!) {
   user(where: {email: {_eq: $email}}) {
@@ -344,10 +314,7 @@ export const GetUserByEmailDocument = gql`
   }
 }
     `;
-
-export function useGetUserByEmailQuery(options: Omit<Urql.UseQueryArgs<GetUserByEmailQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>({ query: GetUserByEmailDocument, ...options });
-};
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetLocationQueryDocument = gql`
     query GetLocationQuery($search: String = "") @cached {
   search_locationv1(args: {search: $search}, limit: 100) {
@@ -361,7 +328,4 @@ export const GetLocationQueryDocument = gql`
   }
 }
     `;
-
-export function useGetLocationQueryQuery(options?: Omit<Urql.UseQueryArgs<GetLocationQueryQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetLocationQueryQuery, GetLocationQueryQueryVariables>({ query: GetLocationQueryDocument, ...options });
-};
+export type GetLocationQueryQueryResult = Apollo.QueryResult<GetLocationQueryQuery, GetLocationQueryQueryVariables>;

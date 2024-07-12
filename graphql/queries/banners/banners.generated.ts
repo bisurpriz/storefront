@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetBannersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -20,7 +19,4 @@ export const GetBannersDocument = gql`
   }
 }
     `;
-
-export function useGetBannersQuery(options?: Omit<Urql.UseQueryArgs<GetBannersQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetBannersQuery, GetBannersQueryVariables>({ query: GetBannersDocument, ...options });
-};
+export type GetBannersQueryResult = Apollo.QueryResult<GetBannersQuery, GetBannersQueryVariables>;

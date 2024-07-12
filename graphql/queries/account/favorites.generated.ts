@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetUserFavoritesQueryVariables = Types.Exact<{
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
@@ -49,10 +48,7 @@ export const GetUserFavoritesDocument = gql`
   }
 }
     `;
-
-export function useGetUserFavoritesQuery(options?: Omit<Urql.UseQueryArgs<GetUserFavoritesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserFavoritesQuery, GetUserFavoritesQueryVariables>({ query: GetUserFavoritesDocument, ...options });
-};
+export type GetUserFavoritesQueryResult = Apollo.QueryResult<GetUserFavoritesQuery, GetUserFavoritesQueryVariables>;
 export const AddToFavoritesDocument = gql`
     mutation addToFavorites($productId: bigint!) {
   insert_user_favorite_one(object: {product_id: $productId}) {
@@ -60,10 +56,9 @@ export const AddToFavoritesDocument = gql`
   }
 }
     `;
-
-export function useAddToFavoritesMutation() {
-  return Urql.useMutation<AddToFavoritesMutation, AddToFavoritesMutationVariables>(AddToFavoritesDocument);
-};
+export type AddToFavoritesMutationFn = Apollo.MutationFunction<AddToFavoritesMutation, AddToFavoritesMutationVariables>;
+export type AddToFavoritesMutationResult = Apollo.MutationResult<AddToFavoritesMutation>;
+export type AddToFavoritesMutationOptions = Apollo.BaseMutationOptions<AddToFavoritesMutation, AddToFavoritesMutationVariables>;
 export const RemoveFromFavoritesDocument = gql`
     mutation removeFromFavorites($productId: bigint!) {
   delete_user_favorite(where: {product_id: {_eq: $productId}}) {
@@ -71,7 +66,6 @@ export const RemoveFromFavoritesDocument = gql`
   }
 }
     `;
-
-export function useRemoveFromFavoritesMutation() {
-  return Urql.useMutation<RemoveFromFavoritesMutation, RemoveFromFavoritesMutationVariables>(RemoveFromFavoritesDocument);
-};
+export type RemoveFromFavoritesMutationFn = Apollo.MutationFunction<RemoveFromFavoritesMutation, RemoveFromFavoritesMutationVariables>;
+export type RemoveFromFavoritesMutationResult = Apollo.MutationResult<RemoveFromFavoritesMutation>;
+export type RemoveFromFavoritesMutationOptions = Apollo.BaseMutationOptions<RemoveFromFavoritesMutation, RemoveFromFavoritesMutationVariables>;

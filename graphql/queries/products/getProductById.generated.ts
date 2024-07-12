@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetProductByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
 }>;
@@ -152,10 +151,7 @@ export const GetProductByIdDocument = gql`
   }
 }
     `;
-
-export function useGetProductByIdQuery(options?: Omit<Urql.UseQueryArgs<GetProductByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductByIdQuery, GetProductByIdQueryVariables>({ query: GetProductByIdDocument, ...options });
-};
+export type GetProductByIdQueryResult = Apollo.QueryResult<GetProductByIdQuery, GetProductByIdQueryVariables>;
 export const GetProductForCartDocument = gql`
     query getProductForCart($id: bigint = 0) {
   product: product_by_pk(id: $id) {
@@ -190,10 +186,7 @@ export const GetProductForCartDocument = gql`
   }
 }
     `;
-
-export function useGetProductForCartQuery(options?: Omit<Urql.UseQueryArgs<GetProductForCartQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductForCartQuery, GetProductForCartQueryVariables>({ query: GetProductForCartDocument, ...options });
-};
+export type GetProductForCartQueryResult = Apollo.QueryResult<GetProductForCartQuery, GetProductForCartQueryVariables>;
 export const GetProductPricesByIdDocument = gql`
     query getProductPricesById($id: bigint = 0) {
   product: product_by_pk(id: $id) {
@@ -203,10 +196,7 @@ export const GetProductPricesByIdDocument = gql`
   }
 }
     `;
-
-export function useGetProductPricesByIdQuery(options?: Omit<Urql.UseQueryArgs<GetProductPricesByIdQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductPricesByIdQuery, GetProductPricesByIdQueryVariables>({ query: GetProductPricesByIdDocument, ...options });
-};
+export type GetProductPricesByIdQueryResult = Apollo.QueryResult<GetProductPricesByIdQuery, GetProductPricesByIdQueryVariables>;
 export const GetProductsForInitialCartDocument = gql`
     query getProductsForInitialCart($ids: [bigint!]) {
   product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
@@ -243,10 +233,7 @@ export const GetProductsForInitialCartDocument = gql`
   }
 }
     `;
-
-export function useGetProductsForInitialCartQuery(options?: Omit<Urql.UseQueryArgs<GetProductsForInitialCartQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductsForInitialCartQuery, GetProductsForInitialCartQueryVariables>({ query: GetProductsForInitialCartDocument, ...options });
-};
+export type GetProductsForInitialCartQueryResult = Apollo.QueryResult<GetProductsForInitialCartQuery, GetProductsForInitialCartQueryVariables>;
 export const GetProductActionDataDocument = gql`
     query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -261,10 +248,7 @@ export const GetProductActionDataDocument = gql`
   }
 }
     `;
-
-export function useGetProductActionDataQuery(options: Omit<Urql.UseQueryArgs<GetProductActionDataQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductActionDataQuery, GetProductActionDataQueryVariables>({ query: GetProductActionDataDocument, ...options });
-};
+export type GetProductActionDataQueryResult = Apollo.QueryResult<GetProductActionDataQuery, GetProductActionDataQueryVariables>;
 export const GetProductActionDataForAnonymousDocument = gql`
     query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -276,10 +260,7 @@ export const GetProductActionDataForAnonymousDocument = gql`
   }
 }
     `;
-
-export function useGetProductActionDataForAnonymousQuery(options: Omit<Urql.UseQueryArgs<GetProductActionDataForAnonymousQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductActionDataForAnonymousQuery, GetProductActionDataForAnonymousQueryVariables>({ query: GetProductActionDataForAnonymousDocument, ...options });
-};
+export type GetProductActionDataForAnonymousQueryResult = Apollo.QueryResult<GetProductActionDataForAnonymousQuery, GetProductActionDataForAnonymousQueryVariables>;
 export const GetProductInformationDocument = gql`
     query getProductInformation($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -307,10 +288,7 @@ export const GetProductInformationDocument = gql`
   }
 }
     `;
-
-export function useGetProductInformationQuery(options: Omit<Urql.UseQueryArgs<GetProductInformationQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductInformationQuery, GetProductInformationQueryVariables>({ query: GetProductInformationDocument, ...options });
-};
+export type GetProductInformationQueryResult = Apollo.QueryResult<GetProductInformationQuery, GetProductInformationQueryVariables>;
 export const GetProductImagesDocument = gql`
     query getProductImages($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -318,10 +296,7 @@ export const GetProductImagesDocument = gql`
   }
 }
     `;
-
-export function useGetProductImagesQuery(options: Omit<Urql.UseQueryArgs<GetProductImagesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductImagesQuery, GetProductImagesQueryVariables>({ query: GetProductImagesDocument, ...options });
-};
+export type GetProductImagesQueryResult = Apollo.QueryResult<GetProductImagesQuery, GetProductImagesQueryVariables>;
 export const GetProductDescriptionDocument = gql`
     query getProductDescription($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -330,10 +305,7 @@ export const GetProductDescriptionDocument = gql`
   }
 }
     `;
-
-export function useGetProductDescriptionQuery(options: Omit<Urql.UseQueryArgs<GetProductDescriptionQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductDescriptionQuery, GetProductDescriptionQueryVariables>({ query: GetProductDescriptionDocument, ...options });
-};
+export type GetProductDescriptionQueryResult = Apollo.QueryResult<GetProductDescriptionQuery, GetProductDescriptionQueryVariables>;
 export const GetProductCommentsDocument = gql`
     query getProductComments($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
@@ -351,7 +323,4 @@ export const GetProductCommentsDocument = gql`
   }
 }
     `;
-
-export function useGetProductCommentsQuery(options: Omit<Urql.UseQueryArgs<GetProductCommentsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductCommentsQuery, GetProductCommentsQueryVariables>({ query: GetProductCommentsDocument, ...options });
-};
+export type GetProductCommentsQueryResult = Apollo.QueryResult<GetProductCommentsQuery, GetProductCommentsQueryVariables>;

@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type SubscribeToChatsSubscriptionVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -47,7 +46,4 @@ export const SubscribeToChatsDocument = gql`
   }
 }
     `;
-
-export function useSubscribeToChatsSubscription<TData = SubscribeToChatsSubscription>(options?: Omit<Urql.UseSubscriptionArgs<SubscribeToChatsSubscriptionVariables>, 'query'>, handler?: Urql.SubscriptionHandler<SubscribeToChatsSubscription, TData>) {
-  return Urql.useSubscription<SubscribeToChatsSubscription, TData, SubscribeToChatsSubscriptionVariables>({ query: SubscribeToChatsDocument, ...options }, handler);
-};
+export type SubscribeToChatsSubscriptionResult = Apollo.SubscriptionResult<SubscribeToChatsSubscription>;

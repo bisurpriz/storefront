@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetAllCouponsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -32,7 +31,4 @@ export const GetAllCouponsDocument = gql`
   }
 }
     `;
-
-export function useGetAllCouponsQuery(options?: Omit<Urql.UseQueryArgs<GetAllCouponsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetAllCouponsQuery, GetAllCouponsQueryVariables>({ query: GetAllCouponsDocument, ...options });
-};
+export type GetAllCouponsQueryResult = Apollo.QueryResult<GetAllCouponsQuery, GetAllCouponsQueryVariables>;

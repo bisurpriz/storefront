@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetSingleTenantOrderItemQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
 }>;
@@ -28,10 +27,7 @@ export const GetSingleTenantOrderItemDocument = gql`
   }
 }
     `;
-
-export function useGetSingleTenantOrderItemQuery(options?: Omit<Urql.UseQueryArgs<GetSingleTenantOrderItemQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetSingleTenantOrderItemQuery, GetSingleTenantOrderItemQueryVariables>({ query: GetSingleTenantOrderItemDocument, ...options });
-};
+export type GetSingleTenantOrderItemQueryResult = Apollo.QueryResult<GetSingleTenantOrderItemQuery, GetSingleTenantOrderItemQueryVariables>;
 export const CreateOrderDocument = gql`
     mutation createOrder($object: order_insert_input!) {
   insert_order_one(object: $object) {
@@ -39,7 +35,6 @@ export const CreateOrderDocument = gql`
   }
 }
     `;
-
-export function useCreateOrderMutation() {
-  return Urql.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument);
-};
+export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;
+export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;

@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type UpdateDbCartMutationVariables = Types.Exact<{
   payload: Array<Types.Cart_Insert_Input> | Types.Cart_Insert_Input;
   CONSTRAINT: Types.Cart_Constraint;
@@ -37,10 +36,9 @@ export const UpdateDbCartDocument = gql`
   }
 }
     `;
-
-export function useUpdateDbCartMutation() {
-  return Urql.useMutation<UpdateDbCartMutation, UpdateDbCartMutationVariables>(UpdateDbCartDocument);
-};
+export type UpdateDbCartMutationFn = Apollo.MutationFunction<UpdateDbCartMutation, UpdateDbCartMutationVariables>;
+export type UpdateDbCartMutationResult = Apollo.MutationResult<UpdateDbCartMutation>;
+export type UpdateDbCartMutationOptions = Apollo.BaseMutationOptions<UpdateDbCartMutation, UpdateDbCartMutationVariables>;
 export const GetDbCartDocument = gql`
     query getDbCart {
   cart {
@@ -49,10 +47,7 @@ export const GetDbCartDocument = gql`
   }
 }
     `;
-
-export function useGetDbCartQuery(options?: Omit<Urql.UseQueryArgs<GetDbCartQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetDbCartQuery, GetDbCartQueryVariables>({ query: GetDbCartDocument, ...options });
-};
+export type GetDbCartQueryResult = Apollo.QueryResult<GetDbCartQuery, GetDbCartQueryVariables>;
 export const GetProductByIdForCartDocument = gql`
     query getProductByIdForCart($id: bigint!) {
   product_by_pk(id: $id) {
@@ -85,7 +80,4 @@ export const GetProductByIdForCartDocument = gql`
   }
 }
     `;
-
-export function useGetProductByIdForCartQuery(options: Omit<Urql.UseQueryArgs<GetProductByIdForCartQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetProductByIdForCartQuery, GetProductByIdForCartQueryVariables>({ query: GetProductByIdForCartDocument, ...options });
-};
+export type GetProductByIdForCartQueryResult = Apollo.QueryResult<GetProductByIdForCartQuery, GetProductByIdForCartQueryVariables>;

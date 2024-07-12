@@ -1,8 +1,7 @@
 import * as Types from '../../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type ExpiredRefreshTokenMutationVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -18,7 +17,6 @@ export const ExpiredRefreshTokenDocument = gql`
   }
 }
     `;
-
-export function useExpiredRefreshTokenMutation() {
-  return Urql.useMutation<ExpiredRefreshTokenMutation, ExpiredRefreshTokenMutationVariables>(ExpiredRefreshTokenDocument);
-};
+export type ExpiredRefreshTokenMutationFn = Apollo.MutationFunction<ExpiredRefreshTokenMutation, ExpiredRefreshTokenMutationVariables>;
+export type ExpiredRefreshTokenMutationResult = Apollo.MutationResult<ExpiredRefreshTokenMutation>;
+export type ExpiredRefreshTokenMutationOptions = Apollo.BaseMutationOptions<ExpiredRefreshTokenMutation, ExpiredRefreshTokenMutationVariables>;

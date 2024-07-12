@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type VerifyTokenMutationVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
   resend?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
@@ -19,7 +18,6 @@ export const VerifyTokenDocument = gql`
   }
 }
     `;
-
-export function useVerifyTokenMutation() {
-  return Urql.useMutation<VerifyTokenMutation, VerifyTokenMutationVariables>(VerifyTokenDocument);
-};
+export type VerifyTokenMutationFn = Apollo.MutationFunction<VerifyTokenMutation, VerifyTokenMutationVariables>;
+export type VerifyTokenMutationResult = Apollo.MutationResult<VerifyTokenMutation>;
+export type VerifyTokenMutationOptions = Apollo.BaseMutationOptions<VerifyTokenMutation, VerifyTokenMutationVariables>;

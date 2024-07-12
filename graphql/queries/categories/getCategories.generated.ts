@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetMainCategoriesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -26,10 +25,7 @@ export const GetMainCategoriesDocument = gql`
   }
 }
     `;
-
-export function useGetMainCategoriesQuery(options?: Omit<Urql.UseQueryArgs<GetMainCategoriesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetMainCategoriesQuery, GetMainCategoriesQueryVariables>({ query: GetMainCategoriesDocument, ...options });
-};
+export type GetMainCategoriesQueryResult = Apollo.QueryResult<GetMainCategoriesQuery, GetMainCategoriesQueryVariables>;
 export const GetAllCategoriesDocument = gql`
     query getAllCategories($parent_category_id: Int) {
   category(where: {parent_category_id: {_eq: $parent_category_id}}) {
@@ -40,7 +36,4 @@ export const GetAllCategoriesDocument = gql`
   }
 }
     `;
-
-export function useGetAllCategoriesQuery(options?: Omit<Urql.UseQueryArgs<GetAllCategoriesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({ query: GetAllCategoriesDocument, ...options });
-};
+export type GetAllCategoriesQueryResult = Apollo.QueryResult<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>;

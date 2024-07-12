@@ -1,8 +1,7 @@
 import * as Types from '../../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type RegisterMutationVariables = Types.Exact<{
   email: Types.Scalars['String']['input'];
   password?: Types.InputMaybe<Types.Scalars['String']['input']>;
@@ -29,7 +28,6 @@ export const RegisterDocument = gql`
   }
 }
     `;
-
-export function useRegisterMutation() {
-  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
-};
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;

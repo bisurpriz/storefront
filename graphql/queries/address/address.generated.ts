@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetUserAddressesQueryVariables = Types.Exact<{
   user_id: Types.Scalars['uuid']['input'];
 }>;
@@ -32,7 +31,4 @@ export const GetUserAddressesDocument = gql`
   }
 }
     `;
-
-export function useGetUserAddressesQuery(options: Omit<Urql.UseQueryArgs<GetUserAddressesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetUserAddressesQuery, GetUserAddressesQueryVariables>({ query: GetUserAddressesDocument, ...options });
-};
+export type GetUserAddressesQueryResult = Apollo.QueryResult<GetUserAddressesQuery, GetUserAddressesQueryVariables>;

@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type GetVendorProductsWithPaginationQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
@@ -41,7 +40,4 @@ export const GetVendorProductsWithPaginationDocument = gql`
   }
 }
     `;
-
-export function useGetVendorProductsWithPaginationQuery(options: Omit<Urql.UseQueryArgs<GetVendorProductsWithPaginationQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetVendorProductsWithPaginationQuery, GetVendorProductsWithPaginationQueryVariables>({ query: GetVendorProductsWithPaginationDocument, ...options });
-};
+export type GetVendorProductsWithPaginationQueryResult = Apollo.QueryResult<GetVendorProductsWithPaginationQuery, GetVendorProductsWithPaginationQueryVariables>;

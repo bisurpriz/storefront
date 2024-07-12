@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type SendMessageAloneMutationVariables = Types.Exact<{
   message: Types.Scalars['String']['input'];
   receiver_id: Types.Scalars['uuid']['input'];
@@ -43,10 +42,9 @@ export const SendMessageAloneDocument = gql`
   }
 }
     `;
-
-export function useSendMessageAloneMutation() {
-  return Urql.useMutation<SendMessageAloneMutation, SendMessageAloneMutationVariables>(SendMessageAloneDocument);
-};
+export type SendMessageAloneMutationFn = Apollo.MutationFunction<SendMessageAloneMutation, SendMessageAloneMutationVariables>;
+export type SendMessageAloneMutationResult = Apollo.MutationResult<SendMessageAloneMutation>;
+export type SendMessageAloneMutationOptions = Apollo.BaseMutationOptions<SendMessageAloneMutation, SendMessageAloneMutationVariables>;
 export const SendMessageDocument = gql`
     mutation sendMessage($message: String!, $receiver_id: uuid!, $chat_thread_id: uuid!) {
   insert_message_one(
@@ -56,10 +54,9 @@ export const SendMessageDocument = gql`
   }
 }
     `;
-
-export function useSendMessageMutation() {
-  return Urql.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument);
-};
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const MarkAsReadDocument = gql`
     mutation markAsRead($chat_thread_id: uuid!) {
   update_message_many(
@@ -69,7 +66,6 @@ export const MarkAsReadDocument = gql`
   }
 }
     `;
-
-export function useMarkAsReadMutation() {
-  return Urql.useMutation<MarkAsReadMutation, MarkAsReadMutationVariables>(MarkAsReadDocument);
-};
+export type MarkAsReadMutationFn = Apollo.MutationFunction<MarkAsReadMutation, MarkAsReadMutationVariables>;
+export type MarkAsReadMutationResult = Apollo.MutationResult<MarkAsReadMutation>;
+export type MarkAsReadMutationOptions = Apollo.BaseMutationOptions<MarkAsReadMutation, MarkAsReadMutationVariables>;

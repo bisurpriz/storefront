@@ -1,8 +1,7 @@
 import * as Types from '../../generated-types';
 
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type SearchProductsQueryVariables = Types.Exact<{
   search?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
@@ -20,7 +19,4 @@ export const SearchProductsDocument = gql`
   }
 }
     `;
-
-export function useSearchProductsQuery(options?: Omit<Urql.UseQueryArgs<SearchProductsQueryVariables>, 'query'>) {
-  return Urql.useQuery<SearchProductsQuery, SearchProductsQueryVariables>({ query: SearchProductsDocument, ...options });
-};
+export type SearchProductsQueryResult = Apollo.QueryResult<SearchProductsQuery, SearchProductsQueryVariables>;
