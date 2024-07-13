@@ -45,6 +45,8 @@ const ProductItem5 = ({
           id,
           slug,
         })}
+        scroll={true}
+        target="_blank"
       >
         <Image
           src={`${getImageUrlFromPath(image?.[0])}${
@@ -53,7 +55,7 @@ const ProductItem5 = ({
           alt={name}
           width={500}
           height={500}
-          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-auto h-auto"
+          className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
           quality={70}
           priority={true}
         />
@@ -80,7 +82,7 @@ const ProductItem5 = ({
           <ProductCardStamps id={id.toString()} stamps={stamps} />
         </div>
       </Link>
-      <AddCartButton2
+      {/* <AddCartButton2
         product={{
           id,
           category,
@@ -92,7 +94,7 @@ const ProductItem5 = ({
           tenant,
           quantity: 1,
         }}
-      />
+      /> */}
     </div>
   );
 };

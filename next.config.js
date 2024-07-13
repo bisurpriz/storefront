@@ -4,6 +4,16 @@ const nextConfig = {
     ppr: true,
     reactCompiler: true,
     forceSwcTransforms: true,
+    optimizePackageImports: [
+      "framer-motion",
+      "@mui/base",
+      "@hookform/resolvers",
+      "date-fns",
+      "graphql",
+      "yup",
+      "zustand",
+      "react-hook-form",
+    ],
   },
   images: {
     loader: "default",

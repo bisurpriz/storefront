@@ -29,7 +29,7 @@ const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
 });
 
@@ -37,7 +37,7 @@ const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-manrope",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
 });
 
@@ -45,7 +45,7 @@ const quickSand = Quicksand({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-quicksand",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
 });
 
@@ -56,11 +56,11 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png?width=32&height=32&quality=70",
+      url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=32&height=32&quality=70",
     },
     {
       rel: "apple-touch-icon",
-      url: "https://bisurprizdev.s3.eu-north-1.amazonaws.com/system-assets/logo-kare.png?width=180&height=180&quality=70",
+      url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=180&height=180&quality=70",
     },
   ],
   keywords: [

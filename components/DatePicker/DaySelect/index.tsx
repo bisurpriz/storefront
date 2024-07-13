@@ -37,18 +37,18 @@ type Props = {
 const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
+  const [selectedHour, setSelectedHour] = useState<string | null>(null);
 
   const handleButtonClick = (daysToAdd: number) => {
     const date = addDays(new Date(), daysToAdd);
     setSelectedDate(date);
     setSelectedButton(daysToAdd);
+    setSelectedHour(null);
   };
 
-  const handleSelectHour = (hour: Date) => {
-    const text = `${hour.getHours()}:00 - ${hour.getHours() + 1}:00`;
-    const date = selectedDate.setHours(hour.getHours(), 0, 0, 0);
-    onSelect(new Date(date));
-    return text;
+  const handleSelectHour = (hour: string) => {
+    onSelect(new Date(selectedDate));
+    setSelectedHour(hour);
   };
 
   return (
@@ -84,12 +84,23 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
           >
             <HourSelect
               deliveryTimeRanges={deliveryTimes}
-              currentDate={selectedDate}
               onHourSelect={handleSelectHour}
             />
           </motion.div>
         )}
       </div>
+      {selectedHour && (
+        <span
+          className={clsx(
+            "text-xs text-gray-500",
+            "p-2 rounded-lg bg-6 text-slate-500"
+          )}
+        >
+          Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}
+          tarihinde <strong>{selectedHour}</strong> saatleri arasında teslim
+          edilecektir.
+        </span>
+      )}
     </div>
   );
 };

@@ -22,6 +22,14 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
 
   const { open } = useImageZoomModal();
 
+  const getImageUrl = (image: string) => {
+    if (!image) return "https://via.placeholder.com/500";
+
+    return `${getImageUrlFromPath(
+      image
+    )}?width=500&height=500&format=wepb&quality=75`;
+  };
+
   return (
     <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
       <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto ">
@@ -36,13 +44,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
             onMouseEnter={() => handleImageClick(image)}
           >
             <Image
-              src={
-                image
-                  ? `${getImageUrlFromPath(
-                      image
-                    )}?width=100&height=100&format=wepb&quality=75`
-                  : "https://via.placeholder.com/100"
-              }
+              src={getImageUrl(image)}
               alt="Product Image"
               className="h-full w-full object-cover"
               width={100}
@@ -66,13 +68,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           resultHeight={400}
         /> */}
         <Image
-          src={
-            selectedImage
-              ? `${getImageUrlFromPath(
-                  selectedImage
-                )}?width=500&height=500&format=wepb&quality=75`
-              : "https://via.placeholder.com/500"
-          }
+          src={getImageUrl(selectedImage)}
           alt="Product Image"
           className="h-full w-full object-contain"
           width={500}
@@ -80,7 +76,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         />
         <ZoomButton
           onClick={() => {
-            open(selectedImage);
+            open(getImageUrl(selectedImage));
           }}
         />
       </div>

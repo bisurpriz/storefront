@@ -120,10 +120,14 @@ export const CartProvider = ({
     id,
     type,
     quantity,
+    deliveryDate,
+    deliveryTime,
   }: {
     id: number;
     type: "updateq" | "add";
     quantity?: number;
+    deliveryDate?: string;
+    deliveryTime?: string;
   }) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === id);
@@ -131,7 +135,13 @@ export const CartProvider = ({
     if (hasItem === -1) {
       const item = await getProductByIdForCart(id);
 
-      cartItems.push(item);
+      const _item = {
+        ...item,
+        deliveryDate,
+        deliveryTime,
+      };
+
+      cartItems.push(_item);
       handleChangeDb(cartItems, "add").then(({ costData, error }) => {
         if (error) return;
 
