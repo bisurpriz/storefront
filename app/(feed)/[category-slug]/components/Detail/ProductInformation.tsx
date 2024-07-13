@@ -150,16 +150,7 @@ const ProductInformation = ({
         )}
         {showDaySelect && (
           <DaySelect
-            deliveryTimes={[
-              {
-                end_time: "20:00",
-                start_time: "18:00",
-              },
-              {
-                end_time: "23:00",
-                start_time: "20:00",
-              },
-            ]}
+            deliveryTimes={parseJson(deliveryTimeRanges)}
             onSelect={(date) => setDeliveryTimeHandler(date)}
           />
         )}

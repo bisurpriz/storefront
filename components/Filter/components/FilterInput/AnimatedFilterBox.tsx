@@ -40,17 +40,17 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
 
   return (
     <>
-      {isOpen && isTablet && (
-        <motion.div
-          key="backdrop"
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={handleClose}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        />
-      )}
-      <AnimationExitProvider show={isOpen} key="submenu">
+      <AnimationExitProvider show={isOpen}>
+        {isTablet && (
+          <motion.div
+            key="backdrop"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={handleClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+        )}
         <motion.div
           key="submenu"
           className={clsx(

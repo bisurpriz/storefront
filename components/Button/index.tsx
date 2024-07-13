@@ -58,7 +58,9 @@ const Button: FC<ButtonProps> = ({
   const widthClass = fullWidth ? "w-full" : "";
   const roundedClass = rounded ? "rounded" : "";
   const loadingClass = loading ? "opacity-50 cursor-not-allowed" : "";
-  const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
+  const disabledStyle = disabled
+    ? "bg-slate-200 text-stone-400 !cursor-not-allowed hover:bg-slate-200 hover:text-stone-400"
+    : "";
 
   const colors = (() => {
     // check variant

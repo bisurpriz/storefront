@@ -32,7 +32,6 @@ export const DeliveryTimeProvider = ({ children }: { children: ReactNode }) => {
       }
       return false;
     } catch (error) {
-      console.log("Error in isValidDeliveryTime", error);
       return false;
     }
   };

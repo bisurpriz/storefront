@@ -7,22 +7,41 @@ import AnimatedFilterBox from "@/components/Filter/components/FilterInput/Animat
 type HourSelectProps = {
   deliveryTimeRanges: TimeRange[] | null;
   onHourSelect: (hour: string) => void;
+  selectedHour?: string;
 };
 
 const HourSelect: FC<HourSelectProps> = ({
   deliveryTimeRanges,
   onHourSelect,
+  selectedHour,
 }) => {
-  const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [showHourDropdown, setShowHourDropdown] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleHourSelect = (date: string) => {
-    setSelectedHour(date);
-    onHourSelect(date);
+  const handleHourSelect = (hour: string) => {
+    if (selectedHour === hour) return;
+    if (!deliveryTimeRanges.length) return;
+    onHourSelect(hour);
     setShowHourDropdown(false);
+    console.log("selected hour", hour);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setShowHourDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [containerRef]);
 
   return (
     <div ref={containerRef} className="w-full relative">
@@ -31,7 +50,8 @@ const HourSelect: FC<HourSelectProps> = ({
         color="secondary"
         variant="fullfilled"
         className="max-md:text-xs justify-center"
-        onClick={() => setShowHourDropdown(!showHourDropdown)}
+        onClick={() => setShowHourDropdown(true)}
+        disabled={!deliveryTimeRanges?.length}
       >
         {selectedHour ?? "Saat Seç"}
       </Button>
@@ -59,13 +79,14 @@ const HourSelect: FC<HourSelectProps> = ({
               className={clsx(
                 "px-4 py-2 cursor-pointer hover:bg-gray-100",
                 {
-                  "bg-gray-100 text-primary": selectedHour?.startsWith(
-                    time.start_time
-                  ),
+                  "bg-gray-100 text-primary":
+                    selectedHour === `${time.start_time} - ${time.end_time}`,
                 },
                 "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
               )}
-              aria-selected={selectedHour === time.start_time}
+              aria-selected={
+                selectedHour === `${time.start_time} - ${time.end_time}`
+              }
               aria-label={`${time.start_time} - ${time.end_time}`}
               key={index}
               onClick={() =>

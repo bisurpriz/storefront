@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  addDays,
-  addHours,
-  differenceInHours,
-  format,
-  isAfter,
-  isSameDay,
-  setHours,
-  setMinutes,
-  startOfHour,
-} from "date-fns";
+import { addDays, addHours, differenceInHours } from "date-fns";
 import { motion } from "framer-motion";
 import Button from "@/components/Button";
 import HourSelect from "../HourSelect";
@@ -71,55 +61,27 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
 
   const calculateTodayAvailableHours = () => {
     const today = new Date();
-    const now = new Date();
+    const nowHour = today.getHours();
 
-    if (!isSameDay(selectedDate, today)) {
-      return [...deliveryTimes];
+    if (selectedDate?.getDate() !== today.getDate()) {
+      return deliveryTimes;
     } else {
-      const availableHours = [...deliveryTimes]?.reduce((acc, time) => {
-        const [startHour, startMinute] = time.start_time.split(":").map(Number);
-        const [endHour, endMinute] = time.end_time.split(":").map(Number);
+      return [...deliveryTimes]?.filter((time) => {
+        const [startHour, startMinute] = time.start_time.split(":");
+        const [endHour, endMinute] = time.end_time.split(":");
 
-        const startTime = setMinutes(setHours(today, startHour), startMinute);
-        const endTime = setMinutes(setHours(today, endHour), endMinute);
+        if (nowHour < parseInt(startHour)) return true;
 
-        if (isAfter(endTime, now)) {
-          if (isAfter(now, startTime)) {
-            const adjustedTime = {
-              ...time,
-              start_time: format(startOfHour(now), "HH:mm"),
-            };
-            acc.push(adjustedTime);
-          } else {
-            const roundedStartTime = format(startOfHour(startTime), "HH:mm");
-            const newTime = {
-              ...time,
-              start_time: roundedStartTime,
-            };
-            acc.push(newTime);
-          }
-        }
+        if (
+          nowHour === parseInt(startHour) &&
+          today.getMinutes() < parseInt(startMinute)
+        )
+          return true;
 
-        return acc;
-      }, []);
+        if (nowHour < parseInt(endHour)) return true;
 
-      // Combine times with the same start_time and end_time
-      const combinedHours = availableHours.reduce((acc, time) => {
-        const existing = acc.find(
-          (t) =>
-            t.start_time === time.start_time && t.end_time === time.end_time
-        );
-
-        if (!existing) {
-          acc.push(time);
-        } else {
-          existing.end_time = time.end_time; // Update the end_time if necessary
-        }
-
-        return acc;
-      }, []);
-
-      return combinedHours;
+        return false;
+      });
     }
   };
 
@@ -162,7 +124,7 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
         ))}
         {selectedDate && (
           <motion.div
-            key={selectedDate?.toString() || 0}
+            key={selectedDate.toString()}
             initial={{ x: 20 }}
             animate={{ x: 0 }}
             exit={{ x: 20 }}
@@ -176,6 +138,7 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
             <HourSelect
               deliveryTimeRanges={availableHours}
               onHourSelect={handleSelectHour}
+              selectedHour={selectedHour}
             />
           </motion.div>
         )}
