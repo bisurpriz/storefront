@@ -1,0 +1,58 @@
+"use client";
+
+import { isDate } from "date-fns";
+import { ReactNode, createContext, useContext, useState } from "react";
+
+export type DeliveryTime = {
+  day: Date | null;
+  hour: string;
+};
+
+interface DeliveryTimeContextType {
+  deliveryTime: DeliveryTime | null;
+  setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
+}
+
+export const DeliveryTimeContext = createContext<DeliveryTimeContextType>({
+  deliveryTime: null,
+  setDeliveryTimeHandler: () => {},
+});
+
+export const DeliveryTimeProvider = ({ children }: { children: ReactNode }) => {
+  const [deliveryTime, setDeliveryTime] = useState<DeliveryTime>({
+    day: null,
+    hour: "",
+  });
+
+  const isValidDeliveryTime = (deliveryTime: DeliveryTime) => {
+    try {
+      const { day, hour } = deliveryTime;
+      if (isDate(day) && hour.length) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log("Error in isValidDeliveryTime", error);
+      return false;
+    }
+  };
+
+  const setDeliveryTimeHandler = (deliveryTime: DeliveryTime) => {
+    if (isValidDeliveryTime(deliveryTime)) {
+      setDeliveryTime(deliveryTime);
+    }
+  };
+
+  return (
+    <DeliveryTimeContext.Provider
+      value={{
+        deliveryTime,
+        setDeliveryTimeHandler,
+      }}
+    >
+      {children}
+    </DeliveryTimeContext.Provider>
+  );
+};
+
+export const useDeliveryTime = () => useContext(DeliveryTimeContext);

@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { TimeRange } from "./utils";
 import Button from "@/components/Button";
 import clsx from "clsx";

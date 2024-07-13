@@ -10,6 +10,8 @@ import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
 import Ticket from "@/components/Icons/Ticket";
 import OutlineArchive from "@/components/Icons/OutlineArchive";
+import { useEffect, useState } from "react";
+import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
 
 type ProductInformationProps = {
   name: string;
@@ -49,6 +51,14 @@ const ProductInformation = ({
 
   const showDaySelect = isSameDay && hasDeliveryTime;
   const showExactTime = isSameDay && !hasDeliveryTime;
+
+  const { setDeliveryTimeHandler } = useDeliveryTime();
+
+  useEffect(() => {
+    return () => {
+      setDeliveryTimeHandler(null);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
@@ -140,8 +150,17 @@ const ProductInformation = ({
         )}
         {showDaySelect && (
           <DaySelect
-            deliveryTimes={parseJson(deliveryTimeRanges)}
-            onSelect={(date) => console.log(date)}
+            deliveryTimes={[
+              {
+                end_time: "20:00",
+                start_time: "18:00",
+              },
+              {
+                end_time: "23:00",
+                start_time: "20:00",
+              },
+            ]}
+            onSelect={(date) => setDeliveryTimeHandler(date)}
           />
         )}
       </div>

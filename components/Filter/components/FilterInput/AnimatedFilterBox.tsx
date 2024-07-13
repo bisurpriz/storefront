@@ -1,5 +1,6 @@
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import useResponsive from "@/hooks/useResponsive";
+import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { Variants, motion } from "framer-motion";
 import { FC } from "react";

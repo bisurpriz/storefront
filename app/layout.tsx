@@ -22,6 +22,7 @@ import {
   GetMainCategoriesQuery,
   GetMainCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
+import { DeliveryTimeProvider } from "@/contexts/DeliveryTimeContext";
 
 export const experimental_ppr = true;
 
@@ -138,13 +139,15 @@ export default async function RootLayout({
         <AuthProvider user={user}>
           <ApolloWrapper>
             <CategoryProvider category={category}>
-              <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                <Suspense fallback={<HeaderSuspense />}>
-                  <Header category={category} />
-                </Suspense>
-                <Content>{children}</Content>
-                {auth}
-              </CartProvider>
+              <DeliveryTimeProvider>
+                <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                  <Suspense fallback={<HeaderSuspense />}>
+                    <Header category={category} />
+                  </Suspense>
+                  <Content>{children}</Content>
+                  {auth}
+                </CartProvider>
+              </DeliveryTimeProvider>
             </CategoryProvider>
           </ApolloWrapper>
         </AuthProvider>
