@@ -70,7 +70,7 @@ export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: s
 export type GetUserOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, product: { id: any, slug?: string | null, description?: string | null, image_url?: Array<string> | null, name: string, price: number, discount_price?: number | null, quantity?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, order_item_special_images: Array<{ image_url: string, quantity_index?: number | null, id: any }>, order_item_special_texts: Array<{ content: string, quantity_index?: number | null, id: any }>, product: { slug?: string | null, image_url?: Array<string> | null, name: string, quantity?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null, order_items_aggregate: { aggregate?: { count: number } | null } }> }> };
 
 export type CreateNewAddressMutationVariables = Types.Exact<{
   address?: Types.InputMaybe<Types.Scalars['String']['input']>;
@@ -100,6 +100,13 @@ export type GetLocationQueryQueryVariables = Types.Exact<{
 
 
 export type GetLocationQueryQuery = { search_locationv1: Array<{ id?: number | null, name?: string | null, type?: string | null, district_id?: number | null, district_name?: string | null, city_id?: number | null, city_name?: string | null }> };
+
+export type UpdateOrderItemSpecialTextMutationVariables = Types.Exact<{
+  object: Array<Types.Order_Item_Special_Text_Insert_Input> | Types.Order_Item_Special_Text_Insert_Input;
+}>;
+
+
+export type UpdateOrderItemSpecialTextMutation = { insert_order_item_special_text?: { affected_rows: number } | null };
 
 
 export const GetUserAddressByIdDocument = gql`
@@ -253,7 +260,6 @@ export const GetUserOrdersDocument = gql`
         id
         tenants {
           name
-          logo
           id
         }
       }
@@ -262,18 +268,24 @@ export const GetUserOrdersDocument = gql`
         order_item_no
         product_id
         quantity
+        order_item_special_images {
+          image_url
+          quantity_index
+          id
+        }
+        order_item_special_texts {
+          content
+          quantity_index
+          id
+        }
         product {
           category {
             name
             slug
           }
-          id
           slug
-          description
           image_url
           name
-          price
-          discount_price
           quantity
           product_customizable_areas {
             count
@@ -287,6 +299,11 @@ export const GetUserOrdersDocument = gql`
       }
       order_status {
         value
+      }
+      order_items_aggregate {
+        aggregate {
+          count(columns: id)
+        }
       }
     }
   }
@@ -329,3 +346,16 @@ export const GetLocationQueryDocument = gql`
 }
     `;
 export type GetLocationQueryQueryResult = Apollo.QueryResult<GetLocationQueryQuery, GetLocationQueryQueryVariables>;
+export const UpdateOrderItemSpecialTextDocument = gql`
+    mutation UpdateOrderItemSpecialText($object: [order_item_special_text_insert_input!]!) {
+  insert_order_item_special_text(
+    objects: $object
+    on_conflict: {constraint: order_item_special_text_pkey, update_columns: [content]}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateOrderItemSpecialTextMutationFn = Apollo.MutationFunction<UpdateOrderItemSpecialTextMutation, UpdateOrderItemSpecialTextMutationVariables>;
+export type UpdateOrderItemSpecialTextMutationResult = Apollo.MutationResult<UpdateOrderItemSpecialTextMutation>;
+export type UpdateOrderItemSpecialTextMutationOptions = Apollo.BaseMutationOptions<UpdateOrderItemSpecialTextMutation, UpdateOrderItemSpecialTextMutationVariables>;

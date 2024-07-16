@@ -24,7 +24,6 @@ const HourSelect: FC<HourSelectProps> = ({
     if (!deliveryTimeRanges.length) return;
     onHourSelect(hour);
     setShowHourDropdown(false);
-    console.log("selected hour", hour);
   };
 
   useEffect(() => {

@@ -8076,11 +8076,14 @@ export type Order_Insert_Input = {
 /** columns and relationships of "order_item" */
 export type Order_Item = {
   amount?: Maybe<Scalars['numeric']['output']>;
+  approve_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id: Scalars['bigint']['output'];
+  images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
+  is_images_approved?: Maybe<Scalars['Boolean']['output']>;
   /** A computed field, executes function "generate_order_item_no" */
   order_item_no?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
@@ -8153,7 +8156,23 @@ export type Order_Item_Aggregate = {
 };
 
 export type Order_Item_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Order_Item_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Order_Item_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Order_Item_Aggregate_Bool_Exp_Count>;
+};
+
+export type Order_Item_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Order_Item_Select_Column_Order_Item_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Order_Item_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Order_Item_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Order_Item_Select_Column_Order_Item_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Order_Item_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Order_Item_Aggregate_Bool_Exp_Count = {
@@ -8235,11 +8254,14 @@ export type Order_Item_Bool_Exp = {
   _not?: InputMaybe<Order_Item_Bool_Exp>;
   _or?: InputMaybe<Array<Order_Item_Bool_Exp>>;
   amount?: InputMaybe<Numeric_Comparison_Exp>;
+  approve_note?: InputMaybe<String_Comparison_Exp>;
   commissioned_amount?: InputMaybe<Numeric_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   delivery_date?: InputMaybe<Timestamp_Comparison_Exp>;
   delivery_time?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Bigint_Comparison_Exp>;
+  images_to_approve?: InputMaybe<String_Array_Comparison_Exp>;
+  is_images_approved?: InputMaybe<Boolean_Comparison_Exp>;
   order_item_no?: InputMaybe<String_Comparison_Exp>;
   order_item_special_images?: InputMaybe<Order_Item_Special_Image_Bool_Exp>;
   order_item_special_images_aggregate?: InputMaybe<Order_Item_Special_Image_Aggregate_Bool_Exp>;
@@ -8276,11 +8298,14 @@ export type Order_Item_Inc_Input = {
 /** input type for inserting data into table "order_item" */
 export type Order_Item_Insert_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
+  approve_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
+  is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_item_special_images?: InputMaybe<Order_Item_Special_Image_Arr_Rel_Insert_Input>;
   order_item_special_texts?: InputMaybe<Order_Item_Special_Text_Arr_Rel_Insert_Input>;
   order_tenant?: InputMaybe<Order_Tenant_Obj_Rel_Insert_Input>;
@@ -8298,11 +8323,13 @@ export type Order_Item_Insert_Input = {
 /** aggregate max on columns */
 export type Order_Item_Max_Fields = {
   amount?: Maybe<Scalars['numeric']['output']>;
+  approve_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
   /** A computed field, executes function "generate_order_item_no" */
   order_item_no?: Maybe<Scalars['String']['output']>;
   order_tenant_id?: Maybe<Scalars['bigint']['output']>;
@@ -8316,11 +8343,13 @@ export type Order_Item_Max_Fields = {
 /** order by max() on columns of table "order_item" */
 export type Order_Item_Max_Order_By = {
   amount?: InputMaybe<Order_By>;
+  approve_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  images_to_approve?: InputMaybe<Order_By>;
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -8332,11 +8361,13 @@ export type Order_Item_Max_Order_By = {
 /** aggregate min on columns */
 export type Order_Item_Min_Fields = {
   amount?: Maybe<Scalars['numeric']['output']>;
+  approve_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
   /** A computed field, executes function "generate_order_item_no" */
   order_item_no?: Maybe<Scalars['String']['output']>;
   order_tenant_id?: Maybe<Scalars['bigint']['output']>;
@@ -8350,11 +8381,13 @@ export type Order_Item_Min_Fields = {
 /** order by min() on columns of table "order_item" */
 export type Order_Item_Min_Order_By = {
   amount?: InputMaybe<Order_By>;
+  approve_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  images_to_approve?: InputMaybe<Order_By>;
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -8381,11 +8414,14 @@ export type Order_Item_On_Conflict = {
 /** Ordering options when selecting data from "order_item". */
 export type Order_Item_Order_By = {
   amount?: InputMaybe<Order_By>;
+  approve_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  images_to_approve?: InputMaybe<Order_By>;
+  is_images_approved?: InputMaybe<Order_By>;
   order_item_no?: InputMaybe<Order_By>;
   order_item_special_images_aggregate?: InputMaybe<Order_Item_Special_Image_Aggregate_Order_By>;
   order_item_special_texts_aggregate?: InputMaybe<Order_Item_Special_Text_Aggregate_Order_By>;
@@ -8411,6 +8447,8 @@ export type Order_Item_Select_Column =
   /** column name */
   | 'amount'
   /** column name */
+  | 'approve_note'
+  /** column name */
   | 'commissioned_amount'
   /** column name */
   | 'created_at'
@@ -8420,6 +8458,10 @@ export type Order_Item_Select_Column =
   | 'delivery_time'
   /** column name */
   | 'id'
+  /** column name */
+  | 'images_to_approve'
+  /** column name */
+  | 'is_images_approved'
   /** column name */
   | 'order_tenant_id'
   /** column name */
@@ -8435,14 +8477,27 @@ export type Order_Item_Select_Column =
   /** column name */
   | 'user_id';
 
+/** select "order_item_aggregate_bool_exp_bool_and_arguments_columns" columns of table "order_item" */
+export type Order_Item_Select_Column_Order_Item_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
+  /** column name */
+  | 'is_images_approved';
+
+/** select "order_item_aggregate_bool_exp_bool_or_arguments_columns" columns of table "order_item" */
+export type Order_Item_Select_Column_Order_Item_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
+  /** column name */
+  | 'is_images_approved';
+
 /** input type for updating data in table "order_item" */
 export type Order_Item_Set_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
+  approve_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
+  is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
@@ -9183,11 +9238,14 @@ export type Order_Item_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Order_Item_Stream_Cursor_Value_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
+  approve_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
+  is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
@@ -9224,6 +9282,8 @@ export type Order_Item_Update_Column =
   /** column name */
   | 'amount'
   /** column name */
+  | 'approve_note'
+  /** column name */
   | 'commissioned_amount'
   /** column name */
   | 'created_at'
@@ -9233,6 +9293,10 @@ export type Order_Item_Update_Column =
   | 'delivery_time'
   /** column name */
   | 'id'
+  /** column name */
+  | 'images_to_approve'
+  /** column name */
+  | 'is_images_approved'
   /** column name */
   | 'order_tenant_id'
   /** column name */

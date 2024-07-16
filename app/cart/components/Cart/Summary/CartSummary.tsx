@@ -5,13 +5,13 @@ import Button from "@/components/Button";
 
 import { useCart } from "@/contexts/CartContext";
 import { usePathname } from "next/navigation";
-import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { CartStepPaths } from "../../../constants";
 import SummaryDetail from "./SummaryDetail";
 import clsx from "clsx";
 import useResponsive from "@/hooks/useResponsive";
 import { createPortal } from "react-dom";
 import ChevronUp from "@/components/Icons/ChevronUp";
+import { useRouter } from "next/navigation";
 
 const CartSummary = () => {
   const {
@@ -19,15 +19,13 @@ const CartSummary = () => {
     loading,
   } = useCart();
   const pathname = usePathname();
-  const { handleChangeStep } = useCartStep();
+  const { push } = useRouter();
   const { isTablet } = useResponsive();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const changeStep = () => {
-    if (pathname !== CartStepPaths.ORDER_DETAIL) {
-      handleChangeStep();
-    }
+    if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
   };
 
   useEffect(() => {

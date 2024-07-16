@@ -99,7 +99,7 @@ const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const { push, replace } = useRouter();
+  const { replace } = useRouter();
   const userData = useUser();
   const { isDesktop } = useResponsive();
   const {
@@ -116,7 +116,7 @@ const CreditCardForm = () => {
   useEffect(() => {
     const serialize = localStorage.getItem("detail-data");
     if (!serialize) {
-      push("/cart");
+      replace("/cart");
     }
   }, []);
 
@@ -300,6 +300,7 @@ const CreditCardForm = () => {
                 error={!!error}
                 errorMessage={error?.message}
                 onChange={(e, val) => onChange(val)}
+                disabled={loading}
               />
             )}
           />

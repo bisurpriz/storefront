@@ -99,6 +99,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           <input
             {...getInputProps()}
             {...rest}
+            tabIndex={0}
             onKeyDown={onKeyDown}
             type={type}
             name={id}

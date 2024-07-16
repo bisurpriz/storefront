@@ -9495,11 +9495,14 @@ columns and relationships of "order_item"
 """
 type order_item {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint!
+  images_to_approve: [String!]
+  is_images_approved: Boolean
 
   """
   A computed field, executes function "generate_order_item_no"
@@ -9604,7 +9607,23 @@ type order_item_aggregate {
 }
 
 input order_item_aggregate_bool_exp {
+  bool_and: order_item_aggregate_bool_exp_bool_and
+  bool_or: order_item_aggregate_bool_exp_bool_or
   count: order_item_aggregate_bool_exp_count
+}
+
+input order_item_aggregate_bool_exp_bool_and {
+  arguments: order_item_select_column_order_item_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: order_item_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input order_item_aggregate_bool_exp_bool_or {
+  arguments: order_item_select_column_order_item_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: order_item_bool_exp
+  predicate: Boolean_comparison_exp!
 }
 
 input order_item_aggregate_bool_exp_count {
@@ -9690,11 +9709,14 @@ input order_item_bool_exp {
   _not: order_item_bool_exp
   _or: [order_item_bool_exp!]
   amount: numeric_comparison_exp
+  approve_note: String_comparison_exp
   commissioned_amount: numeric_comparison_exp
   created_at: timestamptz_comparison_exp
   delivery_date: timestamp_comparison_exp
   delivery_time: String_comparison_exp
   id: bigint_comparison_exp
+  images_to_approve: String_array_comparison_exp
+  is_images_approved: Boolean_comparison_exp
   order_item_no: String_comparison_exp
   order_item_special_images: order_item_special_image_bool_exp
   order_item_special_images_aggregate: order_item_special_image_aggregate_bool_exp
@@ -9740,11 +9762,14 @@ input type for inserting data into table "order_item"
 """
 input order_item_insert_input {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint
+  images_to_approve: [String!]
+  is_images_approved: Boolean
   order_item_special_images: order_item_special_image_arr_rel_insert_input
   order_item_special_texts: order_item_special_text_arr_rel_insert_input
   order_tenant: order_tenant_obj_rel_insert_input
@@ -9762,11 +9787,13 @@ input order_item_insert_input {
 """aggregate max on columns"""
 type order_item_max_fields {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint
+  images_to_approve: [String!]
 
   """
   A computed field, executes function "generate_order_item_no"
@@ -9785,11 +9812,13 @@ order by max() on columns of table "order_item"
 """
 input order_item_max_order_by {
   amount: order_by
+  approve_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
   delivery_time: order_by
   id: order_by
+  images_to_approve: order_by
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
@@ -9801,11 +9830,13 @@ input order_item_max_order_by {
 """aggregate min on columns"""
 type order_item_min_fields {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint
+  images_to_approve: [String!]
 
   """
   A computed field, executes function "generate_order_item_no"
@@ -9824,11 +9855,13 @@ order by min() on columns of table "order_item"
 """
 input order_item_min_order_by {
   amount: order_by
+  approve_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
   delivery_time: order_by
   id: order_by
+  images_to_approve: order_by
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
@@ -9860,11 +9893,14 @@ input order_item_on_conflict {
 """Ordering options when selecting data from "order_item"."""
 input order_item_order_by {
   amount: order_by
+  approve_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
   delivery_time: order_by
   id: order_by
+  images_to_approve: order_by
+  is_images_approved: order_by
   order_item_no: order_by
   order_item_special_images_aggregate: order_item_special_image_aggregate_order_by
   order_item_special_texts_aggregate: order_item_special_text_aggregate_order_by
@@ -9893,6 +9929,9 @@ enum order_item_select_column {
   amount
 
   """column name"""
+  approve_note
+
+  """column name"""
   commissioned_amount
 
   """column name"""
@@ -9906,6 +9945,12 @@ enum order_item_select_column {
 
   """column name"""
   id
+
+  """column name"""
+  images_to_approve
+
+  """column name"""
+  is_images_approved
 
   """column name"""
   order_tenant_id
@@ -9930,15 +9975,34 @@ enum order_item_select_column {
 }
 
 """
+select "order_item_aggregate_bool_exp_bool_and_arguments_columns" columns of table "order_item"
+"""
+enum order_item_select_column_order_item_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  is_images_approved
+}
+
+"""
+select "order_item_aggregate_bool_exp_bool_or_arguments_columns" columns of table "order_item"
+"""
+enum order_item_select_column_order_item_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  is_images_approved
+}
+
+"""
 input type for updating data in table "order_item"
 """
 input order_item_set_input {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint
+  images_to_approve: [String!]
+  is_images_approved: Boolean
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
@@ -10806,11 +10870,14 @@ input order_item_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input order_item_stream_cursor_value_input {
   amount: numeric
+  approve_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
   delivery_time: String
   id: bigint
+  images_to_approve: [String!]
+  is_images_approved: Boolean
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
@@ -10852,6 +10919,9 @@ enum order_item_update_column {
   amount
 
   """column name"""
+  approve_note
+
+  """column name"""
   commissioned_amount
 
   """column name"""
@@ -10865,6 +10935,12 @@ enum order_item_update_column {
 
   """column name"""
   id
+
+  """column name"""
+  images_to_approve
+
+  """column name"""
+  is_images_approved
 
   """column name"""
   order_tenant_id

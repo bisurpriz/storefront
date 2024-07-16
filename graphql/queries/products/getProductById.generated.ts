@@ -49,7 +49,7 @@ export type GetProductInformationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
+export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, properties?: any | null, discount_price?: number | null, reviews_aggregate: { aggregate?: { count: number, avg?: { score?: number | null } | null } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
 
 export type GetProductImagesQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -277,6 +277,9 @@ export const GetProductInformationDocument = gql`
     reviews_aggregate {
       aggregate {
         count(columns: id)
+        avg {
+          score
+        }
       }
     }
     tenant {

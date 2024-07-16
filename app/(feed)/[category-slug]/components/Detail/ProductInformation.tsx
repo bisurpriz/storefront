@@ -128,9 +128,7 @@ const ProductInformation = ({
         <Promotions
           promotions={[
             {
-              description: shippingType?.includes("SAME_DAY")
-                ? "Gün içi teslimat"
-                : "Aynı gün kargo",
+              description: DeliveryType.SAME_DAY,
               icon: <Ticket />,
               filterKey: "SAME_DAY",
             },
