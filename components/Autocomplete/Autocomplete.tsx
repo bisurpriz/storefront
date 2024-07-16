@@ -188,7 +188,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                     "p-2 cursor-pointer",
                     "transition duration-200 ease-in-out text-base font-thin",
                     {
-                      "bg-secondary text-white": activeSuggestion === index,
+                      "bg-primary text-white": activeSuggestion === index,
                     },
                     {
                       "hover:bg-4 hover:text-white": activeSuggestion !== index,
@@ -229,7 +229,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "transition duration-200 ease-in-out",
             { "animate-pulse": isLoading },
             {
-              "text-secondary": selectedValue,
+              "text-white": selectedValue,
             },
             {
               "hover:text-gray-700": !selectedValue,
@@ -245,10 +245,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           value={userInput}
           className={clsx(
             "w-full p-3 pl-10 pr-16 border rounded-lg shadow-sm shadow-gray-100 cursor-pointer text-lg font-normal font-manrope",
-            "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
-            "hover:shadow-md transition duration-200 hover:shadow-gray-100",
+            "focus:outline-none focus:ring-2 focus:ring-primary",
             "placeholder:opacity-50 placeholder-gray-700 placeholder:text-lg",
-            { "border border-2 text-secondary border-secondary": selectedValue }
+            {
+              "border border-2 text-white border-primary bg-primary":
+                selectedValue,
+            }
           )}
           placeholder={placeholder}
         />
@@ -262,7 +264,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               className={clsx(
                 "text-gray-500 ",
                 {
-                  "text-secondary": selectedValue,
+                  "text-white": selectedValue,
                 },
                 {
                   "hover:text-gray-700": !selectedValue,
@@ -281,7 +283,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             className={clsx(
               "text-gray-500 ",
               {
-                "text-secondary": selectedValue,
+                "text-white": selectedValue,
               },
               {
                 "hover:text-gray-700": !selectedValue,

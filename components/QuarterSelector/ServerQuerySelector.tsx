@@ -1,6 +1,5 @@
 import React from "react";
 import QuarterSelector from ".";
-import LandingSearchBanner from "../LandingSearchBanner";
 import { getAvailableLocation } from "@/app/account/addresses/actions";
 import { getLocationFromCookie } from "@/app/actions";
 
@@ -14,7 +13,6 @@ const ServerQuerySelector = async () => {
   return (
     <>
       <QuarterSelector value={value} />
-      <LandingSearchBanner />
     </>
   );
 };

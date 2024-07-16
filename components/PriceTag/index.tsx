@@ -44,7 +44,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
             {getPriceTR(discount)}
           </span>
         )}
-        {price && (
+        {price && discount !== price && (
           <span
             className={clsx([
               "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap",

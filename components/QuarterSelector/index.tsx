@@ -32,7 +32,9 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
       const res = await refetch({
         search: input,
       });
-      const {data: { search_locationv1: locations }} = res;
+      const {
+        data: { search_locationv1: locations },
+      } = res;
       return locations;
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -40,7 +42,12 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label className={clsx("max-xl:col-span-full")}>
+    <label
+      className={clsx(
+        "max-xl:col-span-full",
+        "ring ring-2 ring-primary rounded-lg"
+      )}
+    >
       <Autocomplete
         value={value}
         suggestions={fetchLocations}

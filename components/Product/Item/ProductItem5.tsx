@@ -8,6 +8,7 @@ import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
 import { goToProductDetail } from "@/utils/linkClickEvent";
+import clsx from "clsx";
 
 const ProductItem5 = ({
   name,
@@ -34,7 +35,16 @@ const ProductItem5 = ({
 
   return (
     <div
-      className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col"
+      className={clsx(
+        "rounded-md bg-white shadow-sm",
+        "flex flex-col justify-between",
+        "overflow-hidden",
+        "cursor-pointer",
+        "hover:shadow-md",
+        "transition-shadow duration-300 ease-in-out",
+        "group",
+        "relative"
+      )}
       id={id.toString()}
     >
       <Link
@@ -59,8 +69,8 @@ const ProductItem5 = ({
           quality={70}
           priority={true}
         />
-        <div className="p-2">
-          <article className="flex flex-col justify-between flex-grow">
+        <div className="px-2 pb-6 pt-4">
+          <div className="flex flex-col gap-2 justify-between flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <Rating
                 value={4}
@@ -71,30 +81,17 @@ const ProductItem5 = ({
               {`(${4})`}
             </span>
             <h1
-              className="text-sm font-normal text-gray-800 h-10 line-clamp-2 mb-1 capitalize"
+              className="text-sm font-normal text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"
               title={name}
             >
               {name}
             </h1>
             <PriceTag price={price} discount={discount_price} />
-          </article>
+          </div>
 
           <ProductCardStamps id={id.toString()} stamps={stamps} />
         </div>
       </Link>
-      {/* <AddCartButton2
-        product={{
-          id,
-          category,
-          discount_price,
-          image_url: image,
-          name,
-          price,
-          product_customizable_areas,
-          tenant,
-          quantity: 1,
-        }}
-      /> */}
     </div>
   );
 };

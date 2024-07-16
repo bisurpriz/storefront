@@ -21,7 +21,7 @@ const MessagesPage = async ({
 
   return (
     <>
-      <Main tenantId={tenantId} />;
+      <Main tenantId={tenantId} />
       <Listener />
     </>
   );

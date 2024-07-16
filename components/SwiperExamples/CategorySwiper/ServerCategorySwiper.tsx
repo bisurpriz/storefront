@@ -12,6 +12,7 @@ const ServerCategorySwiper = async () => {
     data: { category },
   } = await query<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({
     query: GetAllCategoriesDocument,
+    fetchPolicy: "cache-first",
   });
 
   return <CategorySwiper categories={category} />;

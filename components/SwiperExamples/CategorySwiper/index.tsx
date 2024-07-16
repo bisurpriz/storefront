@@ -14,8 +14,6 @@ type CategorySwiperProps = {
 };
 
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
-  if (!categories) return null;
-
   const [responsive, setResponsive] = useState<ResponsiveType | null>({
     xs: {
       breakpoint: { max: 575, min: 376 },
@@ -54,38 +52,35 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
 
   return (
     <div className="mb-8">
-      <Card bordered={false} contentClass="!p-0">
-        <Carousel
-          swipeable={true}
-          draggable={false}
-          showDots={false}
-          responsive={responsive}
-          infinite={true}
-          slidesToSlide={1}
-          autoPlay={true}
-          autoPlaySpeed={3000}
-        >
-          {categories.map((item, i) => (
-            <div className="flex-shrink-0 group" key={item.slug}>
-              <Link className="block w-full" href={`/${item.slug}`}>
-                <Image
-                  src={`https://picsum.photos/seed/${item.id}/120/120`}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className={clsx(
-                    "w-24 h-24 mx-auto rounded-xl",
-                    "group-hover:shadow-lg transition-shadow duration-200"
-                  )}
-                />
-                <p className="mt-2 text-center font-normal text-sm leading-none font-monrope">
-                  {item.name}
-                </p>
-              </Link>
-            </div>
-          ))}
-        </Carousel>
-      </Card>
+      <Carousel
+        swipeable={true}
+        draggable={false}
+        responsive={responsive}
+        infinite={true}
+        slidesToSlide={1}
+        autoPlay={true}
+        autoPlaySpeed={3000}
+      >
+        {categories.map((item, i) => (
+          <div className="flex-shrink-0 group" key={item.slug}>
+            <Link className="block w-full" href={`/${item.slug}`}>
+              <Image
+                src={`https://picsum.photos/seed/${item.id}/120/120`}
+                alt={item.name}
+                width={100}
+                height={100}
+                className={clsx(
+                  "w-24 h-24 mx-auto rounded-xl",
+                  "group-hover:shadow-lg transition-shadow duration-200"
+                )}
+              />
+              <p className="mt-2 text-center font-normal text-sm leading-none font-monrope">
+                {item.name}
+              </p>
+            </Link>
+          </div>
+        ))}
+      </Carousel>
     </div>
   );
 };
