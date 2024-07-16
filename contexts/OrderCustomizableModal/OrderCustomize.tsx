@@ -157,7 +157,6 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                       priority
                     />
                     {oi.product.product_customizable_areas.map((area, _id) => {
-                      console.log(area);
                       return (
                         <div className="w-full my-2" key={_id}>
                           <CustomizeCartItem

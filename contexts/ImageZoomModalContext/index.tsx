@@ -5,13 +5,13 @@ import Image from "next/image";
 import { ReactNode, createContext, useContext, useState } from "react";
 
 interface ImageZoomModalType {
-  open: (src: string) => void;
-  close: () => void;
+  onOpen: (src: string) => void;
+  onClose: () => void;
 }
 
 export const ImageZoomModal = createContext<ImageZoomModalType>({
-  open: () => {},
-  close: () => {},
+  onOpen: () => {},
+  onClose: () => {},
 });
 
 export const ImageZoomModalProvider = ({
@@ -21,19 +21,19 @@ export const ImageZoomModalProvider = ({
 }) => {
   const [src, setSrc] = useState<string | null>(null);
 
-  const open = (src: string) => {
+  const onOpen = (src: string) => {
     setSrc(src);
   };
 
-  const close = () => {
+  const onClose = () => {
     setSrc(null);
   };
 
-  const value = { open, close };
+  const value = { onOpen, onClose };
 
   return (
     <ImageZoomModal.Provider value={value}>
-      <Modal open={Boolean(src)} handleClose={close}>
+      <Modal open={Boolean(src)} handleClose={onClose}>
         <div className="flex items-center justify-center max-w-xl h-full overflow-hidden">
           <Image
             src={src}

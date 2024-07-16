@@ -20,7 +20,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
     setSelectedImage(image);
   };
 
-  const { open } = useImageZoomModal();
+  const { onOpen } = useImageZoomModal();
 
   const getImageUrl = (image: string) => {
     if (!image) return "https://via.placeholder.com/500";
@@ -76,7 +76,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         />
         <ZoomButton
           onClick={() => {
-            open(getImageUrl(selectedImage));
+            onOpen(getImageUrl(selectedImage));
           }}
         />
       </div>

@@ -2,7 +2,6 @@ import { getUserOrders } from "./actions";
 import TenantOrders from "./components/TenantOrders";
 import { localeFormat } from "@/utils/format";
 import { OrderCustomizableModalProvider } from "@/contexts/OrderCustomizableModal";
-import OrderItemHeader from "./components/OrderItemHeader";
 
 export const dynamic = "force-dynamic";
 

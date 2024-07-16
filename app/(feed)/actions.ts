@@ -117,6 +117,7 @@ export const searchProducts = async (
         },
         ...paginationParams,
       },
+      fetchPolicy: "no-cache",
     });
     return {
       products,
