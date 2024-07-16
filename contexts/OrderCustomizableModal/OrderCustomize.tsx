@@ -70,7 +70,6 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
     if (selectedTextData.length > 0) {
       const res = await orderTextsUpload(selectedTextData);
       if (res.errors) {
-        console.log(res.errors);
         onStatusChange("fail");
       }
 
@@ -103,16 +102,22 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
     }
 
     if (type === "special_text") {
-      const newData = selectedTextData.map((st) => {
-        if (st.order_item_id === order_item_id) {
-          return {
-            ...st,
-            content: value as string,
-          };
+      const newData = selectedTextData.map((d) => {
+        if (
+          d.order_item_id === order_item_id &&
+          d.quantity_index === inputIndex
+        ) {
+          return { ...d, content: value as string };
         }
+        return d;
       });
 
-      if (newData.length === 0) {
+      if (
+        !newData.some(
+          (d) =>
+            d.order_item_id === order_item_id && d.quantity_index === inputIndex
+        )
+      ) {
         newData.push({
           order_item_id,
           quantity_index: inputIndex,
@@ -120,6 +125,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
           id: specialTextId,
         });
       }
+
       setSelectedTextData(newData);
     }
   };
@@ -150,34 +156,39 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                       className="object-contain w-20 h-20 rounded-lg my-2"
                       priority
                     />
-                    {oi.product.product_customizable_areas.map((area, _id) => (
-                      <div className="w-full my-2" key={_id}>
-                        <CustomizeCartItem
-                          count={area.count}
-                          keyIndex={index}
-                          values={[
-                            ...oi.order_item_special_texts,
-                            ...oi.order_item_special_images,
-                          ]}
-                          maxCharacter={area.max_character}
-                          isDisabled={loading}
-                          onChange={(i, type, value) =>
-                            handleChange({
-                              inputIndex: i,
-                              type,
-                              value,
-                              order_item_id: oi.id,
-                              specialTextId: oi.order_item_special_texts[i]?.id,
-                            })
-                          }
-                          id={area?.customizable_area.id}
-                          key={area?.customizable_area.type}
-                          type={
-                            area?.customizable_area.type as CustomizableAreaType
-                          }
-                        />
-                      </div>
-                    ))}
+                    {oi.product.product_customizable_areas.map((area, _id) => {
+                      console.log(area);
+                      return (
+                        <div className="w-full my-2" key={_id}>
+                          <CustomizeCartItem
+                            count={area.count}
+                            keyIndex={index}
+                            values={[
+                              ...oi.order_item_special_texts,
+                              ...oi.order_item_special_images,
+                            ]}
+                            maxCharacter={area.max_character}
+                            isDisabled={loading}
+                            onChange={(inputIndex, type, value) =>
+                              handleChange({
+                                inputIndex,
+                                type,
+                                value,
+                                order_item_id: oi.id,
+                                specialTextId:
+                                  oi.order_item_special_texts[i]?.id,
+                              })
+                            }
+                            id={area?.customizable_area.id}
+                            key={area?.customizable_area.type}
+                            type={
+                              area?.customizable_area
+                                .type as CustomizableAreaType
+                            }
+                          />
+                        </div>
+                      );
+                    })}
                   </>
                 ))}
               </div>

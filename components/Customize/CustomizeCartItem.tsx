@@ -30,7 +30,6 @@ const CustomizeCartItem = ({
   keyIndex,
   isDisabled = false,
 }: CustomizeCartItemProps) => {
-  console.log(values);
   switch (type) {
     case "special_text":
       return Array(count)
@@ -49,7 +48,7 @@ const CustomizeCartItem = ({
                 defaultValue={value}
                 label={`Özel Yazı ${i + 1}:`}
                 onChange={(e) => {
-                  onChange(keyIndex, CustomizableAreaType.TEXT, e.target.value);
+                  onChange(i, CustomizableAreaType.TEXT, e.target.value);
                 }}
                 maxLength={maxCharacter}
                 disabled={isDisabled || Boolean(value)}
