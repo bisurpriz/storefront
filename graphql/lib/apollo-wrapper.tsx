@@ -20,8 +20,9 @@ if (process.env.NODE_ENV === "development") {
   loadErrorMessages();
 }
 
-const authLink = setContext((_, { headers }) => {
-  return getIdToken().then((cooks) => {
+const setTokenInHeader = async (headers = {}) => {
+  try {
+    const cooks = await getIdToken();
     if (!cooks) return "";
 
     return {
@@ -30,7 +31,14 @@ const authLink = setContext((_, { headers }) => {
         Authorization: `Bearer ${cooks}`,
       },
     };
-  });
+  } catch (error) {
+    console.error("Error setting token in header", error);
+    return headers;
+  }
+};
+
+const authLink = setContext((_, { headers }) => {
+  return setTokenInHeader(headers);
 });
 
 function makeClient() {
@@ -47,14 +55,7 @@ function makeClient() {
             timeout: 30000,
             reconnect: true,
             connectionParams: () => {
-              return getIdToken().then((cooks) => {
-                if (!cooks) return {};
-                return {
-                  headers: {
-                    Authorization: `Bearer ${cooks}`,
-                  },
-                };
-              });
+              return setTokenInHeader();
             },
           },
         })

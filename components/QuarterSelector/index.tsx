@@ -29,12 +29,10 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
 
   const fetchLocations = async (input: string) => {
     try {
-      const {
-        data: { search_locationv1: locations },
-      } = await refetch({
+      const res = await refetch({
         search: input,
       });
-
+      const {data: { search_locationv1: locations }} = res;
       return locations;
     } catch (error) {
       console.error("Error fetching locations:", error);

@@ -1,4 +1,3 @@
-
 query getSingleTenantOrderItem($id: bigint) {
   order_tenant(where: { id: { _eq: $id } }) {
     id
@@ -11,5 +10,29 @@ query getSingleTenantOrderItem($id: bigint) {
 mutation createOrder($object: order_insert_input!) {
   insert_order_one(object: $object) {
     id
+  }
+}
+
+query getOrderApproveImages($id: bigint!, $date: timestamptz!) {
+  order_item(where: { id: { _eq: $id }, created_at: { _eq: $date } }) {
+    images_to_approve
+    is_images_approved
+  }
+}
+
+mutation updateOrderItemApprove(
+  $id: bigint!
+  $date: timestamptz!
+  $status: Boolean
+  $note: String
+) {
+  update_order_item(
+    where: { id: { _eq: $id }, created_at: { _eq: $date } }
+    _set: { is_images_approved: $status, approve_note: $note }
+  ) {
+    affected_rows
+     returning {
+      is_images_approved
+    }
   }
 }
