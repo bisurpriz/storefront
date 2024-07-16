@@ -32,10 +32,8 @@ export async function readIdFromCookies() {
 }
 
 export async function getIdToken() {
-  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value;
-
-  if (!token)
-    return new Promise((resolve, reject) => reject("Session is null"));
+  const token = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+  if (!token) return new Promise((resolve, reject) => resolve(null));
 
   return token;
 }
