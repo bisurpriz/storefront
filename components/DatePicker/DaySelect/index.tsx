@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { addDays, addHours, differenceInHours } from "date-fns";
 import { motion } from "framer-motion";
 import Button from "@/components/Button";

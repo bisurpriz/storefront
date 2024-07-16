@@ -21,7 +21,7 @@ const colors = {
 };
 
 const translations = {
-  [OrderItemStatus.Created]: "Siparişiniz oluşturuldu",
+  [OrderItemStatus.Created]: "Siparişiniz alındı",
   [OrderItemStatus.Processing]: "Siparişiniz hazırlanıyor",
   [OrderItemStatus.Shipped]: "Siparişiniz kargoya verildi",
   [OrderItemStatus.Delivered]: "Siparişiniz teslim edildi",

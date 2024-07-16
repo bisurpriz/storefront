@@ -12,27 +12,10 @@ type SummaryDetailProps = {
   isOpen: boolean;
 };
 
-const variant = {
-  hidden: {
-    y: 50,
-  },
-  visible: {
-    y: 0,
-  },
-  exit: {
-    y: 50,
-  },
-};
-
 const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
   return (
-    <AnimationExitProvider show={isOpen}>
-      <motion.div
-        variants={variant}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-      >
+    isOpen && (
+      <>
         <div className="max-md:py-1 max-md:px-4 md:p-4 max-md:border-t">
           <span className="block text-xl w-full text-center mb-3 font-normal">
             Sipariş Özeti
@@ -70,8 +53,8 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
             </div>
           </div>
         </div>
-      </motion.div>
-    </AnimationExitProvider>
+      </>
+    )
   );
 };
 

@@ -1,10 +1,17 @@
 "use server";
 
+import {
+  OrderImageData,
+  OrderTextData,
+} from "@/contexts/OrderCustomizableModal/OrderCustomize";
 import { mutate, query } from "@/graphql/lib/client";
 import {
   GetUserOrdersDocument,
   GetUserOrdersQuery,
   GetUserOrdersQueryVariables,
+  UpdateOrderItemSpecialTextDocument,
+  UpdateOrderItemSpecialTextMutation,
+  UpdateOrderItemSpecialTextMutationVariables,
 } from "@/graphql/queries/account/account.generated";
 import {
   SendMessageAloneDocument,
@@ -13,18 +20,10 @@ import {
 } from "@/graphql/queries/chat/mutation.generated";
 
 export const getUserOrders = async () => {
-  const { data, loading } = await query<
-    GetUserOrdersQuery,
-    GetUserOrdersQueryVariables
-  >({
+  return await query<GetUserOrdersQuery, GetUserOrdersQueryVariables>({
     query: GetUserOrdersDocument,
     fetchPolicy: "no-cache",
   });
-  const { order } = data;
-  return {
-    orders: order,
-    loading,
-  };
 };
 
 export const startMessageForOrder = async ({
@@ -54,4 +53,27 @@ export const startMessageForOrder = async ({
   return {
     insert_message_one,
   };
+};
+
+export const orderTextsUpload = async (payload: OrderTextData[]) => {
+  try {
+    const variables = payload.map((d) => ({
+      content: d.content,
+      order_item_id: d.order_item_id,
+      quantity_index: d.quantity_index,
+      id: d.id,
+    }));
+
+    return await mutate<
+      UpdateOrderItemSpecialTextMutation,
+      UpdateOrderItemSpecialTextMutationVariables
+    >({
+      mutation: UpdateOrderItemSpecialTextDocument,
+      variables: {
+        object: [...variables],
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

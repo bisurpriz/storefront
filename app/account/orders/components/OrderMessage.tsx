@@ -88,7 +88,6 @@ const OrderMessage = ({
             </div>
             <Button
               label="Mesajı Gönder"
-              variant="fullfilled"
               color="primary"
               size="small"
               className="w-full justify-center"

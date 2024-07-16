@@ -15,7 +15,6 @@ import Card from "@/components/Card";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import { useUser } from "@/contexts/AuthContext";
-import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
@@ -32,6 +31,8 @@ import CompanyDetail from "./CompanyDetail";
 import User from "@/components/Icons/User";
 import Phone from "@/components/Icons/Phone";
 import Mail from "@/components/Icons/Mail";
+import { useRouter } from "next/navigation";
+import { CartStepPaths } from "../../constants";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -145,21 +146,27 @@ const ReceiverForm = ({
   const { user } = useUser();
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
-  const { handleChangeStep } = useCartStep();
-  const { control, reset, watch, getValues, handleSubmit } =
-    useForm<OrderDetailPartialFormData>({
-      defaultValues,
-      mode: "all",
-      delayError: 500,
-      resolver: yupResolver<OrderDetailPartialFormData>(
-        OrderDetailSchema as ObjectSchema<
-          OrderDetailPartialFormData,
-          AnyObject,
-          any,
-          ""
-        >
-      ),
-    });
+  const { push } = useRouter();
+  const {
+    control,
+    reset,
+    watch,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OrderDetailPartialFormData>({
+    defaultValues,
+    mode: "all",
+    delayError: 500,
+    resolver: yupResolver<OrderDetailPartialFormData>(
+      OrderDetailSchema as ObjectSchema<
+        OrderDetailPartialFormData,
+        AnyObject,
+        any,
+        ""
+      >
+    ),
+  });
 
   useEffect(() => {
     getUserAddressById().then(({ userAddresses }) => {
@@ -257,8 +264,7 @@ const ReceiverForm = ({
   const onSubmit = async (values) => {
     const cartId = user?.carts[0]?.id;
     const user_id = user?.id;
-
-    if (values) {
+    if (values && Object.keys(errors).length === 0) {
       if (values.wantToSaveAddress && !values.saved_address) {
         try {
           createNewUserAddress({
@@ -278,9 +284,10 @@ const ReceiverForm = ({
           });
         }
       }
+      console.log(values, !errors);
 
       localStorage.setItem("detail-data", JSON.stringify(values));
-      handleChangeStep();
+      push(CartStepPaths.CHECKOUT);
     }
   };
 
@@ -441,7 +448,6 @@ const ReceiverForm = ({
             "col-span-1 max-md:col-span-full",
             "flex flex-col gap-3 flex-1"
           )}
-          tabIndex={0}
         >
           <SubTitle>Alıcı Bilgileri</SubTitle>
           <Controller

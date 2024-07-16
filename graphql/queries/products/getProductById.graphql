@@ -190,6 +190,9 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     reviews_aggregate {
       aggregate {
         count(columns: id)
+        avg {
+          score
+        }
       }
     }
     tenant {
@@ -200,6 +203,7 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     }
   }
 }
+
 
 query getProductImages($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {

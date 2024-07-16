@@ -7,6 +7,8 @@ type Props = {
   totalCount: number;
 };
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = `Vendor`;
   const description = `Vendor Ürünleri`;

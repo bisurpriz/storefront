@@ -56,7 +56,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       <div
         className={clsx(
           "flex flex-1 items-start justify-center overflow-hidden relative",
-          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-slate-500"
+          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-white"
         )}
       >
         {/* <ZoomableImage
