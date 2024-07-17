@@ -8,11 +8,9 @@ import { approveOrderImages } from "../actions";
 
 const ImagePreview = ({
   initialImages,
-  orderItemId,
   salt,
 }: {
   initialImages: string[];
-  orderItemId: number;
   salt: string;
 }) => {
   const [clickedImage, setClickedImage] = useState("");
@@ -28,13 +26,11 @@ const ImagePreview = ({
 
   const onSubmit = async (approveStatus: boolean) => {
     const response = await approveOrderImages({
-      orderItemId,
       salt,
       note,
       status: approveStatus,
     });
-    console.log(response);
-    if (response.returning[0].is_images_approved) {
+    if (response.approved) {
       setApproveButtonDisabled(true);
       toast.success("Siparişiniz başarıyla onaylandı.", {
         position: "bottom-right",

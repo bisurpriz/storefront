@@ -17,16 +17,14 @@ export type CreateOrderMutationVariables = Types.Exact<{
 export type CreateOrderMutation = { insert_order_one?: { id: any } | null };
 
 export type GetOrderApproveImagesQueryVariables = Types.Exact<{
-  id: Types.Scalars['bigint']['input'];
-  date: Types.Scalars['timestamptz']['input'];
+  token?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
-export type GetOrderApproveImagesQuery = { order_item: Array<{ images_to_approve?: Array<string> | null, is_images_approved?: boolean | null }> };
+export type GetOrderApproveImagesQuery = { order_item: Array<{ images_to_approve?: Array<string> | null, is_images_approved?: boolean | null, image_approve_expiry?: any | null }> };
 
 export type UpdateOrderItemApproveMutationVariables = Types.Exact<{
-  id: Types.Scalars['bigint']['input'];
-  date: Types.Scalars['timestamptz']['input'];
+  token: Types.Scalars['String']['input'];
   status?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
   note?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
@@ -57,18 +55,19 @@ export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation,
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
 export const GetOrderApproveImagesDocument = gql`
-    query getOrderApproveImages($id: bigint!, $date: timestamptz!) {
-  order_item(where: {id: {_eq: $id}, created_at: {_eq: $date}}) {
+    query getOrderApproveImages($token: String) {
+  order_item(where: {image_approve_token: {_eq: $token}}) {
     images_to_approve
     is_images_approved
+    image_approve_expiry
   }
 }
     `;
 export type GetOrderApproveImagesQueryResult = Apollo.QueryResult<GetOrderApproveImagesQuery, GetOrderApproveImagesQueryVariables>;
 export const UpdateOrderItemApproveDocument = gql`
-    mutation updateOrderItemApprove($id: bigint!, $date: timestamptz!, $status: Boolean, $note: String) {
+    mutation updateOrderItemApprove($token: String!, $status: Boolean, $note: String) {
   update_order_item(
-    where: {id: {_eq: $id}, created_at: {_eq: $date}}
+    where: {image_approve_token: {_eq: $token}}
     _set: {is_images_approved: $status, approve_note: $note}
   ) {
     affected_rows

@@ -1,21 +1,17 @@
-"use server"
+"use server";
 
 import { getClient } from "@/graphql/lib/client";
 import {
   GetOrderApproveImagesDocument,
   GetOrderApproveImagesQuery,
   GetOrderApproveImagesQueryVariables,
-  UpdateOrderItemApproveDocument,
-  UpdateOrderItemApproveMutation,
-  UpdateOrderItemApproveMutationVariables,
 } from "@/graphql/queries/order/order.generated";
+import axios from "axios";
 
 export const getOrderApproveImages = async ({
-  orderItemId,
-  salt, // timestamp
+  token,
 }: {
-  orderItemId: number;
-  salt: string;
+  token: string;
 }): Promise<GetOrderApproveImagesQuery["order_item"][0]> => {
   const { data } = await getClient().query<
     GetOrderApproveImagesQuery,
@@ -23,8 +19,7 @@ export const getOrderApproveImages = async ({
   >({
     query: GetOrderApproveImagesDocument,
     variables: {
-      id: orderItemId,
-      date: salt,
+      token,
     },
   });
 
@@ -32,28 +27,26 @@ export const getOrderApproveImages = async ({
 };
 
 export const approveOrderImages = async ({
-  orderItemId,
   salt, // timestamp
   note,
   status,
 }: {
-  orderItemId: number;
   salt: string;
   note?: string;
   status: boolean;
-}): Promise<UpdateOrderItemApproveMutation["update_order_item"]> => {
-  const { data } = await getClient().mutate<
-    UpdateOrderItemApproveMutation,
-    UpdateOrderItemApproveMutationVariables
-  >({
-    mutation: UpdateOrderItemApproveDocument,
-    variables: {
-      id: orderItemId,
-      date: salt,
+}): Promise<any> => {
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_APPROVE_IMAGE_LAMBDA_URL,
+    {
       note,
       status,
     },
-  });
+    {
+      headers: {
+        "x-bonnmarse-approve-salt": salt,
+      },
+    }
+  );
 
-  return data.update_order_item;
+  return response.data;
 };

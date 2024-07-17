@@ -13,25 +13,25 @@ mutation createOrder($object: order_insert_input!) {
   }
 }
 
-query getOrderApproveImages($id: bigint!, $date: timestamptz!) {
-  order_item(where: { id: { _eq: $id }, created_at: { _eq: $date } }) {
+query getOrderApproveImages($token: String) {
+  order_item(where: { image_approve_token: { _eq: $token } }) {
     images_to_approve
     is_images_approved
+    image_approve_expiry
   }
 }
 
 mutation updateOrderItemApprove(
-  $id: bigint!
-  $date: timestamptz!
+  $token: String!
   $status: Boolean
   $note: String
 ) {
   update_order_item(
-    where: { id: { _eq: $id }, created_at: { _eq: $date } }
+    where: { image_approve_token: { _eq: $token } }
     _set: { is_images_approved: $status, approve_note: $note }
   ) {
     affected_rows
-     returning {
+    returning {
       is_images_approved
     }
   }

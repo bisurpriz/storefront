@@ -8082,6 +8082,8 @@ export type Order_Item = {
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id: Scalars['bigint']['output'];
+  image_approve_expiry?: Maybe<Scalars['timestamptz']['output']>;
+  image_approve_token?: Maybe<Scalars['String']['output']>;
   images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
   is_images_approved?: Maybe<Scalars['Boolean']['output']>;
   /** A computed field, executes function "generate_order_item_no" */
@@ -8260,6 +8262,8 @@ export type Order_Item_Bool_Exp = {
   delivery_date?: InputMaybe<Timestamp_Comparison_Exp>;
   delivery_time?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Bigint_Comparison_Exp>;
+  image_approve_expiry?: InputMaybe<Timestamptz_Comparison_Exp>;
+  image_approve_token?: InputMaybe<String_Comparison_Exp>;
   images_to_approve?: InputMaybe<String_Array_Comparison_Exp>;
   is_images_approved?: InputMaybe<Boolean_Comparison_Exp>;
   order_item_no?: InputMaybe<String_Comparison_Exp>;
@@ -8304,6 +8308,8 @@ export type Order_Item_Insert_Input = {
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  image_approve_expiry?: InputMaybe<Scalars['timestamptz']['input']>;
+  image_approve_token?: InputMaybe<Scalars['String']['input']>;
   images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
   is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_item_special_images?: InputMaybe<Order_Item_Special_Image_Arr_Rel_Insert_Input>;
@@ -8329,6 +8335,8 @@ export type Order_Item_Max_Fields = {
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  image_approve_expiry?: Maybe<Scalars['timestamptz']['output']>;
+  image_approve_token?: Maybe<Scalars['String']['output']>;
   images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
   /** A computed field, executes function "generate_order_item_no" */
   order_item_no?: Maybe<Scalars['String']['output']>;
@@ -8349,6 +8357,8 @@ export type Order_Item_Max_Order_By = {
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_approve_expiry?: InputMaybe<Order_By>;
+  image_approve_token?: InputMaybe<Order_By>;
   images_to_approve?: InputMaybe<Order_By>;
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
@@ -8367,6 +8377,8 @@ export type Order_Item_Min_Fields = {
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
   delivery_time?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  image_approve_expiry?: Maybe<Scalars['timestamptz']['output']>;
+  image_approve_token?: Maybe<Scalars['String']['output']>;
   images_to_approve?: Maybe<Array<Scalars['String']['output']>>;
   /** A computed field, executes function "generate_order_item_no" */
   order_item_no?: Maybe<Scalars['String']['output']>;
@@ -8387,6 +8399,8 @@ export type Order_Item_Min_Order_By = {
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_approve_expiry?: InputMaybe<Order_By>;
+  image_approve_token?: InputMaybe<Order_By>;
   images_to_approve?: InputMaybe<Order_By>;
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
@@ -8420,6 +8434,8 @@ export type Order_Item_Order_By = {
   delivery_date?: InputMaybe<Order_By>;
   delivery_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_approve_expiry?: InputMaybe<Order_By>;
+  image_approve_token?: InputMaybe<Order_By>;
   images_to_approve?: InputMaybe<Order_By>;
   is_images_approved?: InputMaybe<Order_By>;
   order_item_no?: InputMaybe<Order_By>;
@@ -8459,6 +8475,10 @@ export type Order_Item_Select_Column =
   /** column name */
   | 'id'
   /** column name */
+  | 'image_approve_expiry'
+  /** column name */
+  | 'image_approve_token'
+  /** column name */
   | 'images_to_approve'
   /** column name */
   | 'is_images_approved'
@@ -8496,6 +8516,8 @@ export type Order_Item_Set_Input = {
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  image_approve_expiry?: InputMaybe<Scalars['timestamptz']['input']>;
+  image_approve_token?: InputMaybe<Scalars['String']['input']>;
   images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
   is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
@@ -9244,6 +9266,8 @@ export type Order_Item_Stream_Cursor_Value_Input = {
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
   delivery_time?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  image_approve_expiry?: InputMaybe<Scalars['timestamptz']['input']>;
+  image_approve_token?: InputMaybe<Scalars['String']['input']>;
   images_to_approve?: InputMaybe<Array<Scalars['String']['input']>>;
   is_images_approved?: InputMaybe<Scalars['Boolean']['input']>;
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
@@ -9293,6 +9317,10 @@ export type Order_Item_Update_Column =
   | 'delivery_time'
   /** column name */
   | 'id'
+  /** column name */
+  | 'image_approve_expiry'
+  /** column name */
+  | 'image_approve_token'
   /** column name */
   | 'images_to_approve'
   /** column name */
