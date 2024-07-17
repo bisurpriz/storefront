@@ -8,21 +8,28 @@ const OrderApprove = async ({
   searchParams: { [key: string]: string | number };
 }) => {
   const orderItemId = Number(searchParams["oid"]);
-  const salt = (searchParams["salt"] as string)?.replaceAll(" ", "+");
+  const date = (searchParams["date"] as string)?.replaceAll(" ", "+");
+  const salt = searchParams["salt"];
 
-  const isSaltValidTimestamp = !isNaN(Date.parse(salt as string));
+  const isSaltValidTimestamp = !isNaN(Date.parse(date as string));
 
-  if (!orderItemId || !salt || !isSaltValidTimestamp) {
+  if (!orderItemId || !date || !isSaltValidTimestamp) {
     return <NotFound />;
   }
 
   const orderItem = await getOrderApproveImages({
-    orderItemId,
-    salt: salt as string,
+    token: salt as string,
   });
+
+  console.log(orderItem, "orderItem");
 
   const images = orderItem.images_to_approve;
   const isApproved = orderItem.is_images_approved;
+  const expiryDate = orderItem.image_approve_expiry;
+
+  if (expiryDate && new Date(expiryDate) < new Date()) {
+    return <div>Onay süresi dolmuş.</div>;
+  }
 
   if (isApproved) {
     return <div>Bu sipariş zaten onaylanmış.</div>;
@@ -31,8 +38,7 @@ const OrderApprove = async ({
   return (
     <ImagePreview
       initialImages={images}
-      orderItemId={orderItemId}
-      salt={salt}
+      salt={salt as string}
     />
   );
 };
