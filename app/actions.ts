@@ -31,7 +31,7 @@ export async function readIdFromCookies() {
   return id?.value;
 }
 
-export async function getIdToken() {
+export async function getAccessToken() {
   const token = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
   if (!token) return new Promise((resolve, reject) => resolve(null));
 

@@ -11,7 +11,7 @@ import { WebSocketLink } from "apollo-link-ws";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { getIdToken } from "@/app/actions";
+import { getAccessToken } from "@/app/actions";
 import { setContext } from "@apollo/client/link/context";
 
 if (process.env.NODE_ENV === "development") {
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "development") {
 
 const setTokenInHeader = async (headers = {}) => {
   try {
-    const cooks = await getIdToken();
+    const cooks = await getAccessToken();
     if (!cooks) return "";
 
     return {
