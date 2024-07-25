@@ -57,6 +57,7 @@ const ProductItem5 = ({
         })}
         scroll={true}
         target="_blank"
+        className="relative"
       >
         <Image
           src={`${getImageUrlFromPath(image?.[0])}${
@@ -68,6 +69,7 @@ const ProductItem5 = ({
           className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
           quality={70}
           priority={true}
+          placeholder="blur"
         />
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">

@@ -63,7 +63,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       >
         {categories.map((item, i) => (
           <div className="flex-shrink-0 group" key={item.slug}>
-            <Link className="block w-full" href={`/${item.slug}`}>
+            <Link className="block w-full relative" href={`/${item.slug}`}>
               <Image
                 src={`https://picsum.photos/seed/${item.id}/120/120`}
                 alt={item.name}

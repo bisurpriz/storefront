@@ -45,7 +45,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           >
             <Image
               src={getImageUrl(image)}
-              alt="Product Image"
+              alt={image}
               className="h-full w-full object-cover"
               width={100}
               height={100}
