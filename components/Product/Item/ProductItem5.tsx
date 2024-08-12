@@ -56,7 +56,7 @@ const ProductItem5 = ({
           slug,
         })}
         scroll={true}
-        target="_blank"
+        // target="_blank"
         className="relative"
       >
         <Image

@@ -2,21 +2,6 @@ import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/Payme
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
 import { ReactNode, Suspense } from "react";
 
-// export async function generateMetadata({ params, searchParams }) {
-//   const {
-//     product: { name, description, image_url, category },
-//   } = await getProductById({
-//     id: Number(searchParams.pid),
-//   });
-
-//   return {
-//     title: name,
-//     description: description,
-//     image: image_url?.[0],
-//     category: category.name,
-//   } as Metadata;
-// }
-
 export default async function ProductExample({
   children,
   information,
@@ -32,28 +17,6 @@ export default async function ProductExample({
   recommended: ReactNode;
   comments: ReactNode;
 }) {
-  // const jsonld = createJSONLd({
-  //   data: {
-  //     name: product.name,
-  //     description: product.description,
-  //     image: `getImageUrlFromPath(product.image_url?.[0])`,
-  //     offers: {
-  //       "@type": "Offer",
-  //       price: product.price,
-  //       priceCurrency: "TRY",
-  //       availability: "https://schema.org/InStock",
-  //       url: `https://www.bonnmarse.com/${params["category-slug"]}/${params["product-slug"]}?pid=${productId}`,
-  //     },
-  //     seller: {
-  //       "@type": "Organization",
-  //       name: tenant.tenants?.[0]?.name,
-  //       url: `https://www.bonnmarse.com/vendor/${tenant.tenants?.[0]?.id}`,
-  //       logo: tenant.tenants?.[0]?.logo,
-  //     },
-  //   },
-  //   type: "Product",
-  // });
-
   return (
     <div className="h-full">
       <section
