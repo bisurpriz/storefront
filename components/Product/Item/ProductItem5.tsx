@@ -70,6 +70,7 @@ const ProductItem5 = ({
           quality={70}
           priority={true}
           placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
         />
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">

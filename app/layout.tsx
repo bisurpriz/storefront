@@ -23,6 +23,7 @@ import {
   GetMainCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
 import { DeliveryTimeProvider } from "@/contexts/DeliveryTimeContext";
+import StickyHeader from "@/components/Layout/Header/StickyHeader";
 
 export const experimental_ppr = true;
 
@@ -143,6 +144,7 @@ export default async function RootLayout({
                 <CartProvider cartDbItems={cartItems} dbCost={costData}>
                   <Suspense fallback={<HeaderSuspense />}>
                     <Header category={category} />
+                    <StickyHeader />
                   </Suspense>
                   <Content>{children}</Content>
                   {auth}

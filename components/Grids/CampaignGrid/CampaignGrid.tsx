@@ -31,6 +31,7 @@ const CampaignGrid: FC = async () => {
             alt={item.name}
             priority
             placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
           />
         </Link>
       ))}
