@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addDays, addHours, differenceInHours } from "date-fns";
+import { addDays } from "date-fns";
 import { motion } from "framer-motion";
 import Button from "@/components/Button";
 import HourSelect from "../HourSelect";
@@ -41,7 +41,6 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
   const [availableHours, setAvailableHours] = useState<TimeRange[] | null>(
     null
   );
-  const [orderWithinHours, setOrderWithinHours] = useState<number | null>(null);
 
   const handleButtonClick = (daysToAdd: number) => {
     const date = addDays(new Date(), daysToAdd);
@@ -84,23 +83,11 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
     }
   };
 
-  const checkOrderWithinHours = (hours: number) => {
-    const today = new Date();
-    const cutoffTime = addHours(today, hours);
-
-    if (selectedDate && differenceInHours(cutoffTime, today) >= 0) {
-      setOrderWithinHours(hours);
-    } else {
-      setOrderWithinHours(null);
-    }
-  };
-
   useEffect(() => {
     if (deliveryTimes) {
       const availableHours = calculateTodayAvailableHours();
       setAvailableHours(availableHours);
     }
-    checkOrderWithinHours(1);
   }, [selectedDate]);
 
   return (
@@ -152,17 +139,6 @@ const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
           Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}
           tarihinde <strong>{selectedHour}</strong> saatleri arasında teslim
           edilecektir.
-        </span>
-      )}
-      {orderWithinHours !== null && (
-        <span
-          className={clsx(
-            "text-xs text-gray-500",
-            "p-2 rounded-lg bg-6 text-slate-500"
-          )}
-        >
-          <strong>{orderWithinHours} saat içinde</strong> sipariş verirseniz,
-          bugün teslimat yapılabilir.
         </span>
       )}
     </div>

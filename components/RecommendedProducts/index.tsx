@@ -64,7 +64,10 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             </div>
             <div className="flex flex-col flex-1 items-end justify-end gap-2">
               <p className="text-sm font-bold text-right">{prod.price} TL</p>
-              <h3 className="text-sm font-normal text-right max-w-[200px]">
+              <h3
+                className="text-sm font-normal text-right max-w-[200px] line-clamp-2"
+                title={prod.name}
+              >
                 {prod.name}
               </h3>
             </div>

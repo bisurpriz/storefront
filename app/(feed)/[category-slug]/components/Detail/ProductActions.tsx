@@ -21,7 +21,7 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const { user } = useUser();
 
-  const { addToCart } = useCart();
+  const { addToCart, loading } = useCart();
   const { push } = useRouter();
   const handleFavorite = () => {
     if (!user) {
@@ -45,13 +45,14 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
       <Button
         size="large"
         color="primary"
-        className="text-xl max-sm:w-full max-sm:justify-center"
+        className="text-xl flex-1 justify-center"
         onClick={() =>
           addToCart({
             id: productId,
             type: "add",
           })
         }
+        loading={loading}
       >
         Sepete Ekle
       </Button>
