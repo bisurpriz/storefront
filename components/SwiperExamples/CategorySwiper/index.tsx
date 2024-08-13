@@ -14,19 +14,12 @@ type CategorySwiperProps = {
 
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   return (
-    <div
-      className={clsx(
-        "mb-8",
-        "flex flex-nowrap overflow-x-auto gap-4",
-        "scrollbar-hide",
-        "snap-mandatory snap-x snap-center scrollbar-"
-      )}
-    >
+    <div className={clsx("mb-8", "flex flex-nowrap overflow-x-auto gap-4")}>
       <Slider
         images={categories.map(
           (category) => `https://picsum.photos/seed/${category.id}/120/120`
         )}
-        gap={4}
+        gap={16}
         imageHeight={120}
         imageWidth={120}
         autoPlay

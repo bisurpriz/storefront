@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { motion, PanInfo } from "framer-motion";
+import Image from "next/image";
 
 interface SliderProps {
   images: string[];
@@ -70,11 +71,14 @@ const Slider: FC<SliderProps> = ({
       handlePrev();
     }
   };
-
   return (
     <div className="relative w-full mx-auto overflow-hidden" ref={ref}>
       <motion.div
-        className="flex items-center gap-4"
+        className="flex items-center"
+        style={{
+          width: images.length * (imageWidth + gap),
+          gap,
+        }}
         drag="x"
         dragConstraints={{
           left: -currentIndex * (imageWidth + gap),
@@ -101,11 +105,15 @@ const Slider: FC<SliderProps> = ({
                 flex: "0 0 auto",
               }}
             >
-              <img
+              <Image
                 src={image}
                 alt={`Slide ${index}`}
                 className="object-cover rounded-lg w-full h-full"
-                style={{ pointerEvents: "none" }} // Disable pointer events on the image
+                style={{ pointerEvents: "none" }}
+                width={imageWidth}
+                height={imageHeight}
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
               />
             </div>
           ))}
