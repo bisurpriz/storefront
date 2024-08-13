@@ -55,7 +55,6 @@ const ProductItem5 = ({
           id,
           slug,
         })}
-        scroll={true}
         // target="_blank"
         className="relative"
       >

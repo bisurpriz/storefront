@@ -4,6 +4,7 @@ const nextConfig = {
     ppr: true,
     reactCompiler: true,
     forceSwcTransforms: true,
+    scrollRestoration: true,
     optimizePackageImports: [
       "framer-motion",
       "@mui/base",
