@@ -1,7 +1,7 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
 import { getPaginatedVendorProducts } from "@/app/vendor/actions";
-import { getClient } from "@/graphql/lib/client";
+import { query } from "@/graphql/lib/client";
 import {
   GetVendorProductsWithPaginationDocument,
   GetVendorProductsWithPaginationQuery,
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Vendor = async ({ params: { id } }: { params: { id: string } }) => {
-  const { data } = await getClient().query<
+  const { data } = await query<
     GetVendorProductsWithPaginationQuery,
     GetVendorProductsWithPaginationQueryVariables
   >({

@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/graphql/lib/client";
+import { query } from "@/graphql/lib/client";
 import {
   GetOrderApproveImagesDocument,
   GetOrderApproveImagesQuery,
@@ -13,7 +13,7 @@ export const getOrderApproveImages = async ({
 }: {
   token: string;
 }): Promise<GetOrderApproveImagesQuery["order_item"][0]> => {
-  const { data } = await getClient().query<
+  const { data } = await query<
     GetOrderApproveImagesQuery,
     GetOrderApproveImagesQueryVariables
   >({

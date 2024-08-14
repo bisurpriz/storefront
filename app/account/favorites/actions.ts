@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient, query } from "@/graphql/lib/client";
+import { mutate, query } from "@/graphql/lib/client";
 import {
   AddToFavoritesDocument,
   AddToFavoritesMutation,
@@ -40,7 +40,7 @@ export const removeFromFavorites = async ({
 }: {
   productId: number;
 }) => {
-  const { data } = await getClient().mutate<
+  const { data } = await mutate<
     RemoveFromFavoritesMutation,
     RemoveFromFavoritesMutationVariables
   >({
@@ -53,7 +53,7 @@ export const removeFromFavorites = async ({
 };
 
 export const addToFavorites = async ({ productId }: { productId: number }) => {
-  const { data } = await getClient().mutate<
+  const { data } = await mutate<
     AddToFavoritesMutation,
     AddToFavoritesMutationVariables
   >({

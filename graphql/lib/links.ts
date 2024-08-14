@@ -16,24 +16,21 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const wsLink =
-  typeof window !== "undefined"
-    ? new WebSocketLink({
-        uri: process.env.HASURA_WS_URL,
-        options: {
-          reconnect: true,
-          connectionParams: async () => {
-            const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+const wsLink = new WebSocketLink({
+  uri: process.env.HASURA_WS_URL,
+  options: {
+    reconnect: true,
+    connectionParams: async () => {
+      const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
 
-            return {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            };
-          },
+      return {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      })
-    : null;
+      };
+    },
+  },
+});
 
 export const authLink = setContext(async (_, { headers }) => {
   let token = null;

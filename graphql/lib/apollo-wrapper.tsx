@@ -11,8 +11,9 @@ import { WebSocketLink } from "apollo-link-ws";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { getAccessToken } from "@/app/actions";
 import { setContext } from "@apollo/client/link/context";
+import { CookieTokens } from "@/app/@auth/contants";
+import { getClientCookie } from "@/utils/getCookie";
 
 if (process.env.NODE_ENV === "development") {
   setVerbosity("debug");
@@ -22,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
 
 const setTokenInHeader = async (headers = {}) => {
   try {
-    const cooks = await getAccessToken();
+    const cooks = await getClientCookie(CookieTokens.ACCESS_TOKEN);
     if (!cooks) return "";
 
     return {

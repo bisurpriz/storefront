@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/graphql/lib/client";
+import { query } from "@/graphql/lib/client";
 import {
   GetVendorProductsWithPaginationDocument,
   GetVendorProductsWithPaginationQuery,
@@ -14,7 +14,7 @@ export const getPaginatedVendorProducts = async <T>({
   offset: number;
   tenant_id: string;
 }) => {
-  const { data } = await getClient().query<
+  const { data } = await query<
     GetVendorProductsWithPaginationQuery,
     GetVendorProductsWithPaginationQueryVariables
   >({

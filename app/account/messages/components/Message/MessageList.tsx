@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { markAsRead } from "../../action";
 import MessageItem from "./MessageItem";
 import MessageItemSkeleton from "./MessageItemSkeleton";
-import { getCookie } from "@/utils/getCookie";
+import { CookieTokens } from "@/app/@auth/contants";
+import { getClientCookie } from "@/utils/getCookie";
 
 const MessageList = ({
   messages,
@@ -29,8 +30,7 @@ const MessageList = ({
   }[];
   threadId: string;
 }) => {
-  const id = getCookie("user_id");
-
+  const id = getClientCookie(CookieTokens.USER_ID);
   const ref = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
