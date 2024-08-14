@@ -1,36 +1,20 @@
-query getVendorById($id: bigint = 0) {
-  product: product_by_pk(id: $id) {
-    category {
-      name
-    }
-    description
+query getVendorById($id: uuid!) {
+  tenant_by_pk(id: $id) {
     id
-    image_url
     name
-    price
-    quantity
-    questions {
-      created_at
-      id
-      question
-      updated_at
-      user {
-        firstname
-        lastname
+    logo
+    legal_company_title
+    created_at
+    owner {
+      products_aggregate {
+        aggregate {
+          count
+        }
       }
-    }
-    reviews {
-      comment
-      created_at
-      score
-      user {
-        firstname
-        lastname
-      }
-    }
-    reviews_aggregate {
-      aggregate {
-        count(columns: id)
+      reviews_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }

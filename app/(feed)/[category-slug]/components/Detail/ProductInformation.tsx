@@ -12,6 +12,7 @@ import Ticket from "@/components/Icons/Ticket";
 import OutlineArchive from "@/components/Icons/OutlineArchive";
 import { useEffect, useState } from "react";
 import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
+import { stringToSlug } from "@/utils/stringToSlug";
 
 type ProductInformationProps = {
   name: string;
@@ -67,7 +68,7 @@ const ProductInformation = ({
           <div className="text-xs flex items-center max-md:mb-2">
             <label className="text-gray-800 me-1">Satıcı:</label>
             <Link
-              href={`/vendor/${vendor.id}`}
+              href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
               className="text-sky-600 font-bold cursor-pointer me-1"
             >
               {vendor.name}

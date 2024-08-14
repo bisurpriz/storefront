@@ -3,47 +3,31 @@ import * as Types from '../../generated-types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type GetVendorByIdQueryVariables = Types.Exact<{
-  id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
+  id: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type GetVendorByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, category: { name: string }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null } }>, reviews_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetVendorByIdQuery = { tenant_by_pk?: { id: any, name?: string | null, logo?: string | null, legal_company_title?: string | null, created_at: any, owner: { products_aggregate: { aggregate?: { count: number } | null }, reviews_aggregate: { aggregate?: { count: number } | null } } } | null };
 
 
 export const GetVendorByIdDocument = gql`
-    query getVendorById($id: bigint = 0) {
-  product: product_by_pk(id: $id) {
-    category {
-      name
-    }
-    description
+    query getVendorById($id: uuid!) {
+  tenant_by_pk(id: $id) {
     id
-    image_url
     name
-    price
-    quantity
-    questions {
-      created_at
-      id
-      question
-      updated_at
-      user {
-        firstname
-        lastname
+    logo
+    legal_company_title
+    created_at
+    owner {
+      products_aggregate {
+        aggregate {
+          count
+        }
       }
-    }
-    reviews {
-      comment
-      created_at
-      score
-      user {
-        firstname
-        lastname
-      }
-    }
-    reviews_aggregate {
-      aggregate {
-        count(columns: id)
+      reviews_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }

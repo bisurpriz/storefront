@@ -21,8 +21,6 @@ const OrderApprove = async ({
     token: salt as string,
   });
 
-  console.log(orderItem, "orderItem");
-
   const images = orderItem.images_to_approve;
   const isApproved = orderItem.is_images_approved;
   const expiryDate = orderItem.image_approve_expiry;
@@ -35,12 +33,7 @@ const OrderApprove = async ({
     return <div>Bu sipariş zaten onaylanmış.</div>;
   }
 
-  return (
-    <ImagePreview
-      initialImages={images}
-      salt={salt as string}
-    />
-  );
+  return <ImagePreview initialImages={images} salt={salt as string} />;
 };
 
 export default OrderApprove;
