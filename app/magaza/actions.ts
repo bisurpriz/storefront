@@ -1,13 +1,15 @@
 "use server";
 
+import { query } from "@/graphql/lib/client";
 import {
   GetVendorByIdDocument,
   GetVendorByIdQuery,
   GetVendorByIdQueryVariables,
+} from "@/graphql/queries/vendors/getVendorById.generated";
+import {
   GetVendorProductsWithPaginationDocument,
   GetVendorProductsWithPaginationQuery,
-} from "@/graphql/generated";
-import { getClient } from "@/graphql/lib/client";
+} from "@/graphql/queries/vendors/getVendorProducstWithPagination.generated";
 
 export const getPaginatedVendorProducts = async <T>({
   offset,
@@ -16,14 +18,13 @@ export const getPaginatedVendorProducts = async <T>({
   offset: number;
   tenant_id: string;
 }) => {
-  const { data } =
-    await getClient().query<GetVendorProductsWithPaginationQuery>({
-      query: GetVendorProductsWithPaginationDocument,
-      variables: {
-        offset,
-        tenant_id,
-      },
-    });
+  const { data } = await query<GetVendorProductsWithPaginationQuery>({
+    query: GetVendorProductsWithPaginationDocument,
+    variables: {
+      offset,
+      tenant_id,
+    },
+  });
 
   return {
     products: data.product,
@@ -32,15 +33,14 @@ export const getPaginatedVendorProducts = async <T>({
 };
 
 export const getVendorDetails = async ({ id }: { id: string }) => {
-  const { data } = await getClient().query<
-    GetVendorByIdQuery,
-    GetVendorByIdQueryVariables
-  >({
-    query: GetVendorByIdDocument,
-    variables: {
-      id,
-    },
-  });
+  const { data } = await query<GetVendorByIdQuery, GetVendorByIdQueryVariables>(
+    {
+      query: GetVendorByIdDocument,
+      variables: {
+        id,
+      },
+    }
+  );
 
   return data.tenant_by_pk;
 };

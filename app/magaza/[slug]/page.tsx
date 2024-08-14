@@ -53,18 +53,15 @@ const Vendor = async ({
   const totalCount = responses[0].totalCount;
   const tenantDetails = responses[1];
 
-  console.log("totalCount", totalCount);
-  console.log("tenant", tenantDetails);
-
   return (
     <>
       <TenantHeader
-          title={tenantDetails.legal_company_title || tenantDetails.name}
-          joinedDate={tenantDetails.created_at}
-          logoUrl={tenantDetails.logo}
-          id={tenantDetails.id}
-          productsCount={tenantDetails.owner.products_aggregate.aggregate.count}
-          reviewsCount={tenantDetails.owner.reviews_aggregate.aggregate.count}
+        title={tenantDetails.legal_company_title || tenantDetails.name}
+        joinedDate={tenantDetails.created_at}
+        logoUrl={tenantDetails.logo}
+        id={tenantDetails.id}
+        productsCount={tenantDetails.owner.products_aggregate.aggregate.count}
+        reviewsCount={tenantDetails.owner.reviews_aggregate.aggregate.count}
       />
       <Filter
         filterTypes={[
