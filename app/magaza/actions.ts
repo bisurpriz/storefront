@@ -1,13 +1,9 @@
 "use server";
 
-import {
-  GetVendorByIdDocument,
-  GetVendorByIdQuery,
-  GetVendorByIdQueryVariables,
-  GetVendorProductsWithPaginationDocument,
-  GetVendorProductsWithPaginationQuery,
-} from "@/graphql/generated";
+
 import { getClient } from "@/graphql/lib/client";
+import { GetVendorByIdDocument, GetVendorByIdQuery, GetVendorByIdQueryVariables } from "@/graphql/queries/vendors/getVendorById.generated";
+import { GetVendorProductsWithPaginationDocument, GetVendorProductsWithPaginationQuery } from "@/graphql/queries/vendors/getVendorProducstWithPagination.generated";
 
 export const getPaginatedVendorProducts = async <T>({
   offset,
