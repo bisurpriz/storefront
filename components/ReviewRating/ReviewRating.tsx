@@ -1,8 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import Rating from "react-rating";
 import { CustomStar } from "./CustomStar";
+import dynamic from "next/dynamic";
+
+const DynamicRating = dynamic(() => import("react-rating"), {
+  ssr: false,
+});
 
 const ReviewRating = ({
   value = 0,
@@ -32,7 +36,7 @@ const ReviewRating = ({
           {value.toFixed(1)} {reviewCount > 0 && "•"}
         </p>
       )}
-      <Rating
+      <DynamicRating
         initialRating={value}
         fractions={2}
         readonly={readOnly}
