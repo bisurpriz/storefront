@@ -24,6 +24,7 @@ import {
 } from "@/graphql/queries/categories/getCategories.generated";
 import { DeliveryTimeProvider } from "@/contexts/DeliveryTimeContext";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
+import { ProductProvider } from "@/contexts/ProductContext";
 
 export const experimental_ppr = true;
 
@@ -139,18 +140,20 @@ export default async function RootLayout({
         <TagManagerNoscript />
         <AuthProvider user={user}>
           <ApolloWrapper>
-            <CategoryProvider category={category}>
-              <DeliveryTimeProvider>
-                <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                  <Suspense fallback={<HeaderSuspense />}>
-                    <Header category={category} />
-                    <StickyHeader />
-                  </Suspense>
-                  <Content>{children}</Content>
-                  {auth}
-                </CartProvider>
-              </DeliveryTimeProvider>
-            </CategoryProvider>
+            <ProductProvider>
+              <CategoryProvider category={category}>
+                <DeliveryTimeProvider>
+                  <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                    <Suspense fallback={<HeaderSuspense />}>
+                      <Header category={category} />
+                      <StickyHeader />
+                    </Suspense>
+                    <Content>{children}</Content>
+                    {auth}
+                  </CartProvider>
+                </DeliveryTimeProvider>
+              </CategoryProvider>
+            </ProductProvider>
           </ApolloWrapper>
         </AuthProvider>
       </body>

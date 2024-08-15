@@ -1,12 +1,12 @@
 "use client";
 
-import Rating from "@/components/Rating/Rating";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Tooltip from "@/components/Tooltip";
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { useState } from "react";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 const ClientModal = ({
   productId,
@@ -79,10 +79,9 @@ const ClientModal = ({
                 Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
               </p>
               <div className="flex flex-col gap-2 items-start mb-2 text-xs text-slate-400">
-                <Rating
+                <ReviewRating
                   value={selectedRating}
                   showReviewCount={false}
-                  className="!max-w-[80px]"
                   readOnly
                 />
                 <p className="text-sm m-0 leading-none text-slate-500 max-w-lg">
@@ -103,10 +102,10 @@ const ClientModal = ({
               Ürünü değerlendirerek diğer kullanıcıların ürün hakkında daha
               fazla bilgi sahibi olmasına yardımcı olabilirsiniz.
             </p>
-            <Rating
+            <ReviewRating
               value={selectedRating}
               showReviewCount={false}
-              className="!max-w-[250px] mx-auto"
+              className="mx-auto"
               onChange={(value) => {
                 setSelectedRating(value);
               }}

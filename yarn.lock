@@ -3422,7 +3422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.92":
+"@types/lodash@npm:^4.14.105, @types/lodash@npm:^4.14.92":
   version: 4.17.7
   resolution: "@types/lodash@npm:4.17.7"
   checksum: 10c0/40c965b5ffdcf7ff5c9105307ee08b782da228c01b5c0529122c554c64f6b7168fc8f11dc79aa7bae4e67e17efafaba685dc3a47e294dbf52a65ed2b67100561
@@ -3500,6 +3500,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^16.0.40":
+  version: 16.14.60
+  resolution: "@types/react@npm:16.14.60"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:^0.16"
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/4cb5d42c00dea95d530ad6a7a72c645aeb06ce6d4773cedfbb9632e53834ee13e8c53c9335202d82060ea4beb1247453dd65d721aaf447e273bd32fb8c524511
+  languageName: node
+  linkType: hard
+
 "@types/resolve@npm:1.17.1":
   version: 1.17.1
   resolution: "@types/resolve@npm:1.17.1"
@@ -3516,6 +3527,13 @@ __metadata:
     "@types/glob": "npm:*"
     "@types/node": "npm:*"
   checksum: 10c0/f1b11100374be4a554fc9bf7c8bd33aef0dc0481007bc55b83451bb2dbe30626be82e3cf16612ba7e4c96ce3982d8bab07cd0e951b9c98d2518d981cf6f2e4b2
+  languageName: node
+  linkType: hard
+
+"@types/scheduler@npm:^0.16":
+  version: 0.16.8
+  resolution: "@types/scheduler@npm:0.16.8"
+  checksum: 10c0/f86de504945b8fc41b1f391f847444d542e2e4067cf7e5d9bfeb5d2d2393d3203b1161bc0ef3b1e104d828dabfb60baf06e8d2c27e27ff7e8258e6e618d8c4ec
   languageName: node
   linkType: hard
 
@@ -6278,6 +6296,7 @@ __metadata:
     graphql: "npm:^16.8.1"
     graphql-request: "npm:^6.1.0"
     graphql-ws: "npm:^5.15.0"
+    i: "npm:^0.3.7"
     js-cookie: "npm:^3.0.5"
     jsonwebtoken: "npm:^9.0.2"
     next: "npm:^15.0.0-rc.0"
@@ -6289,6 +6308,7 @@ __metadata:
     react-hook-form: "npm:^7.48.2"
     react-hot-toast: "npm:^2.4.1"
     react-intersection-observer: "npm:^9.5.2"
+    react-rating: "npm:^2.0.5"
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.2"
     subscriptions-transport-ws: "npm:^0.11.0"
@@ -6933,6 +6953,13 @@ __metadata:
     agent-base: "npm:^7.0.2"
     debug: "npm:4"
   checksum: 10c0/2490e3acec397abeb88807db52cac59102d5ed758feee6df6112ab3ccd8325e8a1ce8bce6f4b66e5470eca102d31e425ace904242e4fa28dbe0c59c4bafa7b2c
+  languageName: node
+  linkType: hard
+
+"i@npm:^0.3.7":
+  version: 0.3.7
+  resolution: "i@npm:0.3.7"
+  checksum: 10c0/fc591b64987c5fcc96aadf9136d8d58b937abb90e9cd840160b9c99a32140ed8a30a94ee1ab7d9a45170ec4d3f872dda9d15afeb1083f689873da6197c25efc7
   languageName: node
   linkType: hard
 
@@ -9488,6 +9515,19 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
+  languageName: node
+  linkType: hard
+
+"react-rating@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-rating@npm:2.0.5"
+  dependencies:
+    "@types/lodash": "npm:^4.14.105"
+    "@types/react": "npm:^16.0.40"
+  peerDependencies:
+    react: ">=16.3.0"
+    react-dom: ">=16.3.0"
+  checksum: 10c0/fa2def4887eb770b67f0e8c1e0508c9df58177728b1bc3ef89eda8ab1ed67aaeb00456744c4c84539d5dd5670fe7e4e8b048ede73c70bd1ad458d55d28fae8af
   languageName: node
   linkType: hard
 

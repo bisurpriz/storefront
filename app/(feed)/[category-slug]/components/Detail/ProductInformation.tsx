@@ -1,8 +1,6 @@
 "use client";
 
-import Popover from "@/components/Popover";
 import Link from "next/link";
-import Rating from "@/components/Rating/Rating";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
@@ -10,9 +8,11 @@ import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
 import Ticket from "@/components/Icons/Ticket";
 import OutlineArchive from "@/components/Icons/OutlineArchive";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
 import { stringToSlug } from "@/utils/stringToSlug";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { Popper } from "@mui/base/Popper";
 
 type ProductInformationProps = {
   name: string;
@@ -30,6 +30,7 @@ type ProductInformationProps = {
   shippingType?: string;
   freeShipping?: boolean;
   deliveryTimeRanges: string;
+  totalUserCommentCount: number;
 };
 
 const ProductInformation = ({
@@ -45,6 +46,7 @@ const ProductInformation = ({
   freeShipping,
   shippingType,
   deliveryTimeRanges,
+  totalUserCommentCount,
 }: ProductInformationProps) => {
   const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
 
@@ -59,6 +61,11 @@ const ProductInformation = ({
       setDeliveryTimeHandler(null);
     };
   }, []);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "rating-popper" : undefined;
 
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
@@ -101,28 +108,42 @@ const ProductInformation = ({
               </span>
             </span>
           </div>
-          <div className="rounded-lg text-end w-full max-xs:text-start max-xs:mt-4">
-            <Popover
-              content={
-                <span>
-                  <RatingDetail
-                    rateCounts={rateCounts}
-                    rating={rating}
-                    totalRating={reviewCount}
-                  />
-                </span>
+          <div className="xs:ml-auto max-xs:text-start max-xs:mt-4">
+            <div
+              onMouseEnter={(event: MouseEvent<HTMLElement>) =>
+                setAnchorEl(event.currentTarget)
               }
-              placement="bottom"
+              onMouseLeave={() => setAnchorEl(null)}
+              className="cursor-pointer"
             >
-              <span>
-                <Rating
-                  value={rating}
-                  reviewCount={reviewCount}
-                  readOnly
-                  className="max-w-[100px] xs:ml-auto"
-                />
-              </span>
-            </Popover>
+              <ReviewRating
+                value={rating}
+                reviewCount={reviewCount}
+                showReviewCount
+                readOnly
+              />
+            </div>
+            <Popper
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              placement="bottom"
+              modifiers={[
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 10],
+                  },
+                },
+              ]}
+            >
+              <RatingDetail
+                rateCounts={rateCounts}
+                rating={rating}
+                totalRating={reviewCount}
+                totalUserCommentCount={totalUserCommentCount}
+              />
+            </Popper>
           </div>
         </div>
         <Promotions

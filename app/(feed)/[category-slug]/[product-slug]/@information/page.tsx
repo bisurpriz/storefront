@@ -68,14 +68,15 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         name={product.name}
         price={product.price}
         rateCounts={{
-          1: 1,
-          2: 1,
-          3: 1,
-          4: 1,
-          5: 1,
+          1: 57,
+          2: 16,
+          3: 39,
+          4: 59,
+          5: 214,
         }}
-        rating={product.reviews_aggregate.aggregate.count}
-        reviewCount={product.reviews_aggregate.aggregate.count}
+        rating={3.9}
+        totalUserCommentCount={240}
+        reviewCount={385}
         promotion="Kargo Bedava"
         discountPrice={product.discount_price}
         discountRate={getDiscountRate(product.price, product.discount_price)}

@@ -14,6 +14,7 @@ const nextConfig = {
       "yup",
       "zustand",
       "react-hook-form",
+      "react-rating",
     ],
     serverActions: {
       bodySizeLimit: "20mb",
@@ -48,6 +49,12 @@ const nextConfig = {
       },
       {
         hostname: "d1sk8qn67xoao2.cloudfront.net",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
         protocol: "https",
         pathname: "/**",
         port: "",

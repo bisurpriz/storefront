@@ -1,11 +1,11 @@
 "use client";
 
-import Rating from "@/components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import ClientModal from "./ClientModal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { createReview } from "../../actions";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 interface Props {
   imageUrl: string;
@@ -60,7 +60,7 @@ const NotReviewedCard = ({
           {/* 
             Halihazırda bu ürünün kendi değerlendirmesi görüntülenecek
           */}
-          <Rating value={rating ?? 3} readOnly showReviewCount={false} />
+          <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
           {reviewCount}
         </div>
 
