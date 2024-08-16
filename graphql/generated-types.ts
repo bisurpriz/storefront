@@ -3322,7 +3322,6 @@ export type Cursor_Ordering =
 
 /** özel yazı yada fotograf */
 export type Customizable_Area = {
-  count?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   type: Scalars['String']['output'];
 };
@@ -3357,7 +3356,6 @@ export type Customizable_Area_Aggregate_FieldsCountArgs = {
 
 /** aggregate avg on columns */
 export type Customizable_Area_Avg_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3366,7 +3364,6 @@ export type Customizable_Area_Bool_Exp = {
   _and?: InputMaybe<Array<Customizable_Area_Bool_Exp>>;
   _not?: InputMaybe<Customizable_Area_Bool_Exp>;
   _or?: InputMaybe<Array<Customizable_Area_Bool_Exp>>;
-  count?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   type?: InputMaybe<String_Comparison_Exp>;
 };
@@ -3378,27 +3375,23 @@ export type Customizable_Area_Constraint =
 
 /** input type for incrementing numeric columns in table "customizable_area" */
 export type Customizable_Area_Inc_Input = {
-  count?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "customizable_area" */
 export type Customizable_Area_Insert_Input = {
-  count?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Customizable_Area_Max_Fields = {
-  count?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Customizable_Area_Min_Fields = {
-  count?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -3427,7 +3420,6 @@ export type Customizable_Area_On_Conflict = {
 
 /** Ordering options when selecting data from "customizable_area". */
 export type Customizable_Area_Order_By = {
-  count?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
 };
@@ -3440,34 +3432,28 @@ export type Customizable_Area_Pk_Columns_Input = {
 /** select columns of table "customizable_area" */
 export type Customizable_Area_Select_Column =
   /** column name */
-  | 'count'
-  /** column name */
   | 'id'
   /** column name */
   | 'type';
 
 /** input type for updating data in table "customizable_area" */
 export type Customizable_Area_Set_Input = {
-  count?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Customizable_Area_Stddev_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Customizable_Area_Stddev_Pop_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Customizable_Area_Stddev_Samp_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3481,21 +3467,17 @@ export type Customizable_Area_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Customizable_Area_Stream_Cursor_Value_Input = {
-  count?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Customizable_Area_Sum_Fields = {
-  count?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "customizable_area" */
 export type Customizable_Area_Update_Column =
-  /** column name */
-  | 'count'
   /** column name */
   | 'id'
   /** column name */
@@ -3512,19 +3494,16 @@ export type Customizable_Area_Updates = {
 
 /** aggregate var_pop on columns */
 export type Customizable_Area_Var_Pop_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Customizable_Area_Var_Samp_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Customizable_Area_Variance_Fields = {
-  count?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -7382,8 +7361,6 @@ export type Numeric_Comparison_Exp = {
 /** columns and relationships of "order" */
 export type Order = {
   created_at: Scalars['timestamptz']['output'];
-  delivery_date?: Maybe<Scalars['timestamptz']['output']>;
-  delivery_time?: Maybe<Scalars['String']['output']>;
   guest_id?: Maybe<Scalars['uuid']['output']>;
   id: Scalars['uuid']['output'];
   /** An array relationship */
@@ -7999,8 +7976,6 @@ export type Order_Bool_Exp = {
   _not?: InputMaybe<Order_Bool_Exp>;
   _or?: InputMaybe<Array<Order_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  delivery_date?: InputMaybe<Timestamptz_Comparison_Exp>;
-  delivery_time?: InputMaybe<String_Comparison_Exp>;
   guest_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   order_addresses?: InputMaybe<Order_Address_Bool_Exp>;
@@ -8054,8 +8029,6 @@ export type Order_Inc_Input = {
 /** input type for inserting data into table "order" */
 export type Order_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_date?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_time?: InputMaybe<Scalars['String']['input']>;
   guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   order_addresses?: InputMaybe<Order_Address_Arr_Rel_Insert_Input>;
@@ -9418,8 +9391,6 @@ export type Order_Item_Variance_Order_By = {
 /** aggregate max on columns */
 export type Order_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  delivery_date?: Maybe<Scalars['timestamptz']['output']>;
-  delivery_time?: Maybe<Scalars['String']['output']>;
   guest_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   order_no?: Maybe<Scalars['bigint']['output']>;
@@ -9434,8 +9405,6 @@ export type Order_Max_Fields = {
 /** order by max() on columns of table "order" */
 export type Order_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
-  delivery_date?: InputMaybe<Order_By>;
-  delivery_time?: InputMaybe<Order_By>;
   guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_no?: InputMaybe<Order_By>;
@@ -9450,8 +9419,6 @@ export type Order_Max_Order_By = {
 /** aggregate min on columns */
 export type Order_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  delivery_date?: Maybe<Scalars['timestamptz']['output']>;
-  delivery_time?: Maybe<Scalars['String']['output']>;
   guest_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   order_no?: Maybe<Scalars['bigint']['output']>;
@@ -9466,8 +9433,6 @@ export type Order_Min_Fields = {
 /** order by min() on columns of table "order" */
 export type Order_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
-  delivery_date?: InputMaybe<Order_By>;
-  delivery_time?: InputMaybe<Order_By>;
   guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_no?: InputMaybe<Order_By>;
@@ -9504,8 +9469,6 @@ export type Order_On_Conflict = {
 /** Ordering options when selecting data from "order". */
 export type Order_Order_By = {
   created_at?: InputMaybe<Order_By>;
-  delivery_date?: InputMaybe<Order_By>;
-  delivery_time?: InputMaybe<Order_By>;
   guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Order_By>;
@@ -9533,10 +9496,6 @@ export type Order_Select_Column =
   /** column name */
   | 'created_at'
   /** column name */
-  | 'delivery_date'
-  /** column name */
-  | 'delivery_time'
-  /** column name */
   | 'guest_id'
   /** column name */
   | 'id'
@@ -9560,8 +9519,6 @@ export type Order_Select_Column =
 /** input type for updating data in table "order" */
 export type Order_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_date?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_time?: InputMaybe<Scalars['String']['input']>;
   guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   order_no?: InputMaybe<Scalars['bigint']['input']>;
@@ -9809,8 +9766,6 @@ export type Order_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Order_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_date?: InputMaybe<Scalars['timestamptz']['input']>;
-  delivery_time?: InputMaybe<Scalars['String']['input']>;
   guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   order_no?: InputMaybe<Scalars['bigint']['input']>;
@@ -10611,10 +10566,6 @@ export type Order_Tenant_Variance_Order_By = {
 export type Order_Update_Column =
   /** column name */
   | 'created_at'
-  /** column name */
-  | 'delivery_date'
-  /** column name */
-  | 'delivery_time'
   /** column name */
   | 'guest_id'
   /** column name */

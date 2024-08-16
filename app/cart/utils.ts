@@ -83,6 +83,8 @@ const getTenantOrders = (
             amount: item.discount_price * item.quantity,
             tenant_amount: Number(commissionedAmount),
             commissioned_amount: Number(commission),
+            delivery_date: item.deliveryDate,
+            delivery_time: item.deliveryTime,
           };
         }),
       },

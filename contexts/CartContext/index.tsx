@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { getProductByIdForCart, updateCart } from "@/app/cart/actions";
 import useResponsive from "@/hooks/useResponsive";
 import { getProductById } from "@/app/(feed)/actions";
+import { useDeliveryTime } from "../DeliveryTimeContext";
 
 type AddToCart = ({
   id,
@@ -76,6 +77,7 @@ export const CartProvider = ({
     cost: dbCost,
   } as CartState);
   const [loading, setLoading] = useState(false);
+  const { deliveryTime, clearDeliveryTime } = useDeliveryTime();
 
   const { isTablet } = useResponsive();
 
@@ -120,8 +122,6 @@ export const CartProvider = ({
     id,
     type,
     quantity,
-    deliveryDate,
-    deliveryTime,
   }: {
     id: number;
     type: "updateq" | "add";
@@ -137,8 +137,8 @@ export const CartProvider = ({
 
       const _item = {
         ...item,
-        deliveryDate,
-        deliveryTime,
+        deliveryDate: deliveryTime.day,
+        deliveryTime: deliveryTime.hour,
       };
 
       cartItems.push(_item);
@@ -154,6 +154,7 @@ export const CartProvider = ({
           },
         });
       });
+      clearDeliveryTime();
       return;
     } else {
       if (type === "updateq") {

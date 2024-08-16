@@ -1,5 +1,4 @@
 "use server";
-
 import { query } from "@/graphql/lib/client";
 import {
   GetVendorByIdDocument,
