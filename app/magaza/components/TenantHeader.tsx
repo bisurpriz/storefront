@@ -42,7 +42,7 @@ const TenantHeader = ({
         </div>
       </div>
     </section>
-  ); 
+  );
 };
 
 export default TenantHeader;

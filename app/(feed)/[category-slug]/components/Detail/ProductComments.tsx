@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
-import Rating from "../../../../../components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import { Suspense } from "react";
+import ReviewRating from "../../../../../components/ReviewRating/ReviewRating";
 
 type Comment = {
   comment_id: number;
@@ -74,9 +74,8 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     >
                       {comment.firstName} {comment.lastName}
                     </p>
-                    <Rating
+                    <ReviewRating
                       value={comment.rate}
-                      className="max-w-[80px] min-w-[80px] self-center"
                       readOnly
                       showReviewCount={false}
                     />

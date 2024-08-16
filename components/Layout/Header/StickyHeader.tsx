@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { motion, scroll } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 const StickyHeader = () => {
   const { category } = useCategory();

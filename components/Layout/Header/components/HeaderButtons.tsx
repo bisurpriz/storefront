@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
+import React, { ReactNode } from "react";
 import BasketButton from "./BasketButton";
 import AltTextWithData from "./AltTextWithData";
 import { useUser } from "@/contexts/AuthContext";
@@ -11,7 +11,7 @@ import Account from "@/components/Icons/Account";
 import Truck from "@/components/Icons/Truck";
 
 export type HeaderButtonData = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   href?: string;
   type: "order" | "account" | "cart";

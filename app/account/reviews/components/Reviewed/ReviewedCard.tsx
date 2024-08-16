@@ -1,9 +1,9 @@
-import Rating from "@/components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Button from "@/components/Button";
 import Trash from "@/components/Icons/Trash";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 interface Props {
   imageUrl: string;
@@ -25,8 +25,8 @@ const ReviewedCard = async ({
 }: Props) => {
   const handleDeleteReview = async () => {
     "use server";
-    console.log("delete review");
   };
+
   return (
     <form
       action={handleDeleteReview}
@@ -47,7 +47,7 @@ const ReviewedCard = async ({
           Değerlendirme tarihi: {localeFormat(new Date(reviewDate), "PPP")}
         </p>
         <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
-          <Rating value={rating ?? 3} readOnly showReviewCount={false} />
+          <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
           {reviewCount}
         </div>
 

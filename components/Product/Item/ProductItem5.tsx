@@ -3,12 +3,11 @@ import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
-import Rating from "@/components/Rating/Rating";
-import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import clsx from "clsx";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 const ProductItem5 = ({
   name,
@@ -74,7 +73,7 @@ const ProductItem5 = ({
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
-              <Rating
+              <ReviewRating
                 value={4}
                 readOnly
                 showReviewCount={false}

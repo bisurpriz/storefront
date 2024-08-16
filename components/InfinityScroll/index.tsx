@@ -60,7 +60,7 @@ const InfinityScroll = <T,>({
   if (totalCount === 0) return <EmptyPage />;
 
   return (
-    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2">
+    <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
       {data?.map((item: any) => (
         <DynamicProductItem key={item.id} {...item} />
       ))}

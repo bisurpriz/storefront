@@ -14,6 +14,7 @@ const nextConfig = {
       "yup",
       "zustand",
       "react-hook-form",
+      "react-rating",
     ],
     serverActions: {
       bodySizeLimit: "20mb",
