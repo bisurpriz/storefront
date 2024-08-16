@@ -1,12 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { CustomStar } from "./CustomStar";
-import dynamic from "next/dynamic";
-
-const DynamicRating = dynamic(() => import("react-rating"), {
-  ssr: false,
-});
+import Rating from "./CustomRating";
+import clsx from "clsx";
 
 const ReviewRating = ({
   value = 0,
@@ -15,6 +11,7 @@ const ReviewRating = ({
   className = "",
   showReviewCount = true,
   onChange,
+  tooltips = [],
 }: {
   value: number;
   readOnly?: boolean;
@@ -22,6 +19,7 @@ const ReviewRating = ({
   className?: string;
   showReviewCount?: boolean;
   onChange?: (value: number) => void;
+  tooltips?: string[];
 }) => {
   const reviewCountText = useMemo(() => {
     return reviewCount > 0
@@ -29,30 +27,25 @@ const ReviewRating = ({
       : "Henüz Değerlendirme Yapılmamış";
   }, [reviewCount]);
 
+  const textStyle = "leading-5 text-slate-400 whitespace-nowrap cursor-pointer";
+
   return (
     <div className="flex items-center font-semibold gap-1">
       {showReviewCount && (
-        <p className="leading-5 text-sm mb-1 text-slate-400 whitespace-nowrap">
+        <p className={clsx(textStyle, "text-sm")}>
           {value.toFixed(1)} {reviewCount > 0 && "•"}
         </p>
       )}
-      <DynamicRating
-        initialRating={value}
-        fractions={2}
-        readonly={readOnly}
+      <Rating
+        defaultValue={value}
+        disabled={readOnly}
+        max={5}
         onChange={onChange}
-        className={className}
-        direction="ltr"
-        key={value}
-        emptySymbol={
-          <CustomStar className="w-4 h-4 fill-gray-300 stroke-gray-300" />
-        }
-        fullSymbol={
-          <CustomStar className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
-        }
+        tooltips={tooltips}
+        value={value}
       />
       {showReviewCount && (
-        <p className="leading-5 text-xs mb-0.5 ml-1 text-slate-400 whitespace-nowrap">
+        <p className={clsx(textStyle, "text-xs ml-1 mt-1")}>
           {reviewCountText}
         </p>
       )}

@@ -8,7 +8,7 @@ import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
 import Ticket from "@/components/Icons/Ticket";
 import OutlineArchive from "@/components/Icons/OutlineArchive";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
@@ -62,6 +62,9 @@ const ProductInformation = ({
     };
   }, []);
 
+  const timeout = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -108,21 +111,23 @@ const ProductInformation = ({
               </span>
             </span>
           </div>
-          <div className="xs:ml-auto max-xs:text-start max-xs:mt-4">
-            <div
-              onMouseEnter={(event: MouseEvent<HTMLElement>) =>
-                setAnchorEl(event.currentTarget)
-              }
-              onMouseLeave={() => setAnchorEl(null)}
-              className="cursor-pointer"
-            >
-              <ReviewRating
-                value={rating}
-                reviewCount={reviewCount}
-                showReviewCount
-                readOnly
-              />
-            </div>
+          <div
+            className="xs:ml-auto max-xs:text-start max-xs:mt-4"
+            onMouseLeave={() => {
+              timeout.current = setTimeout(() => {
+                setAnchorEl(null);
+              }, 500);
+            }}
+            onMouseEnter={(event: MouseEvent<HTMLElement>) =>
+              setAnchorEl(event.currentTarget)
+            }
+          >
+            <ReviewRating
+              value={rating}
+              reviewCount={reviewCount}
+              showReviewCount
+              readOnly
+            />
             <Popper
               id={id}
               open={open}
@@ -137,12 +142,14 @@ const ProductInformation = ({
                 },
               ]}
             >
-              <RatingDetail
-                rateCounts={rateCounts}
-                rating={rating}
-                totalRating={reviewCount}
-                totalUserCommentCount={totalUserCommentCount}
-              />
+              <div ref={wrapperRef}>
+                <RatingDetail
+                  rateCounts={rateCounts}
+                  rating={rating}
+                  totalRating={reviewCount}
+                  totalUserCommentCount={totalUserCommentCount}
+                />
+              </div>
             </Popper>
           </div>
         </div>

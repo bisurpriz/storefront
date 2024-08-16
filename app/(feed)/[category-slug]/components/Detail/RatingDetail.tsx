@@ -1,7 +1,6 @@
 import { CustomStar } from "@/components/ReviewRating/CustomStar";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Rating from "react-rating";
 
 export type RatingProps = {
   rating: number;
