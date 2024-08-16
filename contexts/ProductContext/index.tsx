@@ -16,7 +16,7 @@ import {
 } from "react";
 
 interface ProductContextType {
-  selectedProduct: GetProductByIdQuery["product"];
+  selectedProduct: GetProductByIdQuery["product"] | null;
 }
 
 export const ProductContext = createContext<ProductContextType>({
@@ -25,9 +25,6 @@ export const ProductContext = createContext<ProductContextType>({
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
-  const [selectedProduct, setSelectedProduct] = useState<
-    GetProductByIdQuery["product"] | null
-  >(null);
 
   const haspid = searchParams.has("pid");
   const pid = haspid ? searchParams.get("pid") : null;
@@ -41,16 +38,10 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  useEffect(() => {
-    if (pid && data?.product) {
-      setSelectedProduct(data?.product);
-    }
-  }, [data?.product, pid]);
-
   return (
     <ProductContext.Provider
       value={{
-        selectedProduct,
+        selectedProduct: data?.product,
       }}
     >
       {children}

@@ -100,13 +100,11 @@ const DaySelect: React.FC<Props> = ({
       setSelectedDate(new Date(deliveryTime.day));
       setSelectedHour(deliveryTime.hour);
       setSelectedButton(
-        addDays(new Date(deliveryTime.day), 0).getDate() ===
-          new Date().getDate()
-          ? 0
-          : addDays(new Date(deliveryTime.day), 1).getDate() ===
-            new Date().getDate()
-          ? 1
-          : 2
+        [0, 1, 2].findIndex(
+          (index) =>
+            localeFormat(addDays(new Date(), index), "PPP") ===
+            localeFormat(new Date(deliveryTime.day), "PPP")
+        )
       );
     }
   }, [deliveryTime]);

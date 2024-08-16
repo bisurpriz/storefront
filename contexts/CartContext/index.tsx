@@ -293,15 +293,17 @@ export const CartProvider = ({
 
   const isProductInCart = useMemo(
     () => cartState.cartItems.find((item) => item.id === selectedProduct?.id),
-    [cartState.cartItems, selectedProduct]
+    [cartState.cartItems, selectedProduct?.id]
   );
 
   useEffect(() => {
-    if (isProductInCart) {
+    if (Boolean(isProductInCart)) {
       setDeliveryTime({
         day: isProductInCart.deliveryDate,
         hour: isProductInCart.deliveryTime,
       });
+    } else {
+      clearDeliveryTime();
     }
   }, [isProductInCart]);
 
