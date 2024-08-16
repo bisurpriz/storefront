@@ -6,6 +6,11 @@ subscription subscribeToChats {
       picture
       firstname
       lastname
+      tenants { 
+        id
+        name
+        logo
+      }
     }
     messages(order_by: { created_at: asc }) {
       message

@@ -6,10 +6,12 @@ import MessageItem from "./MessageItem";
 import MessageItemSkeleton from "./MessageItemSkeleton";
 import { CookieTokens } from "@/app/@auth/contants";
 import { getClientCookie } from "@/utils/getCookie";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 const MessageList = ({
   messages,
   threadId,
+  vendor,
 }: {
   messages: {
     id: string;
@@ -29,6 +31,11 @@ const MessageList = ({
     };
   }[];
   threadId: string;
+  vendor: {
+    id: string;
+    name: string;
+    logo: string;
+  };
 }) => {
   const id = getClientCookie(CookieTokens.USER_ID);
   const ref = useRef<HTMLDivElement>(null);
@@ -53,23 +60,29 @@ const MessageList = ({
               type={item % 2 === 0 ? "sent" : "received"}
             />
           ))
-        : messages?.map((item) => (
-            <MessageItem
-              key={item.id}
-              message={item.message}
-              date={
-                item?.created_at
-                  ? localeFormat(new Date(item.created_at), "PPP")
-                  : ""
-              }
-              picture={item?.sender?.picture}
-              type={
-                item?.sender?.id && id && item?.sender?.id === id
-                  ? "sent"
-                  : "received"
-              }
-            />
-          ))}
+        : messages?.map((item) => {
+            return (
+              <MessageItem
+                key={item.id}
+                message={item.message}
+                date={
+                  item?.created_at
+                    ? localeFormat(new Date(item.created_at), "PPP")
+                    : ""
+                }
+                picture={
+                  item?.sender?.id === id
+                    ? item?.sender?.picture
+                    : getImageUrlFromPath(vendor?.logo)
+                }
+                type={
+                  item?.sender?.id && id && item?.sender?.id === id
+                    ? "sent"
+                    : "received"
+                }
+              />
+            );
+          })}
     </div>
   );
 };

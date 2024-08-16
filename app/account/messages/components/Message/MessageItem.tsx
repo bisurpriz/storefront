@@ -21,7 +21,7 @@ const MessageItem = ({ type, message, date, picture }: IMessageItem) => {
               height="48"
             />
           ) : null}
-          <span className="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+          <span className="absolute w-4 h-4 bg-green-500 rounded-full right-0 bottom-0 border-2 border-white"></span>
         </div>
       </div>
       <div className="flex-1 px-2">

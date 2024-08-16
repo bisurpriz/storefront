@@ -6,7 +6,6 @@ export type SendMessageAloneMutationVariables = Types.Exact<{
   message: Types.Scalars['String']['input'];
   receiver_id: Types.Scalars['uuid']['input'];
   order_tenant_id: Types.Scalars['bigint']['input'];
-  user_id: Types.Scalars['uuid']['input'];
 }>;
 
 
@@ -30,9 +29,9 @@ export type MarkAsReadMutation = { update_message_many?: Array<{ affected_rows: 
 
 
 export const SendMessageAloneDocument = gql`
-    mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!, $user_id: uuid!) {
+    mutation sendMessageAlone($message: String!, $receiver_id: uuid!, $order_tenant_id: bigint!) {
   insert_message_one(
-    object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id, user_id: $user_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: [order_tenant_id]}}}
+    object: {receiver_id: $receiver_id, message: $message, chat_thread: {data: {order_tenant_id: $order_tenant_id, tenat_id: $receiver_id}, on_conflict: {constraint: chat_thread_order_tenant_id_key, update_columns: [order_tenant_id]}}}
   ) {
     created_at
     chat_thread {

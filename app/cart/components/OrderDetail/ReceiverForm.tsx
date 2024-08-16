@@ -153,6 +153,7 @@ const ReceiverForm = ({
     watch,
     getValues,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<OrderDetailPartialFormData>({
     defaultValues,
@@ -218,6 +219,14 @@ const ReceiverForm = ({
       return;
     }
 
+    if (!localStorageData && user) {
+      reset({
+        sender_name: user?.firstname + " " + user?.lastname,
+        sender_phone: user?.phone?.match(/^90(\d{10})$/)?.[1],
+        sender_email: user?.email,
+      });
+    }
+
     if (defaultCity && defaultDistrict && defaultQuarter) {
       reset({
         ...getValues(),
@@ -272,13 +281,14 @@ const ReceiverForm = ({
             city_id: values.city?.id,
             district_id: values.district?.id,
             quarter_id: values.quarter?.id,
-            receiver_firstname: values.receiver_firstname,
-            receiver_surname: values.receiver_surname,
+            receiver_firstname: values.receiver_name?.split(" ")[0],
+            receiver_surname: values.receiver_name?.split(" ").slice(1).join(" "),
             receiver_phone: values.receiver_phone,
             user_id,
             address_title: values.address_title,
           });
-        } catch {
+        } catch(e) {
+          console.error(e);
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
@@ -514,6 +524,7 @@ const ReceiverForm = ({
             selectedSavedAddress={selectedSavedAddress}
             control={control}
             user={user}
+            setValue={setValue}
           />
 
           <Controller

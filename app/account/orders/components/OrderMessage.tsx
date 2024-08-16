@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
-import { readIdFromCookies } from "@/app/actions";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import Chat from "@/components/Icons/Chat";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
@@ -24,13 +23,10 @@ const OrderMessage = ({
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
-    const userId = await readIdFromCookies();
-
     const response = await startMessageForOrder({
       message,
       receiver_id: tenant.id,
       order_tenant_id: orderTenantId,
-      user_id: userId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(
