@@ -4025,7 +4025,6 @@ enum cursor_ordering {
 
 """özel yazı yada fotograf"""
 type customizable_area {
-  count: Int
   id: Int!
   type: String!
 }
@@ -4057,7 +4056,6 @@ type customizable_area_aggregate_fields {
 
 """aggregate avg on columns"""
 type customizable_area_avg_fields {
-  count: Float
   id: Float
 }
 
@@ -4068,7 +4066,6 @@ input customizable_area_bool_exp {
   _and: [customizable_area_bool_exp!]
   _not: customizable_area_bool_exp
   _or: [customizable_area_bool_exp!]
-  count: Int_comparison_exp
   id: Int_comparison_exp
   type: String_comparison_exp
 }
@@ -4087,7 +4084,6 @@ enum customizable_area_constraint {
 input type for incrementing numeric columns in table "customizable_area"
 """
 input customizable_area_inc_input {
-  count: Int
   id: Int
 }
 
@@ -4095,21 +4091,18 @@ input customizable_area_inc_input {
 input type for inserting data into table "customizable_area"
 """
 input customizable_area_insert_input {
-  count: Int
   id: Int
   type: String
 }
 
 """aggregate max on columns"""
 type customizable_area_max_fields {
-  count: Int
   id: Int
   type: String
 }
 
 """aggregate min on columns"""
 type customizable_area_min_fields {
-  count: Int
   id: Int
   type: String
 }
@@ -4146,7 +4139,6 @@ input customizable_area_on_conflict {
 
 """Ordering options when selecting data from "customizable_area"."""
 input customizable_area_order_by {
-  count: order_by
   id: order_by
   type: order_by
 }
@@ -4161,9 +4153,6 @@ select columns of table "customizable_area"
 """
 enum customizable_area_select_column {
   """column name"""
-  count
-
-  """column name"""
   id
 
   """column name"""
@@ -4174,26 +4163,22 @@ enum customizable_area_select_column {
 input type for updating data in table "customizable_area"
 """
 input customizable_area_set_input {
-  count: Int
   id: Int
   type: String
 }
 
 """aggregate stddev on columns"""
 type customizable_area_stddev_fields {
-  count: Float
   id: Float
 }
 
 """aggregate stddev_pop on columns"""
 type customizable_area_stddev_pop_fields {
-  count: Float
   id: Float
 }
 
 """aggregate stddev_samp on columns"""
 type customizable_area_stddev_samp_fields {
-  count: Float
   id: Float
 }
 
@@ -4210,14 +4195,12 @@ input customizable_area_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input customizable_area_stream_cursor_value_input {
-  count: Int
   id: Int
   type: String
 }
 
 """aggregate sum on columns"""
 type customizable_area_sum_fields {
-  count: Int
   id: Int
 }
 
@@ -4225,9 +4208,6 @@ type customizable_area_sum_fields {
 update columns of table "customizable_area"
 """
 enum customizable_area_update_column {
-  """column name"""
-  count
-
   """column name"""
   id
 
@@ -4248,19 +4228,16 @@ input customizable_area_updates {
 
 """aggregate var_pop on columns"""
 type customizable_area_var_pop_fields {
-  count: Float
   id: Float
 }
 
 """aggregate var_samp on columns"""
 type customizable_area_var_samp_fields {
-  count: Float
   id: Float
 }
 
 """aggregate variance on columns"""
 type customizable_area_variance_fields {
-  count: Float
   id: Float
 }
 
@@ -8659,8 +8636,6 @@ columns and relationships of "order"
 """
 type order {
   created_at: timestamptz!
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid!
 
@@ -9395,8 +9370,6 @@ input order_bool_exp {
   _not: order_bool_exp
   _or: [order_bool_exp!]
   created_at: timestamptz_comparison_exp
-  delivery_date: timestamptz_comparison_exp
-  delivery_time: String_comparison_exp
   guest_id: uuid_comparison_exp
   id: uuid_comparison_exp
   order_addresses: order_address_bool_exp
@@ -9471,8 +9444,6 @@ input type for inserting data into table "order"
 """
 input order_insert_input {
   created_at: timestamptz
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid
   order_addresses: order_address_arr_rel_insert_input
@@ -11082,8 +11053,6 @@ input order_item_variance_order_by {
 """aggregate max on columns"""
 type order_max_fields {
   created_at: timestamptz
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid
   order_no: bigint
@@ -11100,8 +11069,6 @@ order by max() on columns of table "order"
 """
 input order_max_order_by {
   created_at: order_by
-  delivery_date: order_by
-  delivery_time: order_by
   guest_id: order_by
   id: order_by
   order_no: order_by
@@ -11116,8 +11083,6 @@ input order_max_order_by {
 """aggregate min on columns"""
 type order_min_fields {
   created_at: timestamptz
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid
   order_no: bigint
@@ -11134,8 +11099,6 @@ order by min() on columns of table "order"
 """
 input order_min_order_by {
   created_at: order_by
-  delivery_date: order_by
-  delivery_time: order_by
   guest_id: order_by
   id: order_by
   order_no: order_by
@@ -11180,8 +11143,6 @@ input order_on_conflict {
 """Ordering options when selecting data from "order"."""
 input order_order_by {
   created_at: order_by
-  delivery_date: order_by
-  delivery_time: order_by
   guest_id: order_by
   id: order_by
   order_addresses_aggregate: order_address_aggregate_order_by
@@ -11210,12 +11171,6 @@ select columns of table "order"
 enum order_select_column {
   """column name"""
   created_at
-
-  """column name"""
-  delivery_date
-
-  """column name"""
-  delivery_time
 
   """column name"""
   guest_id
@@ -11253,8 +11208,6 @@ input type for updating data in table "order"
 """
 input order_set_input {
   created_at: timestamptz
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid
   order_no: bigint
@@ -11569,8 +11522,6 @@ input order_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input order_stream_cursor_value_input {
   created_at: timestamptz
-  delivery_date: timestamptz
-  delivery_time: String
   guest_id: uuid
   id: uuid
   order_no: bigint
@@ -12552,12 +12503,6 @@ update columns of table "order"
 enum order_update_column {
   """column name"""
   created_at
-
-  """column name"""
-  delivery_date
-
-  """column name"""
-  delivery_time
 
   """column name"""
   guest_id

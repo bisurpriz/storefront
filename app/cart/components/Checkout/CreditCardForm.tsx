@@ -120,6 +120,8 @@ const CreditCardForm = () => {
     }
   }, []);
 
+  console.log(userData, "userData");
+
   const onSubmit = async (data: CreditCardForm) => {
     if (data) {
       setLoading(true);

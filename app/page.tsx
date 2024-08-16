@@ -34,29 +34,32 @@ export default async function Page({
           />
         </Suspense>
       )}
-      <Suspense fallback={<CategorySwiperSuspense />}>
-        <ServerCategorySwiper />
-      </Suspense>
-
-      <Suspense
-        fallback={
-          <>
-            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
-            <div className="my-4 flex items-center justify-between gap-6">
-              {Array.from({
-                length: 3,
-              }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
-                />
-              ))}
-            </div>
-          </>
-        }
-      >
-        <ServerQuerySelector />
-      </Suspense>
+      {!searchText && (
+        <Suspense fallback={<CategorySwiperSuspense />}>
+          <ServerCategorySwiper />
+        </Suspense>
+      )}
+      {!searchText && (
+        <Suspense
+          fallback={
+            <>
+              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
+              <div className="my-4 flex items-center justify-between gap-6">
+                {Array.from({
+                  length: 3,
+                }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
+                  />
+                ))}
+              </div>
+            </>
+          }
+        >
+          <ServerQuerySelector />
+        </Suspense>
+      )}
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && <CampaignGrid />}
       </Suspense>

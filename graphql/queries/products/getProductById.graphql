@@ -38,7 +38,6 @@ query getProductById($id: bigint = 0) {
     }
     product_customizable_areas {
       customizable_area {
-        count
         id
         type
       }

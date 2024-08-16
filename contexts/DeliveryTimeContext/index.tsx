@@ -11,11 +11,13 @@ export type DeliveryTime = {
 interface DeliveryTimeContextType {
   deliveryTime: DeliveryTime | null;
   setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
+  clearDeliveryTime: () => void;
 }
 
 export const DeliveryTimeContext = createContext<DeliveryTimeContextType>({
   deliveryTime: null,
   setDeliveryTimeHandler: () => {},
+  clearDeliveryTime: () => {},
 });
 
 export const DeliveryTimeProvider = ({ children }: { children: ReactNode }) => {
@@ -42,11 +44,16 @@ export const DeliveryTimeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const clearDeliveryTime = () => {
+    setDeliveryTime({ day: null, hour: "" });
+  }
+
   return (
     <DeliveryTimeContext.Provider
       value={{
         deliveryTime,
         setDeliveryTimeHandler,
+        clearDeliveryTime,
       }}
     >
       {children}

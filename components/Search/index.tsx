@@ -178,23 +178,26 @@ const Search: FC<Props> = ({ className }) => {
               })}
               onClick={() => setIsOpen(false)}
             >
-              <div key={product.id} className="p-2 border-b">
-                <div className="flex items-center">
-                  <div className="flex items-center gap-2">
-                    {product?.image_url?.[0] ? (
+              <div
+                key={product.id}
+                className="p-2 border-b hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-start">
+                  {product?.image_url?.[0] ? (
+                    <div className="w-20 h-20">
                       <Image
                         src={getImageUrlFromPath(product.image_url[0])}
-                        width={60}
-                        height={60}
+                        width={100}
+                        height={100}
+                        className="w-full h-full rounded-lg"
                         alt={product.name}
-                        style={{ minWidth: 60 }}
                       />
-                    ) : null}
-                  </div>
-                  <div className="text-sm text-gray-500 ml-3">
+                    </div>
+                  ) : null}
+                  <div className="text-sm font-semibold text-gray-500 ml-3">
                     {product.name}
                   </div>
-                  <div className="text-xs mt-auto ml-auto text-primary font-semibold">
+                  <div className="text-xs ml-auto text-primary font-semibold mt-auto">
                     {product.category.name}
                   </div>
                 </div>
