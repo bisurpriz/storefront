@@ -21,6 +21,7 @@ interface CheckboxProps {
   ariaRequired?: boolean;
   ariaInvalid?: boolean;
   label;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 const Checkbox = ({
@@ -43,6 +44,7 @@ const Checkbox = ({
   tabIndex,
   value,
   label,
+  ref
 }: CheckboxProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
@@ -92,6 +94,7 @@ const Checkbox = ({
         required={required}
         tabIndex={tabIndex}
         value={value}
+        ref={ref}
       />
       <div
         className={clsx(

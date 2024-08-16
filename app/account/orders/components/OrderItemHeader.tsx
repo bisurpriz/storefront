@@ -29,12 +29,26 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
 
   const showUploadButton = hasCustomizableProducts && !wasCustomized;
 
-  const haveAnyCustomizeEmpty = tenant_orders.order_items.some(
-    (oi) =>
-      oi.product.product_customizable_areas.length > 0 &&
-      (oi.order_item_special_images.length === 0 ||
-        oi.order_item_special_texts.length === 0)
+  // toplam custom alan sayısı
+  const customAreaTotalCount = tenant_orders.order_items.reduce(
+    (acc, oi) =>
+      acc +
+      oi.product.product_customizable_areas.reduce(
+        (acc, cca) => acc + cca.count,
+        0
+      ),
+    0
   );
+  // doldurulan custom alan sayısı
+  const customAreaFilledCount = tenant_orders.order_items.reduce(
+    (acc, oi) =>
+      acc +
+      oi.order_item_special_images.length +
+      oi.order_item_special_texts.length,
+    0
+  );
+
+  const haveAnyCustomizeEmpty = customAreaTotalCount > customAreaFilledCount;
 
   return (
     <div className="flex items-center justify-end gap-4 flex-wrap">
