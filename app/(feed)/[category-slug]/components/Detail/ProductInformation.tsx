@@ -8,11 +8,13 @@ import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
 import Ticket from "@/components/Icons/Ticket";
 import OutlineArchive from "@/components/Icons/OutlineArchive";
-import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
+import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { Popper } from "@mui/base/Popper";
+import { useCart } from "@/contexts/CartContext";
+import { useProduct } from "@/contexts/ProductContext";
+import Error from "@/components/Icons/Error";
 
 type ProductInformationProps = {
   name: string;
@@ -54,7 +56,12 @@ const ProductInformation = ({
   const showDaySelect = isSameDay && hasDeliveryTime;
   const showExactTime = isSameDay && !hasDeliveryTime;
 
-  const { setDeliveryTimeHandler, deliveryTime } = useDeliveryTime();
+  const { setDeliveryTimeHandler, deliveryTime, hasProductInCart } = useCart();
+
+  const isSettedDeliveryTime = useMemo(() => {
+    if (!hasProductInCart) return false;
+    return Boolean(deliveryTime?.day && deliveryTime?.hour);
+  }, [deliveryTime?.day, deliveryTime?.hour]);
 
   useEffect(() => {
     return () => {
@@ -175,11 +182,25 @@ const ProductInformation = ({
           </div>
         )}
         {showDaySelect && (
-          <DaySelect
-            deliveryTimes={parseJson(deliveryTimeRanges)}
-            onSelect={(date) => setDeliveryTimeHandler(date)}
-            deliveryTime={deliveryTime}
-          />
+          <>
+            <DaySelect
+              deliveryTimes={parseJson(deliveryTimeRanges)}
+              onSelect={(date) => setDeliveryTimeHandler(date)}
+              deliveryTime={deliveryTime}
+            />
+            {isSettedDeliveryTime && (
+              <div className="w-full flex space-x-4 items-center py-1 px-4 bg-opacity-50 font-semibold rounded-xl my-2 bg-red-200">
+                <span className="text-xl text-red-500">
+                  <Error className="inline-block" />
+                </span>
+                <p className="text-xs text-gray-500 leading-5">
+                  Bu ürünü daha önce sepetinize eklediniz! <br /> Tarihi ve
+                  saati değiştirirseniz sepetinizdeki ürünün tarih ve saati
+                  güncellenecektir.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

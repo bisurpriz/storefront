@@ -8,7 +8,6 @@ import Button from "@/components/Button";
 import Heart from "@/components/Icons/Heart";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import { useDeliveryTime } from "@/contexts/DeliveryTimeContext";
 import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
@@ -26,7 +25,7 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
   const { user } = useUser();
   const { selectedProduct } = useProduct();
 
-  const { addToCart, loading } = useCart();
+  const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
   const handleFavorite = () => {
     if (!user) {
@@ -45,9 +44,6 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
     setIsFavoriteState(true);
   };
 
-  const { deliveryTime } = useDeliveryTime();
-
-  // Eğer teslimat tarihi ve zamanı seçilmemişse, kullanıcıya bir hata mesajı göster
   const [error, setError] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
 

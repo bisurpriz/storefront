@@ -62,7 +62,10 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
           initial="initial"
           animate="enter"
           exit="exit"
-          transition={subMenuVariants.transition}
+          transition={{
+            ...subMenuVariants.transition,
+            duration: 0.2,
+          }}
         >
           {children}
         </motion.div>

@@ -35,6 +35,7 @@ const ZoomableImage: FC<ZoomableImageProps> = ({
         width={width}
         height={height}
         className="h-full w-full object-contain"
+        priority
       />
       <>
         <div

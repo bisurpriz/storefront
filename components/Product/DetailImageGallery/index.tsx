@@ -73,6 +73,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           className="h-full w-full object-contain"
           width={500}
           height={500}
+          priority
         />
         <ZoomButton
           onClick={() => {

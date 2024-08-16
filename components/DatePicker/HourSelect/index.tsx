@@ -8,18 +8,21 @@ type HourSelectProps = {
   deliveryTimeRanges: TimeRange[] | null;
   onHourSelect: (hour: string) => void;
   selectedHour?: string;
+  disabled?: boolean;
 };
 
 const HourSelect: FC<HourSelectProps> = ({
   deliveryTimeRanges,
   onHourSelect,
   selectedHour,
+  disabled,
 }) => {
   const [showHourDropdown, setShowHourDropdown] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleHourSelect = (hour: string) => {
+    if (disabled) return;
     if (selectedHour === hour) return;
     if (!deliveryTimeRanges.length) return;
     onHourSelect(hour);
@@ -49,14 +52,19 @@ const HourSelect: FC<HourSelectProps> = ({
         color="secondary"
         variant="fullfilled"
         className="max-md:text-xs justify-center"
-        onClick={() => setShowHourDropdown(true)}
-        disabled={!deliveryTimeRanges?.length}
+        onClick={() => {
+          if (disabled) return;
+          setShowHourDropdown(true);
+        }}
+        disabled={!deliveryTimeRanges?.length || disabled}
       >
         {selectedHour ?? "Saat Seç"}
       </Button>
       <AnimatedFilterBox
         isOpen={showHourDropdown}
-        handleClose={() => setShowHourDropdown(false)}
+        handleClose={() => {
+          setShowHourDropdown(false);
+        }}
         className="!w-full"
       >
         <div
@@ -88,9 +96,10 @@ const HourSelect: FC<HourSelectProps> = ({
               }
               aria-label={`${time.start_time} - ${time.end_time}`}
               key={index}
-              onClick={() =>
-                handleHourSelect(`${time.start_time} - ${time.end_time}`)
-              }
+              onClick={() => {
+                if (disabled) return;
+                handleHourSelect(`${time.start_time} - ${time.end_time}`);
+              }}
               role="option"
             >
               {time.start_time} - {time.end_time}

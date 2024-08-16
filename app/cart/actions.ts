@@ -131,6 +131,8 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       quantity: item.quantity,
       tenant_id: item.tenant?.tenants?.[0].id,
       product_customizable_areas: item.product_customizable_areas,
+      deliveryTime: item.deliveryTime,
+      deliveryDate: item.deliveryDate,
     }));
 
     const userId = await checkUserId();
@@ -225,6 +227,8 @@ export const getCart = async (user_id: string) => {
         ...hasProduct,
         quantity: item.quantity,
         product_customizable_areas: item.product_customizable_areas,
+        deliveryTime: item.deliveryTime,
+        deliveryDate: item.deliveryDate,
       };
     });
 

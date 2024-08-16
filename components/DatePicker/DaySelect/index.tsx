@@ -6,7 +6,7 @@ import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
 import { TimeRange } from "../HourSelect/utils";
-import { DeliveryTime } from "@/contexts/DeliveryTimeContext";
+import { DeliveryTime } from "@/contexts/CartContext";
 
 const CustomButton = ({ isSelected, children, ...props }) => {
   return (
@@ -40,12 +40,8 @@ const DaySelect: React.FC<Props> = ({
   onSelect,
   deliveryTime,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    deliveryTime.day
-  );
-  const [selectedHour, setSelectedHour] = useState<string | null>(
-    deliveryTime.hour
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
   const [availableHours, setAvailableHours] = useState<TimeRange[] | null>(
     null
@@ -97,7 +93,23 @@ const DaySelect: React.FC<Props> = ({
       const availableHours = calculateTodayAvailableHours();
       setAvailableHours(availableHours);
     }
-  }, [selectedDate]);
+  }, [deliveryTimes, selectedHour]);
+
+  useEffect(() => {
+    if (Boolean(deliveryTime.day && deliveryTime.hour)) {
+      setSelectedDate(new Date(deliveryTime.day));
+      setSelectedHour(deliveryTime.hour);
+      setSelectedButton(
+        addDays(new Date(deliveryTime.day), 0).getDate() ===
+          new Date().getDate()
+          ? 0
+          : addDays(new Date(deliveryTime.day), 1).getDate() ===
+            new Date().getDate()
+          ? 1
+          : 2
+      );
+    }
+  }, [deliveryTime]);
 
   return (
     <div className="w-full flex flex-col gap-4  font-sans">
