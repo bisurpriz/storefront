@@ -3,7 +3,6 @@ import ProductItemSkeleton from "./ProductItemSkeleton";
 import { Product } from "@/common/types/Product/product";
 import clsx from "clsx";
 import ProductItemImage from "../ProductItemImage/ProductItemImage";
-import AddCartButton from "./components/AddCartButton";
 import AddToFavorite from "./components/AddToFavorite";
 import PriceTag from "@/components/PriceTag";
 import { Suspense } from "react";
@@ -75,18 +74,6 @@ const ProductItem = ({
               />
               {`(${4})`}
             </span>
-            <AddCartButton
-              id={id}
-              loading={loading}
-              product_customizable_areas={product_customizable_areas}
-              tenant={tenant}
-              category={category}
-              discount_price={discount_price}
-              image_url={image?.[0]}
-              name={name}
-              price={price}
-              quantity={1}
-            />
           </div>
           <AddToFavorite isFavorite={isFavorite} productId={id} key={id} />
         </div>

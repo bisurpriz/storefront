@@ -32,12 +32,21 @@ const CustomButton = ({ isSelected, children, ...props }) => {
 type Props = {
   deliveryTimes: TimeRange[] | null;
   onSelect: (deliveryTime: DeliveryTime) => void;
+  deliveryTime: DeliveryTime;
 };
 
-const DaySelect: React.FC<Props> = ({ deliveryTimes, onSelect }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+const DaySelect: React.FC<Props> = ({
+  deliveryTimes,
+  onSelect,
+  deliveryTime,
+}) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    deliveryTime.day
+  );
+  const [selectedHour, setSelectedHour] = useState<string | null>(
+    deliveryTime.hour
+  );
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
-  const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [availableHours, setAvailableHours] = useState<TimeRange[] | null>(
     null
   );

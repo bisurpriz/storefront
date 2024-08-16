@@ -7,7 +7,13 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import { useQuery } from "@apollo/client";
 import { useSearchParams } from "next/navigation";
-import { ReactNode, createContext, useContext } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface ProductContextType {
   selectedProduct: GetProductByIdQuery["product"];
@@ -19,21 +25,32 @@ export const ProductContext = createContext<ProductContextType>({
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
+  const [selectedProduct, setSelectedProduct] = useState<
+    GetProductByIdQuery["product"] | null
+  >(null);
 
+  const haspid = searchParams.has("pid");
+  const pid = haspid ? searchParams.get("pid") : null;
   const { data } = useQuery<GetProductByIdQuery, GetProductByIdQueryVariables>(
     GetProductByIdDocument,
     {
-      skip: !searchParams.has("id"),
+      skip: !haspid,
       variables: {
-        id: searchParams.get("id"),
+        id: pid,
       },
     }
   );
 
+  useEffect(() => {
+    if (pid && data?.product) {
+      setSelectedProduct(data?.product);
+    }
+  }, [data?.product, pid]);
+
   return (
     <ProductContext.Provider
       value={{
-        selectedProduct: data?.product,
+        selectedProduct,
       }}
     >
       {children}
@@ -41,4 +58,4 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useCategory = () => useContext(ProductContext);
+export const useProduct = () => useContext(ProductContext);

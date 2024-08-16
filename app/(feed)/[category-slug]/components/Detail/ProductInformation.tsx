@@ -54,7 +54,7 @@ const ProductInformation = ({
   const showDaySelect = isSameDay && hasDeliveryTime;
   const showExactTime = isSameDay && !hasDeliveryTime;
 
-  const { setDeliveryTimeHandler } = useDeliveryTime();
+  const { setDeliveryTimeHandler, deliveryTime } = useDeliveryTime();
 
   useEffect(() => {
     return () => {
@@ -178,6 +178,7 @@ const ProductInformation = ({
           <DaySelect
             deliveryTimes={parseJson(deliveryTimeRanges)}
             onSelect={(date) => setDeliveryTimeHandler(date)}
+            deliveryTime={deliveryTime}
           />
         )}
       </div>

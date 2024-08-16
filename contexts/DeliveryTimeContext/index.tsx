@@ -46,7 +46,7 @@ export const DeliveryTimeProvider = ({ children }: { children: ReactNode }) => {
 
   const clearDeliveryTime = () => {
     setDeliveryTime({ day: null, hour: "" });
-  }
+  };
 
   return (
     <DeliveryTimeContext.Provider
