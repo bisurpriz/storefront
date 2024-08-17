@@ -16,3 +16,11 @@ export interface ProductForCart
   deliveryDate?: Date;
   deliveryTime?: string;
 }
+
+export interface CostData {
+  totalPrice: number;
+  couponMessage: string;
+  isCouponApplied: boolean;
+  discountAmount: number;
+  totalWithDiscount?: number;
+}

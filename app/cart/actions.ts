@@ -1,6 +1,6 @@
 "use server";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
 import { readIdFromCookies } from "../actions";
 
@@ -109,7 +109,8 @@ export const createOrderAction = async (
 };
 
 export const getCartCost = async (
-  cartItems: Pick<ProductForCart, "id" | "quantity">[]
+  cartItems: Pick<ProductForCart, "id" | "quantity">[],
+  couponCode?: string
 ) => {
   const { data: costData } = await axios.post(
     "https://llt4tsk3fqsilcccjrst76njyq0eiqne.lambda-url.eu-north-1.on.aws/",
@@ -118,10 +119,10 @@ export const getCartCost = async (
         id: item.id,
         quantity: item.quantity,
       })),
+      couponCode,
     }
   );
-
-  return costData.totalPrice as number;
+  return costData;
 };
 
 export const updateCart = async (cartItems: ProductForCart[]) => {
@@ -160,7 +161,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     return {
       cartData,
-      costData,
+      costData: costData,
     };
   } catch (error) {
     return {
@@ -197,10 +198,14 @@ export const getCart = async (user_id: string) => {
     if (parsedContent.length === 0)
       return {
         cartItems: [],
-        costData: 0,
+        costData: {
+          totalPrice: 0,
+          couponMessage: "",
+          isCouponApplied: false,
+        },
       } as {
         cartItems: ProductForCart[];
-        costData: number;
+        costData: CostData;
       };
 
     const ids = parsedContent.map((item) => item.product_id);
@@ -237,15 +242,19 @@ export const getCart = async (user_id: string) => {
       costData,
     } as {
       cartItems: ProductForCart[];
-      costData: number;
+      costData: CostData;
     };
   } catch (error) {
     return {
       cartItems: [],
-      costData: 0,
+      costData: {
+        totalPrice: 0,
+        couponMessage: "",
+        isCouponApplied: false,
+      },
     } as {
       cartItems: ProductForCart[];
-      costData: number;
+      costData: CostData;
     };
   }
 };

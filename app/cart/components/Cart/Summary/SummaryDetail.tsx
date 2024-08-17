@@ -1,18 +1,31 @@
 "use client";
 
-import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import React, { FC } from "react";
-import { motion } from "framer-motion";
+import { FC, useRef } from "react";
 import Ticket from "@/components/Icons/Ticket";
+import { CouponMessages } from "@/contexts/CartContext/constants";
 
 type SummaryDetailProps = {
   cost: number;
+  couponMessage: string;
+  isCouponApplied: boolean;
   isOpen: boolean;
+  discountAmount: number;
+  onDiscountCodeSubmit?: (couponCode: string) => void;
+  totalWithDiscount?: number;
 };
 
-const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
+const SummaryDetail: FC<SummaryDetailProps> = ({
+  cost,
+  isOpen,
+  couponMessage,
+  onDiscountCodeSubmit,
+  isCouponApplied,
+  discountAmount,
+  totalWithDiscount,
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     isOpen && (
       <>
@@ -23,12 +36,23 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
           <div className="flex flex-col">
             <div className="flex justify-between text-sm py-1">
               <span>Ara Toplam</span>
-              <span className="font-semibold">{cost} ₺</span>
+              <span className="font-semibold">
+                {parseInt(cost as any)?.toFixed(2)} ₺
+              </span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span>Kargo</span>
               <span className="font-semibold">29.99 ₺</span>
             </div>
+
+            {isCouponApplied && (
+              <div className="flex justify-between text-sm py-1">
+                <span>İndirim</span>
+                <span className="font-semibold">
+                  {discountAmount.toFixed(2)} ₺
+                </span>
+              </div>
+            )}
 
             <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
               <TextField
@@ -36,6 +60,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
                 placeholder="İndirim Kodu Girin"
                 id="discountCode"
                 fullWidth
+                ref={inputRef}
               />
               <Button
                 type="button"
@@ -43,12 +68,16 @@ const SummaryDetail: FC<SummaryDetailProps> = ({ cost, isOpen }) => {
                 color="primary"
                 className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
                 label="İndirim Kodu Kullan"
+                onClick={() => onDiscountCodeSubmit(inputRef.current?.value)}
               />
+              <p className="text-xs text-red-500 mt-1" id="couponMessage">
+                {CouponMessages[couponMessage as keyof typeof CouponMessages]}
+              </p>
             </div>
             <div className="flex justify-between items-center text-sm border-t py-1 mt-1">
               <span className="font-medium">Toplam</span>
               <span className="font-semibold text-xl text-primary ">
-                {cost} ₺
+                {parseInt(totalWithDiscount ?? (cost as any))?.toFixed(2)} ₺
               </span>
             </div>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
   ReactNode,
   createContext,
@@ -18,7 +18,11 @@ import {
 } from "./constants";
 import { cartReducer } from "./reducer";
 import toast from "react-hot-toast";
-import { getProductByIdForCart, updateCart } from "@/app/cart/actions";
+import {
+  getCartCost,
+  getProductByIdForCart,
+  updateCart,
+} from "@/app/cart/actions";
 import useResponsive from "@/hooks/useResponsive";
 import { useProduct } from "../ProductContext";
 import { isDate } from "date-fns";
@@ -44,12 +48,13 @@ interface CartContextType {
   setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
   clearDeliveryTime: () => void;
   isProductInCart: ProductForCart;
+  applyCouponCode: (code: string) => Promise<void>;
 }
 
 export interface CartState {
   cartItems: ProductForCart[];
   count: number;
-  cost: number;
+  cost: CostData;
 }
 
 type Type = "add" | "remove" | "clear" | "update";
@@ -62,7 +67,12 @@ export type DeliveryTime = {
 export const CartContext = createContext<CartContextType>({
   cartState: {
     cartItems: [],
-    cost: 0,
+    cost: {
+      totalPrice: 0,
+      isCouponApplied: false,
+      couponMessage: "",
+      discountAmount: 0,
+    },
     count: 0,
   },
   addToCart: () => {},
@@ -74,6 +84,7 @@ export const CartContext = createContext<CartContextType>({
   setDeliveryTimeHandler: () => {},
   clearDeliveryTime: () => {},
   isProductInCart: null,
+  applyCouponCode: async () => {},
 });
 
 export const CartProvider = ({
@@ -83,7 +94,7 @@ export const CartProvider = ({
 }: {
   children: ReactNode;
   cartDbItems: ProductForCart[];
-  dbCost: number;
+  dbCost: CostData;
 }) => {
   const [cartState, dispatch] = useReducer(cartReducer, {
     cartItems: cartDbItems,
@@ -269,6 +280,18 @@ export const CartProvider = ({
     });
   };
 
+  const applyCouponCode = async (code: string) => {
+    const newCost = await getCartCost(cartState.cartItems, code);
+    dispatch({
+      type: UPDATE_CART,
+      payload: {
+        cartItems: cartState.cartItems,
+        count: cartState.count,
+        cost: newCost,
+      },
+    });
+  };
+
   const isValidDeliveryTime = (deliveryTime: DeliveryTime) => {
     try {
       const { day, hour } = deliveryTime;
@@ -318,6 +341,7 @@ export const CartProvider = ({
     setDeliveryTimeHandler,
     clearDeliveryTime,
     isProductInCart: isProductInCart,
+    applyCouponCode,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
