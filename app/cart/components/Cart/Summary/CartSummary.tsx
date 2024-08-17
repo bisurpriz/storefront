@@ -17,6 +17,7 @@ const CartSummary = () => {
   const {
     cartState: { cost },
     loading,
+    applyCouponCode,
   } = useCart();
   const pathname = usePathname();
   const { push } = useRouter();
@@ -49,6 +50,10 @@ const CartSummary = () => {
     [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
   };
 
+  const handleDiscountCodeSubmit = async (couponCode: string) => {
+    await applyCouponCode(couponCode);
+  };
+
   return (
     <div
       className={clsx(
@@ -59,12 +64,28 @@ const CartSummary = () => {
       {isTablet ? (
         createPortal(
           <div className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white z-[11]">
-            <SummaryDetail cost={cost} isOpen={isOpen} />
+            <SummaryDetail
+              cost={cost.totalPrice}
+              couponMessage={cost.couponMessage}
+              isCouponApplied={cost.isCouponApplied}
+              onDiscountCodeSubmit={handleDiscountCodeSubmit}
+              discountAmount={cost.discountAmount}
+              isOpen={isOpen}
+              totalWithDiscount={cost.totalWithDiscount}
+            />
           </div>,
           document?.getElementById("cart-summary") || document?.body
         )
       ) : (
-        <SummaryDetail cost={cost} isOpen={isOpen} />
+        <SummaryDetail
+          cost={cost.totalPrice}
+          couponMessage={cost.couponMessage}
+          isCouponApplied={cost.isCouponApplied}
+          isOpen={isOpen}
+          onDiscountCodeSubmit={handleDiscountCodeSubmit}
+          discountAmount={cost.discountAmount}
+          totalWithDiscount={cost.totalWithDiscount}
+        />
       )}
       <div
         className={clsx(
@@ -88,7 +109,9 @@ const CartSummary = () => {
           />
           <span className="flex flex-col items-start justify-between text-xs whitespace-nowrap flex-1">
             <p className="text-slate-600">Toplam</p>
-            <p className="text-primary font-semibold text-sm">{cost} ₺</p>
+            <p className="text-primary font-semibold text-sm">
+              {cost.totalPrice} ₺
+            </p>
           </span>
         </span>
         <Button

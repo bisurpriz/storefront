@@ -142,7 +142,12 @@ export default async function RootLayout({
           <ApolloWrapper>
             <ProductProvider>
               <CategoryProvider category={category}>
-                <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                <CartProvider cartDbItems={cartItems} dbCost={{
+                  totalPrice: costData.totalPrice,
+                  isCouponApplied: false,
+                  couponMessage: "",
+                  discountAmount: 0,
+                }}>
                   <Suspense fallback={<HeaderSuspense />}>
                     <Header category={category} />
                     <StickyHeader />

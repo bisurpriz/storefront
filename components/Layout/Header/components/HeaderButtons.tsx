@@ -47,7 +47,7 @@ const HeaderButtons = () => {
   const getAltTextData = (type: HeaderButtonData["type"]) => {
     switch (type) {
       case "cart":
-        return cost;
+        return cost.totalPrice;
       case "account":
         return user;
       default:

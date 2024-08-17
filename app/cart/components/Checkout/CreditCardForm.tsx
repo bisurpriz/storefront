@@ -120,8 +120,6 @@ const CreditCardForm = () => {
     }
   }, []);
 
-  console.log(userData, "userData");
-
   const onSubmit = async (data: CreditCardForm) => {
     if (data) {
       setLoading(true);
@@ -168,8 +166,8 @@ const CreditCardForm = () => {
         conversationId,
         currency: "TRY",
         locale: Locale.TR,
-        paidPrice: cost.toString(),
-        price: cost.toString(),
+        paidPrice: cost.totalPrice.toString(),
+        price: cost.totalPrice.toString(),
         paymentCard: {
           cardHolderName: data.creditCardName,
           cardNumber: data.creditCardNumber.replaceAll(" ", ""),
