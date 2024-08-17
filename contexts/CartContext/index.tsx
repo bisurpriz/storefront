@@ -43,7 +43,7 @@ interface CartContextType {
   deliveryTime: DeliveryTime | null;
   setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
   clearDeliveryTime: () => void;
-  hasProductInCart: boolean;
+  isProductInCart: ProductForCart;
 }
 
 export interface CartState {
@@ -73,7 +73,7 @@ export const CartContext = createContext<CartContextType>({
   deliveryTime: null,
   setDeliveryTimeHandler: () => {},
   clearDeliveryTime: () => {},
-  hasProductInCart: false,
+  isProductInCart: null,
 });
 
 export const CartProvider = ({
@@ -317,7 +317,7 @@ export const CartProvider = ({
     deliveryTime,
     setDeliveryTimeHandler,
     clearDeliveryTime,
-    hasProductInCart: Boolean(isProductInCart),
+    isProductInCart: isProductInCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

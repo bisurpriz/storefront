@@ -56,11 +56,17 @@ const ProductInformation = ({
   const showDaySelect = isSameDay && hasDeliveryTime;
   const showExactTime = isSameDay && !hasDeliveryTime;
 
-  const { setDeliveryTimeHandler, deliveryTime, hasProductInCart } = useCart();
+  const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
 
   const isSettedDeliveryTime = useMemo(() => {
-    if (!hasProductInCart) return false;
-    return Boolean(deliveryTime?.day && deliveryTime?.hour);
+    if (!isProductInCart || !deliveryTime) return false;
+
+    return (
+      Boolean(
+        new Date(isProductInCart.deliveryDate).getDay() !==
+          new Date(deliveryTime.day).getDay()
+      ) || Boolean(isProductInCart.deliveryTime !== deliveryTime.hour)
+    );
   }, [deliveryTime?.day, deliveryTime?.hour]);
 
   useEffect(() => {
