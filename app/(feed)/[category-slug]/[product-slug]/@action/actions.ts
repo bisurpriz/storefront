@@ -12,11 +12,13 @@ import {
   GetProductActionDataQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
 
-export const getProductActions = async (productId: number) => {
+export const getProductActions = async (
+  productId: number
+): Promise<GetProductActionDataQuery> => {
   const userId = await readIdFromCookies();
 
   if (userId) {
-    return await query<
+    const favs = await query<
       GetProductActionDataQuery,
       GetProductActionDataQueryVariables
     >({
@@ -25,8 +27,15 @@ export const getProductActions = async (productId: number) => {
         id: productId,
       },
     });
+
+    return {
+      product: {
+        user_favorites: favs.data.product.user_favorites,
+        user_favorites_aggregate: favs.data.product.user_favorites_aggregate,
+      },
+    };
   } else {
-    return await query<
+    const anon = await query<
       GetProductActionDataForAnonymousQuery,
       GetProductActionDataForAnonymousQueryVariables
     >({
@@ -35,5 +44,12 @@ export const getProductActions = async (productId: number) => {
         id: productId,
       },
     });
+
+    return {
+      product: {
+        user_favorites: [],
+        user_favorites_aggregate: anon.data.product.user_favorites_aggregate,
+      },
+    };
   }
 };
