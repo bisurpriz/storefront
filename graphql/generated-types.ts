@@ -7386,6 +7386,10 @@ export type Order = {
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   user?: Maybe<User>;
+  /** An array relationship */
+  user_coupons: Array<User_Coupon>;
+  /** An aggregate relationship */
+  user_coupons_aggregate: User_Coupon_Aggregate;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
@@ -7447,6 +7451,26 @@ export type OrderTransactions_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Transaction_Order_By>>;
   where?: InputMaybe<Transaction_Bool_Exp>;
+};
+
+
+/** columns and relationships of "order" */
+export type OrderUser_CouponsArgs = {
+  distinct_on?: InputMaybe<Array<User_Coupon_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Coupon_Order_By>>;
+  where?: InputMaybe<User_Coupon_Bool_Exp>;
+};
+
+
+/** columns and relationships of "order" */
+export type OrderUser_Coupons_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Coupon_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Coupon_Order_By>>;
+  where?: InputMaybe<User_Coupon_Bool_Exp>;
 };
 
 /** columns and relationships of "order_address" */
@@ -7993,6 +8017,8 @@ export type Order_Bool_Exp = {
   transactions_aggregate?: InputMaybe<Transaction_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<User_Bool_Exp>;
+  user_coupons?: InputMaybe<User_Coupon_Bool_Exp>;
+  user_coupons_aggregate?: InputMaybe<User_Coupon_Aggregate_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
@@ -8043,6 +8069,7 @@ export type Order_Insert_Input = {
   transactions?: InputMaybe<Transaction_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  user_coupons?: InputMaybe<User_Coupon_Arr_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -9483,6 +9510,7 @@ export type Order_Order_By = {
   transactions_aggregate?: InputMaybe<Transaction_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<User_Order_By>;
+  user_coupons_aggregate?: InputMaybe<User_Coupon_Aggregate_Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -20893,12 +20921,16 @@ export type User_Constraint =
 export type User_Coupon = {
   /** An object relationship */
   coupon: Coupon;
-  coupon_id: Scalars['uuid']['output'];
+  coupon_code: Scalars['String']['output'];
   created_at: Scalars['timestamptz']['output'];
+  guest_id?: Maybe<Scalars['uuid']['output']>;
   id: Scalars['uuid']['output'];
   /** An object relationship */
-  user: User;
-  user_id: Scalars['uuid']['output'];
+  order: Order;
+  order_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  user?: Maybe<User>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** aggregated selection of "user_coupon" */
@@ -20952,9 +20984,12 @@ export type User_Coupon_Bool_Exp = {
   _not?: InputMaybe<User_Coupon_Bool_Exp>;
   _or?: InputMaybe<Array<User_Coupon_Bool_Exp>>;
   coupon?: InputMaybe<Coupon_Bool_Exp>;
-  coupon_id?: InputMaybe<Uuid_Comparison_Exp>;
+  coupon_code?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  guest_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  order?: InputMaybe<Order_Bool_Exp>;
+  order_id?: InputMaybe<Uuid_Comparison_Exp>;
   user?: InputMaybe<User_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
@@ -20967,42 +21002,53 @@ export type User_Coupon_Constraint =
 /** input type for inserting data into table "user_coupon" */
 export type User_Coupon_Insert_Input = {
   coupon?: InputMaybe<Coupon_Obj_Rel_Insert_Input>;
-  coupon_id?: InputMaybe<Scalars['uuid']['input']>;
+  coupon_code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  order?: InputMaybe<Order_Obj_Rel_Insert_Input>;
+  order_id?: InputMaybe<Scalars['uuid']['input']>;
   user?: InputMaybe<User_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate max on columns */
 export type User_Coupon_Max_Fields = {
-  coupon_id?: Maybe<Scalars['uuid']['output']>;
+  coupon_code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  guest_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  order_id?: Maybe<Scalars['uuid']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by max() on columns of table "user_coupon" */
 export type User_Coupon_Max_Order_By = {
-  coupon_id?: InputMaybe<Order_By>;
+  coupon_code?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  order_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type User_Coupon_Min_Fields = {
-  coupon_id?: Maybe<Scalars['uuid']['output']>;
+  coupon_code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  guest_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  order_id?: Maybe<Scalars['uuid']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by min() on columns of table "user_coupon" */
 export type User_Coupon_Min_Order_By = {
-  coupon_id?: InputMaybe<Order_By>;
+  coupon_code?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  order_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -21024,9 +21070,12 @@ export type User_Coupon_On_Conflict = {
 /** Ordering options when selecting data from "user_coupon". */
 export type User_Coupon_Order_By = {
   coupon?: InputMaybe<Coupon_Order_By>;
-  coupon_id?: InputMaybe<Order_By>;
+  coupon_code?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  guest_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  order?: InputMaybe<Order_Order_By>;
+  order_id?: InputMaybe<Order_By>;
   user?: InputMaybe<User_Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -21039,19 +21088,25 @@ export type User_Coupon_Pk_Columns_Input = {
 /** select columns of table "user_coupon" */
 export type User_Coupon_Select_Column =
   /** column name */
-  | 'coupon_id'
+  | 'coupon_code'
   /** column name */
   | 'created_at'
   /** column name */
+  | 'guest_id'
+  /** column name */
   | 'id'
+  /** column name */
+  | 'order_id'
   /** column name */
   | 'user_id';
 
 /** input type for updating data in table "user_coupon" */
 export type User_Coupon_Set_Input = {
-  coupon_id?: InputMaybe<Scalars['uuid']['input']>;
+  coupon_code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  order_id?: InputMaybe<Scalars['uuid']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -21065,20 +21120,26 @@ export type User_Coupon_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type User_Coupon_Stream_Cursor_Value_Input = {
-  coupon_id?: InputMaybe<Scalars['uuid']['input']>;
+  coupon_code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  guest_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  order_id?: InputMaybe<Scalars['uuid']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** update columns of table "user_coupon" */
 export type User_Coupon_Update_Column =
   /** column name */
-  | 'coupon_id'
+  | 'coupon_code'
   /** column name */
   | 'created_at'
   /** column name */
+  | 'guest_id'
+  /** column name */
   | 'id'
+  /** column name */
+  | 'order_id'
   /** column name */
   | 'user_id';
 

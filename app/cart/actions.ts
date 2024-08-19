@@ -58,7 +58,8 @@ const uploadOrderItemImages = async () => {
 export const createOrderAction = async (
   cartItems: ProductForCart[],
   orderDetail: OrderDetailPartialFormData,
-  paymentConversationId: string
+  paymentConversationId: string,
+  couponInfo?: { code: string; guest_id?: string }
 ) => {
   if (!orderDetail || !cartItems)
     return {
@@ -81,6 +82,16 @@ export const createOrderAction = async (
       sender_mail: orderDetail.sender_email,
       sender_phone: orderDetail.sender_phone,
       paymentConversationId,
+      user_coupons: couponInfo
+        ? {
+            data: [
+              {
+                coupon_code: couponInfo?.code,
+                guest_id: couponInfo?.guest_id,
+              },
+            ],
+          }
+        : undefined,
     },
   };
 

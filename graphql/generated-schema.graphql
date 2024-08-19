@@ -8759,6 +8759,42 @@ type order {
 
   """An object relationship"""
   user: user
+
+  """An array relationship"""
+  user_coupons(
+    """distinct select on columns"""
+    distinct_on: [user_coupon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_coupon_order_by!]
+
+    """filter the rows returned"""
+    where: user_coupon_bool_exp
+  ): [user_coupon!]!
+
+  """An aggregate relationship"""
+  user_coupons_aggregate(
+    """distinct select on columns"""
+    distinct_on: [user_coupon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_coupon_order_by!]
+
+    """filter the rows returned"""
+    where: user_coupon_bool_exp
+  ): user_coupon_aggregate!
   user_id: uuid
 }
 
@@ -9387,6 +9423,8 @@ input order_bool_exp {
   transactions_aggregate: transaction_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
   user: user_bool_exp
+  user_coupons: user_coupon_bool_exp
+  user_coupons_aggregate: user_coupon_aggregate_bool_exp
   user_id: uuid_comparison_exp
 }
 
@@ -9458,6 +9496,7 @@ input order_insert_input {
   transactions: transaction_arr_rel_insert_input
   updated_at: timestamptz
   user: user_obj_rel_insert_input
+  user_coupons: user_coupon_arr_rel_insert_input
   user_id: uuid
 }
 
@@ -11157,6 +11196,7 @@ input order_order_by {
   transactions_aggregate: transaction_aggregate_order_by
   updated_at: order_by
   user: user_order_by
+  user_coupons_aggregate: user_coupon_aggregate_order_by
   user_id: order_by
 }
 
@@ -26008,13 +26048,18 @@ columns and relationships of "user_coupon"
 type user_coupon {
   """An object relationship"""
   coupon: coupon!
-  coupon_id: uuid!
+  coupon_code: String!
   created_at: timestamptz!
+  guest_id: uuid
   id: uuid!
 
   """An object relationship"""
-  user: user!
-  user_id: uuid!
+  order: order!
+  order_id: uuid!
+
+  """An object relationship"""
+  user: user
+  user_id: uuid
 }
 
 """
@@ -26072,9 +26117,12 @@ input user_coupon_bool_exp {
   _not: user_coupon_bool_exp
   _or: [user_coupon_bool_exp!]
   coupon: coupon_bool_exp
-  coupon_id: uuid_comparison_exp
+  coupon_code: String_comparison_exp
   created_at: timestamptz_comparison_exp
+  guest_id: uuid_comparison_exp
   id: uuid_comparison_exp
+  order: order_bool_exp
+  order_id: uuid_comparison_exp
   user: user_bool_exp
   user_id: uuid_comparison_exp
 }
@@ -26094,18 +26142,23 @@ input type for inserting data into table "user_coupon"
 """
 input user_coupon_insert_input {
   coupon: coupon_obj_rel_insert_input
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order: order_obj_rel_insert_input
+  order_id: uuid
   user: user_obj_rel_insert_input
   user_id: uuid
 }
 
 """aggregate max on columns"""
 type user_coupon_max_fields {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26113,17 +26166,21 @@ type user_coupon_max_fields {
 order by max() on columns of table "user_coupon"
 """
 input user_coupon_max_order_by {
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order_id: order_by
   user_id: order_by
 }
 
 """aggregate min on columns"""
 type user_coupon_min_fields {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26131,9 +26188,11 @@ type user_coupon_min_fields {
 order by min() on columns of table "user_coupon"
 """
 input user_coupon_min_order_by {
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order_id: order_by
   user_id: order_by
 }
 
@@ -26160,9 +26219,12 @@ input user_coupon_on_conflict {
 """Ordering options when selecting data from "user_coupon"."""
 input user_coupon_order_by {
   coupon: coupon_order_by
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order: order_order_by
+  order_id: order_by
   user: user_order_by
   user_id: order_by
 }
@@ -26177,13 +26239,19 @@ select columns of table "user_coupon"
 """
 enum user_coupon_select_column {
   """column name"""
-  coupon_id
+  coupon_code
 
   """column name"""
   created_at
 
   """column name"""
+  guest_id
+
+  """column name"""
   id
+
+  """column name"""
+  order_id
 
   """column name"""
   user_id
@@ -26193,9 +26261,11 @@ enum user_coupon_select_column {
 input type for updating data in table "user_coupon"
 """
 input user_coupon_set_input {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26212,9 +26282,11 @@ input user_coupon_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input user_coupon_stream_cursor_value_input {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26223,13 +26295,19 @@ update columns of table "user_coupon"
 """
 enum user_coupon_update_column {
   """column name"""
-  coupon_id
+  coupon_code
 
   """column name"""
   created_at
 
   """column name"""
+  guest_id
+
+  """column name"""
   id
+
+  """column name"""
+  order_id
 
   """column name"""
   user_id

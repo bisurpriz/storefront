@@ -179,10 +179,18 @@ const CreditCardForm = () => {
       } as Initialize3dsPaymentRequest;
 
       const response = await initialize3dsPayment(variables);
+
+      const isCouponApplied = cost.isCouponApplied;
+
+      const couponInfo = isCouponApplied ? {
+        code: cost.couponCode,
+        guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
+      } : undefined;
       const res = await createOrderAction(
         cartItems,
         detailData,
-        conversationId
+        conversationId,
+        couponInfo
       );
 
       if (response.errorMessage || res.status === "error") {

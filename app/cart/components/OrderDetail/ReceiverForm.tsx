@@ -144,7 +144,6 @@ const ReceiverForm = ({
   defaultQuarter,
 }: ReceiverFormProps) => {
   const { user } = useUser();
-  const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
   const { push } = useRouter();
   const {
@@ -179,6 +178,7 @@ const ReceiverForm = ({
     control,
     name: ["city", "district", "invoice_type"],
   });
+  const savedAddressValue = watch("saved_address");
 
   useEffect(() => {
     const serializeLocale = localStorage.getItem("detail-data");
@@ -187,7 +187,7 @@ const ReceiverForm = ({
     if (localStorageData) {
       reset({
         ...getValues(),
-        saved_address: localStorageData.saved_address,
+        saved_address: savedAddressValue ?? localStorageData.saved_address,
         city: defaultCity ?? localStorageData.city,
         district: defaultDistrict ?? localStorageData.district,
         quarter: defaultQuarter ?? localStorageData.quarter,
@@ -208,12 +208,33 @@ const ReceiverForm = ({
         invoice_company_tax_office: localStorageData.invoice_company_tax_office,
       });
 
-      if (userAddresses?.length > 0) {
-        setSelectedSavedAddress(
-          userAddresses.find(
-            (address) => address.id === localStorageData.saved_address
-          )
-        );
+      const savedAddress = userAddresses?.find(
+        (address) => address.id === parseInt(savedAddressValue)
+      );
+      if (savedAddress) {
+        const receiver_phone = formatPhoneNumber(savedAddress.receiver_phone);
+        reset({
+          ...getValues(),
+          city: savedAddress.city,
+          district: savedAddress.district,
+          quarter: savedAddress.quarter,
+          address: savedAddress.address,
+          receiver_name:
+            savedAddress.receiver_firstname +
+            " " +
+            savedAddress.receiver_surname,
+          receiver_phone,
+          address_title: savedAddress.address_title,
+        });
+        return;
+      } else {
+        reset({
+          ...getValues(),
+          city: null,
+          district: null,
+          quarter: null,
+          address: "",
+        });
       }
 
       return;
@@ -237,35 +258,7 @@ const ReceiverForm = ({
 
       return;
     }
-
-    if (selectedSavedAddress) {
-      const receiver_phone = formatPhoneNumber(
-        selectedSavedAddress.receiver_phone
-      );
-      reset({
-        ...getValues(),
-        city: selectedSavedAddress.city,
-        district: selectedSavedAddress.district,
-        quarter: selectedSavedAddress.quarter,
-        address: selectedSavedAddress.address,
-        receiver_name:
-          selectedSavedAddress.receiver_firstname +
-          " " +
-          selectedSavedAddress.receiver_surname,
-        receiver_phone,
-        address_title: selectedSavedAddress.address_title,
-      });
-      return;
-    } else {
-      reset({
-        ...getValues(),
-        city: null,
-        district: null,
-        quarter: null,
-        address: "",
-      });
-    }
-  }, [selectedSavedAddress]);
+  }, [savedAddressValue, userAddresses]);
 
   const { districts } = useDiscrits(city?.id);
   const { quarters } = useQuarters(district?.id);
@@ -275,6 +268,7 @@ const ReceiverForm = ({
     const user_id = user?.id;
     if (values && Object.keys(errors).length === 0) {
       if (values.wantToSaveAddress && !values.saved_address) {
+        console.log(values, "valies");
         try {
           createNewUserAddress({
             address: values.address,
@@ -282,12 +276,15 @@ const ReceiverForm = ({
             district_id: values.district?.id,
             quarter_id: values.quarter?.id,
             receiver_firstname: values.receiver_name?.split(" ")[0],
-            receiver_surname: values.receiver_name?.split(" ").slice(1).join(" "),
+            receiver_surname: values.receiver_name
+              ?.split(" ")
+              .slice(1)
+              .join(" "),
             receiver_phone: values.receiver_phone,
             user_id,
             address_title: values.address_title,
           });
-        } catch(e) {
+        } catch (e) {
           console.error(e);
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
@@ -331,14 +328,8 @@ const ReceiverForm = ({
                   value: address.id,
                 }))}
                 onChange={(option: AutoCompleteOption) => {
-                  const savedAddress = userAddresses.find(
-                    (address) => address.id === option?.value
-                  );
-                  reset({
-                    saved_address: option?.value as string,
-                  });
-
-                  setSelectedSavedAddress(savedAddress);
+                  console.log(option, "option");
+                  field.onChange(option?.value ?? "");
                 }}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
@@ -521,7 +512,7 @@ const ReceiverForm = ({
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
 
           <RenderAddress
-            selectedSavedAddress={selectedSavedAddress}
+            selectedSavedAddress={savedAddressValue}
             control={control}
             user={user}
             setValue={setValue}
