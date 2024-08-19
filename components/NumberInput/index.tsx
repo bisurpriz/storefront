@@ -1,17 +1,14 @@
 "use client";
 
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
-import { IoAdd, IoRemove } from "react-icons/io5";
 import { DecrementButton, IncrementButton } from "./NumberInputButtons";
 import { NumberInputRoot } from "./NumberInputRoot";
 import { NumberCustomInput } from "./NumberCustomInput";
 import { NumberInputProps } from "./NumberInputProps";
-import { ForwardedRef, forwardRef } from "react";
+import Add from "../Icons/Add";
+import Remove from "../Icons/Remove";
 
-const NumberInput = forwardRef(function CustomNumberInput(
-  props: NumberInputProps,
-  ref: ForwardedRef<HTMLDivElement>
-) {
+const NumberInput = (props: NumberInputProps) => {
   return (
     <BaseNumberInput
       slots={{
@@ -22,12 +19,12 @@ const NumberInput = forwardRef(function CustomNumberInput(
       }}
       slotProps={{
         incrementButton: {
-          children: <IoAdd fontSize="small" />,
+          children: <Add />,
           color: props.color,
           disabled: props.disabled,
         },
         decrementButton: {
-          children: <IoRemove fontSize="small" />,
+          children: <Remove />,
           color: props.color,
           disabled: props.disabled,
         },
@@ -38,9 +35,9 @@ const NumberInput = forwardRef(function CustomNumberInput(
         },
       }}
       {...props}
-      ref={ref}
+      ref={props.ref}
     />
   );
-});
+};
 
 export default NumberInput;

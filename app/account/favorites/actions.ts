@@ -1,15 +1,17 @@
 "use server";
 
+import { mutate, query } from "@/graphql/lib/client";
 import {
   AddToFavoritesDocument,
   AddToFavoritesMutation,
+  AddToFavoritesMutationVariables,
   GetUserFavoritesDocument,
   GetUserFavoritesQuery,
   GetUserFavoritesQueryVariables,
   RemoveFromFavoritesDocument,
   RemoveFromFavoritesMutation,
-} from "@/graphql/generated";
-import { getClient, query } from "@/graphql/lib/client";
+  RemoveFromFavoritesMutationVariables,
+} from "@/graphql/queries/account/favorites.generated";
 
 export const getUserFavorites = async ({ offset }: { offset: number }) => {
   const { data, error } = await query<
@@ -38,21 +40,29 @@ export const removeFromFavorites = async ({
 }: {
   productId: number;
 }) => {
-  const { data } = await getClient().mutate<RemoveFromFavoritesMutation>({
+  const { data } = await mutate<
+    RemoveFromFavoritesMutation,
+    RemoveFromFavoritesMutationVariables
+  >({
     mutation: RemoveFromFavoritesDocument,
     variables: {
       productId,
     },
+    fetchPolicy: "no-cache",
   });
   return data;
 };
 
 export const addToFavorites = async ({ productId }: { productId: number }) => {
-  const { data } = await getClient().mutate<AddToFavoritesMutation>({
+  const { data } = await mutate<
+    AddToFavoritesMutation,
+    AddToFavoritesMutationVariables
+  >({
     mutation: AddToFavoritesDocument,
     variables: {
       productId,
     },
+    fetchPolicy: "no-cache",
   });
   return data;
 };

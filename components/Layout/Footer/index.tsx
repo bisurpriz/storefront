@@ -1,10 +1,9 @@
-import FacebookIcon from "@/components/Svgs/Facebook";
-import InstagramIcon from "@/components/Svgs/Instagram";
-import TwitterIcon from "@/components/Svgs/Twitter";
+import FacebookIcon from "@/components/CustomIcons/Facebook";
+import InstagramIcon from "@/components/CustomIcons/Instagram";
+import TwitterIcon from "@/components/CustomIcons/Twitter";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const footerData = [
   {
@@ -140,6 +139,7 @@ const Footer = () => {
               width={200}
               height={200}
               quality={100}
+              className="w-auto h-auto"
             />
             Bonnmarşe ETBİS&apos;e üye bir firmadır.
           </Link>
@@ -152,6 +152,7 @@ const Footer = () => {
             <Image
               src="/payment/iyzico-ode.png"
               alt="iyzico"
+              className="w-auto h-auto"
               width={400}
               height={200}
               quality={100}

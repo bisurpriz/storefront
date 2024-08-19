@@ -9,7 +9,7 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "/logo-kare.png",
+      "src": "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=192&height=192&format=webp&quality=100",
       "sizes": "192x192",
       "type": "image/png"
     }

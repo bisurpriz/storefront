@@ -1,4 +1,4 @@
-query getBanners {
+query getBanners @cached {
   system_banner {
     expire_date
     id

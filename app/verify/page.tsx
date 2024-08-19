@@ -5,7 +5,8 @@ import {
   VerifyTokenDocument,
   VerifyTokenMutation,
   VerifyTokenMutationVariables,
-} from "@/graphql/generated";
+} from "@/graphql/queries/verify/verify.generated";
+
 import { useMutation } from "@apollo/client";
 import clsx from "clsx";
 import Link from "next/link";

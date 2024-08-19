@@ -2,15 +2,16 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
-import { PiTruckLight, PiUserLight } from "react-icons/pi";
+import React, { ReactNode } from "react";
 import BasketButton from "./BasketButton";
 import AltTextWithData from "./AltTextWithData";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import Account from "@/components/Icons/Account";
+import Truck from "@/components/Icons/Truck";
 
 export type HeaderButtonData = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   href?: string;
   type: "order" | "account" | "cart";
@@ -18,13 +19,13 @@ export type HeaderButtonData = {
 
 const headerButtonData: HeaderButtonData[] = [
   {
-    icon: <PiTruckLight />,
+    icon: <Truck />,
     title: "Siparişlerim",
     href: "/account/orders",
     type: "order",
   },
   {
-    icon: <PiUserLight />,
+    icon: <Account />,
     title: "Hesabım",
     href: "/account",
     type: "account",
@@ -46,7 +47,7 @@ const HeaderButtons = () => {
   const getAltTextData = (type: HeaderButtonData["type"]) => {
     switch (type) {
       case "cart":
-        return cost;
+        return cost.totalPrice;
       case "account":
         return user;
       default:

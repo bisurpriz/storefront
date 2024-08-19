@@ -35,7 +35,7 @@ const AccountNavigation = () => {
           aria-current={pathname === item.link ? "page" : undefined}
           aria-label={item.title}
         >
-          <item.icon size={24} />
+          <item.icon className="text-2xl" />
           <span>{item.title}</span>
         </Link>
       ))}

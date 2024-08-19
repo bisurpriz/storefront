@@ -12,7 +12,9 @@ const AnimationExitProvider: FC<AnimationExitProviderProps> = ({
   children,
   mode = "sync",
 }) => {
-  return <AnimatePresence mode={mode}>{show && children}</AnimatePresence>;
+  return (
+    <AnimatePresence mode={mode}>{show ? children : null}</AnimatePresence>
+  );
 };
 
 export default AnimationExitProvider;

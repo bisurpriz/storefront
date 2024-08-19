@@ -3,12 +3,11 @@
 import Button from "@/components/Button";
 import Link from "next/link";
 import { useState } from "react";
-import { GrChatOption } from "react-icons/gr";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
-import { GetUserOrdersQuery } from "@/graphql/generated";
-import { readIdFromCookies } from "@/app/actions";
 import Modal from "@/components/Modal/FramerModal/Modal";
+import Chat from "@/components/Icons/Chat";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 
 const OrderMessage = ({
   tenant,
@@ -24,13 +23,10 @@ const OrderMessage = ({
   const nextRouter = useRouter();
 
   const sendMessage = async () => {
-    const userId = await readIdFromCookies();
-
     const response = await startMessageForOrder({
       message,
       receiver_id: tenant.id,
       order_tenant_id: orderTenantId,
-      user_id: userId,
     });
     if (response.insert_message_one.chat_thread.order_tenant_id) {
       nextRouter.push(
@@ -49,7 +45,7 @@ const OrderMessage = ({
         onClick={() => {
           setOpen(true);
         }}
-        icon={<GrChatOption size={16} />}
+        icon={<Chat className="text-base" />}
       />
 
       <Modal
@@ -88,7 +84,6 @@ const OrderMessage = ({
             </div>
             <Button
               label="Mesajı Gönder"
-              variant="fullfilled"
               color="primary"
               size="small"
               className="w-full justify-center"

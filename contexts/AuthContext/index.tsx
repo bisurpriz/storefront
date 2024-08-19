@@ -1,16 +1,10 @@
 "use client";
 
-import { GetUserByIdQuery } from "@/graphql/generated";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { ReactNode, createContext, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
 import { uuidv4 } from "@/utils/uuidv4";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
@@ -27,8 +21,6 @@ export const AuthProvider = ({
   children: ReactNode;
   user: GetUserByIdQuery["user_by_pk"];
 }) => {
-  const memoized = useMemo(() => ({ user }), [user]);
-
   useEffect(() => {
     if (!user) {
       if (!Cookies.get(CookieTokens.GUEST_ID)) {
@@ -41,7 +33,7 @@ export const AuthProvider = ({
   }, [user]);
 
   return (
-    <AuthContext.Provider value={memoized}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 };
 

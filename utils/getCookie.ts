@@ -1,15 +1,13 @@
-export function getCookie(cname: string) {
-  const name = cname + "=";
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+import Cookies from "js-cookie";
+
+export function getClientCookie(cookieName: string) {
+  return Cookies.get(cookieName);
+}
+
+export function setClientCookie(cookieName: string, value: string) {
+  return Cookies.set(cookieName, value);
+}
+
+export function removeClientCookie(cookieName: string) {
+  return Cookies.remove(cookieName);
 }

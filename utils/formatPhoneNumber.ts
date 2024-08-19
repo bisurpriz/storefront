@@ -1,4 +1,5 @@
 export const formatPhoneNumber = (phoneNumber: string) => {
+  if(!phoneNumber) return null;
   let number = phoneNumber.replace(/\D/g, "");
 
   if (number.startsWith("90")) {

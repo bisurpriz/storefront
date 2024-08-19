@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
-import Rating from "../../../../../components/Rating/Rating";
 import { localeFormat } from "@/utils/format";
 import { Suspense } from "react";
+import ReviewRating from "../../../../../components/ReviewRating/ReviewRating";
 
 type Comment = {
   comment_id: number;
@@ -74,9 +74,8 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     >
                       {comment.firstName} {comment.lastName}
                     </p>
-                    <Rating
+                    <ReviewRating
                       value={comment.rate}
-                      className="max-w-[80px] min-w-[80px] self-center"
                       readOnly
                       showReviewCount={false}
                     />
@@ -85,7 +84,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     </span>
                   </div>
                 </div>
-                <div className="rounded-lg bg-4 ml-4 max-sm:ml-0 mb-2">
+                <div className="rounded-lg bg-4">
                   <p
                     className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
                     aria-label={`comment-${index}-comment`}

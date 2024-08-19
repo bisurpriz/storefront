@@ -3,16 +3,15 @@
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  RiHome2Line,
-  RiSearch2Line,
-  RiShoppingBagLine,
-  RiUser3Line,
-} from "react-icons/ri";
-import { TbCategory } from "react-icons/tb";
+
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Badge from "../Badge";
+import Home from "../Icons/Home";
+import Category from "../Icons/Category";
+import Search from "../Icons/Search";
+import Basket from "../Icons/Basket";
+import User from "../Icons/User";
 
 const MenuItem = ({
   item,
@@ -116,26 +115,26 @@ const mobileBottomMenu = [
   {
     name: "Anasayfa",
     href: "/",
-    icon: <RiHome2Line />,
+    icon: <Home />,
   },
   {
     name: "Kategoriler",
     href: "/categories",
-    icon: <TbCategory />,
+    icon: <Category />,
   },
   {
     name: "Arama",
     href: "/search",
-    icon: <RiSearch2Line />,
+    icon: <Search />,
   },
   {
     name: "Sepet",
     href: "/cart",
-    icon: <RiShoppingBagLine />,
+    icon: <Basket />,
   },
   {
     name: "Profil",
     href: "/account",
-    icon: <RiUser3Line />,
+    icon: <User />,
   },
 ];

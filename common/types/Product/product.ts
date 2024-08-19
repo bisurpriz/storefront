@@ -38,10 +38,13 @@ export interface Product {
   category: Category;
   delivery_type_rel: DeliveryTypeRelation;
   tenant: {
+    id?: string;
     tenants: {
       id: string;
       name?: string;
       logo?: string;
+      iyzi_sub_merchant_key?: string;
+      commision_rate?: number;
     }[];
   };
 }

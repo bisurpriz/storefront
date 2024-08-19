@@ -2,12 +2,10 @@ import { CookieTokens } from "@/app/@auth/contants";
 import { HttpLink, from, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
-import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { cookies } from "next/headers";
 
-export const removeTypenameLink = removeTypenameFromVariables();
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
@@ -18,24 +16,21 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const wsLink =
-  typeof window !== "undefined"
-    ? new WebSocketLink({
-        uri: process.env.HASURA_WS_URL,
-        options: {
-          reconnect: true,
-          connectionParams: async () => {
-            const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+const wsLink = new WebSocketLink({
+  uri: process.env.HASURA_WS_URL,
+  options: {
+    reconnect: true,
+    connectionParams: async () => {
+      const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
 
-            return {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            };
-          },
+      return {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      })
-    : null;
+      };
+    },
+  },
+});
 
 export const authLink = setContext(async (_, { headers }) => {
   let token = null;
@@ -76,4 +71,4 @@ const _httpLink =
       )
     : httpLink;
 
-export const links = from([removeTypenameLink, authLink, errorLink, _httpLink]);
+export const links = from([authLink, errorLink, _httpLink]);

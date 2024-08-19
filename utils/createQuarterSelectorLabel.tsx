@@ -1,4 +1,4 @@
-import { GetLocationQueryQuery } from "@/graphql/generated";
+import { GetLocationQueryQuery } from "@/graphql/queries/account/account.generated";
 
 export const createQuarterSelectorLabel = (
   option: GetLocationQueryQuery["search_locationv1"][0]

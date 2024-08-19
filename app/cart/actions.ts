@@ -1,21 +1,34 @@
 "use server";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
 import { readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
-import {
-  GetDbCartDocument,
-  GetDbCartQuery,
-  GetProductsForInitialCartDocument,
-  GetProductsForInitialCartQuery,
-  UpdateDbCartDocument,
-  UpdateDbCartMutation,
-} from "@/graphql/generated";
+
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
+import { createOrderDataMapper } from "./utils";
+import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
+import { CustomizableArea } from "@/common/types/Order/order";
+import {
+  GetDbCartDocument,
+  GetDbCartQuery,
+  GetDbCartQueryVariables,
+  GetProductByIdForCartDocument,
+  GetProductByIdForCartQuery,
+  GetProductByIdForCartQueryVariables,
+  UpdateDbCartDocument,
+  UpdateDbCartMutation,
+  UpdateDbCartMutationVariables,
+} from "@/graphql/queries/cart/cart.generated";
+import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import {
+  GetProductsForInitialCartDocument,
+  GetProductsForInitialCartQuery,
+  GetProductsForInitialCartQueryVariables,
+} from "@/graphql/queries/products/getProductById.generated";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -23,125 +36,81 @@ export const checkUserId = async () => {
   return userId;
 };
 
+const uploadOrderItemImages = async () => {
+  const images = [];
+  const formData = new FormData();
+  images.map((file: File) => {
+    formData.append("items", file as Blob);
+  });
+  formData.append("order_item_id", "120");
+
+  axios.post(
+    "https://mmcvpm3nmlyqbt2uiyr5h5optm0pihfu.lambda-url.eu-north-1.on.aws",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+};
+
 export const createOrderAction = async (
   cartItems: ProductForCart[],
-  orderDetail
+  orderDetail: OrderDetailPartialFormData,
+  paymentConversationId: string
 ) => {
-  const userId = await checkUserId();
-
-  if (!userId) return null;
-  const tenantGrouped = cartItems.reduce((acc, item) => {
-    const tenantId = item.tenant.tenants?.[0]?.id;
-    if (!acc[tenantId]) {
-      acc[tenantId] = [];
-    }
-    acc[tenantId].push(item);
-    return acc;
-  }, {});
-
-  const getTexts = (specialInstructions) => {
-    // will return an object of texts { content: "text"}
-    if (!specialInstructions) return [];
-    const texts = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("text") && specialInstructions[key] !== null
-      )
-      .map((key) => ({
-        content: specialInstructions[key],
-      }));
-
-    return texts;
-  };
-
-  const getImages = (specialInstructions) => {
-    // will return an object of images { content: "image"}
-    if (!specialInstructions) return [];
-    const images = Object.keys(specialInstructions)
-      .filter(
-        (key) => key.includes("image") && specialInstructions[key] !== null
-      )
-      .map((key) => ({
-        image_url: specialInstructions[key],
-      }));
-    return images;
-  };
-
-  const tenant_orders = Object.keys(tenantGrouped).map((key) => {
-    const tenantItems = tenantGrouped[key];
+  if (!orderDetail || !cartItems)
     return {
-      tenant_id: key,
-      order_items: {
-        data: tenantItems.map((item) => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          order_item_special_texts: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getTexts(instruction)
-                )
-              : [],
-          },
-          order_item_special_images: {
-            data: item.specialInstructions
-              ? item.specialInstructions.flatMap((instruction) =>
-                  getImages(instruction)
-                )
-              : [],
-          },
-        })),
-      },
+      status: "error",
     };
-  });
+
+  const user_id = await readIdFromCookies();
+  const guestId = await cookies().get(CookieTokens.GUEST_ID)?.value;
 
   const {
-    address,
-    address_title,
-    city,
-    quarter,
-    district,
-    receiver_phone,
-    receiver_surname,
-    receiver_firstname,
-  } = orderDetail;
+    object: { tenant_orders, order_addresses },
+  } = createOrderDataMapper(cartItems, orderDetail);
 
-  const variables = {
-    user_id: userId,
-    tenantOrders: {
-      data: tenant_orders,
+  const variables: CreateOrderMutationVariables = {
+    object: {
+      user_id: user_id,
+      guest_id: user_id ? undefined : guestId,
+      tenant_orders,
+      order_addresses,
+      sender_mail: orderDetail.sender_email,
+      sender_phone: orderDetail.sender_phone,
+      paymentConversationId,
     },
-    order_addresses: [
-      {
-        address,
-        address_title,
-        city_id: city.id,
-        quarter_id: quarter.id,
-        district_id: district.id,
-        receiver_phone,
-        receiver_surname,
-        receiver_firstname,
-      },
-    ],
   };
-
-  const token = await cookies().get(CookieTokens.ACCESS_TOKEN).value;
 
   const response = await fetch(
     "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
     {
       method: "POST",
-      body: JSON.stringify(variables),
+      body: JSON.stringify({
+        ...variables.object,
+      }),
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
       },
     }
-  );
+  ).then((res) => res.json());
 
-  return response.json();
+  if (!response) {
+    return {
+      status: "error",
+    };
+  } else {
+    return {
+      status: "success",
+    };
+  }
 };
 
 export const getCartCost = async (
-  cartItems: Pick<ProductForCart, "id" | "quantity">[]
+  cartItems: Pick<ProductForCart, "id" | "quantity">[],
+  couponCode?: string
 ) => {
   const { data: costData } = await axios.post(
     "https://llt4tsk3fqsilcccjrst76njyq0eiqne.lambda-url.eu-north-1.on.aws/",
@@ -150,10 +119,10 @@ export const getCartCost = async (
         id: item.id,
         quantity: item.quantity,
       })),
+      couponCode,
     }
   );
-
-  return costData.totalPrice as number;
+  return costData;
 };
 
 export const updateCart = async (cartItems: ProductForCart[]) => {
@@ -163,11 +132,16 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       quantity: item.quantity,
       tenant_id: item.tenant?.tenants?.[0].id,
       product_customizable_areas: item.product_customizable_areas,
+      deliveryTime: item.deliveryTime,
+      deliveryDate: item.deliveryDate,
     }));
 
     const userId = await checkUserId();
 
-    const { data: cartData } = await mutate<UpdateDbCartMutation>({
+    const { data: cartData } = await mutate<
+      UpdateDbCartMutation,
+      UpdateDbCartMutationVariables
+    >({
       mutation: UpdateDbCartDocument,
       variables: {
         payload: [
@@ -187,10 +161,9 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     return {
       cartData,
-      costData,
+      costData: costData,
     };
   } catch (error) {
-    console.log("Sepet güncellenirken bir hata oluştu.", error);
     return {
       data: null,
       error: {
@@ -215,7 +188,7 @@ export const getCart = async (user_id: string) => {
   try {
     const {
       data: { cart },
-    } = await query<GetDbCartQuery>({
+    } = await query<GetDbCartQuery, GetDbCartQueryVariables>({
       query: GetDbCartDocument,
       fetchPolicy: "no-cache",
       context: headers,
@@ -225,16 +198,23 @@ export const getCart = async (user_id: string) => {
     if (parsedContent.length === 0)
       return {
         cartItems: [],
-        costData: 0,
+        costData: {
+          totalPrice: 0,
+          couponMessage: "",
+          isCouponApplied: false,
+        },
       } as {
         cartItems: ProductForCart[];
-        costData: number;
+        costData: CostData;
       };
 
     const ids = parsedContent.map((item) => item.product_id);
     const {
       data: { product },
-    } = await query<GetProductsForInitialCartQuery>({
+    } = await query<
+      GetProductsForInitialCartQuery,
+      GetProductsForInitialCartQueryVariables
+    >({
       query: GetProductsForInitialCartDocument,
       variables: {
         ids,
@@ -252,6 +232,8 @@ export const getCart = async (user_id: string) => {
         ...hasProduct,
         quantity: item.quantity,
         product_customizable_areas: item.product_customizable_areas,
+        deliveryTime: item.deliveryTime,
+        deliveryDate: item.deliveryDate,
       };
     });
 
@@ -260,18 +242,57 @@ export const getCart = async (user_id: string) => {
       costData,
     } as {
       cartItems: ProductForCart[];
-      costData: number;
+      costData: CostData;
     };
   } catch (error) {
-    console.log(
-      "Sepet bilgisine ulaşılamadı. Hata: getCart fonksiyonu içerisinde."
-    );
     return {
       cartItems: [],
-      costData: 0,
+      costData: {
+        totalPrice: 0,
+        couponMessage: "",
+        isCouponApplied: false,
+      },
     } as {
       cartItems: ProductForCart[];
-      costData: number;
+      costData: CostData;
     };
   }
+};
+
+export const getProductByIdForCart = async (id: number) => {
+  const response = await query<
+    GetProductByIdForCartQuery,
+    GetProductByIdForCartQueryVariables
+  >({
+    query: GetProductByIdForCartDocument,
+    variables: {
+      id,
+    },
+  });
+
+  const product: ProductForCart = {
+    category: {
+      id: response.data.product_by_pk.category.id,
+      name: response.data.product_by_pk.category.name,
+      slug: response.data.product_by_pk.category.slug,
+    },
+    discount_price: response.data.product_by_pk.discount_price,
+    id: response.data.product_by_pk.id,
+    image_url: response.data.product_by_pk.image_url,
+    name: response.data.product_by_pk.name,
+    price: response.data.product_by_pk.price,
+    quantity: 1,
+    product_customizable_areas:
+      response.data.product_by_pk.product_customizable_areas.map((area) => ({
+        count: area.count,
+        customizable_area: {
+          id: area.customizable_area.id,
+          type: area.customizable_area.type as CustomizableArea["type"],
+        },
+        max_character: area.max_character,
+      })),
+    tenant: response.data.product_by_pk.tenant,
+  };
+
+  return product;
 };

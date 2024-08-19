@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import { useCategory } from "@/contexts/CategoryContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -56,30 +56,23 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
     }
   };
 
-  const selectedCategories = useMemo(
-    () =>
-      searchParams
-        ?.get(FilterKeys.CATEGORY)
-        ?.split(",")
-        ?.map((c) => categories.find((category) => category.value === c)) || [],
-    [searchParams, categories]
-  );
+  const selectedCategories =
+    searchParams
+      ?.get(FilterKeys.CATEGORY)
+      ?.split(",")
+      ?.map((c) => categories.find((category) => category.value === c)) || [];
 
-  const selectedPrice = useMemo((): FilterInputOption => {
-    const price = searchParams.get(FilterKeys.PRICE);
-    if (price) {
-      const [min, max] = price.split("-");
-      return {
-        key: `${min}₺ - ${max}₺`,
+  const price = searchParams.get(FilterKeys.PRICE);
+
+  const selectedPrice: FilterInputOption = price
+    ? {
+        key: price.split("-")[0] + "₺ - " + price.split("-")[1] + "₺",
         value: price,
+      }
+    : {
+        key: "",
+        value: "",
       };
-    }
-
-    return {
-      key: "",
-      value: "",
-    };
-  }, [searchParams]);
 
   return (
     <div className={clsx("w-full")}>

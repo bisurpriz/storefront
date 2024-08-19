@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductForCart } from "@/common/types/Cart/cart";
+import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
   ReactNode,
   createContext,
@@ -18,10 +18,24 @@ import {
 } from "./constants";
 import { cartReducer } from "./reducer";
 import toast from "react-hot-toast";
-import { updateCart } from "@/app/cart/actions";
+import {
+  getCartCost,
+  getProductByIdForCart,
+  updateCart,
+} from "@/app/cart/actions";
 import useResponsive from "@/hooks/useResponsive";
+import { useProduct } from "../ProductContext";
+import { isDate } from "date-fns";
 
-type AddToCart = (item: ProductForCart, type: "updateq" | "add") => void;
+type AddToCart = ({
+  id,
+  type,
+  quantity,
+}: {
+  id: number;
+  type: "updateq" | "add";
+  quantity?: number;
+}) => void;
 
 interface CartContextType {
   addToCart: AddToCart;
@@ -30,20 +44,35 @@ interface CartContextType {
   updateCartItem: (item: ProductForCart) => void;
   cartState: CartState;
   loading: boolean;
+  deliveryTime: DeliveryTime | null;
+  setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
+  clearDeliveryTime: () => void;
+  isProductInCart: ProductForCart;
+  applyCouponCode: (code: string) => Promise<void>;
 }
 
 export interface CartState {
   cartItems: ProductForCart[];
   count: number;
-  cost: number;
+  cost: CostData;
 }
 
 type Type = "add" | "remove" | "clear" | "update";
 
+export type DeliveryTime = {
+  day: Date | null;
+  hour: string;
+};
+
 export const CartContext = createContext<CartContextType>({
   cartState: {
     cartItems: [],
-    cost: 0,
+    cost: {
+      totalPrice: 0,
+      isCouponApplied: false,
+      couponMessage: "",
+      discountAmount: 0,
+    },
     count: 0,
   },
   addToCart: () => {},
@@ -51,6 +80,11 @@ export const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   updateCartItem: () => {},
   loading: false,
+  deliveryTime: null,
+  setDeliveryTimeHandler: () => {},
+  clearDeliveryTime: () => {},
+  isProductInCart: null,
+  applyCouponCode: async () => {},
 });
 
 export const CartProvider = ({
@@ -60,7 +94,7 @@ export const CartProvider = ({
 }: {
   children: ReactNode;
   cartDbItems: ProductForCart[];
-  dbCost: number;
+  dbCost: CostData;
 }) => {
   const [cartState, dispatch] = useReducer(cartReducer, {
     cartItems: cartDbItems,
@@ -69,9 +103,15 @@ export const CartProvider = ({
   } as CartState);
   const [loading, setLoading] = useState(false);
 
+  const [deliveryTime, setDeliveryTime] = useState<DeliveryTime>({
+    day: null,
+    hour: "",
+  });
+
+  const { selectedProduct } = useProduct();
+
   const { isTablet } = useResponsive();
 
-  // Get local storage data if cartDbItems is empty
   useEffect(() => {
     if (cartDbItems.length === 0) {
       const cartItems = localStorage.getItem("cart");
@@ -109,12 +149,30 @@ export const CartProvider = ({
     return response;
   };
 
-  const addToCart: AddToCart = async (item, type) => {
+  const addToCart: AddToCart = async ({
+    id,
+    type,
+    quantity,
+  }: {
+    id: number;
+    type: "updateq" | "add";
+    quantity?: number;
+    deliveryDate?: string;
+    deliveryTime?: string;
+  }) => {
     const cartItems = [...cartState.cartItems];
-    const hasItem = cartItems.findIndex((_item) => _item.id === item.id);
+    const hasItem = cartItems.findIndex((_item) => _item.id === id);
 
     if (hasItem === -1) {
-      cartItems.push(item);
+      const item = await getProductByIdForCart(id);
+
+      const _item = {
+        ...item,
+        deliveryDate: deliveryTime.day,
+        deliveryTime: deliveryTime.hour,
+      };
+
+      cartItems.push(_item);
       handleChangeDb(cartItems, "add").then(({ costData, error }) => {
         if (error) return;
 
@@ -127,9 +185,11 @@ export const CartProvider = ({
           },
         });
       });
+      clearDeliveryTime();
+      return;
     } else {
       if (type === "updateq") {
-        cartItems[hasItem].quantity = item.quantity;
+        cartItems[hasItem].quantity = quantity;
         handleChangeDb(cartItems, "update").then(({ costData, error }) => {
           if (error) return;
 
@@ -147,6 +207,8 @@ export const CartProvider = ({
 
       if (type === "add") {
         cartItems[hasItem].quantity += 1;
+        cartItems[hasItem].deliveryDate = deliveryTime.day;
+        cartItems[hasItem].deliveryTime = deliveryTime.hour;
         handleChangeDb(cartItems, "update").then(({ costData, error }) => {
           if (error) return;
 
@@ -218,32 +280,71 @@ export const CartProvider = ({
     });
   };
 
-  const memoizedValue = useMemo(
-    () => ({
-      cartState,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-    }),
-    [
-      cartState.cartItems,
-      cartState.cost,
-      cartState.count,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-    ]
+  const applyCouponCode = async (code: string) => {
+    const newCost = await getCartCost(cartState.cartItems, code);
+    dispatch({
+      type: UPDATE_CART,
+      payload: {
+        cartItems: cartState.cartItems,
+        count: cartState.count,
+        cost: newCost,
+      },
+    });
+  };
+
+  const isValidDeliveryTime = (deliveryTime: DeliveryTime) => {
+    try {
+      const { day, hour } = deliveryTime;
+      if (isDate(day) && hour.length) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const setDeliveryTimeHandler = (deliveryTime: DeliveryTime) => {
+    if (isValidDeliveryTime(deliveryTime)) {
+      setDeliveryTime(deliveryTime);
+    }
+  };
+
+  const clearDeliveryTime = () => {
+    setDeliveryTime({ day: null, hour: "" });
+  };
+
+  const isProductInCart = useMemo(
+    () => cartState.cartItems.find((item) => item.id === selectedProduct?.id),
+    [cartState.cartItems, selectedProduct?.id]
   );
 
-  return (
-    <CartContext.Provider value={memoizedValue}>
-      {children}
-    </CartContext.Provider>
-  );
+  useEffect(() => {
+    if (Boolean(isProductInCart)) {
+      setDeliveryTime({
+        day: isProductInCart.deliveryDate,
+        hour: isProductInCart.deliveryTime,
+      });
+    } else {
+      clearDeliveryTime();
+    }
+  }, [isProductInCart]);
+
+  const value = {
+    cartState,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    updateCartItem,
+    loading,
+    deliveryTime,
+    setDeliveryTimeHandler,
+    clearDeliveryTime,
+    isProductInCart: isProductInCart,
+    applyCouponCode,
+  };
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => useContext(CartContext);

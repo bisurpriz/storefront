@@ -29,7 +29,11 @@ const CartProductGroupListQuantityInput = ({
         onChange={(e, quantity) => {
           const item = cartItems.find((item) => item.id === id);
           if (item) {
-            addToCart({ ...item, quantity }, "updateq");
+            addToCart({
+              id: item.id,
+              type: "updateq",
+              quantity,
+            });
           }
         }}
         color="primary"

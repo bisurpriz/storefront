@@ -2,17 +2,18 @@
 
 import React, { FC } from "react";
 import { useLazyQuery } from "@apollo/client";
-import {
-  GetLocationQueryDocument,
-  GetLocationQueryQuery,
-  GetLocationQueryQueryVariables,
-} from "@/graphql/generated";
+
 import Autocomplete from "../Autocomplete/Autocomplete";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 import Cookies from "js-cookie";
 import { CookieTokens } from "@/app/@auth/contants";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import {
+  GetLocationQueryDocument,
+  GetLocationQueryQuery,
+  GetLocationQueryQueryVariables,
+} from "@/graphql/queries/account/account.generated";
 
 type QuarterSelectorProps = {
   value?: any;
@@ -21,19 +22,19 @@ type QuarterSelectorProps = {
 
 const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   const { refresh } = useRouter();
-  const [query, { refetch }] = useLazyQuery<
+  const [, { refetch }] = useLazyQuery<
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
   >(GetLocationQueryDocument);
 
   const fetchLocations = async (input: string) => {
     try {
-      const {
-        data: { search_locationv1: locations },
-      } = await refetch({
+      const res = await refetch({
         search: input,
       });
-
+      const {
+        data: { search_locationv1: locations },
+      } = res;
       return locations;
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -41,7 +42,12 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label className={clsx("max-xl:col-span-full")}>
+    <label
+      className={clsx(
+        "max-xl:col-span-full",
+        "ring ring-2 ring-primary rounded-lg"
+      )}
+    >
       <Autocomplete
         value={value}
         suggestions={fetchLocations}

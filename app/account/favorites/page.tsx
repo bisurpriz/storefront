@@ -5,6 +5,8 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 
+export const dynamic = "force-dynamic";
+
 const FavoritesPage = async () => {
   const { user_favorite, totalCount } = await getUserFavorites({
     offset: 0,

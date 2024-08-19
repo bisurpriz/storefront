@@ -97,7 +97,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       <div className="w-full">
         <div className="space-y-2 text-center">
           <Image
-            src="/logo.svg"
+            src={"/logo.svg"}
             width={300}
             height={300}
             alt="Login"

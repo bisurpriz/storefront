@@ -2,13 +2,16 @@ import StatusBadge from "@/components/StatusBadge";
 import Link from "next/link";
 import OrderItem from "./OrderItem";
 import OrderMessage from "./OrderMessage";
-import { GetUserOrdersQuery } from "@/graphql/generated";
 import { OrderItemStatus } from "@/common/enums/Order/product";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import OrderItemHeader from "./OrderItemHeader";
 
 const TenantOrders = ({
   tenants,
+  order,
 }: {
   tenants: GetUserOrdersQuery["order"][0]["tenant_orders"];
+  order: GetUserOrdersQuery["order"][0];
 }) => {
   return tenants?.map((to) => (
     <div key={to.id} className="flex items-start flex-col justify-start">
@@ -30,12 +33,9 @@ const TenantOrders = ({
           </span>
           <StatusBadge status={OrderItemStatus[to.order_status.value]} />
         </div>
-
-        <OrderMessage
-          tenant={to.tenant}
-          orderTenantId={to.id}
-          tenantId={to.id}
-        />
+        <div className="flex items-center justify-start gap-4">
+          <OrderItemHeader order={order} tenant_orders={to} />
+        </div>
       </div>
 
       <OrderItem order_items={to.order_items} />

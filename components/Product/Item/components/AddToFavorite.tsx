@@ -5,9 +5,10 @@ import {
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
 import Button from "@/components/Button";
+import Heart from "@/components/Icons/Heart";
+import HeartFill from "@/components/Icons/HeartFill";
 import clsx from "clsx";
 import { useState } from "react";
-import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 
 interface AddToFavoriteProps {
   isFavorite: boolean;
@@ -33,7 +34,8 @@ const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
       variant="link"
       color="secondary"
       size="large"
-      icon={isFavoriteState ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
+      name="favorite-button"
+      icon={isFavoriteState ? <HeartFill /> : <Heart />}
       className={clsx([
         isFavoriteState ? "animate-pulse" : "",
         "!absolute top-2 right-2 !p-0 shadow-lg shadow-cyan-500/50 rounded-full",

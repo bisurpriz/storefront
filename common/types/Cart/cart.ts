@@ -13,4 +13,14 @@ export interface ProductForCart
     | "product_customizable_areas"
   > {
   quantity: number;
+  deliveryDate?: Date;
+  deliveryTime?: string;
+}
+
+export interface CostData {
+  totalPrice: number;
+  couponMessage: string;
+  isCouponApplied: boolean;
+  discountAmount: number;
+  totalWithDiscount?: number;
 }

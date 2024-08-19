@@ -1,11 +1,11 @@
 "use client";
 
 import { Product } from "@/common/types/Product/product";
+import Close from "@/components/Icons/Close";
+import InformationCircleFill from "@/components/Icons/InformationCircleFill";
 import Popover from "@/components/Popover";
 import { useCart } from "@/contexts/CartContext";
 import React from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import { IoInformation } from "react-icons/io5";
 
 const ProductGroupListItemInfo = ({
   id,
@@ -31,10 +31,10 @@ const ProductGroupListItemInfo = ({
             </p>
           }
         >
-          <IoInformation className="text-gray-500 cursor-pointer transition-all duration-200 ease-in-out w-4 h-4 rounded-full border hover:bg-7 hover:text-white hover:border-7" />
+          <InformationCircleFill className="text-gray-500 cursor-pointer transition-all duration-200 ease-in-out w-4 h-4 rounded-full border hover:bg-7 hover:text-white hover:border-7" />
         </Popover>
       ) : null}
-      <AiOutlineClose
+      <Close
         onClick={() => {
           if (loading) return;
           removeFromCart(id);

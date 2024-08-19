@@ -15,7 +15,6 @@ import Card from "@/components/Card";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import { useUser } from "@/contexts/AuthContext";
-import { useCartStep } from "@/contexts/CartContext/CartStepProvider";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
@@ -27,9 +26,13 @@ import { AnyObject, ObjectSchema, boolean, object, string } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
 import clsx from "clsx";
-import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 import RadioGroup from "@/components/Radio/RadioGroup";
 import CompanyDetail from "./CompanyDetail";
+import User from "@/components/Icons/User";
+import Phone from "@/components/Icons/Phone";
+import Mail from "@/components/Icons/Mail";
+import { useRouter } from "next/navigation";
+import { CartStepPaths } from "../../constants";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -143,21 +146,28 @@ const ReceiverForm = ({
   const { user } = useUser();
   const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
-  const { handleChangeStep } = useCartStep();
-  const { control, reset, watch, getValues, handleSubmit } =
-    useForm<OrderDetailPartialFormData>({
-      defaultValues,
-      mode: "onChange",
-      delayError: 500,
-      resolver: yupResolver<OrderDetailPartialFormData>(
-        OrderDetailSchema as ObjectSchema<
-          OrderDetailPartialFormData,
-          AnyObject,
-          any,
-          ""
-        >
-      ),
-    });
+  const { push } = useRouter();
+  const {
+    control,
+    reset,
+    watch,
+    getValues,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<OrderDetailPartialFormData>({
+    defaultValues,
+    mode: "all",
+    delayError: 500,
+    resolver: yupResolver<OrderDetailPartialFormData>(
+      OrderDetailSchema as ObjectSchema<
+        OrderDetailPartialFormData,
+        AnyObject,
+        any,
+        ""
+      >
+    ),
+  });
 
   useEffect(() => {
     getUserAddressById().then(({ userAddresses }) => {
@@ -209,6 +219,14 @@ const ReceiverForm = ({
       return;
     }
 
+    if (!localStorageData && user) {
+      reset({
+        sender_name: user?.firstname + " " + user?.lastname,
+        sender_phone: user?.phone?.match(/^90(\d{10})$/)?.[1],
+        sender_email: user?.email,
+      });
+    }
+
     if (defaultCity && defaultDistrict && defaultQuarter) {
       reset({
         ...getValues(),
@@ -230,7 +248,10 @@ const ReceiverForm = ({
         district: selectedSavedAddress.district,
         quarter: selectedSavedAddress.quarter,
         address: selectedSavedAddress.address,
-        receiver_name: selectedSavedAddress.receiver_name,
+        receiver_name:
+          selectedSavedAddress.receiver_firstname +
+          " " +
+          selectedSavedAddress.receiver_surname,
         receiver_phone,
         address_title: selectedSavedAddress.address_title,
       });
@@ -252,36 +273,35 @@ const ReceiverForm = ({
   const onSubmit = async (values) => {
     const cartId = user?.carts[0]?.id;
     const user_id = user?.id;
-
-    if (values) {
+    if (values && Object.keys(errors).length === 0) {
       if (values.wantToSaveAddress && !values.saved_address) {
         try {
-          await createNewUserAddress({
+          createNewUserAddress({
             address: values.address,
             city_id: values.city?.id,
             district_id: values.district?.id,
             quarter_id: values.quarter?.id,
-            receiver_firstname: values.receiver_firstname,
-            receiver_surname: values.receiver_surname,
+            receiver_firstname: values.receiver_name?.split(" ")[0],
+            receiver_surname: values.receiver_name?.split(" ").slice(1).join(" "),
             receiver_phone: values.receiver_phone,
             user_id,
             address_title: values.address_title,
           });
-        } catch {
+        } catch(e) {
+          console.error(e);
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
           });
         }
       }
+      console.log(values, !errors);
 
       localStorage.setItem("detail-data", JSON.stringify(values));
-      handleChangeStep();
+      push(CartStepPaths.CHECKOUT);
     }
   };
 
-  const onError = (errors) => {
-    console.log(errors);
-  };
+  const onError = (errors) => {};
 
   const renderSavedAddress = () => {
     if (userAddresses?.length > 0) {
@@ -344,6 +364,9 @@ const ReceiverForm = ({
         )}
         onSubmit={handleSubmit(onSubmit, onError)}
       >
+        <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
+          {renderSavedAddress()}
+        </div>
         <div
           className={clsx(
             "col-span-1 max-md:col-span-full",
@@ -366,7 +389,7 @@ const ReceiverForm = ({
                 id="sender_name"
                 value={value}
                 onChange={onChange}
-                icon={<LuUser size={20} />}
+                icon={<User className="text-xl" />}
                 error={!!error}
                 errorMessage={error?.message}
               />
@@ -384,7 +407,7 @@ const ReceiverForm = ({
                 onChange={(val, inputVal) => onChange(inputVal)}
                 value={value}
                 id="sender_phone"
-                icon={<LuPhone size={20} />}
+                icon={<Phone className="text-xl" />}
               />
             )}
           />
@@ -407,7 +430,7 @@ const ReceiverForm = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuMail size={20} />}
+                icon={<Mail className="text-xl" />}
               />
             )}
           />
@@ -454,7 +477,7 @@ const ReceiverForm = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<LuUser size={20} />}
+                icon={<User className="text-xl" />}
               />
             )}
           />
@@ -470,7 +493,7 @@ const ReceiverForm = ({
                 onChange={(val, inputVal) => onChange(inputVal)}
                 value={value}
                 id="receiver_phone"
-                icon={<LuPhone size={20} />}
+                icon={<Phone className="text-xl" />}
               />
             )}
           />
@@ -496,12 +519,12 @@ const ReceiverForm = ({
         <CompanyDetail control={control} invoice_type={invoice_type} />
         <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
-          {renderSavedAddress()}
 
           <RenderAddress
             selectedSavedAddress={selectedSavedAddress}
             control={control}
             user={user}
+            setValue={setValue}
           />
 
           <Controller

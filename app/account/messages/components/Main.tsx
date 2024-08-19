@@ -3,12 +3,12 @@ import Button from "@/components/Button";
 import useDelayUnmount from "@/hooks/useDelayUnmount";
 import useChatStore from "@/store";
 import { useState } from "react";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { sendMessage } from "../action";
 import ChatList from "./ChatList";
 import Input from "./Message/Input";
 import MessageList from "./Message/MessageList";
 import Cookies from "js-cookie";
+import ArrowBackCircleSharp from "@/components/Icons/ArrowBackCircleSharp";
 
 const Main = ({ tenantId }: { tenantId?: string }) => {
   const [isMessageOpen, setIsMessageOpen] = useState(() => Boolean(tenantId));
@@ -69,24 +69,25 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
           >
             <div className="flex items-center">
               <Button
-                icon={<IoArrowBackCircleSharp />}
+                icon={<ArrowBackCircleSharp />}
                 type="button"
                 size="small"
                 variant="link"
                 iconSize={24}
-                className="gap-2 py-0 px-0 max-lg:hidden pl-0"
+                className="gap-2 py-0 px-0 pl-0"
                 onClick={() => setIsMessageOpen(false)}
               />
 
               <h2 className="text-xl py-1 border-b-2 border-gray-200 inline-block mb-0 flex-auto">
-                <b>
-                  {thread?.tenant.firstname + " " + thread?.tenant.lastname}
-                </b>{" "}
-                ile Görüşme
+                <b>{thread?.tenant?.tenants?.[0]?.name}</b> ile Görüşme
               </h2>
             </div>
 
-            <MessageList messages={thread?.messages} threadId={thread?.id} />
+            <MessageList
+              messages={thread?.messages}
+              threadId={thread?.id}
+              vendor={thread?.tenant?.tenants?.[0]}
+            />
             <Input
               onMessageSend={handleMessage}
               value={text}

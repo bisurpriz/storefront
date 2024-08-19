@@ -6,30 +6,43 @@ import { readIdFromCookies } from "../actions";
 import {
   CreateNewAddressDocument,
   CreateNewAddressMutation,
+  CreateNewAddressMutationVariables,
   GetCitiesDocument,
   GetCitiesQuery,
+  GetCitiesQueryVariables,
   GetDistrictsDocument,
   GetDistrictsQuery,
+  GetDistrictsQueryVariables,
   GetQuartersDocument,
   GetQuartersQuery,
+  GetQuartersQueryVariables,
   GetUserAddressByIdDocument,
   GetUserAddressByIdQuery,
+  GetUserAddressByIdQueryVariables,
   GetUserByEmailDocument,
   GetUserByEmailQuery,
+  GetUserByEmailQueryVariables,
   GetUserByIdDocument,
   GetUserByIdQuery,
+  GetUserByIdQueryVariables,
+  UpdateUserByIdDocument,
+  UpdateUserByIdMutation,
+  UpdateUserByIdMutationVariables,
+} from "@/graphql/queries/account/account.generated";
+import {
   RegisterDocument,
   RegisterMutation,
   RegisterMutationVariables,
-  UpdateUserByIdDocument,
-  UpdateUserByIdMutation,
-} from "@/graphql/generated";
+} from "@/graphql/queries/auth/register/register.generated";
 
 export const getQuarters = async (districtId: string) => {
-  const { data, loading } = await query<GetQuartersQuery>({
+  const { data, loading } = await query<
+    GetQuartersQuery,
+    GetQuartersQueryVariables
+  >({
     query: GetQuartersDocument,
     variables: {
-      districtId,
+      districtId: Number(districtId),
     },
   });
 
@@ -42,10 +55,13 @@ export const getQuarters = async (districtId: string) => {
 };
 
 export const getDiscrits = async (cityId: string) => {
-  const { data, loading } = await query<GetDistrictsQuery>({
+  const { data, loading } = await query<
+    GetDistrictsQuery,
+    GetDistrictsQueryVariables
+  >({
     query: GetDistrictsDocument,
     variables: {
-      cityId,
+      cityId: Number(cityId),
     },
   });
 
@@ -58,7 +74,10 @@ export const getDiscrits = async (cityId: string) => {
 };
 
 export const getCities = async () => {
-  const { data, loading } = await query<GetCitiesQuery>({
+  const { data, loading } = await query<
+    GetCitiesQuery,
+    GetCitiesQueryVariables
+  >({
     query: GetCitiesDocument,
   });
 
@@ -80,7 +99,10 @@ export const getUserAddressById = async (id?: string) => {
     };
   }
 
-  const { data, loading } = await query<GetUserAddressByIdQuery>({
+  const { data, loading } = await query<
+    GetUserAddressByIdQuery,
+    GetUserAddressByIdQueryVariables
+  >({
     query: GetUserAddressByIdDocument,
     variables: {
       id: userId,
@@ -104,12 +126,14 @@ export const getUserById = async (id?: string) => {
   if (!userId) return { user: null, loading: false, id: null };
 
   try {
-    const { data, loading } = await query<GetUserByIdQuery>({
+    const { data, loading } = await query<
+      GetUserByIdQuery,
+      GetUserByIdQueryVariables
+    >({
       query: GetUserByIdDocument,
       variables: {
         id: userId,
       },
-      fetchPolicy: "no-cache",
     });
     const { user_by_pk: user } = data;
     return {
@@ -130,7 +154,10 @@ export const getUserByEmail = async (email: string) => {
   if (!email) return { user: null, loading: false, id: null };
 
   try {
-    const { data, loading } = await query<GetUserByEmailQuery>({
+    const { data, loading } = await query<
+      GetUserByEmailQuery,
+      GetUserByEmailQueryVariables
+    >({
       query: GetUserByEmailDocument,
       variables: {
         email,
@@ -154,7 +181,7 @@ export const getUserByEmail = async (email: string) => {
 export const registerUser = async (newUser: RegisterMutationVariables) => {
   const {
     data: { register },
-  } = await mutate<RegisterMutation>({
+  } = await mutate<RegisterMutation, RegisterMutationVariables>({
     mutation: RegisterDocument,
     variables: {
       ...newUser,
@@ -168,7 +195,10 @@ export const updateUserById = async (
     Pick<User, "firstname" | "lastname" | "email" | "id" | "phone" | "picture">
   >
 ) => {
-  const { data: updatedData } = await mutate<UpdateUserByIdMutation>({
+  const { data: updatedData } = await mutate<
+    UpdateUserByIdMutation,
+    UpdateUserByIdMutationVariables
+  >({
     mutation: UpdateUserByIdDocument,
     awaitRefetchQueries: true,
     refetchQueries: [
@@ -192,18 +222,13 @@ export const updateUserById = async (
   };
 };
 
-export const createNewUserAddress = async (data: {
-  address: string;
-  city_id: string;
-  district_id: string;
-  quarter_id: string;
-  user_id: string;
-  receiver_firstname: string;
-  receiver_surname: string;
-  receiver_phone: string;
-  address_title: string;
-}) => {
-  const { data: updatedData } = await mutate<CreateNewAddressMutation>({
+export const createNewUserAddress = async (
+  data: CreateNewAddressMutationVariables
+) => {
+  const { data: updatedData } = await mutate<
+    CreateNewAddressMutation,
+    CreateNewAddressMutationVariables
+  >({
     mutation: CreateNewAddressDocument,
     awaitRefetchQueries: true,
     refetchQueries: [

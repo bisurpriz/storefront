@@ -3,7 +3,7 @@
 import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { Children, ReactElement, cloneElement, memo, useState } from "react";
+import { Children, ReactElement, cloneElement, useState } from "react";
 import { useClassname } from "../../hooks/useClassname";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
@@ -208,4 +208,4 @@ const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-export default memo(Dropdown);
+export default Dropdown;

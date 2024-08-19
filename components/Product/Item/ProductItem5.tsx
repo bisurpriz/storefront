@@ -1,13 +1,13 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
-import Rating from "@/components/Rating/Rating";
-import AddCartButton2 from "./components/AddCartButton2";
 import Link from "next/link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
 import { goToProductDetail } from "@/utils/linkClickEvent";
+import clsx from "clsx";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
 const ProductItem5 = ({
   name,
@@ -22,20 +22,28 @@ const ProductItem5 = ({
   totalReviewCount,
   tenant,
 }: ProductItemProps) => {
-  const stamps = useMemo((): Stamp[] | null => {
-    if (!product_customizable_areas?.length) return null;
-    return [
-      {
-        name: "Özelleştirilebilir",
-        icon: "🎨",
-        color: "orange",
-      },
-    ] as Stamp[];
-  }, [product_customizable_areas]);
+  const stamps = !product_customizable_areas?.length
+    ? null
+    : ([
+        {
+          name: "Özelleştirilebilir",
+          icon: "🎨",
+          color: "orange",
+        },
+      ] as Stamp[]);
 
   return (
     <div
-      className="border rounded-lg border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-200 relative flex flex-col"
+      className={clsx(
+        "rounded-md bg-white shadow-sm",
+        "flex flex-col justify-between",
+        "overflow-hidden",
+        "cursor-pointer",
+        "hover:shadow-md",
+        "transition-shadow duration-300 ease-in-out",
+        "group",
+        "relative"
+      )}
       id={id.toString()}
     >
       <Link
@@ -46,21 +54,26 @@ const ProductItem5 = ({
           id,
           slug,
         })}
+        // target="_blank"
+        className="relative"
       >
         <Image
-          src={getImageUrlFromPath(image?.[0])}
+          src={`${getImageUrlFromPath(image?.[0])}${
+            image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
+          }`}
           alt={name}
           width={500}
           height={500}
           className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
-          loading="eager"
           quality={70}
-          priority
+          priority={true}
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
         />
-        <div className="p-2">
-          <article className="flex flex-col justify-between flex-grow">
+        <div className="px-2 pb-6 pt-4">
+          <div className="flex flex-col gap-2 justify-between flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
-              <Rating
+              <ReviewRating
                 value={4}
                 readOnly
                 showReviewCount={false}
@@ -69,30 +82,17 @@ const ProductItem5 = ({
               {`(${4})`}
             </span>
             <h1
-              className="text-sm font-normal text-gray-800 h-10 line-clamp-2 mb-1 capitalize"
+              className="text-sm font-normal text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"
               title={name}
             >
               {name}
             </h1>
             <PriceTag price={price} discount={discount_price} />
-          </article>
+          </div>
 
           <ProductCardStamps id={id.toString()} stamps={stamps} />
         </div>
       </Link>
-      <AddCartButton2
-        product={{
-          id,
-          category,
-          discount_price,
-          image_url: image,
-          name,
-          price,
-          product_customizable_areas,
-          tenant,
-          quantity: 1,
-        }}
-      />
     </div>
   );
 };

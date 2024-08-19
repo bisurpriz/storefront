@@ -11,8 +11,9 @@ import { WebSocketLink } from "apollo-link-ws";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { getIdToken } from "@/app/actions";
 import { setContext } from "@apollo/client/link/context";
+import { CookieTokens } from "@/app/@auth/contants";
+import { getClientCookie } from "@/utils/getCookie";
 
 if (process.env.NODE_ENV === "development") {
   setVerbosity("debug");
@@ -20,8 +21,9 @@ if (process.env.NODE_ENV === "development") {
   loadErrorMessages();
 }
 
-const authLink = setContext((_, { headers }) => {
-  return getIdToken().then((cooks) => {
+const setTokenInHeader = async (headers = {}) => {
+  try {
+    const cooks = await getClientCookie(CookieTokens.ACCESS_TOKEN);
     if (!cooks) return "";
 
     return {
@@ -30,7 +32,14 @@ const authLink = setContext((_, { headers }) => {
         Authorization: `Bearer ${cooks}`,
       },
     };
-  });
+  } catch (error) {
+    console.error("Error setting token in header", error);
+    return headers;
+  }
+};
+
+const authLink = setContext((_, { headers }) => {
+  return setTokenInHeader(headers);
 });
 
 function makeClient() {
@@ -47,14 +56,7 @@ function makeClient() {
             timeout: 30000,
             reconnect: true,
             connectionParams: () => {
-              return getIdToken().then((cooks) => {
-                if (!cooks) return {};
-                return {
-                  headers: {
-                    Authorization: `Bearer ${cooks}`,
-                  },
-                };
-              });
+              return setTokenInHeader();
             },
           },
         })

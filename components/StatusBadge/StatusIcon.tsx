@@ -1,22 +1,23 @@
-import { BsGift } from 'react-icons/bs';
-import { CiDeliveryTruck, CiWarning } from 'react-icons/ci';
-import { HiOutlineReceiptRefund } from 'react-icons/hi';
-import { MdDoneAll } from 'react-icons/md';
-import { PiSpinnerLight } from 'react-icons/pi';
-import { TbShoppingCartCancel } from 'react-icons/tb';
-import { LiaShippingFastSolid } from 'react-icons/lia';
-import { OrderItemStatus } from '@/common/enums/Order/product';
+import { OrderItemStatus } from "@/common/enums/Order/product";
+import Gift from "../Icons/Gift";
+import Truck from "../Icons/Truck";
+import ShippingFast from "../Icons/ShippingFast";
+import Spinner from "../Icons/Spinner";
+import DoneAll from "../Icons/DoneAll";
+import ShoppingCartCancel from "../Icons/ShoppingCartCancel";
+import ReceiptRefund from "../Icons/ReceiptRefund";
+import Warning from "../Icons/Warning";
 
 const StatusIcon = ({ status }: { status: OrderItemStatus }) => {
   const icons = {
-    [OrderItemStatus.Created]: MdDoneAll,
-    [OrderItemStatus.Processing]: PiSpinnerLight,
-    [OrderItemStatus.Shipped]: LiaShippingFastSolid,
-    [OrderItemStatus.Delivered]: CiDeliveryTruck,
-    [OrderItemStatus.Canceled]: TbShoppingCartCancel,
-    [OrderItemStatus.Refunded]: HiOutlineReceiptRefund,
-    [OrderItemStatus.Completed]: BsGift,
-    [OrderItemStatus.Failed]: CiWarning,
+    [OrderItemStatus.Created]: DoneAll,
+    [OrderItemStatus.Processing]: Spinner,
+    [OrderItemStatus.Shipped]: ShippingFast,
+    [OrderItemStatus.Delivered]: Truck,
+    [OrderItemStatus.Canceled]: ShoppingCartCancel,
+    [OrderItemStatus.Refunded]: ReceiptRefund,
+    [OrderItemStatus.Completed]: Gift,
+    [OrderItemStatus.Failed]: Warning,
   };
 
   const Icon = icons[status];

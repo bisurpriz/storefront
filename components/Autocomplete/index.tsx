@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useAutocomplete } from "@mui/base/useAutocomplete";
-import { MdClear } from "react-icons/md";
-import { BsChevronDown } from "react-icons/bs";
+import Clear from "../Icons/Clear";
+import ChevronDown from "../Icons/ChevronDown";
 
 export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
 
@@ -141,7 +141,7 @@ export default function AutoComplete({
               className="flex items-center justify-center p-1 text-gray-500 hover:text-gray-700 rounded-lg
             transition-transform duration-200 shadow-sm hover:bg-gray-50"
             >
-              <MdClear />
+              <Clear />
             </button>
           )}
 
@@ -154,7 +154,7 @@ export default function AutoComplete({
           `}
             disabled={disabled}
           >
-            <BsChevronDown />
+            <ChevronDown />
           </button>
         </div>
         {error && errorMessage && (

@@ -1,17 +1,24 @@
 "use server";
 
-import { LoginMutationDocument } from "@/graphql/generated";
 import { mutate } from "@/graphql/lib/client";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { CookieTokens } from "./contants";
+import {
+  LoginMutationDocument,
+  LoginMutationMutation,
+  LoginMutationMutationVariables,
+} from "@/graphql/queries/auth/login/login.generated";
 
 export const decodeToken = async (token: string) => {
   return jwt.decode(token);
 };
 
 export const login = async ({ email, password }, headers = {}) => {
-  const response = await mutate({
+  const response = await mutate<
+    LoginMutationMutation,
+    LoginMutationMutationVariables
+  >({
     mutation: LoginMutationDocument,
     variables: {
       email,
@@ -31,7 +38,7 @@ export const login = async ({ email, password }, headers = {}) => {
     };
 
     cookies().set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
@@ -39,13 +46,13 @@ export const login = async ({ email, password }, headers = {}) => {
       CookieTokens.REFRESH_TOKEN,
       response.data.login.refresh_token,
       {
-        httpOnly: true,
+        httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       }
     );
     cookies().set(CookieTokens.USER_ID, user.id, {
-      // httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });

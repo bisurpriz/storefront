@@ -1,0 +1,24 @@
+const { ESLint } = require("eslint");
+
+module.exports = new ESLint({
+  baseConfig: {
+    extends: [
+      "next/core-web-vitals",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "next",
+      "prettier",
+    ],
+    parser: "@typescript-eslint/parser",
+    plugins: ["@typescript-eslint", "unused-imports", "react-compiler"],
+    rules: {
+      "unused-imports/no-unused-imports-ts": 2,
+      "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-unused-vars": 0,
+      "react-hooks/exhaustive-deps": 0,
+      "react/display-name": 0,
+      "@typescript-eslint/ban-types": 0,
+    },
+  },
+});
