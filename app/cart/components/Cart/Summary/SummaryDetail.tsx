@@ -48,7 +48,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
             {isCouponApplied && (
               <div className="flex justify-between text-sm py-1">
                 <span>İndirim</span>
-                <span className="font-semibold">
+                <span className="font-semibold line-through">
                   {discountAmount.toFixed(2)} ₺
                 </span>
               </div>
@@ -71,7 +71,11 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                 onClick={() => onDiscountCodeSubmit(inputRef.current?.value)}
               />
               <p className="text-xs text-red-500 mt-1" id="couponMessage">
-                {CouponMessages[couponMessage as keyof typeof CouponMessages]}
+                {isCouponApplied
+                  ? CouponMessages.COUPON_SUCCESS
+                  : CouponMessages[
+                      couponMessage as keyof typeof CouponMessages
+                    ]}
               </p>
             </div>
             <div className="flex justify-between items-center text-sm border-t py-1 mt-1">

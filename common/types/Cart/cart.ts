@@ -23,4 +23,5 @@ export interface CostData {
   isCouponApplied: boolean;
   discountAmount: number;
   totalWithDiscount?: number;
+  couponCode?: string;
 }
