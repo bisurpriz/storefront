@@ -92,7 +92,7 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
             }`}
             icon={
               <Heart
-                className={`text-red-300 group-hover:text-white group-hover:animate-bounce ${
+                className={`text-red-300 group-hover:text-white ${
                   isFavoriteState ? "text-white" : ""
                 }`}
               />
