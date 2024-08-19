@@ -12,6 +12,8 @@ import useResponsive from "@/hooks/useResponsive";
 import { createPortal } from "react-dom";
 import ChevronUp from "@/components/Icons/ChevronUp";
 import { useRouter } from "next/navigation";
+import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import { motion } from "framer-motion";
 
 const CartSummary = () => {
   const {
@@ -54,6 +56,10 @@ const CartSummary = () => {
     await applyCouponCode(couponCode);
   };
 
+  const handleRemoveCoupon = async () => {
+    await applyCouponCode("");
+  };
+
   return (
     <div
       className={clsx(
@@ -63,17 +69,26 @@ const CartSummary = () => {
     >
       {isTablet ? (
         createPortal(
-          <div className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white z-[11]">
-            <SummaryDetail
-              cost={cost.totalPrice}
-              couponMessage={cost.couponMessage}
-              isCouponApplied={cost.isCouponApplied}
-              onDiscountCodeSubmit={handleDiscountCodeSubmit}
-              discountAmount={cost.discountAmount}
-              isOpen={isOpen}
-              totalWithDiscount={cost.totalWithDiscount}
-            />
-          </div>,
+          <AnimationExitProvider show={isOpen}>
+            <motion.div
+              className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white"
+              initial={{ y: 20 }}
+              animate={{ y: 0, zIndex: -1 }}
+              exit={{ y: 20 }}
+              transition={{ duration: 0.1 }}
+            >
+              <SummaryDetail
+                cost={cost.totalPrice}
+                couponMessage={cost.couponMessage}
+                isCouponApplied={cost.isCouponApplied}
+                onDiscountCodeSubmit={handleDiscountCodeSubmit}
+                discountAmount={cost.discountAmount}
+                isOpen={isOpen}
+                totalWithDiscount={cost.totalWithDiscount}
+                handleRemoveCoupon={handleRemoveCoupon}
+              />
+            </motion.div>
+          </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body
         )
       ) : (
@@ -85,6 +100,7 @@ const CartSummary = () => {
           onDiscountCodeSubmit={handleDiscountCodeSubmit}
           discountAmount={cost.discountAmount}
           totalWithDiscount={cost.totalWithDiscount}
+          handleRemoveCoupon={handleRemoveCoupon}
         />
       )}
       <div
