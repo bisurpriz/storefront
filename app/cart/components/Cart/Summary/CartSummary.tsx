@@ -14,6 +14,8 @@ import ChevronUp from "@/components/Icons/ChevronUp";
 import { useRouter } from "next/navigation";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import { motion } from "framer-motion";
+import { useContract } from "@/contexts/ContractContext";
+import CheckContract from "./CheckContract";
 
 const CartSummary = () => {
   const {
@@ -21,6 +23,10 @@ const CartSummary = () => {
     loading,
     applyCouponCode,
   } = useCart();
+
+  const { openApproveContract, approveContract, setApproveContract } =
+    useContract();
+
   const pathname = usePathname();
   const { push } = useRouter();
   const { isTablet } = useResponsive();
@@ -87,21 +93,32 @@ const CartSummary = () => {
                 totalWithDiscount={cost.totalWithDiscount}
                 handleRemoveCoupon={handleRemoveCoupon}
               />
+              <CheckContract
+                openApproveContract={openApproveContract}
+                approveContract={approveContract}
+              />
             </motion.div>
           </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body
         )
       ) : (
-        <SummaryDetail
-          cost={cost.totalPrice}
-          couponMessage={cost.couponMessage}
-          isCouponApplied={cost.isCouponApplied}
-          isOpen={isOpen}
-          onDiscountCodeSubmit={handleDiscountCodeSubmit}
-          discountAmount={cost.discountAmount}
-          totalWithDiscount={cost.totalWithDiscount}
-          handleRemoveCoupon={handleRemoveCoupon}
-        />
+        <>
+          <SummaryDetail
+            cost={cost.totalPrice}
+            couponMessage={cost.couponMessage}
+            isCouponApplied={cost.isCouponApplied}
+            isOpen={isOpen}
+            onDiscountCodeSubmit={handleDiscountCodeSubmit}
+            discountAmount={cost.discountAmount}
+            totalWithDiscount={cost.totalWithDiscount}
+            handleRemoveCoupon={handleRemoveCoupon}
+          />
+          <CheckContract
+            setApproveContract={setApproveContract}
+            openApproveContract={openApproveContract}
+            approveContract={approveContract}
+          />
+        </>
       )}
       <div
         className={clsx(
@@ -131,7 +148,7 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={loading}
+          disabled={loading || !approveContract}
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"

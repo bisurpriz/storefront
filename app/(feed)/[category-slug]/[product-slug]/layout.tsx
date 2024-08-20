@@ -37,7 +37,7 @@ export default async function ProductExample({
       </section>
 
       <section
-        className="mt-6"
+        className="mt-6 max-md:mt-2"
         aria-labelledby="product-detail"
         aria-describedby="Ürün Detayları"
         id="product-detail"

@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import Ticket from "@/components/Icons/Ticket";
 import { CouponMessages } from "@/contexts/CartContext/constants";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitPro
 import clsx from "clsx";
 import RemoveTag from "@/components/Icons/RemoveTag";
 import ApplyTag from "@/components/Icons/ApplyTag";
+import Checkbox from "@/components/Checkbox";
 
 type SummaryDetailProps = {
   cost: number;
@@ -47,10 +48,6 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
               <span className="font-semibold">
                 {parseInt(cost as any)?.toFixed(2)} ₺
               </span>
-            </div>
-            <div className="flex justify-between text-sm py-1">
-              <span>Kargo</span>
-              <span className="font-semibold">29.99 ₺</span>
             </div>
 
             {isCouponApplied && (

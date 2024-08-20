@@ -93,7 +93,7 @@ const DaySelect: React.FC<Props> = ({
       const availableHours = calculateTodayAvailableHours();
       setAvailableHours(availableHours);
     }
-  }, [deliveryTimes, selectedHour]);
+  }, [deliveryTimes, selectedDate]);
 
   useEffect(() => {
     if (Boolean(deliveryTime.day && deliveryTime.hour)) {
