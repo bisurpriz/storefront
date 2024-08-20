@@ -50,11 +50,20 @@ const ProductInformation = ({
   deliveryTimeRanges,
   totalUserCommentCount,
 }: ProductInformationProps) => {
-  const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
+  const hasDeliveryTime = useMemo(
+    () => Boolean(parseJson(deliveryTimeRanges)?.length),
+    [deliveryTimeRanges]
+  );
 
   const isSameDay = shippingType === "SAME_DAY";
-  const showDaySelect = isSameDay && hasDeliveryTime;
-  const showExactTime = isSameDay && !hasDeliveryTime;
+  const showDaySelect = useMemo(
+    () => isSameDay && hasDeliveryTime,
+    [isSameDay, hasDeliveryTime]
+  );
+  const showExactTime = useMemo(
+    () => isSameDay && !hasDeliveryTime,
+    [isSameDay, hasDeliveryTime]
+  );
 
   const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
 
@@ -75,7 +84,6 @@ const ProductInformation = ({
     };
   }, []);
 
-  const timeout = useRef(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -126,11 +134,7 @@ const ProductInformation = ({
           </div>
           <div
             className="xs:ml-auto max-xs:text-start max-xs:mt-4"
-            onMouseLeave={() => {
-              timeout.current = setTimeout(() => {
-                setAnchorEl(null);
-              }, 500);
-            }}
+            onMouseLeave={() => setAnchorEl(null)}
             onMouseEnter={(event: MouseEvent<HTMLElement>) =>
               setAnchorEl(event.currentTarget)
             }
@@ -195,11 +199,11 @@ const ProductInformation = ({
               deliveryTime={deliveryTime}
             />
             {isSettedDeliveryTime && (
-              <div className="w-full flex space-x-4 items-center py-1 px-4 bg-opacity-50 font-semibold rounded-xl my-2 bg-red-200">
+              <div className="w-full flex space-x-4 items-center py-1 px-4 font-semibold rounded-xl my-2 bg-red-50 border border-red-300">
                 <span className="text-xl text-red-500">
                   <Error className="inline-block" />
                 </span>
-                <p className="text-xs text-gray-500 leading-5">
+                <p className="text-xs text-slate-700 leading-5">
                   Bu ürünü daha önce sepetinize eklediniz! <br /> Tarihi ve
                   saati değiştirirseniz sepetinizdeki ürünün tarih ve saati
                   güncellenecektir.
