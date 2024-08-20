@@ -24,12 +24,8 @@ const CartSummary = () => {
     applyCouponCode,
   } = useCart();
 
-  const {
-    distanceSalesContract,
-    openDistanceSalesContract,
-    openPreliminaryInformation,
-    preliminaryInformation,
-  } = useContract();
+  const { openApproveContract, approveContract, setApproveContract } =
+    useContract();
 
   const pathname = usePathname();
   const { push } = useRouter();
@@ -98,10 +94,8 @@ const CartSummary = () => {
                 handleRemoveCoupon={handleRemoveCoupon}
               />
               <CheckContract
-                distanceSalesContract={distanceSalesContract}
-                openDistanceSalesContract={openDistanceSalesContract}
-                openPreliminaryInformation={openPreliminaryInformation}
-                preliminaryInformation={preliminaryInformation}
+                openApproveContract={openApproveContract}
+                approveContract={approveContract}
               />
             </motion.div>
           </AnimationExitProvider>,
@@ -120,10 +114,9 @@ const CartSummary = () => {
             handleRemoveCoupon={handleRemoveCoupon}
           />
           <CheckContract
-            distanceSalesContract={distanceSalesContract}
-            openDistanceSalesContract={openDistanceSalesContract}
-            openPreliminaryInformation={openPreliminaryInformation}
-            preliminaryInformation={preliminaryInformation}
+            setApproveContract={setApproveContract}
+            openApproveContract={openApproveContract}
+            approveContract={approveContract}
           />
         </>
       )}
@@ -155,7 +148,7 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={loading}
+          disabled={loading || !approveContract}
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"

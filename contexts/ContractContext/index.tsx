@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/Button";
 import DistanceSalesContract from "@/components/ContractPreview/DistanceSalesContract";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import React from "react";
@@ -9,10 +10,9 @@ export interface ContractContextProps {
 }
 
 export interface ContractContextState {
-  preliminaryInformation: boolean;
-  distanceSalesContract: boolean;
-  openPreliminaryInformation: () => void;
-  openDistanceSalesContract: () => void;
+  approveContract: boolean;
+  openApproveContract: () => void;
+  setApproveContract?: (value: boolean) => void;
 }
 
 export const ContractContext = React.createContext<
@@ -20,57 +20,63 @@ export const ContractContext = React.createContext<
 >(undefined);
 
 export const ContractProvider = ({ children }: ContractContextProps) => {
-  const [state, setState] = React.useState({
-    preliminaryInformation: false,
-    distanceSalesContract: false,
-  });
+  const [approveContract, setApproveContract] = React.useState<boolean>(false);
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
 
-  const openPreliminaryInformation = () => {
-    setState({ ...state, preliminaryInformation: true });
-  };
-
-  const openDistanceSalesContract = () => {
-    setState({ ...state, distanceSalesContract: true });
+  const openApproveContract = () => {
+    setOpenModal(true);
   };
 
   return (
     <ContractContext.Provider
       value={{
-        preliminaryInformation: state.preliminaryInformation,
-        distanceSalesContract: state.distanceSalesContract,
-        openPreliminaryInformation,
-        openDistanceSalesContract,
+        approveContract,
+        openApproveContract,
+        setApproveContract,
       }}
     >
       {children}
-      <Modal
-        open={state.distanceSalesContract || state.preliminaryInformation}
-        handleClose={() => {
-          setState({
-            preliminaryInformation: false,
-            distanceSalesContract: false,
-          });
-        }}
-      >
-        {state.preliminaryInformation ? (
+      <Modal open={openModal} handleClose={() => setOpenModal(false)}>
+        <div className="bg-white p-4 rounded-md flex flex-col">
           <DistanceSalesContract
-            customer={{
-              address: "İstanbul",
-              name: "John Doe",
-              orderDate: "2021-10-10",
-              orderNumber: "123456",
-            }}
+            aliciAdi="Ali"
+            email="alisahindev@gmail.com"
+            kargoTeslimSuresi="2 gün"
+            kargoTutari={10}
+            saticiAdi="Veli"
+            saticiAdresi="İstanbul"
+            saticiEmail="zynpltnkynk@gmail.com"
+            saticiFaks="0212 123 45 67"
+            saticiTelefonu="0212 123 45 67"
+            siparisTarihi="12.12.2021"
+            telefon="0212 123 45 67"
+            teslimatAdresi="İstanbul"
+            teslimatSuresi="2 gün"
+            toplamFiyat={100}
+            urun="Bilgisayar"
+            urunAdet={1}
+            urunFiyati={90}
+            key={1}
           />
-        ) : (
-          <DistanceSalesContract
-            customer={{
-              address: "İstanbul",
-              name: "John Doe",
-              orderDate: "2021-10-10",
-              orderNumber: "123456",
-            }}
-          />
-        )}
+          <div className="w-full px-4">
+            <p className="text-center text-xs text-gray-500 mb-1">
+              Ön Bilgilendirme Koşullarını ve Mesafeli Satış Sözleşmesi'ni
+              okudum.
+            </p>
+            <Button
+              variant="fullfilled"
+              color="primary"
+              fullWidth
+              className="justify-center text-xl"
+              onClick={() => {
+                setApproveContract(true);
+                setOpenModal(false);
+              }}
+            >
+              Onaylıyorum
+            </Button>
+          </div>
+        </div>
       </Modal>
     </ContractContext.Provider>
   );
