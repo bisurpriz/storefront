@@ -92,7 +92,7 @@ const ProductInformation = ({
   const id = open ? "rating-popper" : undefined;
 
   return (
-    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
+    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full  max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
         <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
         {vendor && (
