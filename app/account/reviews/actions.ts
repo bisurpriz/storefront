@@ -11,7 +11,6 @@ import {
   GetOrdersWithReviewsQuery,
   GetOrdersWithReviewsQueryVariables,
 } from "@/graphql/queries/review/review.generated";
-import { revalidatePath } from "next/cache";
 
 export const getOrderWithReview = async () => {
   const userId = await readIdFromCookies();
@@ -21,6 +20,7 @@ export const getOrderWithReview = async () => {
   >({
     query: GetOrdersWithReviewsDocument,
     variables: { user_id: userId },
+    fetchPolicy: "no-cache",
   });
 
   const { order_item, review } = data;
@@ -52,8 +52,6 @@ export const createReview = async ({
       product_id,
     },
   });
-
-  revalidatePath("/account/reviews");
 
   const {
     insert_review_one: { created_at },
