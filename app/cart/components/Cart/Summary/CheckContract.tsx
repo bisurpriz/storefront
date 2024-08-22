@@ -12,6 +12,11 @@ const CheckContract: FC<CheckContractProps> = ({
   approveContract,
   setApproveContract,
 }) => {
+  const handleApproveContract = (val: boolean) => {
+    if (approveContract) setApproveContract?.(val);
+    else openApproveContract();
+  };
+
   return (
     <div className="px-4 border-t">
       <Checkbox
@@ -34,7 +39,7 @@ const CheckContract: FC<CheckContractProps> = ({
             'ni okudum, kabul onaylıyorum.
           </span>
         }
-        onChange={(val) => setApproveContract && setApproveContract(val)}
+        onChange={(val) => handleApproveContract(val)}
       />
     </div>
   );

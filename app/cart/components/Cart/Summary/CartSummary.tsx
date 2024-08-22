@@ -148,7 +148,9 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={loading || !approveContract}
+          disabled={
+            loading || (!approveContract && pathname === CartStepPaths.CHECKOUT)
+          }
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"
