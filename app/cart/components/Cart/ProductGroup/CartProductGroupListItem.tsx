@@ -34,7 +34,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <Image
             src={image}
             alt="image"
-            className={`object-contain aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center`}
+            className={`object-contain aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-start`}
             width={500}
             height={500}
           />
