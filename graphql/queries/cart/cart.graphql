@@ -27,6 +27,9 @@ query getProductByIdForCart($id: bigint!) {
     image_url
     name
     price
+    delivery_type
+    is_service_free
+    score
     category {
       id
       name

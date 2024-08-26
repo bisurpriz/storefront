@@ -145,6 +145,8 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       product_customizable_areas: item.product_customizable_areas,
       deliveryTime: item.deliveryTime,
       deliveryDate: item.deliveryDate,
+      is_service_free: item.is_service_free,
+      delivery_type: item.delivery_type,
     }));
 
     const userId = await checkUserId();
@@ -303,6 +305,8 @@ export const getProductByIdForCart = async (id: number) => {
         max_character: area.max_character,
       })),
     tenant: response.data.product_by_pk.tenant,
+    is_service_free: response.data.product_by_pk.is_service_free,
+    delivery_type: response.data.product_by_pk.delivery_type,
   };
 
   return product;

@@ -268,7 +268,6 @@ const ReceiverForm = ({
     const user_id = user?.id;
     if (values && Object.keys(errors).length === 0) {
       if (values.wantToSaveAddress && !values.saved_address) {
-        console.log(values, "valies");
         try {
           createNewUserAddress({
             address: values.address,
@@ -328,7 +327,6 @@ const ReceiverForm = ({
                   value: address.id,
                 }))}
                 onChange={(option: AutoCompleteOption) => {
-                  console.log(option, "option");
                   field.onChange(option?.value ?? "");
                 }}
                 placeholder="Kayıtlı adres seçiniz"

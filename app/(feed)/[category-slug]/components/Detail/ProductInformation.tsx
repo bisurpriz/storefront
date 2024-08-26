@@ -6,15 +6,15 @@ import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
-import Ticket from "@/components/Icons/Ticket";
-import OutlineArchive from "@/components/Icons/OutlineArchive";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { Popper } from "@mui/base/Popper";
 import { useCart } from "@/contexts/CartContext";
-import { useProduct } from "@/contexts/ProductContext";
 import Error from "@/components/Icons/Error";
+import FreeCargo from "@/components/Icons/FreeCargo";
+import Alarm from "@/components/Icons/Alarm";
+import { DesignPalette } from "@/components/Icons/DesignPalette";
 
 type ProductInformationProps = {
   name: string;
@@ -33,6 +33,7 @@ type ProductInformationProps = {
   freeShipping?: boolean;
   deliveryTimeRanges: string;
   totalUserCommentCount: number;
+  isCustomizable?: boolean;
 };
 
 const ProductInformation = ({
@@ -49,6 +50,7 @@ const ProductInformation = ({
   shippingType,
   deliveryTimeRanges,
   totalUserCommentCount,
+  isCustomizable,
 }: ProductInformationProps) => {
   const hasDeliveryTime = useMemo(
     () => Boolean(parseJson(deliveryTimeRanges)?.length),
@@ -174,13 +176,21 @@ const ProductInformation = ({
           promotions={[
             {
               description: DeliveryType.SAME_DAY,
-              icon: <Ticket />,
+              icon: <Alarm />,
               filterKey: "SAME_DAY",
+              show: isSameDay,
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <OutlineArchive />,
+              icon: <FreeCargo />,
               filterKey: "FREE_SHIPPING",
+              show: freeShipping,
+            },
+            {
+              description: "Tasarlanabilir",
+              icon: <DesignPalette />,
+              filterKey: "CUSTOMIZABLE",
+              show: isCustomizable,
             },
           ]}
         />

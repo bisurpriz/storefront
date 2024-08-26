@@ -11,6 +11,8 @@ export interface ProductForCart
     | "tenant"
     | "discount_price"
     | "product_customizable_areas"
+    | "delivery_type"
+    | "is_service_free"
   > {
   quantity: number;
   deliveryDate?: Date;

@@ -50,6 +50,26 @@ type ForgotPasswordOutput {
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
+input Int_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [Int!]
+
+  """does the array contain the given value"""
+  _contains: [Int!]
+  _eq: [Int!]
+  _gt: [Int!]
+  _gte: [Int!]
+  _in: [[Int!]!]
+  _is_null: Boolean
+  _lt: [Int!]
+  _lte: [Int!]
+  _neq: [Int!]
+  _nin: [[Int!]!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
 input Int_comparison_exp {
   _eq: Int
   _gt: Int
@@ -9601,6 +9621,7 @@ type order_item {
   product: product!
   product_id: bigint!
   quantity: Int!
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -9697,6 +9718,7 @@ type order_item_avg_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -9710,6 +9732,7 @@ input order_item_avg_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -9741,6 +9764,7 @@ input order_item_bool_exp {
   product: product_bool_exp
   product_id: bigint_comparison_exp
   quantity: Int_comparison_exp
+  sell_price: numeric_comparison_exp
   status: order_status_enum_comparison_exp
   tenant_amount: numeric_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -9768,6 +9792,7 @@ input order_item_inc_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
 }
 
@@ -9793,6 +9818,7 @@ input order_item_insert_input {
   product: product_obj_rel_insert_input
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -9820,6 +9846,7 @@ type order_item_max_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
   updated_at: timestamptz
   user_id: uuid
@@ -9842,6 +9869,7 @@ input order_item_max_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
   updated_at: order_by
   user_id: order_by
@@ -9867,6 +9895,7 @@ type order_item_min_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
   updated_at: timestamptz
   user_id: uuid
@@ -9889,6 +9918,7 @@ input order_item_min_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
   updated_at: order_by
   user_id: order_by
@@ -9935,6 +9965,7 @@ input order_item_order_by {
   product: product_order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   status: order_by
   tenant_amount: order_by
   updated_at: order_by
@@ -9994,6 +10025,9 @@ enum order_item_select_column {
   quantity
 
   """column name"""
+  sell_price
+
+  """column name"""
   status
 
   """column name"""
@@ -10040,6 +10074,7 @@ input order_item_set_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -10826,6 +10861,7 @@ type order_item_stddev_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10839,6 +10875,7 @@ input order_item_stddev_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10850,6 +10887,7 @@ type order_item_stddev_pop_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10863,6 +10901,7 @@ input order_item_stddev_pop_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10874,6 +10913,7 @@ type order_item_stddev_samp_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10887,6 +10927,7 @@ input order_item_stddev_samp_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10917,6 +10958,7 @@ input order_item_stream_cursor_value_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -10931,6 +10973,7 @@ type order_item_sum_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
 }
 
@@ -10944,6 +10987,7 @@ input order_item_sum_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10994,6 +11038,9 @@ enum order_item_update_column {
   quantity
 
   """column name"""
+  sell_price
+
+  """column name"""
   status
 
   """column name"""
@@ -11025,6 +11072,7 @@ type order_item_var_pop_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -11038,6 +11086,7 @@ input order_item_var_pop_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -11049,6 +11098,7 @@ type order_item_var_samp_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -11062,6 +11112,7 @@ input order_item_var_samp_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -11073,6 +11124,7 @@ type order_item_variance_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -11086,6 +11138,7 @@ input order_item_variance_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -12983,6 +13036,11 @@ type product {
   ): review_aggregate!
 
   """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
+
+  """
   A computed field, executes function "generate_slug"
   """
   slug: String
@@ -13123,6 +13181,11 @@ type product_avg_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -13171,6 +13234,7 @@ input product_bool_exp {
   questions_aggregate: question_aggregate_bool_exp
   reviews: review_bool_exp
   reviews_aggregate: review_aggregate_bool_exp
+  score: numeric_comparison_exp
   slug: String_comparison_exp
   stock: Int_comparison_exp
   stock_track: Boolean_comparison_exp
@@ -13729,6 +13793,11 @@ type product_max_fields {
   quantity: Int
 
   """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
+
+  """
   A computed field, executes function "generate_slug"
   """
   slug: String
@@ -13770,6 +13839,11 @@ type product_min_fields {
   price: numeric
   product_no: String
   quantity: Int
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
 
   """
   A computed field, executes function "generate_slug"
@@ -13854,6 +13928,7 @@ input product_order_by {
   quantity: order_by
   questions_aggregate: question_aggregate_order_by
   reviews_aggregate: review_aggregate_order_by
+  score: order_by
   slug: order_by
   stock: order_by
   stock_track: order_by
@@ -14000,6 +14075,11 @@ type product_stddev_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14022,6 +14102,11 @@ type product_stddev_pop_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14044,6 +14129,11 @@ type product_stddev_samp_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14101,6 +14191,11 @@ type product_sum_fields {
   id: bigint
   price: numeric
   quantity: Int
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Int
 }
 
@@ -14220,6 +14315,11 @@ type product_var_pop_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14242,6 +14342,11 @@ type product_var_samp_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14264,6 +14369,11 @@ type product_variance_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -21411,12 +21521,14 @@ type tenant {
   company_type_rel: company_type
   created_at: timestamptz!
   iban: String
+  iban_holder_name: String
   id: uuid!
   is_active: Boolean!
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
 
   """An object relationship"""
   owner: user!
@@ -22032,12 +22144,14 @@ input tenant_bool_exp {
   company_type_rel: company_type_bool_exp
   created_at: timestamptz_comparison_exp
   iban: String_comparison_exp
+  iban_holder_name: String_comparison_exp
   id: uuid_comparison_exp
   is_active: Boolean_comparison_exp
   iyzi_sub_merchant_key: String_comparison_exp
   legal_company_title: String_comparison_exp
   logo: String_comparison_exp
   name: String_comparison_exp
+  off_days: Int_array_comparison_exp
   owner: user_bool_exp
   owner_id: uuid_comparison_exp
   phone: String_comparison_exp
@@ -22475,12 +22589,14 @@ input tenant_insert_input {
   company_type_rel: company_type_obj_rel_insert_input
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner: user_obj_rel_insert_input
   owner_id: uuid
   phone: String
@@ -22502,11 +22618,13 @@ type tenant_max_fields {
   commision_rate: numeric
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -22525,11 +22643,13 @@ input tenant_max_order_by {
   commision_rate: order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
@@ -22546,11 +22666,13 @@ type tenant_min_fields {
   commision_rate: numeric
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -22569,11 +22691,13 @@ input tenant_min_order_by {
   commision_rate: order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
@@ -22623,12 +22747,14 @@ input tenant_order_by {
   company_type_rel: company_type_order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   is_active: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner: user_order_by
   owner_id: order_by
   phone: order_by
@@ -22669,6 +22795,9 @@ enum tenant_select_column {
   iban
 
   """column name"""
+  iban_holder_name
+
+  """column name"""
   id
 
   """column name"""
@@ -22685,6 +22814,9 @@ enum tenant_select_column {
 
   """column name"""
   name
+
+  """column name"""
+  off_days
 
   """column name"""
   owner_id
@@ -22736,12 +22868,14 @@ input tenant_set_input {
   company_type: company_type_enum
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -23232,12 +23366,14 @@ input tenant_stream_cursor_value_input {
   company_type: company_type_enum
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -23284,6 +23420,9 @@ enum tenant_update_column {
   iban
 
   """column name"""
+  iban_holder_name
+
+  """column name"""
   id
 
   """column name"""
@@ -23300,6 +23439,9 @@ enum tenant_update_column {
 
   """column name"""
   name
+
+  """column name"""
+  off_days
 
   """column name"""
   owner_id

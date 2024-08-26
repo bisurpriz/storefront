@@ -13,7 +13,7 @@ const CustomizableFilter: FC<CustomizableFilterProps> = ({
 }) => {
   return (
     <ButtonCheckbox
-      label={"Özelleştirilebilir"}
+      label={"Tasarlanabilir"}
       checked={!!customizable}
       onChange={(check) =>
         handleFilterSubmit("customizable", check ? "true" : "")

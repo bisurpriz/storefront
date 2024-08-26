@@ -13,6 +13,7 @@ query getProductById($id: bigint = 0) {
     delivery_time_ranges
     delivery_type
     properties
+    score
     discount_price
     questions {
       created_at
@@ -81,6 +82,7 @@ query getProductForCart($id: bigint = 0) {
     image_url
     name
     price
+    score
     discount_price
     product_customizable_areas {
       customizable_area {
@@ -122,6 +124,7 @@ query getProductsForInitialCart($ids: [bigint!]) {
     id
     price
     discount_price
+    score
     stock
     image_url
     category {
@@ -184,8 +187,17 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     is_service_free
     delivery_time_ranges
     delivery_type
+    score
     properties
     discount_price
+     product_customizable_areas {
+      customizable_area {
+        id
+        type
+      }
+      count
+      max_character
+    }
     reviews_aggregate {
       aggregate {
         count(columns: id)

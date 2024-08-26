@@ -10,7 +10,7 @@ export type GetProductsWithPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 export type GetProductsWithFilteredPaginationQueryVariables = Types.Exact<{
   filter_payload?: Types.InputMaybe<Types.Product_Bool_Exp>;
@@ -19,7 +19,7 @@ export type GetProductsWithFilteredPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 
 export const GetProductsWithPaginationDocument = gql`
@@ -41,6 +41,7 @@ export const GetProductsWithPaginationDocument = gql`
     description
     name
     slug
+    score
     category {
       name
       slug
@@ -93,6 +94,7 @@ export const GetProductsWithFilteredPaginationDocument = gql`
     description
     name
     slug
+    score
     category {
       name
       slug
