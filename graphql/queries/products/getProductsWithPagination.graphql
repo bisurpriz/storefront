@@ -27,6 +27,7 @@ query getProductsWithPagination(
     description
     name
     slug
+    score
     category {
       name
       slug
@@ -81,6 +82,7 @@ query getProductsWithFilteredPagination(
     description
     name
     slug
+    score
     category {
       name
       slug

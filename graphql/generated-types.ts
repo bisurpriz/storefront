@@ -55,6 +55,23 @@ export type ForgotPasswordOutput = {
 };
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
+export type Int_Array_Comparison_Exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _eq?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _gt?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _gte?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _in?: InputMaybe<Array<Array<Scalars['Int']['input']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _lte?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _neq?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['Int']['input']>>>;
+};
+
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
   _gt?: InputMaybe<Scalars['Int']['input']>;
@@ -8103,6 +8120,7 @@ export type Order_Item = {
   product: Product;
   product_id: Scalars['bigint']['output'];
   quantity: Scalars['Int']['output'];
+  sell_price?: Maybe<Scalars['numeric']['output']>;
   status?: Maybe<Order_Status_Enum>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -8236,6 +8254,7 @@ export type Order_Item_Avg_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -8247,6 +8266,7 @@ export type Order_Item_Avg_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -8276,6 +8296,7 @@ export type Order_Item_Bool_Exp = {
   product?: InputMaybe<Product_Bool_Exp>;
   product_id?: InputMaybe<Bigint_Comparison_Exp>;
   quantity?: InputMaybe<Int_Comparison_Exp>;
+  sell_price?: InputMaybe<Numeric_Comparison_Exp>;
   status?: InputMaybe<Order_Status_Enum_Comparison_Exp>;
   tenant_amount?: InputMaybe<Numeric_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -8296,6 +8317,7 @@ export type Order_Item_Inc_Input = {
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
+  sell_price?: InputMaybe<Scalars['numeric']['input']>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
 };
 
@@ -8319,6 +8341,7 @@ export type Order_Item_Insert_Input = {
   product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
+  sell_price?: InputMaybe<Scalars['numeric']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -8343,6 +8366,7 @@ export type Order_Item_Max_Fields = {
   order_tenant_id?: Maybe<Scalars['bigint']['output']>;
   product_id?: Maybe<Scalars['bigint']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  sell_price?: Maybe<Scalars['numeric']['output']>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -8363,6 +8387,7 @@ export type Order_Item_Max_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -8385,6 +8410,7 @@ export type Order_Item_Min_Fields = {
   order_tenant_id?: Maybe<Scalars['bigint']['output']>;
   product_id?: Maybe<Scalars['bigint']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  sell_price?: Maybe<Scalars['numeric']['output']>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -8405,6 +8431,7 @@ export type Order_Item_Min_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -8446,6 +8473,7 @@ export type Order_Item_Order_By = {
   product?: InputMaybe<Product_Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -8489,6 +8517,8 @@ export type Order_Item_Select_Column =
   /** column name */
   | 'quantity'
   /** column name */
+  | 'sell_price'
+  /** column name */
   | 'status'
   /** column name */
   | 'tenant_amount'
@@ -8523,6 +8553,7 @@ export type Order_Item_Set_Input = {
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
+  sell_price?: InputMaybe<Scalars['numeric']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9191,6 +9222,7 @@ export type Order_Item_Stddev_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9202,6 +9234,7 @@ export type Order_Item_Stddev_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9213,6 +9246,7 @@ export type Order_Item_Stddev_Pop_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9224,6 +9258,7 @@ export type Order_Item_Stddev_Pop_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9235,6 +9270,7 @@ export type Order_Item_Stddev_Samp_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9246,6 +9282,7 @@ export type Order_Item_Stddev_Samp_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9273,6 +9310,7 @@ export type Order_Item_Stream_Cursor_Value_Input = {
   order_tenant_id?: InputMaybe<Scalars['bigint']['input']>;
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
+  sell_price?: InputMaybe<Scalars['numeric']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9287,6 +9325,7 @@ export type Order_Item_Sum_Fields = {
   order_tenant_id?: Maybe<Scalars['bigint']['output']>;
   product_id?: Maybe<Scalars['bigint']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  sell_price?: Maybe<Scalars['numeric']['output']>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
 };
 
@@ -9298,6 +9337,7 @@ export type Order_Item_Sum_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9332,6 +9372,8 @@ export type Order_Item_Update_Column =
   /** column name */
   | 'quantity'
   /** column name */
+  | 'sell_price'
+  /** column name */
   | 'status'
   /** column name */
   | 'tenant_amount'
@@ -9357,6 +9399,7 @@ export type Order_Item_Var_Pop_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9368,6 +9411,7 @@ export type Order_Item_Var_Pop_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9379,6 +9423,7 @@ export type Order_Item_Var_Samp_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9390,6 +9435,7 @@ export type Order_Item_Var_Samp_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -9401,6 +9447,7 @@ export type Order_Item_Variance_Fields = {
   order_tenant_id?: Maybe<Scalars['Float']['output']>;
   product_id?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  sell_price?: Maybe<Scalars['Float']['output']>;
   tenant_amount?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -9412,6 +9459,7 @@ export type Order_Item_Variance_Order_By = {
   order_tenant_id?: InputMaybe<Order_By>;
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  sell_price?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
 };
 
@@ -10843,6 +10891,8 @@ export type Product = {
   reviews: Array<Review>;
   /** An aggregate relationship */
   reviews_aggregate: Review_Aggregate;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   /** A computed field, executes function "generate_slug" */
   slug?: Maybe<Scalars['String']['output']>;
   stock?: Maybe<Scalars['Int']['output']>;
@@ -11059,6 +11109,8 @@ export type Product_Avg_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -11103,6 +11155,7 @@ export type Product_Bool_Exp = {
   questions_aggregate?: InputMaybe<Question_Aggregate_Bool_Exp>;
   reviews?: InputMaybe<Review_Bool_Exp>;
   reviews_aggregate?: InputMaybe<Review_Aggregate_Bool_Exp>;
+  score?: InputMaybe<Numeric_Comparison_Exp>;
   slug?: InputMaybe<String_Comparison_Exp>;
   stock?: InputMaybe<Int_Comparison_Exp>;
   stock_track?: InputMaybe<Boolean_Comparison_Exp>;
@@ -11578,6 +11631,8 @@ export type Product_Max_Fields = {
   price?: Maybe<Scalars['numeric']['output']>;
   product_no?: Maybe<Scalars['String']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   /** A computed field, executes function "generate_slug" */
   slug?: Maybe<Scalars['String']['output']>;
   stock?: Maybe<Scalars['Int']['output']>;
@@ -11616,6 +11671,8 @@ export type Product_Min_Fields = {
   price?: Maybe<Scalars['numeric']['output']>;
   product_no?: Maybe<Scalars['String']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   /** A computed field, executes function "generate_slug" */
   slug?: Maybe<Scalars['String']['output']>;
   stock?: Maybe<Scalars['Int']['output']>;
@@ -11687,6 +11744,7 @@ export type Product_Order_By = {
   quantity?: InputMaybe<Order_By>;
   questions_aggregate?: InputMaybe<Question_Aggregate_Order_By>;
   reviews_aggregate?: InputMaybe<Review_Aggregate_Order_By>;
+  score?: InputMaybe<Order_By>;
   slug?: InputMaybe<Order_By>;
   stock?: InputMaybe<Order_By>;
   stock_track?: InputMaybe<Order_By>;
@@ -11799,6 +11857,8 @@ export type Product_Stddev_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -11819,6 +11879,8 @@ export type Product_Stddev_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -11839,6 +11901,8 @@ export type Product_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -11891,6 +11955,8 @@ export type Product_Sum_Fields = {
   id?: Maybe<Scalars['bigint']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -11973,6 +12039,8 @@ export type Product_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -11993,6 +12061,8 @@ export type Product_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -12013,6 +12083,8 @@ export type Product_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "get_average_score_of_product" */
+  score?: Maybe<Scalars['numeric']['output']>;
   stock?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -17112,12 +17184,14 @@ export type Tenant = {
   company_type_rel?: Maybe<Company_Type>;
   created_at: Scalars['timestamptz']['output'];
   iban?: Maybe<Scalars['String']['output']>;
+  iban_holder_name?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   is_active: Scalars['Boolean']['output'];
   iyzi_sub_merchant_key?: Maybe<Scalars['String']['output']>;
   legal_company_title?: Maybe<Scalars['String']['output']>;
   logo?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  off_days?: Maybe<Array<Scalars['Int']['output']>>;
   /** An object relationship */
   owner: User;
   owner_id: Scalars['uuid']['output'];
@@ -17652,12 +17726,14 @@ export type Tenant_Bool_Exp = {
   company_type_rel?: InputMaybe<Company_Type_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   iban?: InputMaybe<String_Comparison_Exp>;
+  iban_holder_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
   iyzi_sub_merchant_key?: InputMaybe<String_Comparison_Exp>;
   legal_company_title?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  off_days?: InputMaybe<Int_Array_Comparison_Exp>;
   owner?: InputMaybe<User_Bool_Exp>;
   owner_id?: InputMaybe<Uuid_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
@@ -18020,12 +18096,14 @@ export type Tenant_Insert_Input = {
   company_type_rel?: InputMaybe<Company_Type_Obj_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   iban?: InputMaybe<Scalars['String']['input']>;
+  iban_holder_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   iyzi_sub_merchant_key?: InputMaybe<Scalars['String']['input']>;
   legal_company_title?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  off_days?: InputMaybe<Array<Scalars['Int']['input']>>;
   owner?: InputMaybe<User_Obj_Rel_Insert_Input>;
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
@@ -18047,11 +18125,13 @@ export type Tenant_Max_Fields = {
   commision_rate?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   iban?: Maybe<Scalars['String']['output']>;
+  iban_holder_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   iyzi_sub_merchant_key?: Maybe<Scalars['String']['output']>;
   legal_company_title?: Maybe<Scalars['String']['output']>;
   logo?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  off_days?: Maybe<Array<Scalars['Int']['output']>>;
   owner_id?: Maybe<Scalars['uuid']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   quarter_id?: Maybe<Scalars['Int']['output']>;
@@ -18068,11 +18148,13 @@ export type Tenant_Max_Order_By = {
   commision_rate?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   iban?: InputMaybe<Order_By>;
+  iban_holder_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   iyzi_sub_merchant_key?: InputMaybe<Order_By>;
   legal_company_title?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  off_days?: InputMaybe<Order_By>;
   owner_id?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   quarter_id?: InputMaybe<Order_By>;
@@ -18089,11 +18171,13 @@ export type Tenant_Min_Fields = {
   commision_rate?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   iban?: Maybe<Scalars['String']['output']>;
+  iban_holder_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   iyzi_sub_merchant_key?: Maybe<Scalars['String']['output']>;
   legal_company_title?: Maybe<Scalars['String']['output']>;
   logo?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  off_days?: Maybe<Array<Scalars['Int']['output']>>;
   owner_id?: Maybe<Scalars['uuid']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   quarter_id?: Maybe<Scalars['Int']['output']>;
@@ -18110,11 +18194,13 @@ export type Tenant_Min_Order_By = {
   commision_rate?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   iban?: InputMaybe<Order_By>;
+  iban_holder_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   iyzi_sub_merchant_key?: InputMaybe<Order_By>;
   legal_company_title?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  off_days?: InputMaybe<Order_By>;
   owner_id?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   quarter_id?: InputMaybe<Order_By>;
@@ -18156,12 +18242,14 @@ export type Tenant_Order_By = {
   company_type_rel?: InputMaybe<Company_Type_Order_By>;
   created_at?: InputMaybe<Order_By>;
   iban?: InputMaybe<Order_By>;
+  iban_holder_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
   iyzi_sub_merchant_key?: InputMaybe<Order_By>;
   legal_company_title?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  off_days?: InputMaybe<Order_By>;
   owner?: InputMaybe<User_Order_By>;
   owner_id?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
@@ -18195,6 +18283,8 @@ export type Tenant_Select_Column =
   /** column name */
   | 'iban'
   /** column name */
+  | 'iban_holder_name'
+  /** column name */
   | 'id'
   /** column name */
   | 'is_active'
@@ -18206,6 +18296,8 @@ export type Tenant_Select_Column =
   | 'logo'
   /** column name */
   | 'name'
+  /** column name */
+  | 'off_days'
   /** column name */
   | 'owner_id'
   /** column name */
@@ -18240,12 +18332,14 @@ export type Tenant_Set_Input = {
   company_type?: InputMaybe<Company_Type_Enum>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   iban?: InputMaybe<Scalars['String']['input']>;
+  iban_holder_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   iyzi_sub_merchant_key?: InputMaybe<Scalars['String']['input']>;
   legal_company_title?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  off_days?: InputMaybe<Array<Scalars['Int']['input']>>;
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   quarter_id?: InputMaybe<Scalars['Int']['input']>;
@@ -18657,12 +18751,14 @@ export type Tenant_Stream_Cursor_Value_Input = {
   company_type?: InputMaybe<Company_Type_Enum>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   iban?: InputMaybe<Scalars['String']['input']>;
+  iban_holder_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   iyzi_sub_merchant_key?: InputMaybe<Scalars['String']['input']>;
   legal_company_title?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  off_days?: InputMaybe<Array<Scalars['Int']['input']>>;
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   quarter_id?: InputMaybe<Scalars['Int']['input']>;
@@ -18700,6 +18796,8 @@ export type Tenant_Update_Column =
   /** column name */
   | 'iban'
   /** column name */
+  | 'iban_holder_name'
+  /** column name */
   | 'id'
   /** column name */
   | 'is_active'
@@ -18711,6 +18809,8 @@ export type Tenant_Update_Column =
   | 'logo'
   /** column name */
   | 'name'
+  /** column name */
+  | 'off_days'
   /** column name */
   | 'owner_id'
   /** column name */

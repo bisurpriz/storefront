@@ -110,7 +110,7 @@ const DaySelect: React.FC<Props> = ({
   }, [deliveryTime]);
 
   return (
-    <div className="w-full flex flex-col gap-4  font-sans">
+    <div className="w-full flex flex-col gap-4  font-sans mb-2">
       <div className={clsx("grid grid-cols-3 gap-2")}>
         {Array.from({ length: 3 }).map((_, index) => (
           <CustomButton

@@ -6,7 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
-import Accesibility from "@/components/Icons/Accesibility";
+import { DesignPalette } from "@/components/Icons/DesignPalette";
+import { DeliveryType } from "@/common/enums/Product/product";
+import Alarm from "@/components/Icons/Alarm";
+import FreeCargo from "@/components/Icons/FreeCargo";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -18,6 +21,8 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     image_url,
     discount_price,
     category,
+    is_service_free,
+    delivery_type,
   } = product;
 
   const image = getImageUrlFromPath(image_url?.[0]);
@@ -51,9 +56,24 @@ const CartProductGroupListItem = (product: ProductForCart) => {
         <Promotions
           promotions={[
             {
-              description: "Kategori İndirimi",
-              icon: <Accesibility />,
-              filterKey: "category",
+              description: "Tasarlanabilir",
+              icon: <DesignPalette />,
+              filterKey: "CUSTOMIZABLE",
+              show: customize?.length > 0,
+            },
+            {
+              description: DeliveryType.SAME_DAY,
+              icon: <Alarm />,
+              filterKey: "SAME_DAY",
+              show:
+                delivery_type === (DeliveryType.SAME_DAY as string) ||
+                delivery_type === (DeliveryType.SAME_DAY_CARGO as string),
+            },
+            {
+              description: "Ücretsiz kargo",
+              icon: <FreeCargo />,
+              filterKey: "FREE_SHIPPING",
+              show: is_service_free,
             },
           ]}
         />

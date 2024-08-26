@@ -63,7 +63,7 @@ export const OrderCustomizableModalProvider = ({
               "text-lg font-semibold text-slate-400 border-b border-gray-200"
             )}
           >
-            Lütfen özelleştirilebilir ürünlerinizi tamamlayınız.
+            Lütfen tasarlanabilir ürünlerinizi tamamlayınız.
           </div>
           <OrderCustomize
             order={selectedOrder}

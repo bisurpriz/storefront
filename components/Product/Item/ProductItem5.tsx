@@ -21,12 +21,13 @@ const ProductItem5 = ({
   slug,
   totalReviewCount,
   tenant,
+  score,
 }: ProductItemProps) => {
   const stamps = !product_customizable_areas?.length
     ? null
     : ([
         {
-          name: "Özelleştirilebilir",
+          name: "Tasarlanabilir",
           icon: "🎨",
           color: "orange",
         },
@@ -74,7 +75,7 @@ const ProductItem5 = ({
           <div className="flex flex-col gap-2 justify-between flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
-                value={4}
+                value={score ?? 0}
                 readOnly
                 showReviewCount={false}
                 reviewCount={totalReviewCount}
