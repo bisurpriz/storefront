@@ -14,6 +14,7 @@ type TextareaProps = {
   disabled?: boolean;
   className?: string;
   rows?: number;
+  defaultValue?: string;
 };
 
 const Textarea: FC<TextareaProps> = ({
@@ -28,6 +29,7 @@ const Textarea: FC<TextareaProps> = ({
   value,
   className,
   rows = 3,
+  ...rest
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange?.(e, e.target.value);
@@ -59,6 +61,7 @@ const Textarea: FC<TextareaProps> = ({
           fullWidthClasses
         )}
         minRows={rows}
+        {...rest}
       />
       {error && errorMessage && (
         <span className="text-xs text-red-500">{errorMessage}</span>

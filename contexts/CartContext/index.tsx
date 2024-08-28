@@ -49,6 +49,7 @@ interface CartContextType {
   clearDeliveryTime: () => void;
   isProductInCart: ProductForCart;
   applyCouponCode: (code: string) => Promise<void>;
+  updateCartItemNote: (id: number, note: string) => void;
 }
 
 export interface CartState {
@@ -85,6 +86,7 @@ export const CartContext = createContext<CartContextType>({
   clearDeliveryTime: () => {},
   isProductInCart: null,
   applyCouponCode: async () => {},
+  updateCartItemNote: () => {},
 });
 
 export const CartProvider = ({
@@ -147,6 +149,21 @@ export const CartProvider = ({
     setLoading(false);
 
     return response;
+  };
+
+  const updateCartItemNote = (id: number, note: string) => {
+    const cartItems = [...cartState.cartItems];
+    const index = cartItems.findIndex((item) => item.id === id);
+    if (index === -1) return cartState;
+    cartItems[index].card_note = note;
+    dispatch({
+      type: UPDATE_CART,
+      payload: {
+        cartItems,
+        count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+        cost: cartState.cost,
+      },
+    });
   };
 
   const addToCart: AddToCart = async ({
@@ -342,6 +359,7 @@ export const CartProvider = ({
     clearDeliveryTime,
     isProductInCart: isProductInCart,
     applyCouponCode,
+    updateCartItemNote,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
