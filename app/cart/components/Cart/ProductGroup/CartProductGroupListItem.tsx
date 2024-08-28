@@ -10,6 +10,7 @@ import { DesignPalette } from "@/components/Icons/DesignPalette";
 import { DeliveryType } from "@/common/enums/Product/product";
 import Alarm from "@/components/Icons/Alarm";
 import FreeCargo from "@/components/Icons/FreeCargo";
+import GiftCardNote from "./GiftCardNote";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -77,6 +78,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
           ]}
         />
+        <GiftCardNote id={id} quantity={quantity} />
       </div>
     </li>
   );

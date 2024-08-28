@@ -17,6 +17,7 @@ export interface ProductForCart
   quantity: number;
   deliveryDate?: Date;
   deliveryTime?: string;
+  card_note?: string;
 }
 
 export interface CostData {

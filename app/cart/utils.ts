@@ -85,6 +85,7 @@ const getTenantOrders = (
             commissioned_amount: Number(commission),
             delivery_date: item.deliveryDate,
             delivery_time: item.deliveryTime,
+            card_note: item.card_note,
           };
         }),
       },
