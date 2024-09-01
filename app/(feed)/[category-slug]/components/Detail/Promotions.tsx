@@ -10,7 +10,7 @@ type Promotions = {
 const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
   return (
     promotions?.length > 0 && (
-      <div className="gap-2 flex items-start mb-2">
+      <div className="gap-2 flex items-start mb-2 overflow-hidden overflow-x-auto w-full snap-x no-scrollbar">
         {promotions
           ?.filter((x) => x.show)
           .map((promotion, index) => (
@@ -24,7 +24,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
               </span>
               <p
                 aria-label="Kampanya açıklaması"
-                className={`text-xs tracking-wide`}
+                className={`text-xs tracking-wide whitespace-nowrap`}
               >
                 {promotion.description}
               </p>
