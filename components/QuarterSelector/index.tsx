@@ -42,12 +42,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label
-      className={clsx(
-        "max-xl:col-span-full",
-        "ring ring-2 ring-primary rounded-lg"
-      )}
-    >
+    <label className={clsx("max-xl:col-span-full")}>
       <Autocomplete
         value={value}
         suggestions={fetchLocations}
