@@ -1,0 +1,7 @@
+query getProductDeliveryCities($product_id: bigint!) {
+  get_product_delivery_cities(args: { product_id: $product_id }) {
+    city_code
+    city_name
+    id
+  }
+}

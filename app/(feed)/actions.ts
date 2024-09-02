@@ -138,12 +138,12 @@ export const checkProductLocation = async (
   if (!locationId || !type) return;
   let whereExp = {};
 
-  if (type === "quarter") whereExp = { quarter_code: { _eq: locationId } };
+  if (type === "quarter") whereExp = { quarter: { id: { _eq: locationId } } };
   if (type === "district")
     whereExp = {
       quarter: {
         district: {
-          code: { _eq: locationId },
+          id: { _eq: locationId },
         },
       },
     };
@@ -152,7 +152,7 @@ export const checkProductLocation = async (
       quarter: {
         district: {
           city: {
-            code: { _eq: locationId },
+            id: { _eq: locationId },
           },
         },
       },

@@ -4193,6 +4193,10 @@ export type District_Variance_Order_By = {
   parent_id?: InputMaybe<Order_By>;
 };
 
+export type Get_Product_Delivery_Cities_Args = {
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+};
+
 export type Jsonb_Cast_Exp = {
   String?: InputMaybe<String_Comparison_Exp>;
 };
@@ -4723,6 +4727,8 @@ export type Mutation_Root = {
   delete_product_customizable_area?: Maybe<Product_Customizable_Area_Mutation_Response>;
   /** delete single row from the table: "product_customizable_area" */
   delete_product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
+  /** delete data from the table: "product_delivery_city_info" */
+  delete_product_delivery_city_info?: Maybe<Product_Delivery_City_Info_Mutation_Response>;
   /** delete data from the table: "quarter" */
   delete_quarter?: Maybe<Quarter_Mutation_Response>;
   /** delete single row from the table: "quarter" */
@@ -4898,6 +4904,10 @@ export type Mutation_Root = {
   insert_product_customizable_area?: Maybe<Product_Customizable_Area_Mutation_Response>;
   /** insert a single row into the table: "product_customizable_area" */
   insert_product_customizable_area_one?: Maybe<Product_Customizable_Area>;
+  /** insert data into the table: "product_delivery_city_info" */
+  insert_product_delivery_city_info?: Maybe<Product_Delivery_City_Info_Mutation_Response>;
+  /** insert a single row into the table: "product_delivery_city_info" */
+  insert_product_delivery_city_info_one?: Maybe<Product_Delivery_City_Info>;
   /** insert a single row into the table: "product" */
   insert_product_one?: Maybe<Product>;
   /** insert data into the table: "quarter" */
@@ -5128,6 +5138,10 @@ export type Mutation_Root = {
   update_product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
   /** update multiples rows of table: "product_customizable_area" */
   update_product_customizable_area_many?: Maybe<Array<Maybe<Product_Customizable_Area_Mutation_Response>>>;
+  /** update data of the table: "product_delivery_city_info" */
+  update_product_delivery_city_info?: Maybe<Product_Delivery_City_Info_Mutation_Response>;
+  /** update multiples rows of table: "product_delivery_city_info" */
+  update_product_delivery_city_info_many?: Maybe<Array<Maybe<Product_Delivery_City_Info_Mutation_Response>>>;
   /** update multiples rows of table: "product" */
   update_product_many?: Maybe<Array<Maybe<Product_Mutation_Response>>>;
   /** update data of the table: "quarter" */
@@ -5542,6 +5556,12 @@ export type Mutation_RootDelete_Product_Customizable_AreaArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Product_Customizable_Area_By_PkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Product_Delivery_City_InfoArgs = {
+  where: Product_Delivery_City_Info_Bool_Exp;
 };
 
 
@@ -6119,6 +6139,18 @@ export type Mutation_RootInsert_Product_Customizable_AreaArgs = {
 export type Mutation_RootInsert_Product_Customizable_Area_OneArgs = {
   object: Product_Customizable_Area_Insert_Input;
   on_conflict?: InputMaybe<Product_Customizable_Area_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_Delivery_City_InfoArgs = {
+  objects: Array<Product_Delivery_City_Info_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_Delivery_City_Info_OneArgs = {
+  object: Product_Delivery_City_Info_Insert_Input;
 };
 
 
@@ -6958,6 +6990,20 @@ export type Mutation_RootUpdate_Product_Customizable_Area_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Product_Customizable_Area_ManyArgs = {
   updates: Array<Product_Customizable_Area_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Delivery_City_InfoArgs = {
+  _inc?: InputMaybe<Product_Delivery_City_Info_Inc_Input>;
+  _set?: InputMaybe<Product_Delivery_City_Info_Set_Input>;
+  where: Product_Delivery_City_Info_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Delivery_City_Info_ManyArgs = {
+  updates: Array<Product_Delivery_City_Info_Updates>;
 };
 
 
@@ -8094,6 +8140,7 @@ export type Order_Insert_Input = {
 export type Order_Item = {
   amount?: Maybe<Scalars['numeric']['output']>;
   approve_note?: Maybe<Scalars['String']['output']>;
+  card_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
@@ -8277,6 +8324,7 @@ export type Order_Item_Bool_Exp = {
   _or?: InputMaybe<Array<Order_Item_Bool_Exp>>;
   amount?: InputMaybe<Numeric_Comparison_Exp>;
   approve_note?: InputMaybe<String_Comparison_Exp>;
+  card_note?: InputMaybe<String_Comparison_Exp>;
   commissioned_amount?: InputMaybe<Numeric_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   delivery_date?: InputMaybe<Timestamp_Comparison_Exp>;
@@ -8325,6 +8373,7 @@ export type Order_Item_Inc_Input = {
 export type Order_Item_Insert_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
   approve_note?: InputMaybe<Scalars['String']['input']>;
+  card_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
@@ -8353,6 +8402,7 @@ export type Order_Item_Insert_Input = {
 export type Order_Item_Max_Fields = {
   amount?: Maybe<Scalars['numeric']['output']>;
   approve_note?: Maybe<Scalars['String']['output']>;
+  card_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
@@ -8376,6 +8426,7 @@ export type Order_Item_Max_Fields = {
 export type Order_Item_Max_Order_By = {
   amount?: InputMaybe<Order_By>;
   approve_note?: InputMaybe<Order_By>;
+  card_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
@@ -8397,6 +8448,7 @@ export type Order_Item_Max_Order_By = {
 export type Order_Item_Min_Fields = {
   amount?: Maybe<Scalars['numeric']['output']>;
   approve_note?: Maybe<Scalars['String']['output']>;
+  card_note?: Maybe<Scalars['String']['output']>;
   commissioned_amount?: Maybe<Scalars['numeric']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   delivery_date?: Maybe<Scalars['timestamp']['output']>;
@@ -8420,6 +8472,7 @@ export type Order_Item_Min_Fields = {
 export type Order_Item_Min_Order_By = {
   amount?: InputMaybe<Order_By>;
   approve_note?: InputMaybe<Order_By>;
+  card_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
@@ -8456,6 +8509,7 @@ export type Order_Item_On_Conflict = {
 export type Order_Item_Order_By = {
   amount?: InputMaybe<Order_By>;
   approve_note?: InputMaybe<Order_By>;
+  card_note?: InputMaybe<Order_By>;
   commissioned_amount?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   delivery_date?: InputMaybe<Order_By>;
@@ -8492,6 +8546,8 @@ export type Order_Item_Select_Column =
   | 'amount'
   /** column name */
   | 'approve_note'
+  /** column name */
+  | 'card_note'
   /** column name */
   | 'commissioned_amount'
   /** column name */
@@ -8541,6 +8597,7 @@ export type Order_Item_Select_Column_Order_Item_Aggregate_Bool_Exp_Bool_Or_Argum
 export type Order_Item_Set_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
   approve_note?: InputMaybe<Scalars['String']['input']>;
+  card_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
@@ -9298,6 +9355,7 @@ export type Order_Item_Stream_Cursor_Input = {
 export type Order_Item_Stream_Cursor_Value_Input = {
   amount?: InputMaybe<Scalars['numeric']['input']>;
   approve_note?: InputMaybe<Scalars['String']['input']>;
+  card_note?: InputMaybe<Scalars['String']['input']>;
   commissioned_amount?: InputMaybe<Scalars['numeric']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   delivery_date?: InputMaybe<Scalars['timestamp']['input']>;
@@ -9347,6 +9405,8 @@ export type Order_Item_Update_Column =
   | 'amount'
   /** column name */
   | 'approve_note'
+  /** column name */
+  | 'card_note'
   /** column name */
   | 'commissioned_amount'
   /** column name */
@@ -11576,6 +11636,180 @@ export type Product_Delete_Key_Input = {
   properties?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** columns and relationships of "product_delivery_city_info" */
+export type Product_Delivery_City_Info = {
+  city_code?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Product_Delivery_City_Info_Aggregate = {
+  aggregate?: Maybe<Product_Delivery_City_Info_Aggregate_Fields>;
+  nodes: Array<Product_Delivery_City_Info>;
+};
+
+/** aggregate fields of "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Aggregate_Fields = {
+  avg?: Maybe<Product_Delivery_City_Info_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Product_Delivery_City_Info_Max_Fields>;
+  min?: Maybe<Product_Delivery_City_Info_Min_Fields>;
+  stddev?: Maybe<Product_Delivery_City_Info_Stddev_Fields>;
+  stddev_pop?: Maybe<Product_Delivery_City_Info_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Product_Delivery_City_Info_Stddev_Samp_Fields>;
+  sum?: Maybe<Product_Delivery_City_Info_Sum_Fields>;
+  var_pop?: Maybe<Product_Delivery_City_Info_Var_Pop_Fields>;
+  var_samp?: Maybe<Product_Delivery_City_Info_Var_Samp_Fields>;
+  variance?: Maybe<Product_Delivery_City_Info_Variance_Fields>;
+};
+
+
+/** aggregate fields of "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Product_Delivery_City_Info_Avg_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "product_delivery_city_info". All fields are combined with a logical 'AND'. */
+export type Product_Delivery_City_Info_Bool_Exp = {
+  _and?: InputMaybe<Array<Product_Delivery_City_Info_Bool_Exp>>;
+  _not?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+  _or?: InputMaybe<Array<Product_Delivery_City_Info_Bool_Exp>>;
+  city_code?: InputMaybe<Int_Comparison_Exp>;
+  city_name?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Inc_Input = {
+  city_code?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Insert_Input = {
+  city_code?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate max on columns */
+export type Product_Delivery_City_Info_Max_Fields = {
+  city_code?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** aggregate min on columns */
+export type Product_Delivery_City_Info_Min_Fields = {
+  city_code?: Maybe<Scalars['Int']['output']>;
+  city_name?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** response of any mutation on the table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Product_Delivery_City_Info>;
+};
+
+/** Ordering options when selecting data from "product_delivery_city_info". */
+export type Product_Delivery_City_Info_Order_By = {
+  city_code?: InputMaybe<Order_By>;
+  city_name?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Select_Column =
+  /** column name */
+  | 'city_code'
+  /** column name */
+  | 'city_name'
+  /** column name */
+  | 'id';
+
+/** input type for updating data in table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Set_Input = {
+  city_code?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Product_Delivery_City_Info_Stddev_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Product_Delivery_City_Info_Stddev_Pop_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Product_Delivery_City_Info_Stddev_Samp_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "product_delivery_city_info" */
+export type Product_Delivery_City_Info_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Product_Delivery_City_Info_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Product_Delivery_City_Info_Stream_Cursor_Value_Input = {
+  city_code?: InputMaybe<Scalars['Int']['input']>;
+  city_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Product_Delivery_City_Info_Sum_Fields = {
+  city_code?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Product_Delivery_City_Info_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Product_Delivery_City_Info_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Product_Delivery_City_Info_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Product_Delivery_City_Info_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Product_Delivery_City_Info_Var_Pop_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Product_Delivery_City_Info_Var_Samp_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Product_Delivery_City_Info_Variance_Fields = {
+  city_code?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
 /** input type for incrementing numeric columns in table "product" */
 export type Product_Inc_Input = {
   category_id?: InputMaybe<Scalars['Int']['input']>;
@@ -12574,6 +12808,10 @@ export type Query_Root = {
   district_aggregate: District_Aggregate;
   /** fetch data from the table: "district" using primary key columns */
   district_by_pk?: Maybe<District>;
+  /** execute function "get_product_delivery_cities" which returns "product_delivery_city_info" */
+  get_product_delivery_cities: Array<Product_Delivery_City_Info>;
+  /** execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info" */
+  get_product_delivery_cities_aggregate: Product_Delivery_City_Info_Aggregate;
   /** fetch data from the table: "message" */
   message: Array<Message>;
   /** fetch aggregated fields from the table: "message" */
@@ -12646,6 +12884,10 @@ export type Query_Root = {
   product_customizable_area_aggregate: Product_Customizable_Area_Aggregate;
   /** fetch data from the table: "product_customizable_area" using primary key columns */
   product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
+  /** fetch data from the table: "product_delivery_city_info" */
+  product_delivery_city_info: Array<Product_Delivery_City_Info>;
+  /** fetch aggregated fields from the table: "product_delivery_city_info" */
+  product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
   /** fetch data from the table: "quarter" */
   quarter: Array<Quarter>;
   /** fetch aggregated fields from the table: "quarter" */
@@ -13072,6 +13314,26 @@ export type Query_RootDistrict_By_PkArgs = {
 };
 
 
+export type Query_RootGet_Product_Delivery_CitiesArgs = {
+  args: Get_Product_Delivery_Cities_Args;
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Query_RootGet_Product_Delivery_Cities_AggregateArgs = {
+  args: Get_Product_Delivery_Cities_Args;
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
 export type Query_RootMessageArgs = {
   distinct_on?: InputMaybe<Array<Message_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -13345,6 +13607,24 @@ export type Query_RootProduct_Customizable_Area_AggregateArgs = {
 
 export type Query_RootProduct_Customizable_Area_By_PkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+
+export type Query_RootProduct_Delivery_City_InfoArgs = {
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Delivery_City_Info_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
 };
 
 
@@ -15363,6 +15643,10 @@ export type Subscription_Root = {
   district_by_pk?: Maybe<District>;
   /** fetch data from the table in a streaming manner: "district" */
   district_stream: Array<District>;
+  /** execute function "get_product_delivery_cities" which returns "product_delivery_city_info" */
+  get_product_delivery_cities: Array<Product_Delivery_City_Info>;
+  /** execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info" */
+  get_product_delivery_cities_aggregate: Product_Delivery_City_Info_Aggregate;
   /** fetch data from the table: "message" */
   message: Array<Message>;
   /** fetch aggregated fields from the table: "message" */
@@ -15457,6 +15741,12 @@ export type Subscription_Root = {
   product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
   /** fetch data from the table in a streaming manner: "product_customizable_area" */
   product_customizable_area_stream: Array<Product_Customizable_Area>;
+  /** fetch data from the table: "product_delivery_city_info" */
+  product_delivery_city_info: Array<Product_Delivery_City_Info>;
+  /** fetch aggregated fields from the table: "product_delivery_city_info" */
+  product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
+  /** fetch data from the table in a streaming manner: "product_delivery_city_info" */
+  product_delivery_city_info_stream: Array<Product_Delivery_City_Info>;
   /** fetch data from the table in a streaming manner: "product" */
   product_stream: Array<Product>;
   /** fetch data from the table: "quarter" */
@@ -16014,6 +16304,26 @@ export type Subscription_RootDistrict_StreamArgs = {
 };
 
 
+export type Subscription_RootGet_Product_Delivery_CitiesArgs = {
+  args: Get_Product_Delivery_Cities_Args;
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Subscription_RootGet_Product_Delivery_Cities_AggregateArgs = {
+  args: Get_Product_Delivery_Cities_Args;
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
 export type Subscription_RootMessageArgs = {
   distinct_on?: InputMaybe<Array<Message_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -16364,6 +16674,31 @@ export type Subscription_RootProduct_Customizable_Area_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Product_Customizable_Area_Stream_Cursor_Input>>;
   where?: InputMaybe<Product_Customizable_Area_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Delivery_City_InfoArgs = {
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Delivery_City_Info_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Delivery_City_Info_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Delivery_City_Info_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Product_Delivery_City_Info_Stream_Cursor_Input>>;
+  where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
 };
 
 
@@ -21354,7 +21689,7 @@ export type User_Favorite_Bool_Exp = {
 export type User_Favorite_Constraint =
   /** unique or primary key constraint on columns "id" */
   | 'user_favorite_pkey'
-  /** unique or primary key constraint on columns "product_id", "user_id" */
+  /** unique or primary key constraint on columns "user_id", "product_id" */
   | 'user_favorite_user_id_product_id_key';
 
 /** input type for incrementing numeric columns in table "user_favorite" */

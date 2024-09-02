@@ -109,7 +109,7 @@ query GetQuarterById($id: Int) @cached {
 }
 
 query getDistrictById($id: Int) @cached {
-  district(where: {id: {_eq: $id}}) {
+  district(where: { id: { _eq: $id } }) {
     code
     id
     name
@@ -129,7 +129,7 @@ query getCityById($id: Int) {
 }
 
 query getUserOrders {
-  order {
+  order(where: { payment_status: { _eq: PAID } }) {
     created_at
     id
     total_amount
@@ -188,7 +188,6 @@ query getUserOrders {
   }
 }
 
-
 mutation createNewAddress(
   $address: String
   $address_title: String
@@ -237,12 +236,16 @@ query GetLocationQuery($search: String = "") @cached {
   }
 }
 
-
-mutation UpdateOrderItemSpecialText($object: [order_item_special_text_insert_input!]!){
-	insert_order_item_special_text (objects:$object,on_conflict: {
-      constraint:  order_item_special_text_pkey,
+mutation UpdateOrderItemSpecialText(
+  $object: [order_item_special_text_insert_input!]!
+) {
+  insert_order_item_special_text(
+    objects: $object
+    on_conflict: {
+      constraint: order_item_special_text_pkey
       update_columns: [content]
-  }){
+    }
+  ) {
     affected_rows
   }
 }

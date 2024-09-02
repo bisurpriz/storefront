@@ -1,3 +1,4 @@
+import { DeliveryLocation } from "../Order/order";
 import { Product } from "../Product/product";
 
 export interface ProductForCart
@@ -18,6 +19,7 @@ export interface ProductForCart
   deliveryDate?: Date;
   deliveryTime?: string;
   card_note?: string;
+  deliveryLocation?: DeliveryLocation;
 }
 
 export interface CostData {
