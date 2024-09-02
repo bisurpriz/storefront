@@ -14,7 +14,12 @@ type CategorySwiperProps = {
 
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   return (
-    <div className={clsx("mb-8", "flex flex-nowrap overflow-x-auto gap-4")}>
+    <div
+      className={clsx(
+        "max-md:mb-2",
+        "mb-8flex flex-nowrap overflow-x-auto gap-4"
+      )}
+    >
       <Slider
         images={categories.map(
           (category) => `https://picsum.photos/seed/${category.id}/120/120`
