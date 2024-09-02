@@ -5092,6 +5092,10 @@ input district_variance_order_by {
   parent_id: order_by
 }
 
+input get_product_delivery_cities_args {
+  product_id: bigint
+}
+
 scalar json
 
 scalar jsonb
@@ -5938,6 +5942,14 @@ type mutation_root {
   delete_product_customizable_area_by_pk(id: bigint!): product_customizable_area
 
   """
+  delete data from the table: "product_delivery_city_info"
+  """
+  delete_product_delivery_city_info(
+    """filter the rows which have to be deleted"""
+    where: product_delivery_city_info_bool_exp!
+  ): product_delivery_city_info_mutation_response
+
+  """
   delete data from the table: "quarter"
   """
   delete_quarter(
@@ -6721,6 +6733,22 @@ type mutation_root {
     """upsert condition"""
     on_conflict: product_customizable_area_on_conflict
   ): product_customizable_area
+
+  """
+  insert data into the table: "product_delivery_city_info"
+  """
+  insert_product_delivery_city_info(
+    """the rows to be inserted"""
+    objects: [product_delivery_city_info_insert_input!]!
+  ): product_delivery_city_info_mutation_response
+
+  """
+  insert a single row into the table: "product_delivery_city_info"
+  """
+  insert_product_delivery_city_info_one(
+    """the row to be inserted"""
+    object: product_delivery_city_info_insert_input!
+  ): product_delivery_city_info
 
   """
   insert a single row into the table: "product"
@@ -8032,6 +8060,28 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [product_customizable_area_updates!]!
   ): [product_customizable_area_mutation_response]
+
+  """
+  update data of the table: "product_delivery_city_info"
+  """
+  update_product_delivery_city_info(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_delivery_city_info_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_delivery_city_info_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_delivery_city_info_bool_exp!
+  ): product_delivery_city_info_mutation_response
+
+  """
+  update multiples rows of table: "product_delivery_city_info"
+  """
+  update_product_delivery_city_info_many(
+    """updates to execute, in order"""
+    updates: [product_delivery_city_info_updates!]!
+  ): [product_delivery_city_info_mutation_response]
 
   """
   update multiples rows of table: "product"
@@ -9526,6 +9576,7 @@ columns and relationships of "order_item"
 type order_item {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9745,6 +9796,7 @@ input order_item_bool_exp {
   _or: [order_item_bool_exp!]
   amount: numeric_comparison_exp
   approve_note: String_comparison_exp
+  card_note: String_comparison_exp
   commissioned_amount: numeric_comparison_exp
   created_at: timestamptz_comparison_exp
   delivery_date: timestamp_comparison_exp
@@ -9802,6 +9854,7 @@ input type for inserting data into table "order_item"
 input order_item_insert_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9830,6 +9883,7 @@ input order_item_insert_input {
 type order_item_max_fields {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9858,6 +9912,7 @@ order by max() on columns of table "order_item"
 input order_item_max_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9879,6 +9934,7 @@ input order_item_max_order_by {
 type order_item_min_fields {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9907,6 +9963,7 @@ order by min() on columns of table "order_item"
 input order_item_min_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9948,6 +10005,7 @@ input order_item_on_conflict {
 input order_item_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9987,6 +10045,9 @@ enum order_item_select_column {
 
   """column name"""
   approve_note
+
+  """column name"""
+  card_note
 
   """column name"""
   commissioned_amount
@@ -10062,6 +10123,7 @@ input type for updating data in table "order_item"
 input order_item_set_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -10946,6 +11008,7 @@ input order_item_stream_cursor_input {
 input order_item_stream_cursor_value_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -11000,6 +11063,9 @@ enum order_item_update_column {
 
   """column name"""
   approve_note
+
+  """column name"""
+  card_note
 
   """column name"""
   commissioned_amount
@@ -13733,6 +13799,200 @@ input product_delete_key_input {
 }
 
 """
+columns and relationships of "product_delivery_city_info"
+"""
+type product_delivery_city_info {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+type product_delivery_city_info_aggregate {
+  aggregate: product_delivery_city_info_aggregate_fields
+  nodes: [product_delivery_city_info!]!
+}
+
+"""
+aggregate fields of "product_delivery_city_info"
+"""
+type product_delivery_city_info_aggregate_fields {
+  avg: product_delivery_city_info_avg_fields
+  count(columns: [product_delivery_city_info_select_column!], distinct: Boolean): Int!
+  max: product_delivery_city_info_max_fields
+  min: product_delivery_city_info_min_fields
+  stddev: product_delivery_city_info_stddev_fields
+  stddev_pop: product_delivery_city_info_stddev_pop_fields
+  stddev_samp: product_delivery_city_info_stddev_samp_fields
+  sum: product_delivery_city_info_sum_fields
+  var_pop: product_delivery_city_info_var_pop_fields
+  var_samp: product_delivery_city_info_var_samp_fields
+  variance: product_delivery_city_info_variance_fields
+}
+
+"""aggregate avg on columns"""
+type product_delivery_city_info_avg_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "product_delivery_city_info". All fields are combined with a logical 'AND'.
+"""
+input product_delivery_city_info_bool_exp {
+  _and: [product_delivery_city_info_bool_exp!]
+  _not: product_delivery_city_info_bool_exp
+  _or: [product_delivery_city_info_bool_exp!]
+  city_code: Int_comparison_exp
+  city_name: String_comparison_exp
+  id: Int_comparison_exp
+}
+
+"""
+input type for incrementing numeric columns in table "product_delivery_city_info"
+"""
+input product_delivery_city_info_inc_input {
+  city_code: Int
+  id: Int
+}
+
+"""
+input type for inserting data into table "product_delivery_city_info"
+"""
+input product_delivery_city_info_insert_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate max on columns"""
+type product_delivery_city_info_max_fields {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate min on columns"""
+type product_delivery_city_info_min_fields {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""
+response of any mutation on the table "product_delivery_city_info"
+"""
+type product_delivery_city_info_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product_delivery_city_info!]!
+}
+
+"""
+Ordering options when selecting data from "product_delivery_city_info".
+"""
+input product_delivery_city_info_order_by {
+  city_code: order_by
+  city_name: order_by
+  id: order_by
+}
+
+"""
+select columns of table "product_delivery_city_info"
+"""
+enum product_delivery_city_info_select_column {
+  """column name"""
+  city_code
+
+  """column name"""
+  city_name
+
+  """column name"""
+  id
+}
+
+"""
+input type for updating data in table "product_delivery_city_info"
+"""
+input product_delivery_city_info_set_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate stddev on columns"""
+type product_delivery_city_info_stddev_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type product_delivery_city_info_stddev_pop_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type product_delivery_city_info_stddev_samp_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
+Streaming cursor of the table "product_delivery_city_info"
+"""
+input product_delivery_city_info_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_delivery_city_info_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_delivery_city_info_stream_cursor_value_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate sum on columns"""
+type product_delivery_city_info_sum_fields {
+  city_code: Int
+  id: Int
+}
+
+input product_delivery_city_info_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_delivery_city_info_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_delivery_city_info_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_delivery_city_info_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_delivery_city_info_var_pop_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type product_delivery_city_info_var_samp_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type product_delivery_city_info_variance_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
 input type for incrementing numeric columns in table "product"
 """
 input product_inc_input {
@@ -15425,6 +15685,56 @@ type query_root {
   district_by_pk(id: Int!): district
 
   """
+  execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
+  """
+  get_product_delivery_cities(
+    """
+    input parameters for function "get_product_delivery_cities"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info"
+  """
+  get_product_delivery_cities_aggregate(
+    """
+    input parameters for function "get_product_delivery_cities_aggregate"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
   fetch data from the table: "message"
   """
   message(
@@ -15947,6 +16257,46 @@ type query_root {
   fetch data from the table: "product_customizable_area" using primary key columns
   """
   product_customizable_area_by_pk(id: bigint!): product_customizable_area
+
+  """
+  fetch data from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  fetch aggregated fields from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
 
   """
   fetch data from the table: "quarter"
@@ -19341,6 +19691,56 @@ type subscription_root {
   ): [district!]!
 
   """
+  execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
+  """
+  get_product_delivery_cities(
+    """
+    input parameters for function "get_product_delivery_cities"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info"
+  """
+  get_product_delivery_cities_aggregate(
+    """
+    input parameters for function "get_product_delivery_cities_aggregate"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
   fetch data from the table: "message"
   """
   message(
@@ -20017,6 +20417,60 @@ type subscription_root {
     """filter the rows returned"""
     where: product_customizable_area_bool_exp
   ): [product_customizable_area!]!
+
+  """
+  fetch data from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  fetch aggregated fields from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "product_delivery_city_info"
+  """
+  product_delivery_city_info_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_delivery_city_info_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
 
   """
   fetch data from the table in a streaming manner: "product"
@@ -26583,7 +27037,7 @@ enum user_favorite_constraint {
   user_favorite_pkey
 
   """
-  unique or primary key constraint on columns "product_id", "user_id"
+  unique or primary key constraint on columns "user_id", "product_id"
   """
   user_favorite_user_id_product_id_key
 }

@@ -26,6 +26,7 @@ import {
 import useResponsive from "@/hooks/useResponsive";
 import { useProduct } from "../ProductContext";
 import { isDate } from "date-fns";
+import { DeliveryLocation } from "@/common/types/Order/order";
 
 type AddToCart = ({
   id,
@@ -35,6 +36,9 @@ type AddToCart = ({
   id: number;
   type: "updateq" | "add";
   quantity?: number;
+  deliveryDate?: string;
+  deliveryTime?: string;
+  deliveryLocation: DeliveryLocation;
 }) => void;
 
 interface CartContextType {
@@ -170,12 +174,14 @@ export const CartProvider = ({
     id,
     type,
     quantity,
+    deliveryLocation,
   }: {
     id: number;
     type: "updateq" | "add";
     quantity?: number;
     deliveryDate?: string;
     deliveryTime?: string;
+    deliveryLocation: DeliveryLocation;
   }) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === id);
@@ -187,6 +193,7 @@ export const CartProvider = ({
         ...item,
         deliveryDate: deliveryTime.day,
         deliveryTime: deliveryTime.hour,
+        deliveryLocation: deliveryLocation,
       };
 
       cartItems.push(_item);

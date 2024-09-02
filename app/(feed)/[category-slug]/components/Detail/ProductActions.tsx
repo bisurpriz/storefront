@@ -69,7 +69,6 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
 
   useEffect(() => {
     checkProductLocation(locationId, locType, productId).then((isAvailable) => {
-      console.log("isAvailable", isAvailable);
       if (!isAvailable) {
         setShowPlaceWarning(true);
       } else {
@@ -80,7 +79,7 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
 
   return (
     <>
-      {showPlaceWarning && (
+      {showPlaceWarning && locationId && (
         <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
           <p className="text-xs text-gray-500">
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
@@ -104,6 +103,10 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
                 addToCart({
                   id: productId,
                   type: "add",
+                  deliveryLocation: {
+                    id: locationId,
+                    type: locType,
+                  },
                 });
               }
               return;
@@ -111,6 +114,10 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
             addToCart({
               id: productId,
               type: "add",
+              deliveryLocation: {
+                id: locationId,
+                type: locType,
+              },
             });
           }}
           loading={loading}

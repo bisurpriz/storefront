@@ -250,7 +250,7 @@ export const GetCityByIdDocument = gql`
 export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;
 export const GetUserOrdersDocument = gql`
     query getUserOrders {
-  order {
+  order(where: {payment_status: {_eq: PAID}}) {
     created_at
     id
     total_amount

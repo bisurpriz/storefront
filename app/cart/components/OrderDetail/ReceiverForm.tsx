@@ -2,6 +2,7 @@
 
 import {
   createNewUserAddress,
+  getAvailableCitiesForProduct,
   getUserAddressById,
 } from "@/app/account/actions";
 import {
@@ -33,6 +34,7 @@ import Phone from "@/components/Icons/Phone";
 import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
 import { CartStepPaths } from "../../constants";
+import { useCart } from "@/contexts/CartContext";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -50,8 +52,14 @@ export interface OrderDetailPartialFormData
   wantToSaveAddress?: boolean;
 }
 
+interface AvailableCity {
+  city_code: number;
+  city_name: string;
+  id: number;
+}
+
 interface ReceiverFormProps {
-  cities: CityResponse[];
+  cities: AvailableCity[];
   defaultCity?: CityResponse;
   defaultDistrict?: DistrictResponse;
   defaultQuarter?: QuarterResponse;
@@ -145,7 +153,9 @@ const ReceiverForm = ({
 }: ReceiverFormProps) => {
   const { user } = useUser();
   const [userAddresses, setUserAddresses] = useState(null);
+  const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
+  const { cartState } = useCart();
   const {
     control,
     reset,
@@ -172,6 +182,12 @@ const ReceiverForm = ({
     getUserAddressById().then(({ userAddresses }) => {
       setUserAddresses(userAddresses);
     });
+
+    getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
+      (cities) => {
+        setAvailableCities(cities);
+      }
+    );
   }, []);
 
   const [city, district, invoice_type] = useWatch({
@@ -188,9 +204,6 @@ const ReceiverForm = ({
       reset({
         ...getValues(),
         saved_address: savedAddressValue ?? localStorageData.saved_address,
-        city: defaultCity ?? localStorageData.city,
-        district: defaultDistrict ?? localStorageData.district,
-        quarter: defaultQuarter ?? localStorageData.quarter,
         address: localStorageData.address,
         receiver_name: localStorageData.receiver_name,
         receiver_phone: localStorageData.receiver_phone,
@@ -208,16 +221,23 @@ const ReceiverForm = ({
         invoice_company_tax_office: localStorageData.invoice_company_tax_office,
       });
 
+      if (defaultCity || defaultDistrict || defaultQuarter) {
+        reset({
+          ...getValues(),
+          city: defaultCity ?? null,
+          district: defaultDistrict ?? null,
+          quarter: defaultQuarter ?? null,
+        });
+      }
+
       const savedAddress = userAddresses?.find(
         (address) => address.id === parseInt(savedAddressValue)
       );
+
       if (savedAddress) {
         const receiver_phone = formatPhoneNumber(savedAddress.receiver_phone);
         reset({
           ...getValues(),
-          city: savedAddress.city,
-          district: savedAddress.district,
-          quarter: savedAddress.quarter,
           address: savedAddress.address,
           receiver_name:
             savedAddress.receiver_firstname +
@@ -225,15 +245,6 @@ const ReceiverForm = ({
             savedAddress.receiver_surname,
           receiver_phone,
           address_title: savedAddress.address_title,
-        });
-        return;
-      } else {
-        reset({
-          ...getValues(),
-          city: null,
-          district: null,
-          quarter: null,
-          address: "",
         });
       }
 
@@ -246,17 +257,6 @@ const ReceiverForm = ({
         sender_phone: user?.phone?.match(/^90(\d{10})$/)?.[1],
         sender_email: user?.email,
       });
-    }
-
-    if (defaultCity && defaultDistrict && defaultQuarter) {
-      reset({
-        ...getValues(),
-        city: defaultCity,
-        district: defaultDistrict,
-        quarter: defaultQuarter,
-      });
-
-      return;
     }
   }, [savedAddressValue, userAddresses]);
 
@@ -520,21 +520,19 @@ const ReceiverForm = ({
             control={control}
             name="city"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
-              const selectedCity = cities.find((city) => city.id === value?.id);
-
               return (
                 <AutoComplete
                   value={
-                    selectedCity
+                    value
                       ? {
-                          label: selectedCity.name,
-                          value: selectedCity.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
                   label="İl"
-                  options={cities.map((city) => ({
-                    label: city.name,
+                  options={availableCities.map((city) => ({
+                    label: city.city_name,
                     value: city.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
@@ -555,7 +553,6 @@ const ReceiverForm = ({
                   error={!!error}
                   errorMessage={error?.message}
                   autoComplete="off"
-                  disabled={!!defaultCity}
                 />
               );
             }}
@@ -568,16 +565,13 @@ const ReceiverForm = ({
               field: { onChange, value, ref },
               fieldState: { error },
             }) => {
-              const selectedDistrict = districts.find(
-                (district) => district.id === value?.id
-              );
               return (
                 <AutoComplete
                   value={
-                    selectedDistrict
+                    value
                       ? {
-                          label: selectedDistrict.name,
-                          value: selectedDistrict.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
@@ -611,16 +605,13 @@ const ReceiverForm = ({
             control={control}
             name="quarter"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
-              const selectedQuarter = quarters.find(
-                (quarter) => quarter.id === value?.id
-              );
               return (
                 <AutoComplete
                   value={
-                    selectedQuarter
+                    value
                       ? {
-                          label: selectedQuarter.name,
-                          value: selectedQuarter.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
