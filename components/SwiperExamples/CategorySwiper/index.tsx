@@ -1,9 +1,7 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import Image from "next/image";
-import Card from "../../Card";
-import Link from "next/link";
+import { FC } from "react";
+
 import clsx from "clsx";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import Slider from "./Slider";
@@ -16,7 +14,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   return (
     <div
       className={clsx(
-        "max-md:mb-2",
+        "max-md:mb-2 mb-4",
         "mb-8flex flex-nowrap overflow-x-auto gap-4"
       )}
     >

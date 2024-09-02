@@ -31,7 +31,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 max-xs:flex-col mb-4">
+        <div className="flex items-center justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
           <Image
             src={image}
             alt="image"

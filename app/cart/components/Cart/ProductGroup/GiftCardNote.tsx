@@ -1,7 +1,8 @@
+"use client";
+
 import Accordion from "@/components/Accordion";
 import Textarea from "@/components/Textarea";
 import { useCart } from "@/contexts/CartContext";
-import { useEffect } from "react";
 
 const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
   const { updateCartItemNote } = useCart();
@@ -33,10 +34,12 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
                     data-id={`giftCardNote-${id}`}
                     onChange={(e, quantity) => onChange(e, i)}
                     defaultValue={
-                      JSON.parse(localStorage.getItem("cart"))
-                        ?.find((x) => x.id === id)
-                        ?.card_note?.match(/\[(.*?)\]/g)
-                        ?.map((item) => item.slice(1, -1))?.[i] ?? ""
+                      typeof window !== "undefined" && window.localStorage
+                        ? JSON.parse(localStorage.getItem("cart"))
+                            ?.find((x) => x.id === id)
+                            ?.card_note?.match(/\[(.*?)\]/g)
+                            ?.map((item) => item.slice(1, -1))?.[i] ?? ""
+                        : ""
                     }
                   />
                 </>
