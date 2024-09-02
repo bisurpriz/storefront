@@ -38,14 +38,14 @@ const Modal = ({
           onClick={(e) => e.stopPropagation()}
           variants={variant}
           className={clsx(
-            "max-md:fixed max-md:w-full max-md:h-full max-md:top-0 max-md:left-0 max-md:bottom-0 max-md:right-0 max-md:z-40 max-md:rounded-none",
+            "max-md:fixed max-md:w-full max-md:min-h-[100dvh] max-md:top-0 max-md:left-0 max-md:bottom-0 max-md:right-0 max-md:z-40 max-md:rounded-none",
             "w-fit h-fit flex items-center justify-center"
           )}
           initial={isTablet ? "mobileHidden" : "hidden"}
           animate={isTablet ? "mobileVisible" : "visible"}
           exit={isTablet ? "mobileExit" : "exit"}
         >
-          <div className="relative">
+          <div className="relative max-md:h-full">
             <span className="absolute top-4 right-4 md:hidden">
               <button onClick={handleClose}>
                 <svg
