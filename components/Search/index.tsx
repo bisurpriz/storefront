@@ -11,7 +11,7 @@ import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { useRouter, useSearchParams } from "next/navigation";
 import RemoveSquare from "../Icons/RemoveSquare";
-import SearchIcon from "../Icons/Search";
+import SearchIcon from "../Icons/SearchBotttomMenu";
 import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 
 type Props = {

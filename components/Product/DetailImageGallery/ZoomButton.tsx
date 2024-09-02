@@ -1,4 +1,4 @@
-import Search from "@/components/Icons/Search";
+import SearchBotttomMenu from "@/components/Icons/SearchBotttomMenu";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { FC } from "react";
@@ -20,7 +20,7 @@ const ZoomButton: FC<ZoomButtonProps> = ({ onClick }) => {
         "bg-slate-50 bg-opacity-30 rounded-full shadow-lg"
       )}
     >
-      <Search className="w-6 h-6 stroke-[2px]" />
+      <SearchBotttomMenu className="w-6 h-6 stroke-[2px]" />
     </motion.button>
   );
 };
