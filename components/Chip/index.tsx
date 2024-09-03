@@ -41,7 +41,8 @@ const Chip: React.FC<ChipProps> = ({
   as = "button",
   href,
 }) => {
-  const baseClasses = "w-fit flex items-center font-medium cursor-pointer";
+  const baseClasses =
+    "w-fit flex items-center font-medium cursor-pointer whitespace-nowrap";
 
   const sizeClasses = {
     small: "px-2 py-1 text-xs",

@@ -40,11 +40,11 @@ export const ImageZoomModalProvider = ({
             alt="zoomed"
             width={1200}
             height={1200}
-            className="w-full object-contain max-w-4xl select-none overflow-hidden"
+            quality={100}
+            className="w-full h-full object-contain max-w-4xl select-none overflow-hidden"
           />
         </div>
       </Modal>
-
       {children}
     </ImageZoomModal.Provider>
   );
