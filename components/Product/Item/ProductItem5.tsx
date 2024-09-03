@@ -26,12 +26,12 @@ const ProductItem5 = ({
   const stamps = !product_customizable_areas?.length
     ? null
     : ([
-        {
-          name: "Tasarlanabilir",
-          icon: "🎨",
-          color: "orange",
-        },
-      ] as Stamp[]);
+      {
+        name: "Tasarlanabilir",
+        icon: "🎨",
+        color: "orange",
+      },
+    ] as Stamp[]);
 
   return (
     <div
@@ -59,9 +59,8 @@ const ProductItem5 = ({
         className="relative"
       >
         <Image
-          src={`${getImageUrlFromPath(image?.[0])}${
-            image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
-          }`}
+          src={`${getImageUrlFromPath(image?.[0])}${image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
+            }`}
           alt={name}
           width={500}
           height={500}
@@ -80,7 +79,7 @@ const ProductItem5 = ({
                 showReviewCount={false}
                 reviewCount={totalReviewCount}
               />
-              {`(${4})`}
+              {score > 0 && `(${score})`}
             </span>
             <h1
               className="text-sm font-normal text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"

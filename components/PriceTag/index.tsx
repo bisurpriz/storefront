@@ -27,7 +27,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
     </span>;
 
   return (
-    <div className="flex items-end gap-1">
+    <div className="flex items-end gap-1 min-h-[28px]">
       {discount > 0 && price && discountRate > 0 && (
         <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-lg max-md:text-xs">
           %{discountRate}

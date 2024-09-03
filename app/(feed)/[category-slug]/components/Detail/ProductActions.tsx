@@ -80,8 +80,8 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
   return (
     <>
       {showPlaceWarning && locationId && (
-        <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
-          <p className="text-xs text-gray-500">
+        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-1 bg-opacity-50 rounded-md my-2">
+          <p className="text-sm font-semibold text-slate-500 max-md:text-xs max-md:font-normal">
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
           </p>
         </div>
