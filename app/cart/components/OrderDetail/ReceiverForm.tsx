@@ -145,12 +145,7 @@ const defaultValues: OrderDetailPartialFormData = {
   user_id: null,
 };
 
-const ReceiverForm = ({
-  cities,
-  defaultCity,
-  defaultDistrict,
-  defaultQuarter,
-}: ReceiverFormProps) => {
+const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const { user } = useUser();
   const [userAddresses, setUserAddresses] = useState(null);
   const [availableCities, setAvailableCities] = useState([]);
@@ -220,15 +215,6 @@ const ReceiverForm = ({
         invoice_company_tax_number: localStorageData.invoice_company_tax_number,
         invoice_company_tax_office: localStorageData.invoice_company_tax_office,
       });
-
-      if (defaultCity || defaultDistrict || defaultQuarter) {
-        reset({
-          ...getValues(),
-          city: defaultCity ?? null,
-          district: defaultDistrict ?? null,
-          quarter: defaultQuarter ?? null,
-        });
-      }
 
       const savedAddress = userAddresses?.find(
         (address) => address.id === parseInt(savedAddressValue)
@@ -595,7 +581,6 @@ const ReceiverForm = ({
                   id="district"
                   error={!!error}
                   errorMessage={error?.message}
-                  disabled={!!defaultDistrict}
                 />
               );
             }}
@@ -630,7 +615,6 @@ const ReceiverForm = ({
                   id="quarter"
                   error={!!error}
                   errorMessage={error?.message}
-                  disabled={!!defaultQuarter}
                 />
               );
             }}

@@ -4,9 +4,28 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { accountNavigationItems } from "../../constants";
+import { useEffect } from "react";
+import useResponsive from "@/hooks/useResponsive";
 
 const AccountNavigation = () => {
   const pathname = usePathname();
+  const { isTablet } = useResponsive();
+
+  useEffect(() => {
+    if (isTablet) {
+      const activeItem = document.querySelector(
+        `a[href="${pathname}"]`
+      ) as HTMLAnchorElement;
+
+      if (activeItem) {
+        activeItem.scrollIntoView({
+          inline: "center",
+          block: "center",
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [pathname, isTablet]);
 
   return (
     <nav

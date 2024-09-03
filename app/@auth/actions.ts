@@ -9,6 +9,7 @@ import {
   LoginMutationMutation,
   LoginMutationMutationVariables,
 } from "@/graphql/queries/auth/login/login.generated";
+import { redirect } from "next/navigation";
 
 export const decodeToken = async (token: string) => {
   return jwt.decode(token);
@@ -65,5 +66,5 @@ export const logout = async () => {
   cookies().delete(CookieTokens.REFRESH_TOKEN);
   cookies().delete(CookieTokens.USER_ID);
 
-  return true;
+  redirect("/");
 };

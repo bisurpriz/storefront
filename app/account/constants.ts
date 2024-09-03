@@ -9,6 +9,11 @@ import User from "@/components/Icons/User";
 
 export const accountNavigationItems = [
   {
+    title: "Bilgilerim",
+    icon: User,
+    link: "/account",
+  },
+  {
     title: "Siparişlerim",
     icon: Truck,
     link: "/account/orders",
@@ -27,11 +32,6 @@ export const accountNavigationItems = [
     title: "Değerlendirmelerim",
     icon: Star,
     link: "/account/reviews",
-  },
-  {
-    title: "Bilgilerim",
-    icon: User,
-    link: "/account",
   },
   {
     title: "Mesajlarım",
