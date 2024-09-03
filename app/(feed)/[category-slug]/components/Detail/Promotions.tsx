@@ -1,3 +1,4 @@
+import Chip, { ChipColor } from "@/components/Chip";
 import Link from "next/link";
 
 type Promotions = {
@@ -5,6 +6,7 @@ type Promotions = {
   description: string;
   filterKey: string;
   show?: boolean;
+  color?: keyof typeof ChipColor;
 };
 
 const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
@@ -17,22 +19,17 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
         {promotions
           ?.filter((x) => x.show)
           .map((promotion, index) => (
-            <Link
+            <Chip
               key={promotion?.description}
-              className="flex items-start justify-start rounded-lg p-1 gap-1 bg-sky-50  border border-sky-600 text-sky-600"
               href={`/products?filter=${promotion.filterKey}`}
-              tabIndex={-1}
-            >
-              <span aria-label="Kampanya ikonu" className="text-lg">
-                {promotion.icon}
-              </span>
-              <p
-                aria-label="Kampanya açıklaması"
-                className={`text-xs tracking-wide whitespace-nowrap`}
-              >
-                {promotion.description}
-              </p>
-            </Link>
+              label={promotion.description}
+              as="link"
+              color={promotion.color}
+              icon={promotion.icon}
+              size="small"
+              rounded="semi"
+              variant="outlined"
+            />
           ))}
       </div>
     )
