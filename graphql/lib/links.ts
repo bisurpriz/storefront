@@ -36,7 +36,7 @@ export const authLink = setContext(async (_, { headers }) => {
   let token = null;
   try {
     // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get(CookieTokens.REFRESH_TOKEN)?.value;
+    const ntoken = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
     token = ntoken;
   } catch (e) {
     console.error(e, "error getting session");

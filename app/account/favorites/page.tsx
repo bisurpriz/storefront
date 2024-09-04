@@ -65,7 +65,7 @@ const FavoritesPage = async () => {
               <Link
                 href={goToProductDetail({
                   category: {
-                    slug: item.product.category.slug,
+                    slug: item.product.product_categories[0].category.slug,
                   },
                   id: item.product.id,
                   slug: item.product.slug,

@@ -10,7 +10,7 @@ export type GetProductsWithPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 export type GetProductsWithFilteredPaginationQueryVariables = Types.Exact<{
   filter_payload?: Types.InputMaybe<Types.Product_Bool_Exp>;
@@ -19,13 +19,13 @@ export type GetProductsWithFilteredPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 
 export const GetProductsWithPaginationDocument = gql`
     query getProductsWithPagination($limit: Int = 15, $offset: Int = 0, $is_active: Boolean = true, $category_slug: String) {
   product_aggregate(
-    where: {is_active: {_eq: $is_active}, category: {slug: {_eq: $category_slug}}}
+    where: {is_active: {_eq: $is_active}, product_categories: {category: {slug: {_eq: $category_slug}}}}
   ) {
     aggregate {
       count
@@ -34,7 +34,7 @@ export const GetProductsWithPaginationDocument = gql`
   product(
     limit: $limit
     offset: $offset
-    where: {is_active: {_eq: $is_active}, category: {slug: {_eq: $category_slug}}}
+    where: {is_active: {_eq: $is_active}, product_categories: {category: {slug: {_eq: $category_slug}}}}
   ) {
     id
     tenant_id
@@ -42,9 +42,11 @@ export const GetProductsWithPaginationDocument = gql`
     name
     slug
     score
-    category {
-      name
-      slug
+    product_categories {
+      category {
+        name
+        slug
+      }
     }
     image_url
     price
@@ -95,9 +97,11 @@ export const GetProductsWithFilteredPaginationDocument = gql`
     name
     slug
     score
-    category {
-      name
-      slug
+    product_categories {
+      category {
+        name
+        slug
+      }
     }
     image_url
     price

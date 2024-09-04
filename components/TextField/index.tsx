@@ -58,10 +58,6 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
       : "";
 
-    const focusedClasses = focused
-      ? "focus-within:ring-1 focus-within:ring-primary focus-visible:outline-none"
-      : "";
-
     const disabledClasses = isDisabled
       ? "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed"
       : "";
@@ -74,15 +70,21 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <label
         {...getRootProps()}
         className={clsx(
-          "flex flex-col gap-1 text-xs font-normal text-gray-700 relative whitespace-nowrap",
-          {
-            "text-red-500": isError,
-          },
+          "relative text-xs font-medium text-gray-700 flex flex-col gap-1 w-fit",
           fullWidthClasses
         )}
       >
-        {label ?? null}
-        <div className="relative">
+        {label ? <p>{label}</p> : null}
+        <div
+          className={clsx(
+            "flex relative w-full gap-[5px] pr-[5px] overflow-hidden rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
+            !focused && "shadow-[0_2px_2px_transparent] shadow-gray-50 ",
+            focused &&
+              "border-primary-400 shadow-[0_0_0_3px_transparent] shadow-primary-200 ",
+            isErrorClasses,
+            disabledClasses
+          )}
+        >
           <AnimationExitProvider show={!!icon}>
             <motion.span
               className={clsx(
@@ -110,9 +112,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder={placeholder}
             value={value as string}
             className={clsx(
-              "w-full px-3 py-2 text-sm text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200",
+              "text-sm leading-[1.5] text-gray-900  bg-inherit border-0 rounded-[inherit] px-3 py-2 outline-0 grow shrink-0 basis-auto",
               className,
-              focusedClasses,
               disabledClasses,
               isErrorClasses,
               hasIconClasses

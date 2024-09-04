@@ -125,6 +125,7 @@ const Search: FC<Props> = ({ className }) => {
         onChange={onChange}
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
+        fullWidth
       />
 
       <div
@@ -171,7 +172,7 @@ const Search: FC<Props> = ({ className }) => {
               key={product.id}
               href={goToProductDetail({
                 category: {
-                  slug: product.category.slug,
+                  slug: product.product_categories[0].category.slug,
                 },
                 id: product.id,
                 slug: product.slug,
@@ -198,7 +199,7 @@ const Search: FC<Props> = ({ className }) => {
                     {product.name}
                   </div>
                   <div className="text-xs ml-auto text-primary font-semibold mt-auto">
-                    {product.category.name}
+                    {product.product_categories[0].category.name}
                   </div>
                 </div>
               </div>

@@ -7,7 +7,7 @@ export type GetUserFavoritesQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetUserFavoritesQuery = { user_favorite: Array<{ id: any, product: { name: string, id: any, image_url?: Array<string> | null, price: number, discount_price?: number | null, slug?: string | null, category: { name: string, slug?: string | null } } }>, user_favorite_aggregate: { aggregate?: { count: number } | null } };
+export type GetUserFavoritesQuery = { user_favorite: Array<{ id: any, product: { name: string, id: any, image_url?: Array<string> | null, price: number, discount_price?: number | null, slug?: string | null, product_categories: Array<{ category: { name: string, slug?: string | null } }> } }>, user_favorite_aggregate: { aggregate?: { count: number } | null } };
 
 export type AddToFavoritesMutationVariables = Types.Exact<{
   productId: Types.Scalars['bigint']['input'];
@@ -35,9 +35,11 @@ export const GetUserFavoritesDocument = gql`
       price
       discount_price
       slug
-      category {
-        name
-        slug
+      product_categories {
+        category {
+          name
+          slug
+        }
       }
     }
   }

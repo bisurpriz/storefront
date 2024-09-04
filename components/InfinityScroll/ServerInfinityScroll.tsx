@@ -9,7 +9,7 @@ type ServerInfinityScrollProps = {
 const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
   searchParams,
 }) => {
-  const { products, totalCount } = await searchProducts(
+  const data = await searchProducts(
     {
       offset: 0,
       limit: 15,
@@ -19,8 +19,8 @@ const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
 
   return (
     <InfinityScroll
-      totalCount={totalCount}
-      initialData={products}
+      totalCount={data?.totalCount}
+      initialData={data?.products}
       dataKey="products"
       query={searchProducts}
       params={searchParams}

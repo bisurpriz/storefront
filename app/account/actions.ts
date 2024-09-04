@@ -111,35 +111,15 @@ export const getAvailableCitiesForProduct = async (pid: number) => {
   return get_product_delivery_cities;
 };
 
-export const getUserAddressById = async (id?: string) => {
-  const userId = id || (await readIdFromCookies());
-
-  if (!userId) {
-    return {
-      userAddresses: [],
-      loading: false,
-    };
-  }
-
-  const { data, loading } = await query<
-    GetUserAddressByIdQuery,
-    GetUserAddressByIdQueryVariables
-  >({
-    query: GetUserAddressByIdDocument,
-    variables: {
-      id: userId,
-    },
-  });
-
-  const {
-    user_by_pk: { user_addresses },
-  } = data;
-
-  return {
-    userAddresses: user_addresses,
-    loading,
-    user_id: userId,
-  };
+export const getUserAddressById = async (id: string) => {
+  return await query<GetUserAddressByIdQuery, GetUserAddressByIdQueryVariables>(
+    {
+      query: GetUserAddressByIdDocument,
+      variables: {
+        id,
+      },
+    }
+  );
 };
 
 export const getUserById = async (id?: string) => {

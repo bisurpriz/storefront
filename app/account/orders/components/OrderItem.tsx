@@ -75,7 +75,7 @@ const OrderItem = ({
               ) : null}
             </div>
             <Link
-              href={`/${oi?.product?.category?.slug}/${oi?.product?.slug}?pid=${oi.product_id}`}
+              href={`/${oi?.product?.product_categories[0].category?.slug}/${oi?.product?.slug}?pid=${oi.product_id}`}
               className="text-sm mt-1 block"
             >
               {oi.product.name}{" "}

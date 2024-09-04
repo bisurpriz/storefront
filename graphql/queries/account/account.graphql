@@ -158,9 +158,11 @@ query getUserOrders {
           id
         }
         product {
-          category {
-            name
-            slug
+          product_categories {
+            category {
+              name
+              slug
+            }
           }
           slug
           image_url

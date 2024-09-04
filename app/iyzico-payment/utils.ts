@@ -60,7 +60,8 @@ export const createBasketItems = (items: ProductForCart[]) => {
     (product.price * product.quantity)?.toFixed(2).toString();
 
   const basketItems = items.map((product) => ({
-    category1: product.category.name,
+    category1: product.product_categories[0].category.name,
+    category2: product.product_categories[1]?.category.name,
     id: product.id.toString(),
     name: product.name,
     price: getPrice(product),

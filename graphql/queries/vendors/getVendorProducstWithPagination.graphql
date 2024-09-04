@@ -28,9 +28,11 @@ query getVendorProductsWithPagination(
     image_url
     price
     quantity
-    category {
-      name
-      slug
+    product_categories {
+      category {
+        name
+        slug
+      }
     }
   }
 }
