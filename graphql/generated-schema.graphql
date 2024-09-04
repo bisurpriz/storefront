@@ -1142,6 +1142,7 @@ type category {
     """filter the rows returned"""
     where: company_category_bool_exp
   ): company_category_aggregate!
+  description: String
   id: Int!
   image_url: String
   name: String!
@@ -1153,7 +1154,7 @@ type category {
   """An array relationship"""
   products(
     """distinct select on columns"""
-    distinct_on: [product_select_column!]
+    distinct_on: [product_category_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -1162,16 +1163,16 @@ type category {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [product_order_by!]
+    order_by: [product_category_order_by!]
 
     """filter the rows returned"""
-    where: product_bool_exp
-  ): [product!]!
+    where: product_category_bool_exp
+  ): [product_category!]!
 
   """An aggregate relationship"""
   products_aggregate(
     """distinct select on columns"""
-    distinct_on: [product_select_column!]
+    distinct_on: [product_category_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -1180,11 +1181,11 @@ type category {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [product_order_by!]
+    order_by: [product_category_order_by!]
 
     """filter the rows returned"""
-    where: product_bool_exp
-  ): product_aggregate!
+    where: product_category_bool_exp
+  ): product_category_aggregate!
   slug: String
 
   """An array relationship"""
@@ -1222,6 +1223,42 @@ type category {
     """filter the rows returned"""
     where: category_bool_exp
   ): category_aggregate!
+
+  """An array relationship"""
+  tenants(
+    """distinct select on columns"""
+    distinct_on: [tenant_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tenant_category_order_by!]
+
+    """filter the rows returned"""
+    where: tenant_category_bool_exp
+  ): [tenant_category!]!
+
+  """An aggregate relationship"""
+  tenants_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tenant_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tenant_category_order_by!]
+
+    """filter the rows returned"""
+    where: tenant_category_bool_exp
+  ): tenant_category_aggregate!
 }
 
 """
@@ -1310,16 +1347,19 @@ input category_bool_exp {
   _or: [category_bool_exp!]
   companies: company_category_bool_exp
   companies_aggregate: company_category_aggregate_bool_exp
+  description: String_comparison_exp
   id: Int_comparison_exp
   image_url: String_comparison_exp
   name: String_comparison_exp
   parent_category: category_bool_exp
   parent_category_id: Int_comparison_exp
-  products: product_bool_exp
-  products_aggregate: product_aggregate_bool_exp
+  products: product_category_bool_exp
+  products_aggregate: product_category_aggregate_bool_exp
   slug: String_comparison_exp
   sub_categories: category_bool_exp
   sub_categories_aggregate: category_aggregate_bool_exp
+  tenants: tenant_category_bool_exp
+  tenants_aggregate: tenant_category_aggregate_bool_exp
 }
 
 """
@@ -1345,18 +1385,21 @@ input type for inserting data into table "category"
 """
 input category_insert_input {
   companies: company_category_arr_rel_insert_input
+  description: String
   id: Int
   image_url: String
   name: String
   parent_category: category_obj_rel_insert_input
   parent_category_id: Int
-  products: product_arr_rel_insert_input
+  products: product_category_arr_rel_insert_input
   slug: String
   sub_categories: category_arr_rel_insert_input
+  tenants: tenant_category_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
 type category_max_fields {
+  description: String
   id: Int
   image_url: String
   name: String
@@ -1368,6 +1411,7 @@ type category_max_fields {
 order by max() on columns of table "category"
 """
 input category_max_order_by {
+  description: order_by
   id: order_by
   image_url: order_by
   name: order_by
@@ -1377,6 +1421,7 @@ input category_max_order_by {
 
 """aggregate min on columns"""
 type category_min_fields {
+  description: String
   id: Int
   image_url: String
   name: String
@@ -1388,6 +1433,7 @@ type category_min_fields {
 order by min() on columns of table "category"
 """
 input category_min_order_by {
+  description: order_by
   id: order_by
   image_url: order_by
   name: order_by
@@ -1428,14 +1474,16 @@ input category_on_conflict {
 """Ordering options when selecting data from "category"."""
 input category_order_by {
   companies_aggregate: company_category_aggregate_order_by
+  description: order_by
   id: order_by
   image_url: order_by
   name: order_by
   parent_category: category_order_by
   parent_category_id: order_by
-  products_aggregate: product_aggregate_order_by
+  products_aggregate: product_category_aggregate_order_by
   slug: order_by
   sub_categories_aggregate: category_aggregate_order_by
+  tenants_aggregate: tenant_category_aggregate_order_by
 }
 
 """primary key columns input for table: category"""
@@ -1447,6 +1495,9 @@ input category_pk_columns_input {
 select columns of table "category"
 """
 enum category_select_column {
+  """column name"""
+  description
+
   """column name"""
   id
 
@@ -1467,6 +1518,7 @@ enum category_select_column {
 input type for updating data in table "category"
 """
 input category_set_input {
+  description: String
   id: Int
   image_url: String
   name: String
@@ -1529,6 +1581,7 @@ input category_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input category_stream_cursor_value_input {
+  description: String
   id: Int
   image_url: String
   name: String
@@ -1554,6 +1607,9 @@ input category_sum_order_by {
 update columns of table "category"
 """
 enum category_update_column {
+  """column name"""
+  description
+
   """column name"""
   id
 
@@ -5929,6 +5985,19 @@ type mutation_root {
   delete_product_by_pk(id: bigint!): product
 
   """
+  delete data from the table: "product_category"
+  """
+  delete_product_category(
+    """filter the rows which have to be deleted"""
+    where: product_category_bool_exp!
+  ): product_category_mutation_response
+
+  """
+  delete single row from the table: "product_category"
+  """
+  delete_product_category_by_pk(id: bigint!): product_category
+
+  """
   delete data from the table: "product_customizable_area"
   """
   delete_product_customizable_area(
@@ -6711,6 +6780,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: product_on_conflict
   ): product_mutation_response
+
+  """
+  insert data into the table: "product_category"
+  """
+  insert_product_category(
+    """the rows to be inserted"""
+    objects: [product_category_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: product_category_on_conflict
+  ): product_category_mutation_response
+
+  """
+  insert a single row into the table: "product_category"
+  """
+  insert_product_category_one(
+    """the row to be inserted"""
+    object: product_category_insert_input!
+
+    """upsert condition"""
+    on_conflict: product_category_on_conflict
+  ): product_category
 
   """
   insert data into the table: "product_customizable_area"
@@ -8026,6 +8117,40 @@ type mutation_root {
     _set: product_set_input
     pk_columns: product_pk_columns_input!
   ): product
+
+  """
+  update data of the table: "product_category"
+  """
+  update_product_category(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_category_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_category_bool_exp!
+  ): product_category_mutation_response
+
+  """
+  update single row of the table: "product_category"
+  """
+  update_product_category_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_category_set_input
+    pk_columns: product_category_pk_columns_input!
+  ): product_category
+
+  """
+  update multiples rows of table: "product_category"
+  """
+  update_product_category_many(
+    """updates to execute, in order"""
+    updates: [product_category_updates!]!
+  ): [product_category_mutation_response]
 
   """
   update data of the table: "product_customizable_area"
@@ -12929,9 +13054,7 @@ input payment_status_updates {
 columns and relationships of "product"
 """
 type product {
-  """An object relationship"""
-  category: category!
-  category_id: Int!
+  category_id: Int
   delivery_end_time: timestamptz
   delivery_start_time: timestamptz
   delivery_time_ranges(
@@ -12986,6 +13109,42 @@ type product {
     where: order_item_bool_exp
   ): order_item_aggregate!
   price: numeric!
+
+  """An array relationship"""
+  product_categories(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): [product_category!]!
+
+  """An aggregate relationship"""
+  product_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): product_category_aggregate!
 
   """An array relationship"""
   product_customizable_areas(
@@ -13274,7 +13433,6 @@ input product_bool_exp {
   _and: [product_bool_exp!]
   _not: product_bool_exp
   _or: [product_bool_exp!]
-  category: category_bool_exp
   category_id: Int_comparison_exp
   delivery_end_time: timestamptz_comparison_exp
   delivery_start_time: timestamptz_comparison_exp
@@ -13291,6 +13449,8 @@ input product_bool_exp {
   order_items: order_item_bool_exp
   order_items_aggregate: order_item_aggregate_bool_exp
   price: numeric_comparison_exp
+  product_categories: product_category_bool_exp
+  product_categories_aggregate: product_category_aggregate_bool_exp
   product_customizable_areas: product_customizable_area_bool_exp
   product_customizable_areas_aggregate: product_customizable_area_aggregate_bool_exp
   product_no: String_comparison_exp
@@ -13309,6 +13469,436 @@ input product_bool_exp {
   tenant_id: uuid_comparison_exp
   user_favorites: user_favorite_bool_exp
   user_favorites_aggregate: user_favorite_aggregate_bool_exp
+}
+
+"""
+columns and relationships of "product_category"
+"""
+type product_category {
+  """An object relationship"""
+  category: category!
+  category_id: Int!
+  id: bigint!
+  is_active: Boolean
+
+  """An object relationship"""
+  product: product!
+  product_id: bigint!
+}
+
+"""
+aggregated selection of "product_category"
+"""
+type product_category_aggregate {
+  aggregate: product_category_aggregate_fields
+  nodes: [product_category!]!
+}
+
+input product_category_aggregate_bool_exp {
+  bool_and: product_category_aggregate_bool_exp_bool_and
+  bool_or: product_category_aggregate_bool_exp_bool_or
+  count: product_category_aggregate_bool_exp_count
+}
+
+input product_category_aggregate_bool_exp_bool_and {
+  arguments: product_category_select_column_product_category_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: product_category_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input product_category_aggregate_bool_exp_bool_or {
+  arguments: product_category_select_column_product_category_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: product_category_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input product_category_aggregate_bool_exp_count {
+  arguments: [product_category_select_column!]
+  distinct: Boolean
+  filter: product_category_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "product_category"
+"""
+type product_category_aggregate_fields {
+  avg: product_category_avg_fields
+  count(columns: [product_category_select_column!], distinct: Boolean): Int!
+  max: product_category_max_fields
+  min: product_category_min_fields
+  stddev: product_category_stddev_fields
+  stddev_pop: product_category_stddev_pop_fields
+  stddev_samp: product_category_stddev_samp_fields
+  sum: product_category_sum_fields
+  var_pop: product_category_var_pop_fields
+  var_samp: product_category_var_samp_fields
+  variance: product_category_variance_fields
+}
+
+"""
+order by aggregate values of table "product_category"
+"""
+input product_category_aggregate_order_by {
+  avg: product_category_avg_order_by
+  count: order_by
+  max: product_category_max_order_by
+  min: product_category_min_order_by
+  stddev: product_category_stddev_order_by
+  stddev_pop: product_category_stddev_pop_order_by
+  stddev_samp: product_category_stddev_samp_order_by
+  sum: product_category_sum_order_by
+  var_pop: product_category_var_pop_order_by
+  var_samp: product_category_var_samp_order_by
+  variance: product_category_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "product_category"
+"""
+input product_category_arr_rel_insert_input {
+  data: [product_category_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: product_category_on_conflict
+}
+
+"""aggregate avg on columns"""
+type product_category_avg_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by avg() on columns of table "product_category"
+"""
+input product_category_avg_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "product_category". All fields are combined with a logical 'AND'.
+"""
+input product_category_bool_exp {
+  _and: [product_category_bool_exp!]
+  _not: product_category_bool_exp
+  _or: [product_category_bool_exp!]
+  category: category_bool_exp
+  category_id: Int_comparison_exp
+  id: bigint_comparison_exp
+  is_active: Boolean_comparison_exp
+  product: product_bool_exp
+  product_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "product_category"
+"""
+enum product_category_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  product_category_pkey
+
+  """
+  unique or primary key constraint on columns "product_id", "category_id"
+  """
+  product_category_product_id_category_id_key
+}
+
+"""
+input type for incrementing numeric columns in table "product_category"
+"""
+input product_category_inc_input {
+  category_id: Int
+  id: bigint
+  product_id: bigint
+}
+
+"""
+input type for inserting data into table "product_category"
+"""
+input product_category_insert_input {
+  category: category_obj_rel_insert_input
+  category_id: Int
+  id: bigint
+  is_active: Boolean
+  product: product_obj_rel_insert_input
+  product_id: bigint
+}
+
+"""aggregate max on columns"""
+type product_category_max_fields {
+  category_id: Int
+  id: bigint
+  product_id: bigint
+}
+
+"""
+order by max() on columns of table "product_category"
+"""
+input product_category_max_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""aggregate min on columns"""
+type product_category_min_fields {
+  category_id: Int
+  id: bigint
+  product_id: bigint
+}
+
+"""
+order by min() on columns of table "product_category"
+"""
+input product_category_min_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""
+response of any mutation on the table "product_category"
+"""
+type product_category_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product_category!]!
+}
+
+"""
+on_conflict condition type for table "product_category"
+"""
+input product_category_on_conflict {
+  constraint: product_category_constraint!
+  update_columns: [product_category_update_column!]! = []
+  where: product_category_bool_exp
+}
+
+"""Ordering options when selecting data from "product_category"."""
+input product_category_order_by {
+  category: category_order_by
+  category_id: order_by
+  id: order_by
+  is_active: order_by
+  product: product_order_by
+  product_id: order_by
+}
+
+"""primary key columns input for table: product_category"""
+input product_category_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "product_category"
+"""
+enum product_category_select_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  id
+
+  """column name"""
+  is_active
+
+  """column name"""
+  product_id
+}
+
+"""
+select "product_category_aggregate_bool_exp_bool_and_arguments_columns" columns of table "product_category"
+"""
+enum product_category_select_column_product_category_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  is_active
+}
+
+"""
+select "product_category_aggregate_bool_exp_bool_or_arguments_columns" columns of table "product_category"
+"""
+enum product_category_select_column_product_category_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  is_active
+}
+
+"""
+input type for updating data in table "product_category"
+"""
+input product_category_set_input {
+  category_id: Int
+  id: bigint
+  is_active: Boolean
+  product_id: bigint
+}
+
+"""aggregate stddev on columns"""
+type product_category_stddev_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by stddev() on columns of table "product_category"
+"""
+input product_category_stddev_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type product_category_stddev_pop_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "product_category"
+"""
+input product_category_stddev_pop_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type product_category_stddev_samp_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "product_category"
+"""
+input product_category_stddev_samp_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""
+Streaming cursor of the table "product_category"
+"""
+input product_category_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_category_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_category_stream_cursor_value_input {
+  category_id: Int
+  id: bigint
+  is_active: Boolean
+  product_id: bigint
+}
+
+"""aggregate sum on columns"""
+type product_category_sum_fields {
+  category_id: Int
+  id: bigint
+  product_id: bigint
+}
+
+"""
+order by sum() on columns of table "product_category"
+"""
+input product_category_sum_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""
+update columns of table "product_category"
+"""
+enum product_category_update_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  id
+
+  """column name"""
+  is_active
+
+  """column name"""
+  product_id
+}
+
+input product_category_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_category_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_category_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_category_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_category_var_pop_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by var_pop() on columns of table "product_category"
+"""
+input product_category_var_pop_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type product_category_var_samp_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by var_samp() on columns of table "product_category"
+"""
+input product_category_var_samp_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
+}
+
+"""aggregate variance on columns"""
+type product_category_variance_fields {
+  category_id: Float
+  id: Float
+  product_id: Float
+}
+
+"""
+order by variance() on columns of table "product_category"
+"""
+input product_category_variance_order_by {
+  category_id: order_by
+  id: order_by
+  product_id: order_by
 }
 
 """
@@ -14008,7 +14598,6 @@ input product_inc_input {
 input type for inserting data into table "product"
 """
 input product_insert_input {
-  category: category_obj_rel_insert_input
   category_id: Int
   delivery_end_time: timestamptz
   delivery_start_time: timestamptz
@@ -14024,6 +14613,7 @@ input product_insert_input {
   name: String
   order_items: order_item_arr_rel_insert_input
   price: numeric
+  product_categories: product_category_arr_rel_insert_input
   product_customizable_areas: product_customizable_area_arr_rel_insert_input
   product_no: String
   properties: jsonb
@@ -14166,7 +14756,6 @@ input product_on_conflict {
 
 """Ordering options when selecting data from "product"."""
 input product_order_by {
-  category: category_order_by
   category_id: order_by
   delivery_end_time: order_by
   delivery_start_time: order_by
@@ -14182,6 +14771,7 @@ input product_order_by {
   name: order_by
   order_items_aggregate: order_item_aggregate_order_by
   price: order_by
+  product_categories_aggregate: product_category_aggregate_order_by
   product_customizable_areas_aggregate: product_customizable_area_aggregate_order_by
   product_no: order_by
   properties: order_by
@@ -16212,6 +16802,51 @@ type query_root {
 
   """fetch data from the table: "product" using primary key columns"""
   product_by_pk(id: bigint!): product
+
+  """
+  fetch data from the table: "product_category"
+  """
+  product_category(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): [product_category!]!
+
+  """
+  fetch aggregated fields from the table: "product_category"
+  """
+  product_category_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): product_category_aggregate!
+
+  """
+  fetch data from the table: "product_category" using primary key columns
+  """
+  product_category_by_pk(id: bigint!): product_category
 
   """
   fetch data from the table: "product_customizable_area"
@@ -20358,6 +20993,65 @@ type subscription_root {
 
   """fetch data from the table: "product" using primary key columns"""
   product_by_pk(id: bigint!): product
+
+  """
+  fetch data from the table: "product_category"
+  """
+  product_category(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): [product_category!]!
+
+  """
+  fetch aggregated fields from the table: "product_category"
+  """
+  product_category_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_category_order_by!]
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): product_category_aggregate!
+
+  """
+  fetch data from the table: "product_category" using primary key columns
+  """
+  product_category_by_pk(id: bigint!): product_category
+
+  """
+  fetch data from the table in a streaming manner: "product_category"
+  """
+  product_category_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_category_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_category_bool_exp
+  ): [product_category!]!
 
   """
   fetch data from the table: "product_customizable_area"

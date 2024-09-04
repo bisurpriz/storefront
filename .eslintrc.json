@@ -16,5 +16,16 @@
     "react-hooks/exhaustive-deps": 0,
     "react/display-name": 0,
     "@typescript-eslint/ban-types": 0
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": ["@graphql-eslint"],
+      "rules": {
+        "prettier/prettier": "error",
+        "@graphql-eslint/known-type-names": "error"
+      }
+    }
+  ]
 }

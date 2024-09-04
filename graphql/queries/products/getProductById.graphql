@@ -1,7 +1,9 @@
 query getProductById($id: bigint = 0) {
   product: product_by_pk(id: $id) {
-    category {
-      name
+    product_categories {
+      category {
+        name
+      }
     }
     description
     id
@@ -48,10 +50,12 @@ query getProductById($id: bigint = 0) {
         count(columns: id)
       }
     }
-    category {
-      name
-      id
-      slug
+    product_categories {
+      category {
+        name
+        id
+        slug
+      }
     }
     tenant {
       id
@@ -90,8 +94,10 @@ query getProductForCart($id: bigint = 0) {
       }
       count
     }
-    category {
-      name
+    product_categories {
+      category {
+        name
+      }
     }
     tenant {
       id
@@ -127,10 +133,12 @@ query getProductsForInitialCart($ids: [bigint!]) {
     score
     stock
     image_url
-    category {
-      id
-      name
-      slug
+    product_categories {
+      category {
+        id
+        name
+        slug
+      }
     }
     tenant {
       id

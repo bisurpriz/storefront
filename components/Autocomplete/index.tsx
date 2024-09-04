@@ -2,6 +2,9 @@ import * as React from "react";
 import { useAutocomplete } from "@mui/base/useAutocomplete";
 import Clear from "../Icons/Clear";
 import ChevronDown from "../Icons/ChevronDown";
+import { unstable_useForkRef as useForkRef } from "@mui/utils";
+import { Popper } from "@mui/base/Popper";
+import clsx from "clsx";
 
 export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
 
@@ -40,7 +43,6 @@ export default function AutoComplete({
   disabled,
   readOnly,
   disableCloseOnSelect,
-  autoComplete = "off",
   error,
   errorMessage,
 }: AutoCompleteProps) {
@@ -55,6 +57,8 @@ export default function AutoComplete({
     getClearProps,
     getPopupIndicatorProps,
     popupOpen,
+    anchorEl,
+    setAnchorEl,
     value: selectedValue,
   } = useAutocomplete<DropdownOption, typeof multiple, false, false>({
     id,
@@ -71,6 +75,10 @@ export default function AutoComplete({
     isOptionEqualToValue: (option, value) => option.value === value.value,
   });
 
+  const ref = React.useRef(null);
+
+  const rootRef = useForkRef(ref, setAnchorEl);
+
   const hasClearIcon = !disabled && dirty && !readOnly;
 
   const hasErrorClass = error
@@ -80,28 +88,24 @@ export default function AutoComplete({
   const disabledClass = disabled ? "bg-gray-100 text-gray-500" : "";
 
   return (
-    <div className="relative">
+    <div>
       <label
-        className={`text-xs font-medium text-gray-700 flex flex-col gap-1 
-      ${error ? "text-red-500" : ""}
+        className={`relative text-xs font-medium text-gray-700 flex flex-col gap-1 w-fit
+        ${error ? "text-red-500" : ""}
       `}
       >
         {label ? <p>{label}</p> : null}
         <div
           {...getRootProps()}
-          className={` ${focused ? "ring-1 ring-primary" : ""} 
-            rounded-md
-            bg-white 
-            border 
-            shadow-sm
-            focus-within:ring-1 focus-within:ring-primary
-            transition-colors duration-200
-            focus-visible:outline-none
-            overflow-hidden
-            flex items-center gap-2
-            ${hasErrorClass}
-            ${disabledClass}
-            `}
+          ref={rootRef}
+          className={clsx(
+            "flex gap-[5px] pr-[5px] overflow-hidden w-80 rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
+            !focused && "shadow-[0_2px_2px_transparent] shadow-gray-50 ",
+            focused &&
+              "border-primary-400 shadow-[0_0_0_3px_transparent] shadow-primary-200 ",
+            hasErrorClass,
+            disabledClass
+          )}
         >
           {multiple && (
             <div className="flex gap-1 flex-nowrap whitespace-nowrap">
@@ -117,19 +121,14 @@ export default function AutoComplete({
           )}
           <input
             {...getInputProps()}
-            className={`
-            text-sm font-normal leading-normal
-            text-gray-900
-            bg-inherit
-            border-none
-            px-3 py-2
-            outline-none
-            flex-1
-            ${disabledClass}
-            ${className ?? ""}`}
+            className={clsx(
+              "text-sm leading-[1.5] text-gray-900  bg-inherit border-0 rounded-[inherit] px-3 py-2 outline-0 grow shrink-0 basis-auto",
+              disabledClass,
+              className
+            )}
             placeholder={placeholder}
             aria-label={label}
-            autoComplete={"off"}
+            autoComplete={"new-password"}
             readOnly={readOnly}
             disabled={disabled}
           />
@@ -138,8 +137,7 @@ export default function AutoComplete({
             <button
               {...getClearProps()}
               type="button"
-              className="flex items-center justify-center p-1 text-gray-500 hover:text-gray-700 rounded-lg
-            transition-transform duration-200 shadow-sm hover:bg-gray-50"
+              className="self-center outline-0 shadow-none border-0 py-0 px-0.5 rounded-[4px] bg-transparent hover:bg-primary-100  hover:cursor-pointer"
             >
               <Clear />
             </button>
@@ -147,62 +145,58 @@ export default function AutoComplete({
 
           <button
             {...getPopupIndicatorProps()}
-            className={`${popupOpen ? "rotate-180" : ""}
-            flex items-center justify-center mr-2 p-1 text-gray-500 hover:text-gray-700 rounded-lg
-            transition-transform duration-200 shadow-sm hover:bg-gray-50
-            ${error ? "text-red-500 hover:text-red-700" : ""}
-          `}
+            className={clsx(
+              "self-center outline-0 shadow-none border-0 py-0 px-0.5 rounded-[4px] bg-transparent hover:bg-primary-100  hover:cursor-pointer",
+              error ? "text-red-500 hover:text-red-700" : ""
+            )}
             disabled={disabled}
           >
-            <ChevronDown />
+            <ChevronDown
+              className={clsx("translate-y-[2px]", popupOpen && "rotate-180")}
+            />
           </button>
         </div>
         {error && errorMessage && (
           <span className="text-xs text-red-500">{errorMessage}</span>
         )}
       </label>
-      {groupedOptions.length > 0 && (
-        <ul
-          {...getListboxProps()}
-          className={`
-            absolute text-sm
-            left-0
-            right-0
-            z-10
-            overflow-auto
-            max-h-60
-            outline-none
-            rounded-md
-            my-3
-            bg-white dark:bg-slate-50
-            border dark:border-slate-200
-            shadow-sm
-            focus-within:ring-1 focus-within:ring-primary
-            transition-colors duration-200
-            focus-visible:outline-none
-            w-full
-            p-1
-            `}
+      {anchorEl && (
+        <Popper
+          open={popupOpen}
+          anchorEl={anchorEl}
+          slotProps={{
+            root: {
+              className: "relative z-[1001] w-80",
+            },
+          }}
+          modifiers={[
+            { name: "flip", enabled: false },
+            { name: "preventOverflow", enabled: false },
+          ]}
         >
-          {(groupedOptions as DropdownOption[]).map((option, index) => (
-            <li
-              {...getOptionProps({ option, index })}
-              key={option.value}
-              className={`
-              list-none
-              p-2
-              my-1
-              rounded-sm
-              cursor-pointer
-              ${index === groupedOptions.length - 1 ? "border-b-0" : ""}
-              hover:bg-primary-light hover:text-white
-              aria-selected:bg-primary aria-selected:text-white
-              `}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
+          <ul
+            {...getListboxProps()}
+            className="text-sm box-border p-1.5 my-3 mx-0 min-w-[320px] rounded-xl overflow-auto outline-0 max-h-[300px] z-[1] bg-white  border border-solid border-gray-200  text-gray-900  shadow-[0_4px_30px_transparent] shadow-gray-200 "
+          >
+            {(groupedOptions as DropdownOption[]).map((option, index) => (
+              <li
+                {...getOptionProps({ option, index })}
+                key={option.value}
+                className="list-none p-2 rounded-lg cursor-default 
+                last-of-type:border-b-0 hover:cursor-pointer 
+                aria-selected:bg-primary-100  aria-selected:text-primary-900 
+                 ui-focused:bg-gray-100  ui-focus-visible:bg-gray-100
+                   ui-focused:text-gray-900  ui-focus-visible:text-gray-900
+                     ui-focus-visible:shadow-[0_0_0_3px_transparent] ui-focus-visible:shadow-primary-200  
+                     ui-focused:aria-selected:bg-primary-100  ui-focus-visible:aria-selected:bg-primary-100
+                      ui-focused:aria-selected:text-primary-900 ui-focus-visible:aria-selected:text-primary-900 
+                      "
+              >
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        </Popper>
       )}
     </div>
   );

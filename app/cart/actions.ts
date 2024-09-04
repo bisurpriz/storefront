@@ -284,11 +284,7 @@ export const getProductByIdForCart = async (id: number) => {
   });
 
   const product: ProductForCart = {
-    category: {
-      id: response.data.product_by_pk.category.id,
-      name: response.data.product_by_pk.category.name,
-      slug: response.data.product_by_pk.category.slug,
-    },
+    product_categories: response.data.product_by_pk.product_categories,
     discount_price: response.data.product_by_pk.discount_price,
     id: response.data.product_by_pk.id,
     image_url: response.data.product_by_pk.image_url,

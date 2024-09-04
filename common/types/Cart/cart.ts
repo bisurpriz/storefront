@@ -8,7 +8,7 @@ export interface ProductForCart
     | "image_url"
     | "name"
     | "price"
-    | "category"
+    | "product_categories"
     | "tenant"
     | "discount_price"
     | "product_customizable_areas"

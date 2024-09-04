@@ -17,7 +17,7 @@ const ProductItem5 = ({
   loading = false,
   discount_price,
   product_customizable_areas,
-  category,
+  product_categories,
   slug,
   totalReviewCount,
   tenant,
@@ -26,12 +26,12 @@ const ProductItem5 = ({
   const stamps = !product_customizable_areas?.length
     ? null
     : ([
-      {
-        name: "Tasarlanabilir",
-        icon: "🎨",
-        color: "orange",
-      },
-    ] as Stamp[]);
+        {
+          name: "Tasarlanabilir",
+          icon: "🎨",
+          color: "orange",
+        },
+      ] as Stamp[]);
 
   return (
     <div
@@ -50,7 +50,7 @@ const ProductItem5 = ({
       <Link
         href={goToProductDetail({
           category: {
-            slug: category.slug,
+            slug: product_categories?.[0]?.category?.slug,
           },
           id,
           slug,
@@ -59,8 +59,9 @@ const ProductItem5 = ({
         className="relative"
       >
         <Image
-          src={`${getImageUrlFromPath(image?.[0])}${image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
-            }`}
+          src={`${getImageUrlFromPath(image?.[0])}${
+            image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
+          }`}
           alt={name}
           width={500}
           height={500}

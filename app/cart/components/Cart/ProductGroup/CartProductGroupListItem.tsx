@@ -21,13 +21,13 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     product_customizable_areas: customize,
     image_url,
     discount_price,
-    category,
+    product_categories,
     is_service_free,
     delivery_type,
   } = product;
 
   const image = getImageUrlFromPath(image_url?.[0]);
-
+  console.log(product_categories, "product_categories");
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
@@ -42,7 +42,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <div className="flex flex-col gap-2">
             <Link
               className="text-base font-semibold text-gray-800 uppercase max-md:text-xs"
-              href={`/${category.slug}/${name}?pid=${id}`}
+              href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
             </Link>

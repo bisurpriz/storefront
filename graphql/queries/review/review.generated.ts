@@ -7,7 +7,7 @@ export type GetOrdersWithReviewsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrdersWithReviewsQuery = { order_item: Array<{ id: any, created_at?: any | null, order_tenant?: { updated_at: any, order_status?: { value: string } | null } | null, product: { slug?: string | null, id: any, name: string, image_url?: Array<string> | null, reviews_aggregate: { aggregate?: { count: number } | null } } }>, review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, product: { slug?: string | null, name: string, id: any, image_url?: Array<string> | null, category: { name: string, slug?: string | null, id: number }, tenant: { id: any, picture?: string | null }, reviews_aggregate: { aggregate?: { count: number } | null } } }> };
+export type GetOrdersWithReviewsQuery = { order_item: Array<{ id: any, created_at?: any | null, order_tenant?: { updated_at: any, order_status?: { value: string } | null } | null, product: { slug?: string | null, id: any, name: string, image_url?: Array<string> | null, reviews_aggregate: { aggregate?: { count: number } | null } } }>, review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, product: { slug?: string | null, name: string, id: any, image_url?: Array<string> | null, product_categories: Array<{ category: { name: string, slug?: string | null, id: number } }>, tenant: { id: any, picture?: string | null }, reviews_aggregate: { aggregate?: { count: number } | null } } }> };
 
 export type CreateReviewMutationVariables = Types.Exact<{
   comment: Types.Scalars['String']['input'];
@@ -63,10 +63,12 @@ export const GetOrdersWithReviewsDocument = gql`
       name
       id
       image_url
-      category {
-        name
-        slug
-        id
+      product_categories {
+        category {
+          name
+          slug
+          id
+        }
       }
       tenant {
         id

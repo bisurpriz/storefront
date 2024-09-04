@@ -93,10 +93,12 @@ const CartSummary = () => {
                 totalWithDiscount={cost.totalWithDiscount}
                 handleRemoveCoupon={handleRemoveCoupon}
               />
-              <CheckContract
-                openApproveContract={openApproveContract}
-                approveContract={approveContract}
-              />
+              {approveContract && pathname === CartStepPaths.CHECKOUT && (
+                <CheckContract
+                  openApproveContract={openApproveContract}
+                  approveContract={approveContract}
+                />
+              )}
             </motion.div>
           </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body
@@ -113,11 +115,13 @@ const CartSummary = () => {
             totalWithDiscount={cost.totalWithDiscount}
             handleRemoveCoupon={handleRemoveCoupon}
           />
-          <CheckContract
-            setApproveContract={setApproveContract}
-            openApproveContract={openApproveContract}
-            approveContract={approveContract}
-          />
+          {approveContract && pathname === CartStepPaths.CHECKOUT && (
+            <CheckContract
+              setApproveContract={setApproveContract}
+              openApproveContract={openApproveContract}
+              approveContract={approveContract}
+            />
+          )}
         </>
       )}
       <div

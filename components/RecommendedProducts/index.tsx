@@ -45,7 +45,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
           <Link
             key={prod.id}
             className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
-            href={`/${prod.category.slug}/${prod.slug}?pid=${prod.id}`}
+            href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
             prefetch={false}
           >
             <div className="absolute top-0 left-0 bg-primary text-white px-2 py-1 rounded-br-lg text-xs">

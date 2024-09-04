@@ -37,7 +37,9 @@ export interface Product {
       count: number;
     };
   };
-  category: Category;
+  product_categories: {
+    category: Category;
+  }[];
   delivery_type_rel: DeliveryTypeRelation;
   tenant: {
     id?: string;

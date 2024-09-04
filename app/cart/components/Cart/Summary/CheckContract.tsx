@@ -36,7 +36,7 @@ const CheckContract: FC<CheckContractProps> = ({
             >
               Mesafeli Satış Sözleşmesi
             </strong>
-            'ni okudum, kabul onaylıyorum.
+            'ni okudum, onaylıyorum.
           </span>
         }
         onChange={(val) => handleApproveContract(val)}
