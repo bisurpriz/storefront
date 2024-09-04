@@ -12,9 +12,9 @@ import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { Popper } from "@mui/base/Popper";
 import { useCart } from "@/contexts/CartContext";
 import Error from "@/components/Icons/Error";
-import FreeCargo from "@/components/Icons/FreeCargo";
-import Alarm from "@/components/Icons/Alarm";
-import { DesignPalette } from "@/components/Icons/DesignPalette";
+import SevenOclock from "@/components/Icons/SevenOclock";
+import FreeTruck from "@/components/Icons/FreeTruck";
+import Palette from "@/components/Icons/Palette";
 
 type ProductInformationProps = {
   name: string;
@@ -176,21 +176,24 @@ const ProductInformation = ({
           promotions={[
             {
               description: DeliveryType.SAME_DAY,
-              icon: <Alarm />,
+              icon: <SevenOclock />,
               filterKey: "SAME_DAY",
               show: isSameDay,
+              color: "info",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <FreeCargo />,
+              icon: <FreeTruck />,
               filterKey: "FREE_SHIPPING",
               show: freeShipping,
+              color: "warning",
             },
             {
               description: "Tasarlanabilir",
-              icon: <DesignPalette />,
+              icon: <Palette />,
               filterKey: "CUSTOMIZABLE",
               show: isCustomizable,
+              color: "secondary",
             },
           ]}
         />

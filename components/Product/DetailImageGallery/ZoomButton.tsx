@@ -20,7 +20,7 @@ const ZoomButton: FC<ZoomButtonProps> = ({ onClick }) => {
         "bg-slate-50 bg-opacity-30 rounded-full shadow-lg"
       )}
     >
-      <SearchBotttomMenu className="w-6 h-6 stroke-[2px]" />
+      <SearchBotttomMenu className="w-6 h-6" />
     </motion.button>
   );
 };

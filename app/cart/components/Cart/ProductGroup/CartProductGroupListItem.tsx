@@ -6,11 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
-import { DesignPalette } from "@/components/Icons/DesignPalette";
 import { DeliveryType } from "@/common/enums/Product/product";
-import Alarm from "@/components/Icons/Alarm";
-import FreeCargo from "@/components/Icons/FreeCargo";
 import GiftCardNote from "./GiftCardNote";
+import SevenOclock from "@/components/Icons/SevenOclock";
+import Palette from "@/components/Icons/Palette";
+import FreeTruck from "@/components/Icons/FreeTruck";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -31,7 +31,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-center justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
+        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
           <Image
             src={image}
             alt="image"
@@ -39,14 +39,14 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             width={500}
             height={500}
           />
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <Link
               className="text-base font-semibold text-gray-800 uppercase max-md:text-xs"
               href={`/${category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
             </Link>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <PriceTag price={price} discount={discount_price} />
               <CartProductGroupListQuantityInput id={id} quantity={quantity} />
             </div>
@@ -58,23 +58,26 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           promotions={[
             {
               description: "Tasarlanabilir",
-              icon: <DesignPalette />,
+              icon: <Palette />,
               filterKey: "CUSTOMIZABLE",
               show: customize?.length > 0,
+              color: "secondary",
             },
             {
               description: DeliveryType.SAME_DAY,
-              icon: <Alarm />,
+              icon: <SevenOclock />,
               filterKey: "SAME_DAY",
               show:
                 delivery_type === (DeliveryType.SAME_DAY as string) ||
                 delivery_type === (DeliveryType.SAME_DAY_CARGO as string),
+              color: "info",
             },
             {
               description: "Ücretsiz kargo",
-              icon: <FreeCargo />,
+              icon: <FreeTruck />,
               filterKey: "FREE_SHIPPING",
               show: is_service_free,
+              color: "warning",
             },
           ]}
         />
