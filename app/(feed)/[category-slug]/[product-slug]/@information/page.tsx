@@ -56,8 +56,8 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
       },
       aggregateRating: {
         type: "AggregateRating",
-        reviewCount: product.reviews_aggregate.aggregate.count,
-        ratingValue: product.reviews_aggregate.aggregate.avg.score ?? 5,
+        reviewCount: product.reviews_aggregate.aggregate.count.toString(),
+        ratingValue: product.reviews_aggregate.aggregate.avg.score.toString(),
       },
     },
   });
