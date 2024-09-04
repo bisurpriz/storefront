@@ -4,16 +4,16 @@ import Link from "next/link";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getBanners } from "@/app/actions";
 
+const getImageUrl = (image: string) => {
+  if (!image) return "https://via.placeholder.com/500";
+
+  return `${getImageUrlFromPath(
+    image
+  )}?width=500&height=500&format=wepb&quality=75`;
+};
+
 const CampaignGrid: FC = async () => {
   const { banners } = await getBanners();
-
-  const getImageUrl = (image: string) => {
-    if (!image) return "https://via.placeholder.com/500";
-
-    return `${getImageUrlFromPath(
-      image
-    )}?width=500&height=500&format=wepb&quality=75`;
-  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4 my-4">
@@ -24,14 +24,22 @@ const CampaignGrid: FC = async () => {
           key={item.id}
         >
           <Image
-            src={getImageUrl(item.path)}
-            width={500}
-            height={500}
             className="rounded-lg w-full h-auto"
             alt={item.name}
-            priority
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
+            sizes="(max-width: 576px) 100vw, 
+                   (max-width: 768px) 50vw, 
+                   (max-width: 992px) 50vw, 
+                   (min-width: 1200px) 33vw"
+            layout="responsive"
+            width={1600}
+            height={900}
+            src={getImageUrl(item.path)}
+            priority={true}
+            loading="eager"
+            objectFit="cover"
+            objectPosition="center"
           />
         </Link>
       ))}
