@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import LogoutButton from "@/components/LogoutButton";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import {
@@ -221,6 +222,7 @@ const ProfileForm = ({
         <Button loading={loading} type="submit" className="w-fit">
           Kaydet
         </Button>
+        <LogoutButton />
       </div>
     </Form>
   ) : (

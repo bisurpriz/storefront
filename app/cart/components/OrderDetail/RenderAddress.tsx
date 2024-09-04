@@ -2,7 +2,12 @@ import Checkbox from "@/components/Checkbox";
 import TextField from "@/components/TextField";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import React, { FC } from "react";
-import { Control, Controller, FieldValues, UseFormSetValue } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  UseFormSetValue,
+} from "react-hook-form";
 import { OrderDetailPartialFormData } from "./ReceiverForm";
 
 type RenderAddressProps = {
@@ -43,23 +48,25 @@ const RenderAddress: FC<RenderAddressProps> = ({
               />
             )}
           />
-          <Controller
-            control={control}
-            name="wantToSaveAddress"
-            render={({ field: { onChange, value } }) => (
-              <Checkbox
-                name="wantToSaveAddress"
-                checked={value}
-                onChange={(e) => {
-                  onChange(e);
-                  setValue("wantToSaveAddress", e);
-                }}
-                label="Sonraki alışverişlerimde bu adresi kullanmak istiyorum."
-                id="wantToSaveAddress"
-                className="text-xs"
-              />
-            )}
-          />
+          {!selectedSavedAddress && (
+            <Controller
+              control={control}
+              name="wantToSaveAddress"
+              render={({ field: { onChange, value } }) => (
+                <Checkbox
+                  name="wantToSaveAddress"
+                  checked={value}
+                  onChange={(e) => {
+                    onChange(e);
+                    setValue("wantToSaveAddress", e);
+                  }}
+                  label="Sonraki alışverişlerimde bu adresi kullanmak istiyorum."
+                  id="wantToSaveAddress"
+                  className="text-xs"
+                />
+              )}
+            />
+          )}
         </>
       )}
     </>

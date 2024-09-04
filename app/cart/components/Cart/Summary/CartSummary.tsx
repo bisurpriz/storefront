@@ -12,6 +12,10 @@ import useResponsive from "@/hooks/useResponsive";
 import { createPortal } from "react-dom";
 import ChevronUp from "@/components/Icons/ChevronUp";
 import { useRouter } from "next/navigation";
+import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import { motion } from "framer-motion";
+import { useContract } from "@/contexts/ContractContext";
+import CheckContract from "./CheckContract";
 
 const CartSummary = () => {
   const {
@@ -19,6 +23,10 @@ const CartSummary = () => {
     loading,
     applyCouponCode,
   } = useCart();
+
+  const { openApproveContract, approveContract, setApproveContract } =
+    useContract();
+
   const pathname = usePathname();
   const { push } = useRouter();
   const { isTablet } = useResponsive();
@@ -54,6 +62,10 @@ const CartSummary = () => {
     await applyCouponCode(couponCode);
   };
 
+  const handleRemoveCoupon = async () => {
+    await applyCouponCode("");
+  };
+
   return (
     <div
       className={clsx(
@@ -63,29 +75,50 @@ const CartSummary = () => {
     >
       {isTablet ? (
         createPortal(
-          <div className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white z-[11]">
-            <SummaryDetail
-              cost={cost.totalPrice}
-              couponMessage={cost.couponMessage}
-              isCouponApplied={cost.isCouponApplied}
-              onDiscountCodeSubmit={handleDiscountCodeSubmit}
-              discountAmount={cost.discountAmount}
-              isOpen={isOpen}
-              totalWithDiscount={cost.totalWithDiscount}
-            />
-          </div>,
+          <AnimationExitProvider show={isOpen}>
+            <motion.div
+              className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white"
+              initial={{ y: 20 }}
+              animate={{ y: 0, zIndex: -1 }}
+              exit={{ y: 20 }}
+              transition={{ duration: 0.1 }}
+            >
+              <SummaryDetail
+                cost={cost.totalPrice}
+                couponMessage={cost.couponMessage}
+                isCouponApplied={cost.isCouponApplied}
+                onDiscountCodeSubmit={handleDiscountCodeSubmit}
+                discountAmount={cost.discountAmount}
+                isOpen={isOpen}
+                totalWithDiscount={cost.totalWithDiscount}
+                handleRemoveCoupon={handleRemoveCoupon}
+              />
+              <CheckContract
+                openApproveContract={openApproveContract}
+                approveContract={approveContract}
+              />
+            </motion.div>
+          </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body
         )
       ) : (
-        <SummaryDetail
-          cost={cost.totalPrice}
-          couponMessage={cost.couponMessage}
-          isCouponApplied={cost.isCouponApplied}
-          isOpen={isOpen}
-          onDiscountCodeSubmit={handleDiscountCodeSubmit}
-          discountAmount={cost.discountAmount}
-          totalWithDiscount={cost.totalWithDiscount}
-        />
+        <>
+          <SummaryDetail
+            cost={cost.totalPrice}
+            couponMessage={cost.couponMessage}
+            isCouponApplied={cost.isCouponApplied}
+            isOpen={isOpen}
+            onDiscountCodeSubmit={handleDiscountCodeSubmit}
+            discountAmount={cost.discountAmount}
+            totalWithDiscount={cost.totalWithDiscount}
+            handleRemoveCoupon={handleRemoveCoupon}
+          />
+          <CheckContract
+            setApproveContract={setApproveContract}
+            openApproveContract={openApproveContract}
+            approveContract={approveContract}
+          />
+        </>
       )}
       <div
         className={clsx(
@@ -115,7 +148,9 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={loading}
+          disabled={
+            loading || (!approveContract && pathname === CartStepPaths.CHECKOUT)
+          }
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"

@@ -12,7 +12,9 @@ import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Cookies from "js-cookie";
+import { checkProductLocation } from "@/app/(feed)/actions";
 
 interface Props {
   productId: number;
@@ -22,6 +24,7 @@ interface Props {
 
 const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+  const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
   const { selectedProduct } = useProduct();
 
@@ -49,14 +52,48 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
 
   const willShowError = !deliveryTime?.day || !deliveryTime?.hour;
 
+  const handleCookie = () => {
+    try {
+      const locationCookie = Cookies.get("location_id")
+        ? parseJson(Cookies.get("location_id"))
+        : null;
+      return locationCookie;
+    } catch (error) {
+      console.error("Error while parsing location cookie", error);
+      return null;
+    }
+  };
+
+  const locationId = handleCookie()?.id;
+  const locType = handleCookie()?.type;
+
+  useEffect(() => {
+    if (!locationId || !locType) return;
+
+    checkProductLocation(locationId, locType, productId).then((isAvailable) => {
+      if (!isAvailable) {
+        setShowPlaceWarning(true);
+      } else {
+        setShowPlaceWarning(false);
+      }
+    });
+  }, [locationId, locType]);
+
   return (
     <>
-      <div className="flex items-center justify-start gap-4 py-4 font-mono">
+      {showPlaceWarning && (
+        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-1 bg-opacity-50 rounded-md my-2">
+          <p className="text-sm font-semibold text-slate-500 max-md:text-xs max-md:font-normal">
+            Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
+          </p>
+        </div>
+      )}
+      <div className="flex items-center justify-start gap-4 py-4 max-md:py-2 max-md:pt-0 font-mono">
         <Button
           size="large"
           color={error ? "error" : "primary"}
           className={clsx("text-base w-full justify-center sm:text-xl")}
-          disabled={loading || error}
+          disabled={loading || error || !locationId || showPlaceWarning}
           onClick={() => {
             if (parseJson(selectedProduct?.delivery_time_ranges)?.length > 0) {
               if (willShowError) {
@@ -68,6 +105,10 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
                 addToCart({
                   id: productId,
                   type: "add",
+                  deliveryLocation: {
+                    id: locationId,
+                    type: locType,
+                  },
                 });
               }
               return;
@@ -75,6 +116,10 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
             addToCart({
               id: productId,
               type: "add",
+              deliveryLocation: {
+                id: locationId,
+                type: locType,
+              },
             });
           }}
           loading={loading}

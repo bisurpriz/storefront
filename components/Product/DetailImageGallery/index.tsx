@@ -2,10 +2,9 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
-import ZoomButton from "./ZoomButton";
-import { useImageZoomModal } from "@/contexts/ImageZoomModalContext";
+import { useCallback, useState } from "react";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { Controlled as ControlledZoom } from "react-medium-image-zoom";
 
 type ProductDetailImageGalleryProps = {
   images: string[];
@@ -15,12 +14,11 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
   const [selectedImage, setSelectedImage] = useState(images?.[0]);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
-
-  const { onOpen } = useImageZoomModal();
 
   const getImageUrl = (image: string) => {
     if (!image) return "https://via.placeholder.com/500";
@@ -29,6 +27,9 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       image
     )}?width=500&height=500&format=wepb&quality=75`;
   };
+  const handleZoomChange = useCallback((shouldZoom) => {
+    setIsZoomed(shouldZoom);
+  }, []);
 
   return (
     <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
@@ -67,19 +68,17 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           resultWidth={400}
           resultHeight={400}
         /> */}
-        <Image
-          src={getImageUrl(selectedImage)}
-          alt="Product Image"
-          className="h-full w-full object-contain"
-          width={500}
-          height={500}
-          priority
-        />
-        <ZoomButton
-          onClick={() => {
-            onOpen(getImageUrl(selectedImage));
-          }}
-        />
+
+        <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
+          <Image
+            src={getImageUrl(selectedImage)}
+            alt="Product Image"
+            className="h-full w-full object-contain"
+            width={500}
+            height={500}
+            priority
+          />
+        </ControlledZoom>
       </div>
     </div>
   );

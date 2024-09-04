@@ -7,4 +7,5 @@ export const CouponMessages = {
   INVALID_COUPON: "Hatalı kupon kodu",
   COUPON_LIMIT_OVER: "Geçersiz kupon",
   TOTAL_AMOUNT_LESS: "Sepet tutarı yetersiz",
+  COUPON_SUCCESS: "Kupon başarıyla uygulandı",
 };

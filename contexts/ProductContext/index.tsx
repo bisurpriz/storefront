@@ -7,13 +7,7 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import { useQuery } from "@apollo/client";
 import { useSearchParams } from "next/navigation";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ReactNode, createContext, useContext } from "react";
 
 interface ProductContextType {
   selectedProduct: GetProductByIdQuery["product"] | null;

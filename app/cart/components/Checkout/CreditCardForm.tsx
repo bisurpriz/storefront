@@ -9,7 +9,10 @@ import { object, string } from "yup";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useEffect, useState } from "react";
-import { initialize3dsPayment } from "@/app/iyzico-payment/actions";
+import {
+  getConversationId,
+  initialize3dsPayment,
+} from "@/app/iyzico-payment/actions";
 import { useUser } from "@/contexts/AuthContext";
 import { OrderDetailPartialFormData } from "../OrderDetail/ReceiverForm";
 import { getIpAddress } from "@/app/actions";
@@ -24,12 +27,8 @@ import clsx from "clsx";
 import usePopup from "@/hooks/usePopup";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal/FramerModal/Modal";
-import { createPortal } from "react-dom";
 import { createOrderAction } from "../../actions";
-import {
-  createBasketItems,
-  getConversationId,
-} from "@/app/iyzico-payment/utils";
+import { createBasketItems } from "@/app/iyzico-payment/utils";
 import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
@@ -179,10 +178,20 @@ const CreditCardForm = () => {
       } as Initialize3dsPaymentRequest;
 
       const response = await initialize3dsPayment(variables);
+
+      const isCouponApplied = cost.isCouponApplied;
+
+      const couponInfo = isCouponApplied
+        ? {
+            code: cost.couponCode,
+            guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
+          }
+        : undefined;
       const res = await createOrderAction(
         cartItems,
         detailData,
-        conversationId
+        conversationId,
+        couponInfo
       );
 
       if (response.errorMessage || res.status === "error") {

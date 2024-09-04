@@ -6,6 +6,8 @@ import ClientModal from "./ClientModal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { createReview } from "../../actions";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Props {
   imageUrl: string;
@@ -24,6 +26,7 @@ const NotReviewedCard = ({
   reviewCount,
   productId,
 }: Props) => {
+  const { refresh } = useRouter();
   const handleCreateReview = async ({
     product_id,
     score,
@@ -33,11 +36,15 @@ const NotReviewedCard = ({
     score: number;
     comment: string;
   }) => {
-    createReview({
+    const response = await createReview({
       product_id,
       score,
       comment,
     });
+    if (response?.created_at) {
+      toast.success("Değerlendirme başarıyla eklendi.");
+    }
+    refresh();
   };
 
   return (

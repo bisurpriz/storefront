@@ -21,16 +21,17 @@ const ProductItem5 = ({
   slug,
   totalReviewCount,
   tenant,
+  score,
 }: ProductItemProps) => {
   const stamps = !product_customizable_areas?.length
     ? null
     : ([
-        {
-          name: "Özelleştirilebilir",
-          icon: "🎨",
-          color: "orange",
-        },
-      ] as Stamp[]);
+      {
+        name: "Tasarlanabilir",
+        icon: "🎨",
+        color: "orange",
+      },
+    ] as Stamp[]);
 
   return (
     <div
@@ -58,9 +59,8 @@ const ProductItem5 = ({
         className="relative"
       >
         <Image
-          src={`${getImageUrlFromPath(image?.[0])}${
-            image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
-          }`}
+          src={`${getImageUrlFromPath(image?.[0])}${image?.[0] ? "?width=500&height=500&format=webp&quality=70" : ""
+            }`}
           alt={name}
           width={500}
           height={500}
@@ -74,12 +74,12 @@ const ProductItem5 = ({
           <div className="flex flex-col gap-2 justify-between flex-grow">
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
-                value={4}
+                value={score ?? 0}
                 readOnly
                 showReviewCount={false}
                 reviewCount={totalReviewCount}
               />
-              {`(${4})`}
+              {score > 0 && `(${score})`}
             </span>
             <h1
               className="text-sm font-normal text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"

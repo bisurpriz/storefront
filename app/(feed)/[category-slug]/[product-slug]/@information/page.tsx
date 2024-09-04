@@ -56,8 +56,8 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
       },
       aggregateRating: {
         type: "AggregateRating",
-        reviewCount: product.reviews_aggregate.aggregate.count,
-        ratingValue: product.reviews_aggregate.aggregate.avg.score ?? 5,
+        reviewCount: `${product.reviews_aggregate.aggregate.count}`,
+        ratingValue: `${product.reviews_aggregate.aggregate.avg.score}`,
       },
     },
   });
@@ -74,7 +74,7 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
           4: 59,
           5: 214,
         }}
-        rating={3.9}
+        rating={product.score ?? 0}
         totalUserCommentCount={240}
         reviewCount={385}
         promotion="Kargo Bedava"
@@ -85,6 +85,7 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         freeShipping={true}
         shippingType={product.delivery_type}
         deliveryTimeRanges={product.delivery_time_ranges}
+        isCustomizable={product.product_customizable_areas?.length > 0}
       />
       <Script
         type="application/ld+json"

@@ -39,28 +39,6 @@ export const generateHashV2 = (
   return Buffer.from(authorizationParams.join("&")).toString("base64");
 };
 
-export async function getConversationId(timeStamps) {
-  try {
-    const userId = Cookies.get(CookieTokens.USER_ID);
-    const guestId = Cookies.get(CookieTokens.GUEST_ID);
-
-    if (!timeStamps) {
-      throw new Error("Timestamp is required");
-    }
-
-    if (userId) {
-      return `${userId}-${timeStamps}`;
-    } else if (guestId) {
-      return `${guestId}-${timeStamps}`;
-    } else {
-      throw new Error("No user or guest ID found");
-    }
-  } catch (error) {
-    console.error("Error creating conversation ID:", error);
-    throw error;
-  }
-}
-
 export const calculateCommissionedAmount = (
   amount: string,
   commissionRate: number

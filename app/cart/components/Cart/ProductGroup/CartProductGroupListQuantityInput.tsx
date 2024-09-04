@@ -33,6 +33,7 @@ const CartProductGroupListQuantityInput = ({
               id: item.id,
               type: "updateq",
               quantity,
+              deliveryLocation: item.deliveryLocation,
             });
           }
         }}

@@ -7,11 +7,11 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Badge from "../Badge";
-import Home from "../Icons/Home";
-import Category from "../Icons/Category";
-import Search from "../Icons/Search";
-import Basket from "../Icons/Basket";
-import User from "../Icons/User";
+import HomeBottomMenu from "../Icons/HomeBottomMenu";
+import Dashboard from "../Icons/Dashboard";
+import SearchBotttomMenu from "../Icons/SearchBotttomMenu";
+import BasketBottomMenu from "../Icons/BasketBottomMenu";
+import UserBottomMenu from "../Icons/UserBottomMenu";
 
 const MenuItem = ({
   item,
@@ -40,10 +40,10 @@ const MenuItem = ({
     >
       {hasBadge?.badgeShow ? (
         <Badge show={hasBadge.badgeShow} text={hasBadge.badgeText}>
-          <span className="text-2xl">{item.icon}</span>
+          <span className="text-2xl flex-1">{item.icon}</span>
         </Badge>
       ) : (
-        <span className="text-2xl">{item.icon}</span>
+        <span className="text-2xl flex-1">{item.icon}</span>
       )}
 
       <span className="text-xs font-medium inline-block max-xs:hidden">
@@ -115,26 +115,26 @@ const mobileBottomMenu = [
   {
     name: "Anasayfa",
     href: "/",
-    icon: <Home />,
+    icon: <HomeBottomMenu />,
   },
   {
     name: "Kategoriler",
     href: "/categories",
-    icon: <Category />,
+    icon: <Dashboard />,
   },
   {
     name: "Arama",
     href: "/search",
-    icon: <Search />,
+    icon: <SearchBotttomMenu />,
   },
   {
     name: "Sepet",
     href: "/cart",
-    icon: <Basket />,
+    icon: <BasketBottomMenu />,
   },
   {
     name: "Profil",
     href: "/account",
-    icon: <User />,
+    icon: <UserBottomMenu />,
   },
 ];

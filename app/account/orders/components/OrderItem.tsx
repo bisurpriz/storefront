@@ -1,4 +1,3 @@
-import { useImageZoomModal } from "@/contexts/ImageZoomModalContext";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";

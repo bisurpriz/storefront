@@ -50,6 +50,26 @@ type ForgotPasswordOutput {
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
+input Int_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [Int!]
+
+  """does the array contain the given value"""
+  _contains: [Int!]
+  _eq: [Int!]
+  _gt: [Int!]
+  _gte: [Int!]
+  _in: [[Int!]!]
+  _is_null: Boolean
+  _lt: [Int!]
+  _lte: [Int!]
+  _neq: [Int!]
+  _nin: [[Int!]!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
 input Int_comparison_exp {
   _eq: Int
   _gt: Int
@@ -5072,6 +5092,10 @@ input district_variance_order_by {
   parent_id: order_by
 }
 
+input get_product_delivery_cities_args {
+  product_id: bigint
+}
+
 scalar json
 
 scalar jsonb
@@ -5918,6 +5942,14 @@ type mutation_root {
   delete_product_customizable_area_by_pk(id: bigint!): product_customizable_area
 
   """
+  delete data from the table: "product_delivery_city_info"
+  """
+  delete_product_delivery_city_info(
+    """filter the rows which have to be deleted"""
+    where: product_delivery_city_info_bool_exp!
+  ): product_delivery_city_info_mutation_response
+
+  """
   delete data from the table: "quarter"
   """
   delete_quarter(
@@ -6701,6 +6733,22 @@ type mutation_root {
     """upsert condition"""
     on_conflict: product_customizable_area_on_conflict
   ): product_customizable_area
+
+  """
+  insert data into the table: "product_delivery_city_info"
+  """
+  insert_product_delivery_city_info(
+    """the rows to be inserted"""
+    objects: [product_delivery_city_info_insert_input!]!
+  ): product_delivery_city_info_mutation_response
+
+  """
+  insert a single row into the table: "product_delivery_city_info"
+  """
+  insert_product_delivery_city_info_one(
+    """the row to be inserted"""
+    object: product_delivery_city_info_insert_input!
+  ): product_delivery_city_info
 
   """
   insert a single row into the table: "product"
@@ -8014,6 +8062,28 @@ type mutation_root {
   ): [product_customizable_area_mutation_response]
 
   """
+  update data of the table: "product_delivery_city_info"
+  """
+  update_product_delivery_city_info(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_delivery_city_info_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_delivery_city_info_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_delivery_city_info_bool_exp!
+  ): product_delivery_city_info_mutation_response
+
+  """
+  update multiples rows of table: "product_delivery_city_info"
+  """
+  update_product_delivery_city_info_many(
+    """updates to execute, in order"""
+    updates: [product_delivery_city_info_updates!]!
+  ): [product_delivery_city_info_mutation_response]
+
+  """
   update multiples rows of table: "product"
   """
   update_product_many(
@@ -8759,6 +8829,42 @@ type order {
 
   """An object relationship"""
   user: user
+
+  """An array relationship"""
+  user_coupons(
+    """distinct select on columns"""
+    distinct_on: [user_coupon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_coupon_order_by!]
+
+    """filter the rows returned"""
+    where: user_coupon_bool_exp
+  ): [user_coupon!]!
+
+  """An aggregate relationship"""
+  user_coupons_aggregate(
+    """distinct select on columns"""
+    distinct_on: [user_coupon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_coupon_order_by!]
+
+    """filter the rows returned"""
+    where: user_coupon_bool_exp
+  ): user_coupon_aggregate!
   user_id: uuid
 }
 
@@ -9387,6 +9493,8 @@ input order_bool_exp {
   transactions_aggregate: transaction_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
   user: user_bool_exp
+  user_coupons: user_coupon_bool_exp
+  user_coupons_aggregate: user_coupon_aggregate_bool_exp
   user_id: uuid_comparison_exp
 }
 
@@ -9458,6 +9566,7 @@ input order_insert_input {
   transactions: transaction_arr_rel_insert_input
   updated_at: timestamptz
   user: user_obj_rel_insert_input
+  user_coupons: user_coupon_arr_rel_insert_input
   user_id: uuid
 }
 
@@ -9467,6 +9576,7 @@ columns and relationships of "order_item"
 type order_item {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9562,6 +9672,7 @@ type order_item {
   product: product!
   product_id: bigint!
   quantity: Int!
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -9658,6 +9769,7 @@ type order_item_avg_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -9671,6 +9783,7 @@ input order_item_avg_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -9683,6 +9796,7 @@ input order_item_bool_exp {
   _or: [order_item_bool_exp!]
   amount: numeric_comparison_exp
   approve_note: String_comparison_exp
+  card_note: String_comparison_exp
   commissioned_amount: numeric_comparison_exp
   created_at: timestamptz_comparison_exp
   delivery_date: timestamp_comparison_exp
@@ -9702,6 +9816,7 @@ input order_item_bool_exp {
   product: product_bool_exp
   product_id: bigint_comparison_exp
   quantity: Int_comparison_exp
+  sell_price: numeric_comparison_exp
   status: order_status_enum_comparison_exp
   tenant_amount: numeric_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -9729,6 +9844,7 @@ input order_item_inc_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
 }
 
@@ -9738,6 +9854,7 @@ input type for inserting data into table "order_item"
 input order_item_insert_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9754,6 +9871,7 @@ input order_item_insert_input {
   product: product_obj_rel_insert_input
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -9765,6 +9883,7 @@ input order_item_insert_input {
 type order_item_max_fields {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9781,6 +9900,7 @@ type order_item_max_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
   updated_at: timestamptz
   user_id: uuid
@@ -9792,6 +9912,7 @@ order by max() on columns of table "order_item"
 input order_item_max_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9803,6 +9924,7 @@ input order_item_max_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
   updated_at: order_by
   user_id: order_by
@@ -9812,6 +9934,7 @@ input order_item_max_order_by {
 type order_item_min_fields {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -9828,6 +9951,7 @@ type order_item_min_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
   updated_at: timestamptz
   user_id: uuid
@@ -9839,6 +9963,7 @@ order by min() on columns of table "order_item"
 input order_item_min_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9850,6 +9975,7 @@ input order_item_min_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
   updated_at: order_by
   user_id: order_by
@@ -9879,6 +10005,7 @@ input order_item_on_conflict {
 input order_item_order_by {
   amount: order_by
   approve_note: order_by
+  card_note: order_by
   commissioned_amount: order_by
   created_at: order_by
   delivery_date: order_by
@@ -9896,6 +10023,7 @@ input order_item_order_by {
   product: product_order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   status: order_by
   tenant_amount: order_by
   updated_at: order_by
@@ -9917,6 +10045,9 @@ enum order_item_select_column {
 
   """column name"""
   approve_note
+
+  """column name"""
+  card_note
 
   """column name"""
   commissioned_amount
@@ -9955,6 +10086,9 @@ enum order_item_select_column {
   quantity
 
   """column name"""
+  sell_price
+
+  """column name"""
   status
 
   """column name"""
@@ -9989,6 +10123,7 @@ input type for updating data in table "order_item"
 input order_item_set_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -10001,6 +10136,7 @@ input order_item_set_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -10787,6 +10923,7 @@ type order_item_stddev_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10800,6 +10937,7 @@ input order_item_stddev_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10811,6 +10949,7 @@ type order_item_stddev_pop_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10824,6 +10963,7 @@ input order_item_stddev_pop_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10835,6 +10975,7 @@ type order_item_stddev_samp_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10848,6 +10989,7 @@ input order_item_stddev_samp_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10866,6 +11008,7 @@ input order_item_stream_cursor_input {
 input order_item_stream_cursor_value_input {
   amount: numeric
   approve_note: String
+  card_note: String
   commissioned_amount: numeric
   created_at: timestamptz
   delivery_date: timestamp
@@ -10878,6 +11021,7 @@ input order_item_stream_cursor_value_input {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   status: order_status_enum
   tenant_amount: numeric
   updated_at: timestamptz
@@ -10892,6 +11036,7 @@ type order_item_sum_fields {
   order_tenant_id: bigint
   product_id: bigint
   quantity: Int
+  sell_price: numeric
   tenant_amount: numeric
 }
 
@@ -10905,6 +11050,7 @@ input order_item_sum_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -10917,6 +11063,9 @@ enum order_item_update_column {
 
   """column name"""
   approve_note
+
+  """column name"""
+  card_note
 
   """column name"""
   commissioned_amount
@@ -10955,6 +11104,9 @@ enum order_item_update_column {
   quantity
 
   """column name"""
+  sell_price
+
+  """column name"""
   status
 
   """column name"""
@@ -10986,6 +11138,7 @@ type order_item_var_pop_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -10999,6 +11152,7 @@ input order_item_var_pop_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -11010,6 +11164,7 @@ type order_item_var_samp_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -11023,6 +11178,7 @@ input order_item_var_samp_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -11034,6 +11190,7 @@ type order_item_variance_fields {
   order_tenant_id: Float
   product_id: Float
   quantity: Float
+  sell_price: Float
   tenant_amount: Float
 }
 
@@ -11047,6 +11204,7 @@ input order_item_variance_order_by {
   order_tenant_id: order_by
   product_id: order_by
   quantity: order_by
+  sell_price: order_by
   tenant_amount: order_by
 }
 
@@ -11157,6 +11315,7 @@ input order_order_by {
   transactions_aggregate: transaction_aggregate_order_by
   updated_at: order_by
   user: user_order_by
+  user_coupons_aggregate: user_coupon_aggregate_order_by
   user_id: order_by
 }
 
@@ -12943,6 +13102,11 @@ type product {
   ): review_aggregate!
 
   """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
+
+  """
   A computed field, executes function "generate_slug"
   """
   slug: String
@@ -13083,6 +13247,11 @@ type product_avg_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -13131,6 +13300,7 @@ input product_bool_exp {
   questions_aggregate: question_aggregate_bool_exp
   reviews: review_bool_exp
   reviews_aggregate: review_aggregate_bool_exp
+  score: numeric_comparison_exp
   slug: String_comparison_exp
   stock: Int_comparison_exp
   stock_track: Boolean_comparison_exp
@@ -13629,6 +13799,200 @@ input product_delete_key_input {
 }
 
 """
+columns and relationships of "product_delivery_city_info"
+"""
+type product_delivery_city_info {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+type product_delivery_city_info_aggregate {
+  aggregate: product_delivery_city_info_aggregate_fields
+  nodes: [product_delivery_city_info!]!
+}
+
+"""
+aggregate fields of "product_delivery_city_info"
+"""
+type product_delivery_city_info_aggregate_fields {
+  avg: product_delivery_city_info_avg_fields
+  count(columns: [product_delivery_city_info_select_column!], distinct: Boolean): Int!
+  max: product_delivery_city_info_max_fields
+  min: product_delivery_city_info_min_fields
+  stddev: product_delivery_city_info_stddev_fields
+  stddev_pop: product_delivery_city_info_stddev_pop_fields
+  stddev_samp: product_delivery_city_info_stddev_samp_fields
+  sum: product_delivery_city_info_sum_fields
+  var_pop: product_delivery_city_info_var_pop_fields
+  var_samp: product_delivery_city_info_var_samp_fields
+  variance: product_delivery_city_info_variance_fields
+}
+
+"""aggregate avg on columns"""
+type product_delivery_city_info_avg_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "product_delivery_city_info". All fields are combined with a logical 'AND'.
+"""
+input product_delivery_city_info_bool_exp {
+  _and: [product_delivery_city_info_bool_exp!]
+  _not: product_delivery_city_info_bool_exp
+  _or: [product_delivery_city_info_bool_exp!]
+  city_code: Int_comparison_exp
+  city_name: String_comparison_exp
+  id: Int_comparison_exp
+}
+
+"""
+input type for incrementing numeric columns in table "product_delivery_city_info"
+"""
+input product_delivery_city_info_inc_input {
+  city_code: Int
+  id: Int
+}
+
+"""
+input type for inserting data into table "product_delivery_city_info"
+"""
+input product_delivery_city_info_insert_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate max on columns"""
+type product_delivery_city_info_max_fields {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate min on columns"""
+type product_delivery_city_info_min_fields {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""
+response of any mutation on the table "product_delivery_city_info"
+"""
+type product_delivery_city_info_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product_delivery_city_info!]!
+}
+
+"""
+Ordering options when selecting data from "product_delivery_city_info".
+"""
+input product_delivery_city_info_order_by {
+  city_code: order_by
+  city_name: order_by
+  id: order_by
+}
+
+"""
+select columns of table "product_delivery_city_info"
+"""
+enum product_delivery_city_info_select_column {
+  """column name"""
+  city_code
+
+  """column name"""
+  city_name
+
+  """column name"""
+  id
+}
+
+"""
+input type for updating data in table "product_delivery_city_info"
+"""
+input product_delivery_city_info_set_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate stddev on columns"""
+type product_delivery_city_info_stddev_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type product_delivery_city_info_stddev_pop_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type product_delivery_city_info_stddev_samp_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
+Streaming cursor of the table "product_delivery_city_info"
+"""
+input product_delivery_city_info_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_delivery_city_info_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_delivery_city_info_stream_cursor_value_input {
+  city_code: Int
+  city_name: String
+  id: Int
+}
+
+"""aggregate sum on columns"""
+type product_delivery_city_info_sum_fields {
+  city_code: Int
+  id: Int
+}
+
+input product_delivery_city_info_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_delivery_city_info_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_delivery_city_info_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_delivery_city_info_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_delivery_city_info_var_pop_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type product_delivery_city_info_var_samp_fields {
+  city_code: Float
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type product_delivery_city_info_variance_fields {
+  city_code: Float
+  id: Float
+}
+
+"""
 input type for incrementing numeric columns in table "product"
 """
 input product_inc_input {
@@ -13689,6 +14053,11 @@ type product_max_fields {
   quantity: Int
 
   """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
+
+  """
   A computed field, executes function "generate_slug"
   """
   slug: String
@@ -13730,6 +14099,11 @@ type product_min_fields {
   price: numeric
   product_no: String
   quantity: Int
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
 
   """
   A computed field, executes function "generate_slug"
@@ -13814,6 +14188,7 @@ input product_order_by {
   quantity: order_by
   questions_aggregate: question_aggregate_order_by
   reviews_aggregate: review_aggregate_order_by
+  score: order_by
   slug: order_by
   stock: order_by
   stock_track: order_by
@@ -13960,6 +14335,11 @@ type product_stddev_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -13982,6 +14362,11 @@ type product_stddev_pop_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14004,6 +14389,11 @@ type product_stddev_samp_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14061,6 +14451,11 @@ type product_sum_fields {
   id: bigint
   price: numeric
   quantity: Int
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Int
 }
 
@@ -14180,6 +14575,11 @@ type product_var_pop_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14202,6 +14602,11 @@ type product_var_samp_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -14224,6 +14629,11 @@ type product_variance_fields {
   id: Float
   price: Float
   quantity: Float
+
+  """
+  A computed field, executes function "get_average_score_of_product"
+  """
+  score: numeric
   stock: Float
 }
 
@@ -15275,6 +15685,56 @@ type query_root {
   district_by_pk(id: Int!): district
 
   """
+  execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
+  """
+  get_product_delivery_cities(
+    """
+    input parameters for function "get_product_delivery_cities"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info"
+  """
+  get_product_delivery_cities_aggregate(
+    """
+    input parameters for function "get_product_delivery_cities_aggregate"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
   fetch data from the table: "message"
   """
   message(
@@ -15797,6 +16257,46 @@ type query_root {
   fetch data from the table: "product_customizable_area" using primary key columns
   """
   product_customizable_area_by_pk(id: bigint!): product_customizable_area
+
+  """
+  fetch data from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  fetch aggregated fields from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
 
   """
   fetch data from the table: "quarter"
@@ -19191,6 +19691,56 @@ type subscription_root {
   ): [district!]!
 
   """
+  execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
+  """
+  get_product_delivery_cities(
+    """
+    input parameters for function "get_product_delivery_cities"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info"
+  """
+  get_product_delivery_cities_aggregate(
+    """
+    input parameters for function "get_product_delivery_cities_aggregate"
+    """
+    args: get_product_delivery_cities_args!
+
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
   fetch data from the table: "message"
   """
   message(
@@ -19867,6 +20417,60 @@ type subscription_root {
     """filter the rows returned"""
     where: product_customizable_area_bool_exp
   ): [product_customizable_area!]!
+
+  """
+  fetch data from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
+
+  """
+  fetch aggregated fields from the table: "product_delivery_city_info"
+  """
+  product_delivery_city_info_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_delivery_city_info_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_delivery_city_info_order_by!]
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): product_delivery_city_info_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "product_delivery_city_info"
+  """
+  product_delivery_city_info_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_delivery_city_info_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_delivery_city_info_bool_exp
+  ): [product_delivery_city_info!]!
 
   """
   fetch data from the table in a streaming manner: "product"
@@ -21371,12 +21975,14 @@ type tenant {
   company_type_rel: company_type
   created_at: timestamptz!
   iban: String
+  iban_holder_name: String
   id: uuid!
   is_active: Boolean!
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
 
   """An object relationship"""
   owner: user!
@@ -21992,12 +22598,14 @@ input tenant_bool_exp {
   company_type_rel: company_type_bool_exp
   created_at: timestamptz_comparison_exp
   iban: String_comparison_exp
+  iban_holder_name: String_comparison_exp
   id: uuid_comparison_exp
   is_active: Boolean_comparison_exp
   iyzi_sub_merchant_key: String_comparison_exp
   legal_company_title: String_comparison_exp
   logo: String_comparison_exp
   name: String_comparison_exp
+  off_days: Int_array_comparison_exp
   owner: user_bool_exp
   owner_id: uuid_comparison_exp
   phone: String_comparison_exp
@@ -22435,12 +23043,14 @@ input tenant_insert_input {
   company_type_rel: company_type_obj_rel_insert_input
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner: user_obj_rel_insert_input
   owner_id: uuid
   phone: String
@@ -22462,11 +23072,13 @@ type tenant_max_fields {
   commision_rate: numeric
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -22485,11 +23097,13 @@ input tenant_max_order_by {
   commision_rate: order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
@@ -22506,11 +23120,13 @@ type tenant_min_fields {
   commision_rate: numeric
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -22529,11 +23145,13 @@ input tenant_min_order_by {
   commision_rate: order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
@@ -22583,12 +23201,14 @@ input tenant_order_by {
   company_type_rel: company_type_order_by
   created_at: order_by
   iban: order_by
+  iban_holder_name: order_by
   id: order_by
   is_active: order_by
   iyzi_sub_merchant_key: order_by
   legal_company_title: order_by
   logo: order_by
   name: order_by
+  off_days: order_by
   owner: user_order_by
   owner_id: order_by
   phone: order_by
@@ -22629,6 +23249,9 @@ enum tenant_select_column {
   iban
 
   """column name"""
+  iban_holder_name
+
+  """column name"""
   id
 
   """column name"""
@@ -22645,6 +23268,9 @@ enum tenant_select_column {
 
   """column name"""
   name
+
+  """column name"""
+  off_days
 
   """column name"""
   owner_id
@@ -22696,12 +23322,14 @@ input tenant_set_input {
   company_type: company_type_enum
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -23192,12 +23820,14 @@ input tenant_stream_cursor_value_input {
   company_type: company_type_enum
   created_at: timestamptz
   iban: String
+  iban_holder_name: String
   id: uuid
   is_active: Boolean
   iyzi_sub_merchant_key: String
   legal_company_title: String
   logo: String
   name: String
+  off_days: [Int!]
   owner_id: uuid
   phone: String
   quarter_id: Int
@@ -23244,6 +23874,9 @@ enum tenant_update_column {
   iban
 
   """column name"""
+  iban_holder_name
+
+  """column name"""
   id
 
   """column name"""
@@ -23260,6 +23893,9 @@ enum tenant_update_column {
 
   """column name"""
   name
+
+  """column name"""
+  off_days
 
   """column name"""
   owner_id
@@ -26008,13 +26644,18 @@ columns and relationships of "user_coupon"
 type user_coupon {
   """An object relationship"""
   coupon: coupon!
-  coupon_id: uuid!
+  coupon_code: String!
   created_at: timestamptz!
+  guest_id: uuid
   id: uuid!
 
   """An object relationship"""
-  user: user!
-  user_id: uuid!
+  order: order!
+  order_id: uuid!
+
+  """An object relationship"""
+  user: user
+  user_id: uuid
 }
 
 """
@@ -26072,9 +26713,12 @@ input user_coupon_bool_exp {
   _not: user_coupon_bool_exp
   _or: [user_coupon_bool_exp!]
   coupon: coupon_bool_exp
-  coupon_id: uuid_comparison_exp
+  coupon_code: String_comparison_exp
   created_at: timestamptz_comparison_exp
+  guest_id: uuid_comparison_exp
   id: uuid_comparison_exp
+  order: order_bool_exp
+  order_id: uuid_comparison_exp
   user: user_bool_exp
   user_id: uuid_comparison_exp
 }
@@ -26094,18 +26738,23 @@ input type for inserting data into table "user_coupon"
 """
 input user_coupon_insert_input {
   coupon: coupon_obj_rel_insert_input
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order: order_obj_rel_insert_input
+  order_id: uuid
   user: user_obj_rel_insert_input
   user_id: uuid
 }
 
 """aggregate max on columns"""
 type user_coupon_max_fields {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26113,17 +26762,21 @@ type user_coupon_max_fields {
 order by max() on columns of table "user_coupon"
 """
 input user_coupon_max_order_by {
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order_id: order_by
   user_id: order_by
 }
 
 """aggregate min on columns"""
 type user_coupon_min_fields {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26131,9 +26784,11 @@ type user_coupon_min_fields {
 order by min() on columns of table "user_coupon"
 """
 input user_coupon_min_order_by {
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order_id: order_by
   user_id: order_by
 }
 
@@ -26160,9 +26815,12 @@ input user_coupon_on_conflict {
 """Ordering options when selecting data from "user_coupon"."""
 input user_coupon_order_by {
   coupon: coupon_order_by
-  coupon_id: order_by
+  coupon_code: order_by
   created_at: order_by
+  guest_id: order_by
   id: order_by
+  order: order_order_by
+  order_id: order_by
   user: user_order_by
   user_id: order_by
 }
@@ -26177,13 +26835,19 @@ select columns of table "user_coupon"
 """
 enum user_coupon_select_column {
   """column name"""
-  coupon_id
+  coupon_code
 
   """column name"""
   created_at
 
   """column name"""
+  guest_id
+
+  """column name"""
   id
+
+  """column name"""
+  order_id
 
   """column name"""
   user_id
@@ -26193,9 +26857,11 @@ enum user_coupon_select_column {
 input type for updating data in table "user_coupon"
 """
 input user_coupon_set_input {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26212,9 +26878,11 @@ input user_coupon_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input user_coupon_stream_cursor_value_input {
-  coupon_id: uuid
+  coupon_code: String
   created_at: timestamptz
+  guest_id: uuid
   id: uuid
+  order_id: uuid
   user_id: uuid
 }
 
@@ -26223,13 +26891,19 @@ update columns of table "user_coupon"
 """
 enum user_coupon_update_column {
   """column name"""
-  coupon_id
+  coupon_code
 
   """column name"""
   created_at
 
   """column name"""
+  guest_id
+
+  """column name"""
   id
+
+  """column name"""
+  order_id
 
   """column name"""
   user_id
@@ -26363,7 +27037,7 @@ enum user_favorite_constraint {
   user_favorite_pkey
 
   """
-  unique or primary key constraint on columns "product_id", "user_id"
+  unique or primary key constraint on columns "user_id", "product_id"
   """
   user_favorite_user_id_product_id_key
 }

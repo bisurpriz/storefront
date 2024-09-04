@@ -13,6 +13,8 @@ import {
   Initialize3dsPaymentRequest,
   Initialize3dsPaymentResponse,
 } from "./types";
+import { cookies } from "next/headers";
+import { CookieTokens } from "../@auth/contants";
 
 const iyzicoUrl = process.env.IYZICO_URL;
 
@@ -50,3 +52,25 @@ export const initialize3dsPayment = async (
     data
   );
 };
+
+export async function getConversationId(timeStamps) {
+  try {
+    const userId = cookies().get(CookieTokens.USER_ID);
+    const guestId = cookies().get(CookieTokens.GUEST_ID);
+
+    if (!timeStamps) {
+      throw new Error("Timestamp is required");
+    }
+
+    if (userId) {
+      return `${userId}-${timeStamps}`;
+    } else if (guestId) {
+      return `${guestId}-${timeStamps}`;
+    } else {
+      throw new Error("No user or guest ID found");
+    }
+  } catch (error) {
+    console.error("Error creating conversation ID:", error);
+    throw error;
+  }
+}

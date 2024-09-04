@@ -6,15 +6,15 @@ import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
 import { DeliveryType } from "@/common/enums/Product/product";
-import Ticket from "@/components/Icons/Ticket";
-import OutlineArchive from "@/components/Icons/OutlineArchive";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { Popper } from "@mui/base/Popper";
 import { useCart } from "@/contexts/CartContext";
-import { useProduct } from "@/contexts/ProductContext";
 import Error from "@/components/Icons/Error";
+import SevenOclock from "@/components/Icons/SevenOclock";
+import FreeTruck from "@/components/Icons/FreeTruck";
+import Palette from "@/components/Icons/Palette";
 
 type ProductInformationProps = {
   name: string;
@@ -33,6 +33,7 @@ type ProductInformationProps = {
   freeShipping?: boolean;
   deliveryTimeRanges: string;
   totalUserCommentCount: number;
+  isCustomizable?: boolean;
 };
 
 const ProductInformation = ({
@@ -49,12 +50,22 @@ const ProductInformation = ({
   shippingType,
   deliveryTimeRanges,
   totalUserCommentCount,
+  isCustomizable,
 }: ProductInformationProps) => {
-  const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
+  const hasDeliveryTime = useMemo(
+    () => Boolean(parseJson(deliveryTimeRanges)?.length),
+    [deliveryTimeRanges]
+  );
 
   const isSameDay = shippingType === "SAME_DAY";
-  const showDaySelect = isSameDay && hasDeliveryTime;
-  const showExactTime = isSameDay && !hasDeliveryTime;
+  const showDaySelect = useMemo(
+    () => isSameDay && hasDeliveryTime,
+    [isSameDay, hasDeliveryTime]
+  );
+  const showExactTime = useMemo(
+    () => isSameDay && !hasDeliveryTime,
+    [isSameDay, hasDeliveryTime]
+  );
 
   const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
 
@@ -75,7 +86,6 @@ const ProductInformation = ({
     };
   }, []);
 
-  const timeout = useRef(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -84,7 +94,7 @@ const ProductInformation = ({
   const id = open ? "rating-popper" : undefined;
 
   return (
-    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
+    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full  max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
         <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
         {vendor && (
@@ -126,11 +136,7 @@ const ProductInformation = ({
           </div>
           <div
             className="xs:ml-auto max-xs:text-start max-xs:mt-4"
-            onMouseLeave={() => {
-              timeout.current = setTimeout(() => {
-                setAnchorEl(null);
-              }, 500);
-            }}
+            onMouseLeave={() => setAnchorEl(null)}
             onMouseEnter={(event: MouseEvent<HTMLElement>) =>
               setAnchorEl(event.currentTarget)
             }
@@ -170,13 +176,24 @@ const ProductInformation = ({
           promotions={[
             {
               description: DeliveryType.SAME_DAY,
-              icon: <Ticket />,
+              icon: <SevenOclock />,
               filterKey: "SAME_DAY",
+              show: isSameDay,
+              color: "info",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <OutlineArchive />,
+              icon: <FreeTruck />,
               filterKey: "FREE_SHIPPING",
+              show: freeShipping,
+              color: "warning",
+            },
+            {
+              description: "Tasarlanabilir",
+              icon: <Palette />,
+              filterKey: "CUSTOMIZABLE",
+              show: isCustomizable,
+              color: "secondary",
             },
           ]}
         />
@@ -195,11 +212,11 @@ const ProductInformation = ({
               deliveryTime={deliveryTime}
             />
             {isSettedDeliveryTime && (
-              <div className="w-full flex space-x-4 items-center py-1 px-4 bg-opacity-50 font-semibold rounded-xl my-2 bg-red-200">
+              <div className="w-full flex space-x-4 items-center py-1 px-4 font-semibold rounded-xl my-2 bg-red-50 border border-red-300">
                 <span className="text-xl text-red-500">
                   <Error className="inline-block" />
                 </span>
-                <p className="text-xs text-gray-500 leading-5">
+                <p className="text-xs text-slate-700 leading-5">
                   Bu ürünü daha önce sepetinize eklediniz! <br /> Tarihi ve
                   saati değiştirirseniz sepetinizdeki ürünün tarih ve saati
                   güncellenecektir.

@@ -2,6 +2,7 @@
 
 import {
   createNewUserAddress,
+  getAvailableCitiesForProduct,
   getUserAddressById,
 } from "@/app/account/actions";
 import {
@@ -33,6 +34,7 @@ import Phone from "@/components/Icons/Phone";
 import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
 import { CartStepPaths } from "../../constants";
+import { useCart } from "@/contexts/CartContext";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -50,8 +52,14 @@ export interface OrderDetailPartialFormData
   wantToSaveAddress?: boolean;
 }
 
+interface AvailableCity {
+  city_code: number;
+  city_name: string;
+  id: number;
+}
+
 interface ReceiverFormProps {
-  cities: CityResponse[];
+  cities: AvailableCity[];
   defaultCity?: CityResponse;
   defaultDistrict?: DistrictResponse;
   defaultQuarter?: QuarterResponse;
@@ -137,16 +145,12 @@ const defaultValues: OrderDetailPartialFormData = {
   user_id: null,
 };
 
-const ReceiverForm = ({
-  cities,
-  defaultCity,
-  defaultDistrict,
-  defaultQuarter,
-}: ReceiverFormProps) => {
+const ReceiverForm = ({ cities }: ReceiverFormProps) => {
   const { user } = useUser();
-  const [selectedSavedAddress, setSelectedSavedAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState(null);
+  const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
+  const { cartState } = useCart();
   const {
     control,
     reset,
@@ -173,12 +177,19 @@ const ReceiverForm = ({
     getUserAddressById().then(({ userAddresses }) => {
       setUserAddresses(userAddresses);
     });
+
+    getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
+      (cities) => {
+        setAvailableCities(cities);
+      }
+    );
   }, []);
 
   const [city, district, invoice_type] = useWatch({
     control,
     name: ["city", "district", "invoice_type"],
   });
+  const savedAddressValue = watch("saved_address");
 
   useEffect(() => {
     const serializeLocale = localStorage.getItem("detail-data");
@@ -187,10 +198,7 @@ const ReceiverForm = ({
     if (localStorageData) {
       reset({
         ...getValues(),
-        saved_address: localStorageData.saved_address,
-        city: defaultCity ?? localStorageData.city,
-        district: defaultDistrict ?? localStorageData.district,
-        quarter: defaultQuarter ?? localStorageData.quarter,
+        saved_address: savedAddressValue ?? localStorageData.saved_address,
         address: localStorageData.address,
         receiver_name: localStorageData.receiver_name,
         receiver_phone: localStorageData.receiver_phone,
@@ -208,12 +216,22 @@ const ReceiverForm = ({
         invoice_company_tax_office: localStorageData.invoice_company_tax_office,
       });
 
-      if (userAddresses?.length > 0) {
-        setSelectedSavedAddress(
-          userAddresses.find(
-            (address) => address.id === localStorageData.saved_address
-          )
-        );
+      const savedAddress = userAddresses?.find(
+        (address) => address.id === parseInt(savedAddressValue)
+      );
+
+      if (savedAddress) {
+        const receiver_phone = formatPhoneNumber(savedAddress.receiver_phone);
+        reset({
+          ...getValues(),
+          address: savedAddress.address,
+          receiver_name:
+            savedAddress.receiver_firstname +
+            " " +
+            savedAddress.receiver_surname,
+          receiver_phone,
+          address_title: savedAddress.address_title,
+        });
       }
 
       return;
@@ -226,46 +244,7 @@ const ReceiverForm = ({
         sender_email: user?.email,
       });
     }
-
-    if (defaultCity && defaultDistrict && defaultQuarter) {
-      reset({
-        ...getValues(),
-        city: defaultCity,
-        district: defaultDistrict,
-        quarter: defaultQuarter,
-      });
-
-      return;
-    }
-
-    if (selectedSavedAddress) {
-      const receiver_phone = formatPhoneNumber(
-        selectedSavedAddress.receiver_phone
-      );
-      reset({
-        ...getValues(),
-        city: selectedSavedAddress.city,
-        district: selectedSavedAddress.district,
-        quarter: selectedSavedAddress.quarter,
-        address: selectedSavedAddress.address,
-        receiver_name:
-          selectedSavedAddress.receiver_firstname +
-          " " +
-          selectedSavedAddress.receiver_surname,
-        receiver_phone,
-        address_title: selectedSavedAddress.address_title,
-      });
-      return;
-    } else {
-      reset({
-        ...getValues(),
-        city: null,
-        district: null,
-        quarter: null,
-        address: "",
-      });
-    }
-  }, [selectedSavedAddress]);
+  }, [savedAddressValue, userAddresses]);
 
   const { districts } = useDiscrits(city?.id);
   const { quarters } = useQuarters(district?.id);
@@ -282,12 +261,15 @@ const ReceiverForm = ({
             district_id: values.district?.id,
             quarter_id: values.quarter?.id,
             receiver_firstname: values.receiver_name?.split(" ")[0],
-            receiver_surname: values.receiver_name?.split(" ").slice(1).join(" "),
+            receiver_surname: values.receiver_name
+              ?.split(" ")
+              .slice(1)
+              .join(" "),
             receiver_phone: values.receiver_phone,
             user_id,
             address_title: values.address_title,
           });
-        } catch(e) {
+        } catch (e) {
           console.error(e);
           toast.error("Adres kaydedilirken bir hata oluştu.", {
             duration: 4000,
@@ -331,14 +313,7 @@ const ReceiverForm = ({
                   value: address.id,
                 }))}
                 onChange={(option: AutoCompleteOption) => {
-                  const savedAddress = userAddresses.find(
-                    (address) => address.id === option?.value
-                  );
-                  reset({
-                    saved_address: option?.value as string,
-                  });
-
-                  setSelectedSavedAddress(savedAddress);
+                  field.onChange(option?.value ?? "");
                 }}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
@@ -521,7 +496,7 @@ const ReceiverForm = ({
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
 
           <RenderAddress
-            selectedSavedAddress={selectedSavedAddress}
+            selectedSavedAddress={savedAddressValue}
             control={control}
             user={user}
             setValue={setValue}
@@ -531,21 +506,19 @@ const ReceiverForm = ({
             control={control}
             name="city"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
-              const selectedCity = cities.find((city) => city.id === value?.id);
-
               return (
                 <AutoComplete
                   value={
-                    selectedCity
+                    value
                       ? {
-                          label: selectedCity.name,
-                          value: selectedCity.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
                   label="İl"
-                  options={cities.map((city) => ({
-                    label: city.name,
+                  options={availableCities.map((city) => ({
+                    label: city.city_name,
                     value: city.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
@@ -566,7 +539,6 @@ const ReceiverForm = ({
                   error={!!error}
                   errorMessage={error?.message}
                   autoComplete="off"
-                  disabled={!!defaultCity}
                 />
               );
             }}
@@ -579,16 +551,13 @@ const ReceiverForm = ({
               field: { onChange, value, ref },
               fieldState: { error },
             }) => {
-              const selectedDistrict = districts.find(
-                (district) => district.id === value?.id
-              );
               return (
                 <AutoComplete
                   value={
-                    selectedDistrict
+                    value
                       ? {
-                          label: selectedDistrict.name,
-                          value: selectedDistrict.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
@@ -612,7 +581,6 @@ const ReceiverForm = ({
                   id="district"
                   error={!!error}
                   errorMessage={error?.message}
-                  disabled={!!defaultDistrict}
                 />
               );
             }}
@@ -622,16 +590,13 @@ const ReceiverForm = ({
             control={control}
             name="quarter"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
-              const selectedQuarter = quarters.find(
-                (quarter) => quarter.id === value?.id
-              );
               return (
                 <AutoComplete
                   value={
-                    selectedQuarter
+                    value
                       ? {
-                          label: selectedQuarter.name,
-                          value: selectedQuarter.id,
+                          label: value?.name,
+                          value: value?.id,
                         }
                       : null
                   }
@@ -650,7 +615,6 @@ const ReceiverForm = ({
                   id="quarter"
                   error={!!error}
                   errorMessage={error?.message}
-                  disabled={!!defaultQuarter}
                 />
               );
             }}

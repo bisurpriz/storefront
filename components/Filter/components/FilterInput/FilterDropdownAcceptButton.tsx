@@ -12,7 +12,11 @@ const FilterDropdownAcceptButton: FC<FilterDropdownAcceptButtonProps> = ({
   handleFilterSubmit,
 }) => {
   return (
-    <div className={clsx("py-2 px-4 w-full flex items-end justify-between")}>
+    <div
+      className={clsx(
+        "py-2 px-4 w-full flex items-end justify-between border-t"
+      )}
+    >
       <Button
         variant="outlined"
         color="info"

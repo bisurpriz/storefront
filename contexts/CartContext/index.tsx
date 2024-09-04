@@ -26,6 +26,7 @@ import {
 import useResponsive from "@/hooks/useResponsive";
 import { useProduct } from "../ProductContext";
 import { isDate } from "date-fns";
+import { DeliveryLocation } from "@/common/types/Order/order";
 
 type AddToCart = ({
   id,
@@ -35,6 +36,9 @@ type AddToCart = ({
   id: number;
   type: "updateq" | "add";
   quantity?: number;
+  deliveryDate?: string;
+  deliveryTime?: string;
+  deliveryLocation: DeliveryLocation;
 }) => void;
 
 interface CartContextType {
@@ -49,6 +53,7 @@ interface CartContextType {
   clearDeliveryTime: () => void;
   isProductInCart: ProductForCart;
   applyCouponCode: (code: string) => Promise<void>;
+  updateCartItemNote: (id: number, note: string) => void;
 }
 
 export interface CartState {
@@ -85,6 +90,7 @@ export const CartContext = createContext<CartContextType>({
   clearDeliveryTime: () => {},
   isProductInCart: null,
   applyCouponCode: async () => {},
+  updateCartItemNote: () => {},
 });
 
 export const CartProvider = ({
@@ -149,16 +155,33 @@ export const CartProvider = ({
     return response;
   };
 
+  const updateCartItemNote = (id: number, note: string) => {
+    const cartItems = [...cartState.cartItems];
+    const index = cartItems.findIndex((item) => item.id === id);
+    if (index === -1) return cartState;
+    cartItems[index].card_note = note;
+    dispatch({
+      type: UPDATE_CART,
+      payload: {
+        cartItems,
+        count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+        cost: cartState.cost,
+      },
+    });
+  };
+
   const addToCart: AddToCart = async ({
     id,
     type,
     quantity,
+    deliveryLocation,
   }: {
     id: number;
     type: "updateq" | "add";
     quantity?: number;
     deliveryDate?: string;
     deliveryTime?: string;
+    deliveryLocation: DeliveryLocation;
   }) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === id);
@@ -170,6 +193,7 @@ export const CartProvider = ({
         ...item,
         deliveryDate: deliveryTime.day,
         deliveryTime: deliveryTime.hour,
+        deliveryLocation: deliveryLocation,
       };
 
       cartItems.push(_item);
@@ -342,6 +366,7 @@ export const CartProvider = ({
     clearDeliveryTime,
     isProductInCart: isProductInCart,
     applyCouponCode,
+    updateCartItemNote,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

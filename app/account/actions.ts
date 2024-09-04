@@ -35,6 +35,12 @@ import {
   RegisterMutationVariables,
 } from "@/graphql/queries/auth/register/register.generated";
 
+import {
+  GetProductDeliveryCitiesDocument,
+  GetProductDeliveryCitiesQuery,
+  GetProductDeliveryCitiesQueryVariables,
+} from "@/graphql/queries/products/getProductLocation.generated";
+
 export const getQuarters = async (districtId: string) => {
   const { data, loading } = await query<
     GetQuartersQuery,
@@ -87,6 +93,22 @@ export const getCities = async () => {
     loading,
     error: null,
   };
+};
+
+export const getAvailableCitiesForProduct = async (pid: number) => {
+  if (!pid) return [];
+  const { data, loading } = await query<
+    GetProductDeliveryCitiesQuery,
+    GetProductDeliveryCitiesQueryVariables
+  >({
+    query: GetProductDeliveryCitiesDocument,
+    variables: {
+      product_id: pid,
+    },
+  });
+
+  const { get_product_delivery_cities } = data;
+  return get_product_delivery_cities;
 };
 
 export const getUserAddressById = async (id?: string) => {

@@ -24,6 +24,7 @@ import {
   GetProductReviewsQueryVariables,
 } from "@/graphql/queries/review/review.generated";
 import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
+import { gql } from "@apollo/client";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
   const { data } = await query<
@@ -127,4 +128,62 @@ export const searchProducts = async (
   } catch (error) {
     console.error("Error fetching suggestions:", error);
   }
+};
+
+export const checkProductLocation = async (
+  locationId: number,
+  type: string,
+  productId: number
+) => {
+  if (!locationId || !type) return;
+  let whereExp = {};
+
+  if (type === "quarter") whereExp = { quarter: { id: { _eq: locationId } } };
+  if (type === "district")
+    whereExp = {
+      quarter: {
+        district: {
+          id: { _eq: locationId },
+        },
+      },
+    };
+  if (type === "city")
+    whereExp = {
+      quarter: {
+        district: {
+          city: {
+            id: { _eq: locationId },
+          },
+        },
+      },
+    };
+
+  const queryExpression = gql`
+    query getLocation($where: tenant_shipping_place_bool_exp, $pid: bigint) {
+      product(where: { id: { _eq: $pid } }) {
+        tenant {
+          tenants {
+            tenant_shipping_places_aggregate(where: $where) {
+              aggregate {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const { data } = await query({
+    query: queryExpression as any,
+    variables: {
+      where: whereExp,
+      pid: productId,
+    },
+  });
+
+  const count =
+    data.product[0]?.tenant?.tenants[0]?.tenant_shipping_places_aggregate
+      ?.aggregate?.count;
+  return count > 0;
 };

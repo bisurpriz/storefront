@@ -1,5 +1,6 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import { ReactNode, Suspense } from "react";
 
 export default async function ProductExample({
@@ -32,12 +33,33 @@ export default async function ProductExample({
         </div>
         <div className="w-1/2 max-md:w-full">
           {information}
+          <Suspense
+            fallback={
+              <>
+                <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
+                <div className="my-4 flex items-center justify-between gap-6">
+                  {Array.from({
+                    length: 3,
+                  }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
+                    />
+                  ))}
+                </div>
+              </>
+            }
+          >
+            <div className="mb-2">
+              <ServerQuerySelector />
+            </div>
+          </Suspense>
           {action}
         </div>
       </section>
 
       <section
-        className="mt-6"
+        className="mt-6 max-md:mt-2"
         aria-labelledby="product-detail"
         aria-describedby="Ürün Detayları"
         id="product-detail"

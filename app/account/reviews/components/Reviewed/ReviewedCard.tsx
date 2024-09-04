@@ -48,7 +48,7 @@ const ReviewedCard = async ({
         </p>
         <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
           <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
-          {reviewCount}
+          {reviewCount} değerlendirme
         </div>
 
         <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">

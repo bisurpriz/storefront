@@ -30,6 +30,8 @@ export interface Product {
   product_customizable_areas: ProductCustomizableArea[];
   questions: Question[];
   reviews: Review[];
+  is_service_free: boolean;
+  score: number;
   reviews_aggregate: {
     aggregate: {
       count: number;
