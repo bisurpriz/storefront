@@ -6279,7 +6279,6 @@ __metadata:
     react-hook-form: "npm:^7.48.2"
     react-hot-toast: "npm:^2.4.1"
     react-intersection-observer: "npm:^9.5.2"
-    react-medium-image-zoom: "npm:^5.2.9"
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.2"
     subscriptions-transport-ws: "npm:^0.11.0"
@@ -9486,16 +9485,6 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
-  languageName: node
-  linkType: hard
-
-"react-medium-image-zoom@npm:^5.2.9":
-  version: 5.2.9
-  resolution: "react-medium-image-zoom@npm:5.2.9"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/8b081eb568081a73ab77595d1c8ba9e270e06f26a41936507ce057a153422853cd7a9f2a1ddb22cdb4ac1fa6a75d4fc995284973074cb6f0b3102b7d77490092
   languageName: node
   linkType: hard
 
