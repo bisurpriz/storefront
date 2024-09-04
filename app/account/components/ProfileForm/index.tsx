@@ -1,13 +1,14 @@
 "use client";
 
 import Button from "@/components/Button";
+import LogoutButton from "@/components/LogoutButton";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import {
   UpdateUserByIdDocument,
   UpdateUserByIdMutation,
   UpdateUserByIdMutationVariables,
-} from "@/graphql/generated";
+} from "@/graphql/queries/account/account.generated";
 import { localeDistanceFormat } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { useMutation } from "@apollo/client";
@@ -17,6 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { object, string } from "yup";
 
 const schema = object().shape({
@@ -55,8 +57,17 @@ const ProfileForm = ({
         id,
         firstname: rest.firstname,
         lastname: rest.lastname,
-        phone: phone,
+        phone: phone.replace(/[^0-9]/g, ""),
       },
+    });
+    toast.success("Profil bilgileriniz başarıyla güncellendi.", {
+      position: "bottom-right",
+      ariaProps: {
+        "aria-live": "polite",
+        role: "status",
+      },
+      id: "login-success",
+      duration: 3000,
     });
   };
 
@@ -211,6 +222,7 @@ const ProfileForm = ({
         <Button loading={loading} type="submit" className="w-fit">
           Kaydet
         </Button>
+        <LogoutButton />
       </div>
     </Form>
   ) : (

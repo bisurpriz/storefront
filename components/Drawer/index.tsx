@@ -1,9 +1,9 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { clsx } from "clsx";
-import { AiOutlineClose } from "react-icons/ai";
 import { usePathname } from "next/navigation";
+import Close from "../Icons/Close";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -42,20 +42,17 @@ const Drawer: React.FC<DrawerProps> = ({
     }
   }, [pathname]);
 
-  const handleEsc = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    },
-    [onClose]
-  );
+  const handleEsc = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose?.();
+    }
+  };
 
-  const handleResize = useCallback(() => {
+  const handleResize = () => {
     if (window.innerWidth > 640) {
       onClose?.();
     }
-  }, [onClose]);
+  };
 
   useEffect(() => {
     window.addEventListener("keydown", handleEsc);
@@ -136,7 +133,7 @@ const Drawer: React.FC<DrawerProps> = ({
                     className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                     onClick={onClose}
                   >
-                    <AiOutlineClose size={24} />
+                    <Close className="text-2xl" />
                   </button>
                 </div>
                 {children}
@@ -149,4 +146,4 @@ const Drawer: React.FC<DrawerProps> = ({
   );
 };
 
-export default memo(Drawer);
+export default Drawer;

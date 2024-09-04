@@ -2,84 +2,89 @@
 
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 import Button from "../Button";
 import clsx from "clsx";
+import Close from "../Icons/Close";
 
 interface ImageUploadProps {
-  onChange: (files: string[] | null) => void;
+  onChange: (files: File[] | null) => void;
   id?: string;
   defaultValue?: string | null;
   label?: string;
-  count?: number;
+  maxCharacter?: number;
+  disabled?: boolean;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   id,
-  defaultValue = null,
   label,
-  count,
+  maxCharacter,
+  disabled,
 }) => {
-  const [selectedImages, setSelectedImages] = useState<string[] | null>(
-    defaultValue ? [defaultValue] : null
-  );
+  const [selectedImages, setSelectedImages] = useState<File[] | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files.length === 0) return;
 
-    const images = Array.from(files).map((file) => URL.createObjectURL(file));
-    const data = selectedImages ? [...selectedImages, ...images] : images;
-
-    if (data.length > count) {
-      data.splice(count, data.length - count);
+    let fileItems = [] as File[];
+    for (let index = 0; index < files.length; index++) {
+      const element = files.item(index);
+      fileItems.push(element);
     }
 
-    setSelectedImages(data);
-    onChange(data);
+    if (fileItems.length > maxCharacter) {
+      fileItems.splice(maxCharacter, files.length - maxCharacter);
+    }
+
+    setSelectedImages(fileItems);
+    onChange(fileItems);
   };
 
   return (
-    <div
-      className={clsx("flex items-center justify-center gap-3 rounded-md", {
-        "flex-row-reverse": selectedImages?.length,
-      })}
-    >
-      <label className="mt-2">
+    <div className={clsx("flex items-center justify-start gap-2")}>
+      <label
+        className={clsx(
+          "p-4 rounded-md border border-gray-300 cursor-pointer text-sm text-slate-500",
+          {
+            "bg-gray-200": selectedImages?.length,
+          }
+        )}
+      >
         <input
           type="file"
           accept="image/*"
           multiple
           onChange={handleFileChange}
           name={id}
+          max={maxCharacter}
+          maxLength={maxCharacter}
           id={id}
           className="hidden"
-          disabled={selectedImages?.length >= count}
+          disabled={selectedImages?.length >= maxCharacter || disabled}
         />
-        <span
-          className={clsx(
-            "text-white rounded-md p-2 cursor-pointer",
-            selectedImages?.length >= count ? "bg-gray-400" : "bg-green-500"
-          )}
-        >
-          Resim Yükle ({selectedImages?.length ?? 0}/{count})
+        <span>
+          Resim Yükle ({selectedImages?.length ?? 0}/{maxCharacter})
         </span>
       </label>
       {selectedImages && (
-        <div className="w-full flex gap-2 overflow-hidden">
+        <div className="w-full flex gap-2 max-w-lg overflow-hidden overflow-y-auto">
           {selectedImages?.map((image, index) => (
-            <div className="relative" key={image}>
-              <span>
-                <Image
-                  src={image}
-                  width={100}
-                  height={100}
-                  alt="Resim"
-                  className="rounded-md object-contain w-28 h-28"
-                />
-              </span>
+            <div
+              className="relative w-28 h-28 rounded-lg overflow-hidden"
+              key={image.name}
+            >
+              <Image
+                src={
+                  typeof image === "string" ? image : URL.createObjectURL(image)
+                }
+                width={100}
+                height={100}
+                alt="Resim"
+                className="object-contain w-full h-full flex-1"
+              />
               <Button
                 type="button"
                 onClick={() => {
@@ -91,7 +96,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 variant="outlined"
                 className="!absolute !top-1 !right-1 !p-[2px] rounded-full"
               >
-                <AiOutlineClose />
+                <Close />
               </Button>
             </div>
           ))}

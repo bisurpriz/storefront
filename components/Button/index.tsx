@@ -1,9 +1,10 @@
 import {
-  forwardRef,
   ButtonHTMLAttributes,
   ReactNode,
   CSSProperties,
   Suspense,
+  RefObject,
+  FC,
 } from "react";
 import Spinner from "../Spinner";
 
@@ -23,160 +24,159 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: "primary" | "error" | "warning" | "secondary" | "success" | "info";
   children?: ReactNode;
   ownerState?: Record<string, any>;
+  ref?: RefObject<HTMLButtonElement>;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      size = "medium",
-      fullWidth,
-      rounded = true,
-      loading,
-      disabled,
-      variant = "default",
-      color = "primary",
-      icon,
-      iconSize,
-      children,
-      onClick,
-      label,
-      type = "button",
-      className,
-      ownerState,
-      ...rest
-    },
-    ref
-  ) => {
-    const sizeClasses = {
-      small: "py-2 px-4 text-sm",
-      medium: "py-3 px-6 text-base",
-      large: "py-4 px-8 text-lg",
-    };
+const Button: FC<ButtonProps> = ({
+  size = "medium",
+  fullWidth,
+  rounded = true,
+  loading,
+  disabled,
+  variant = "default",
+  color = "primary",
+  icon,
+  iconSize,
+  children,
+  onClick,
+  label,
+  type = "button",
+  className,
+  ownerState,
+  ref,
+  ...rest
+}) => {
+  const sizeClasses = {
+    small: "py-2 px-4 text-sm",
+    medium: "py-3 px-6 text-base",
+    large: "py-4 px-8 text-lg",
+  };
 
-    const baseClasses =
-      "flex items-center font-medium cursor-pointer relative transition-colors duration-200 focus:outline-none focus-visible:outline-none";
-    const sizeClass = sizeClasses[size];
-    const widthClass = fullWidth ? "w-full" : "";
-    const roundedClass = rounded ? "rounded" : "";
-    const loadingClass = loading ? "opacity-50 cursor-not-allowed" : "";
-    const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
+  const baseClasses =
+    "flex items-center font-medium cursor-pointer relative transition-colors duration-200 focus:outline-none focus-visible:outline-none";
+  const sizeClass = sizeClasses[size];
+  const widthClass = fullWidth ? "w-full" : "";
+  const roundedClass = rounded ? "rounded" : "";
+  const loadingClass = loading ? "opacity-50 cursor-not-allowed" : "";
+  const disabledStyle = disabled
+    ? "bg-slate-200 text-stone-400 !cursor-not-allowed hover:bg-slate-200 hover:text-stone-400"
+    : "";
 
-    const colors = (() => {
-      // check variant
-      switch (variant) {
-        case "outlined":
-        case "dashed":
-          return {
-            primary:
-              "text-primary border border-primary hover:bg-primary hover:text-white",
-            error:
-              "text-error border border-error hover:bg-error hover:text-white",
-            warning:
-              "text-warning border border-warning hover:bg-warning hover:text-white",
-            secondary:
-              "text-secondary border border-secondary hover:bg-secondary hover:text-white",
-            success:
-              "text-success border border-success hover:bg-success hover:text-white",
-            info: "text-info border border-info hover:bg-info hover:text-white",
-          };
-        case "fullfilled":
-          return {
-            primary: "bg-primary text-white hover:bg-primary-dark",
-            error: "bg-error text-white hover:bg-error-dark",
-            warning: "bg-warning text-white hover:bg-warning-dark",
-            secondary: "bg-secondary text-white hover:bg-secondary-dark",
-            success: "bg-success text-white hover:bg-success-dark",
-            info: "bg-info text-white hover:bg-info-dark",
-          };
-        case "link":
-          return {
-            primary: "text-primary hover:text-primary-dark",
-            error: "text-error hover:text-error-dark",
-            warning: "text-warning hover:text-warning-dark",
-            secondary: "text-secondary hover:text-secondary-dark",
-            success: "text-success hover:text-success-dark",
-            info: "text-info hover:text-info-dark",
-          };
-        default:
-          return {
-            primary: "bg-primary text-white hover:bg-primary-dark",
-            error: "bg-error text-white hover:bg-error-dark",
-            warning: "bg-warning text-white hover:bg-warning-dark",
-            secondary: "bg-secondary text-white hover:bg-secondary-dark",
-            success: "bg-success text-white hover:bg-success-dark",
-            info: "bg-info text-white hover:bg-info-dark",
-          };
+  const colors = (() => {
+    // check variant
+    switch (variant) {
+      case "outlined":
+      case "dashed":
+        return {
+          primary:
+            "text-primary border border-primary hover:bg-primary hover:text-white",
+          error:
+            "text-error border border-error hover:bg-error hover:text-white",
+          warning:
+            "text-warning border border-warning hover:bg-warning hover:text-white",
+          secondary:
+            "text-secondary border border-secondary hover:bg-secondary hover:text-white",
+          success:
+            "text-success border border-success hover:bg-success hover:text-white",
+          info: "text-info border border-info hover:bg-info hover:text-white",
+        };
+      case "fullfilled":
+        return {
+          primary: "bg-primary text-white hover:bg-primary-dark",
+          error: "bg-error text-white hover:bg-error-dark",
+          warning: "bg-warning text-white hover:bg-warning-dark",
+          secondary: "bg-secondary text-white hover:bg-secondary-dark",
+          success: "bg-success text-white hover:bg-success-dark",
+          info: "bg-info text-white hover:bg-info-dark",
+        };
+      case "link":
+        return {
+          primary: "text-primary hover:text-primary-dark",
+          error: "text-error hover:text-error-dark",
+          warning: "text-warning hover:text-warning-dark",
+          secondary: "text-secondary hover:text-secondary-dark",
+          success: "text-success hover:text-success-dark",
+          info: "text-info hover:text-info-dark",
+        };
+      default:
+        return {
+          primary: "bg-primary text-white hover:bg-primary-dark",
+          error: "bg-error text-white hover:bg-error-dark",
+          warning: "bg-warning text-white hover:bg-warning-dark",
+          secondary: "bg-secondary text-white hover:bg-secondary-dark",
+          success: "bg-success text-white hover:bg-success-dark",
+          info: "bg-info text-white hover:bg-info-dark",
+        };
+    }
+  })();
+
+  const colorClass = (() => {
+    switch (color) {
+      case "primary":
+        return colors.primary;
+      case "error":
+        return colors.error;
+      case "warning":
+        return colors.warning;
+      case "secondary":
+        return colors.secondary;
+      case "success":
+        return colors.success;
+      case "info":
+        return colors.info;
+      default:
+        return "";
+    }
+  })();
+
+  const variantClass = (() => {
+    switch (variant) {
+      case "outlined":
+        return "border";
+      case "dashed":
+        return "border-dashed";
+      case "link":
+        return "border-0 underline";
+      case "fullfilled":
+        return "bg-primary text-white hover:bg-primary-dark";
+      default:
+        return "";
+    }
+  })();
+
+  const iconStyle: CSSProperties = {
+    width: `${iconSize}px`,
+    height: `${iconSize}px`,
+    fontSize: `${iconSize ?? 24}px`,
+  };
+
+  return (
+    <Suspense
+      fallback={
+        <Spinner
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit`}
+        />
       }
-    })();
-
-    const colorClass = (() => {
-      switch (color) {
-        case "primary":
-          return colors.primary;
-        case "error":
-          return colors.error;
-        case "warning":
-          return colors.warning;
-        case "secondary":
-          return colors.secondary;
-        case "success":
-          return colors.success;
-        case "info":
-          return colors.info;
-        default:
-          return "";
-      }
-    })();
-
-    const variantClass = (() => {
-      switch (variant) {
-        case "outlined":
-          return "border";
-        case "dashed":
-          return "border-dashed";
-        case "link":
-          return "border-0 underline";
-        case "fullfilled":
-          return "bg-primary text-white hover:bg-primary-dark";
-        default:
-          return "";
-      }
-    })();
-
-    const iconStyle: CSSProperties = {
-      width: `${iconSize}px`,
-      height: `${iconSize}px`,
-      fontSize: `${iconSize ?? 24}px`,
-    };
-
-    return (
-      <Suspense
-        fallback={
-          <Spinner
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit`}
-          />
-        }
+    >
+      <button
+        ref={ref}
+        className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
+        onClick={onClick}
+        disabled={disabled || loading}
+        type={type}
+        {...rest}
       >
-        <button
-          ref={ref}
-          className={`whitespace-nowrap ${baseClasses} ${sizeClass} ${widthClass} ${roundedClass} ${loadingClass} ${variantClass} ${colorClass} ${disabledStyle} ${className}`}
-          onClick={onClick}
-          disabled={disabled || loading}
-          type={type}
-          {...rest}
-        >
-          {icon && <span style={iconStyle}>{icon}</span>}
-          {loading && (
-            <Spinner
-              style={iconStyle}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
-            />
-          )}
-          {children || label}
-        </button>
-      </Suspense>
-    );
-  }
-);
+        {icon && <span style={iconStyle}>{icon}</span>}
+        {loading && (
+          <Spinner
+            style={iconStyle}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 min-w-min bg-stone-400 bg-opacity-40 w-full h-full rounded flex items-center justify-center text-inherit"
+          />
+        )}
+        {children || label}
+      </button>
+    </Suspense>
+  );
+};
 
 export default Button;

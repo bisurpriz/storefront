@@ -44,7 +44,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
     let inputPhoneNumber = event.target.value;
 
     // Sadece sayıları al
-    inputPhoneNumber = inputPhoneNumber.replace(/\D/g, "");
+    inputPhoneNumber = inputPhoneNumber?.replace(/\D/g, "");
 
     // Telefon numarasını formatla (XXX) XXX-XXXX
 

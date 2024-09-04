@@ -1,7 +1,6 @@
-import ProductItemSkeleton from './ProductItemSkeleton';
-import ProductItemImage from '../ProductItemImage/ProductItemImage';
-import AddCartButton from './components/AddCartButton';
-import { ProductItemProps } from '.';
+import ProductItemSkeleton from "./ProductItemSkeleton";
+import ProductItemImage from "../ProductItemImage/ProductItemImage";
+import { ProductItemProps } from ".";
 
 function ProductItem4({
   description,
@@ -38,18 +37,6 @@ function ProductItem4({
       </div>
       <div className="flex justify-between items-end mt-4 max-2xl:flex-col max-2xl:justify-start max-2xl:items-start max-2xl:gap-4 grow">
         <div className="text-2xl font-bold">{price} ₺</div>
-        <AddCartButton
-          id={id}
-          image_url={image}
-          name={name}
-          price={price}
-          loading={loading}
-          category={null}
-          discount_price={null}
-          product_customizable_areas={null}
-          quantity={1}
-          tenant={tenant}
-        />
       </div>
     </div>
   ) : (

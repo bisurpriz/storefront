@@ -1,57 +1,122 @@
-import React, { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from "react";
 import { addDays } from "date-fns";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Button from "@/components/Button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
+import { TimeRange } from "../HourSelect/utils";
+import { DeliveryTime } from "@/contexts/CartContext";
 
-const CustomButton = ({ isSelected, selectedHour, children, ...props }) => {
+const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
       variant="outlined"
       color="secondary"
       className={clsx(
-        { "bg-secondary text-white": isSelected },
-        "max-sm:px-0 flex flex-col justify-center items-center"
+        { "bg-secondary text-white ": isSelected },
+        "max-sm:px-0 flex flex-col justify-center items-center",
+        "rounded-md px-2 py-6 w-full max-md:p-2",
+        "text-xl max-md:text-sm",
+        "hover:bg-secondary hover:text-white",
+        "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
+        "transition-all duration-200 ease-in-out"
       )}
       {...props}
     >
       {children}
-      {selectedHour && isSelected && (
-        <span className="text-xs">{selectedHour}</span>
-      )}
     </Button>
   );
 };
 
-const DaySelect: React.FC = () => {
+type Props = {
+  deliveryTimes: TimeRange[] | null;
+  onSelect: (deliveryTime: DeliveryTime) => void;
+  deliveryTime: DeliveryTime;
+};
+
+const DaySelect: React.FC<Props> = ({
+  deliveryTimes,
+  onSelect,
+  deliveryTime,
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedButton, setSelectedButton] = useState<number>(0);
-  const [selectedHour, setSelectedHour] = useState<string>(null);
+  const [selectedHour, setSelectedHour] = useState<string | null>(null);
+  const [selectedButton, setSelectedButton] = useState<number | null>(null);
+  const [availableHours, setAvailableHours] = useState<TimeRange[] | null>(
+    null
+  );
 
   const handleButtonClick = (daysToAdd: number) => {
-    setSelectedHour(null);
     const date = addDays(new Date(), daysToAdd);
     setSelectedDate(date);
     setSelectedButton(daysToAdd);
+    setSelectedHour(null);
   };
 
-  const handleSelectHour = (hour: Date) => {
-    const text = `${hour.getHours()}:00 - ${hour.getHours() + 1}:00`;
-    setSelectedHour(text);
+  const handleSelectHour = (hour: string) => {
+    onSelect({
+      day: selectedDate,
+      hour,
+    });
+    setSelectedHour(hour);
   };
+
+  const calculateTodayAvailableHours = () => {
+    const today = new Date();
+    const nowHour = today.getHours();
+
+    if (selectedDate?.getDate() !== today.getDate()) {
+      return deliveryTimes;
+    } else {
+      return [...deliveryTimes]?.filter((time) => {
+        const [startHour, startMinute] = time.start_time.split(":");
+        const [endHour, endMinute] = time.end_time.split(":");
+
+        if (nowHour < parseInt(startHour)) return true;
+
+        if (
+          nowHour === parseInt(startHour) &&
+          today.getMinutes() < parseInt(startMinute)
+        )
+          return true;
+
+        if (nowHour < parseInt(endHour)) return true;
+
+        return false;
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (deliveryTimes) {
+      const availableHours = calculateTodayAvailableHours();
+      setAvailableHours(availableHours);
+    }
+  }, [deliveryTimes, selectedDate]);
+
+  useEffect(() => {
+    if (Boolean(deliveryTime.day && deliveryTime.hour)) {
+      setSelectedDate(new Date(deliveryTime.day));
+      setSelectedHour(deliveryTime.hour);
+      setSelectedButton(
+        [0, 1, 2].findIndex(
+          (index) =>
+            localeFormat(addDays(new Date(), index), "PPP") ===
+            localeFormat(new Date(deliveryTime.day), "PPP")
+        )
+      );
+    }
+  }, [deliveryTime]);
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4  font-sans mb-2">
       <div className={clsx("grid grid-cols-3 gap-2")}>
         {Array.from({ length: 3 }).map((_, index) => (
           <CustomButton
             key={index}
             isSelected={selectedButton === index}
             onClick={() => handleButtonClick(index)}
-            selectedHour={selectedHour}
           >
             <span>
               {index === 0
@@ -62,34 +127,39 @@ const DaySelect: React.FC = () => {
             </span>
           </CustomButton>
         ))}
-      </div>
-
-      <AnimatePresence>
         {selectedDate && (
           <motion.div
-            key={selectedDate?.toString()}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            key={selectedDate.toString()}
+            initial={{ x: 20 }}
+            animate={{ x: 0 }}
+            exit={{ x: 20 }}
             transition={{ duration: 0.2 }}
+            className={clsx(
+              { "col-start-1 col-end-2": selectedButton === 0 },
+              { "col-start-2 col-end-3": selectedButton === 1 },
+              { "col-start-3 col-span-1": selectedButton === 2 }
+            )}
           >
             <HourSelect
-              deliveryTimeRanges={[
-                {
-                  start_time: "09:00",
-                  end_time: "12:00",
-                },
-                {
-                  start_time: "19:00",
-                  end_time: "23:00",
-                },
-              ]}
-              currentDate={selectedDate}
+              deliveryTimeRanges={availableHours}
               onHourSelect={handleSelectHour}
+              selectedHour={selectedHour}
             />
           </motion.div>
         )}
-      </AnimatePresence>
+      </div>
+      {selectedHour && (
+        <span
+          className={clsx(
+            "text-xs text-gray-500",
+            "p-2 rounded-lg bg-6 text-slate-500"
+          )}
+        >
+          Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}
+          tarihinde <strong>{selectedHour}</strong> saatleri arasında teslim
+          edilecektir.
+        </span>
+      )}
     </div>
   );
 };

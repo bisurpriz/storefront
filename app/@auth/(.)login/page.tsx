@@ -8,7 +8,7 @@ const ModalLoginPage = () => {
   const { back } = useRouter();
 
   return (
-    <Modal handleClose={back} open>
+    <Modal handleClose={back} open={true}>
       <LoginForm
         onSuccessfulLogin={(status) => {
           if (status) {

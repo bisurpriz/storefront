@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextField from "../TextField";
 import { checkBin } from "@/app/iyzico-payment/actions";
 import { getCardAssociationImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
-import { LuCreditCard } from "react-icons/lu";
+import CreditCard from "../Icons/CreditCard";
 
 const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
   const [creditCardNumber, setCreditCardNumber] = useState("");
@@ -42,12 +42,12 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
     };
   }, []);
 
-  const formatCreditCardNumber = useCallback((number) => {
+  const formatCreditCardNumber = (number) => {
     return number
       .replace(/\s/g, "")
       .replace(/(\d{4})/g, "$1 ")
       .trim();
-  }, []);
+  };
 
   return (
     <TextField
@@ -61,7 +61,7 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
         cardTypeImage ? (
           <Image width={20} height={20} src={cardTypeImage} alt="card type" />
         ) : (
-          <LuCreditCard size={20} />
+          <CreditCard className="text-xl" />
         )
       }
       fullWidth

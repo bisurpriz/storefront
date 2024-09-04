@@ -1,17 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PiSpinner } from "react-icons/pi";
 import clsx from "clsx";
-import { VscSearchStop } from "react-icons/vsc";
-import { CiSquareRemove } from "react-icons/ci";
-import { IoChevronDownOutline } from "react-icons/io5";
-import { SlLocationPin } from "react-icons/sl";
+import SearchStop from "../Icons/SearchStop";
+import Location from "../Icons/Location";
+import RemoveSquare from "../Icons/RemoveSquare";
+import ChevronDown from "../Icons/ChevronDown";
+import Spinner from "../Spinner";
 
 interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
@@ -137,7 +131,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     };
   }, []);
 
-  const moveActiveSuggestions = useCallback(() => {
+  const moveActiveSuggestions = () => {
     if (activeItemRef.current && suggestionsListRef.current) {
       const activeElement = activeItemRef.current;
       const listElement = suggestionsListRef.current;
@@ -154,7 +148,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
         listElement.scrollTop = activeBottom - listHeight;
       }
     }
-  }, [activeItemRef, suggestionsListRef]);
+  };
 
   useEffect(() => {
     moveActiveSuggestions();
@@ -167,148 +161,145 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     return option;
   };
 
-  const suggestionsListComponent = useMemo(
-    () => (
-      <AnimatePresence>
-        {showSuggestions && userInput && (
-          <motion.ul
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className={clsx(
-              "absolute w-full mt-1 max-h-60 overflow-y-auto z-10 font-mono",
-              "bg-white border border-gray-300 rounded-lg shadow-md",
-              "transition-all duration-200 ease-in-out py-1"
-            )}
-            ref={suggestionsListRef}
-          >
-            {isLoading ? (
-              <div className="p-2 flex items-center justify-center">
-                <PiSpinner className="animate-spin h-5 w-5 mr-3 inline-block" />
-              </div>
-            ) : filteredSuggestions?.length ? (
-              filteredSuggestions.map((suggestion, index) => {
-                return (
-                  <li
-                    className={clsx(
-                      "p-2 cursor-pointer",
-                      "transition duration-200 ease-in-out text-base font-thin",
-                      {
-                        "bg-secondary text-white": activeSuggestion === index,
-                      },
-                      {
-                        "hover:bg-4 hover:text-white":
-                          activeSuggestion !== index,
-                      }
-                    )}
-                    key={index}
-                    onClick={() => handleClick(suggestion)}
-                    ref={index === activeSuggestion ? activeItemRef : null}
-                  >
-                    {renderOptionLabel(suggestion)}
-                  </li>
-                );
-              })
-            ) : (
-              <div
-                className={clsx(
-                  "p-2 flex items-center justify-center text-gray-500 text-base gap-2"
-                )}
-              >
-                <VscSearchStop size={24} />
-                <p className="m-0">
-                  &quot;{userInput}&quot; aramasına uygun mahalle bulunamadı.
-                </p>
-              </div>
-            )}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    ),
-    [
-      showSuggestions,
-      isLoading,
-      filteredSuggestions,
-      activeSuggestion,
-      activeItemRef,
-      suggestionsListRef,
-      handleClick,
-      renderOptionLabel,
-    ]
+  const suggestionsListComponent = (
+    <AnimatePresence>
+      {showSuggestions && userInput && (
+        <motion.ul
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.2 }}
+          ref={suggestionsListRef}
+          className={clsx(
+            "absolute",
+            "w-full",
+            "bg-white",
+            "border",
+            "border-lime-300",
+            "rounded-md",
+            "shadow-md",
+            "z-10",
+            "overflow-y-auto",
+            "max-h-60",
+            "mt-1"
+          )}
+        >
+          {isLoading ? (
+            <Spinner className="animate-spin h-5 w-5 inline-block" />
+          ) : filteredSuggestions?.length ? (
+            filteredSuggestions.map((suggestion, index) => {
+              return (
+                <li
+                  key={index}
+                  onClick={() => handleClick(suggestion)}
+                  ref={index === activeSuggestion ? activeItemRef : null}
+                  className={clsx(
+                    "p-2",
+                    "cursor-pointer",
+                    index === activeSuggestion
+                      ? "bg-lime-100"
+                      : "hover:bg-lime-100",
+                    index === filteredSuggestions.length - 1
+                      ? "rounded-b-md"
+                      : ""
+                  )}
+                >
+                  {renderOptionLabel(suggestion)}
+                </li>
+              );
+            })
+          ) : (
+            <div
+              className={clsx(
+                "p-2",
+                "flex",
+                "items-center",
+                "gap-2",
+                "text-lime-500"
+              )}
+            >
+              <SearchStop className={clsx("h-5", "w-5", "text-lime-500")} />
+              <p className={clsx("text-sm", "font-semibold", "text-lime-500")}>
+                &quot;{userInput}&quot; aramasına uygun mahalle bulunamadı.
+              </p>
+            </div>
+          )}
+        </motion.ul>
+      )}
+    </AnimatePresence>
   );
 
   return (
     <div className="relative" ref={wrapperRef}>
       <div className="w-full text-xs">
-        <div
+        <Location
           className={clsx(
-            "absolute top-1/2 left-2 -translate-y-1/2",
-            "text-gray-500",
-            "transition duration-200 ease-in-out",
-            { "animate-pulse": isLoading },
-            {
-              "text-secondary": selectedValue,
-            },
-            {
-              "hover:text-gray-700": !selectedValue,
-            }
+            "absolute",
+            "left-3",
+            "top-1/2",
+            "transform",
+            "-translate-y-1/2",
+            "text-lime-500",
+            "text-2xl"
           )}
-        >
-          <SlLocationPin size={24} />
-        </div>
+        />
         <input
           type="text"
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={userInput}
-          className={clsx(
-            "w-full p-3 pl-10 pr-16 border rounded-lg shadow-sm shadow-gray-100 cursor-pointer text-lg font-normal font-manrope",
-            "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
-            "hover:shadow-md transition duration-200 hover:shadow-gray-100",
-            "placeholder:opacity-50 placeholder-gray-700 placeholder:text-lg",
-            { "border border-2 text-secondary border-secondary": selectedValue }
-          )}
           placeholder={placeholder}
+          className={clsx(
+            "w-full",
+            "text-base",
+            "font-semibold",
+            "rounded-md",
+            "border",
+            "border-lime-300",
+            "focus:border-primary-light",
+            "outline-none",
+            "py-3",
+            "px-10",
+            "pr-20",
+            { "border-2": selectedValue },
+            "text-slate-600",
+            "truncate"
+          )}
         />
         <div
           className={clsx(
-            "absolute top-1/2 right-2 flex items-center gap-2 -translate-y-1/2"
+            "absolute",
+            "right-3",
+            "top-1/2",
+            "transform",
+            "-translate-y-1/2",
+            "flex",
+            "gap-2"
           )}
         >
           {selectedValue && (
             <button
-              className={clsx(
-                "text-gray-500 ",
-                {
-                  "text-secondary": selectedValue,
-                },
-                {
-                  "hover:text-gray-700": !selectedValue,
-                }
-              )}
               onClick={() => {
                 setUserInput("");
                 setSelectedValue(null);
                 onClear?.();
               }}
             >
-              <CiSquareRemove size={24} />
+              <RemoveSquare className="text-2xl text-lime-500" />
             </button>
           )}
           <button
             className={clsx(
-              "text-gray-500 ",
-              {
-                "text-secondary": selectedValue,
-              },
-              {
-                "hover:text-gray-700": !selectedValue,
-              },
-              { "transform rotate-180": showSuggestions }
+              "rotate-0",
+              "transform",
+              "transition-transform",
+              "duration-200",
+              "ease-in-out",
+              showSuggestions ? "rotate-180" : "",
+              "text-lime-500"
             )}
           >
-            <IoChevronDownOutline size={24} />
+            <ChevronDown className="text-2xl" />
           </button>
         </div>
       </div>

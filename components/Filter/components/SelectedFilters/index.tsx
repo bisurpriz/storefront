@@ -64,7 +64,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
           <SelectedFilterTag
             key={"customizable"}
             id={"customizable"}
-            label="Özelleştirilebilir"
+            label="Tasarlanabilir"
             onClear={() => onClear("customizable", "")}
           />
         )}

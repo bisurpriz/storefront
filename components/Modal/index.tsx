@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import ClientOnlyPortal from "./ClientOnlyPortal";
 import { useClickAway } from "@uidotdev/usehooks";
-import { AiOutlineClose } from "react-icons/ai";
 import { motion } from "framer-motion";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
+import Close from "../Icons/Close";
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
           rounded-md shadow-md max-sm:w-full max-sm:mx-auto max-sm:mt-4 max-w-screen-xl w-fit
         ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
       >
-        <AiOutlineClose
+        <Close
           className="absolute top-2 right-2 cursor-pointer"
           onClick={() => onClose?.()}
         />

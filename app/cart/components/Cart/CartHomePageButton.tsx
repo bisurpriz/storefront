@@ -1,12 +1,12 @@
-import Button from '@/components/Button';
-import Link from 'next/link';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import Button from "@/components/Button";
+import ArrowLeft from "@/components/Icons/ArrowLeft";
+import Link from "next/link";
 
 const CartHomePageButton = () => {
   return (
     <Link href="/">
       <Button
-        icon={<AiOutlineArrowLeft />}
+        icon={<ArrowLeft />}
         type="button"
         size="small"
         variant="link"

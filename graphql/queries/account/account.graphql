@@ -109,7 +109,7 @@ query GetQuarterById($id: Int) @cached {
 }
 
 query getDistrictById($id: Int) @cached {
-  district(where: {id: {_eq: $id}}) {
+  district(where: { id: { _eq: $id } }) {
     code
     id
     name
@@ -129,7 +129,7 @@ query getCityById($id: Int) {
 }
 
 query getUserOrders {
-  order {
+  order(where: { payment_status: { _eq: PAID } }) {
     created_at
     id
     total_amount
@@ -139,7 +139,6 @@ query getUserOrders {
         id
         tenants {
           name
-          logo
           id
         }
       }
@@ -148,23 +147,42 @@ query getUserOrders {
         order_item_no
         product_id
         quantity
+        order_item_special_images {
+          image_url
+          quantity_index
+          id
+        }
+        order_item_special_texts {
+          content
+          quantity_index
+          id
+        }
         product {
           category {
             name
             slug
           }
-          id
           slug
-          description
           image_url
           name
-          price
-          discount_price
           quantity
+          product_customizable_areas {
+            count
+            max_character
+            customizable_area {
+              id
+              type
+            }
+          }
         }
       }
       order_status {
         value
+      }
+      order_items_aggregate {
+        aggregate {
+          count(columns: id)
+        }
       }
     }
   }
@@ -215,5 +233,19 @@ query GetLocationQuery($search: String = "") @cached {
     district_name
     city_id
     city_name
+  }
+}
+
+mutation UpdateOrderItemSpecialText(
+  $object: [order_item_special_text_insert_input!]!
+) {
+  insert_order_item_special_text(
+    objects: $object
+    on_conflict: {
+      constraint: order_item_special_text_pkey
+      update_columns: [content]
+    }
+  ) {
+    affected_rows
   }
 }

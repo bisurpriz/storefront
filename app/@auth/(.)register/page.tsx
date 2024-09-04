@@ -8,7 +8,7 @@ const ModalRegisterPage = () => {
   const { back } = useRouter();
 
   return (
-    <Modal handleClose={back} open>
+    <Modal handleClose={back} open={true}>
       <RegisterForm
         onSuccessfulRegister={(status) => {
           if (status) {

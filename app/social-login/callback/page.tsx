@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 const SocialCallback = () => {
@@ -26,7 +26,7 @@ const SocialCallback = () => {
     }
   }, [result]);
 
-  return <></>;
+  return null;
 };
 
 export default SocialCallback;

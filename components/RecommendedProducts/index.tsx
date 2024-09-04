@@ -1,9 +1,10 @@
 "use client";
 
-import { GetProductsWithPaginationQuery } from "@/graphql/generated";
+import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { AnimatePresence, useScroll, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useRef } from "react";
 
 type RecommendedProductsProps = {
@@ -41,16 +42,21 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
         ref={ref}
       >
         {products.map((prod) => (
-          <div
+          <Link
             key={prod.id}
             className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
+            href={`/${prod.category.slug}/${prod.slug}?pid=${prod.id}`}
+            prefetch={false}
           >
             <div className="absolute top-0 left-0 bg-primary text-white px-2 py-1 rounded-br-lg text-xs">
               5% indirim
             </div>
-            <div className="aspect-w-1 aspect-h-1">
+            <div className="aspect-square rounded-lg overflow-hidden">
               <Image
-                src={getImageUrlFromPath(prod.image_url?.[0])}
+                src={`${getImageUrlFromPath(
+                  prod.image_url?.[0]
+                )}?width=80&height=80&format=webp&quality=70`}
+                className="w-full h-full"
                 alt={prod.name}
                 width={80}
                 height={80}
@@ -58,11 +64,14 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             </div>
             <div className="flex flex-col flex-1 items-end justify-end gap-2">
               <p className="text-sm font-bold text-right">{prod.price} TL</p>
-              <h3 className="text-sm font-normal text-right max-w-[200px]">
+              <h3
+                className="text-sm font-normal text-right max-w-[200px] line-clamp-2"
+                title={prod.name}
+              >
                 {prod.name}
               </h3>
             </div>
-          </div>
+          </Link>
         ))}
       </motion.div>
     </AnimatePresence>

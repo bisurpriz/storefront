@@ -27,6 +27,7 @@ query getProductsWithPagination(
     description
     name
     slug
+    score
     category {
       name
       slug
@@ -43,10 +44,13 @@ query getProductsWithPagination(
       }
     }
     tenant {
+      id
       tenants {
         name
         logo
         id
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     reviews_aggregate {
@@ -78,6 +82,7 @@ query getProductsWithFilteredPagination(
     description
     name
     slug
+    score
     category {
       name
       slug
@@ -95,10 +100,13 @@ query getProductsWithFilteredPagination(
       }
     }
     tenant {
+      id
       tenants {
         name
         logo
         id
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     reviews_aggregate {

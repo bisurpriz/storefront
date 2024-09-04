@@ -9,12 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#F075AA",
-        ["primary-dark"]: "#D6458D",
-        ["primary-light"]: "#BC5A94",
-        secondary: "#ADD899",
-        ["secondary-dark"]: "#8dbb6b",
-        ["secondary-light"]: "#c4e1b6",
+        secondary: "#F075AA",
+        ["secondary-dark"]: "#D6458D",
+        ["secondary-light"]: "#BC5A94",
+        primary: "#ADD899",
+        ["primary-dark"]: "#8dbb6b",
+        ["primary-light"]: "#c4e1b6",
         tertiary: "#FFDE95",
         ["tertiary-dark"]: "#e9c46a",
         ["tertiary-light"]: "#ffedc1",

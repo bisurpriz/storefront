@@ -1,11 +1,13 @@
 "use client";
 
-import Rating from '@/components/Rating/Rating';
-import { localeFormat } from '@/utils/format';
-import Image from 'next/image';
-import ClientModal from './ClientModal';
-import { getImageUrlFromPath } from '@/utils/getImageUrl';
-import { createReview } from '../../actions';
+import { localeFormat } from "@/utils/format";
+import Image from "next/image";
+import ClientModal from "./ClientModal";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { createReview } from "../../actions";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Props {
   imageUrl: string;
@@ -24,6 +26,7 @@ const NotReviewedCard = ({
   reviewCount,
   productId,
 }: Props) => {
+  const { refresh } = useRouter();
   const handleCreateReview = async ({
     product_id,
     score,
@@ -33,11 +36,15 @@ const NotReviewedCard = ({
     score: number;
     comment: string;
   }) => {
-    await createReview({
+    const response = await createReview({
       product_id,
       score,
       comment,
     });
+    if (response?.created_at) {
+      toast.success("Değerlendirme başarıyla eklendi.");
+    }
+    refresh();
   };
 
   return (
@@ -54,13 +61,13 @@ const NotReviewedCard = ({
           {productName}
         </h4>
         <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          Teslim tarihi: {localeFormat(new Date(deliveryDate), 'PPP')}
+          Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
         </p>
         <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
           {/* 
             Halihazırda bu ürünün kendi değerlendirmesi görüntülenecek
           */}
-          <Rating value={rating ?? 3} readOnly showReviewCount={false} />
+          <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
           {reviewCount}
         </div>
 

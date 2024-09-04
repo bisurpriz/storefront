@@ -1,21 +1,21 @@
-import Link from 'next/link';
-import { useRef, useState } from 'react';
-import { PiCaretDownBold } from 'react-icons/pi';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import ChevronDown from "@/components/Icons/ChevronDown";
 
 const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
   const [isCollapse, setIsCollapse] = useState(false);
 
   const toggle = () => setIsCollapse(!isCollapse);
 
-  const textClasses = 'text-lg font-normal mt-2 text-slate-500';
+  const textClasses = "text-lg font-normal mt-2 text-slate-500";
 
   const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div role="menuitem" className={`${textClasses}  py-2 `}>
       <Link
-        href={link ?? '#'}
+        href={link ?? "#"}
         onClick={() => {
           toggle();
         }}
@@ -28,8 +28,8 @@ const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
           {text}
         </div>
         {subMenuItems?.length ? (
-          <PiCaretDownBold
-            className={`w-4 h-4 ml-2 ${!isCollapse ? '-rotate-90' : 'rotate-0'}
+          <ChevronDown
+            className={`w-4 h-4 ml-2 ${!isCollapse ? "-rotate-90" : "rotate-0"}
                 transition-all duration-300 ease-in-out transform
             `}
           />
@@ -37,9 +37,9 @@ const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
       </Link>
       <motion.div
         initial={false}
-        animate={isCollapse ? 'open' : 'closed'}
+        animate={isCollapse ? "open" : "closed"}
         variants={{
-          open: { height: 'auto', opacity: 1 },
+          open: { height: "auto", opacity: 1 },
           closed: { height: 0, opacity: 0 },
         }}
         className="overflow-hidden"

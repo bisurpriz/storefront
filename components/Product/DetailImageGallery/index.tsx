@@ -1,116 +1,84 @@
 "use client";
 
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from "react";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { useMeasure } from "@uidotdev/usehooks";
+import clsx from "clsx";
 import Image from "next/image";
-import { Pagination, Virtual, Zoom } from "swiper/modules";
-import useResponsive from "@/hooks/useResponsive";
-import { Swiper as SwiperType } from "swiper/types";
+import { useCallback, useState } from "react";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { Controlled as ControlledZoom } from "react-medium-image-zoom";
 
 type ProductDetailImageGalleryProps = {
-  images: {
-    id: number;
-    url: string;
-  }[];
+  images: string[];
 };
 
 const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
-  const swiperRef = useRef<SwiperRef>(null);
-  const [direction, setDirection] = useState<"horizontal" | "vertical">(
-    "horizontal"
-  );
-  const { isExtraLargeDesktop } = useResponsive();
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const [selected, setSelected] = useState<number>(0);
+  const [selectedImage, setSelectedImage] = useState(images?.[0]);
+  const [isZoomed, setIsZoomed] = useState(false);
 
-  useEffect(() => {
-    if (isExtraLargeDesktop) {
-      setDirection("horizontal");
-    } else {
-      setDirection("vertical");
-    }
-  }, [isExtraLargeDesktop]);
-
-  const handleImageClick = (index: number) => {
-    swiperRef?.current?.swiper.slideTo(index);
-    setSelected(index);
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
   };
 
-  const handleSlideChange = (swiper: SwiperType) => {
-    setSelected(swiper.activeIndex);
-  };
+  const getImageUrl = (image: string) => {
+    if (!image) return "https://via.placeholder.com/500";
 
-  const handleZoomClick = (swiper: SwiperType) => {
-    swiper.zoom.toggle();
+    return `${getImageUrlFromPath(
+      image
+    )}?width=500&height=500&format=wepb&quality=75`;
   };
+  const handleZoomChange = useCallback((shouldZoom) => {
+    setIsZoomed(shouldZoom);
+  }, []);
 
   return (
-    <div className="grid grid-cols-6 grid-rows-6 gap-2 max-h-[500px] max-md:max-h-[720px]">
-      <div
-        className="col-span-full row-span-1 order-2 2xl:col-span-1 2xl:row-span-full 2xl:order-1 overflow-hidden rounded-lg"
-        ref={ref}
-      >
-        <Swiper
-          slidesPerView={4}
-          spaceBetween={10}
-          direction={direction}
-          className="h-full gallery-scroll-hide"
-          modules={[Virtual]}
-          width={width}
-          virtual
-        >
-          {images?.map((image, index) => (
-            <SwiperSlide key={image.id} onClick={() => handleImageClick(index)}>
-              <Image
-                src={image.url}
-                alt="Product Image"
-                width={100}
-                height={100}
-                className={`rounded-lg cursor-pointer object-fill transition-all duration-300 ease-linear  ${
-                  index === selected
-                    ? "border border-2 border-primary border-solid"
-                    : "border border-2 border-transparent"
-                }`}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+    <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
+      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto ">
+        {images?.map((image) => (
+          <div
+            key={image}
+            className={clsx(
+              "flex items-center justify-center relative overflow-hidden",
+              "h-20 w-20 object-contain border border-gray-200 rounded-lg flex-1 aspect-square"
+            )}
+            onClick={() => handleImageClick(image)}
+            onMouseEnter={() => handleImageClick(image)}
+          >
+            <Image
+              src={getImageUrl(image)}
+              alt={image}
+              className="h-full w-full object-cover"
+              width={100}
+              height={100}
+            />
+          </div>
+        ))}
       </div>
-      <div className="col-span-full order-1 row-span-5 2xl:col-span-5 2xl:row-span-6 2xl:order-2 rounded-lg ">
-        <Swiper
-          ref={swiperRef}
-          className={`h-full gallery-scroll-hide cursor-zoom-in`}
-          pagination={{
-            clickable: true,
-            bulletActiveClass: "!bg-primary !opacity-100",
-          }}
-          modules={[Zoom, Pagination]}
-          zoom={{
-            toggle: false,
-          }}
-          onSlideChange={handleSlideChange}
-          onClick={handleZoomClick}
-        >
-          {images?.map((image) => (
-            <SwiperSlide key={image.id}>
-              <div className="swiper-zoom-container">
-                <Image
-                  src={image.url}
-                  alt={`Product Image ${image.id}`}
-                  width={1024}
-                  height={1024}
-                  objectFit="contain"
-                  className={`rounded-lg transition-all duration-300 ease-linear`}
-                  priority={image.id === 0}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <div
+        className={clsx(
+          "flex flex-1 items-start justify-center overflow-hidden relative",
+          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-white"
+        )}
+      >
+        {/* <ZoomableImage
+          src={selectedImage.url}
+          alt="Product Image"
+          width={1200}
+          height={1200}
+          resultWidth={400}
+          resultHeight={400}
+        /> */}
+
+        <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
+          <Image
+            src={getImageUrl(selectedImage)}
+            alt="Product Image"
+            className="h-full w-full object-contain"
+            width={500}
+            height={500}
+            priority
+          />
+        </ControlledZoom>
       </div>
     </div>
   );

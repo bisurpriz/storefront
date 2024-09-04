@@ -7,16 +7,21 @@ import {
   readIdFromCookies,
 } from "@/app/actions";
 import { Location } from "@/common/types/Addresses/addresses";
+
+import { query } from "@/graphql/lib/client";
 import {
   GetUserAddressesDocument,
   GetUserAddressesQuery,
-} from "@/graphql/generated";
-import { query } from "@/graphql/lib/client";
+  GetUserAddressesQueryVariables,
+} from "@/graphql/queries/address/address.generated";
 import { createQuarterSelectorLabel } from "@/utils/createQuarterSelectorLabel";
 
 export const getUserAddresses = async () => {
   const userId = await readIdFromCookies();
-  const { data } = await query<GetUserAddressesQuery>({
+  const { data } = await query<
+    GetUserAddressesQuery,
+    GetUserAddressesQueryVariables
+  >({
     query: GetUserAddressesDocument,
     variables: {
       user_id: userId,

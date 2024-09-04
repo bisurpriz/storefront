@@ -1,49 +1,51 @@
-import { AiOutlineUnlock, AiOutlineUser } from "react-icons/ai";
-import { BsTruck } from "react-icons/bs";
-import { FiMessageSquare, FiStar } from "react-icons/fi";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { PiAddressBook } from "react-icons/pi";
-import { RiCoupon2Line } from "react-icons/ri";
+import AddressBook from "@/components/Icons/AddressBook";
+import Coupon from "@/components/Icons/Coupon";
+import Heart from "@/components/Icons/Heart";
+import Message from "@/components/Icons/Message";
+import Star from "@/components/Icons/Star";
+import Truck from "@/components/Icons/Truck";
+import Unlock from "@/components/Icons/Unlock";
+import User from "@/components/Icons/User";
 
 export const accountNavigationItems = [
   {
+    title: "Bilgilerim",
+    icon: User,
+    link: "/account",
+  },
+  {
     title: "Siparişlerim",
-    icon: BsTruck,
+    icon: Truck,
     link: "/account/orders",
   },
   {
     title: "Kuponlarım",
-    icon: RiCoupon2Line,
+    icon: Coupon,
     link: "/account/coupons",
   },
   {
     title: "Favorilerim",
-    icon: MdOutlineFavoriteBorder,
+    icon: Heart,
     link: "/account/favorites",
   },
   {
     title: "Değerlendirmelerim",
-    icon: FiStar,
+    icon: Star,
     link: "/account/reviews",
   },
   {
-    title: "Bilgilerim",
-    icon: AiOutlineUser,
-    link: "/account",
-  },
-  {
     title: "Mesajlarım",
-    icon: FiMessageSquare,
+    icon: Message,
     link: "/account/messages",
   },
   {
     title: "Adreslerim",
-    icon: PiAddressBook,
+    icon: AddressBook,
     link: "/account/addresses",
   },
   {
     title: "İzinlerim",
-    icon: AiOutlineUnlock,
+    icon: Unlock,
     link: "/account/permissions",
   },
 ];

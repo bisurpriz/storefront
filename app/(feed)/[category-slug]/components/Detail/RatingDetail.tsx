@@ -1,4 +1,6 @@
+import { CustomStar } from "@/components/ReviewRating/CustomStar";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export type RatingProps = {
   rating: number;
@@ -10,24 +12,17 @@ export type RatingProps = {
     5: number;
   };
   totalRating: number;
+  totalUserCommentCount: number;
 };
 
-const Star = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
-    viewBox="0 0 32 32"
-    className="w-6 h-6"
-  >
-    <path d="M16 4.588l2.833 8.719H28l-7.416 5.387 2.832 8.719L16 22.023l-7.417 5.389 2.833-8.719L4 13.307h9.167L16 4.588z" />
-  </svg>
-);
-
-const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
+const RatingDetail = ({
+  rateCounts,
+  rating,
+  totalRating,
+  totalUserCommentCount,
+}: RatingProps) => {
   const percentage = (val: number) => {
-    const per = (val / totalRating) * 100;
-
-    return per;
+    return (val / totalRating) * 100;
   };
 
   const getLimitedValue = (val: number) => {
@@ -39,43 +34,46 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   };
 
   return rateCounts ? (
-    <div className="flex flex-col gap-2 items-start justify-center">
-      {Boolean(rating) && (
-        <p className="whitespace-nowrap mx-10">
-          5 üzerinden {Number(rating)} yıldız
-        </p>
-      )}
-      {Object.entries(rateCounts).map(([key, value]) => (
-        <div key={key} className="flex items-center justify-start gap-2">
-          <p
-            aria-label={`${key} yıldızlı ${value} değerlendirme`}
-            className="text-orange-500"
-          >
-            <Star />
-          </p>
-          <p aria-label={`${key} yıldızlı ${value} değerlendirme`}>{key}</p>
+    <div className="bg-white p-4 rounded-lg flex flex-col gap-4 shadow-md ring ring-gray-100">
+      <div className="flex items-center justify-between">
+        <p className="text-xl font-semibold">{rating.toFixed(1)} Puan</p>
+        <Link
+          href="/#yorumlar"
+          className="text-primary-500 text-sm font-semibold"
+        >
+          ({totalUserCommentCount} Yorum)
+        </Link>
+      </div>
+      {Object.keys(rateCounts).map((key) => {
+        return (
           <div
-            className="w-[100px] h-1.5 bg-gray-200 rounded-xl"
-            style={{
-              background: `linear-gradient(90deg, #f97316 ${percentage(
-                value as any
-              )}%, #F1F5F9 ${percentage(value as any)}%)`,
-            }}
-          />
-          <p
-            aria-label={`${key} yıldızlı ${value} değerlendirme`}
-            className="text-gray-500 ml-2"
+            key={key}
+            className={
+              "grid grid-cols-12 items-center justify-start text-xs font-semibold"
+            }
           >
-            {getLimitedValue(value as any)}
-          </p>
-        </div>
-      ))}
-      <Link
-        href={`#reviews`}
-        className="text-primary font-normal hover:underline mx-auto"
-      >
-        Tüm değerlendirmeleri gör
-      </Link>
+            <p className="text-gray-800 col-span-4 flex items-center justify-start gap-1">
+              {key}
+              {Array.from({ length: parseInt(key) }).map((_, index) => (
+                <span key={index}>
+                  <CustomStar className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+                </span>
+              ))}
+            </p>
+            <div className="flex items-center justify-start col-span-8 gap-4">
+              <div className={`w-52 h-1.5 bg-gray-200 rounded-lg relative`}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${percentage(rateCounts[key])}%` }}
+                  transition={{ duration: 1 }}
+                  className={`h-full bg-yellow-400 rounded-lg absolute left-0 top-0`}
+                />
+              </div>
+              <p>{getLimitedValue(rateCounts[key])}</p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   ) : null;
 };

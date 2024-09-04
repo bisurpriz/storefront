@@ -1,18 +1,18 @@
 "use client";
 
 import { FC, useEffect, useRef, useState } from "react";
-import { BsSearch } from "react-icons/bs";
 import TextField from "../TextField";
 import clsx from "clsx";
 import { searchProducts } from "@/app/(feed)/actions";
-import { GetProductsWithFilteredPaginationQuery } from "@/graphql/generated";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CiSquareRemove } from "react-icons/ci";
+import RemoveSquare from "../Icons/RemoveSquare";
+import SearchIcon from "../Icons/SearchBotttomMenu";
+import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 
 type Props = {
   className?: string;
@@ -51,9 +51,6 @@ const Search: FC<Props> = ({ className }) => {
 
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleFocus = () => {
-    ref.current?.focus();
-  };
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
   const searchParams = useSearchParams();
 
@@ -69,7 +66,7 @@ const Search: FC<Props> = ({ className }) => {
     try {
       if (!input) {
         setProducts([]);
-        await searchProducts({}, {});
+        searchProducts({}, {});
         return;
       }
       setIsLoading(true);
@@ -146,20 +143,20 @@ const Search: FC<Props> = ({ className }) => {
             )}
             onClick={handleClear}
           >
-            <CiSquareRemove size={24} />
+            <RemoveSquare className="text-2xl" />
           </button>
         )}
         <button
           className={clsx(
-            "h-full bg-primary text-white rounded-r-lg py-2 px-10",
+            "h-full bg-primary text-white rounded-r-lg px-6",
             "flex items-center justify-center outline-none",
             "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
             "transition-all duration-300 group"
           )}
-          onFocus={handleFocus}
           onClick={pushToSearch}
+          name="search"
         >
-          <BsSearch className="group-hover:animate-bounce text-lg" />
+          <SearchIcon className="group-hover:animate-bounce text-2xl" />
         </button>
       </div>
 
@@ -181,23 +178,26 @@ const Search: FC<Props> = ({ className }) => {
               })}
               onClick={() => setIsOpen(false)}
             >
-              <div key={product.id} className="p-2 border-b">
-                <div className="flex items-center">
-                  <div className="flex items-center gap-2">
-                    {product?.image_url?.[0] ? (
+              <div
+                key={product.id}
+                className="p-2 border-b hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-start">
+                  {product?.image_url?.[0] ? (
+                    <div className="w-20 h-20">
                       <Image
                         src={getImageUrlFromPath(product.image_url[0])}
-                        width={60}
-                        height={60}
+                        width={100}
+                        height={100}
+                        className="w-full h-full rounded-lg"
                         alt={product.name}
-                        style={{ minWidth: 60 }}
                       />
-                    ) : null}
-                  </div>
-                  <div className="text-sm text-gray-500 ml-3">
+                    </div>
+                  ) : null}
+                  <div className="text-sm font-semibold text-gray-500 ml-3">
                     {product.name}
                   </div>
-                  <div className="text-xs mt-auto ml-auto text-primary font-semibold">
+                  <div className="text-xs ml-auto text-primary font-semibold mt-auto">
                     {product.category.name}
                   </div>
                 </div>
@@ -205,7 +205,6 @@ const Search: FC<Props> = ({ className }) => {
             </Link>
           ))}
 
-          {/* spinner */}
           {isLoading && <Skeleton />}
 
           {products.length === 0 && !isLoading && (

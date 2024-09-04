@@ -13,6 +13,7 @@ query getProductById($id: bigint = 0) {
     delivery_time_ranges
     delivery_type
     properties
+    score
     discount_price
     questions {
       created_at
@@ -38,7 +39,6 @@ query getProductById($id: bigint = 0) {
     }
     product_customizable_areas {
       customizable_area {
-        count
         id
         type
       }
@@ -54,10 +54,13 @@ query getProductById($id: bigint = 0) {
       slug
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     user_favorites {
@@ -79,6 +82,7 @@ query getProductForCart($id: bigint = 0) {
     image_url
     name
     price
+    score
     discount_price
     product_customizable_areas {
       customizable_area {
@@ -90,10 +94,13 @@ query getProductForCart($id: bigint = 0) {
       name
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
   }
@@ -117,6 +124,7 @@ query getProductsForInitialCart($ids: [bigint!]) {
     id
     price
     discount_price
+    score
     stock
     image_url
     category {
@@ -125,10 +133,13 @@ query getProductsForInitialCart($ids: [bigint!]) {
       slug
     }
     tenant {
+      id
       tenants {
         id
         name
         logo
+        iyzi_sub_merchant_key
+        commision_rate
       }
     }
     product_customizable_areas {
@@ -138,6 +149,98 @@ query getProductsForInitialCart($ids: [bigint!]) {
       }
       count
       max_character
+    }
+  }
+}
+
+
+query getProductActionData($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+    user_favorites(where: {product: {id: {_eq: $id}}}) {
+      product_id
+    }
+  }
+}
+
+query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    user_favorites_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+
+query getProductInformation($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    description
+    id
+    image_url
+    name
+    price
+    is_service_free
+    delivery_time_ranges
+    delivery_type
+    score
+    properties
+    discount_price
+     product_customizable_areas {
+      customizable_area {
+        id
+        type
+      }
+      count
+      max_character
+    }
+    reviews_aggregate {
+      aggregate {
+        count(columns: id)
+        avg {
+          score
+        }
+      }
+    }
+    tenant {
+      tenants {
+        name
+        id
+      }
+    }
+  }
+}
+
+
+query getProductImages($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    image_url
+  }
+}
+
+query getProductDescription($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    description
+    properties
+  }
+}
+
+query getProductComments ($id: bigint!) @cached(ttl: 180) {
+  product: product_by_pk(id: $id) {
+    reviews {
+      id
+      comment
+      created_at
+      score
+      user {
+        firstname
+        lastname
+        picture
+      }
     }
   }
 }

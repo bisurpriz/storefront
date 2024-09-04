@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { HiChevronDown } from "react-icons/hi";
 import { motion } from "framer-motion";
+import ChevronDown from "@/components/Icons/ChevronDown";
 
 interface AccordionItemProps {
   title: React.ReactNode;
@@ -43,7 +43,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         onClick={handleToggle}
       >
         <h4 className="flex items-center font-medium">{title}</h4>
-        <HiChevronDown
+        <ChevronDown
           className={`transition-transform transform ${
             open ? "-rotate-180" : ""
           }`}

@@ -3,16 +3,15 @@
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  RiHome2Line,
-  RiSearch2Line,
-  RiShoppingBagLine,
-  RiUser3Line,
-} from "react-icons/ri";
-import { TbCategory } from "react-icons/tb";
+
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Badge from "../Badge";
+import HomeBottomMenu from "../Icons/HomeBottomMenu";
+import Dashboard from "../Icons/Dashboard";
+import SearchBotttomMenu from "../Icons/SearchBotttomMenu";
+import BasketBottomMenu from "../Icons/BasketBottomMenu";
+import UserBottomMenu from "../Icons/UserBottomMenu";
 
 const MenuItem = ({
   item,
@@ -41,10 +40,10 @@ const MenuItem = ({
     >
       {hasBadge?.badgeShow ? (
         <Badge show={hasBadge.badgeShow} text={hasBadge.badgeText}>
-          <span className="text-2xl">{item.icon}</span>
+          <span className="text-2xl flex-1">{item.icon}</span>
         </Badge>
       ) : (
-        <span className="text-2xl">{item.icon}</span>
+        <span className="text-2xl flex-1">{item.icon}</span>
       )}
 
       <span className="text-xs font-medium inline-block max-xs:hidden">
@@ -116,26 +115,26 @@ const mobileBottomMenu = [
   {
     name: "Anasayfa",
     href: "/",
-    icon: <RiHome2Line />,
+    icon: <HomeBottomMenu />,
   },
   {
     name: "Kategoriler",
     href: "/categories",
-    icon: <TbCategory />,
+    icon: <Dashboard />,
   },
   {
     name: "Arama",
     href: "/search",
-    icon: <RiSearch2Line />,
+    icon: <SearchBotttomMenu />,
   },
   {
     name: "Sepet",
     href: "/cart",
-    icon: <RiShoppingBagLine />,
+    icon: <BasketBottomMenu />,
   },
   {
     name: "Profil",
     href: "/account",
-    icon: <RiUser3Line />,
+    icon: <UserBottomMenu />,
   },
 ];

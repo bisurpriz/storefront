@@ -1,11 +1,11 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { HandleFilterSubmit } from "../..";
 import AnimatedFilterBox from "../FilterInput/AnimatedFilterBox";
 import FilterDropdownButton from "../FilterInput/FilterDropdownButton";
-import { TbCategory } from "react-icons/tb";
 import FilterDropdownAcceptButton from "../FilterInput/FilterDropdownAcceptButton";
 import FilterModalHeader from "../FilterInput/FilterModalHeader";
 import PriceInput from "@/components/PriceInput";
+import Category from "@/components/Icons/Category";
 
 type PriceFilterProps = {
   prices: number[];
@@ -31,19 +31,15 @@ const PriceFilter: FC<PriceFilterProps> = ({
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const selectedItems = useMemo(() => {
-    if (defaultPrice) {
-      return {
+  const selectedItems = defaultPrice
+    ? {
         key: `${selectedPrice.min}₺ - ${selectedPrice.max}₺`,
         value: defaultPrice,
-      };
-    } else {
-      return {
+      }
+    : {
         key: "",
         value: "",
       };
-    }
-  }, [defaultPrice]);
 
   return (
     <div className="w-fit">
@@ -52,7 +48,7 @@ const PriceFilter: FC<PriceFilterProps> = ({
         selectedItems={selectedItems.key ? [selectedItems] : []}
         toggle={toggle}
         title={"Fiyat"}
-        icon={<TbCategory />}
+        icon={<Category />}
       />
       <AnimatedFilterBox isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <FilterModalHeader

@@ -34,7 +34,7 @@ const ProductDescription = ({
         </div>
       )}
 
-      {specifications?.length && (
+      {specifications?.length > 0 && (
         <div className="mt-4">
           <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
             Özellikler

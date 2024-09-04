@@ -86,8 +86,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           <AnimationExitProvider show={!!icon}>
             <motion.span
               className={clsx(
-                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none",
-                "object-fill"
+                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none text-sm",
+                "object-fill text-current"
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -99,6 +99,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           <input
             {...getInputProps()}
             {...rest}
+            tabIndex={0}
             onKeyDown={onKeyDown}
             type={type}
             name={id}

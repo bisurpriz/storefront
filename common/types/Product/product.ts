@@ -30,6 +30,8 @@ export interface Product {
   product_customizable_areas: ProductCustomizableArea[];
   questions: Question[];
   reviews: Review[];
+  is_service_free: boolean;
+  score: number;
   reviews_aggregate: {
     aggregate: {
       count: number;
@@ -38,10 +40,13 @@ export interface Product {
   category: Category;
   delivery_type_rel: DeliveryTypeRelation;
   tenant: {
+    id?: string;
     tenants: {
       id: string;
       name?: string;
       logo?: string;
+      iyzi_sub_merchant_key?: string;
+      commision_rate?: number;
     }[];
   };
 }

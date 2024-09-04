@@ -3,9 +3,9 @@
 import { Category } from "@/common/types/Category/category";
 import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
+import HamburgerMenu from "@/components/Icons/HamburgerMenu";
 import MobileMenu from "@/components/Menu/MobileMenu";
 import { useState } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
 
 const MobileDrawer = ({
   categories,
@@ -19,7 +19,7 @@ const MobileDrawer = ({
   return (
     <>
       <Button
-        icon={<RxHamburgerMenu size={28} />}
+        icon={<HamburgerMenu className="text-[28px]" />}
         variant="link"
         size="small"
         iconSize={24}

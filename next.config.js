@@ -1,86 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: true,
-  compiler: {
-    // removeConsole: process.env.NODE_ENV !== "development",
+  experimental: {
+    ppr: true,
+    reactCompiler: true,
+    forceSwcTransforms: true,
+    scrollRestoration: true,
+    optimizePackageImports: [
+      "framer-motion",
+      "@mui/base",
+      "@hookform/resolvers",
+      "date-fns",
+      "graphql",
+      "yup",
+      "zustand",
+      "react-hook-form",
+    ],
+    serverActions: {
+      bodySizeLimit: "20mb",
+    },
   },
   images: {
     loader: "default",
     remotePatterns: [
       {
-        hostname: "lh3.googleusercontent.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "bisurprizdev.s3.eu-north-1.amazonaws.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "lottie.host",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
         hostname: "picsum.photos",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "images.unsplash.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "maps.gstatic.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "maps.googleapis.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "nest-nextjs-13.vercel.app",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "avatars.githubusercontent.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "cloudflare-ipfs.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "cdn03.ciceksepeti.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "loremflickr.com",
-        protocol: "https",
-        pathname: "/**",
-        port: "",
-      },
-      {
-        hostname: "source.unsplash.com",
         protocol: "https",
         pathname: "/**",
         port: "",
@@ -92,13 +35,25 @@ const nextConfig = {
         port: "",
       },
       {
-        hostname: "cdn.trendyol.com",
+        hostname: "www.eticaret.gov.tr",
         protocol: "https",
         pathname: "/**",
         port: "",
       },
       {
-        hostname: "www.eticaret.gov.tr",
+        hostname: "via.placeholder.com",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
+      {
+        hostname: "d1sk8qn67xoao2.cloudfront.net",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
         protocol: "https",
         pathname: "/**",
         port: "",

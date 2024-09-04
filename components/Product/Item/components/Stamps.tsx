@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 
 type TailwindBgColorsTpye =
   | "purple"
@@ -53,15 +53,14 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
     orange: "text-orange-700",
   };
 
-  const itemObject = useMemo(() => {
-    if (!stamps) return null;
-    return {
-      firstThree: stamps.slice(0, 3),
-      rest: stamps.slice(2),
-    };
-  }, [stamps]);
+  const itemObject = !stamps
+    ? null
+    : {
+        firstThree: stamps.slice(0, 3),
+        rest: stamps.slice(2),
+      };
 
-  if (!stamps) return null;
+  if (!itemObject) return null;
 
   return (
     <div

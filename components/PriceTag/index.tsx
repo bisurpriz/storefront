@@ -1,6 +1,5 @@
 import { getPriceTR } from "@/utils/getPriceTR";
 import clsx from "clsx";
-import { memo, useMemo } from "react";
 
 interface PriceTagProps {
   price: number;
@@ -15,10 +14,7 @@ export const getDiscountRate = (price: number, discount: number) => {
 };
 
 const PriceTag = ({ price, discount }: PriceTagProps) => {
-  const discountRate = useMemo(
-    () => getDiscountRate(price, discount),
-    [price, discount]
-  );
+  const discountRate = getDiscountRate(price, discount);
 
   if (!discount)
     <span
@@ -31,7 +27,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
     </span>;
 
   return (
-    <div className="flex items-end gap-1">
+    <div className="flex items-end gap-1 min-h-[28px]">
       {discount > 0 && price && discountRate > 0 && (
         <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-lg max-md:text-xs">
           %{discountRate}
@@ -48,7 +44,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
             {getPriceTR(discount)}
           </span>
         )}
-        {price && (
+        {price && discount !== price && (
           <span
             className={clsx([
               "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap",
@@ -65,4 +61,4 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
   );
 };
 
-export default memo(PriceTag);
+export default PriceTag;

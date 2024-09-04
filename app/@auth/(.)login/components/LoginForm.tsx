@@ -5,13 +5,13 @@ import TextField from "@/components/TextField";
 import Link from "next/link";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
-import { IoLogIn } from "react-icons/io5";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 import { signIn } from "next-auth/react";
 import clsx from "clsx";
-import GoogleIcon from "@/components/Svgs/Google";
+import GoogleIcon from "@/components/CustomIcons/Google";
 import Image from "next/image";
+import Login from "@/components/Icons/Login";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -80,7 +80,13 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
         "flex flex-col items-center justify-center rounded-lg p-12 m-auto gap-4 font-mono w-[500px] bg-white max-md:w-full max-md:h-full max-md:rounded-none"
       )}
     >
-      <Image src="/logo.svg" width={300} height={300} alt="Login" />
+      <Image
+        src={"/logo.svg"}
+        width={300}
+        height={300}
+        alt="Login"
+        className="w-auto h-auto"
+      />
       <h1 className="text-3xl font-bold text-center">Giriş Yap</h1>
       <p className="text-center text-gray-500">
         Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası için
@@ -107,7 +113,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       </div>
       <Button
         type="submit"
-        icon={<IoLogIn className="mr-2" />}
+        icon={<Login className="mr-2" />}
         label="Giriş Yap"
         loading={loading}
       />

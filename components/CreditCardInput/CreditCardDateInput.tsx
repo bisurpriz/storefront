@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextField from "../TextField";
-import { LuCalendar } from "react-icons/lu";
+import Calendar from "../Icons/Calendar";
 
 const CreditCardDateInput = ({
   onChange,
@@ -37,7 +37,7 @@ const CreditCardDateInput = ({
         label="Son Kullanma Tarihi"
         id="creditCardDate"
         type="text"
-        icon={<LuCalendar size={20} />}
+        icon={<Calendar className="text-xl" />}
         value={expiryDate}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
