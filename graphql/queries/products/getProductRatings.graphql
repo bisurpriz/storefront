@@ -1,0 +1,6 @@
+query getRatings($pid: bigint!) {
+  get_comment_by_score(args: { pid: $pid }) {
+    score
+    comment_count
+  }
+}

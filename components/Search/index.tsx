@@ -172,7 +172,7 @@ const Search: FC<Props> = ({ className }) => {
               key={product.id}
               href={goToProductDetail({
                 category: {
-                  slug: product.product_categories[0].category.slug,
+                  slug: product.product_categories[0]?.category?.slug,
                 },
                 id: product.id,
                 slug: product.slug,

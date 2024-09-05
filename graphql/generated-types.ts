@@ -2164,6 +2164,171 @@ export type City_Variance_Fields = {
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
+/** columns and relationships of "comment_by_score" */
+export type Comment_By_Score = {
+  comment_count?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
+};
+
+/** aggregated selection of "comment_by_score" */
+export type Comment_By_Score_Aggregate = {
+  aggregate?: Maybe<Comment_By_Score_Aggregate_Fields>;
+  nodes: Array<Comment_By_Score>;
+};
+
+/** aggregate fields of "comment_by_score" */
+export type Comment_By_Score_Aggregate_Fields = {
+  avg?: Maybe<Comment_By_Score_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Comment_By_Score_Max_Fields>;
+  min?: Maybe<Comment_By_Score_Min_Fields>;
+  stddev?: Maybe<Comment_By_Score_Stddev_Fields>;
+  stddev_pop?: Maybe<Comment_By_Score_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Comment_By_Score_Stddev_Samp_Fields>;
+  sum?: Maybe<Comment_By_Score_Sum_Fields>;
+  var_pop?: Maybe<Comment_By_Score_Var_Pop_Fields>;
+  var_samp?: Maybe<Comment_By_Score_Var_Samp_Fields>;
+  variance?: Maybe<Comment_By_Score_Variance_Fields>;
+};
+
+
+/** aggregate fields of "comment_by_score" */
+export type Comment_By_Score_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Comment_By_Score_Avg_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "comment_by_score". All fields are combined with a logical 'AND'. */
+export type Comment_By_Score_Bool_Exp = {
+  _and?: InputMaybe<Array<Comment_By_Score_Bool_Exp>>;
+  _not?: InputMaybe<Comment_By_Score_Bool_Exp>;
+  _or?: InputMaybe<Array<Comment_By_Score_Bool_Exp>>;
+  comment_count?: InputMaybe<Int_Comparison_Exp>;
+  score?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "comment_by_score" */
+export type Comment_By_Score_Inc_Input = {
+  comment_count?: InputMaybe<Scalars['Int']['input']>;
+  score?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "comment_by_score" */
+export type Comment_By_Score_Insert_Input = {
+  comment_count?: InputMaybe<Scalars['Int']['input']>;
+  score?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate max on columns */
+export type Comment_By_Score_Max_Fields = {
+  comment_count?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
+};
+
+/** aggregate min on columns */
+export type Comment_By_Score_Min_Fields = {
+  comment_count?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
+};
+
+/** response of any mutation on the table "comment_by_score" */
+export type Comment_By_Score_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Comment_By_Score>;
+};
+
+/** Ordering options when selecting data from "comment_by_score". */
+export type Comment_By_Score_Order_By = {
+  comment_count?: InputMaybe<Order_By>;
+  score?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "comment_by_score" */
+export type Comment_By_Score_Select_Column =
+  /** column name */
+  | 'comment_count'
+  /** column name */
+  | 'score';
+
+/** input type for updating data in table "comment_by_score" */
+export type Comment_By_Score_Set_Input = {
+  comment_count?: InputMaybe<Scalars['Int']['input']>;
+  score?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Comment_By_Score_Stddev_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Comment_By_Score_Stddev_Pop_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Comment_By_Score_Stddev_Samp_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "comment_by_score" */
+export type Comment_By_Score_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Comment_By_Score_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Comment_By_Score_Stream_Cursor_Value_Input = {
+  comment_count?: InputMaybe<Scalars['Int']['input']>;
+  score?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Comment_By_Score_Sum_Fields = {
+  comment_count?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Comment_By_Score_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Comment_By_Score_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Comment_By_Score_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Comment_By_Score_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Comment_By_Score_Var_Pop_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Comment_By_Score_Var_Samp_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Comment_By_Score_Variance_Fields = {
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+};
+
 /** columns and relationships of "company" */
 export type Company = {
   address: Scalars['String']['output'];
@@ -4235,6 +4400,10 @@ export type District_Variance_Order_By = {
   parent_id?: InputMaybe<Order_By>;
 };
 
+export type Get_Comment_By_Score_Args = {
+  pid?: InputMaybe<Scalars['bigint']['input']>;
+};
+
 export type Get_Product_Delivery_Cities_Args = {
   product_id?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -4693,6 +4862,8 @@ export type Mutation_Root = {
   delete_city?: Maybe<City_Mutation_Response>;
   /** delete single row from the table: "city" */
   delete_city_by_pk?: Maybe<City>;
+  /** delete data from the table: "comment_by_score" */
+  delete_comment_by_score?: Maybe<Comment_By_Score_Mutation_Response>;
   /** delete data from the table: "company" */
   delete_company?: Maybe<Company_Mutation_Response>;
   /** delete single row from the table: "company" */
@@ -4876,6 +5047,10 @@ export type Mutation_Root = {
   insert_city?: Maybe<City_Mutation_Response>;
   /** insert a single row into the table: "city" */
   insert_city_one?: Maybe<City>;
+  /** insert data into the table: "comment_by_score" */
+  insert_comment_by_score?: Maybe<Comment_By_Score_Mutation_Response>;
+  /** insert a single row into the table: "comment_by_score" */
+  insert_comment_by_score_one?: Maybe<Comment_By_Score>;
   /** insert data into the table: "company" */
   insert_company?: Maybe<Company_Mutation_Response>;
   /** insert data into the table: "company_category" */
@@ -5076,6 +5251,10 @@ export type Mutation_Root = {
   update_city_by_pk?: Maybe<City>;
   /** update multiples rows of table: "city" */
   update_city_many?: Maybe<Array<Maybe<City_Mutation_Response>>>;
+  /** update data of the table: "comment_by_score" */
+  update_comment_by_score?: Maybe<Comment_By_Score_Mutation_Response>;
+  /** update multiples rows of table: "comment_by_score" */
+  update_comment_by_score_many?: Maybe<Array<Maybe<Comment_By_Score_Mutation_Response>>>;
   /** update data of the table: "company" */
   update_company?: Maybe<Company_Mutation_Response>;
   /** update single row of the table: "company" */
@@ -5384,6 +5563,12 @@ export type Mutation_RootDelete_CityArgs = {
 /** mutation root */
 export type Mutation_RootDelete_City_By_PkArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Comment_By_ScoreArgs = {
+  where: Comment_By_Score_Bool_Exp;
 };
 
 
@@ -5948,6 +6133,18 @@ export type Mutation_RootInsert_CityArgs = {
 export type Mutation_RootInsert_City_OneArgs = {
   object: City_Insert_Input;
   on_conflict?: InputMaybe<City_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Comment_By_ScoreArgs = {
+  objects: Array<Comment_By_Score_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Comment_By_Score_OneArgs = {
+  object: Comment_By_Score_Insert_Input;
 };
 
 
@@ -6660,6 +6857,20 @@ export type Mutation_RootUpdate_City_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_City_ManyArgs = {
   updates: Array<City_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Comment_By_ScoreArgs = {
+  _inc?: InputMaybe<Comment_By_Score_Inc_Input>;
+  _set?: InputMaybe<Comment_By_Score_Set_Input>;
+  where: Comment_By_Score_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Comment_By_Score_ManyArgs = {
+  updates: Array<Comment_By_Score_Updates>;
 };
 
 
@@ -13254,6 +13465,10 @@ export type Query_Root = {
   city_aggregate: City_Aggregate;
   /** fetch data from the table: "city" using primary key columns */
   city_by_pk?: Maybe<City>;
+  /** fetch data from the table: "comment_by_score" */
+  comment_by_score: Array<Comment_By_Score>;
+  /** fetch aggregated fields from the table: "comment_by_score" */
+  comment_by_score_aggregate: Comment_By_Score_Aggregate;
   /** fetch data from the table: "company" */
   company: Array<Company>;
   /** fetch aggregated fields from the table: "company" */
@@ -13296,6 +13511,10 @@ export type Query_Root = {
   district_aggregate: District_Aggregate;
   /** fetch data from the table: "district" using primary key columns */
   district_by_pk?: Maybe<District>;
+  /** execute function "get_comment_by_score" which returns "comment_by_score" */
+  get_comment_by_score: Array<Comment_By_Score>;
+  /** execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score" */
+  get_comment_by_score_aggregate: Comment_By_Score_Aggregate;
   /** execute function "get_product_delivery_cities" which returns "product_delivery_city_info" */
   get_product_delivery_cities: Array<Product_Delivery_City_Info>;
   /** execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info" */
@@ -13647,6 +13866,24 @@ export type Query_RootCity_By_PkArgs = {
 };
 
 
+export type Query_RootComment_By_ScoreArgs = {
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
+export type Query_RootComment_By_Score_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
 export type Query_RootCompanyArgs = {
   distinct_on?: InputMaybe<Array<Company_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -13805,6 +14042,26 @@ export type Query_RootDistrict_AggregateArgs = {
 
 export type Query_RootDistrict_By_PkArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type Query_RootGet_Comment_By_ScoreArgs = {
+  args: Get_Comment_By_Score_Args;
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
+export type Query_RootGet_Comment_By_Score_AggregateArgs = {
+  args: Get_Comment_By_Score_Args;
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
 };
 
 
@@ -16104,6 +16361,12 @@ export type Subscription_Root = {
   city_by_pk?: Maybe<City>;
   /** fetch data from the table in a streaming manner: "city" */
   city_stream: Array<City>;
+  /** fetch data from the table: "comment_by_score" */
+  comment_by_score: Array<Comment_By_Score>;
+  /** fetch aggregated fields from the table: "comment_by_score" */
+  comment_by_score_aggregate: Comment_By_Score_Aggregate;
+  /** fetch data from the table in a streaming manner: "comment_by_score" */
+  comment_by_score_stream: Array<Comment_By_Score>;
   /** fetch data from the table: "company" */
   company: Array<Company>;
   /** fetch aggregated fields from the table: "company" */
@@ -16160,6 +16423,10 @@ export type Subscription_Root = {
   district_by_pk?: Maybe<District>;
   /** fetch data from the table in a streaming manner: "district" */
   district_stream: Array<District>;
+  /** execute function "get_comment_by_score" which returns "comment_by_score" */
+  get_comment_by_score: Array<Comment_By_Score>;
+  /** execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score" */
+  get_comment_by_score_aggregate: Comment_By_Score_Aggregate;
   /** execute function "get_product_delivery_cities" which returns "product_delivery_city_info" */
   get_product_delivery_cities: Array<Product_Delivery_City_Info>;
   /** execute function "get_product_delivery_cities" and query aggregates on result of table type "product_delivery_city_info" */
@@ -16619,6 +16886,31 @@ export type Subscription_RootCity_StreamArgs = {
 };
 
 
+export type Subscription_RootComment_By_ScoreArgs = {
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
+export type Subscription_RootComment_By_Score_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
+export type Subscription_RootComment_By_Score_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Comment_By_Score_Stream_Cursor_Input>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
 export type Subscription_RootCompanyArgs = {
   distinct_on?: InputMaybe<Array<Company_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -16826,6 +17118,26 @@ export type Subscription_RootDistrict_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<District_Stream_Cursor_Input>>;
   where?: InputMaybe<District_Bool_Exp>;
+};
+
+
+export type Subscription_RootGet_Comment_By_ScoreArgs = {
+  args: Get_Comment_By_Score_Args;
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
+};
+
+
+export type Subscription_RootGet_Comment_By_Score_AggregateArgs = {
+  args: Get_Comment_By_Score_Args;
+  distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Comment_By_Score_Order_By>>;
+  where?: InputMaybe<Comment_By_Score_Bool_Exp>;
 };
 
 

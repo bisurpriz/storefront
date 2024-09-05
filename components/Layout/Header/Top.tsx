@@ -15,7 +15,7 @@ const headerTopLeftMenu = [
   },
   {
     label: "Sipariş Takibi",
-    link: "order-tracking",
+    link: "siparis-takip",
   },
 ];
 

@@ -12,6 +12,11 @@ import {
   GetProductByIdQuery,
 } from "@/graphql/queries/products/getProductById.generated";
 import {
+  GetRatingsDocument,
+  GetRatingsQuery,
+  GetRatingsQueryVariables,
+} from "@/graphql/queries/products/getProductRatings.generated";
+import {
   GetProductsWithFilteredPaginationDocument,
   GetProductsWithFilteredPaginationQuery,
   GetProductsWithPaginationDocument,
@@ -74,6 +79,17 @@ export const getProductReviews = async ({
     },
   });
   return data;
+};
+
+export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
+  const { data } = await query<GetRatingsQuery>({
+    query: GetRatingsDocument,
+    variables: {
+      pid,
+    },
+  });
+  console.log(data, "getProductRatings");
+  return data.get_comment_by_score;
 };
 
 export const searchLocation = async (location: string) => {

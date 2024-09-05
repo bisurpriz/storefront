@@ -32,6 +32,13 @@ export type UpdateOrderItemApproveMutationVariables = Types.Exact<{
 
 export type UpdateOrderItemApproveMutation = { update_order_item?: { affected_rows: number, returning: Array<{ is_images_approved?: boolean | null }> } | null };
 
+export type GetOrderForTrackingQueryVariables = Types.Exact<{
+  orderNo: Types.Scalars['bigint']['input'];
+}>;
+
+
+export type GetOrderForTrackingQuery = { order: Array<{ created_at: any, order_no?: any | null, tenant_orders: Array<{ id: any, status?: Types.Order_Status_Enum | null, order_items: Array<{ quantity: number, id: any, delivery_date?: any | null, delivery_time?: string | null, product: { name: string, id: any, slug?: string | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }> } }> }> }> };
+
 
 export const GetSingleTenantOrderItemDocument = gql`
     query getSingleTenantOrderItem($id: bigint) {
@@ -80,3 +87,34 @@ export const UpdateOrderItemApproveDocument = gql`
 export type UpdateOrderItemApproveMutationFn = Apollo.MutationFunction<UpdateOrderItemApproveMutation, UpdateOrderItemApproveMutationVariables>;
 export type UpdateOrderItemApproveMutationResult = Apollo.MutationResult<UpdateOrderItemApproveMutation>;
 export type UpdateOrderItemApproveMutationOptions = Apollo.BaseMutationOptions<UpdateOrderItemApproveMutation, UpdateOrderItemApproveMutationVariables>;
+export const GetOrderForTrackingDocument = gql`
+    query getOrderForTracking($orderNo: bigint!) {
+  order(where: {order_no: {_eq: $orderNo}, payment_status: {_eq: PAID}}) {
+    created_at
+    order_no
+    tenant_orders {
+      id
+      status
+      order_items {
+        quantity
+        id
+        delivery_date
+        delivery_time
+        product {
+          name
+          id
+          slug
+          product_categories {
+            category {
+              name
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type GetOrderForTrackingQueryResult = Apollo.QueryResult<GetOrderForTrackingQuery, GetOrderForTrackingQueryVariables>;

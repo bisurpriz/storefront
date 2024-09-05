@@ -11,6 +11,7 @@ import GiftCardNote from "./GiftCardNote";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import Palette from "@/components/Icons/Palette";
 import FreeTruck from "@/components/Icons/FreeTruck";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -27,7 +28,16 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   } = product;
 
   const image = getImageUrlFromPath(image_url?.[0]);
-  console.log(product_categories, "product_categories");
+
+  const specialTextCount = customize?.filter(
+    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT
+  ).length;
+  const specialImageCount = customize?.filter(
+    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
+  ).length;
+
+  console.log(customize, "customize");
+
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
@@ -81,6 +91,15 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
           ]}
         />
+
+        {(specialImageCount > 0 || specialTextCount > 0) && (
+          <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
+            <p className="text-xs text-gray-500">
+              Siparişi tamamladıktan sonra, tasarlanabilir alanları
+              doldurabilirsiniz.
+            </p>
+          </div>
+        )}
         <GiftCardNote id={id} quantity={quantity} />
       </div>
     </li>
