@@ -64,13 +64,13 @@ export const createDynamicQueryMapper = (searchParams: {
         };
       case FILTER_KEYS.CATEGORY:
         return {
-          product_categories: { 
+          product_categories: {
             category: {
               slug: {
                 _in: (searchParams[key] as string).split(","),
               },
             },
-          }
+          },
         };
       case FILTER_KEYS.PRICE: {
         const price = (searchParams[key] as string).split("-");
@@ -113,7 +113,9 @@ export const createDynamicQueryMapper = (searchParams: {
   const locationType = parseJson(cookie)?.type;
 
   const locationWhereExpression = {
-    quarter: { quarter_code: { _in: locationId ? [locationId] : undefined } },
+    quarter: {
+      quarter: { id: { _in: locationId ? [locationId] : undefined } },
+    },
     district: { quarter: { district: { id: { _in: [locationId] } } } },
     city: { quarter: { district: { city: { id: { _in: [locationId] } } } } },
   };
