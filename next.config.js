@@ -53,6 +53,12 @@ const nextConfig = {
         port: "",
       },
       {
+        hostname: "d5425fns9u0fk.cloudfront.net",
+        protocol: "https",
+        pathname: "/**",
+        port: "",
+      },
+      {
         hostname: "lh3.googleusercontent.com",
         protocol: "https",
         pathname: "/**",
