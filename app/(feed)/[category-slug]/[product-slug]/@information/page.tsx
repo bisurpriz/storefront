@@ -84,7 +84,7 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         discountRate={getDiscountRate(product.price, product.discount_price)}
         key={product.id}
         vendor={product.tenant.tenants?.[0]}
-        freeShipping={true}
+        freeShipping={product.is_service_free}
         shippingType={product.delivery_type}
         deliveryTimeRanges={product.delivery_time_ranges}
         isCustomizable={product.product_customizable_areas?.length > 0}
