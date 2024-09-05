@@ -64,11 +64,13 @@ export const createDynamicQueryMapper = (searchParams: {
         };
       case FILTER_KEYS.CATEGORY:
         return {
-          category: {
-            slug: {
-              _in: (searchParams[key] as string).split(","),
+          product_categories: { 
+            category: {
+              slug: {
+                _in: (searchParams[key] as string).split(","),
+              },
             },
-          },
+          }
         };
       case FILTER_KEYS.PRICE: {
         const price = (searchParams[key] as string).split("-");

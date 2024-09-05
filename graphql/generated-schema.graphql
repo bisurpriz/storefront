@@ -2639,6 +2639,190 @@ type city_variance_fields {
 }
 
 """
+columns and relationships of "comment_by_score"
+"""
+type comment_by_score {
+  comment_count: Int
+  score: Int
+}
+
+"""
+aggregated selection of "comment_by_score"
+"""
+type comment_by_score_aggregate {
+  aggregate: comment_by_score_aggregate_fields
+  nodes: [comment_by_score!]!
+}
+
+"""
+aggregate fields of "comment_by_score"
+"""
+type comment_by_score_aggregate_fields {
+  avg: comment_by_score_avg_fields
+  count(columns: [comment_by_score_select_column!], distinct: Boolean): Int!
+  max: comment_by_score_max_fields
+  min: comment_by_score_min_fields
+  stddev: comment_by_score_stddev_fields
+  stddev_pop: comment_by_score_stddev_pop_fields
+  stddev_samp: comment_by_score_stddev_samp_fields
+  sum: comment_by_score_sum_fields
+  var_pop: comment_by_score_var_pop_fields
+  var_samp: comment_by_score_var_samp_fields
+  variance: comment_by_score_variance_fields
+}
+
+"""aggregate avg on columns"""
+type comment_by_score_avg_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""
+Boolean expression to filter rows from the table "comment_by_score". All fields are combined with a logical 'AND'.
+"""
+input comment_by_score_bool_exp {
+  _and: [comment_by_score_bool_exp!]
+  _not: comment_by_score_bool_exp
+  _or: [comment_by_score_bool_exp!]
+  comment_count: Int_comparison_exp
+  score: Int_comparison_exp
+}
+
+"""
+input type for incrementing numeric columns in table "comment_by_score"
+"""
+input comment_by_score_inc_input {
+  comment_count: Int
+  score: Int
+}
+
+"""
+input type for inserting data into table "comment_by_score"
+"""
+input comment_by_score_insert_input {
+  comment_count: Int
+  score: Int
+}
+
+"""aggregate max on columns"""
+type comment_by_score_max_fields {
+  comment_count: Int
+  score: Int
+}
+
+"""aggregate min on columns"""
+type comment_by_score_min_fields {
+  comment_count: Int
+  score: Int
+}
+
+"""
+response of any mutation on the table "comment_by_score"
+"""
+type comment_by_score_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [comment_by_score!]!
+}
+
+"""Ordering options when selecting data from "comment_by_score"."""
+input comment_by_score_order_by {
+  comment_count: order_by
+  score: order_by
+}
+
+"""
+select columns of table "comment_by_score"
+"""
+enum comment_by_score_select_column {
+  """column name"""
+  comment_count
+
+  """column name"""
+  score
+}
+
+"""
+input type for updating data in table "comment_by_score"
+"""
+input comment_by_score_set_input {
+  comment_count: Int
+  score: Int
+}
+
+"""aggregate stddev on columns"""
+type comment_by_score_stddev_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type comment_by_score_stddev_pop_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type comment_by_score_stddev_samp_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""
+Streaming cursor of the table "comment_by_score"
+"""
+input comment_by_score_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: comment_by_score_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input comment_by_score_stream_cursor_value_input {
+  comment_count: Int
+  score: Int
+}
+
+"""aggregate sum on columns"""
+type comment_by_score_sum_fields {
+  comment_count: Int
+  score: Int
+}
+
+input comment_by_score_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: comment_by_score_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: comment_by_score_set_input
+
+  """filter the rows which have to be updated"""
+  where: comment_by_score_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type comment_by_score_var_pop_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""aggregate var_samp on columns"""
+type comment_by_score_var_samp_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""aggregate variance on columns"""
+type comment_by_score_variance_fields {
+  comment_count: Float
+  score: Float
+}
+
+"""
 columns and relationships of "company"
 """
 type company {
@@ -5148,6 +5332,10 @@ input district_variance_order_by {
   parent_id: order_by
 }
 
+input get_comment_by_score_args {
+  pid: bigint
+}
+
 input get_product_delivery_cities_args {
   product_id: bigint
 }
@@ -5749,6 +5937,14 @@ type mutation_root {
   delete single row from the table: "city"
   """
   delete_city_by_pk(id: Int!): city
+
+  """
+  delete data from the table: "comment_by_score"
+  """
+  delete_comment_by_score(
+    """filter the rows which have to be deleted"""
+    where: comment_by_score_bool_exp!
+  ): comment_by_score_mutation_response
 
   """
   delete data from the table: "company"
@@ -6395,6 +6591,22 @@ type mutation_root {
     """upsert condition"""
     on_conflict: city_on_conflict
   ): city
+
+  """
+  insert data into the table: "comment_by_score"
+  """
+  insert_comment_by_score(
+    """the rows to be inserted"""
+    objects: [comment_by_score_insert_input!]!
+  ): comment_by_score_mutation_response
+
+  """
+  insert a single row into the table: "comment_by_score"
+  """
+  insert_comment_by_score_one(
+    """the row to be inserted"""
+    object: comment_by_score_insert_input!
+  ): comment_by_score
 
   """
   insert data into the table: "company"
@@ -7501,6 +7713,28 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [city_updates!]!
   ): [city_mutation_response]
+
+  """
+  update data of the table: "comment_by_score"
+  """
+  update_comment_by_score(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: comment_by_score_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: comment_by_score_set_input
+
+    """filter the rows which have to be updated"""
+    where: comment_by_score_bool_exp!
+  ): comment_by_score_mutation_response
+
+  """
+  update multiples rows of table: "comment_by_score"
+  """
+  update_comment_by_score_many(
+    """updates to execute, in order"""
+    updates: [comment_by_score_updates!]!
+  ): [comment_by_score_mutation_response]
 
   """
   update data of the table: "company"
@@ -15970,6 +16204,46 @@ type query_root {
   city_by_pk(id: Int!): city
 
   """
+  fetch data from the table: "comment_by_score"
+  """
+  comment_by_score(
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): [comment_by_score!]!
+
+  """
+  fetch aggregated fields from the table: "comment_by_score"
+  """
+  comment_by_score_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): comment_by_score_aggregate!
+
+  """
   fetch data from the table: "company"
   """
   company(
@@ -16273,6 +16547,56 @@ type query_root {
 
   """fetch data from the table: "district" using primary key columns"""
   district_by_pk(id: Int!): district
+
+  """
+  execute function "get_comment_by_score" which returns "comment_by_score"
+  """
+  get_comment_by_score(
+    """
+    input parameters for function "get_comment_by_score"
+    """
+    args: get_comment_by_score_args!
+
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): [comment_by_score!]!
+
+  """
+  execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score"
+  """
+  get_comment_by_score_aggregate(
+    """
+    input parameters for function "get_comment_by_score_aggregate"
+    """
+    args: get_comment_by_score_args!
+
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): comment_by_score_aggregate!
 
   """
   execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
@@ -19923,6 +20247,60 @@ type subscription_root {
   ): [city!]!
 
   """
+  fetch data from the table: "comment_by_score"
+  """
+  comment_by_score(
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): [comment_by_score!]!
+
+  """
+  fetch aggregated fields from the table: "comment_by_score"
+  """
+  comment_by_score_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): comment_by_score_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "comment_by_score"
+  """
+  comment_by_score_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [comment_by_score_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): [comment_by_score!]!
+
+  """
   fetch data from the table: "company"
   """
   company(
@@ -20324,6 +20702,56 @@ type subscription_root {
     """filter the rows returned"""
     where: district_bool_exp
   ): [district!]!
+
+  """
+  execute function "get_comment_by_score" which returns "comment_by_score"
+  """
+  get_comment_by_score(
+    """
+    input parameters for function "get_comment_by_score"
+    """
+    args: get_comment_by_score_args!
+
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): [comment_by_score!]!
+
+  """
+  execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score"
+  """
+  get_comment_by_score_aggregate(
+    """
+    input parameters for function "get_comment_by_score_aggregate"
+    """
+    args: get_comment_by_score_args!
+
+    """distinct select on columns"""
+    distinct_on: [comment_by_score_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_by_score_order_by!]
+
+    """filter the rows returned"""
+    where: comment_by_score_bool_exp
+  ): comment_by_score_aggregate!
 
   """
   execute function "get_product_delivery_cities" which returns "product_delivery_city_info"
