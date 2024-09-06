@@ -93,7 +93,7 @@ const CartSummary = () => {
                 totalWithDiscount={cost.totalWithDiscount}
                 handleRemoveCoupon={handleRemoveCoupon}
               />
-              {approveContract && pathname === CartStepPaths.CHECKOUT && (
+              {pathname === CartStepPaths.CHECKOUT && (
                 <CheckContract
                   openApproveContract={openApproveContract}
                   approveContract={approveContract}
@@ -115,7 +115,7 @@ const CartSummary = () => {
             totalWithDiscount={cost.totalWithDiscount}
             handleRemoveCoupon={handleRemoveCoupon}
           />
-          {approveContract && pathname === CartStepPaths.CHECKOUT && (
+          {pathname === CartStepPaths.CHECKOUT && (
             <CheckContract
               setApproveContract={setApproveContract}
               openApproveContract={openApproveContract}

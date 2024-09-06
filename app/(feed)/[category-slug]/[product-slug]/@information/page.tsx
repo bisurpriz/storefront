@@ -5,7 +5,6 @@ import { FC } from "react";
 import { createJSONLd } from "@/utils/createJSONLd";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Script from "next/script";
-import { DeliveryType } from "@/common/enums/Product/product";
 import { getProductRatings } from "@/app/(feed)/actions";
 
 type Props = {

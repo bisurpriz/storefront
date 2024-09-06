@@ -113,7 +113,7 @@ const CreditCardForm = () => {
   });
 
   useEffect(() => {
-    const serialize = localStorage.getItem("detail-data");
+    const serialize = sessionStorage.getItem("order-detail-form");
     if (!serialize) {
       replace("/cart");
     }
@@ -122,7 +122,7 @@ const CreditCardForm = () => {
   const onSubmit = async (data: CreditCardForm) => {
     if (data) {
       setLoading(true);
-      const serialize = localStorage.getItem("detail-data");
+      const serialize = sessionStorage.getItem("order-detail-form");
       const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
       const senderNames = detailData.sender_name.split(" ");
       const timeStamps = new Date().getTime();
@@ -213,7 +213,7 @@ const CreditCardForm = () => {
 
       if (event.data === "success") {
         clearCart();
-        localStorage.removeItem("detail-data");
+        sessionStorage.removeItem("order-detail-form");
         localStorage.removeItem("cart");
         localStorage.removeItem("count");
         localStorage.removeItem("cost");

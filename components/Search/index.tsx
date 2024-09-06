@@ -120,6 +120,7 @@ const Search: FC<Props> = ({ className }) => {
       <TextField
         type="text"
         className=""
+        id="header-search"
         placeholder="Çiçek, hediye, süprizler..."
         ref={ref}
         onChange={onChange}

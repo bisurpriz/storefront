@@ -70,7 +70,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <label
         {...getRootProps()}
         className={clsx(
-          "relative text-xs font-medium text-gray-700 flex flex-col gap-1 w-fit",
+          "relative text-xs font-medium text-gray-700 flex flex-col gap-1 w-80",
           fullWidthClasses
         )}
       >

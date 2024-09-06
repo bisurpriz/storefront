@@ -49,7 +49,6 @@ export interface OrderItemSpecialImage extends OrderItemSpecial {
 }
 
 export interface OrderDetailFormData {
-  user_id: User["id"];
   receiver_name: string;
   receiver_phone: string;
   sender_name: string;
@@ -63,7 +62,6 @@ export interface OrderDetailFormData {
   invoice_company_address?: string;
   invoice_company_city?: string;
   invoice_company_district?: string;
-  id: number;
   city: CityResponse;
   district: DistrictResponse;
   quarter: QuarterResponse;

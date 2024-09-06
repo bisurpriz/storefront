@@ -37,6 +37,8 @@ const PhoneInput: FC<PhoneInputProps> = ({
       handleChange({
         target: { value },
       } as ChangeEvent<HTMLInputElement>);
+    } else {
+      setPhoneNumber("");
     }
   }, [value]);
 

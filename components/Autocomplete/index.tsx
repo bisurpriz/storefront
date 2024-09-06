@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { useAutocomplete } from "@mui/base/useAutocomplete";
 import Clear from "../Icons/Clear";
@@ -6,7 +8,9 @@ import { unstable_useForkRef as useForkRef } from "@mui/utils";
 import { Popper } from "@mui/base/Popper";
 import clsx from "clsx";
 
-export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
+export type AutoCompleteOption = Pick<DropdownOption, "label" | "value"> & {
+  [key: string]: any;
+};
 
 export interface AutoCompleteProps {
   options: AutoCompleteOption[];
