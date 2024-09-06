@@ -1,25 +1,26 @@
-import { getQuarters } from '@/app/account/actions';
-import { Quarter } from '@/common/types/Addresses/addresses';
-import { useEffect, useState } from 'react';
+import { getAvailableQuartersForProduct } from "@/app/account/actions";
+import { Quarter } from "@/common/types/Addresses/addresses";
+import { useEffect, useState } from "react";
 
-type QuarterResponse = Pick<Quarter, 'id' | 'name'>[];
+type QuarterResponse = Pick<Quarter, "id" | "name">[];
 
-export const useQuarters = (districtId: number | string) => {
+export const useQuarters = (districtId: number, pid: number) => {
   const [quarters, setQuarters] = useState<QuarterResponse>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!districtId) return;
+    if (!districtId || !pid) return;
 
     const fetchDiscrits = async () => {
-      const { quarters } = await getQuarters(
-        typeof districtId === 'string' ? districtId : districtId.toString()
-      );
+      setLoading(true);
+      const { quarter } = await getAvailableQuartersForProduct(pid, districtId);
 
-      setQuarters(quarters);
+      setQuarters(quarter);
+      setLoading(false);
     };
 
     fetchDiscrits();
   }, [districtId]);
 
-  return { quarters };
+  return { quarters, loading };
 };
