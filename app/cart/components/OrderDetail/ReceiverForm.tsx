@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
@@ -32,8 +32,6 @@ import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { OrderDetailSchema } from "./schema";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { GetProductDeliveryCitiesQuery } from "@/graphql/queries/products/getProductLocation.generated";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -47,7 +45,7 @@ const SubTitle = ({ children }: { children: React.ReactNode }) => (
 
 export interface OrderDetailPartialFormData
   extends Partial<OrderDetailFormData> {
-  saved_address?: AutoCompleteOption | null;
+  saved_address?: string;
   wantToSaveAddress?: boolean;
 }
 
@@ -95,9 +93,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   defaultQuarter,
 }) => {
   const { user, userAddresses } = useUser();
-  const [availableCities, setAvailableCities] = useState<
-    GetProductDeliveryCitiesQuery["get_product_delivery_cities"]
-  >([]);
+  const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
   const { cartState } = useCart();
   const {
@@ -127,8 +123,10 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   });
 
   useEffect(() => {
-    getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then((cities) =>
-      setAvailableCities(cities)
+    getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
+      (cities) => {
+        setAvailableCities(cities);
+      }
     );
   }, []);
 
@@ -146,25 +144,27 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     cartState?.cartItems?.[0]?.id
   );
 
-  const getShowableSavedAddress = useMemo(() => {
-    if (!userAddresses) return null;
-
-    return userAddresses.filter((add) =>
-      availableCities.find((city) => city.id === add.city.id)
-    );
-  }, [userAddresses, availableCities]);
-
   const renderSavedAddress = () => {
-    console.log(getShowableSavedAddress);
-    if (getShowableSavedAddress?.length > 0) {
+    if (userAddresses?.length > 0) {
       return (
         <Controller
           control={control}
           name="saved_address"
-          render={({ field: { onChange, value } }) => {
+          render={({ field }) => {
+            const selectedAddress = userAddresses.find(
+              (address) => address?.id?.toString() === field.value
+            );
+
             return (
               <AutoComplete
-                value={value}
+                value={
+                  selectedAddress
+                    ? {
+                        label: selectedAddress.address_title,
+                        value: selectedAddress.id,
+                      }
+                    : null
+                }
                 label="Kayıtlı Adresler"
                 getOptionLabel={(option) => option.label}
                 options={userAddresses.map((address) => ({
@@ -172,13 +172,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                   value: address.id,
                 }))}
                 onChange={(option: AutoCompleteOption) => {
-                  if (
-                    availableCities.findIndex(
-                      (city) => city.id === option?.value
-                    ) !== -1
-                  ) {
-                    onChange(option);
-                  }
+                  field.onChange(option?.value ?? "");
                 }}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"

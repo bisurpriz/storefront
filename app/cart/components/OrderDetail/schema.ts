@@ -13,7 +13,7 @@ export const OrderDetailSchema = object({
     .required("Gönderici e-posta adresi zorunludur.")
     .email("Geçerli bir e-posta adresi giriniz."),
   address_title: string().optional().nullable(),
-  saved_address: object().optional().nullable(),
+  saved_address: string().optional().nullable(),
   wantToSaveAddress: boolean().optional().nullable(),
   invoice_type: string()
     .default("person")

@@ -45,7 +45,7 @@ const Search: FC<Props> = ({ className }) => {
   const { push } = useRouter();
   const [inputVal, setInputVal] = useState("");
 
-  const modalRef = useClickAway<HTMLUListElement>(() => {
+  const modalRef = useClickAway<HTMLInputElement>(() => {
     setIsOpen(false);
   });
 
@@ -162,50 +162,48 @@ const Search: FC<Props> = ({ className }) => {
       </div>
 
       {isOpen && (
-        <ul
+        <div
           ref={modalRef}
           className="absolute z-10 w-full bg-white shadow-lg rounded-lg mt-2 max-h-80 overflow-y-auto"
         >
           {products.map((product) => (
-            <li>
-              <Link
-                prefetch
+            <Link
+              prefetch
+              key={product.id}
+              href={goToProductDetail({
+                category: {
+                  slug: product.product_categories[0]?.category?.slug,
+                },
+                id: product.id,
+                slug: product.slug,
+              })}
+              onClick={() => setIsOpen(false)}
+            >
+              <div
                 key={product.id}
-                href={goToProductDetail({
-                  category: {
-                    slug: product.product_categories[0]?.category?.slug,
-                  },
-                  id: product.id,
-                  slug: product.slug,
-                })}
-                onClick={() => setIsOpen(false)}
+                className="p-2 border-b hover:bg-gray-100 transition-colors"
               >
-                <div
-                  key={product.id}
-                  className="p-2 border-b hover:bg-gray-100 transition-colors"
-                >
-                  <div className="flex items-start">
-                    {product?.image_url?.[0] ? (
-                      <div className="w-20 h-20">
-                        <Image
-                          src={getImageUrlFromPath(product.image_url[0])}
-                          width={100}
-                          height={100}
-                          className="w-full h-full rounded-lg"
-                          alt={product.name}
-                        />
-                      </div>
-                    ) : null}
-                    <div className="text-sm font-semibold text-gray-500 ml-3">
-                      {product.name}
+                <div className="flex items-start">
+                  {product?.image_url?.[0] ? (
+                    <div className="w-20 h-20">
+                      <Image
+                        src={getImageUrlFromPath(product.image_url[0])}
+                        width={100}
+                        height={100}
+                        className="w-full h-full rounded-lg"
+                        alt={product.name}
+                      />
                     </div>
-                    <div className="text-xs ml-auto text-primary font-semibold mt-auto">
-                      {product.product_categories[0].category.name}
-                    </div>
+                  ) : null}
+                  <div className="text-sm font-semibold text-gray-500 ml-3">
+                    {product.name}
+                  </div>
+                  <div className="text-xs ml-auto text-primary font-semibold mt-auto">
+                    {product.product_categories[0].category.name}
                   </div>
                 </div>
-              </Link>
-            </li>
+              </div>
+            </Link>
           ))}
 
           {isLoading && <Skeleton />}
@@ -213,7 +211,7 @@ const Search: FC<Props> = ({ className }) => {
           {products.length === 0 && !isLoading && (
             <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
           )}
-        </ul>
+        </div>
       )}
     </div>
   );

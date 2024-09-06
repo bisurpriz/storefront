@@ -15488,42 +15488,6 @@ type quarter {
   minlongitude: String
   name: String!
   parent_id: Int!
-
-  """An array relationship"""
-  tenant_shipping_places(
-    """distinct select on columns"""
-    distinct_on: [tenant_shipping_place_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tenant_shipping_place_order_by!]
-
-    """filter the rows returned"""
-    where: tenant_shipping_place_bool_exp
-  ): [tenant_shipping_place!]!
-
-  """An aggregate relationship"""
-  tenant_shipping_places_aggregate(
-    """distinct select on columns"""
-    distinct_on: [tenant_shipping_place_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tenant_shipping_place_order_by!]
-
-    """filter the rows returned"""
-    where: tenant_shipping_place_bool_exp
-  ): tenant_shipping_place_aggregate!
 }
 
 """
@@ -15621,8 +15585,6 @@ input quarter_bool_exp {
   minlongitude: String_comparison_exp
   name: String_comparison_exp
   parent_id: Int_comparison_exp
-  tenant_shipping_places: tenant_shipping_place_bool_exp
-  tenant_shipping_places_aggregate: tenant_shipping_place_aggregate_bool_exp
 }
 
 """
@@ -15662,7 +15624,6 @@ input quarter_insert_input {
   minlongitude: String
   name: String
   parent_id: Int
-  tenant_shipping_places: tenant_shipping_place_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -15758,7 +15719,6 @@ input quarter_order_by {
   minlongitude: order_by
   name: order_by
   parent_id: order_by
-  tenant_shipping_places_aggregate: tenant_shipping_place_aggregate_order_by
 }
 
 """primary key columns input for table: quarter"""

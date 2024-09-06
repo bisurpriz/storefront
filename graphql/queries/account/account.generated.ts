@@ -7,7 +7,7 @@ export type GetUserAddressByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetUserAddressByIdQuery = { user_by_pk?: { user_addresses: Array<{ address: string, address_title: string, receiver_firstname: string, receiver_phone: string, receiver_surname: string, id: number, city: { id: number, name: string, code: number }, district: { id: number, name: string, code: number }, quarter: { id: number, name: string, code: number } }> } | null };
+export type GetUserAddressByIdQuery = { user_by_pk?: { user_addresses: Array<{ address: string, address_title: string, receiver_firstname: string, receiver_phone: string, receiver_surname: string, id: number, city: { id: number, name: string }, district: { id: number, name: string }, quarter: { id: number, name: string } }> } | null };
 
 export type GetUserByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['uuid']['input']>;
@@ -138,17 +138,14 @@ export const GetUserAddressByIdDocument = gql`
       city {
         id
         name
-        code
       }
       district {
         id
         name
-        code
       }
       quarter {
         id
         name
-        code
       }
     }
   }
