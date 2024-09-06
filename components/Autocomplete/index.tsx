@@ -85,7 +85,9 @@ export default function AutoComplete({
     ? "border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500"
     : "";
 
-  const disabledClass = disabled ? "bg-gray-100 text-gray-500" : "";
+  const disabledClass = disabled
+    ? "!bg-gray-100 text-gray-500 cursor-not-allowed hover:border-gray-200"
+    : "";
 
   return (
     <div>
@@ -99,7 +101,7 @@ export default function AutoComplete({
           {...getRootProps()}
           ref={rootRef}
           className={clsx(
-            "flex gap-[5px] pr-[5px] overflow-hidden w-80 rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
+            "flex gap-[5px] overflow-hidden w-80 rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
             !focused && "shadow-[0_2px_2px_transparent] shadow-gray-50 ",
             focused &&
               "border-primary-400 shadow-[0_0_0_3px_transparent] shadow-primary-200 ",

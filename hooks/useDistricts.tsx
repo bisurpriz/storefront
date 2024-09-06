@@ -1,25 +1,29 @@
-import { getDiscrits } from '@/app/account/actions';
-import { District } from '@/common/types/Addresses/addresses';
-import { useEffect, useState } from 'react';
+import { getAvailableDistrictsForProduct } from "@/app/account/actions";
+import { District } from "@/common/types/Addresses/addresses";
+import { useEffect, useState } from "react";
 
-type DistrictResponse = Pick<District, 'id' | 'name'>[];
+type DistrictResponse = Pick<District, "id" | "name">[];
 
-export const useDiscrits = (cityId: number | string) => {
+export const useDiscrits = (cityId: number, pid: number) => {
   const [districts, setDiscrits] = useState<DistrictResponse>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!cityId) return;
+    if (!cityId || !pid) return;
 
     const fetchDiscrits = async () => {
-      const { districts } = await getDiscrits(
-        typeof cityId === 'string' ? cityId : cityId.toString()
+      setLoading(true);
+      const { district, loading } = await getAvailableDistrictsForProduct(
+        pid,
+        cityId
       );
 
-      setDiscrits(districts);
+      setDiscrits(district);
+      setLoading(loading);
     };
 
     fetchDiscrits();
-  }, [cityId]);
+  }, [cityId, pid]);
 
-  return { districts };
+  return { districts, loading };
 };

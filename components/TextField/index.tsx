@@ -77,7 +77,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         {label ? <p>{label}</p> : null}
         <div
           className={clsx(
-            "flex relative w-full gap-[5px] pr-[5px] overflow-hidden rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
+            "flex relative w-full overflow-hidden rounded-lg bg-white  border border-solid border-gray-200  hover:border-primary-400 focus-visible:outline-0 shadow-[0_2px_4px_rgb(0_0_0_/_0.05)] ",
             !focused && "shadow-[0_2px_2px_transparent] shadow-gray-50 ",
             focused &&
               "border-primary-400 shadow-[0_0_0_3px_transparent] shadow-primary-200 ",

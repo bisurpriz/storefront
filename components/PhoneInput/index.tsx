@@ -99,6 +99,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
       className={className}
       id={id}
       icon={icon}
+      fullWidth
     />
   );
 };

@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
@@ -70,7 +70,7 @@ const defaultValues: OrderDetailPartialFormData = {
   quarter: null,
   receiver_name: "",
   receiver_phone: "",
-  saved_address: "",
+  saved_address: null,
   wantToSaveAddress: false,
   sender_email: "",
   sender_name: "",
@@ -87,7 +87,11 @@ const defaultValues: OrderDetailPartialFormData = {
   user_id: null,
 };
 
-const ReceiverForm = ({ cities }: ReceiverFormProps) => {
+const ReceiverForm: FC<ReceiverFormProps> = ({
+  defaultCity,
+  defaultDistrict,
+  defaultQuarter,
+}) => {
   const { user, userAddresses } = useUser();
   const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
@@ -100,7 +104,12 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     setValue,
     formState: { errors },
   } = useForm<OrderDetailPartialFormData>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      city: defaultCity,
+      district: defaultDistrict,
+      quarter: defaultQuarter,
+    },
     mode: "all",
     delayError: 500,
     resolver: yupResolver<OrderDetailPartialFormData>(
@@ -126,8 +135,14 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     name: ["city", "district", "invoice_type", "saved_address"],
   });
 
-  const { districts } = useDiscrits(city?.id);
-  const { quarters } = useQuarters(district?.id);
+  const { districts, loading: districtLoading } = useDiscrits(
+    city?.id,
+    cartState?.cartItems?.[0]?.id
+  );
+  const { quarters, loading: quarterLoading } = useQuarters(
+    district?.id,
+    cartState?.cartItems?.[0]?.id
+  );
 
   const renderSavedAddress = () => {
     if (userAddresses?.length > 0) {
@@ -407,10 +422,12 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                       : null
                   }
                   label="İlçe"
-                  options={districts.map((district) => ({
-                    label: district.name,
-                    value: district.id,
-                  }))}
+                  options={
+                    districts?.map((district) => ({
+                      label: district.name,
+                      value: district.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
                     onChange(option);
                     reset({
@@ -426,6 +443,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   }}
                   placeholder="İlçe Seçiniz"
                   id="district"
+                  disabled={!city}
                   error={!!error}
                   errorMessage={error?.message}
                 />
@@ -448,10 +466,12 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                       : null
                   }
                   label="Mahalle"
-                  options={quarters.map((option) => ({
-                    label: option.name,
-                    value: option.id,
-                  }))}
+                  options={
+                    quarters?.map((option) => ({
+                      label: option.name,
+                      value: option.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
                     onChange(
                       option
@@ -465,6 +485,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   placeholder="Mahalle Seçiniz"
                   id="quarter"
                   error={!!error}
+                  disabled={!district}
                   errorMessage={error?.message}
                 />
               );
