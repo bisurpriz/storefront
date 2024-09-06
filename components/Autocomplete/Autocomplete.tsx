@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import SearchStop from "../Icons/SearchStop";
@@ -164,48 +164,54 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 
   const { isTablet } = useResponsive();
 
-  const likeBottomSheetStyle = isTablet
-    ? clsx(
-        "fixed",
-        "bottom-0",
-        "left-0",
-        "right-0",
-        "bg-white",
-        "shadow-lg",
-        "rounded-t-lg",
-        "p-4",
-        "pt-0",
-        "z-[1000]",
-        "max-h-[50vh]",
-        "overflow-y-auto"
-      )
-    : clsx(
-        "absolute",
-        "w-full",
-        "bg-white",
-        "border",
-        "border-lime-300",
-        "rounded-md",
-        "shadow-md",
-        "z-10",
-        "overflow-y-auto",
-        "max-h-60",
-        "mt-1"
-      );
+  const likeBottomSheetStyle = useMemo(() => {
+    return isTablet
+      ? clsx(
+          "fixed",
+          "bottom-0",
+          "left-0",
+          "right-0",
+          "bg-white",
+          "shadow-lg",
+          "rounded-t-lg",
+          "p-4",
+          "pt-0",
+          "z-[1000]",
+          "max-h-[50vh]",
+          "overflow-y-auto"
+        )
+      : clsx(
+          "absolute",
+          "w-full",
+          "bg-white",
+          "border",
+          "border-lime-300",
+          "rounded-md",
+          "shadow-md",
+          "z-10",
+          "overflow-y-auto",
+          "max-h-60",
+          "mt-1"
+        );
+  }, [isTablet]);
 
-  const likeBottomSheetAnimation = isTablet
-    ? {
-        initial: { y: "100%" },
-        animate: { y: 0 },
-        exit: { y: "100%" },
-        transition: { duration: 0.2 },
-      }
-    : {
-        initial: { opacity: 0, height: 0 },
-        animate: { opacity: 1, height: "auto" },
-        exit: { opacity: 0, height: 0 },
-        transition: { duration: 0.2 },
-      };
+  const likeBottomSheetAnimation = useMemo(
+    () =>
+      isTablet
+        ? {
+            initial: { y: "100%" },
+            animate: { y: 0 },
+            exit: { y: "100%" },
+            transition: { duration: 0.2 },
+          }
+        : {
+            initial: { opacity: 0, height: 0 },
+            animate: { opacity: 1, height: "auto" },
+            exit: { opacity: 0, height: 0 },
+            transition: { duration: 0.2 },
+          },
+    [isTablet]
+  );
 
   const suggestionsListComponent = (
     <AnimatePresence>
