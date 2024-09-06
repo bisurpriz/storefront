@@ -25,7 +25,7 @@ const RenderAddress: FC<RenderAddressProps> = ({
 }) => {
   return (
     <>
-      {(!selectedSavedAddress || user) && (
+      {user && !selectedSavedAddress && (
         <>
           <Controller
             control={control}

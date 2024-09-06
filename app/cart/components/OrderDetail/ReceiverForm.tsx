@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
@@ -70,7 +70,7 @@ const defaultValues: OrderDetailPartialFormData = {
   quarter: null,
   receiver_name: "",
   receiver_phone: "",
-  saved_address: "",
+  saved_address: null,
   wantToSaveAddress: false,
   sender_email: "",
   sender_name: "",
@@ -87,7 +87,7 @@ const defaultValues: OrderDetailPartialFormData = {
   user_id: null,
 };
 
-const ReceiverForm = ({ cities }: ReceiverFormProps) => {
+const ReceiverForm: FC<ReceiverFormProps> = () => {
   const { user, userAddresses } = useUser();
   const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
@@ -426,6 +426,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   }}
                   placeholder="İlçe Seçiniz"
                   id="district"
+                  disabled={!city}
                   error={!!error}
                   errorMessage={error?.message}
                 />
@@ -465,6 +466,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                   placeholder="Mahalle Seçiniz"
                   id="quarter"
                   error={!!error}
+                  disabled={!district}
                   errorMessage={error?.message}
                 />
               );

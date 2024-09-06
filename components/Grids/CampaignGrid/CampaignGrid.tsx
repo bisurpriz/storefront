@@ -32,14 +32,12 @@ const CampaignGrid: FC = async () => {
                    (max-width: 768px) 50vw, 
                    (max-width: 992px) 50vw, 
                    (min-width: 1200px) 33vw"
-            layout="responsive"
             width={1600}
             height={900}
             src={getImageUrl(item.path)}
             priority={true}
             loading="eager"
-            objectFit="cover"
-            objectPosition="center"
+            style={{ objectFit: "cover" }}
           />
         </Link>
       ))}
