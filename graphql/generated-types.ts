@@ -13043,30 +13043,6 @@ export type Quarter = {
   minlongitude?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id: Scalars['Int']['output'];
-  /** An array relationship */
-  tenant_shipping_places: Array<Tenant_Shipping_Place>;
-  /** An aggregate relationship */
-  tenant_shipping_places_aggregate: Tenant_Shipping_Place_Aggregate;
-};
-
-
-/** columns and relationships of "quarter" */
-export type QuarterTenant_Shipping_PlacesArgs = {
-  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
-  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
-};
-
-
-/** columns and relationships of "quarter" */
-export type QuarterTenant_Shipping_Places_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
-  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
 };
 
 /** aggregated selection of "quarter" */
@@ -13158,8 +13134,6 @@ export type Quarter_Bool_Exp = {
   minlongitude?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   parent_id?: InputMaybe<Int_Comparison_Exp>;
-  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
-  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "quarter" */
@@ -13187,7 +13161,6 @@ export type Quarter_Insert_Input = {
   minlongitude?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
-  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -13271,7 +13244,6 @@ export type Quarter_Order_By = {
   minlongitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
-  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: quarter */
