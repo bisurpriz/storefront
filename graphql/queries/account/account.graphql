@@ -10,14 +10,17 @@ query getUserAddressById($id: uuid = "") {
       city {
         id
         name
+        code
       }
       district {
         id
         name
+        code
       }
       quarter {
         id
         name
+        code
       }
     }
   }
