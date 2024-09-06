@@ -128,6 +128,46 @@ query getCityById($id: Int) {
   }
 }
 
+query getDistrictForProduct($cityId: Int!, $pid: bigint!) {
+  district(
+    where: {
+      _and: [
+        { city: { id: { _eq: $cityId } } }
+        {
+          quarters: {
+            tenant_shipping_places: {
+              tenant: { owner: { products: { id: { _eq: $pid } } } }
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    name
+    id
+    code
+  }
+}
+
+query getQuartersForProduct($pid: bigint!, $districtId: Int!) {
+  quarter(
+    where: {
+      _and: [
+        { district: { id: { _eq: $districtId } } }
+        {
+          tenant_shipping_places: {
+            tenant: { owner: { products: { id: { _eq: $pid } } } }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    name
+    code
+  }
+}
+
 query getUserOrders {
   order(where: { payment_status: { _eq: PAID } }) {
     created_at

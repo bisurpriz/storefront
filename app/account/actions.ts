@@ -10,10 +10,16 @@ import {
   GetCitiesDocument,
   GetCitiesQuery,
   GetCitiesQueryVariables,
+  GetDistrictForProductDocument,
+  GetDistrictForProductQuery,
+  GetDistrictForProductQueryVariables,
   GetDistrictsDocument,
   GetDistrictsQuery,
   GetDistrictsQueryVariables,
   GetQuartersDocument,
+  GetQuartersForProductDocument,
+  GetQuartersForProductQuery,
+  GetQuartersForProductQueryVariables,
   GetQuartersQuery,
   GetQuartersQueryVariables,
   GetUserAddressByIdDocument,
@@ -75,6 +81,52 @@ export const getDiscrits = async (cityId: string) => {
 
   return {
     districts,
+    loading,
+  };
+};
+
+export const getAvailableDistrictsForProduct = async (
+  pid: number,
+  cityId: number
+) => {
+  const { data, loading } = await query<
+    GetDistrictForProductQuery,
+    GetDistrictForProductQueryVariables
+  >({
+    query: GetDistrictForProductDocument,
+    variables: {
+      pid: pid,
+      cityId: cityId,
+    },
+  });
+
+  const { district } = data;
+
+  return {
+    district,
+    loading,
+  };
+};
+
+export const getAvailableQuartersForProduct = async (
+  pid: number,
+  districtId: number
+) => {
+  const { data, loading } = await query<
+    GetQuartersForProductQuery,
+    GetQuartersForProductQueryVariables
+  >({
+    query: GetQuartersForProductDocument,
+    variables: {
+      pid: pid,
+      districtId: districtId,
+    },
+  });
+
+  const { quarter } = data;
+
+  return {
+    quarter,
     loading,
   };
 };

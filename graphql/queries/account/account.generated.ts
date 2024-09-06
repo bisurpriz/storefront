@@ -67,6 +67,22 @@ export type GetCityByIdQueryVariables = Types.Exact<{
 
 export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: string }> };
 
+export type GetDistrictForProductQueryVariables = Types.Exact<{
+  cityId: Types.Scalars['Int']['input'];
+  pid: Types.Scalars['bigint']['input'];
+}>;
+
+
+export type GetDistrictForProductQuery = { district: Array<{ name: string, id: number, code: number }> };
+
+export type GetQuartersForProductQueryVariables = Types.Exact<{
+  pid: Types.Scalars['bigint']['input'];
+  districtId: Types.Scalars['Int']['input'];
+}>;
+
+
+export type GetQuartersForProductQuery = { quarter: Array<{ id: number, name: string, code: number }> };
+
 export type GetUserOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -248,6 +264,30 @@ export const GetCityByIdDocument = gql`
 }
     `;
 export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;
+export const GetDistrictForProductDocument = gql`
+    query getDistrictForProduct($cityId: Int!, $pid: bigint!) {
+  district(
+    where: {_and: [{city: {id: {_eq: $cityId}}}, {quarters: {tenant_shipping_places: {tenant: {owner: {products: {id: {_eq: $pid}}}}}}}]}
+  ) {
+    name
+    id
+    code
+  }
+}
+    `;
+export type GetDistrictForProductQueryResult = Apollo.QueryResult<GetDistrictForProductQuery, GetDistrictForProductQueryVariables>;
+export const GetQuartersForProductDocument = gql`
+    query getQuartersForProduct($pid: bigint!, $districtId: Int!) {
+  quarter(
+    where: {_and: [{district: {id: {_eq: $districtId}}}, {tenant_shipping_places: {tenant: {owner: {products: {id: {_eq: $pid}}}}}}]}
+  ) {
+    id
+    name
+    code
+  }
+}
+    `;
+export type GetQuartersForProductQueryResult = Apollo.QueryResult<GetQuartersForProductQuery, GetQuartersForProductQueryVariables>;
 export const GetUserOrdersDocument = gql`
     query getUserOrders {
   order(where: {payment_status: {_eq: PAID}}) {

@@ -87,7 +87,11 @@ const defaultValues: OrderDetailPartialFormData = {
   user_id: null,
 };
 
-const ReceiverForm: FC<ReceiverFormProps> = () => {
+const ReceiverForm: FC<ReceiverFormProps> = ({
+  defaultCity,
+  defaultDistrict,
+  defaultQuarter,
+}) => {
   const { user, userAddresses } = useUser();
   const [availableCities, setAvailableCities] = useState([]);
   const { push } = useRouter();
@@ -100,7 +104,12 @@ const ReceiverForm: FC<ReceiverFormProps> = () => {
     setValue,
     formState: { errors },
   } = useForm<OrderDetailPartialFormData>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      city: defaultCity,
+      district: defaultDistrict,
+      quarter: defaultQuarter,
+    },
     mode: "all",
     delayError: 500,
     resolver: yupResolver<OrderDetailPartialFormData>(
@@ -126,8 +135,14 @@ const ReceiverForm: FC<ReceiverFormProps> = () => {
     name: ["city", "district", "invoice_type", "saved_address"],
   });
 
-  const { districts } = useDiscrits(city?.id);
-  const { quarters } = useQuarters(district?.id);
+  const { districts, loading: districtLoading } = useDiscrits(
+    city?.id,
+    cartState?.cartItems?.[0]?.id
+  );
+  const { quarters, loading: quarterLoading } = useQuarters(
+    district?.id,
+    cartState?.cartItems?.[0]?.id
+  );
 
   const renderSavedAddress = () => {
     if (userAddresses?.length > 0) {
@@ -407,10 +422,12 @@ const ReceiverForm: FC<ReceiverFormProps> = () => {
                       : null
                   }
                   label="İlçe"
-                  options={districts.map((district) => ({
-                    label: district.name,
-                    value: district.id,
-                  }))}
+                  options={
+                    districts?.map((district) => ({
+                      label: district.name,
+                      value: district.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
                     onChange(option);
                     reset({
@@ -449,10 +466,12 @@ const ReceiverForm: FC<ReceiverFormProps> = () => {
                       : null
                   }
                   label="Mahalle"
-                  options={quarters.map((option) => ({
-                    label: option.name,
-                    value: option.id,
-                  }))}
+                  options={
+                    quarters?.map((option) => ({
+                      label: option.name,
+                      value: option.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
                     onChange(
                       option
