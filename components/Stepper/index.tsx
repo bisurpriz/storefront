@@ -1,8 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import Done from "../Icons/Done";
-import CartYesFill from "../Icons/CartYesFill";
 
 type StepProps = {
   label: string;
@@ -15,8 +13,6 @@ interface StepperProps {
   activeStep: number;
   steps: StepProps[];
 }
-
-const DoneIcon = () => <CartYesFill />;
 
 export default function Stepper({ activeStep, steps }: StepperProps) {
   return (

@@ -2,7 +2,7 @@
 
 import Stepper from "@/components/Stepper";
 import { useEffect, useState } from "react";
-import { CartStepPaths, cartStepperPaths } from "../../constants";
+import { cartStepperPaths } from "../../constants";
 import { usePathname } from "next/navigation";
 
 const CartSteps = () => {
