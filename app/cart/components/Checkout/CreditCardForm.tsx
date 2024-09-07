@@ -106,7 +106,7 @@ const CreditCardForm = () => {
   const { isDesktop } = useResponsive();
   const {
     cartState: { cartItems, cost },
-    clearCart,
+    hasCustomizableProduct,
   } = useCart();
 
   const { handleSubmit, control } = useForm({
@@ -118,7 +118,7 @@ const CreditCardForm = () => {
   useEffect(() => {
     const serialize = sessionStorage.getItem("order-detail-form");
     if (!serialize) {
-      replace("/cart");
+      replace(CartStepPaths.CART);
     }
   }, []);
 
@@ -225,14 +225,10 @@ const CreditCardForm = () => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
       if (event.data === "success") {
-        clearCart();
-        sessionStorage.removeItem("order-detail-form");
-        localStorage.removeItem("cart");
-        localStorage.removeItem("count");
-        localStorage.removeItem("cost");
-
         setLoading(false);
-        replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
+        if (hasCustomizableProduct)
+          replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
+        else replace(CartStepPaths.COMPLETE);
       } else if (event.data.errorMessage) {
         setLoading(false);
         setErrorMessage(event.data.errorMessage);

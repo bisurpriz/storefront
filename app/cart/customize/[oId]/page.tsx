@@ -1,9 +1,9 @@
 import { getOrderById, getUserOrders } from "@/app/account/orders/actions";
 import CustomizePageCoutdown from "../components/CustomizePageCoutdown";
 import Customizer from "../components/Customizer";
-import clsx from "clsx";
 import Chip from "@/components/Chip";
 import { redirect } from "next/navigation";
+import { CartStepPaths } from "../../constants";
 
 export const dynamic = "force-dynamic";
 
@@ -16,27 +16,25 @@ export default async function CartCustomizePage({ params: { oId } }) {
   } = await getOrderById(oId);
 
   const isExpired =
-    new Date(created_at).getTime() + 60 * 60 * 1000 < new Date().getTime();
+    new Date(created_at).getTime() + 3 * 60 * 60 * 1000 < new Date().getTime();
 
   const countdown = isExpired
     ? 0
     : Math.floor(
         (new Date(created_at).getTime() +
-          60 * 60 * 1000 -
+          3 * 60 * 60 * 1000 -
           new Date().getTime()) /
           1000
       );
 
   if (
-    tenant_orders.some((to) =>
+    !tenant_orders.some((to) =>
       to.order_items.some(
-        (oi) =>
-          oi.order_item_special_images.length > 0 ||
-          oi.order_item_special_texts.length > 0
+        (oi) => oi.product.product_customizable_areas.length > 0
       )
     )
   ) {
-    return redirect("/cart");
+    return redirect(CartStepPaths.CART);
   }
 
   return (
@@ -51,21 +49,23 @@ export default async function CartCustomizePage({ params: { oId } }) {
       ) : (
         <>
           <CustomizePageCoutdown countdown={countdown} />
-          {tenant_orders.map((tenant_order, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-4 relative rounded-lg ring ring-2 p-4"
-            >
-              <div className="absolute left-0 top-0 -translate-y-1/2 translate-x-1/3">
-                <Chip
-                  label={tenant_order.tenant.tenants[0].name}
-                  variant="filled"
-                  color="primary"
-                />
+          {tenant_orders.map((tenant_order, index) => {
+            return (
+              <div
+                key={index}
+                className="flex flex-col gap-4 relative rounded-lg ring ring-2 p-4"
+              >
+                <div className="absolute left-0 top-0 -translate-y-1/2 translate-x-1/3">
+                  <Chip
+                    label={tenant_order.tenant.tenants[0].name}
+                    variant="filled"
+                    color="primary"
+                  />
+                </div>
+                <Customizer key={index} tenant_order={tenant_order} />
               </div>
-              <Customizer key={index} tenant_order={tenant_order} />
-            </div>
-          ))}
+            );
+          })}
         </>
       )}
     </div>

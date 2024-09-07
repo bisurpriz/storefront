@@ -6,7 +6,6 @@ import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
 import { useRouter } from "next/navigation";
 import React, { FC, Fragment } from "react";
 import toast from "react-hot-toast";
-import { CartStepPaths } from "../../constants";
 import { useCart } from "@/contexts/CartContext";
 
 type CustomizeOrderItemProps = {
@@ -49,8 +48,6 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({
   const [textUploadStatus, setTextUploadStatus] =
     React.useState<boolean>(false);
 
-  const { replace } = useRouter();
-  const { clearCart } = useCart();
   const handleChange = ({
     quantityIndex,
     type,
@@ -151,15 +148,6 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({
         setTextUploadStatus(true);
       }
     }
-
-    sessionStorage.removeItem("order-detail-form");
-    localStorage.removeItem("cart");
-    localStorage.removeItem("count");
-    localStorage.removeItem("cost");
-
-    clearCart();
-
-    replace(CartStepPaths.COMPLETE);
   };
 
   return (

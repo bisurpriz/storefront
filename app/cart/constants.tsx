@@ -1,5 +1,4 @@
 import PaymentOutline from "@/components/Icons/PaymentOutline";
-import Customize from "@/components/Icons/Customize";
 import StepCart from "@/components/Icons/StepCart";
 import StepInfoOutline from "@/components/Icons/StepInfoOutline";
 import StepYesOutlined from "@/components/Icons/StepYesOutlined";
@@ -28,11 +27,7 @@ export const cartStepperPaths = [
     label: "Ödeme",
     icon: <PaymentOutline />,
   },
-  {
-    path: CartStepPaths.CUSTOMIZE,
-    label: "Özelleştirme",
-    icon: <Customize />,
-  },
+
   {
     path: CartStepPaths.COMPLETE,
     label: "Onay",
