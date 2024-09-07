@@ -33,6 +33,7 @@ import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
 import { CartStepPaths } from "../../constants";
+import toast from "react-hot-toast";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -134,6 +135,11 @@ const CreditCardForm = () => {
       const basketId =
         userData.user?.carts[0].id + "-" + timeStamps ??
         Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
+      const ip = await getIpAddress();
+
+      if (!ip) {
+        toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
+      }
 
       const variables = {
         basketId,
