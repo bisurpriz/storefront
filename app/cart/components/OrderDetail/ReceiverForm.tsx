@@ -18,8 +18,15 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, useEffect, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { FC, useEffect, useMemo, useState } from "react";
+import {
+  Controller,
+  Form,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
@@ -32,6 +39,11 @@ import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { OrderDetailSchema } from "./schema";
+import { GetProductDeliveryCitiesQuery } from "@/graphql/queries/products/getProductLocation.generated";
+import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { parseJson } from "@/utils/format";
+import { CartStepPaths } from "../../constants";
+import toast from "react-hot-toast";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -45,7 +57,7 @@ const SubTitle = ({ children }: { children: React.ReactNode }) => (
 
 export interface OrderDetailPartialFormData
   extends Partial<OrderDetailFormData> {
-  saved_address?: string;
+  saved_address?: AutoCompleteOption;
   wantToSaveAddress?: boolean;
 }
 
@@ -69,14 +81,13 @@ const defaultValues: OrderDetailPartialFormData = {
   district: null,
   quarter: null,
   receiver_name: "",
-  receiver_phone: "",
+  receiver_phone: null,
   saved_address: null,
   wantToSaveAddress: false,
   sender_email: "",
   sender_name: "",
-  sender_phone: "",
+  sender_phone: null,
   invoice_type: "person",
-  id: null,
   invoice_address: "",
   invoice_company_address: "",
   invoice_company_city: "",
@@ -84,7 +95,6 @@ const defaultValues: OrderDetailPartialFormData = {
   invoice_company_name: "",
   invoice_company_tax_number: "",
   invoice_company_tax_office: "",
-  user_id: null,
 };
 
 const ReceiverForm: FC<ReceiverFormProps> = ({
@@ -93,7 +103,9 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   defaultQuarter,
 }) => {
   const { user, userAddresses } = useUser();
-  const [availableCities, setAvailableCities] = useState([]);
+  const [availableCities, setAvailableCities] = useState<
+    GetProductDeliveryCitiesQuery["get_product_delivery_cities"]
+  >([]);
   const { push } = useRouter();
   const { cartState } = useCart();
   const {
@@ -122,12 +134,61 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     ),
   });
 
+  const setSessionStorage = (data: OrderDetailPartialFormData) => {
+    sessionStorage?.setItem("order-detail-form", JSON.stringify(data));
+  };
+
+  const getSessionStorage = () => {
+    return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
+  };
+
+  const onSubmit: SubmitHandler<OrderDetailPartialFormData> = async (data) => {
+    if (data && Object.keys(errors).length === 0) {
+      if (data.wantToSaveAddress && !data.saved_address && user?.id) {
+        try {
+          createNewUserAddress({
+            address: data.address,
+            city_id: data.city?.id,
+            district_id: data.district?.id,
+            quarter_id: data.quarter?.id,
+            receiver_firstname: data.receiver_name?.split(" ")[0],
+            receiver_surname: data.receiver_name?.split(" ").slice(1).join(" "),
+            receiver_phone: data.receiver_phone,
+            address_title: data.address_title,
+            user_id: user?.id,
+          });
+        } catch (e) {
+          console.error(e);
+          toast.error("Adres kaydedilirken bir hata oluştu.", {
+            duration: 4000,
+          });
+        }
+      }
+      setSessionStorage(data);
+      push(CartStepPaths.CHECKOUT);
+    }
+  };
+
+  const onError: SubmitErrorHandler<OrderDetailPartialFormData> = (
+    error: any
+  ) => {
+    console.log(error);
+  };
+
   useEffect(() => {
     getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
       (cities) => {
         setAvailableCities(cities);
       }
     );
+    const session = getSessionStorage();
+    if (session) {
+      reset({
+        ...session,
+        receiver_phone: formatPhoneNumber(session.receiver_phone),
+        sender_phone: formatPhoneNumber(session.sender_phone),
+      });
+    }
   }, []);
 
   const [city, district, invoice_type, savedAddressValue] = useWatch({
@@ -144,36 +205,58 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     cartState?.cartItems?.[0]?.id
   );
 
+  const getFilteredSavedAddress = useMemo(() => {
+    if (!user?.id) return null;
+    return userAddresses.filter((ad) =>
+      availableCities.some((city) => city.id === ad.city.id)
+    );
+  }, [userAddresses, availableCities]);
+
+  const savedAdressInputChange = (option: AutoCompleteOption) => {
+    if (!option) {
+      reset({
+        ...defaultValues,
+        sender_phone: formatPhoneNumber(""),
+        receiver_phone: formatPhoneNumber(""),
+      });
+      return;
+    }
+    const city = availableCities.find((ct) => ct.id === option.city.id);
+    setValue("saved_address", option);
+    setValue("city", {
+      code: city?.city_code,
+      name: city?.city_name,
+      id: city?.id,
+    });
+    setValue(
+      "receiver_name",
+      option.receiver_firstname + " " + option.receiver_surname
+    );
+    setValue("receiver_phone", formatPhoneNumber(option.receiver_phone));
+    setValue("sender_email", user.email);
+    setValue("sender_name", user.firstname + " " + user.lastname);
+    setValue("sender_phone", formatPhoneNumber(user.phone));
+    setValue("address", option.address);
+  };
+
   const renderSavedAddress = () => {
-    if (userAddresses?.length > 0) {
+    if (getFilteredSavedAddress?.length > 0) {
       return (
         <Controller
           control={control}
           name="saved_address"
-          render={({ field }) => {
-            const selectedAddress = userAddresses.find(
-              (address) => address?.id?.toString() === field.value
-            );
-
+          render={({ field: { value, onChange } }) => {
             return (
               <AutoComplete
-                value={
-                  selectedAddress
-                    ? {
-                        label: selectedAddress.address_title,
-                        value: selectedAddress.id,
-                      }
-                    : null
-                }
+                value={value}
                 label="Kayıtlı Adresler"
                 getOptionLabel={(option) => option.label}
-                options={userAddresses.map((address) => ({
-                  label: address.address_title,
-                  value: address.id,
+                options={getFilteredSavedAddress.map((ad) => ({
+                  ...ad,
+                  label: ad.address_title,
+                  value: ad.id,
                 }))}
-                onChange={(option: AutoCompleteOption) => {
-                  field.onChange(option?.value ?? "");
-                }}
+                onChange={savedAdressInputChange}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
               />
@@ -189,6 +272,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     <Card>
       <Title>Teslimat Detay</Title>
       <form
+        onSubmit={handleSubmit(onSubmit, onError)}
         id="order-detail-form"
         name="order-detail-form"
         autoComplete="off"
@@ -352,9 +436,11 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
         <CompanyDetail control={control} invoice_type={invoice_type} />
         <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
-
           <RenderAddress
-            selectedSavedAddress={savedAddressValue}
+            isSelectedSavedAddress={
+              Boolean(savedAddressValue) ||
+              Boolean(getSessionStorage()?.saved_address)
+            }
             control={control}
             user={user}
             setValue={setValue}
@@ -443,7 +529,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                   }}
                   placeholder="İlçe Seçiniz"
                   id="district"
-                  disabled={!city}
+                  disabled={!city || districtLoading}
                   error={!!error}
                   errorMessage={error?.message}
                 />
@@ -485,7 +571,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                   placeholder="Mahalle Seçiniz"
                   id="quarter"
                   error={!!error}
-                  disabled={!district}
+                  disabled={!district || quarterLoading}
                   errorMessage={error?.message}
                 />
               );

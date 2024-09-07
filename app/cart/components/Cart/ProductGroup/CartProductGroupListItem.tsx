@@ -36,8 +36,6 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
   ).length;
 
-  console.log(customize, "customize");
-
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">

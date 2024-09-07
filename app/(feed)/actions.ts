@@ -88,7 +88,6 @@ export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
       pid,
     },
   });
-  console.log(data, "getProductRatings");
   return data.get_comment_by_score;
 };
 
