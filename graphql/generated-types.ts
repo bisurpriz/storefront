@@ -938,6 +938,7 @@ export type Category = {
   products: Array<Product_Category>;
   /** An aggregate relationship */
   products_aggregate: Product_Category_Aggregate;
+  show_in_slider?: Maybe<Scalars['Boolean']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   sub_categories: Array<Category>;
@@ -1036,7 +1037,23 @@ export type Category_Aggregate = {
 };
 
 export type Category_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Category_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Category_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Category_Aggregate_Bool_Exp_Count>;
+};
+
+export type Category_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Category_Select_Column_Category_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Category_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Category_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Category_Select_Column_Category_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Category_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Category_Aggregate_Bool_Exp_Count = {
@@ -1117,6 +1134,7 @@ export type Category_Bool_Exp = {
   parent_category_id?: InputMaybe<Int_Comparison_Exp>;
   products?: InputMaybe<Product_Category_Bool_Exp>;
   products_aggregate?: InputMaybe<Product_Category_Aggregate_Bool_Exp>;
+  show_in_slider?: InputMaybe<Boolean_Comparison_Exp>;
   slug?: InputMaybe<String_Comparison_Exp>;
   sub_categories?: InputMaybe<Category_Bool_Exp>;
   sub_categories_aggregate?: InputMaybe<Category_Aggregate_Bool_Exp>;
@@ -1145,6 +1163,7 @@ export type Category_Insert_Input = {
   parent_category?: InputMaybe<Category_Obj_Rel_Insert_Input>;
   parent_category_id?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Product_Category_Arr_Rel_Insert_Input>;
+  show_in_slider?: InputMaybe<Scalars['Boolean']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   sub_categories?: InputMaybe<Category_Arr_Rel_Insert_Input>;
   tenants?: InputMaybe<Tenant_Category_Arr_Rel_Insert_Input>;
@@ -1222,6 +1241,7 @@ export type Category_Order_By = {
   parent_category?: InputMaybe<Category_Order_By>;
   parent_category_id?: InputMaybe<Order_By>;
   products_aggregate?: InputMaybe<Product_Category_Aggregate_Order_By>;
+  show_in_slider?: InputMaybe<Order_By>;
   slug?: InputMaybe<Order_By>;
   sub_categories_aggregate?: InputMaybe<Category_Aggregate_Order_By>;
   tenants_aggregate?: InputMaybe<Tenant_Category_Aggregate_Order_By>;
@@ -1245,7 +1265,19 @@ export type Category_Select_Column =
   /** column name */
   | 'parent_category_id'
   /** column name */
+  | 'show_in_slider'
+  /** column name */
   | 'slug';
+
+/** select "category_aggregate_bool_exp_bool_and_arguments_columns" columns of table "category" */
+export type Category_Select_Column_Category_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
+  /** column name */
+  | 'show_in_slider';
+
+/** select "category_aggregate_bool_exp_bool_or_arguments_columns" columns of table "category" */
+export type Category_Select_Column_Category_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
+  /** column name */
+  | 'show_in_slider';
 
 /** input type for updating data in table "category" */
 export type Category_Set_Input = {
@@ -1254,6 +1286,7 @@ export type Category_Set_Input = {
   image_url?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_category_id?: InputMaybe<Scalars['Int']['input']>;
+  show_in_slider?: InputMaybe<Scalars['Boolean']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1308,6 +1341,7 @@ export type Category_Stream_Cursor_Value_Input = {
   image_url?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_category_id?: InputMaybe<Scalars['Int']['input']>;
+  show_in_slider?: InputMaybe<Scalars['Boolean']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1335,6 +1369,8 @@ export type Category_Update_Column =
   | 'name'
   /** column name */
   | 'parent_category_id'
+  /** column name */
+  | 'show_in_slider'
   /** column name */
   | 'slug';
 
@@ -13043,6 +13079,30 @@ export type Quarter = {
   minlongitude?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id: Scalars['Int']['output'];
+  /** An array relationship */
+  tenant_shipping_places: Array<Tenant_Shipping_Place>;
+  /** An aggregate relationship */
+  tenant_shipping_places_aggregate: Tenant_Shipping_Place_Aggregate;
+};
+
+
+/** columns and relationships of "quarter" */
+export type QuarterTenant_Shipping_PlacesArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+};
+
+
+/** columns and relationships of "quarter" */
+export type QuarterTenant_Shipping_Places_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tenant_Shipping_Place_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tenant_Shipping_Place_Order_By>>;
+  where?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
 };
 
 /** aggregated selection of "quarter" */
@@ -13134,6 +13194,8 @@ export type Quarter_Bool_Exp = {
   minlongitude?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   parent_id?: InputMaybe<Int_Comparison_Exp>;
+  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Bool_Exp>;
+  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "quarter" */
@@ -13161,6 +13223,7 @@ export type Quarter_Insert_Input = {
   minlongitude?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
+  tenant_shipping_places?: InputMaybe<Tenant_Shipping_Place_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -13244,6 +13307,7 @@ export type Quarter_Order_By = {
   minlongitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
+  tenant_shipping_places_aggregate?: InputMaybe<Tenant_Shipping_Place_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: quarter */
