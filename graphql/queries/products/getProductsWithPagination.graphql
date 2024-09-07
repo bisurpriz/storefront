@@ -97,6 +97,8 @@ query getProductsWithFilteredPagination(
     slug
     properties
     discount_price
+    is_service_free
+    delivery_type
     product_customizable_areas {
       count
       customizable_area {

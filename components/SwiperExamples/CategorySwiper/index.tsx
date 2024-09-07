@@ -5,6 +5,7 @@ import { FC } from "react";
 import clsx from "clsx";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import Slider from "./Slider";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
@@ -19,9 +20,13 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       )}
     >
       <Slider
-        images={categories.map(
-          (category) => `https://picsum.photos/seed/${category.id}/120/120`
-        )}
+        images={categories
+          .sort((a, b) => a?.id - b?.id)
+          .map((category) =>
+            category?.image_url
+              ? getImageUrlFromPath(category.image_url)
+              : `https://picsum.photos/seed/${category.id}/120/120`
+          )}
         gap={16}
         imageHeight={120}
         imageWidth={120}

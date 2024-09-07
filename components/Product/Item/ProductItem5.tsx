@@ -22,6 +22,8 @@ const ProductItem5 = ({
   totalReviewCount,
   tenant,
   score,
+  is_service_free,
+  delivery_type,
 }: ProductItemProps) => {
   const stamps = !product_customizable_areas?.length
     ? null
@@ -32,6 +34,9 @@ const ProductItem5 = ({
           color: "orange",
         },
       ] as Stamp[]);
+
+  const isSameDayDelivery =
+    delivery_type === "SAME_DAY" || delivery_type === "SAME_DAY_CARGO";
 
   return (
     <div
@@ -77,6 +82,10 @@ const ProductItem5 = ({
         />
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">
+            <span className="text-xs text-green-500 font-semibold">
+              {is_service_free && isSameDayDelivery && "Ücretsiz /"}
+              {isSameDayDelivery && "Aynı gün teslimat"}
+            </span>
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
                 value={score ?? 0}

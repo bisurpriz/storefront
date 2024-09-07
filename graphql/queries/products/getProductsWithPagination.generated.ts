@@ -19,7 +19,7 @@ export type GetProductsWithFilteredPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
+export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, tenant_id: any, description?: string | null, name: string, slug?: string | null, score?: number | null, image_url?: Array<string> | null, price: number, quantity?: number | null, properties?: any | null, discount_price?: number | null, is_service_free?: boolean | null, delivery_type?: Types.Delivery_Type_Enum | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, tenant: { id: any, tenants: Array<{ name?: string | null, logo?: string | null, id: any, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, reviews_aggregate: { aggregate?: { count: number } | null } }> };
 
 
 export const GetProductsWithPaginationDocument = gql`
@@ -109,6 +109,8 @@ export const GetProductsWithFilteredPaginationDocument = gql`
     slug
     properties
     discount_price
+    is_service_free
+    delivery_type
     product_customizable_areas {
       count
       customizable_area {
