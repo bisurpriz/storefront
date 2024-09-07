@@ -41,8 +41,9 @@ const Chip: React.FC<ChipProps> = ({
   as = "button",
   href,
 }) => {
-  const baseClasses =
-    "w-fit flex items-center font-medium cursor-pointer whitespace-nowrap";
+  const baseClasses = `w-fit flex items-center font-medium whitespace-nowrap ${
+    href ? "cursor-pointer" : "cursor-default"
+  }`;
 
   const sizeClasses = {
     small: "px-2 py-1 text-xs",

@@ -2,7 +2,7 @@
 
 import Stepper from "@/components/Stepper";
 import { useEffect, useState } from "react";
-import { cartStepperPaths } from "../../constants";
+import { CartStepPaths, cartStepperPaths } from "../../constants";
 import { usePathname } from "next/navigation";
 
 const CartSteps = () => {
@@ -12,7 +12,10 @@ const CartSteps = () => {
   );
 
   useEffect(() => {
-    setActiveStep(cartStepperPaths.findIndex((step) => step.path === pathname));
+    const customizePath = pathname.split("/").slice(0, 3).join("/");
+    setActiveStep(
+      cartStepperPaths.findIndex((step) => step.path === customizePath)
+    );
   }, [pathname]);
 
   return (

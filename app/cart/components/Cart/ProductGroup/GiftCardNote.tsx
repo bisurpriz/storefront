@@ -3,6 +3,7 @@
 import Accordion from "@/components/Accordion";
 import Textarea from "@/components/Textarea";
 import { useCart } from "@/contexts/CartContext";
+import { Fragment } from "react";
 
 const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
   const { updateCartItemNote } = useCart();
@@ -25,10 +26,12 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
             title: "Hediye Kartı Üzerine Yazılacak Not",
             content: Array.from({ length: quantity }, (_, i) => {
               return (
-                <>
-                  {quantity > 1 && <span>{i + 1}. ürün</span>}
+                <Fragment key={i}>
+                  {quantity > 1 && (
+                    <span key={`quantity-${i}`}>{i + 1}. ürün</span>
+                  )}
                   <Textarea
-                    key={i}
+                    key={`textarea-${i}`}
                     placeholder="Hediye notunuzu buraya yazabilirsiniz."
                     className="w-full"
                     data-id={`giftCardNote-${id}`}
@@ -42,7 +45,7 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
                         : ""
                     }
                   />
-                </>
+                </Fragment>
               );
             }),
           },

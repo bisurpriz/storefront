@@ -63,6 +63,7 @@ export const createOrderAction = async (
 ) => {
   if (!orderDetail || !cartItems)
     return {
+      data: null,
       status: "error",
     };
 
@@ -108,13 +109,16 @@ export const createOrderAction = async (
     }
   ).then((res) => res.json());
 
-  if (!response) {
+  console.log(response);
+
+  if (response.errors) {
     return {
       status: "error",
     };
   } else {
     return {
       status: "success",
+      data: response.data,
     };
   }
 };
@@ -189,6 +193,20 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 export const getCart = async (user_id: string) => {
   const userId = user_id || (await checkUserId());
   const guestId = cookies().get(CookieTokens.GUEST_ID)?.value;
+
+  if (!userId && !guestId) {
+    return {
+      cartItems: [],
+      costData: {
+        totalPrice: 0,
+        couponMessage: "",
+        isCouponApplied: false,
+      },
+    } as {
+      cartItems: ProductForCart[];
+      costData: CostData;
+    };
+  }
 
   const headers =
     !userId && guestId

@@ -32,6 +32,7 @@ import { createBasketItems } from "@/app/iyzico-payment/utils";
 import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
+import { CartStepPaths } from "../../constants";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -97,6 +98,7 @@ const defaultValues: CreditCardForm = {
 const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [createdOrder, setCreatedOrder] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { replace } = useRouter();
   const userData = useUser();
@@ -194,11 +196,16 @@ const CreditCardForm = () => {
         couponInfo
       );
 
+      if (res?.data?.insert_order_one?.id) {
+        setCreatedOrder(res.data.insert_order_one.id);
+      }
+
       if (response.errorMessage || res.status === "error") {
         setLoading(false);
         openPopup();
         setErrorMessage(
-          response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
+          response.errorMessage ??
+            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
         );
         return;
       } else setBase64PasswordHtml(response.threeDSHtmlContent);
@@ -219,7 +226,7 @@ const CreditCardForm = () => {
         localStorage.removeItem("cost");
 
         setLoading(false);
-        replace("/cart/complete");
+        replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
       } else if (event.data.errorMessage) {
         setLoading(false);
         setErrorMessage(event.data.errorMessage);

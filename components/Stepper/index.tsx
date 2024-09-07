@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Done from "../Icons/Done";
+import CartYesFill from "../Icons/CartYesFill";
 
 type StepProps = {
   label: string;
@@ -15,7 +16,7 @@ interface StepperProps {
   steps: StepProps[];
 }
 
-const DoneIcon = () => <Done />;
+const DoneIcon = () => <CartYesFill />;
 
 export default function Stepper({ activeStep, steps }: StepperProps) {
   return (
@@ -33,9 +34,9 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
             <div
               key={step.label}
               className={clsx([
-                `flex items-center justify-center w-10 h-10 rounded-full`,
-                activeStep === index ? "bg-slate-300" : "bg-gray-200",
-                activeStep > index ? "bg-slate-500" : "bg-gray-200",
+                `flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0`,
+                activeStep === index ? "bg-primary-300" : "bg-gray-200",
+                activeStep > index ? "bg-primary-500" : "bg-gray-200",
               ])}
             >
               <span
@@ -45,15 +46,15 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
                   activeStep === index ? "text-white" : "text-gray-500",
                 ])}
               >
-                {activeStep > index ? <DoneIcon /> : step.icon}
+                {step.icon}
               </span>
             </div>
             <span
               className={clsx([
                 "text-base font-medium",
-                activeStep > index ? "text-slate-500" : "text-gray-500",
-                activeStep === index ? "text-slate-300" : "text-gray-500",
-                "max-sm:hidden",
+                activeStep > index ? "text-primary-500" : "text-gray-500",
+                activeStep === index ? "text-primary-300" : "text-gray-500",
+                "max-md:hidden",
               ])}
             >
               {step.label}
@@ -62,7 +63,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
               className={clsx([
                 "flex-1 h-0.5",
                 index === steps.length - 1 ? "hidden" : "block",
-                activeStep > index ? "bg-slate-500" : "bg-gray-200",
+                activeStep > index ? "bg-primary-500" : "bg-gray-200",
               ])}
             />
           </div>

@@ -50,6 +50,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         />
       </div>
       <motion.div
+        key={title.toString()}
         ref={nodeRef}
         initial={false}
         animate={open ? "open" : "closed"}

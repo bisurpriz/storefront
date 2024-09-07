@@ -39,6 +39,13 @@ export type GetOrderForTrackingQueryVariables = Types.Exact<{
 
 export type GetOrderForTrackingQuery = { order: Array<{ created_at: any, order_no?: any | null, tenant_orders: Array<{ id: any, status?: Types.Order_Status_Enum | null, order_items: Array<{ quantity: number, id: any, delivery_date?: any | null, delivery_time?: string | null, product: { name: string, id: any, slug?: string | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }> } }> }> }> };
 
+export type GetOrderByIdQueryVariables = Types.Exact<{
+  id?: Types.InputMaybe<Types.Scalars['uuid']['input']>;
+}>;
+
+
+export type GetOrderByIdQuery = { order_by_pk?: { created_at: any, tenant_orders: Array<{ tenant: { tenants: Array<{ logo?: string | null, name?: string | null }> }, order_items: Array<{ id: any, sell_price?: number | null, quantity: number, order_item_special_images: Array<{ image_url: string, order_item_id: any, quantity_index?: number | null }>, order_item_special_texts: Array<{ id: any, order_item_id: any, quantity_index?: number | null, content: string }>, product: { image_url?: Array<string> | null, slug?: string | null, name: string, product_customizable_areas: Array<{ id: any, max_character?: number | null, count: number, customizable_area: { id: number, type: string } }> } }> }> } | null };
+
 
 export const GetSingleTenantOrderItemDocument = gql`
     query getSingleTenantOrderItem($id: bigint) {
@@ -118,3 +125,49 @@ export const GetOrderForTrackingDocument = gql`
 }
     `;
 export type GetOrderForTrackingQueryResult = Apollo.QueryResult<GetOrderForTrackingQuery, GetOrderForTrackingQueryVariables>;
+export const GetOrderByIdDocument = gql`
+    query GetOrderById($id: uuid = "") {
+  order_by_pk(id: $id) {
+    created_at
+    tenant_orders {
+      tenant {
+        tenants {
+          logo
+          name
+        }
+      }
+      order_items {
+        id
+        order_item_special_images {
+          image_url
+          order_item_id
+          quantity_index
+        }
+        order_item_special_texts {
+          id
+          order_item_id
+          quantity_index
+          content
+        }
+        sell_price
+        quantity
+        product {
+          image_url
+          slug
+          name
+          product_customizable_areas {
+            customizable_area {
+              id
+              type
+            }
+            id
+            max_character
+            count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type GetOrderByIdQueryResult = Apollo.QueryResult<GetOrderByIdQuery, GetOrderByIdQueryVariables>;

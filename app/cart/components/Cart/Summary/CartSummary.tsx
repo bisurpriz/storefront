@@ -49,7 +49,10 @@ const CartSummary = () => {
     return null;
   }
 
-  if (pathname === CartStepPaths.COMPLETE) {
+  if (
+    pathname === CartStepPaths.COMPLETE ||
+    pathname.startsWith(CartStepPaths.CUSTOMIZE)
+  ) {
     return null;
   }
 

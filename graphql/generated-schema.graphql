@@ -1186,6 +1186,7 @@ type category {
     """filter the rows returned"""
     where: product_category_bool_exp
   ): product_category_aggregate!
+  show_in_slider: Boolean
   slug: String
 
   """An array relationship"""
@@ -1270,7 +1271,23 @@ type category_aggregate {
 }
 
 input category_aggregate_bool_exp {
+  bool_and: category_aggregate_bool_exp_bool_and
+  bool_or: category_aggregate_bool_exp_bool_or
   count: category_aggregate_bool_exp_count
+}
+
+input category_aggregate_bool_exp_bool_and {
+  arguments: category_select_column_category_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: category_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input category_aggregate_bool_exp_bool_or {
+  arguments: category_select_column_category_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: category_bool_exp
+  predicate: Boolean_comparison_exp!
 }
 
 input category_aggregate_bool_exp_count {
@@ -1355,6 +1372,7 @@ input category_bool_exp {
   parent_category_id: Int_comparison_exp
   products: product_category_bool_exp
   products_aggregate: product_category_aggregate_bool_exp
+  show_in_slider: Boolean_comparison_exp
   slug: String_comparison_exp
   sub_categories: category_bool_exp
   sub_categories_aggregate: category_aggregate_bool_exp
@@ -1392,6 +1410,7 @@ input category_insert_input {
   parent_category: category_obj_rel_insert_input
   parent_category_id: Int
   products: product_category_arr_rel_insert_input
+  show_in_slider: Boolean
   slug: String
   sub_categories: category_arr_rel_insert_input
   tenants: tenant_category_arr_rel_insert_input
@@ -1481,6 +1500,7 @@ input category_order_by {
   parent_category: category_order_by
   parent_category_id: order_by
   products_aggregate: product_category_aggregate_order_by
+  show_in_slider: order_by
   slug: order_by
   sub_categories_aggregate: category_aggregate_order_by
   tenants_aggregate: tenant_category_aggregate_order_by
@@ -1511,7 +1531,26 @@ enum category_select_column {
   parent_category_id
 
   """column name"""
+  show_in_slider
+
+  """column name"""
   slug
+}
+
+"""
+select "category_aggregate_bool_exp_bool_and_arguments_columns" columns of table "category"
+"""
+enum category_select_column_category_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  show_in_slider
+}
+
+"""
+select "category_aggregate_bool_exp_bool_or_arguments_columns" columns of table "category"
+"""
+enum category_select_column_category_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  show_in_slider
 }
 
 """
@@ -1523,6 +1562,7 @@ input category_set_input {
   image_url: String
   name: String
   parent_category_id: Int
+  show_in_slider: Boolean
   slug: String
 }
 
@@ -1586,6 +1626,7 @@ input category_stream_cursor_value_input {
   image_url: String
   name: String
   parent_category_id: Int
+  show_in_slider: Boolean
   slug: String
 }
 
@@ -1621,6 +1662,9 @@ enum category_update_column {
 
   """column name"""
   parent_category_id
+
+  """column name"""
+  show_in_slider
 
   """column name"""
   slug
@@ -9232,7 +9276,7 @@ columns and relationships of "order_address"
 """
 type order_address {
   address: String!
-  address_title: String!
+  address_title: String
 
   """An object relationship"""
   city: city!
@@ -15488,6 +15532,42 @@ type quarter {
   minlongitude: String
   name: String!
   parent_id: Int!
+
+  """An array relationship"""
+  tenant_shipping_places(
+    """distinct select on columns"""
+    distinct_on: [tenant_shipping_place_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tenant_shipping_place_order_by!]
+
+    """filter the rows returned"""
+    where: tenant_shipping_place_bool_exp
+  ): [tenant_shipping_place!]!
+
+  """An aggregate relationship"""
+  tenant_shipping_places_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tenant_shipping_place_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tenant_shipping_place_order_by!]
+
+    """filter the rows returned"""
+    where: tenant_shipping_place_bool_exp
+  ): tenant_shipping_place_aggregate!
 }
 
 """
@@ -15585,6 +15665,8 @@ input quarter_bool_exp {
   minlongitude: String_comparison_exp
   name: String_comparison_exp
   parent_id: Int_comparison_exp
+  tenant_shipping_places: tenant_shipping_place_bool_exp
+  tenant_shipping_places_aggregate: tenant_shipping_place_aggregate_bool_exp
 }
 
 """
@@ -15624,6 +15706,7 @@ input quarter_insert_input {
   minlongitude: String
   name: String
   parent_id: Int
+  tenant_shipping_places: tenant_shipping_place_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -15719,6 +15802,7 @@ input quarter_order_by {
   minlongitude: order_by
   name: order_by
   parent_id: order_by
+  tenant_shipping_places_aggregate: tenant_shipping_place_aggregate_order_by
 }
 
 """primary key columns input for table: quarter"""
