@@ -109,8 +109,6 @@ export const createOrderAction = async (
     }
   ).then((res) => res.json());
 
-  console.log(response);
-
   if (response.errors) {
     return {
       status: "error",

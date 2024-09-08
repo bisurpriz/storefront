@@ -29,10 +29,12 @@ export default async function CartCustomizePage({ params: { oId } }) {
   const wasCustomized = tenant_orders.every((tenant_order) =>
     tenant_order.order_items.every(
       (order_item) =>
-        order_item.product.product_customizable_areas.length ===
-          order_item.order_item_special_images.length ||
-        order_item.product.product_customizable_areas.length ===
-          order_item.order_item_special_texts.length
+        order_item.product.product_customizable_areas.reduce(
+          (acc, pca) => acc + pca.count * order_item.quantity,
+          0
+        ) ===
+        (order_item.order_item_special_images?.length || 0) +
+          (order_item.order_item_special_texts?.length || 0)
     )
   );
 
