@@ -4,6 +4,7 @@ import Filter from "@/components/Filter";
 import { searchProducts } from "@/app/(feed)/actions";
 import TenantHeader from "../components/TenantHeader";
 import { getVendorDetails } from "../actions";
+import { PER_REQUEST } from "@/app/constants";
 
 type Props = {
   products: any;
@@ -37,7 +38,7 @@ const Vendor = async ({
     searchProducts(
       {
         offset: 0,
-        limit: 15,
+        limit: PER_REQUEST,
       },
       {
         ...searchParams,

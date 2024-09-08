@@ -64,11 +64,15 @@ export default async function Page({
         {!searchText && <CampaignGrid />}
       </Suspense>
       <Suspense
-        fallback={Array.from({
-          length: 15,
-        }).map((_, i) => (
-          <ProductItemSkeleton key={i} />
-        ))}
+        fallback={
+          <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
+            {Array.from({
+              length: 5,
+            }).map((_, i) => (
+              <ProductItemSkeleton key={i} />
+            ))}
+          </div>
+        }
       >
         <ServerInfinityScroll searchParams={searchParams} />
       </Suspense>
