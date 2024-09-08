@@ -1,6 +1,7 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import Filter from "@/components/Filter";
 import { searchProducts } from "../actions";
+import { PER_REQUEST } from "@/app/constants";
 
 export default async function CategoryPage({
   params,
@@ -14,7 +15,7 @@ export default async function CategoryPage({
   const data = await searchProducts(
     {
       offset: 0,
-      limit: 15,
+      limit: PER_REQUEST,
     },
     {
       ...searchParams,

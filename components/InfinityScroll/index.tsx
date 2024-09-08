@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import EmptyPage from "./EmptyPage";
 import dynamic from "next/dynamic";
+import { PER_REQUEST } from "@/app/constants";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -14,8 +15,6 @@ interface InfinityScrollProps<T> {
   totalCount: number;
   params?: any;
 }
-
-const PER_REQUEST = 15;
 
 const DynamicProductItem = dynamic(
   () => import("../Product/Item/ProductItem5")
@@ -53,6 +52,7 @@ const InfinityScroll = <T,>({
 
   useEffect(() => {
     if (inView && totalCount > data?.length) {
+      console.log("load more data");
       loadMoreData();
     }
   }, [inView]);
