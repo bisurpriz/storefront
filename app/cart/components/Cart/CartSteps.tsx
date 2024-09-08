@@ -41,7 +41,7 @@ const CartSteps = () => {
   useEffect(() => {
     const customizePath = pathname.split("/").slice(0, 3).join("/");
     setActiveStep(steps.findIndex((step) => step.path === customizePath));
-  }, [pathname]);
+  }, [pathname, steps]);
 
   return (
     <Stepper

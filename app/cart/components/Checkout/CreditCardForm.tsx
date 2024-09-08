@@ -107,6 +107,7 @@ const CreditCardForm = () => {
   const {
     cartState: { cartItems, cost },
     hasCustomizableProduct,
+    clearCart,
   } = useCart();
 
   const { handleSubmit, control } = useForm({
@@ -220,12 +221,22 @@ const CreditCardForm = () => {
 
   const { renderPopup, openPopup, closePopup } = usePopup();
 
+  const removeStorages = () => {
+    sessionStorage.removeItem("order-detail-form");
+    localStorage.removeItem("order-detail-form");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("count");
+    localStorage.removeItem("cost");
+  };
+
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
       if (event.data === "success") {
         setLoading(false);
+        clearCart();
+        removeStorages();
         if (hasCustomizableProduct)
           replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
         else replace(CartStepPaths.COMPLETE);

@@ -13,7 +13,7 @@ const CustomizePageCoutdown: FC<CustomizePageCoutdownProps> = ({
   return countdown ? (
     <CountdownTimer
       time={countdown}
-      className="bg-primary-500 text-white p-4 rounded-lg text-center text-lg font-semibold mb-8"
+      className="bg-primary-500 text-white p-4 rounded-lg text-center text-lg font-semibold"
       text={(count) =>
         `Özelleştirmeleri tamamlamak için ${count} dakikanız kaldı`
       }

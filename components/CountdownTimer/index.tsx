@@ -21,7 +21,6 @@ const CountdownTimer: FC<CountdownTimerProps> = ({
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       if (count === 0 || count < 0) {
-        sessionStorage.removeItem("countdown");
         clearInterval(intervalRef.current);
         return;
       }

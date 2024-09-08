@@ -44,7 +44,7 @@ export type GetOrderByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrderByIdQuery = { order_by_pk?: { created_at: any, tenant_orders: Array<{ tenant: { tenants: Array<{ logo?: string | null, name?: string | null }> }, order_items: Array<{ id: any, sell_price?: number | null, quantity: number, order_item_special_images: Array<{ image_url: string, order_item_id: any, quantity_index?: number | null }>, order_item_special_texts: Array<{ id: any, order_item_id: any, quantity_index?: number | null, content: string }>, product: { image_url?: Array<string> | null, slug?: string | null, name: string, product_customizable_areas: Array<{ id: any, max_character?: number | null, count: number, customizable_area: { id: number, type: string } }> } }> }> } | null };
+export type GetOrderByIdQuery = { order_by_pk?: { created_at: any, tenant_orders: Array<{ tenant: { tenants: Array<{ logo?: string | null, name?: string | null }> }, order_items: Array<{ id: any, status?: Types.Order_Status_Enum | null, sell_price?: number | null, quantity: number, order_item_special_images: Array<{ id: any, image_url: string, order_item_id: any, quantity_index?: number | null }>, order_item_special_texts: Array<{ id: any, order_item_id: any, quantity_index?: number | null, content: string }>, product: { image_url?: Array<string> | null, slug?: string | null, name: string, product_customizable_areas: Array<{ id: any, max_character?: number | null, count: number, customizable_area: { id: number, type: string } }> } }> }> } | null };
 
 
 export const GetSingleTenantOrderItemDocument = gql`
@@ -139,6 +139,7 @@ export const GetOrderByIdDocument = gql`
       order_items {
         id
         order_item_special_images {
+          id
           image_url
           order_item_id
           quantity_index
@@ -149,6 +150,7 @@ export const GetOrderByIdDocument = gql`
           quantity_index
           content
         }
+        status
         sell_price
         quantity
         product {
