@@ -1,0 +1,17 @@
+mutation updateOrderSpecialText($id: bigint!, $content: String) {
+  update_order_item_special_text_by_pk(
+    pk_columns: { id: $id }
+    _set: { content: $content }
+  ) {
+    id
+  }
+}
+
+mutation updateOrderSpecialImage($id: bigint!, $image_url: String) {
+  update_order_item_special_image_by_pk(
+    pk_columns: { id: $id }
+    _set: { image_url: $image_url }
+  ) {
+    id
+  }
+}

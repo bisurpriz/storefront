@@ -54,6 +54,7 @@ interface CartContextType {
   isProductInCart: ProductForCart;
   applyCouponCode: (code: string) => Promise<void>;
   updateCartItemNote: (id: number, note: string) => void;
+  hasCustomizableProduct: boolean;
 }
 
 export interface CartState {
@@ -91,6 +92,7 @@ export const CartContext = createContext<CartContextType>({
   isProductInCart: null,
   applyCouponCode: async () => {},
   updateCartItemNote: () => {},
+  hasCustomizableProduct: false,
 });
 
 export const CartProvider = ({
@@ -102,6 +104,7 @@ export const CartProvider = ({
   cartDbItems: ProductForCart[];
   dbCost: CostData;
 }) => {
+  const [hasCustomizableProduct, setHasCustomizableProduct] = useState(false);
   const [cartState, dispatch] = useReducer(cartReducer, {
     cartItems: cartDbItems,
     count: cartDbItems.reduce((acc, item) => acc + item.quantity, 0),
@@ -117,6 +120,14 @@ export const CartProvider = ({
   const { selectedProduct } = useProduct();
 
   const { isTablet } = useResponsive();
+
+  useEffect(() => {
+    setHasCustomizableProduct(
+      cartState.cartItems.some((item) =>
+        item.product_customizable_areas.some((area) => area.count > 0)
+      )
+    );
+  }, [cartState.cartItems]);
 
   useEffect(() => {
     if (cartDbItems.length === 0) {
@@ -367,6 +378,7 @@ export const CartProvider = ({
     isProductInCart: isProductInCart,
     applyCouponCode,
     updateCartItemNote,
+    hasCustomizableProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

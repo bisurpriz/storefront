@@ -48,8 +48,12 @@ const CartSummary = () => {
   if (typeof document === "undefined") {
     return null;
   }
+  const customizePath = pathname.split("/").slice(0, 3).join("/");
 
-  if (pathname === CartStepPaths.COMPLETE) {
+  if (
+    customizePath === CartStepPaths.COMPLETE ||
+    customizePath.startsWith(CartStepPaths.CUSTOMIZE)
+  ) {
     return null;
   }
 

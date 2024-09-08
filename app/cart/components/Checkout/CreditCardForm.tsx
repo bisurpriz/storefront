@@ -32,6 +32,8 @@ import { createBasketItems } from "@/app/iyzico-payment/utils";
 import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
+import { CartStepPaths } from "../../constants";
+import toast from "react-hot-toast";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -97,12 +99,14 @@ const defaultValues: CreditCardForm = {
 const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [createdOrder, setCreatedOrder] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { replace } = useRouter();
   const userData = useUser();
   const { isDesktop } = useResponsive();
   const {
     cartState: { cartItems, cost },
+    hasCustomizableProduct,
     clearCart,
   } = useCart();
 
@@ -115,7 +119,7 @@ const CreditCardForm = () => {
   useEffect(() => {
     const serialize = sessionStorage.getItem("order-detail-form");
     if (!serialize) {
-      replace("/cart");
+      replace(CartStepPaths.CART);
     }
   }, []);
 
@@ -132,6 +136,11 @@ const CreditCardForm = () => {
       const basketId =
         userData.user?.carts[0].id + "-" + timeStamps ??
         Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
+      const ip = await getIpAddress();
+
+      if (!ip) {
+        toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
+      }
 
       const variables = {
         basketId,
@@ -194,11 +203,16 @@ const CreditCardForm = () => {
         couponInfo
       );
 
+      if (res?.data?.insert_order_one?.id) {
+        setCreatedOrder(res.data.insert_order_one.id);
+      }
+
       if (response.errorMessage || res.status === "error") {
         setLoading(false);
         openPopup();
         setErrorMessage(
-          response.errorMessage ?? "Şuan sipariş oluşturamıyoruz..."
+          response.errorMessage ??
+            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
         );
         return;
       } else setBase64PasswordHtml(response.threeDSHtmlContent);
@@ -207,19 +221,25 @@ const CreditCardForm = () => {
 
   const { renderPopup, openPopup, closePopup } = usePopup();
 
+  const removeStorages = () => {
+    sessionStorage.removeItem("order-detail-form");
+    localStorage.removeItem("order-detail-form");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("count");
+    localStorage.removeItem("cost");
+  };
+
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
       if (event.data === "success") {
-        clearCart();
-        sessionStorage.removeItem("order-detail-form");
-        localStorage.removeItem("cart");
-        localStorage.removeItem("count");
-        localStorage.removeItem("cost");
-
         setLoading(false);
-        replace("/cart/complete");
+        clearCart();
+        removeStorages();
+        if (hasCustomizableProduct)
+          replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
+        else replace(CartStepPaths.COMPLETE);
       } else if (event.data.errorMessage) {
         setLoading(false);
         setErrorMessage(event.data.errorMessage);

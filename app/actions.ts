@@ -81,7 +81,7 @@ export const getIpAddress = async () => {
   if (isValidIp) {
     return ip;
   } else {
-    throw new Error("Invalid IP");
+    return null;
   }
 };
 
