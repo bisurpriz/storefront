@@ -12,15 +12,9 @@ export type RatingProps = {
     5: number;
   };
   totalRating: number;
-  totalUserCommentCount: number;
 };
 
-const RatingDetail = ({
-  rateCounts,
-  rating,
-  totalRating,
-  totalUserCommentCount,
-}: RatingProps) => {
+const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   const percentage = (val: number) => {
     return (val / totalRating) * 100;
   };
@@ -41,7 +35,7 @@ const RatingDetail = ({
           href="/#yorumlar"
           className="text-primary-500 text-sm font-semibold"
         >
-          ({totalUserCommentCount} Yorum)
+          ({totalRating} Yorum)
         </Link>
       </div>
       {Object.keys(rateCounts).map((key) => {

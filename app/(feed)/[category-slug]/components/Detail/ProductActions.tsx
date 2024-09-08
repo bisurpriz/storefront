@@ -88,7 +88,7 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
           </p>
         </div>
       )}
-      <div className="flex items-center justify-start gap-4 py-4 max-md:py-2 max-md:pt-0 font-mono">
+      <div className="flex items-center justify-start gap-4 py-4 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
         <Button
           size="large"
           color={error ? "error" : "primary"}

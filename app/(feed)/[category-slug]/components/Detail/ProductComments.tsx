@@ -51,7 +51,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
             {comments?.map((comment, index) => (
               <li
                 key={comment.comment_id}
-                className="flex items-center justify-start border-b border-slate-100 pb-4 max-sm:flex-col max-sm:pb-0 max-sm:gap-2 w-full"
+                className="flex sm:items-center justify-start border-b border-slate-100 pb-4 max-sm:flex-col max-sm:pb-0 max-sm:gap-2 w-full"
                 aria-labelledby={`comment-${index}`}
                 aria-describedby={`comment-${index}`}
                 id={`comment-${index}`}
@@ -84,7 +84,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     </span>
                   </div>
                 </div>
-                <div className="rounded-lg bg-4">
+                <div className="rounded-lg h-fit bg-4 w-fit">
                   <p
                     className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
                     aria-label={`comment-${index}-comment`}
