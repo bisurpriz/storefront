@@ -15,6 +15,7 @@ import Error from "@/components/Icons/Error";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
+import { format } from "date-fns";
 
 type ProductInformationProps = {
   name: string;
@@ -32,8 +33,16 @@ type ProductInformationProps = {
   shippingType?: string;
   freeShipping?: boolean;
   deliveryTimeRanges: string;
-  totalUserCommentCount: number;
   isCustomizable?: boolean;
+  lastOrderTime?: string;
+};
+
+const defaultRating = {
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
 };
 
 const ProductInformation = ({
@@ -49,13 +58,22 @@ const ProductInformation = ({
   freeShipping,
   shippingType,
   deliveryTimeRanges,
-  totalUserCommentCount,
   isCustomizable,
+  lastOrderTime,
 }: ProductInformationProps) => {
   const hasDeliveryTime = useMemo(
     () => Boolean(parseJson(deliveryTimeRanges)?.length),
     [deliveryTimeRanges]
   );
+
+  const manipulatedRateCounts = useMemo(() => {
+    return Object.keys(defaultRating).reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: rateCounts[key] || 0,
+      };
+    }, defaultRating);
+  }, [rateCounts]);
 
   const isSameDay = shippingType === "SAME_DAY";
   const showDaySelect = useMemo(
@@ -163,10 +181,9 @@ const ProductInformation = ({
             >
               <div ref={wrapperRef}>
                 <RatingDetail
-                  rateCounts={rateCounts}
+                  rateCounts={manipulatedRateCounts}
                   rating={rating}
                   totalRating={reviewCount}
-                  totalUserCommentCount={totalUserCommentCount}
                 />
               </div>
             </Popper>
@@ -210,6 +227,7 @@ const ProductInformation = ({
               deliveryTimes={parseJson(deliveryTimeRanges)}
               onSelect={(date) => setDeliveryTimeHandler(date)}
               deliveryTime={deliveryTime}
+              lastOrderTime={lastOrderTime}
             />
             {isSettedDeliveryTime && (
               <div className="w-full flex space-x-4 items-center py-1 px-4 font-semibold rounded-xl my-2 bg-red-50 border border-red-300">
