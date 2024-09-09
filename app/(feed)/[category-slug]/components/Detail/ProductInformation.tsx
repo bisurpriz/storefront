@@ -15,6 +15,7 @@ import Error from "@/components/Icons/Error";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
+import { format } from "date-fns";
 
 type ProductInformationProps = {
   name: string;
@@ -33,6 +34,7 @@ type ProductInformationProps = {
   freeShipping?: boolean;
   deliveryTimeRanges: string;
   isCustomizable?: boolean;
+  lastOrderTime?: string;
 };
 
 const defaultRating = {
@@ -57,6 +59,7 @@ const ProductInformation = ({
   shippingType,
   deliveryTimeRanges,
   isCustomizable,
+  lastOrderTime,
 }: ProductInformationProps) => {
   const hasDeliveryTime = useMemo(
     () => Boolean(parseJson(deliveryTimeRanges)?.length),
@@ -224,6 +227,7 @@ const ProductInformation = ({
               deliveryTimes={parseJson(deliveryTimeRanges)}
               onSelect={(date) => setDeliveryTimeHandler(date)}
               deliveryTime={deliveryTime}
+              lastOrderTime={lastOrderTime}
             />
             {isSettedDeliveryTime && (
               <div className="w-full flex space-x-4 items-center py-1 px-4 font-semibold rounded-xl my-2 bg-red-50 border border-red-300">

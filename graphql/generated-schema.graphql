@@ -13349,6 +13349,7 @@ type product {
   image_url: [String!]
   is_active: Boolean
   is_service_free: Boolean
+  last_order_time: timestamptz
   name: String!
 
   """An array relationship"""
@@ -13723,6 +13724,7 @@ input product_bool_exp {
   image_url: String_array_comparison_exp
   is_active: Boolean_comparison_exp
   is_service_free: Boolean_comparison_exp
+  last_order_time: timestamptz_comparison_exp
   name: String_comparison_exp
   order_items: order_item_bool_exp
   order_items_aggregate: order_item_aggregate_bool_exp
@@ -14888,6 +14890,7 @@ input product_insert_input {
   image_url: [String!]
   is_active: Boolean
   is_service_free: Boolean
+  last_order_time: timestamptz
   name: String
   order_items: order_item_arr_rel_insert_input
   price: numeric
@@ -14915,6 +14918,7 @@ type product_max_fields {
   discount_price: numeric
   id: bigint
   image_url: [String!]
+  last_order_time: timestamptz
   name: String
   price: numeric
   product_no: String
@@ -14945,6 +14949,7 @@ input product_max_order_by {
   discount_price: order_by
   id: order_by
   image_url: order_by
+  last_order_time: order_by
   name: order_by
   price: order_by
   product_no: order_by
@@ -14963,6 +14968,7 @@ type product_min_fields {
   discount_price: numeric
   id: bigint
   image_url: [String!]
+  last_order_time: timestamptz
   name: String
   price: numeric
   product_no: String
@@ -14993,6 +14999,7 @@ input product_min_order_by {
   discount_price: order_by
   id: order_by
   image_url: order_by
+  last_order_time: order_by
   name: order_by
   price: order_by
   product_no: order_by
@@ -15046,6 +15053,7 @@ input product_order_by {
   image_url: order_by
   is_active: order_by
   is_service_free: order_by
+  last_order_time: order_by
   name: order_by
   order_items_aggregate: order_item_aggregate_order_by
   price: order_by
@@ -15113,6 +15121,9 @@ enum product_select_column {
 
   """column name"""
   is_service_free
+
+  """column name"""
+  last_order_time
 
   """column name"""
   name
@@ -15185,6 +15196,7 @@ input product_set_input {
   image_url: [String!]
   is_active: Boolean
   is_service_free: Boolean
+  last_order_time: timestamptz
   name: String
   price: numeric
   product_no: String
@@ -15301,6 +15313,7 @@ input product_stream_cursor_value_input {
   image_url: [String!]
   is_active: Boolean
   is_service_free: Boolean
+  last_order_time: timestamptz
   name: String
   price: numeric
   product_no: String
@@ -15375,6 +15388,9 @@ enum product_update_column {
 
   """column name"""
   is_service_free
+
+  """column name"""
+  last_order_time
 
   """column name"""
   name

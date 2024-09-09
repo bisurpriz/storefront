@@ -14,6 +14,7 @@ query getProductById($id: bigint = 0) {
     is_service_free
     delivery_time_ranges
     delivery_type
+    last_order_time
     properties
     score
     discount_price
@@ -195,6 +196,7 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     is_service_free
     delivery_time_ranges
     delivery_type
+    last_order_time
     score
     properties
     discount_price
