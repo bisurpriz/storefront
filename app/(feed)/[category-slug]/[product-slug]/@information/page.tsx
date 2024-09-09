@@ -86,6 +86,7 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         shippingType={product.delivery_type}
         deliveryTimeRanges={product.delivery_time_ranges}
         isCustomizable={product.product_customizable_areas?.length > 0}
+        lastOrderTime={product.last_order_time}
       />
       <Script
         type="application/ld+json"

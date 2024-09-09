@@ -11279,6 +11279,7 @@ export type Product = {
   image_url?: Maybe<Array<Scalars['String']['output']>>;
   is_active?: Maybe<Scalars['Boolean']['output']>;
   is_service_free?: Maybe<Scalars['Boolean']['output']>;
+  last_order_time?: Maybe<Scalars['timestamptz']['output']>;
   name: Scalars['String']['output'];
   /** An array relationship */
   order_items: Array<Order_Item>;
@@ -11574,6 +11575,7 @@ export type Product_Bool_Exp = {
   image_url?: InputMaybe<String_Array_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
   is_service_free?: InputMaybe<Boolean_Comparison_Exp>;
+  last_order_time?: InputMaybe<Timestamptz_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   order_items?: InputMaybe<Order_Item_Bool_Exp>;
   order_items_aggregate?: InputMaybe<Order_Item_Aggregate_Bool_Exp>;
@@ -12569,6 +12571,7 @@ export type Product_Insert_Input = {
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
+  last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order_items?: InputMaybe<Order_Item_Arr_Rel_Insert_Input>;
   price?: InputMaybe<Scalars['numeric']['input']>;
@@ -12596,6 +12599,7 @@ export type Product_Max_Fields = {
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Array<Scalars['String']['output']>>;
+  last_order_time?: Maybe<Scalars['timestamptz']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
   product_no?: Maybe<Scalars['String']['output']>;
@@ -12618,6 +12622,7 @@ export type Product_Max_Order_By = {
   discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
+  last_order_time?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   product_no?: InputMaybe<Order_By>;
@@ -12636,6 +12641,7 @@ export type Product_Min_Fields = {
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Array<Scalars['String']['output']>>;
+  last_order_time?: Maybe<Scalars['timestamptz']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
   product_no?: Maybe<Scalars['String']['output']>;
@@ -12658,6 +12664,7 @@ export type Product_Min_Order_By = {
   discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
+  last_order_time?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   product_no?: InputMaybe<Order_By>;
@@ -12703,6 +12710,7 @@ export type Product_Order_By = {
   image_url?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
   is_service_free?: InputMaybe<Order_By>;
+  last_order_time?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   order_items_aggregate?: InputMaybe<Order_Item_Aggregate_Order_By>;
   price?: InputMaybe<Order_By>;
@@ -12759,6 +12767,8 @@ export type Product_Select_Column =
   /** column name */
   | 'is_service_free'
   /** column name */
+  | 'last_order_time'
+  /** column name */
   | 'name'
   /** column name */
   | 'price'
@@ -12808,6 +12818,7 @@ export type Product_Set_Input = {
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
+  last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   product_no?: InputMaybe<Scalars['String']['input']>;
@@ -12906,6 +12917,7 @@ export type Product_Stream_Cursor_Value_Input = {
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
+  last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   product_no?: InputMaybe<Scalars['String']['input']>;
@@ -12963,6 +12975,8 @@ export type Product_Update_Column =
   | 'is_active'
   /** column name */
   | 'is_service_free'
+  /** column name */
+  | 'last_order_time'
   /** column name */
   | 'name'
   /** column name */
