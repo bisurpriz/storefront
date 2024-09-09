@@ -32,8 +32,15 @@ type ProductInformationProps = {
   shippingType?: string;
   freeShipping?: boolean;
   deliveryTimeRanges: string;
-  totalUserCommentCount: number;
   isCustomizable?: boolean;
+};
+
+const defaultRating = {
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
 };
 
 const ProductInformation = ({
@@ -49,13 +56,21 @@ const ProductInformation = ({
   freeShipping,
   shippingType,
   deliveryTimeRanges,
-  totalUserCommentCount,
   isCustomizable,
 }: ProductInformationProps) => {
   const hasDeliveryTime = useMemo(
     () => Boolean(parseJson(deliveryTimeRanges)?.length),
     [deliveryTimeRanges]
   );
+
+  const manipulatedRateCounts = useMemo(() => {
+    return Object.keys(defaultRating).reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: rateCounts[key] || 0,
+      };
+    }, defaultRating);
+  }, [rateCounts]);
 
   const isSameDay = shippingType === "SAME_DAY";
   const showDaySelect = useMemo(
@@ -163,10 +178,9 @@ const ProductInformation = ({
             >
               <div ref={wrapperRef}>
                 <RatingDetail
-                  rateCounts={rateCounts}
+                  rateCounts={manipulatedRateCounts}
                   rating={rating}
                   totalRating={reviewCount}
-                  totalUserCommentCount={totalUserCommentCount}
                 />
               </div>
             </Popper>

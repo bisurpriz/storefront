@@ -76,7 +76,6 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
           }, {}) as any) ?? {}
         }
         rating={product.score ?? 0}
-        totalUserCommentCount={product.reviews_aggregate.aggregate.count}
         reviewCount={product.reviews_aggregate.aggregate.count}
         promotion="Kargo Bedava"
         discountPrice={product.discount_price}
