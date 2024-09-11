@@ -38,6 +38,12 @@ export const login = async ({ email, password }, headers = {}) => {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
 
+    const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
+
+    if (guest_id) {
+      cookies().delete(CookieTokens.GUEST_ID);
+    }
+
     cookies().set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
