@@ -66,38 +66,12 @@ export const metadata: Metadata = {
     },
   ],
   keywords: [
-    "sürpriz",
-    "sevgiliye sürpriz",
-    "sevgiliye hediye",
-    "sevgiliye doğum günü hediyesi",
-    "sevgiliye doğum günü sürprizi",
-    "sevgiliye doğum günü",
-    "sevgiliye doğum günü hediyesi ne alınır",
-    "sevgiliye doğum günü hediyesi fikirleri",
-    "sevgiliye doğum günü hediyesi ne alabilirim",
-    "sevgiliye doğum günü hediyesi ne yapabilirim",
-    "sevgiliye doğum günü hediyesi ne alınır ekşi",
-    "sevgiliye doğum günü hediyesi ne alınır kadın",
-    "sevgiliye doğum günü hediyesi ne alınır erkek",
-    "çiçek",
-    "çiçek siparişi",
-    "çiçek siparişi ankara",
-    "çiçek siparişi istanbul",
-    "hediyelik eşya",
-    "hediyelik eşya ankara",
-    "hediye",
-    "hediye ankara",
-    "hediye istanbul",
-    "hediye fikirleri",
-    "çikolata",
-    "çikolata ankara",
-    "çikolata istanbul",
-    "çikolata çeşitleri",
-    "çikolata çeşitleri ankara",
-    "çikolata çeşitleri istanbul",
-    "çikolata çeşitleri fiyatları",
-    "çikolata çeşitleri fiyatları ankara",
-    "çikolata çeşitleri fiyatları istanbul",
+    "Bonnmarşe",
+    "Bonnmarşe.com",
+    "Sevdiklerinize sürpriz yapın",
+    "Hediye",
+    "Çiçek",
+    "Çikolata",
   ],
   robots: "index, follow",
   manifest: "/manifest.json",
@@ -142,12 +116,15 @@ export default async function RootLayout({
           <ApolloWrapper>
             <ProductProvider>
               <CategoryProvider category={category}>
-                <CartProvider cartDbItems={cartItems} dbCost={{
-                  totalPrice: costData.totalPrice,
-                  isCouponApplied: false,
-                  couponMessage: "",
-                  discountAmount: 0,
-                }}>
+                <CartProvider
+                  cartDbItems={cartItems}
+                  dbCost={{
+                    totalPrice: costData.totalPrice,
+                    isCouponApplied: false,
+                    couponMessage: "",
+                    discountAmount: 0,
+                  }}
+                >
                   <Suspense fallback={<HeaderSuspense />}>
                     <Header category={category} />
                     <StickyHeader />
