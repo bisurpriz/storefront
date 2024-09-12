@@ -133,9 +133,10 @@ const CreditCardForm = () => {
 
       const conversationId = await getConversationId(timeStamps);
 
-      const basketId =
-        userData.user?.carts[0].id + "-" + timeStamps ??
-        Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
+      const basketId = userData.user?.carts[0]?.id
+        ? userData.user?.carts[0]?.id + "-"
+        : "" + timeStamps ??
+          Cookies.get(CookieTokens.GUEST_ID) + "-" + timeStamps;
       const ip = await getIpAddress();
 
       if (!ip) {
