@@ -4,6 +4,7 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
+import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -33,6 +34,7 @@ const wsLink = new WebSocketLink({
 });
 
 export const authLink = setContext(async (_, { headers }) => {
+  unstable_noStore();
   let token = null;
   try {
     // TODO: Refresh Fetch işlemi yapılacak
