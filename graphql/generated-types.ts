@@ -10095,7 +10095,6 @@ export type Order_Status_Enum =
   | 'Delivered'
   /** Ödemenin başarısız olması veya envanterin kullanılamaması gibi sorunlar nedeniyle sipariş işleme koyulamadı. */
   | 'Failed'
-  | 'Paid'
   /** Sipariş sevkiyata hazırlanıyor. */
   | 'Processing'
   /** Siparişin ödemesi müşteriye iade edilmiştir. */
@@ -11278,6 +11277,7 @@ export type Product = {
   id: Scalars['bigint']['output'];
   image_url?: Maybe<Array<Scalars['String']['output']>>;
   is_active?: Maybe<Scalars['Boolean']['output']>;
+  is_approved?: Maybe<Scalars['Boolean']['output']>;
   is_service_free?: Maybe<Scalars['Boolean']['output']>;
   last_order_time?: Maybe<Scalars['timestamptz']['output']>;
   name: Scalars['String']['output'];
@@ -11574,6 +11574,7 @@ export type Product_Bool_Exp = {
   id?: InputMaybe<Bigint_Comparison_Exp>;
   image_url?: InputMaybe<String_Array_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
+  is_approved?: InputMaybe<Boolean_Comparison_Exp>;
   is_service_free?: InputMaybe<Boolean_Comparison_Exp>;
   last_order_time?: InputMaybe<Timestamptz_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -12570,6 +12571,7 @@ export type Product_Insert_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  is_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -12709,6 +12711,7 @@ export type Product_Order_By = {
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
+  is_approved?: InputMaybe<Order_By>;
   is_service_free?: InputMaybe<Order_By>;
   last_order_time?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -12765,6 +12768,8 @@ export type Product_Select_Column =
   /** column name */
   | 'is_active'
   /** column name */
+  | 'is_approved'
+  /** column name */
   | 'is_service_free'
   /** column name */
   | 'last_order_time'
@@ -12792,6 +12797,8 @@ export type Product_Select_Column_Product_Aggregate_Bool_Exp_Bool_And_Arguments_
   /** column name */
   | 'is_active'
   /** column name */
+  | 'is_approved'
+  /** column name */
   | 'is_service_free'
   /** column name */
   | 'stock_track';
@@ -12800,6 +12807,8 @@ export type Product_Select_Column_Product_Aggregate_Bool_Exp_Bool_And_Arguments_
 export type Product_Select_Column_Product_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
   /** column name */
   | 'is_active'
+  /** column name */
+  | 'is_approved'
   /** column name */
   | 'is_service_free'
   /** column name */
@@ -12817,6 +12826,7 @@ export type Product_Set_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  is_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -12916,6 +12926,7 @@ export type Product_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  is_approved?: InputMaybe<Scalars['Boolean']['input']>;
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -12973,6 +12984,8 @@ export type Product_Update_Column =
   | 'image_url'
   /** column name */
   | 'is_active'
+  /** column name */
+  | 'is_approved'
   /** column name */
   | 'is_service_free'
   /** column name */
@@ -21128,7 +21141,7 @@ export type Transaction = {
   order?: Maybe<Order>;
   paymentConversationId?: Maybe<Scalars['String']['output']>;
   paymentId?: Maybe<Scalars['String']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
+  status: Scalars['String']['output'];
 };
 
 /** aggregated selection of "transaction" */
@@ -21842,9 +21855,7 @@ export type User_Address_Bool_Exp = {
 /** unique or primary key constraints on table "user_address" */
 export type User_Address_Constraint =
   /** unique or primary key constraint on columns "id" */
-  | 'user_address_pkey'
-  /** unique or primary key constraint on columns "user_id", "address_title" */
-  | 'user_address_user_id_address_title_key';
+  | 'user_address_pkey';
 
 /** input type for incrementing numeric columns in table "user_address" */
 export type User_Address_Inc_Input = {
@@ -22634,7 +22645,7 @@ export type User_Favorite_Bool_Exp = {
 export type User_Favorite_Constraint =
   /** unique or primary key constraint on columns "id" */
   | 'user_favorite_pkey'
-  /** unique or primary key constraint on columns "user_id", "product_id" */
+  /** unique or primary key constraint on columns "product_id", "user_id" */
   | 'user_favorite_user_id_product_id_key';
 
 /** input type for incrementing numeric columns in table "user_favorite" */

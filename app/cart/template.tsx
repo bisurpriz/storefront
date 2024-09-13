@@ -55,7 +55,12 @@ const CartTemplate = ({ children }: { children: React.ReactNode }) => {
     cartState: { count },
   } = useCart();
   const pathname = usePathname();
-  if (!count && pathname !== CartStepPaths.COMPLETE) {
+  const customizePath = pathname.split("/").slice(0, 3).join("/");
+  if (
+    !count &&
+    pathname !== CartStepPaths.COMPLETE &&
+    customizePath !== CartStepPaths.CUSTOMIZE
+  ) {
     return <EmptyCart />;
   }
 

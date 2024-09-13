@@ -2,7 +2,9 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -55,6 +57,7 @@ interface CartContextType {
   applyCouponCode: (code: string) => Promise<void>;
   updateCartItemNote: (id: number, note: string) => void;
   hasCustomizableProduct: boolean;
+  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>
 }
 
 export interface CartState {
@@ -93,6 +96,7 @@ export const CartContext = createContext<CartContextType>({
   applyCouponCode: async () => {},
   updateCartItemNote: () => {},
   hasCustomizableProduct: false,
+  setHasCustomizableProduct: () => {},
 });
 
 export const CartProvider = ({
@@ -379,6 +383,7 @@ export const CartProvider = ({
     applyCouponCode,
     updateCartItemNote,
     hasCustomizableProduct,
+    setHasCustomizableProduct
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

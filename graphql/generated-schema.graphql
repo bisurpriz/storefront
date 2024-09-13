@@ -11887,7 +11887,6 @@ enum order_status_enum {
   Ödemenin başarısız olması veya envanterin kullanılamaması gibi sorunlar nedeniyle sipariş işleme koyulamadı.
   """
   Failed
-  Paid
 
   """Sipariş sevkiyata hazırlanıyor."""
   Processing
@@ -13348,6 +13347,7 @@ type product {
   id: bigint!
   image_url: [String!]
   is_active: Boolean
+  is_approved: Boolean
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String!
@@ -13723,6 +13723,7 @@ input product_bool_exp {
   id: bigint_comparison_exp
   image_url: String_array_comparison_exp
   is_active: Boolean_comparison_exp
+  is_approved: Boolean_comparison_exp
   is_service_free: Boolean_comparison_exp
   last_order_time: timestamptz_comparison_exp
   name: String_comparison_exp
@@ -14889,6 +14890,7 @@ input product_insert_input {
   id: bigint
   image_url: [String!]
   is_active: Boolean
+  is_approved: Boolean
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
@@ -15052,6 +15054,7 @@ input product_order_by {
   id: order_by
   image_url: order_by
   is_active: order_by
+  is_approved: order_by
   is_service_free: order_by
   last_order_time: order_by
   name: order_by
@@ -15120,6 +15123,9 @@ enum product_select_column {
   is_active
 
   """column name"""
+  is_approved
+
+  """column name"""
   is_service_free
 
   """column name"""
@@ -15161,6 +15167,9 @@ enum product_select_column_product_aggregate_bool_exp_bool_and_arguments_columns
   is_active
 
   """column name"""
+  is_approved
+
+  """column name"""
   is_service_free
 
   """column name"""
@@ -15173,6 +15182,9 @@ select "product_aggregate_bool_exp_bool_or_arguments_columns" columns of table "
 enum product_select_column_product_aggregate_bool_exp_bool_or_arguments_columns {
   """column name"""
   is_active
+
+  """column name"""
+  is_approved
 
   """column name"""
   is_service_free
@@ -15195,6 +15207,7 @@ input product_set_input {
   id: bigint
   image_url: [String!]
   is_active: Boolean
+  is_approved: Boolean
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
@@ -15312,6 +15325,7 @@ input product_stream_cursor_value_input {
   id: bigint
   image_url: [String!]
   is_active: Boolean
+  is_approved: Boolean
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
@@ -15385,6 +15399,9 @@ enum product_update_column {
 
   """column name"""
   is_active
+
+  """column name"""
+  is_approved
 
   """column name"""
   is_service_free
@@ -26383,7 +26400,7 @@ type transaction {
   order: order
   paymentConversationId: String
   paymentId: String
-  status: String
+  status: String!
 }
 
 """
@@ -27329,11 +27346,6 @@ enum user_address_constraint {
   unique or primary key constraint on columns "id"
   """
   user_address_pkey
-
-  """
-  unique or primary key constraint on columns "user_id", "address_title"
-  """
-  user_address_user_id_address_title_key
 }
 
 """
@@ -28259,7 +28271,7 @@ enum user_favorite_constraint {
   user_favorite_pkey
 
   """
-  unique or primary key constraint on columns "user_id", "product_id"
+  unique or primary key constraint on columns "product_id", "user_id"
   """
   user_favorite_user_id_product_id_key
 }

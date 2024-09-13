@@ -139,6 +139,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   };
 
   const getSessionStorage = () => {
+    if (typeof sessionStorage === "undefined") return null;
     return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
   };
 

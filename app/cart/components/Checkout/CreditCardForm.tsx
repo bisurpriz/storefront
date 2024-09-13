@@ -252,7 +252,7 @@ const CreditCardForm = () => {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [createdOrder]);
 
   const handleClosePopupWithClearStates = () => {
     setBase64PasswordHtml("");
