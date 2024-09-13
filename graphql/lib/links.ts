@@ -34,15 +34,9 @@ const wsLink = new WebSocketLink({
 });
 
 export const authLink = setContext(async (_, { headers }) => {
-  unstable_noStore();
   let token = null;
-  try {
-    // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
-    token = ntoken;
-  } catch (e) {
-    console.error(e, "error getting session");
-  }
+  const ntoken = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+  token = ntoken;
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {};
 
