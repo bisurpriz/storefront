@@ -44,15 +44,15 @@ export const authLink = setContext(async (_, { headers }) => {
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {};
 
-  const user_id = cookies().get(CookieTokens.USER_ID)?.value;
+  /* const user_id = cookies().get(CookieTokens.USER_ID)?.value;
   const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
 
   const newHeaders =
-    !user_id && guest_id ? { "x-hasura-guest-id": guest_id } : {};
+    !user_id && guest_id ? { ["x-hasura-guest-id"]: guest_id } : {}; */
 
   return {
     headers: {
-      ...newHeaders,
+      ...headers,
       ...hasToken,
     },
   };
