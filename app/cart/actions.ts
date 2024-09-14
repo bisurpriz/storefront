@@ -96,18 +96,15 @@ export const createOrderAction = async (
     },
   };
 
-  const response = await fetch(
-    "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        ...variables.object,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  const response = await fetch(process.env.CREATE_ORDER_ACTION_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      ...variables.object,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
 
   if (response.errors) {
     return {
@@ -126,7 +123,7 @@ export const getCartCost = async (
   couponCode?: string
 ) => {
   const { data: costData } = await axios.post(
-    "https://llt4tsk3fqsilcccjrst76njyq0eiqne.lambda-url.eu-north-1.on.aws/",
+    process.env.CART_COST_URL,
     {
       products: cartItems.map((item) => ({
         id: item.id,

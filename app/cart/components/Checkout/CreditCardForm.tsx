@@ -110,7 +110,7 @@ const CreditCardForm = () => {
     clearCart,
   } = useCart();
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, getValues } = useForm({
     defaultValues,
     resolver: yupResolver(schema),
     mode: "onChange",
