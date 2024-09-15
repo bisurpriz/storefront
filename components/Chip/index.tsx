@@ -24,9 +24,10 @@ type ChipProps = {
   color?: ChipColorType;
   withClose?: boolean;
   onClose?: () => void;
-  rounded?: "full" | "semi" | "none";
+  rounded?: "full" | "semi" | "low" | "none";
   as?: "button" | "link";
-  href?: string; // If as='link', href is required
+  href?: string;
+  className?: string;
 };
 
 const Chip: React.FC<ChipProps> = ({
@@ -40,10 +41,11 @@ const Chip: React.FC<ChipProps> = ({
   rounded = "full",
   as = "button",
   href,
+  className = "",
 }) => {
   const baseClasses = `w-fit flex items-center font-medium whitespace-nowrap ${
     href ? "cursor-pointer" : "cursor-default"
-  }`;
+  } ${className}`;
 
   const sizeClasses = {
     small: "px-2 py-1 text-xs",
@@ -104,6 +106,7 @@ const Chip: React.FC<ChipProps> = ({
     full: "rounded-full",
     semi: "rounded-lg",
     none: "rounded-none",
+    low: "rounded-sm",
   };
 
   const chipContent = (

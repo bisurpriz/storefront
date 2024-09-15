@@ -12,6 +12,8 @@ import SevenOclock from "@/components/Icons/SevenOclock";
 import Palette from "@/components/Icons/Palette";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { localeFormat } from "@/utils/format";
+import Chip from "@/components/Chip";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -36,6 +38,13 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
   ).length;
 
+  const getEstimatedDeliveryDateText = () => {
+    return `Tahmini teslimat tarihi: ${localeFormat(
+      new Date(product.deliveryDate),
+      "dd MMMM yyyy"
+    )}${product.deliveryTime ? ` - ${product.deliveryTime}` : ""}`;
+  };
+
   return (
     <li className="py-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
@@ -58,6 +67,16 @@ const CartProductGroupListItem = (product: ProductForCart) => {
               <PriceTag price={price} discount={discount_price} />
               <CartProductGroupListQuantityInput id={id} quantity={quantity} />
             </div>
+            {delivery_type === "SAME_DAY" && (
+              <Chip
+                rounded="low"
+                label={getEstimatedDeliveryDateText()}
+                size="small"
+                color="info"
+                variant="outlined"
+                className="font-sans font-semibold"
+              />
+            )}
           </div>
 
           <ProductGroupListItemInfo customize={customize} id={id} />

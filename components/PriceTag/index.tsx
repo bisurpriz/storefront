@@ -37,7 +37,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {discount > 0 && (
           <span
             className={clsx([
-              "font-normal leading-none text-lg text-green-500 max-md:text-xs whitespace-nowrap",
+              "font-semibold leading-none text-lg text-green-500 max-md:text-xs whitespace-nowrap",
               discount > 0 ? "" : "font-normal",
             ])}
           >

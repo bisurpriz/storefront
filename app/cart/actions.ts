@@ -245,20 +245,36 @@ export const getCart = async (user_id: string) => {
       fetchPolicy: "no-cache",
     });
 
-    const cartItems = product?.map((item) => {
-      const hasProduct = parsedContent.find((p) => p.product_id === item.id);
-      return {
-        ...hasProduct,
-        ...item,
-        quantity: hasProduct.quantity,
-        product_customizable_areas: item.product_customizable_areas,
-        deliveryTime: hasProduct.deliveryTime,
-        deliveryDate: hasProduct.deliveryDate,
-      };
-    });
+    const cartItems = product
+      ?.map((item) => {
+        const hasProduct = parsedContent.find((p) => p.product_id === item.id);
+        // Check if delivery date is in the past
+        if (hasProduct.deliveryDate && hasProduct.deliveryTime) {
+          const currentDate = new Date();
+
+          const deliveryDate = new Date(hasProduct.deliveryDate);
+
+          if (deliveryDate < currentDate) {
+            return null;
+          }
+        }
+
+        return {
+          ...hasProduct,
+          ...item,
+          quantity: hasProduct.quantity,
+          product_customizable_areas: item.product_customizable_areas,
+          deliveryTime: hasProduct.deliveryTime,
+          deliveryDate: hasProduct.deliveryDate,
+        };
+      })
+      // Remove products with delivery date in the past
+      .filter((_) => _ !== null);
+
     const costData = await getCartCost(
       cartItems.map((_) => ({ id: _.id, quantity: _.quantity }))
     );
+
     return {
       cartItems,
       costData,
