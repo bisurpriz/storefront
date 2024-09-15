@@ -20,9 +20,17 @@ interface Props {
   productId: number;
   isFavorite: boolean;
   favoriteCount?: number;
+  locationId: number;
+  locType: string;
 }
 
-const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
+const ProductActions = ({
+  productId,
+  isFavorite,
+  favoriteCount,
+  locType,
+  locationId,
+}: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
@@ -51,21 +59,6 @@ const ProductActions = ({ productId, isFavorite, favoriteCount }: Props) => {
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const willShowError = !deliveryTime?.day || !deliveryTime?.hour;
-
-  const handleCookie = () => {
-    try {
-      const locationCookie = Cookies.get("location_id")
-        ? parseJson(Cookies.get("location_id"))
-        : null;
-      return locationCookie;
-    } catch (error) {
-      console.error("Error while parsing location cookie", error);
-      return null;
-    }
-  };
-
-  const locationId = handleCookie()?.id;
-  const locType = handleCookie()?.type;
 
   useEffect(() => {
     if (!locationId || !locType) return;

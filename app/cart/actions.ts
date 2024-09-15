@@ -218,7 +218,6 @@ export const getCart = async (user_id: string) => {
     });
 
     const parsedContent = parseJson(cart[0].content);
-
     if (parsedContent.length === 0)
       return {
         cartItems: [],
@@ -243,6 +242,7 @@ export const getCart = async (user_id: string) => {
       variables: {
         ids,
       },
+      fetchPolicy: "no-cache",
     });
 
     const cartItems = product?.map((item) => {
@@ -256,11 +256,9 @@ export const getCart = async (user_id: string) => {
         deliveryDate: hasProduct.deliveryDate,
       };
     });
-
     const costData = await getCartCost(
       cartItems.map((_) => ({ id: _.id, quantity: _.quantity }))
     );
-
     return {
       cartItems,
       costData,
