@@ -57,7 +57,7 @@ interface CartContextType {
   applyCouponCode: (code: string) => Promise<void>;
   updateCartItemNote: (id: number, note: string) => void;
   hasCustomizableProduct: boolean;
-  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>
+  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface CartState {
@@ -135,21 +135,6 @@ export const CartProvider = ({
 
   useEffect(() => {
     if (cartDbItems.length === 0) {
-      const cartItems = localStorage.getItem("cart");
-      const count = localStorage.getItem("count");
-      const cost = localStorage.getItem("cost");
-
-      if (cartItems && count && cost) {
-        dispatch({
-          type: "ADD_TO_CART",
-          payload: {
-            cartItems: JSON.parse(cartItems),
-            count: JSON.parse(count),
-            cost: JSON.parse(cost),
-          },
-        });
-      }
-    } else {
       localStorage.removeItem("cart");
       localStorage.removeItem("count");
       localStorage.removeItem("cost");
@@ -383,7 +368,7 @@ export const CartProvider = ({
     applyCouponCode,
     updateCartItemNote,
     hasCustomizableProduct,
-    setHasCustomizableProduct
+    setHasCustomizableProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

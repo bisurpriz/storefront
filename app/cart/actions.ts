@@ -122,16 +122,13 @@ export const getCartCost = async (
   cartItems: Pick<ProductForCart, "id" | "quantity">[],
   couponCode?: string
 ) => {
-  const { data: costData } = await axios.post(
-    process.env.CART_COST_URL,
-    {
-      products: cartItems.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-      couponCode,
-    }
-  );
+  const { data: costData } = await axios.post(process.env.CART_COST_URL, {
+    products: cartItems.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+    })),
+    couponCode,
+  });
   return costData;
 };
 
@@ -221,6 +218,7 @@ export const getCart = async (user_id: string) => {
     });
 
     const parsedContent = parseJson(cart[0].content);
+
     if (parsedContent.length === 0)
       return {
         cartItems: [],
@@ -247,21 +245,21 @@ export const getCart = async (user_id: string) => {
       },
     });
 
-    const costData = await getCartCost(
-      parsedContent.map((_) => ({ id: _.product_id, quantity: _.quantity }))
-    );
-
-    const cartItems = parsedContent.map((item) => {
-      const hasProduct = product.find((p) => p.id === item.product_id);
+    const cartItems = product?.map((item) => {
+      const hasProduct = parsedContent.find((p) => p.product_id === item.id);
       return {
-        ...item,
         ...hasProduct,
-        quantity: item.quantity,
+        ...item,
+        quantity: hasProduct.quantity,
         product_customizable_areas: item.product_customizable_areas,
-        deliveryTime: item.deliveryTime,
-        deliveryDate: item.deliveryDate,
+        deliveryTime: hasProduct.deliveryTime,
+        deliveryDate: hasProduct.deliveryDate,
       };
     });
+
+    const costData = await getCartCost(
+      cartItems.map((_) => ({ id: _.id, quantity: _.quantity }))
+    );
 
     return {
       cartItems,
