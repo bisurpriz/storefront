@@ -9,6 +9,7 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import dynamic from "next/dynamic";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -35,6 +36,10 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
       id,
     },
   });
+
+  if (!product) {
+    redirect("/");
+  }
 
   return (
     <ImageZoomModalProvider>

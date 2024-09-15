@@ -2,8 +2,6 @@ import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/Payme
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
 import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import { ReactNode, Suspense } from "react";
-import RecommendedProductsLoadingPage from "./@recommended/loading";
-import ProductCommentsLoadingPage from "./@comments/loading";
 
 export default async function ProductExample({
   children,
@@ -77,10 +75,6 @@ export default async function ProductExample({
         aria-describedby="Yorumlar"
       >
         {comments}
-        {/* <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
-        /> */}
       </section>
     </div>
   );
