@@ -43,6 +43,7 @@ query getProductByIdForCart($id: bigint!) {
         id
         name
         commision_rate
+        iyzi_sub_merchant_key
       }
     }
     discount_price

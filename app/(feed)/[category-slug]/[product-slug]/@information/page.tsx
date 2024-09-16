@@ -6,6 +6,7 @@ import { createJSONLd } from "@/utils/createJSONLd";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Script from "next/script";
 import { getProductRatings } from "@/app/(feed)/actions";
+import InformationLoadingPage from "./loading";
 
 type Props = {
   searchParams: {
@@ -19,6 +20,10 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
   const {
     data: { product },
   } = await getProductInformation(productId);
+
+  if (!product) {
+    return <InformationLoadingPage />;
+  }
 
   const ratings = await getProductRatings({ pid: productId });
 

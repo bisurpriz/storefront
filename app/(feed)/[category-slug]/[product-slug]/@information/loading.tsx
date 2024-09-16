@@ -20,7 +20,7 @@ const InformationLoadingPage = () => {
             />
           ))}
         </div>
-        <div className="flex items-center justify-between w-full gap-6">
+        <div className="flex items-center justify-between w-full gap-6 mb-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}

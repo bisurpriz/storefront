@@ -6,6 +6,7 @@ import {
   GetProductCommentsQuery,
   GetProductCommentsQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
+import ProductCommentsLoadingPage from "./loading";
 
 type Props = {
   searchParams: {
@@ -24,6 +25,10 @@ const ProductCommentsPage: FC<Props> = async ({ searchParams }) => {
       id,
     },
   });
+
+  if (!product) {
+    return <ProductCommentsLoadingPage />;
+  }
 
   return (
     <ProductComments

@@ -110,7 +110,7 @@ const CreditCardForm = () => {
     clearCart,
   } = useCart();
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, getValues } = useForm({
     defaultValues,
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -252,7 +252,7 @@ const CreditCardForm = () => {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [createdOrder]);
 
   const handleClosePopupWithClearStates = () => {
     setBase64PasswordHtml("");

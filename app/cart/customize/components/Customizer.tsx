@@ -3,15 +3,23 @@
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import CustomizeOrderItem from "./CustomizeOrderItem";
 import Chip from "@/components/Chip";
+import { useCart } from "@/contexts/CartContext";
 
 type CustomizerProps = {
   tenant_order: GetOrderByIdQuery["order_by_pk"]["tenant_orders"][0];
 };
 
 const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
+  const {setHasCustomizableProduct} = useCart();
+
+  useEffect(() => {
+    setHasCustomizableProduct(true);
+  }
+  , [setHasCustomizableProduct]);
+
   return tenant_order.order_items.map((oi, oindex) => {
     if (oi.product.product_customizable_areas.length === 0) null;
 

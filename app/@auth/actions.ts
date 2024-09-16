@@ -16,6 +16,8 @@ export const decodeToken = async (token: string) => {
 };
 
 export const login = async ({ email, password }, headers = {}) => {
+  const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
+
   const response = await mutate<
     LoginMutationMutation,
     LoginMutationMutationVariables
@@ -28,6 +30,7 @@ export const login = async ({ email, password }, headers = {}) => {
     context: {
       headers: {
         ...headers,
+        "x-hasura-guest-id": guest_id,
       },
     },
   });
@@ -37,8 +40,6 @@ export const login = async ({ email, password }, headers = {}) => {
     const user = {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
-
-    const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
 
     if (guest_id) {
       cookies().delete(CookieTokens.GUEST_ID);

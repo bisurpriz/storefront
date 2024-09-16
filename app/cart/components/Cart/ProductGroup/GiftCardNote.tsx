@@ -19,7 +19,7 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
   };
 
   return (
-    <div className="border border-slate-200 rounded-xl ">
+    <div className="border border-slate-200 rounded-md">
       <Accordion
         items={[
           {

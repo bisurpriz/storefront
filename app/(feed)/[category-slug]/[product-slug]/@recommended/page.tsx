@@ -2,6 +2,7 @@ import { getPaginatedProducts } from "@/app/(feed)/actions";
 import { PER_REQUEST } from "@/app/constants";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import React, { FC } from "react";
+import RecommendedProductsLoadingPage from "./loading";
 
 type Props = {
   params: {
@@ -15,6 +16,10 @@ const ProductRecommendedPage: FC<Props> = async ({ params }) => {
     category_slug: params["category-slug"],
     limit: PER_REQUEST,
   });
+
+  if (!categoryProducts) {
+    return <RecommendedProductsLoadingPage />;
+  }
 
   return <RecommendedProducts products={categoryProducts} />;
 };

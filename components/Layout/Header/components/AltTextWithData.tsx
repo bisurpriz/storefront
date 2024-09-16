@@ -32,7 +32,7 @@ const AltTextWithData = ({
     case "cart":
       {
         const cost = data as number;
-        altText = cost ? `${cost} ₺` : "0 ₺";
+        altText = cost ? `${cost?.toFixed(2)} ₺` : "0.00 ₺";
       }
       break;
   }

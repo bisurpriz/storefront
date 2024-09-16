@@ -2,7 +2,9 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -55,6 +57,7 @@ interface CartContextType {
   applyCouponCode: (code: string) => Promise<void>;
   updateCartItemNote: (id: number, note: string) => void;
   hasCustomizableProduct: boolean;
+  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface CartState {
@@ -93,6 +96,7 @@ export const CartContext = createContext<CartContextType>({
   applyCouponCode: async () => {},
   updateCartItemNote: () => {},
   hasCustomizableProduct: false,
+  setHasCustomizableProduct: () => {},
 });
 
 export const CartProvider = ({
@@ -131,21 +135,6 @@ export const CartProvider = ({
 
   useEffect(() => {
     if (cartDbItems.length === 0) {
-      const cartItems = localStorage.getItem("cart");
-      const count = localStorage.getItem("count");
-      const cost = localStorage.getItem("cost");
-
-      if (cartItems && count && cost) {
-        dispatch({
-          type: "ADD_TO_CART",
-          payload: {
-            cartItems: JSON.parse(cartItems),
-            count: JSON.parse(count),
-            cost: JSON.parse(cost),
-          },
-        });
-      }
-    } else {
       localStorage.removeItem("cart");
       localStorage.removeItem("count");
       localStorage.removeItem("cost");
@@ -379,6 +368,7 @@ export const CartProvider = ({
     applyCouponCode,
     updateCartItemNote,
     hasCustomizableProduct,
+    setHasCustomizableProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

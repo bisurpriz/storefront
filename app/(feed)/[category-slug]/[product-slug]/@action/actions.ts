@@ -30,8 +30,8 @@ export const getProductActions = async (
 
     return {
       product: {
-        user_favorites: favs.data.product.user_favorites,
-        user_favorites_aggregate: favs.data.product.user_favorites_aggregate,
+        user_favorites: favs?.data?.product?.user_favorites,
+        user_favorites_aggregate: favs?.data?.product?.user_favorites_aggregate,
       },
     };
   } else {
@@ -48,7 +48,7 @@ export const getProductActions = async (
     return {
       product: {
         user_favorites: [],
-        user_favorites_aggregate: anon.data.product.user_favorites_aggregate,
+        user_favorites_aggregate: anon?.data?.product?.user_favorites_aggregate,
       },
     };
   }

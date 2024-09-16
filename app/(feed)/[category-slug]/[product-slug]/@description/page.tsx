@@ -9,6 +9,7 @@ import {
   GetProductDescriptionQuery,
   GetProductDescriptionQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
+import ProductDescriptionLoadingPage from "./loading";
 
 type Props = {
   searchParams: {
@@ -30,6 +31,10 @@ const ProductDescriptionPage: FC<Props> = async ({ searchParams }) => {
       id,
     },
   });
+
+  if (!product) {
+    return <ProductDescriptionLoadingPage />;
+  }
 
   const { description, properties } = product;
 
