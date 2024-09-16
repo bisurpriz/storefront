@@ -26,42 +26,6 @@
   }
 
 
-  .slider {
-    @apply relative p-4 bg-gray-50 rounded-lg border border-gray-200;
-  }
-
-  .slider__track,
-  .slider__range,
-  .slider__left-value,
-  .slider__right-value {
-    @apply absolute;
-  }
-
-  .slider__track,
-  .slider__range {
-    @apply h-[5px] rounded-[3px];
-  }
-
-  .slider__track {
-    @apply z-[1] w-full left-0 bg-gray-200;
-  }
-
-  .slider__range {
-    @apply z-[2];
-  }
-
-  .slider__left-value,
-  .slider__right-value {
-    @apply text-xs mt-5 text-gray-600;
-  }
-
-  .slider__left-value {
-    @apply left-1.5;
-  }
-
-  .slider__right-value {
-    @apply -right-1;
-  }
 
   /* Removing the default appearance */
   .thumb,
