@@ -46,7 +46,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   };
 
   return (
-    <li className="py-4" key={id}>
+    <li className="p-0 pt-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
         <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
           <Image
@@ -67,19 +67,33 @@ const CartProductGroupListItem = (product: ProductForCart) => {
               <PriceTag price={price} discount={discount_price} />
               <CartProductGroupListQuantityInput id={id} quantity={quantity} />
             </div>
-            {delivery_type === "SAME_DAY" && (
-              <Chip
-                rounded="low"
-                label={getEstimatedDeliveryDateText()}
-                size="small"
-                color="info"
-                variant="outlined"
-                className="font-sans font-semibold"
-              />
-            )}
           </div>
 
           <ProductGroupListItemInfo customize={customize} id={id} />
+        </div>
+        <div className="flex gap-2 items-start flex-wrap mb-4">
+          {delivery_type === "SAME_DAY" && product.deliveryDate && (
+            <Chip
+              rounded="low"
+              label={getEstimatedDeliveryDateText()}
+              size="small"
+              color="primary"
+              variant="soft"
+              className="font-sans max-sm:w-full"
+            />
+          )}
+          {(specialImageCount > 0 || specialTextCount > 0) && (
+            <Chip
+              rounded="semi"
+              label={
+                "Siparişi tamamladıktan sonra, tasarlanabilir alanları doldurabilirsiniz."
+              }
+              size="small"
+              color="purple"
+              variant="soft"
+              className="font-sans whitespace-break-spaces"
+            />
+          )}
         </div>
         <Promotions
           promotions={[
@@ -109,14 +123,6 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           ]}
         />
 
-        {(specialImageCount > 0 || specialTextCount > 0) && (
-          <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
-            <p className="text-xs text-gray-500">
-              Siparişi tamamladıktan sonra, tasarlanabilir alanları
-              doldurabilirsiniz.
-            </p>
-          </div>
-        )}
         <GiftCardNote id={id} quantity={quantity} />
       </div>
     </li>

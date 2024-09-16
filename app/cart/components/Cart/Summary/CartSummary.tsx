@@ -73,7 +73,7 @@ const CartSummary = () => {
   return (
     <div
       className={clsx(
-        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-xl relative",
+        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-md relative",
         "max-md:border-none md:overflow-hidden"
       )}
     >

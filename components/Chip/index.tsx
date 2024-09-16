@@ -63,7 +63,7 @@ const Chip: React.FC<ChipProps> = ({
     primary: {
       outlined: "border border-primary text-primary-dark",
       filled: "bg-primary text-white",
-      soft: "bg-slate-200 text-primary-dark",
+      soft: "bg-primary-100 text-primary-800",
     },
     secondary: {
       outlined: "border border-secondary text-secondary-dark",
@@ -104,9 +104,9 @@ const Chip: React.FC<ChipProps> = ({
 
   const roundedClasses = {
     full: "rounded-full",
-    semi: "rounded-lg",
+    semi: "rounded-tl-lg rounded-br-lg",
+    low: "rounded-tl-md rounded-br-md",
     none: "rounded-none",
-    low: "rounded-sm",
   };
 
   const chipContent = (
