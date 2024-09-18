@@ -29,6 +29,7 @@ import {
   GetProductsForInitialCartQuery,
   GetProductsForInitialCartQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
+import { createJwt } from "@/utils/createJwt";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -103,6 +104,7 @@ export const createOrderAction = async (
     }),
     headers: {
       "Content-Type": "application/json",
+      authorization: `${createJwt()}`,
     },
   }).then((res) => res.json());
 

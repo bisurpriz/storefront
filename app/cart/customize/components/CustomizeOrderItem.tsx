@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import ImageUpload from "@/components/ImageUpload";
 import TextField from "@/components/TextField";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
+import { createJwt } from "@/utils/createJwt";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -87,6 +88,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
 
   const handleUpload = async () => {
     setLoading(true);
+    const jwt = createJwt();
     try {
       if (selectedImages?.length > 0) {
         const all = selectedImages.map((d) => {
@@ -99,6 +101,9 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
           return fetch(process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL, {
             method: "POST",
             body: formData,
+            headers: {
+              authorization: `${jwt}`,
+            },
           });
         });
 

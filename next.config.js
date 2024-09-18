@@ -92,6 +92,7 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL,
     CREATE_ORDER_ACTION_URL: process.env.CREATE_ORDER_ACTION_URL,
     CART_COST_URL: process.env.CART_COST_URL,
+    JWT_CONFIG: process.env.JWT_CONFIG,
   },
 };
 
