@@ -136,7 +136,7 @@ const ProductInformation = ({
               </span>
             ) : null}
             <span className="flex flex-col gap-1">
-              {discountPrice ? (
+              {discountPrice && discountPrice < price ? (
                 <h5 className="text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap">
                   <del>₺{price?.toFixed(2)} ₺</del>
                 </h5>

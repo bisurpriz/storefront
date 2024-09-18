@@ -52,7 +52,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
               href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
               prefetch={false}
             >
-              {discount && (
+              {discount > 0 && (
                 <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-br-lg text-xs">
                   {discount}%
                 </div>
