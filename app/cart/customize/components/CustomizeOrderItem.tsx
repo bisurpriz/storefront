@@ -1,4 +1,5 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
+import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import Button from "@/components/Button";
 import ImageUpload from "@/components/ImageUpload";
@@ -87,6 +88,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
 
   const handleUpload = async () => {
     setLoading(true);
+    const jwt = await createJwt();
     try {
       if (selectedImages?.length > 0) {
         const all = selectedImages.map((d) => {
@@ -99,6 +101,9 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
           return fetch(process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL, {
             method: "POST",
             body: formData,
+            headers: {
+              authorization: `${jwt}`,
+            },
           });
         });
 

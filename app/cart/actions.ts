@@ -2,7 +2,7 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
-import { readIdFromCookies } from "../actions";
+import { createJwt, readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
 
@@ -96,6 +96,7 @@ export const createOrderAction = async (
     },
   };
 
+  const jwtToken = await createJwt();
   const response = await fetch(process.env.CREATE_ORDER_ACTION_URL, {
     method: "POST",
     body: JSON.stringify({
@@ -103,6 +104,7 @@ export const createOrderAction = async (
     }),
     headers: {
       "Content-Type": "application/json",
+      authorization: jwtToken,
     },
   }).then((res) => res.json());
 

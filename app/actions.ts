@@ -21,6 +21,7 @@ import {
   GetQuarterByIdQuery,
   GetQuarterByIdQueryVariables,
 } from "@/graphql/queries/account/account.generated";
+import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
   const auth = cookies();
@@ -36,6 +37,21 @@ export async function getAccessToken() {
   if (!token) return new Promise((resolve, reject) => resolve(null));
 
   return token;
+}
+
+export async function createJwt() {
+  try {
+    const JWT_CONFIG = JSON.parse(process.env.JWT_CONFIG || "");
+    return await jwt.sign({}, JWT_CONFIG.secret, {
+      expiresIn: "15m",
+      notBefore: "0",
+      algorithm: "HS256",
+      audience: JWT_CONFIG.audience,
+      issuer: JWT_CONFIG.issuer,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function getBanners() {
