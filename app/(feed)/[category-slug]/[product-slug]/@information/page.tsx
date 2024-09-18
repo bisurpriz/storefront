@@ -1,5 +1,4 @@
 import ProductInformation from "../../components/Detail/ProductInformation";
-import { getDiscountRate } from "@/components/PriceTag";
 import { getProductInformation } from "./actions";
 import { FC } from "react";
 import { createJSONLd } from "@/utils/createJSONLd";
@@ -7,6 +6,7 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Script from "next/script";
 import { getProductRatings } from "@/app/(feed)/actions";
 import InformationLoadingPage from "./loading";
+import { getDiscountRate } from "@/utils/price";
 
 type Props = {
   searchParams: {
@@ -82,7 +82,6 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
         }
         rating={product.score ?? 0}
         reviewCount={product.reviews_aggregate.aggregate.count}
-        promotion="Kargo Bedava"
         discountPrice={product.discount_price}
         discountRate={getDiscountRate(product.price, product.discount_price)}
         key={product.id}

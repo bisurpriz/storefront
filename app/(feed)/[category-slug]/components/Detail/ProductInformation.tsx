@@ -16,6 +16,7 @@ import SevenOclock from "@/components/Icons/SevenOclock";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
 import { format } from "date-fns";
+import { getPriceTR } from "@/utils/getPriceTR";
 
 type ProductInformationProps = {
   name: string;
@@ -142,7 +143,7 @@ const ProductInformation = ({
               ) : null}
               <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
                 <h1 className="text-3xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
-                  {discountPrice ? discountPrice : price}₺
+                  {getPriceTR(discountPrice ? discountPrice : price)}
                 </h1>
                 {promotion && (
                   <p className="text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap">

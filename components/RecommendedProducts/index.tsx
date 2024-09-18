@@ -2,6 +2,8 @@
 
 import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getPriceTR } from "@/utils/getPriceTR";
+import { getDiscountRate } from "@/utils/price";
 import { AnimatePresence, useScroll, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,38 +43,54 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
         transition={{ duration: 0.5 }}
         ref={ref}
       >
-        {products.map((prod) => (
-          <Link
-            key={prod.id}
-            className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
-            href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
-            prefetch={false}
-          >
-            <div className="absolute top-0 left-0 bg-primary text-white px-2 py-1 rounded-br-lg text-xs">
-              5% indirim
-            </div>
-            <div className="aspect-square rounded-lg overflow-hidden">
-              <Image
-                src={`${getImageUrlFromPath(
-                  prod.image_url?.[0]
-                )}?width=80&height=80&format=webp&quality=70`}
-                className="w-full h-full"
-                alt={prod.name}
-                width={80}
-                height={80}
-              />
-            </div>
-            <div className="flex flex-col flex-1 items-end justify-end gap-2">
-              <p className="text-sm font-bold text-right">{prod.price} TL</p>
-              <h3
-                className="text-sm font-normal text-right max-w-[200px] line-clamp-2"
-                title={prod.name}
-              >
-                {prod.name}
-              </h3>
-            </div>
-          </Link>
-        ))}
+        {products.map((prod) => {
+          const discount = getDiscountRate(prod.price, prod.discount_price);
+          return (
+            <Link
+              key={prod.id}
+              className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
+              href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
+              prefetch={false}
+            >
+              {discount && (
+                <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-br-lg text-xs">
+                  {discount}%
+                </div>
+              )}
+              <div className="aspect-square rounded-lg overflow-hidden">
+                <Image
+                  src={`${getImageUrlFromPath(
+                    prod.image_url?.[0]
+                  )}?width=80&height=80&format=webp&quality=70`}
+                  className="w-full h-full"
+                  alt={prod.name}
+                  width={80}
+                  height={80}
+                />
+              </div>
+              <div className="flex flex-col flex-1 items-end justify-start gap-2">
+                <span className="font-semibold text-right flex gap-2 items-end">
+                  <span className="text-primary text-lg leading-none">
+                    {getPriceTR(
+                      prod.discount_price ? prod.discount_price : prod.price
+                    )}
+                  </span>
+                  {prod.discount_price ? (
+                    <span className="line-through text-gray-400 text-sm leading-none">
+                      {getPriceTR(prod.price)}
+                    </span>
+                  ) : null}
+                </span>
+                <h3
+                  className="text-sm font-normal text-right max-w-[200px] line-clamp-2"
+                  title={prod.name}
+                >
+                  {prod.name}
+                </h3>
+              </div>
+            </Link>
+          );
+        })}
       </motion.div>
     </AnimatePresence>
   );
