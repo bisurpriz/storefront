@@ -75,7 +75,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
                       prod.discount_price ? prod.discount_price : prod.price
                     )}
                   </span>
-                  {prod.discount_price ? (
+                  {prod.discount_price && prod.discount_price > prod.price ? (
                     <span className="line-through text-gray-400 text-sm leading-none">
                       {getPriceTR(prod.price)}
                     </span>
