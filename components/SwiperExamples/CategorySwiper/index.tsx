@@ -20,19 +20,14 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
       )}
     >
       <Slider
-        images={categories
+        slides={categories
           .sort((a, b) => a?.id - b?.id)
-          .map((category) =>
-            category?.image_url
-              ? getImageUrlFromPath(category.image_url)
-              : `https://picsum.photos/seed/${category.id}/120/120`
-          )}
-        gap={16}
-        imageHeight={120}
-        imageWidth={120}
-        autoPlay
-        autoPlayInterval={2000}
-        showArrows={false}
+          .map((category) => ({
+            imageUrl: category?.image_url,
+            id: category?.id,
+            label: category?.name || "Category",
+          }))}
+        autoPlayTime={5000}
       />
     </div>
   );

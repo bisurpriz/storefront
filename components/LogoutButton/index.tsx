@@ -17,7 +17,8 @@ const LogoutButton = () => {
         "w-full",
         "bg-red-400",
         "rounded-md",
-        "p-2"
+        "p-2",
+        "cursor-pointer"
       )}
       onClick={async () => {
         logout();
