@@ -107,7 +107,7 @@ const withPWA = require("next-pwa")({
 });
 
 module.exports = withSentryConfig(withPWA(nextConfig), {
-  silent: true,
+  silent: false,
   org: "bonnmarse-c9",
   project: "javascript-nextjs",
   authToken: process.env.SENTRY_AUTH_TOKEN,
