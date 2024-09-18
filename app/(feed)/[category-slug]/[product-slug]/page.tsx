@@ -1,7 +1,6 @@
 import { query } from "@/graphql/lib/client";
 
 import { FC } from "react";
-import { ImageZoomModalProvider } from "@/contexts/ImageZoomModalContext";
 import {
   GetProductImagesDocument,
   GetProductImagesQuery,
@@ -41,11 +40,7 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
     redirect("/");
   }
 
-  return (
-    <ImageZoomModalProvider>
-      <DynamicGallery images={product.image_url} />
-    </ImageZoomModalProvider>
-  );
+  return <DynamicGallery images={product.image_url} />;
 };
 
 export default ProductImageCarouselPage;

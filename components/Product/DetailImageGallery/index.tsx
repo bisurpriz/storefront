@@ -3,8 +3,6 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
-import ZoomButton from "./ZoomButton";
-import { useImageZoomModal } from "@/contexts/ImageZoomModalContext";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 type ProductDetailImageGalleryProps = {
@@ -20,11 +18,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
     setSelectedImage(image);
   };
 
-  const { onOpen } = useImageZoomModal();
-
   const getImageUrl = (image: string) => {
-    if (!image) return "https://via.placeholder.com/500";
-
     return `${getImageUrlFromPath(
       image
     )}?width=500&height=500&format=wepb&quality=75`;
@@ -59,14 +53,6 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-white"
         )}
       >
-        {/* <ZoomableImage
-          src={selectedImage.url}
-          alt="Product Image"
-          width={1200}
-          height={1200}
-          resultWidth={400}
-          resultHeight={400}
-        /> */}
         <Image
           src={getImageUrl(selectedImage)}
           alt="Product Image"
@@ -74,11 +60,6 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           width={500}
           height={500}
           priority
-        />
-        <ZoomButton
-          onClick={() => {
-            onOpen(getImageUrl(selectedImage));
-          }}
         />
       </div>
     </div>
