@@ -71,13 +71,11 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
               <div className="flex flex-col flex-1 items-end justify-start gap-2">
                 <span className="font-semibold text-right flex gap-2 items-end">
                   <span className="text-primary text-lg leading-none">
-                    {getPriceTR(
-                      prod.discount_price ? prod.discount_price : prod.price
-                    )}
+                    {getPriceTR(prod.price)}
                   </span>
                   {prod.discount_price && prod.discount_price > prod.price ? (
                     <span className="line-through text-gray-400 text-sm leading-none">
-                      {getPriceTR(prod.price)}
+                      {getPriceTR(prod.discount_price)}
                     </span>
                   ) : null}
                 </span>
