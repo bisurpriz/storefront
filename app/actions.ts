@@ -40,14 +40,18 @@ export async function getAccessToken() {
 }
 
 export async function createJwt() {
-  const JWT_CONFIG = JSON.parse(process.env.JWT_CONFIG || "");
-  return await jwt.sign({}, JWT_CONFIG.secret, {
-    expiresIn: "15m",
-    notBefore: "0",
-    algorithm: "HS256",
-    audience: JWT_CONFIG.audience,
-    issuer: JWT_CONFIG.issuer,
-  });
+  try {
+    const JWT_CONFIG = JSON.parse(process.env.JWT_CONFIG || "");
+    return await jwt.sign({}, JWT_CONFIG.secret, {
+      expiresIn: "15m",
+      notBefore: "0",
+      algorithm: "HS256",
+      audience: JWT_CONFIG.audience,
+      issuer: JWT_CONFIG.issuer,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function getBanners() {
