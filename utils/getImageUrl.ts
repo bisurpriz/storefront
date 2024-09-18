@@ -1,8 +1,8 @@
 import { CardAssociation } from "@/app/iyzico-payment/types";
 import { IMAGE_URL } from "@/contants/urls";
 
-export function getImageUrlFromPath(path: string): string {
-  if (!path) return "https://via.placeholder.com/500";
+export function getImageUrlFromPath(path: string, size = 300): string {
+  if (!path) return `https://via.placeholder.com/${size}`;
   return `${IMAGE_URL}/${path}`;
 }
 

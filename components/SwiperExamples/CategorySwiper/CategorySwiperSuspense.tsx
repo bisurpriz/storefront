@@ -5,13 +5,16 @@ const CategorySwiperSuspense = () => {
   return (
     <div
       className={clsx(
-        "w-full p-4 flex items-center justify-between gap-4 rounded-lg animate-pulse bg-slate-300 overflow-hidden mb-4"
+        "w-full py-2 flex items-center justify-between gap-2 overflow-hidden"
       )}
     >
       {Array.from({ length: 10 }).map((_, i) => (
         <div className="flex flex-col gap-2" key={i}>
-          <div key={i} className={clsx("w-24 h-20 bg-gray-200 rounded-lg")} />
-          <div className={clsx("w-24 h-2 bg-gray-200 rounded-lg")} />
+          <div
+            key={i}
+            className={clsx("w-[130px] h-[112px] bg-gray-200 rounded-lg")}
+          />
+          <div className={clsx("w-32 h-2 bg-gray-200 rounded-lg")} />
         </div>
       ))}
     </div>

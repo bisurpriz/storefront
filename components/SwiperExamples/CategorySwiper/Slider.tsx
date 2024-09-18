@@ -1,6 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./slider.css";
+"use client";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import clsx from "clsx";
+import CategorySwiperSuspense from "./CategorySwiperSuspense";
+import { useMeasure } from "@uidotdev/usehooks";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+
 interface Slide {
   id: number;
   imageUrl: string;
@@ -9,101 +19,64 @@ interface Slide {
 
 interface SliderProps {
   slides: Slide[];
-  autoPlay?: boolean;
   autoPlayTime?: number;
+  slideWidth?: number;
 }
 
 const Slider: React.FC<SliderProps> = ({
   slides,
-  autoPlay = false,
-  autoPlayTime = 5000,
+  autoPlayTime = 3000,
+  slideWidth = 130,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [slidesToShow, setSlidesToShow] = useState(1);
-  const [willAutoPlay, setWillAutoPlay] = useState(autoPlay);
-
-  const slideInterval = useRef<NodeJS.Timeout | null>(null);
-
-  const totalSlides = slides.length;
-  const slideWidth = 130;
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);
-  };
+  const [mounted, setMounted] = useState<boolean>();
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   useEffect(() => {
-    if (willAutoPlay) {
-      slideInterval.current = setInterval(nextSlide, autoPlayTime);
-    }
-    return () => {
-      if (slideInterval.current) clearInterval(slideInterval.current);
-    };
-  }, [willAutoPlay, autoPlayTime, willAutoPlay]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      const newSlidesToShow = Math.floor(screenWidth / slideWidth);
-      setSlidesToShow(newSlidesToShow);
-      if (newSlidesToShow < slidesToShow) {
-        setCurrentIndex(0);
-      }
-
-      if (totalSlides <= newSlidesToShow) {
-        setWillAutoPlay(false);
-        setCurrentIndex(0);
-      } else {
-        setWillAutoPlay(autoPlay);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    setMounted(true);
   }, []);
 
-  const getTransformStyle = () => {
-    if (totalSlides <= slidesToShow && !willAutoPlay) {
-      return { transform: `translateX(0)` };
-    }
+  if (!mounted) return <CategorySwiperSuspense />;
 
-    return { transform: `translateX(-${currentIndex * slideWidth}px)` };
-  };
+  const slidesPerView = Math.floor(width / slideWidth);
+
+  const slidesLength = slides.length;
 
   return (
-    <div className="slider">
-      <button className="slider-button prev" onClick={prevSlide}>
-        &#10094;
-      </button>
-      <div className="slider-content" style={getTransformStyle()}>
-        {slides.map((slide, index) => (
-          <div
-            className="slide"
-            key={slide.id}
-            style={{ width: `${slideWidth}px` }}
-          >
-            <Image
-              src={slide.imageUrl}
-              alt={slide.label}
-              width={130}
-              height={130}
-            />
-            <p className="text-sm font-semibold font-manrope text-center mt-1">
-              {slide.label}
-            </p>
-          </div>
+    <div className={clsx("relative", "w-full", "overflow-hidden")} ref={ref}>
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={slidesPerView}
+        centeredSlides={false}
+        loop={true}
+        autoplay={
+          autoPlayTime
+            ? {
+                delay: autoPlayTime,
+                disableOnInteraction: false,
+              }
+            : false
+        }
+        grabCursor={true}
+        navigation={slidesLength > Math.floor(window.innerWidth / slideWidth)}
+        modules={[Navigation, Autoplay]}
+      >
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <div
+              className={clsx("w-full", "bg-transparent overflow-hidden my-1")}
+            >
+              <Image
+                src={getImageUrlFromPath(slide.imageUrl, 130)}
+                alt={slide.label}
+                className="rounded-md object-contain w-full"
+                width={slideWidth}
+                height={slideWidth}
+                loading="lazy"
+              />
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
-      <button className="slider-button next" onClick={nextSlide}>
-        &#10095;
-      </button>
+      </Swiper>
     </div>
   );
 };
