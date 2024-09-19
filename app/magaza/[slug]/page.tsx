@@ -64,14 +64,7 @@ const Vendor = async ({
         productsCount={tenantDetails.owner.products_aggregate.aggregate.count}
         reviewsCount={tenantDetails.owner.reviews_aggregate.aggregate.count}
       />
-      <Filter
-        filterTypes={[
-          "price",
-          "sameDayDelivery",
-          "specialOffers",
-          "customizable",
-        ]}
-      />
+      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
 
       <InfinityScroll
         totalCount={totalCount}

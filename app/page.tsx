@@ -24,14 +24,7 @@ export default async function Page({
     <>
       {searchText && (
         <Suspense fallback={<FilterSuspense />}>
-          <Filter
-            filterTypes={[
-              "price",
-              "sameDayDelivery",
-              "specialOffers",
-              "customizable",
-            ]}
-          />
+          <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
         </Suspense>
       )}
       {!searchText && (

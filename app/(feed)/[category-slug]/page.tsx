@@ -27,14 +27,7 @@ export default async function CategoryPage({
 
   return (
     <>
-      <Filter
-        filterTypes={[
-          "price",
-          "sameDayDelivery",
-          "specialOffers",
-          "customizable",
-        ]}
-      />
+      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
       <InfinityScroll
         totalCount={totalCount}
         initialData={products}
