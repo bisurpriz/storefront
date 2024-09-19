@@ -1,15 +1,20 @@
 "use client";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { useMeasure } from "@uidotdev/usehooks";
+import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import clsx from "clsx";
+import { Grid, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import CategorySwiperSuspense from "./CategorySwiperSuspense";
-import { useMeasure } from "@uidotdev/usehooks";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+
+interface LoopCheckParams {
+  totalSlides: number;
+  slidesPerView: number;
+  slidesPerGroup: number;
+  gridRows?: number; // Opsiyonel, grid sisteminde satır sayısı
+}
 
 interface Slide {
   id: number;
@@ -45,27 +50,53 @@ const Slider: React.FC<SliderProps> = ({
     `w-[${slideWidth}px]`,
     `h-[${slideWidth}px]`,
     "bg-transparent",
-    "rounded-lg"
+    "rounded-lg",
+    "mx-auto"
   );
+
+  function canEnableLoop({
+    totalSlides,
+    slidesPerView,
+    slidesPerGroup,
+    gridRows = 1,
+  }: LoopCheckParams): boolean {
+    const minRequiredSlides = slidesPerView + slidesPerGroup;
+
+    const isGridValid = totalSlides % gridRows === 0;
+
+    const isGroupValid = totalSlides % slidesPerGroup === 0;
+
+    if (totalSlides >= minRequiredSlides && isGroupValid && isGridValid) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const navigation = slidesLength > Math.floor(window.innerWidth / slideWidth);
+  const slidesPerGroup = 1;
 
   return (
     <div className={clsx("relative", "w-full", "overflow-hidden")} ref={ref}>
       <Swiper
-        spaceBetween={10}
         slidesPerView={slidesPerView}
-        centeredSlides={false}
-        virtualTranslate={true}
-        autoplay={
-          autoPlayTime
-            ? {
-                delay: autoPlayTime,
-                disableOnInteraction: false,
-              }
-            : false
-        }
-        grabCursor={true}
-        navigation={slidesLength > Math.floor(window.innerWidth / slideWidth)}
-        modules={[Navigation, Autoplay]}
+        grid={{
+          fill: "row",
+          rows: 1,
+        }}
+        spaceBetween={10}
+        slidesPerGroup={slidesPerGroup}
+        pagination={{
+          clickable: true,
+        }}
+        grabCursor
+        navigation={navigation}
+        modules={[Grid, Navigation]}
+        loop={canEnableLoop({
+          totalSlides: slidesLength,
+          slidesPerView,
+          slidesPerGroup,
+        })}
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
