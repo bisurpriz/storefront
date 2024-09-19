@@ -49,6 +49,7 @@ export const login = async ({ email, password }, headers = {}) => {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
     cookies().set(
       CookieTokens.REFRESH_TOKEN,
@@ -57,12 +58,14 @@ export const login = async ({ email, password }, headers = {}) => {
         httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       }
     );
     cookies().set(CookieTokens.USER_ID, user.id, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
   }
   return response;
