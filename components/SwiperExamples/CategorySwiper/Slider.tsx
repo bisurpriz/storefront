@@ -41,13 +41,20 @@ const Slider: React.FC<SliderProps> = ({
 
   const slidesLength = slides.length;
 
+  const imageWrapperClasses = clsx(
+    `w-[${slideWidth}px]`,
+    `h-[${slideWidth}px]`,
+    "bg-transparent",
+    "rounded-lg"
+  );
+
   return (
     <div className={clsx("relative", "w-full", "overflow-hidden")} ref={ref}>
       <Swiper
         spaceBetween={10}
         slidesPerView={slidesPerView}
         centeredSlides={false}
-        loop={true}
+        virtualTranslate={true}
         autoplay={
           autoPlayTime
             ? {
@@ -62,18 +69,27 @@ const Slider: React.FC<SliderProps> = ({
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div
-              className={clsx("w-full", "bg-transparent overflow-hidden my-1")}
-            >
+            <div className={imageWrapperClasses}>
               <Image
                 src={getImageUrlFromPath(slide.imageUrl, 130)}
                 alt={slide.label}
-                className="rounded-md object-contain w-full"
+                className="rounded-full object-contain w-full"
                 width={slideWidth}
                 height={slideWidth}
-                loading="lazy"
+                priority
               />
             </div>
+            <span
+              className={clsx(
+                "block",
+                "text-xs",
+                "text-center",
+                "text-gray-600",
+                "mt-1"
+              )}
+            >
+              {slide.label}
+            </span>
           </SwiperSlide>
         ))}
       </Swiper>

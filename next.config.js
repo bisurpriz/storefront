@@ -17,6 +17,7 @@ const nextConfig = {
       "yup",
       "zustand",
       "react-hook-form",
+      "swiper",
     ],
     serverActions: {
       bodySizeLimit: "20mb",
@@ -113,9 +114,7 @@ module.exports = withSentryConfig(withPWA(nextConfig), {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 });
 
-
 // Injected content via Sentry wizard below
-
 
 /* module.exports = withSentryConfig(
   module.exports,
