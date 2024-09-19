@@ -5,9 +5,8 @@ const CategorySwiperSuspense = () => {
   return (
     <div className={clsx("w-full overflow-hidden h-[150px] whitespace-nowrap")}>
       {Array.from({ length: 10 }).map((_, index) => (
-        <div className="inline-block last:mr-0 mr-[10px]">
+        <div key={index} className="inline-block last:mr-0 mr-[10px]">
           <div
-            key={index}
             className={clsx(
               "w-[130px] h-[130px] bg-gray-100 rounded-full",
               "animate-pulse",

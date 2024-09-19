@@ -6,6 +6,10 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
+import "swiper/css";
+import "swiper/css/grid";
+import "swiper/css/pagination";
+import "swiper/css/a11y";
 
 const ServerCategorySwiper = async () => {
   const {
