@@ -64,13 +64,14 @@ const ProductItem5 = ({
       >
         <Image
           src={`${getImageUrlFromPath(image?.[0])}${
-            image?.[0] ? "?width=500&height=500&format=webp" : ""
+            image?.[0] ? "?format=webp" : ""
           }`}
           alt={name}
-          width={300}
-          height={300}
+          width={500}
+          height={500}
           className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
-          quality={75}
+          quality={100}
+          priority={true}
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
           sizes="(max-width: 576px) 100vw,

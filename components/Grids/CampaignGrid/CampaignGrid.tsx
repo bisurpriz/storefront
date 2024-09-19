@@ -7,9 +7,7 @@ import { getBanners } from "@/app/actions";
 const getImageUrl = (image: string) => {
   if (!image) return "https://via.placeholder.com/500";
 
-  return `${getImageUrlFromPath(
-    image
-  )}?width=500&height=500&format=wepb&quality=75`;
+  return `${getImageUrlFromPath(image)}?format=wepb&quality=75`;
 };
 
 const CampaignGrid: FC = async () => {
@@ -29,12 +27,11 @@ const CampaignGrid: FC = async () => {
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
             sizes="(max-width: 576px) 100vw,
-                    (max-width: 768px) 50vw,
-                    (max-width: 992px) 50vw,
-                    (min-width: 1200px) 33vw"
+                   (max-width: 768px) 50vw,
+                   (max-width: 992px) 50vw,
+                   (min-width: 1200px) 33vw"
             width={676}
             height={272}
-            quality={75}
             src={getImageUrl(item.path)}
             priority={true}
             loading="eager"
