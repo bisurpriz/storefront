@@ -41,7 +41,13 @@ export const AuthProvider = ({
     if (!user) {
       if (!Cookies.get(CookieTokens.GUEST_ID)) {
         const guest_id = uuidv4();
-        Cookies.set(CookieTokens.GUEST_ID, guest_id);
+        Cookies.set(CookieTokens.GUEST_ID, guest_id, {
+          // 1 yıl
+          expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+          sameSite: "strict",
+          httpOnly: process.env.NODE_ENV === "production",
+          secure: process.env.NODE_ENV === "production",
+        });
       }
     } else {
       Cookies.remove(CookieTokens.GUEST_ID);

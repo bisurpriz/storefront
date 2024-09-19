@@ -48,8 +48,8 @@ const footerData = [
         path: "/mesafeli-satis-sozlesmesi",
       },
       {
-        name: "KVK Politikası",
-        path: "/kvk-politikasi",
+        name: "KVKK Politikası",
+        path: "/kvkk-politikasi",
       },
     ],
   },
