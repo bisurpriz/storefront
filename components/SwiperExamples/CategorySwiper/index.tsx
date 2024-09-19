@@ -4,12 +4,17 @@ import { FC } from "react";
 
 import clsx from "clsx";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import Slider from "./Slider";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import dynamic from "next/dynamic";
+import CategorySwiperSuspense from "./CategorySwiperSuspense";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
 };
+
+const DynamicCategorySwiper = dynamic(() => import("./Slider"), {
+  ssr: false,
+  loading: () => <CategorySwiperSuspense />,
+});
 
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   return (
@@ -19,7 +24,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
         "mb-8flex flex-nowrap overflow-x-auto gap-4"
       )}
     >
-      <Slider
+      <DynamicCategorySwiper
         slides={categories
           .sort((a, b) => a?.id - b?.id)
           .map((category) => ({

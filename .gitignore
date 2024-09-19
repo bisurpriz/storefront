@@ -48,5 +48,4 @@ certs
 .env.test
 .env.production
 
-# Sentry Config File
-.env.sentry-build-plugin
+

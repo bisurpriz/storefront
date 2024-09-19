@@ -3,18 +3,25 @@ import React from "react";
 
 const CategorySwiperSuspense = () => {
   return (
-    <div
-      className={clsx(
-        "w-full py-2 flex items-center justify-between gap-2 overflow-hidden"
-      )}
-    >
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div className="flex flex-col gap-2" key={i}>
+    <div className={clsx("w-full overflow-hidden h-[150px] whitespace-nowrap")}>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <div className="inline-block last:mr-0 mr-[10px]">
           <div
-            key={i}
-            className={clsx("w-[130px] h-[112px] bg-gray-200 rounded-lg")}
+            key={index}
+            className={clsx(
+              "w-[130px] h-[130px] bg-gray-100 rounded-full",
+              "animate-pulse",
+              ""
+            )}
           />
-          <div className={clsx("w-32 h-2 bg-gray-200 rounded-lg")} />
+          <span
+            className={clsx(
+              "block h-4 bg-gray-100 rounded-lg",
+              "mt-1",
+              "w-full",
+              "animate-pulse"
+            )}
+          />
         </div>
       ))}
     </div>
