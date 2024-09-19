@@ -118,7 +118,7 @@ const ProductInformation = ({
         <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
         {vendor && (
           <div className="text-xs flex items-center max-md:mb-2">
-            <label className="text-gray-800 me-1">Satıcı:</label>
+            <label className="text-gray-800 me-1 font-semibold">Satıcı:</label>
             <Link
               href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
               className="text-sky-600 font-bold cursor-pointer me-1"
@@ -131,7 +131,7 @@ const ProductInformation = ({
         <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4">
           <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
             {discountRate ? (
-              <span className="text-2xl font-medium text-slate-200 max-w-lg bg-red-500 p-2 rounded-xl w-max">
+              <span className="text-2xl font-medium text-white max-w-lg bg-red-500 p-2 rounded-xl w-max">
                 {discountRate}%
               </span>
             ) : null}
@@ -142,8 +142,8 @@ const ProductInformation = ({
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
-                <h1 className="text-3xl leading-none font-semibold max-w-lg mt-0 whitespace-nowrap">
-                  {getPriceTR(discountPrice ? discountPrice : price)}
+                <h1 className="text-3xl leading-none text-primary-dark font-semibold max-w-lg mt-0 whitespace-nowrap">
+                  {getPriceTR(discountPrice)}
                 </h1>
                 {promotion && (
                   <p className="text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap">

@@ -23,7 +23,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
             key={step.value}
             className={clsx([
               `flex items-center space-x-4 w-full`,
-              "transition-all duration-500 ease-in-out",
+              "transition-all duration-500 ease-in-out pointer-events-none select-none",
               index === steps.length - 1 ? "justify-content !w-fit" : "",
             ])}
           >
@@ -37,7 +37,7 @@ export default function Stepper({ activeStep, steps }: StepperProps) {
             >
               <span
                 className={clsx([
-                  "text-lg font-bold cursor-pointer",
+                  "text-lg font-bold",
                   activeStep > index ? "text-white" : "text-gray-500",
                   activeStep === index ? "text-white" : "text-gray-500",
                 ])}
