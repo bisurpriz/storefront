@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import Button from "@/components/Button";
 import Error from "../Icons/Error";
-import * as Sentry from "@sentry/nextjs";
 
 const ErrorComponent = ({
   error,
@@ -19,7 +18,6 @@ const ErrorComponent = ({
   useEffect(() => {
     if (error) {
       console.error(error);
-      Sentry.captureException(error);
     }
   }, [error]);
 
