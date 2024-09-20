@@ -24,7 +24,7 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
   );
 
   const hasCustomizableProducts = tenant_orders.order_items.some(
-    (oi) => oi.product.product_customizable_areas.length > 0
+    (oi) => oi?.product?.product_customizable_areas.length > 0
   );
 
   const showUploadButton = hasCustomizableProducts && !wasCustomized;
@@ -33,7 +33,7 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
   const customAreaTotalCount = tenant_orders.order_items.reduce(
     (acc, oi) =>
       acc +
-      oi.product.product_customizable_areas.reduce(
+      oi?.product?.product_customizable_areas.reduce(
         (acc, cca) => acc + cca.count,
         0
       ),

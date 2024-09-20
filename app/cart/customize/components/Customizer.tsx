@@ -13,15 +13,14 @@ type CustomizerProps = {
 };
 
 const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
-  const {setHasCustomizableProduct} = useCart();
+  const { setHasCustomizableProduct } = useCart();
 
   useEffect(() => {
     setHasCustomizableProduct(true);
-  }
-  , [setHasCustomizableProduct]);
+  }, [setHasCustomizableProduct]);
 
   return tenant_order.order_items.map((oi, oindex) => {
-    if (oi.product.product_customizable_areas.length === 0) null;
+    if (oi?.product?.product_customizable_areas.length === 0) null;
 
     return (
       <div
@@ -38,7 +37,7 @@ const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
         <div className="grid grid-cols-12 gap-4">
           <div className="flex items-start justify-center col-span-4 max-lg:col-span-6 max-md:col-span-full">
             <Image
-              src={getImageUrlFromPath(oi.product.image_url[0])}
+              src={getImageUrlFromPath(oi?.product?.image_url[0])}
               alt="Product Image"
               width={320}
               height={320}

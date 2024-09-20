@@ -6,7 +6,6 @@ import { Suspense } from "react";
 
 const ReviewsPage = async () => {
   const { order_item, reviews } = await getOrderWithReview();
-
   return (
     <Suspense
       fallback={
