@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Button from "@/components/Button";
 
 import { useCart } from "@/contexts/CartContext";
@@ -16,6 +16,7 @@ import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitPro
 import { motion } from "framer-motion";
 import { useContract } from "@/contexts/ContractContext";
 import CheckContract from "./CheckContract";
+import { useProgress } from "react-transition-progress";
 
 const CartSummary = () => {
   const {
@@ -30,11 +31,15 @@ const CartSummary = () => {
   const pathname = usePathname();
   const { push } = useRouter();
   const { isTablet } = useResponsive();
-
+  const [, startTransition] = useTransition();
+  const startProgress = useProgress();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const changeStep = () => {
-    if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    startTransition(() => {
+      startProgress();
+      if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    });
   };
 
   useEffect(() => {

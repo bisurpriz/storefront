@@ -3,7 +3,7 @@
 import { useCategory } from "@/contexts/CategoryContext";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const CategoriesPage = () => {
   const { category } = useCategory();

@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import MenuItem from "./MenuItem";
 import { logout } from "@/app/@auth/actions";
 import { useRouter } from "next/navigation";

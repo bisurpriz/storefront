@@ -10,6 +10,7 @@ import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
+import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { query } from "@/graphql/lib/client";
@@ -111,31 +112,34 @@ export default async function RootLayout({
         font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
         id="root"
       >
-        <TagManagerNoscript />
-        <AuthProvider user={user}>
-          <ApolloWrapper>
-            <ProductProvider>
-              <CategoryProvider category={category}>
-                <CartProvider
-                  cartDbItems={cartItems}
-                  dbCost={{
-                    totalPrice: costData.totalPrice,
-                    isCouponApplied: false,
-                    couponMessage: "",
-                    discountAmount: 0,
-                  }}
-                >
-                  <Suspense fallback={<HeaderSuspense />}>
-                    <Header category={category} />
-                    <StickyHeader />
-                  </Suspense>
-                  <Content>{children}</Content>
-                  {auth}
-                </CartProvider>
-              </CategoryProvider>
-            </ProductProvider>
-          </ApolloWrapper>
-        </AuthProvider>
+        <ProgressBarProvider>
+          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
+          <TagManagerNoscript />
+          <AuthProvider user={user}>
+            <ApolloWrapper>
+              <ProductProvider>
+                <CategoryProvider category={category}>
+                  <CartProvider
+                    cartDbItems={cartItems}
+                    dbCost={{
+                      totalPrice: costData.totalPrice,
+                      isCouponApplied: false,
+                      couponMessage: "",
+                      discountAmount: 0,
+                    }}
+                  >
+                    <Suspense fallback={<HeaderSuspense />}>
+                      <Header category={category} />
+                      <StickyHeader />
+                    </Suspense>
+                    <Content>{children}</Content>
+                    {auth}
+                  </CartProvider>
+                </CategoryProvider>
+              </ProductProvider>
+            </ApolloWrapper>
+          </AuthProvider>
+        </ProgressBarProvider>
       </body>
     </html>
   );

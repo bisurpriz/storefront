@@ -2,7 +2,7 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/WALd6mN4Lpq
  */
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import Image from "next/image";
 import Button from "@/components/Button";
 

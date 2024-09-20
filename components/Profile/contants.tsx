@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import LogoutButton from '../LogoutButton';
+import { Link } from "@/components/Link";
+import LogoutButton from "../LogoutButton";
 
 export const profileItems = [
   {
@@ -11,8 +11,8 @@ export const profileItems = [
         Siparişlerim
       </Link>
     ),
-    value: 'siparislerim',
-    searchValue: 'Siparişlerim',
+    value: "siparislerim",
+    searchValue: "Siparişlerim",
   },
   {
     label: (
@@ -23,8 +23,8 @@ export const profileItems = [
         Kuponlarım
       </Link>
     ),
-    value: 'kuponlarim',
-    searchValue: 'Kuponlarım',
+    value: "kuponlarim",
+    searchValue: "Kuponlarım",
   },
   {
     label: (
@@ -35,8 +35,8 @@ export const profileItems = [
         Değerlendirmelerim
       </Link>
     ),
-    value: 'degerlendirmelerim',
-    searchValue: 'Değerlendirmelerim',
+    value: "degerlendirmelerim",
+    searchValue: "Değerlendirmelerim",
   },
   {
     label: (
@@ -47,8 +47,8 @@ export const profileItems = [
         Favorilerim
       </Link>
     ),
-    value: 'favorilerim',
-    searchValue: 'Favorilerim',
+    value: "favorilerim",
+    searchValue: "Favorilerim",
   },
   {
     label: (
@@ -59,14 +59,12 @@ export const profileItems = [
         Üyelik Bilgilerim
       </Link>
     ),
-    value: 'hesabim',
-    searchValue: 'Üyelik Bilgilerim',
+    value: "hesabim",
+    searchValue: "Üyelik Bilgilerim",
   },
   {
-    label: (
-      <LogoutButton />
-    ),
-    value: 'cikis',
-    searchValue: 'Çıkış Yap',
+    label: <LogoutButton />,
+    value: "cikis",
+    searchValue: "Çıkış Yap",
   },
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";

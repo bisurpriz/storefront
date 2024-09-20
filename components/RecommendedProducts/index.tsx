@@ -6,7 +6,7 @@ import { getPriceTR } from "@/utils/getPriceTR";
 import { getDiscountRate } from "@/utils/price";
 import { AnimatePresence, useScroll, motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import React, { useRef } from "react";
 
 type RecommendedProductsProps = {

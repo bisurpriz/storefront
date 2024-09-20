@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getBanners } from "@/app/actions";
 

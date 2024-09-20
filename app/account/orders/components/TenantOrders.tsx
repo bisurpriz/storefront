@@ -1,5 +1,5 @@
 import StatusBadge from "@/components/StatusBadge";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import OrderItem from "./OrderItem";
 import OrderMessage from "./OrderMessage";
 import { OrderItemStatus } from "@/common/enums/Order/product";

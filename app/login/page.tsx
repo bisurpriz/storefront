@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import LoginForm from "../@auth/(.)login/components/LoginForm";
+import { useTransition } from "react";
+import { useProgress } from "react-transition-progress";
 
 export type LoginResponse = {
   data: {
@@ -15,12 +17,17 @@ export type LoginResponse = {
 
 const LoginPage = () => {
   const { replace } = useRouter();
+  const [, startTransition] = useTransition();
+  const startProgress = useProgress();
   return (
     <LoginForm
       onSuccessfulLogin={(status) => {
-        if (status) {
-          replace("/");
-        }
+        startTransition(() => {
+          startProgress();
+          if (status) {
+            replace("/");
+          }
+        });
       }}
     />
   );

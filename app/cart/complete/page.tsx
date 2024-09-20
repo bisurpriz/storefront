@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 export const generateMetadata = async () => {
   return {

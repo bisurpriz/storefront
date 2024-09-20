@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from "@/components/Link";
 
 export default function NotFound() {
   return (
@@ -11,9 +11,10 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="text-xl font-bold text-center mt-4 text-primary">
+        className="text-xl font-bold text-center mt-4 text-primary"
+      >
         Anasayfaya dön
       </Link>
     </div>
-  )
+  );
 }

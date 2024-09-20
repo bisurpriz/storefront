@@ -1,6 +1,6 @@
 import Search from "@/components/Search";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import HeaderButtons from "./components/HeaderButtons";
 import clsx from "clsx";
 
