@@ -72,6 +72,14 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
               className="w-full object-contain"
               width={120}
               height={120}
+              sizes="
+              (max-width: 375px) 25vw,
+              (max-width: 576px) 25vw,
+              (max-width: 768px) 25vw,
+              (max-width: 992px) 25vw,
+              (max-width: 1200px) 25vw,
+              10vw
+              "
             />
           </SwiperSlide>
         ))}
