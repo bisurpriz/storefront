@@ -1,8 +1,8 @@
-import Tab from '@/components/Tab';
-import { getOrderWithReview } from './actions';
-import NotReviewedCardMapper from './components/NotReviewed/CardMapper';
-import ReviewedCardMapper from './components/Reviewed/CardMapper';
-import { Suspense } from 'react';
+import { CustomTab } from "@/components/Tab/Tab";
+import { getOrderWithReview } from "./actions";
+import NotReviewedCardMapper from "./components/NotReviewed/CardMapper";
+import ReviewedCardMapper from "./components/Reviewed/CardMapper";
+import { Suspense } from "react";
 
 const ReviewsPage = async () => {
   const { order_item, reviews } = await getOrderWithReview();
@@ -15,17 +15,17 @@ const ReviewsPage = async () => {
         </div>
       }
     >
-      <Tab
+      <CustomTab
         tabs={[
           {
             content: <NotReviewedCardMapper result={order_item} />,
-            id: 'not-reviewed',
-            label: 'Değerlendirme yapılmayanlar',
+            id: "not-reviewed",
+            label: "Değerlendirme yapılmayanlar",
           },
           {
             content: <ReviewedCardMapper result={reviews} />,
-            id: 'reviewed',
-            label: 'Değerlendirilenler',
+            id: "reviewed",
+            label: "Değerlendirilenler",
           },
         ]}
       />
