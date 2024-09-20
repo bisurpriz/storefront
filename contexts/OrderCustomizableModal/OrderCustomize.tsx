@@ -149,45 +149,47 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                       {oi.product.name}
                     </span>
                     <Image
-                      src={getImageUrlFromPath(oi.product.image_url[0])}
+                      src={getImageUrlFromPath(oi?.product?.image_url[0])}
                       width={100}
                       height={100}
                       alt={oi.product.name}
                       className="object-contain w-20 h-20 rounded-lg my-2"
                       priority
                     />
-                    {oi.product.product_customizable_areas.map((area, _id) => {
-                      return (
-                        <div className="w-full my-2" key={_id}>
-                          <CustomizeCartItem
-                            count={area.count}
-                            keyIndex={index}
-                            values={[
-                              ...oi.order_item_special_texts,
-                              ...oi.order_item_special_images,
-                            ]}
-                            maxCharacter={area.max_character}
-                            isDisabled={loading}
-                            onChange={(inputIndex, type, value) =>
-                              handleChange({
-                                inputIndex,
-                                type,
-                                value,
-                                order_item_id: oi.id,
-                                specialTextId:
-                                  oi.order_item_special_texts[i]?.id,
-                              })
-                            }
-                            id={area?.customizable_area.id}
-                            key={area?.customizable_area.type}
-                            type={
-                              area?.customizable_area
-                                .type as CustomizableAreaType
-                            }
-                          />
-                        </div>
-                      );
-                    })}
+                    {oi?.product?.product_customizable_areas.map(
+                      (area, _id) => {
+                        return (
+                          <div className="w-full my-2" key={_id}>
+                            <CustomizeCartItem
+                              count={area.count}
+                              keyIndex={index}
+                              values={[
+                                ...oi.order_item_special_texts,
+                                ...oi.order_item_special_images,
+                              ]}
+                              maxCharacter={area.max_character}
+                              isDisabled={loading}
+                              onChange={(inputIndex, type, value) =>
+                                handleChange({
+                                  inputIndex,
+                                  type,
+                                  value,
+                                  order_item_id: oi.id,
+                                  specialTextId:
+                                    oi.order_item_special_texts[i]?.id,
+                                })
+                              }
+                              id={area?.customizable_area.id}
+                              key={area?.customizable_area.type}
+                              type={
+                                area?.customizable_area
+                                  .type as CustomizableAreaType
+                              }
+                            />
+                          </div>
+                        );
+                      }
+                    )}
                   </>
                 ))}
               </div>

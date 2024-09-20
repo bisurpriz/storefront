@@ -26,6 +26,14 @@
   }
 
 
+  .swiper-button-next,
+  .swiper-button-prev {
+    @apply bg-white rounded-full shadow-md text-primary
+  }
+
+
+
+
 
   /* Removing the default appearance */
   .thumb,
@@ -84,6 +92,14 @@
   z-index: 49;
 }
 
-.react-multiple-carousel__arrow {
-  z-index: 2 !important;
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: #8dbb6b;
+
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  text-shadow: 0 0 5px #8dbb6b;
 }
