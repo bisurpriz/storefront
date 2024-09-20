@@ -3,17 +3,19 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+import { FreeMode, Navigation, Thumbs, Virtual, Zoom } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Zoom } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/zoom";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
+import "swiper/css/virtual";
+
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
+import { useMeasure } from "@uidotdev/usehooks";
 
 type ProductDetailImageGalleryProps = {
   images: string[];
@@ -23,17 +25,24 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const { isDesktop } = useResponsive();
+  const { isLargeDesktop } = useResponsive();
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const [ref, { width, height }] = useMeasure<HTMLDivElement>();
+
   const getImageUrl = useMemo(() => getImageUrlFromPath, []);
+
+  const slidePerview = useMemo(() => {
+    return isLargeDesktop ? Math.floor(width / 120) : Math.floor(height / 120);
+  }, [isLargeDesktop, width, height]);
 
   return (
     <div
       className={clsx(
-        "flex justify-start items-start h-[500px] gap-2 max-lg:flex-col max-lg:h-full max-lg:w-full",
-        "max-lg:flex-col-reverse max-h-[500px] max-lg:gap-0 max-lg:w-full"
+        "flex justify-start items-start max-h-[800px] h-[500px] min-h-[500px] gap-2 max-xl:flex-col max-xl:h-full max-xl:w-full",
+        "max-xl:flex-col-reverse max-xl:gap-0 max-xl:w-full"
       )}
+      ref={ref}
     >
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -42,28 +51,27 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        direction={isDesktop ? "horizontal" : "vertical"}
-        slidesPerView={4}
+        direction={isLargeDesktop ? "horizontal" : "vertical"}
+        slidesPerView={slidePerview}
         className={clsx(
-          "h-full m-0",
-          "max-lg:w-full max-lg:h-[100px] max-lg:mb-2 max-lg:mt-2 max-lg:gap-2"
+          "h-full m-0 w-[120px] ",
+          "max-xl:w-full max-xl:mb-2 max-xl:mt-2 max-xl:gap-2"
         )}
       >
         {images?.map((image, index) => (
           <SwiperSlide
             key={image}
             className={clsx(
-              "h-[100px] w-[100px] flex items-center justify-center border border-gray-200 rounded-md overflow-hidden shadow-sm",
-              activeIndex === index && "border-primary",
-              "max-lg:w-[100px] max-lg:h-[100px]"
+              "flex items-center justify-center border border-gray-200 rounded-md overflow-hidden shadow-sm",
+              activeIndex === index && "border-primary"
             )}
           >
             <Image
               src={getImageUrl(image)}
               alt={image}
-              className="h-full w-full object-contain"
-              width={100}
-              height={100}
+              className="w-full object-contain"
+              width={120}
+              height={120}
             />
           </SwiperSlide>
         ))}
@@ -73,35 +81,41 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         spaceBetween={10}
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
-        modules={[Zoom, FreeMode, Navigation, Thumbs]}
+        modules={[Zoom, FreeMode, Navigation, Thumbs, Virtual]}
         slidesPerView={1}
         onActiveIndexChange={(swiper) => {
           setActiveIndex(swiper.activeIndex);
         }}
         className={clsx(
-          "flex-1 ring-1 ring-gray-200 rounded-lg",
-          "max-lg:w-full max-lg:h-[400px] max-lg:mt-2 max-lg:mb-2"
+          "flex-1 ring-1 ring-gray-200 rounded-lg w-full",
+          "max-xl:w-full  max-xl:mt-2 max-xl:mb-2"
         )}
         style={{
           height: "-webkit-fill-available",
         }}
         zoom={true}
+        virtual={true}
       >
-        {images?.map((image) => (
+        {images?.map((image, index) => (
           <SwiperSlide
             key={image}
             className={clsx(
               "w-full flex items-center justify-center",
-              "max-lg:w-full max-lg:h-[400px]"
+              "max-xl:w-full "
             )}
+            virtualIndex={index}
           >
-            <Image
-              src={getImageUrl(image)}
-              alt={image}
-              className="h-full w-full object-contain"
-              width={500}
-              height={500}
-            />
+            <div className="swiper-zoom-container">
+              <Image
+                src={getImageUrl(image)}
+                alt={image}
+                className="h-full w-full object-contain"
+                width={500}
+                height={500}
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

@@ -16,6 +16,7 @@ const nextConfig = {
       "zustand",
       "react-hook-form",
       "swiper",
+      "react-transition-progress",
     ],
     serverActions: {
       bodySizeLimit: "20mb",
