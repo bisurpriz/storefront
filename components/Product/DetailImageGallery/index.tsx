@@ -114,7 +114,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
                 height={500}
                 priority={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 500px"
+                sizes="(max-width: 375px) 100vw, (max-width: 576px) 100vw, (max-width: 768px) 100vw, (max-width: 992px) 50vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </SwiperSlide>
