@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Basket from "@/components/Icons/Basket";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const EmptyCart = () => {
   return (

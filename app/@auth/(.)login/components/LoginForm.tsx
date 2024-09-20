@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import TextField from "@/components/TextField";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
 import { login } from "../../actions";

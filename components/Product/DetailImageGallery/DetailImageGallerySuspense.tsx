@@ -4,7 +4,7 @@ import React from "react";
 const ProductImageGalleryLoading = () => {
   return (
     <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
-      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto bg-gray-100 rounded-lg p-2">
+      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-hidden bg-gray-100 rounded-lg p-2">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}

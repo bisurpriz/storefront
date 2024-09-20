@@ -1,5 +1,5 @@
 import { CustomStar } from "@/components/ReviewRating/CustomStar";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { motion } from "framer-motion";
 
 export type RatingProps = {

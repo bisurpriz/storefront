@@ -1,13 +1,14 @@
 "use client";
 
 import Button from "@/components/Button";
-import Link from "next/link";
-import { useState } from "react";
+import { Link } from "@/components/Link";
+import { useState, useTransition } from "react";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import Chat from "@/components/Icons/Chat";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { useProgress } from "react-transition-progress";
 
 const OrderMessage = ({
   tenant,
@@ -21,19 +22,23 @@ const OrderMessage = ({
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const nextRouter = useRouter();
-
+  const startProgress = useProgress();
+  const [, startTransition] = useTransition();
   const sendMessage = async () => {
-    const response = await startMessageForOrder({
-      message,
-      receiver_id: tenant.id,
-      order_tenant_id: orderTenantId,
+    startTransition(async () => {
+      startProgress();
+      const response = await startMessageForOrder({
+        message,
+        receiver_id: tenant.id,
+        order_tenant_id: orderTenantId,
+      });
+      if (response.insert_message_one.chat_thread.order_tenant_id) {
+        nextRouter.push(
+          `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`
+        );
+      }
+      setOpen(false);
     });
-    if (response.insert_message_one.chat_thread.order_tenant_id) {
-      nextRouter.push(
-        `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`
-      );
-    }
-    setOpen(false);
   };
 
   return (

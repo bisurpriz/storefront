@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState, useTransition } from "react";
 import {
   Controller,
   Form,
@@ -44,6 +44,7 @@ import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { parseJson } from "@/utils/format";
 import { CartStepPaths } from "../../constants";
 import toast from "react-hot-toast";
+import { useProgress } from "react-transition-progress";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -143,31 +144,39 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
   };
 
+  const [, startTransition] = useTransition();
+  const startProgress = useProgress();
   const onSubmit: SubmitHandler<OrderDetailPartialFormData> = async (data) => {
-    if (data && Object.keys(errors).length === 0) {
-      if (data.wantToSaveAddress && !data.saved_address && user?.id) {
-        try {
-          createNewUserAddress({
-            address: data.address,
-            city_id: data.city?.id,
-            district_id: data.district?.id,
-            quarter_id: data.quarter?.id,
-            receiver_firstname: data.receiver_name?.split(" ")[0],
-            receiver_surname: data.receiver_name?.split(" ").slice(1).join(" "),
-            receiver_phone: data.receiver_phone,
-            address_title: data.address_title,
-            user_id: user?.id,
-          });
-        } catch (e) {
-          console.error(e);
-          toast.error("Adres kaydedilirken bir hata oluştu.", {
-            duration: 4000,
-          });
+    startTransition(() => {
+      startProgress();
+      if (data && Object.keys(errors).length === 0) {
+        if (data.wantToSaveAddress && !data.saved_address && user?.id) {
+          try {
+            createNewUserAddress({
+              address: data.address,
+              city_id: data.city?.id,
+              district_id: data.district?.id,
+              quarter_id: data.quarter?.id,
+              receiver_firstname: data.receiver_name?.split(" ")[0],
+              receiver_surname: data.receiver_name
+                ?.split(" ")
+                .slice(1)
+                .join(" "),
+              receiver_phone: data.receiver_phone,
+              address_title: data.address_title,
+              user_id: user?.id,
+            });
+          } catch (e) {
+            console.error(e);
+            toast.error("Adres kaydedilirken bir hata oluştu.", {
+              duration: 4000,
+            });
+          }
         }
+        setSessionStorage(data);
+        push(CartStepPaths.CHECKOUT);
       }
-      setSessionStorage(data);
-      push(CartStepPaths.CHECKOUT);
-    }
+    });
   };
 
   const onError: SubmitErrorHandler<OrderDetailPartialFormData> = (

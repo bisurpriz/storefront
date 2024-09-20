@@ -1,18 +1,19 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState, useTransition } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
 import { searchProducts } from "@/app/(feed)/actions";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { useRouter, useSearchParams } from "next/navigation";
 import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
 import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
+import { useProgress } from "react-transition-progress";
 
 type Props = {
   className?: string;
@@ -53,7 +54,8 @@ const Search: FC<Props> = ({ className }) => {
 
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
   const searchParams = useSearchParams();
-
+  const startProgress = useProgress();
+  const [, startTransition] = useTransition();
   useEffect(() => {
     const search = searchParams.get("search");
     if (search) {
@@ -87,8 +89,11 @@ const Search: FC<Props> = ({ className }) => {
   };
 
   const pushToSearch = () => {
-    setIsOpen(false);
-    push(`/?search=${ref.current?.value}`);
+    startTransition(() => {
+      startProgress();
+      setIsOpen(false);
+      push(`/?search=${ref.current?.value}`);
+    });
   };
 
   const handleKeyDown = (event) => {
@@ -104,11 +109,14 @@ const Search: FC<Props> = ({ className }) => {
   }, []);
 
   const handleClear = () => {
-    setInputVal("");
-    setProducts([]);
-    ref.current.value = "";
-    onChange(null, "");
-    push("/?search=");
+    startTransition(() => {
+      startProgress();
+      setInputVal("");
+      setProducts([]);
+      ref.current.value = "";
+      onChange(null, "");
+      push("/?search=");
+    });
   };
 
   return (

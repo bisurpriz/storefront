@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { useEffect, useState } from "react";
 
 import { usePathname } from "next/navigation";

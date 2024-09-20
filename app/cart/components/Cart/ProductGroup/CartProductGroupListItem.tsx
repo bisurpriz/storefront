@@ -3,7 +3,7 @@ import { ProductForCart } from "@/common/types/Cart/cart";
 import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
 import { DeliveryType } from "@/common/enums/Product/product";

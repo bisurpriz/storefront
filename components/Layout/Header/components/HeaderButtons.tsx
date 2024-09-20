@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import React, { ReactNode } from "react";
 import BasketButton from "./BasketButton";
 import AltTextWithData from "./AltTextWithData";
