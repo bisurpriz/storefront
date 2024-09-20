@@ -3,7 +3,7 @@ import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import ProductCardStamps, { Stamp } from "./components/Stamps";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import clsx from "clsx";

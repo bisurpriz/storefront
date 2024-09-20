@@ -12,9 +12,10 @@ import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Cookies from "js-cookie";
 import { checkProductLocation } from "@/app/(feed)/actions";
+import { useProgress } from "react-transition-progress";
 
 interface Props {
   productId: number;
@@ -38,21 +39,26 @@ const ProductActions = ({
 
   const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
+  const [, startTransition] = useTransition();
+  const startProgress = useProgress();
   const handleFavorite = () => {
-    if (!user) {
-      push("/login");
-      return;
-    }
+    startTransition(() => {
+      startProgress();
+      if (!user) {
+        push("/login");
+        return;
+      }
 
-    if (isFavoriteState) {
-      removeFromFavorites({ productId });
-      setIsFavoriteState(false);
+      if (isFavoriteState) {
+        removeFromFavorites({ productId });
+        setIsFavoriteState(false);
 
-      return;
-    }
+        return;
+      }
 
-    addToFavorites({ productId });
-    setIsFavoriteState(true);
+      addToFavorites({ productId });
+      setIsFavoriteState(true);
+    });
   };
 
   const [error, setError] = useState(false);

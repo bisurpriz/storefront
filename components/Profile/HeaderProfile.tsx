@@ -1,6 +1,6 @@
 import { getUserById } from "@/app/account/actions";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import Button from "../Button";
 import Dropdown from "../Dropdown";
 import { profileItems } from "./contants";

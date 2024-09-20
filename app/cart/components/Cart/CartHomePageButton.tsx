@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import ArrowLeft from "@/components/Icons/ArrowLeft";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const CartHomePageButton = () => {
   return (

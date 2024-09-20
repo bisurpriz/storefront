@@ -6597,6 +6597,7 @@ __metadata:
     react-hook-form: "npm:^7.48.2"
     react-hot-toast: "npm:^2.4.1"
     react-intersection-observer: "npm:^9.5.2"
+    react-transition-progress: "npm:^0.0.4"
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.2"
     subscriptions-transport-ws: "npm:^0.11.0"
@@ -9865,6 +9866,20 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
+  languageName: node
+  linkType: hard
+
+"react-transition-progress@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "react-transition-progress@npm:0.0.4"
+  peerDependencies:
+    framer-motion: "*"
+    next: "*"
+    react: "*"
+  peerDependenciesMeta:
+    next:
+      optional: true
+  checksum: 10c0/7b28b8d76e20f0e45f4e9e7137178ffdfffef3865006f38814b697fd69a2276ea0199b0e56af7a418b0a322fa5764eedf0f15710feb8a448a8322cc8274b998b
   languageName: node
   linkType: hard
 

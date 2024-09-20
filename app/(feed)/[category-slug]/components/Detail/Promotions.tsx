@@ -1,5 +1,5 @@
 import Chip, { ChipColor } from "@/components/Chip";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 type Promotions = {
   icon: string | React.ReactElement;
