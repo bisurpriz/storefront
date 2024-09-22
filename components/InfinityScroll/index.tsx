@@ -64,7 +64,10 @@ const InfinityScroll = <T,>({
       {data?.map((item: any) => (
         <DynamicProductItem key={item.id} {...item} />
       ))}
-      {totalCount > data?.length && <ProductItemSkeleton ref={ref} />}
+      {totalCount > data?.length &&
+        Array.from({ length: 4 }).map((_, i) => (
+          <ProductItemSkeleton key={i} ref={i === 0 && ref} />
+        ))}
     </div>
   );
 };
