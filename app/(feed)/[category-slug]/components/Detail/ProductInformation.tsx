@@ -128,8 +128,8 @@ const ProductInformation = ({
           </div>
         )}
 
-        <div className="flex items-end justify-start gap-2 max-xs:flex-col max-xs:items-start w-full mb-4 md:mt-4">
-          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xs:flex-row max-xs:items-center">
+        <div className="flex items-end justify-start gap-2 max-xl:flex-col max-xl:items-start w-full mb-4 md:mt-4">
+          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xl:flex-row max-xl:items-center">
             {discountRate ? (
               <span className="text-2xl font-medium text-white max-w-lg bg-red-500 p-2 rounded-xl w-max">
                 {discountRate}%
@@ -141,7 +141,7 @@ const ProductInformation = ({
                   <del>₺{price?.toFixed(2)} ₺</del>
                 </h5>
               ) : null}
-              <span className="flex items-end gap-2 max-xl:flex-col max-xl:items-start max-xl:text-start max-xs:flex-row max-xs:items-center">
+              <span className="flex items-end gap-2 max-xl:text-start max-xl:flex-row max-xl:items-center">
                 <h1 className="text-3xl leading-none text-primary-dark font-semibold max-w-lg mt-0 whitespace-nowrap">
                   {getPriceTR(discountPrice)}
                 </h1>
@@ -154,7 +154,7 @@ const ProductInformation = ({
             </span>
           </div>
           <div
-            className="xs:ml-auto max-xs:text-start max-xs:mt-4"
+            className="xl:ml-auto"
             onMouseLeave={() => setAnchorEl(null)}
             onMouseEnter={(event: MouseEvent<HTMLElement>) =>
               setAnchorEl(event.currentTarget)
@@ -168,7 +168,7 @@ const ProductInformation = ({
             />
             <Popper
               id={id}
-              open={open}
+              open={open && reviewCount > 0}
               anchorEl={anchorEl}
               placement="bottom"
               modifiers={[
