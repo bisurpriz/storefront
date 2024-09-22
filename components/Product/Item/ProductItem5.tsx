@@ -74,9 +74,9 @@ const ProductItem5 = ({
           priority={true}
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
-          sizes="(max-width: 576px) 100vw,
-                 (max-width: 768px) 50vw,
-                 (max-width: 992px) 33vw,
+          sizes="(max-width: 576px) 25vw,
+                 (max-width: 768px) 25vw,
+                 (max-width: 992px) 25vw,
                  (max-width: 1200px) 25vw,
                  20vw"
         />
