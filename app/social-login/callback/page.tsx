@@ -1,14 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useTransition } from "react";
+import { useEffect, startTransition } from "react";
 import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
 
 const SocialCallback = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
   const result = searchParams.get("result");
 

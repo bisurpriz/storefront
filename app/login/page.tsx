@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import LoginForm from "../@auth/(.)login/components/LoginForm";
-import { useTransition } from "react";
+import { startTransition } from "react";
 import { useProgress } from "react-transition-progress";
 
 export type LoginResponse = {
@@ -17,7 +17,6 @@ export type LoginResponse = {
 
 const LoginPage = () => {
   const { replace } = useRouter();
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
   return (
     <LoginForm

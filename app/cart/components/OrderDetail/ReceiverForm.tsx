@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, useEffect, useMemo, useState, useTransition } from "react";
+import { FC, useEffect, useMemo, useState, startTransition } from "react";
 import {
   Controller,
   Form,
@@ -144,7 +144,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
   };
 
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
   const onSubmit: SubmitHandler<OrderDetailPartialFormData> = async (data) => {
     startTransition(() => {
