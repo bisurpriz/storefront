@@ -17,7 +17,10 @@ interface InfinityScrollProps<T> {
 }
 
 const DynamicProductItem = dynamic(
-  () => import("../Product/Item/ProductItem5")
+  () => import("../Product/Item/ProductItem5"),
+  {
+    loading: () => <ProductItemSkeleton />,
+  }
 );
 
 const InfinityScroll = <T,>({
@@ -64,7 +67,14 @@ const InfinityScroll = <T,>({
       {data?.map((item: any) => (
         <DynamicProductItem key={item.id} {...item} />
       ))}
-      {totalCount > data?.length && <ProductItemSkeleton ref={ref} />}
+      {totalCount > data?.length && (
+        <>
+          <ProductItemSkeleton ref={ref} />
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
+          <ProductItemSkeleton />
+        </>
+      )}
     </div>
   );
 };
