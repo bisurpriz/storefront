@@ -1,4 +1,5 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
+import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import Button from "@/components/Button";
 import CustomizeCartItem from "@/components/Customize/CustomizeCartItem";
@@ -37,6 +38,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
 
   const handleUpload = async () => {
     setLoading(true);
+    const jwt = await createJwt();
     if (selectedImageData.length > 0) {
       const all = selectedImageData.map((d) => {
         const formData = new FormData();
@@ -47,10 +49,13 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
         });
 
         return fetch(
-          "https://mmcvpm3nmlyqbt2uiyr5h5optm0pihfu.lambda-url.eu-north-1.on.aws/ ",
+          process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL,
           {
             method: "POST",
             body: formData,
+            headers: {
+              authorization: jwt,
+            }
           }
         );
       });
