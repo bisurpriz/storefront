@@ -12,8 +12,7 @@ import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
-import Cookies from "js-cookie";
+import { useEffect, useRef, useState, startTransition } from "react";
 import { checkProductLocation } from "@/app/(feed)/actions";
 import { useProgress } from "react-transition-progress";
 
@@ -39,7 +38,6 @@ const ProductActions = ({
 
   const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
   const handleFavorite = () => {
     startTransition(() => {

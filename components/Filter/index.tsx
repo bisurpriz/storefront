@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useTransition } from "react";
+import React, { FC, startTransition } from "react";
 import { useCategory } from "@/contexts/CategoryContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -42,7 +42,6 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
   const { push } = useRouter();
   const pathname = usePathname();
   const startProgress = useProgress();
-  const [, startTransition] = useTransition();
   const categories: FilterInputOption[] = category.map((c) => ({
     key: c.name,
     value: c.slug,

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef, useState, useTransition } from "react";
+import { FC, useEffect, useRef, useState, startTransition } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
 import { searchProducts } from "@/app/(feed)/actions";
@@ -55,7 +55,6 @@ const Search: FC<Props> = ({ className }) => {
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
   const searchParams = useSearchParams();
   const startProgress = useProgress();
-  const [, startTransition] = useTransition();
   useEffect(() => {
     const search = searchParams.get("search");
     if (search) {

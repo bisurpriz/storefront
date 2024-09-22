@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { startTransition, useEffect, useState } from "react";
 import Button from "@/components/Button";
 
 import { useCart } from "@/contexts/CartContext";
@@ -31,7 +31,6 @@ const CartSummary = () => {
   const pathname = usePathname();
   const { push } = useRouter();
   const { isTablet } = useResponsive();
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 

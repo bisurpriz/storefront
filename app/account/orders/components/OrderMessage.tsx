@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import { Link } from "@/components/Link";
-import { useState, useTransition } from "react";
+import { useState, startTransition } from "react";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal/FramerModal/Modal";
@@ -23,7 +23,6 @@ const OrderMessage = ({
   const [message, setMessage] = useState("");
   const nextRouter = useRouter();
   const startProgress = useProgress();
-  const [, startTransition] = useTransition();
   const sendMessage = async () => {
     startTransition(async () => {
       startProgress();

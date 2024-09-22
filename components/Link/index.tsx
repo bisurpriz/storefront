@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { startTransition } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useProgress } from "react-transition-progress";
@@ -12,7 +12,6 @@ export function Link({
   ...rest
 }: Parameters<typeof NextLink>[0]) {
   const router = useRouter();
-  const [, startTransition] = useTransition();
   const startProgress = useProgress();
 
   return (

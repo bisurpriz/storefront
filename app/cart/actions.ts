@@ -148,7 +148,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     }));
 
     const userId = await checkUserId();
-
+    const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
     const { data: cartData } = await mutate<
       UpdateDbCartMutation,
       UpdateDbCartMutationVariables
@@ -159,15 +159,12 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
           {
             user_id: userId,
             content: JSON.stringify(content),
-            guest_id: userId
-              ? undefined
-              : cookies().get(CookieTokens.GUEST_ID)?.value,
+            guest_id: userId ? undefined : guest_id,
           },
         ],
         CONSTRAINT: userId ? "cart_user_id_key" : "cart_guest_id_key",
       },
     });
-
     const costData = await getCartCost(cartItems);
 
     return {
