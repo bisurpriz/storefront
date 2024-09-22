@@ -137,15 +137,10 @@ const DaySelect: React.FC<Props> = ({
 
   return (
     <div className="w-full flex flex-col gap-4  font-sans mb-2">
-      {lastOrderTime && (
+      {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
         <span className="leading-5 text-slate-400 whitespace-nowrap cursor-pointer text-xs ml-1 mt-1">
           {!isTodayDisabled && `Bugün teslimat için son: `}{" "}
-          <span
-            className={clsx(
-              "text-slate-500",
-              "p-2 rounded-lg bg-6 text-slate-500"
-            )}
-          >
+          <span className={clsx("p-2 rounded-lg bg-6 text-slate-500")}>
             {remainTime.hours} saat {remainTime.minutes} dakika.{" "}
           </span>
         </span>
@@ -189,12 +184,7 @@ const DaySelect: React.FC<Props> = ({
         )}
       </div>
       {selectedHour && (
-        <span
-          className={clsx(
-            "text-xs text-gray-500",
-            "p-2 rounded-lg bg-6 text-slate-500"
-          )}
-        >
+        <span className={clsx("text-xs p-2 rounded-lg bg-6 text-slate-500")}>
           Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}
           tarihinde <strong>{selectedHour}</strong> saatleri arasında teslim
           edilecektir.
