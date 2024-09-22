@@ -67,7 +67,7 @@ const InfinityScroll = <T,>({
       <div ref={ref}>
         {totalCount > data?.length &&
           Array.from({ length: 4 }).map((_, i) => (
-            <ProductItemSkeleton key={i} ref={i === 0 && ref} />
+            <ProductItemSkeleton key={i} />
           ))}
       </div>
     </div>
