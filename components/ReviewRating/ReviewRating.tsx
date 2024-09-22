@@ -27,15 +27,20 @@ const ReviewRating = ({
       : "Henüz Değerlendirme Yapılmamış";
   }, [reviewCount]);
 
-  const textStyle = "leading-5 text-slate-400 whitespace-nowrap cursor-pointer";
+  const textStyle =
+    "leading-normal text-slate-400 whitespace-nowrap cursor-pointer";
 
   return (
     <div className="flex items-center font-semibold gap-1">
       {showReviewCount && (
-        <p className={clsx(textStyle, "text-sm")}>
-          {value.toFixed(1)} {reviewCount > 0 && "•"}
-        </p>
+        <>
+          <p className={clsx(textStyle, "text-sm")}>
+            {value.toFixed(1)} {reviewCount > 0 && "•"}
+          </p>
+          <span className="w-1 h-1 bg-slate-400 rounded-full flex-shrink-0 mx-1" />
+        </>
       )}
+
       <Rating
         defaultValue={value}
         disabled={readOnly}
@@ -45,9 +50,12 @@ const ReviewRating = ({
         value={value}
       />
       {showReviewCount && (
-        <p className={clsx(textStyle, "text-xs ml-1 mt-1")}>
-          {reviewCountText}
-        </p>
+        <>
+          <span className="w-1 h-1 bg-slate-400 rounded-full flex-shrink-0 mx-1" />
+          <p className={clsx(textStyle, "text-xs text-warning")}>
+            {reviewCountText}
+          </p>
+        </>
       )}
     </div>
   );

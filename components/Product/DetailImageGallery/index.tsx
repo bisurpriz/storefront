@@ -16,6 +16,7 @@ import "swiper/css/virtual";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import { useMeasure } from "@uidotdev/usehooks";
+import { Swiper as SwiperType } from "swiper/types";
 
 type ProductDetailImageGalleryProps = {
   images: string[];
@@ -24,13 +25,11 @@ type ProductDetailImageGalleryProps = {
 const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType>(null);
   const { isLargeDesktop } = useResponsive();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [ref, { width, height }] = useMeasure<HTMLDivElement>();
-
-  const getImageUrl = useMemo(() => getImageUrlFromPath, []);
 
   const slidePerview = useMemo(() => {
     return isLargeDesktop ? Math.floor(width / 120) : Math.floor(height / 120);
@@ -62,12 +61,12 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           <SwiperSlide
             key={image}
             className={clsx(
-              "flex items-center justify-center border border-gray-200 rounded-md overflow-hidden shadow-sm",
-              activeIndex === index && "border-primary"
+              "flex items-center justify-center border-2 border-transparent rounded-md overflow-hidden shadow-sm",
+              activeIndex === index && "!border-primary"
             )}
           >
             <Image
-              src={getImageUrl(image)}
+              src={getImageUrlFromPath(image)}
               alt={image}
               className="w-full object-contain"
               width={120}
@@ -86,13 +85,15 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       </Swiper>
       <Swiper
         loop={true}
-        spaceBetween={10}
+        zoom={true}
+        virtual={true}
         navigation={true}
+        spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[Zoom, FreeMode, Navigation, Thumbs, Virtual]}
         slidesPerView={1}
         onActiveIndexChange={(swiper) => {
-          setActiveIndex(swiper.activeIndex);
+          setActiveIndex(swiper.realIndex);
         }}
         className={clsx(
           "flex-1 ring-1 ring-gray-200 rounded-lg w-full",
@@ -101,8 +102,6 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
         style={{
           height: "-webkit-fill-available",
         }}
-        zoom={true}
-        virtual={true}
       >
         {images?.map((image, index) => (
           <SwiperSlide
@@ -115,7 +114,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           >
             <div className="swiper-zoom-container">
               <Image
-                src={getImageUrl(image)}
+                src={getImageUrlFromPath(image)}
                 alt={image}
                 className="h-full w-full object-contain"
                 width={500}
