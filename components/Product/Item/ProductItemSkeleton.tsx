@@ -2,9 +2,9 @@ const ProductItemSkeleton = ({ ref = null }) => {
   return (
     <div
       ref={ref}
-      className="bg-gray-200 rounded-lg animate-pulse overflow-hidden"
+      className="bg-gray-200 rounded-lg animate-pulse h-full w-full overflow-hidden"
     >
-      <div className="w-full h-80 bg-gray-300 rounded object-cover"></div>
+      <div className="w-full xl:h-80 lg:h-56 md:h-52 sm:h-60 h-44 bg-gray-300 rounded object-cover"></div>
       <div className="py-2 px-4 pb-4 flex flex-col gap-2">
         <p className="text-gray-800 text-lg font-bold mt-2 bg-gray-300 h-2 rounded w-2/3"></p>
         <h2 className="text-lg font-semibold mt-2 bg-gray-300 h-6 rounded w-full"></h2>
