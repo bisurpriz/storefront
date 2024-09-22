@@ -41,7 +41,7 @@ const ProductItem5 = ({
   return (
     <div
       className={clsx(
-        "rounded-md bg-white shadow-sm h-full",
+        "rounded-md bg-white shadow-sm min-h-[320px]",
         "flex flex-col justify-between",
         "overflow-hidden",
         "cursor-pointer",
