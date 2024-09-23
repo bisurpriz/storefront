@@ -35,6 +35,7 @@ import Report from "@/components/Icons/Report";
 import { CartStepPaths } from "../../constants";
 import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
+import { useContract } from "@/contexts/ContractContext";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -132,9 +133,16 @@ const CreditCardForm = () => {
       }
     });
   }, []);
+  const { openApproveContract, approveContract, setApproveContract } =
+    useContract();
 
   const onSubmit = async (data: CreditCardForm) => {
     startTransition(async () => {
+      if (!approveContract) {
+        openApproveContract();
+        return;
+      }
+
       startProgress();
       if (data) {
         setLoading(true);
