@@ -244,23 +244,20 @@ const CreditCardForm = () => {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      startTransition(() => {
-        startProgress();
-        if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
+      if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
-        if (event.data === "success") {
-          setLoading(false);
-          clearCart();
-          removeStorages();
-          if (hasCustomizableProduct)
-            replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
-          else replace(CartStepPaths.COMPLETE);
-        } else if (event.data.errorMessage) {
-          setLoading(false);
-          setErrorMessage(event.data.errorMessage);
-          openPopup();
-        }
-      });
+      if (event.data === "success") {
+        setLoading(false);
+        clearCart();
+        removeStorages();
+        if (hasCustomizableProduct)
+          replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
+        else replace(CartStepPaths.COMPLETE);
+      } else if (event.data.errorMessage) {
+        setLoading(false);
+        setErrorMessage(event.data.errorMessage);
+        openPopup();
+      }
     };
 
     window.addEventListener("message", handleMessage);
