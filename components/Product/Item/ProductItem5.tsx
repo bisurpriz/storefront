@@ -76,8 +76,8 @@ const ProductItem5 = ({
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
           sizes="(max-width: 576px) 25vw,
           (max-width: 768px) 25vw,
-          (max-width: 992px) 25vw,
-          (max-width: 1200px) 25vw,
+          (max-width: 992px) 20vw,
+          (max-width: 1200px) 20vw,
           20vw"
         />
         <div className="px-2 pb-6 pt-4">
