@@ -5,7 +5,7 @@ import Promotions from "./Promotions";
 import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
-import { DeliveryType } from "@/common/enums/Product/product";
+import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
@@ -15,7 +15,6 @@ import Error from "@/components/Icons/Error";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
-import { format } from "date-fns";
 import { getPriceTR } from "@/utils/getPriceTR";
 
 type ProductInformationProps = {
@@ -195,21 +194,21 @@ const ProductInformation = ({
             {
               description: DeliveryType.SAME_DAY,
               icon: <SevenOclock />,
-              filterKey: "SAME_DAY",
+              filterKey: FILTER_KEYS["SAME_DAY_DELIVERY"],
               show: isSameDay,
               color: "info",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
               icon: <FreeTruck />,
-              filterKey: "FREE_SHIPPING",
+              filterKey: FILTER_KEYS["FREE_SHIPPING"],
               show: freeShipping,
               color: "warning",
             },
             {
               description: "Tasarlanabilir",
               icon: <Palette />,
-              filterKey: "CUSTOMIZABLE",
+              filterKey: FILTER_KEYS["CUSTOMIZABLE"],
               show: isCustomizable,
               color: "secondary",
             },

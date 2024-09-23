@@ -67,17 +67,17 @@ const ProductItem5 = ({
             image?.[0] ? "?format=webp" : ""
           }`}
           alt={name}
-          width={500}
-          height={500}
+          width={250}
+          height={250}
           className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
-          quality={100}
-          priority={true}
+          quality={70}
+          loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
           sizes="(max-width: 576px) 25vw,
           (max-width: 768px) 25vw,
-          (max-width: 992px) 25vw,
-          (max-width: 1200px) 25vw,
+          (max-width: 992px) 20vw,
+          (max-width: 1200px) 20vw,
           20vw"
         />
         <div className="px-2 pb-6 pt-4">

@@ -18,7 +18,7 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const searchText = searchParams["search"];
+  const searchText = searchParams.hasOwnProperty("search");
 
   return (
     <>
