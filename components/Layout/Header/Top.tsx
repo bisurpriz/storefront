@@ -35,7 +35,7 @@ const HeaderTop = () => {
             </div>
           ))}
         </div>
-        <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
+       {/*  <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
           Sevgililer gününe özel&nbsp;
           <Link
             href="/campaign-details"
@@ -43,7 +43,7 @@ const HeaderTop = () => {
           >
             ürünler!
           </Link>
-        </p>
+        </p> */}
         <ul className="text-right whitespace-nowrap">
           <li>
             Bonnmarşe&apos;de satış yapmak ister misiniz?&nbsp;

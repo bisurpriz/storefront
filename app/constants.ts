@@ -1,1 +1,1 @@
-export const PER_REQUEST = 10;
+export const PER_REQUEST = 12;
