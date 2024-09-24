@@ -40,6 +40,7 @@ export const AuthProvider = ({
   useEffect(() => {
     if (!user) {
       if (!Cookies.get(CookieTokens.GUEST_ID)) {
+        console.log("Creating guest id");
         const guest_id = uuidv4();
         Cookies.set(CookieTokens.GUEST_ID, guest_id, {
           // 1 yıl
@@ -48,6 +49,7 @@ export const AuthProvider = ({
           httpOnly: process.env.NODE_ENV === "production",
           secure: process.env.NODE_ENV === "production",
         });
+        console.log("Guest id created", guest_id);
       }
     } else {
       Cookies.remove(CookieTokens.GUEST_ID);
