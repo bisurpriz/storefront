@@ -41,7 +41,11 @@ export async function getAccessToken() {
 
 export async function createJwt() {
   try {
-    const JWT_CONFIG = JSON.parse(process.env.JWT_CONFIG || "");
+    console.log("JWT_CONFIG", process.env.JWT_CONFIG);
+    const JWT_CONFIG =
+      typeof process.env.JWT_CONFIG === "object"
+        ? process.env.JWT_CONFIG
+        : JSON.parse(process.env.JWT_CONFIG || "");
     return await jwt.sign({}, JWT_CONFIG.secret, {
       expiresIn: "15m",
       notBefore: "0",
