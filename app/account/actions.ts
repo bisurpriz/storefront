@@ -196,11 +196,7 @@ export const getUserById = async (id?: string) => {
       id: userId,
     };
   } catch (error) {
-    return {
-      user: null,
-      loading: false,
-      id: userId,
-    };
+    return error;
   }
 };
 
