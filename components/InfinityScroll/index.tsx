@@ -30,14 +30,22 @@ const InfinityScroll = <T,>({
   dataKey,
   params,
 }: InfinityScrollProps<T>) => {
-  const [data, setData] = useState<T[]>(() => initialData);
-  const [offset, setOffset] = useState(0);
+  const [data, setData] = useState<T[]>(() => {
+    const cachedData = sessionStorage.getItem("infinityScrollData");
+    return cachedData ? JSON.parse(cachedData) : initialData;
+  });
+  const [offset, setOffset] = useState(() => {
+    const cachedOffset = sessionStorage.getItem("infinityScrollOffset");
+    return cachedOffset ? Number(cachedOffset) : 0;
+  });
+  const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0.9,
   });
 
   const loadMoreData = async () => {
     const next = offset + PER_REQUEST;
+    setLoading(true);
     const response = await query(
       {
         offset: next,
@@ -45,20 +53,24 @@ const InfinityScroll = <T,>({
       },
       params
     );
+    setLoading(false);
     setOffset(next);
     setData((prev) => [...prev, ...response[dataKey]]);
   };
 
+  // Cache verileri her değiştiğinde sessionStorage'a kaydediyoruz
   useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
+    sessionStorage.setItem("infinityScrollData", JSON.stringify(data));
+    sessionStorage.setItem("infinityScrollOffset", offset.toString());
+  }, [data, offset]);
 
   useEffect(() => {
     if (inView && totalCount > data?.length) {
-      console.log("load more data");
-      loadMoreData();
+      if (!loading) {
+        loadMoreData();
+      }
     }
-  }, [inView]);
+  }, [inView, loading]);
 
   if (totalCount === 0) return <EmptyPage />;
 
