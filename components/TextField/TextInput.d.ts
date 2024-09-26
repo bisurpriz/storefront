@@ -15,9 +15,11 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
   autoComplete?: string;
   id?: string;
-  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url';
+  type?: "text" | "password" | "email" | "number" | "tel" | "url" | "search";
   icon?: React.ReactNode;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   maxLength?: number;
   minLength?: number;
+  ref: React.Ref<HTMLInputElement>;
+  spellCheck?: boolean;
 }

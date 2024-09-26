@@ -49,3 +49,5 @@ certs
 .env.production
 
 
+.idea
+.vscode
