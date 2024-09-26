@@ -28,8 +28,12 @@ import {
   GetProductReviewsQuery,
   GetProductReviewsQueryVariables,
 } from "@/graphql/queries/review/review.generated";
+import searchClient from "@/typesense/client";
 import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
 import { gql } from "@apollo/client";
+import { SearchParams } from "typesense/lib/Typesense/Documents";
+import { PER_REQUEST } from "../constants";
+import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
   const { data } = await query<
@@ -140,6 +144,35 @@ export const searchProducts = async (
       message: "Success",
       totalCount: product_aggregate.aggregate.count,
     };
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+  }
+};
+
+export const searchProductsv1 = async (
+  params: SearchParams = {},
+  filters: { [key: string]: string | string[] | undefined } = {}
+) => {
+  if (!filters) return { hits:[], found:0 };
+  const filterBy = createTypesenseQueryMapper(filters);
+  try {
+    const response = await searchClient
+      .collections("products")
+      .documents()
+      .search(
+        {
+          q: "*",
+          query_by: "name",
+          sort_by: "score:desc",
+          filter_by: filterBy.filter_by,
+          offset: 0,
+          limit: PER_REQUEST,
+          ...params,
+        },
+        {}
+      );
+      console.log(response,"search response")
+    return response;
   } catch (error) {
     console.error("Error fetching suggestions:", error);
   }

@@ -96,6 +96,8 @@ const nextConfig = {
     CREATE_ORDER_ACTION_URL: process.env.CREATE_ORDER_ACTION_URL,
     CART_COST_URL: process.env.CART_COST_URL,
     JWT_CONFIG: process.env.JWT_CONFIG,
+    TYPESENSE_HOST: process.env.TYPESENSE_HOST,
+    TYPESENSE_API_KEY: process.env.TYPESENSE_API_KEY,
   },
 };
 
