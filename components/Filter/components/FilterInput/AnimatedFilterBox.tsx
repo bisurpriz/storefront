@@ -1,9 +1,8 @@
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import useResponsive from "@/hooks/useResponsive";
-import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { Variants, motion } from "framer-motion";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 type AnimatedFilterBoxProps = {
   children: React.ReactNode;
@@ -37,6 +36,20 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
           type: "spring",
         },
       };
+
+  useEffect(() => {
+    if (isTablet) {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isTablet, isOpen]);
 
   return (
     <>

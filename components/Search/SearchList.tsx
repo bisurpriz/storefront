@@ -5,9 +5,7 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
-import Backdrop from "../Modal/FramerModal/Backdrop";
 import TextField from "../TextField";
-import { useClickAway } from "@uidotdev/usehooks";
 import Close from "../Icons/Close";
 
 type Props = {
@@ -18,6 +16,7 @@ type Props = {
   onChange?: (e: any, value: string) => void;
   setInputVal?: (value: string) => void;
   inputVal?: string;
+  setProducts: (products: any[]) => void;
 };
 
 const SearchList: FC<Props> = ({
@@ -27,6 +26,8 @@ const SearchList: FC<Props> = ({
   setIsOpen,
   onChange,
   inputVal,
+  setInputVal,
+  setProducts,
 }) => {
   const { isTablet } = useResponsive();
 
@@ -62,11 +63,40 @@ const SearchList: FC<Props> = ({
         );
   };
 
+  useEffect(() => {
+    if (isTablet) {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isTablet, isOpen]);
+
+  const tabletViewRef = React.useRef<HTMLDivElement>(null);
+
+  const listener = (e) => {
+    tabletViewRef.current.style.top = `${e.currentTarget.height}px`;
+  };
+
+  useEffect(() => {
+    window.visualViewport.addEventListener("resize", listener);
+
+    return () => {
+      window.visualViewport.removeEventListener("resize", listener);
+    };
+  }, []);
+
   return (
     isOpen && (
       <div>
         {isTablet && (
           <div
+            ref={tabletViewRef}
             onClick={() => setIsOpen(false)}
             className={clsx(
               "fixed",
@@ -126,7 +156,11 @@ const SearchList: FC<Props> = ({
                   id: product.id,
                   slug: product.slug,
                 })}
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setInputVal("");
+                  setProducts([]);
+                }}
               >
                 <div
                   key={product.id}

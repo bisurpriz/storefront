@@ -12,6 +12,7 @@ import Dashboard from "../Icons/Dashboard";
 import SearchBotttomMenu from "../Icons/SearchBotttomMenu";
 import BasketBottomMenu from "../Icons/BasketBottomMenu";
 import UserBottomMenu from "../Icons/UserBottomMenu";
+import { useSearchProduct } from "@/contexts/SearchContext";
 
 const MenuItem = ({
   item,
@@ -27,8 +28,10 @@ const MenuItem = ({
     badgeText: string | number;
   };
 }) => {
+  const Component = item.href ? Link : "button";
+
   return (
-    <Link
+    <Component
       href={item.href}
       className={clsx(
         "flex flex-col items-center justify-center text-gray-600 rounded-md p-2 touch-auto",
@@ -49,7 +52,7 @@ const MenuItem = ({
       <span className="text-xs font-medium inline-block max-xs:hidden">
         {item.name}
       </span>
-    </Link>
+    </Component>
   );
 };
 
@@ -58,6 +61,7 @@ const MobileBottomNav = () => {
     cartState: { count },
   } = useCart();
   const pathname = usePathname();
+  const { setIsOpen } = useSearchProduct();
 
   const getSelectedMenuItem = () => {
     const splittedPathname = pathname.split("/");
@@ -76,6 +80,8 @@ const MobileBottomNav = () => {
 
   const handleSelect = (index: number) => {
     setSelected(index);
+
+    if (index === 2) setIsOpen(true);
   };
 
   return (
@@ -87,7 +93,7 @@ const MobileBottomNav = () => {
         {mobileBottomMenu.map((item, index) => {
           return item.href === "/cart" ? (
             <MenuItem
-              key={item.href}
+              key={item.name}
               item={item}
               selected={selected === index}
               onSelect={() => handleSelect(index)}
@@ -98,7 +104,7 @@ const MobileBottomNav = () => {
             />
           ) : (
             <MenuItem
-              key={item.href}
+              key={item.name}
               item={item}
               selected={selected === index}
               onSelect={() => handleSelect(index)}
@@ -124,7 +130,6 @@ const mobileBottomMenu = [
   },
   {
     name: "Arama",
-    href: "/search",
     icon: <SearchBotttomMenu />,
   },
   {

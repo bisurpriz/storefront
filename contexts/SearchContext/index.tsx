@@ -24,6 +24,9 @@ interface SearchProductContextType {
   handleClear: () => void;
   handleKeyDown: (event: any) => void;
   pushToSearch: () => void;
+  setProducts: (
+    products: GetProductsWithFilteredPaginationQuery["product"]
+  ) => void;
 }
 
 export const SearchProductContext = createContext<SearchProductContextType>({
@@ -37,6 +40,7 @@ export const SearchProductContext = createContext<SearchProductContextType>({
   handleKeyDown: () => {},
   pushToSearch: () => {},
   setInputVal: () => {},
+  setProducts: () => {},
 });
 
 export const SearchProductProvider = ({
@@ -82,9 +86,9 @@ export const SearchProductProvider = ({
 
     startTransition(() => {
       startProgress();
-
-      setIsOpen(false);
       setInputVal("");
+      setProducts([]);
+      setIsOpen(false);
       push(`/?search=${inputVal}`);
     });
   };
@@ -118,6 +122,7 @@ export const SearchProductProvider = ({
         handleKeyDown,
         pushToSearch,
         setInputVal,
+        setProducts,
       }}
     >
       {children}

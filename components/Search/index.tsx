@@ -1,9 +1,8 @@
 "use client";
 
-import { FC, useRef } from "react";
+import { FC } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
-import { useClickAway } from "@uidotdev/usehooks";
 import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
 import SearchList from "./SearchList";
@@ -25,6 +24,7 @@ const Search: FC<Props> = ({ className }) => {
     handleKeyDown,
     pushToSearch,
     handleClear,
+    setProducts,
   } = useSearchProduct();
 
   const onChange = (e, value: string) => {
@@ -90,6 +90,7 @@ const Search: FC<Props> = ({ className }) => {
         onChange={onChange}
         inputVal={inputVal}
         setInputVal={setInputVal}
+        setProducts={setProducts}
       />
     </div>
   );
