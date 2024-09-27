@@ -177,7 +177,9 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           "pt-0",
           "z-[1000]",
           "max-h-[50vh]",
-          "overflow-y-auto"
+          "overflow-y-auto",
+          "max-md:bottom-14",
+          "border-t"
         )
       : clsx(
           "absolute",

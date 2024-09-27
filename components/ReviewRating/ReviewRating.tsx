@@ -31,7 +31,7 @@ const ReviewRating = ({
     "leading-normal text-slate-400 whitespace-nowrap cursor-pointer";
 
   return (
-    <div className="flex items-center font-semibold gap-1">
+    <div className="flex items-center font-semibold gap-1 max-sm:flex-wrap">
       {showReviewCount && (
         <>
           <p className={clsx(textStyle, "text-sm")}>
