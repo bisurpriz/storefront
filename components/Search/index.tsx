@@ -3,7 +3,7 @@
 import { FC, useEffect, useRef, useState, startTransition } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
-import { searchProducts } from "@/app/(feed)/actions";
+import { searchProductsv1 } from "@/app/(feed)/actions";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
@@ -67,12 +67,16 @@ const Search: FC<Props> = ({ className }) => {
     try {
       if (!input) {
         setProducts([]);
-        searchProducts({}, {});
+        searchProductsv1({}, {});
         return;
       }
       setIsLoading(true);
-      const response = await searchProducts({}, { search: input });
-      setProducts(response.products);
+      const response = await searchProductsv1({ q: input });
+      setProducts(
+        response.hits.map(
+          (hit) => hit.document
+        ) as GetProductsWithFilteredPaginationQuery["product"]
+      );
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
@@ -80,11 +84,12 @@ const Search: FC<Props> = ({ className }) => {
   };
 
   const onChange = (e, value: string) => {
-    clearTimeout(debounceTimeout.current);
+    // clearTimeout(debounceTimeout.current);
     setInputVal(value);
-    debounceTimeout.current = setTimeout(() => {
-      handleSearchProducts(value);
-    }, 500);
+    handleSearchProducts(value);
+    // debounceTimeout.current = setTimeout(() => {
+    //
+    // }, 500);
   };
 
   const pushToSearch = () => {
