@@ -233,7 +233,11 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 "py-4"
               )}
             >
-              <p className={clsx("text-lg", "font-semibold", "text-lime-500")}>
+              <p
+                className={clsx("text-lg", "font-semibold", "text-lime-500", {
+                  "text-orange-600": selectedValue,
+                })}
+              >
                 Sonuçlar
               </p>
               <button
@@ -242,7 +246,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                   "text-lime-500",
                   "text-lg",
                   "font-semibold",
-                  "hover:text-primary-light"
+                  "hover:text-primary-light",
+                  {
+                    "text-orange-600": selectedValue,
+                  }
                 )}
                 onBlur={() => setShowSuggestions(false)}
               >
@@ -309,7 +316,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "transform",
             "-translate-y-1/2",
             "text-lime-500",
-            "text-2xl"
+            "text-2xl",
+            {
+              "text-orange-600": selectedValue,
+            }
           )}
         />
         <input
@@ -342,7 +352,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "focus:text-2xl focus:py-6",
             "disabled:bg-gray-100",
             "disabled:text-gray-500",
-            "disabled:cursor-not-allowed"
+            "disabled:cursor-not-allowed",
+            {
+              "bg-orange-100 py-4 !text-2xl font-semibold text-orange-600 border-orange-600 focus:ring-orange-500 focus:border-orange-500":
+                selectedValue,
+            },
+            "truncate"
           )}
           disabled={disabled}
         />
@@ -365,7 +380,11 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 onClear?.();
               }}
             >
-              <RemoveSquare className="text-2xl text-lime-500" />
+              <RemoveSquare
+                className={clsx("text-2xl text-lime-500", {
+                  "text-orange-600": selectedValue,
+                })}
+              />
             </button>
           )}
           <button
@@ -376,7 +395,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               "duration-200",
               "ease-in-out",
               showSuggestions ? "rotate-180" : "",
-              "text-lime-500"
+              "text-lime-500",
+              {
+                "text-orange-600": selectedValue,
+              }
             )}
           >
             <ChevronDown className="text-2xl" />

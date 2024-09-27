@@ -6,7 +6,7 @@ import { parseJson } from "./format";
 export const createTypesenseQueryMapper = (searchParams: {
   [key: string]: string | string[] | undefined;
 }) => {
-  const filter_by = Object.keys(searchParams).map((key) => {
+  let filter_by = Object.keys(searchParams).map((key) => {
     switch (key) {
       case FILTER_KEYS.CATEGORY:
         return `category.slug:=[${searchParams[key]}]`;
@@ -27,6 +27,9 @@ export const createTypesenseQueryMapper = (searchParams: {
         return `tenant_id:${searchParams[key]}`;
     }
   });
+
+  filter_by.push("is_active:true");
+  filter_by.push("is_approved:true");
 
   const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
   const locationId = parseJson(cookie)?.id;

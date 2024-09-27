@@ -43,7 +43,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label className={clsx("max-xl:col-span-full")}>
+    <label className={clsx("max-xl:col-span-full")} tabIndex={0}>
       <Autocomplete
         disabled={isPending}
         value={value}
