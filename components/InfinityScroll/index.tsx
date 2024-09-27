@@ -43,6 +43,7 @@ const InfinityScroll = <T,>({
     startTransition(async () => {
       startProgress();
       const next = offset + PER_REQUEST;
+
       const response = await query(
         {
           offset: next,
@@ -65,8 +66,7 @@ const InfinityScroll = <T,>({
   useEffect(() => {
     if (isPending) return;
 
-    if (inView && totalCount > data?.length) {
-      console.log("Ürün çek");
+    if (inView && totalCount >= data?.length) {
       loadMoreData();
     }
   }, [inView, isPending]);
@@ -88,8 +88,11 @@ const InfinityScroll = <T,>({
           </>
         )}
       </div>
-      {totalCount > data?.length && !isPending && (
-        <div ref={ref}>
+      {totalCount > data?.length && (
+        <div
+          ref={ref}
+          className="flex justify-center items-center w-full h-20 bg-transparent"
+        >
           <Spinner />
         </div>
       )}
