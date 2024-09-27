@@ -25,6 +25,7 @@ import {
 } from "@/graphql/queries/categories/getCategories.generated";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import { ProductProvider } from "@/contexts/ProductContext";
+import { SearchProductProvider } from "@/contexts/SearchContext";
 
 export const experimental_ppr = true;
 
@@ -130,12 +131,14 @@ export default async function RootLayout({
                       discountAmount: 0,
                     }}
                   >
-                    <Suspense fallback={<HeaderSuspense />}>
-                      <Header category={categoryData?.category} />
-                      <StickyHeader />
-                    </Suspense>
-                    <Content>{children}</Content>
-                    {auth}
+                    <SearchProductProvider>
+                      <Suspense fallback={<HeaderSuspense />}>
+                        <Header category={categoryData?.category} />
+                        <StickyHeader />
+                      </Suspense>
+                      <Content>{children}</Content>
+                      {auth}
+                    </SearchProductProvider>
                   </CartProvider>
                 </CategoryProvider>
               </ProductProvider>

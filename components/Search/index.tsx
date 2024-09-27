@@ -1,111 +1,35 @@
 "use client";
 
-import { FC, useEffect, useRef, useState, startTransition } from "react";
+import { FC, useRef } from "react";
 import TextField from "../TextField";
 import clsx from "clsx";
-import { searchProductsv1 } from "@/app/(feed)/actions";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useClickAway } from "@uidotdev/usehooks";
-import { Link } from "@/components/Link";
-import { goToProductDetail } from "@/utils/linkClickEvent";
-import { useRouter, useSearchParams } from "next/navigation";
 import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
-import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
-import { useProgress } from "react-transition-progress";
 import SearchList from "./SearchList";
+import { useSearchProduct } from "@/contexts/SearchContext";
 
 type Props = {
   className?: string;
 };
 
 const Search: FC<Props> = ({ className }) => {
-  const [products, setProducts] = useState<
-    GetProductsWithFilteredPaginationQuery["product"]
-  >([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { push } = useRouter();
-  const [inputVal, setInputVal] = useState("");
-
-  const modalRef = useClickAway<HTMLInputElement>(() => {
-    setIsOpen(false);
-  });
-
-  const ref = useRef<HTMLInputElement>(null);
-
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null!);
-  const searchParams = useSearchParams();
-  const startProgress = useProgress();
-  useEffect(() => {
-    const search = searchParams.get("search");
-    if (search) {
-      ref.current.value = search;
-      setInputVal(search);
-    }
-  }, [searchParams]);
-
-  const handleSearchProducts = async (input: string) => {
-    try {
-      if (!input) {
-        setProducts([]);
-        searchProductsv1({}, {});
-        return;
-      }
-      setIsLoading(true);
-      const response = await searchProductsv1({ q: input });
-      setProducts(
-        response.hits.map(
-          (hit) => hit.document
-        ) as GetProductsWithFilteredPaginationQuery["product"]
-      );
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching suggestions:", error);
-    }
-  };
+  const {
+    handleSearchProducts,
+    products,
+    loading,
+    inputVal,
+    setInputVal,
+    isOpen,
+    setIsOpen,
+    handleKeyDown,
+    pushToSearch,
+    handleClear,
+  } = useSearchProduct();
 
   const onChange = (e, value: string) => {
-    // clearTimeout(debounceTimeout.current);
     setInputVal(value);
     handleSearchProducts(value);
-    setIsOpen(true);
-    // debounceTimeout.current = setTimeout(() => {
-    //
-    // }, 500);
-  };
-
-  const pushToSearch = () => {
-    startTransition(() => {
-      startProgress();
-      setIsOpen(false);
-      push(`/?search=${ref.current?.value}`);
-    });
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      pushToSearch();
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(debounceTimeout.current);
-    };
-  }, []);
-
-  const handleClear = () => {
-    startTransition(() => {
-      startProgress();
-      setInputVal("");
-      setProducts([]);
-      ref.current.value = "";
-      onChange(null, "");
-      push("/");
-      setIsOpen(false);
-    });
   };
 
   return (
@@ -119,10 +43,11 @@ const Search: FC<Props> = ({ className }) => {
         className=""
         id="header-search"
         placeholder="Çiçek, hediye, süprizler..."
-        ref={ref}
+        value={inputVal}
         onChange={onChange}
         onKeyDown={handleKeyDown}
         fullWidth
+        onFocus={() => setIsOpen(true)}
       />
 
       <div
@@ -158,11 +83,13 @@ const Search: FC<Props> = ({ className }) => {
         </button>
       </div>
       <SearchList
-        isLoading={isLoading}
+        isLoading={loading}
         isOpen={isOpen}
-        modalRef={modalRef}
         products={products}
         setIsOpen={setIsOpen}
+        onChange={onChange}
+        inputVal={inputVal}
+        setInputVal={setInputVal}
       />
     </div>
   );

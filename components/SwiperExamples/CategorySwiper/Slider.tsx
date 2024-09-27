@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Grid, Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import CategorySwiperSuspense from "./CategorySwiperSuspense";
 import { Link } from "@/components/Link";
 
@@ -79,7 +79,7 @@ const Slider: React.FC<SliderProps> = ({
   const slidesPerGroup = 1;
 
   return (
-    <div className={clsx("relative", "overflow-hidden")} ref={ref}>
+    <div className={clsx("relative", "overflow-hidden", "z-0")} ref={ref}>
       <Swiper
         slidesPerView={slidesPerView}
         grid={{

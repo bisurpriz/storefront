@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Link } from "../Link";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -6,21 +6,27 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import Backdrop from "../Modal/FramerModal/Backdrop";
+import TextField from "../TextField";
+import { useClickAway } from "@uidotdev/usehooks";
+import Close from "../Icons/Close";
 
 type Props = {
   products: any[];
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   isLoading: boolean;
-  modalRef: any;
+  onChange?: (e: any, value: string) => void;
+  setInputVal?: (value: string) => void;
+  inputVal?: string;
 };
 
 const SearchList: FC<Props> = ({
   isLoading,
   isOpen,
-  modalRef,
   products,
   setIsOpen,
+  onChange,
+  inputVal,
 }) => {
   const { isTablet } = useResponsive();
 
@@ -58,7 +64,7 @@ const SearchList: FC<Props> = ({
 
   return (
     isOpen && (
-      <>
+      <div>
         {isTablet && (
           <div
             onClick={() => setIsOpen(false)}
@@ -74,8 +80,8 @@ const SearchList: FC<Props> = ({
             )}
           />
         )}
-        <div ref={modalRef} className={likeBottomSheetStyle()}>
-          {isTablet && (
+        <div className={likeBottomSheetStyle()}>
+          {isTablet ? (
             <div
               className={clsx(
                 "text-lg",
@@ -90,7 +96,22 @@ const SearchList: FC<Props> = ({
                 "z-[52]"
               )}
             >
-              Arama Sonuçları
+              <TextField
+                type="text"
+                className=""
+                id="header-search"
+                placeholder="Çiçek, hediye, süprizler..."
+                onChange={onChange}
+                fullWidth
+                value={inputVal}
+              />
+            </div>
+          ) : (
+            <div className="w-full p-2 flex justify-end border-b border-gray-200">
+              <Close
+                onClick={() => setIsOpen(false)}
+                className="text-primary cursor-pointer"
+              />
             </div>
           )}
           {!isLoading ? (
@@ -113,7 +134,7 @@ const SearchList: FC<Props> = ({
                 >
                   <div className="flex items-start">
                     {product?.image_url?.[0] ? (
-                      <div className="w-20 h-20">
+                      <div className="w-20 h-20 min-w-[5rem] min-h-[5rem]">
                         <Image
                           src={getImageUrlFromPath(product.image_url[0])}
                           width={100}
@@ -123,7 +144,7 @@ const SearchList: FC<Props> = ({
                         />
                       </div>
                     ) : null}
-                    <div className="text-sm font-semibold text-gray-500 ml-3">
+                    <div className="text-sm font-semibold text-gray-500 ml-3 truncate">
                       {product.name}
                     </div>
                     <div className="text-xs ml-auto text-primary font-semibold mt-auto">
@@ -141,7 +162,7 @@ const SearchList: FC<Props> = ({
             <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
           )}
         </div>
-      </>
+      </div>
     )
   );
 };
