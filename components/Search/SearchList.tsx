@@ -77,28 +77,6 @@ const SearchList: FC<Props> = ({
     };
   }, [isTablet, isOpen]);
 
-  const tabletViewRef = React.useRef<HTMLDivElement>(null);
-
-  const listener = (e) => {
-    // we need to position the search list to the bottom of the input
-    // so we need to get the input's bottom position
-
-    if (tabletViewRef.current) {
-      const inputRect = window.innerHeight;
-      const inputBottom = inputRect - e.target.visualViewport.height;
-      console.log(inputBottom);
-      tabletViewRef.current.style.top = `${inputBottom}px`;
-    }
-  };
-
-  useEffect(() => {
-    window.visualViewport.addEventListener("resize", listener);
-
-    return () => {
-      window.visualViewport.removeEventListener("resize", listener);
-    };
-  }, []);
-
   return (
     isOpen && (
       <div>
@@ -120,7 +98,6 @@ const SearchList: FC<Props> = ({
         <div className={likeBottomSheetStyle()}>
           {isTablet ? (
             <div
-              ref={tabletViewRef}
               className={clsx(
                 "text-lg",
                 "font-semibold",

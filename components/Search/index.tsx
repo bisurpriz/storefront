@@ -7,6 +7,7 @@ import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
 import SearchList from "./SearchList";
 import { useSearchProduct } from "@/contexts/SearchContext";
+import useResponsive from "@/hooks/useResponsive";
 
 type Props = {
   className?: string;
@@ -32,6 +33,8 @@ const Search: FC<Props> = ({ className }) => {
     handleSearchProducts(value);
   };
 
+  const { isTablet } = useResponsive();
+
   return (
     <div
       className={clsx("relative max-w-xl w-full mx-auto", {
@@ -47,7 +50,10 @@ const Search: FC<Props> = ({ className }) => {
         onChange={onChange}
         onKeyDown={handleKeyDown}
         fullWidth
-        onFocus={() => setIsOpen(true)}
+        onFocus={() => {
+          isTablet ? null : setIsOpen(true);
+        }}
+        onClick={() => setIsOpen(true)}
       />
 
       <div
