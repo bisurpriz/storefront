@@ -35,19 +35,7 @@ export default async function Page({
       {!searchText && (
         <Suspense
           fallback={
-            <>
-              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
-              <div className="my-4 flex items-center justify-between gap-6">
-                {Array.from({
-                  length: 3,
-                }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
-                  />
-                ))}
-              </div>
-            </>
+            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
           }
         >
           <ServerQuerySelector />

@@ -137,7 +137,7 @@ const ProductInformation = ({
             <span className="flex flex-col gap-1">
               {discountPrice && discountPrice < price ? (
                 <h5 className="text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap">
-                  <del>₺{price?.toFixed(2)} ₺</del>
+                  <del>₺{price?.toFixed(2)}</del>
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:text-start max-xl:flex-row max-xl:items-center">

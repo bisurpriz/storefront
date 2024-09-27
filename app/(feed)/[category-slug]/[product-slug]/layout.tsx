@@ -26,16 +26,16 @@ export default async function ProductExample({
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-full">
+        <div className="w-1/2 max-md:w-full z-0">
           <Suspense fallback={<ProductImageGalleryLoading />}>
             {children}
           </Suspense>
         </div>
-        <div className="w-1/2 max-md:w-full">
+        <div className="w-1/2 max-md:w-full z-0">
           {information}
           <Suspense
             fallback={
-              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
+              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
             }
           >
             <ServerQuerySelector />

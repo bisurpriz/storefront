@@ -25,6 +25,7 @@ import {
 } from "@/graphql/queries/categories/getCategories.generated";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import { ProductProvider } from "@/contexts/ProductContext";
+import { SearchProductProvider } from "@/contexts/SearchContext";
 
 export const experimental_ppr = true;
 
@@ -94,11 +95,13 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const { user } = await getUserById();
-  const { cartItems, costData } = await getCart(user?.id);
-  const {
-    data: { category },
-  } = await query<GetMainCategoriesQuery, GetMainCategoriesQueryVariables>({
+  const data = await getUserById();
+  const { cartItems, costData } = await getCart(data?.user?.id);
+
+  const { data: categoryData } = await query<
+    GetMainCategoriesQuery,
+    GetMainCategoriesQueryVariables
+  >({
     query: GetMainCategoriesDocument,
     fetchPolicy: "no-cache",
   });
@@ -115,10 +118,10 @@ export default async function RootLayout({
         <ProgressBarProvider>
           <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
           <TagManagerNoscript />
-          <AuthProvider user={user}>
+          <AuthProvider user={data?.user}>
             <ApolloWrapper>
               <ProductProvider>
-                <CategoryProvider category={category}>
+                <CategoryProvider category={categoryData?.category}>
                   <CartProvider
                     cartDbItems={cartItems}
                     dbCost={{
@@ -128,12 +131,14 @@ export default async function RootLayout({
                       discountAmount: 0,
                     }}
                   >
-                    <Suspense fallback={<HeaderSuspense />}>
-                      <Header category={category} />
-                      <StickyHeader />
-                    </Suspense>
-                    <Content>{children}</Content>
-                    {auth}
+                    <SearchProductProvider>
+                      <Suspense fallback={<HeaderSuspense />}>
+                        <Header category={categoryData?.category} />
+                        <StickyHeader />
+                      </Suspense>
+                      <Content>{children}</Content>
+                      {auth}
+                    </SearchProductProvider>
                   </CartProvider>
                 </CategoryProvider>
               </ProductProvider>

@@ -84,17 +84,19 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     </span>
                   </div>
                 </div>
-                <div className="rounded-lg h-fit bg-4 w-fit">
-                  <p
-                    className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
-                    aria-label={`comment-${index}-comment`}
-                    id={`comment-${index}-comment`}
-                    aria-describedby={`comment-${index}-comment`}
-                    key={`comment-${index}-comment`}
-                  >
-                    {comment.comment}
-                  </p>
-                </div>
+                {comment.comment && (
+                  <div className="rounded-lg h-fit bg-4 w-fit">
+                    <p
+                      className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
+                      aria-label={`comment-${index}-comment`}
+                      id={`comment-${index}-comment`}
+                      aria-describedby={`comment-${index}-comment`}
+                      key={`comment-${index}-comment`}
+                    >
+                      {comment.comment}
+                    </p>
+                  </div>
+                )}
               </li>
             ))}
           </ul>

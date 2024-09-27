@@ -15,6 +15,7 @@ import {
   GetUserByIdQuery,
 } from "@/graphql/queries/account/account.generated";
 import { getUserAddressById } from "@/app/account/actions";
+import { setClientCookie } from "@/utils/getCookie";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
@@ -41,12 +42,10 @@ export const AuthProvider = ({
     if (!user) {
       if (!Cookies.get(CookieTokens.GUEST_ID)) {
         const guest_id = uuidv4();
-        Cookies.set(CookieTokens.GUEST_ID, guest_id, {
-          // 1 yıl
-          expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-          sameSite: "strict",
-          httpOnly: process.env.NODE_ENV === "production",
+        setClientCookie(CookieTokens.GUEST_ID, guest_id, {
           secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
       }
     } else {

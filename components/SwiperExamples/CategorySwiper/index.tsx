@@ -25,8 +25,10 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
             imageUrl: category?.image_url,
             id: category?.id,
             label: category?.name || "Category",
+            slug: category?.slug,
           }))}
         autoPlayTime={2000}
+        slideWidth={100}
       />
     </div>
   );

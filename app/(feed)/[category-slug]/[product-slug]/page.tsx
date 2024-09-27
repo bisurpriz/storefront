@@ -27,20 +27,21 @@ const DynamicGallery = dynamic(
 const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
   const id = Number(searchParams["pid"]);
 
-  const {
-    data: { product },
-  } = await query<GetProductImagesQuery, GetProductImagesQueryVariables>({
+  const { data } = await query<
+    GetProductImagesQuery,
+    GetProductImagesQueryVariables
+  >({
     query: GetProductImagesDocument,
     variables: {
       id,
     },
   });
 
-  if (!product) {
+  if (!data?.product) {
     redirect("/");
   }
 
-  return <DynamicGallery images={product.image_url} />;
+  return <DynamicGallery images={data?.product.image_url} />;
 };
 
 export default ProductImageCarouselPage;

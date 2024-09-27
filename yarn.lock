@@ -4606,6 +4606,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.6.0":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/4499efc89e86b0b49ffddc018798de05fab26e3bf57913818266be73279a6418c3ce8f9e934c7d2d707ab8c095e837fc6c90608fb7715b94d357720b5f568af7
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:~3.1.1":
   version: 3.1.1
   resolution: "axobject-query@npm:3.1.1"
@@ -6605,6 +6616,7 @@ __metadata:
     tailwindcss: "npm:3.3.3"
     tsconfig-paths-webpack-plugin: "npm:^4.1.0"
     typescript: "npm:latest"
+    typesense: "npm:^1.8.2"
     uuid: "npm:^9.0.1"
     yup: "npm:^1.3.2"
     zustand: "npm:^4.4.6"
@@ -8410,6 +8422,13 @@ __metadata:
     slice-ansi: "npm:^4.0.0"
     wrap-ansi: "npm:^6.2.0"
   checksum: 10c0/18b299e230432a156f2535660776406d15ba8bb7817dd3eaadd58004b363756d4ecaabcd658f9949f90b62ea7d3354423be3fdeb7a201ab951ec0e8d6139af86
+  languageName: node
+  linkType: hard
+
+"loglevel@npm:^1.8.1":
+  version: 1.9.2
+  resolution: "loglevel@npm:1.9.2"
+  checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
   languageName: node
   linkType: hard
 
@@ -11451,6 +11470,18 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/5a437c416251334deeaf29897157032311f3f126547cfdc4b133768b606cb0e62bcee733bb97cf74c42fe7268801aea1392d8e40988cdef112e9546eba4c03c5
+  languageName: node
+  linkType: hard
+
+"typesense@npm:^1.8.2":
+  version: 1.8.2
+  resolution: "typesense@npm:1.8.2"
+  dependencies:
+    axios: "npm:^1.6.0"
+    loglevel: "npm:^1.8.1"
+  peerDependencies:
+    "@babel/runtime": ^7.23.2
+  checksum: 10c0/9a553b479ebbd435867dd257035ce6dda78e1e7c2e1c1fb9fc90aef2cf36c67ecdc5e322a8d10ff069bb27efd017d1b29c4496b54581ad453f5eb54af4cd0696
   languageName: node
   linkType: hard
 

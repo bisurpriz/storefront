@@ -35,6 +35,7 @@ import Report from "@/components/Icons/Report";
 import { CartStepPaths } from "../../constants";
 import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
+import { useContract } from "@/contexts/ContractContext";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -132,9 +133,16 @@ const CreditCardForm = () => {
       }
     });
   }, []);
+  const { openApproveContract, approveContract, setApproveContract } =
+    useContract();
 
   const onSubmit = async (data: CreditCardForm) => {
     startTransition(async () => {
+      if (!approveContract) {
+        openApproveContract();
+        return;
+      }
+
       startProgress();
       if (data) {
         setLoading(true);
@@ -244,23 +252,20 @@ const CreditCardForm = () => {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      startTransition(() => {
-        startProgress();
-        if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
+      if (event.origin !== process.env.NEXT_PUBLIC_HOST) return;
 
-        if (event.data === "success") {
-          setLoading(false);
-          clearCart();
-          removeStorages();
-          if (hasCustomizableProduct)
-            replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
-          else replace(CartStepPaths.COMPLETE);
-        } else if (event.data.errorMessage) {
-          setLoading(false);
-          setErrorMessage(event.data.errorMessage);
-          openPopup();
-        }
-      });
+      if (event.data === "success") {
+        setLoading(false);
+        clearCart();
+        removeStorages();
+        if (hasCustomizableProduct)
+          replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
+        else replace(CartStepPaths.COMPLETE);
+      } else if (event.data.errorMessage) {
+        setLoading(false);
+        setErrorMessage(event.data.errorMessage);
+        openPopup();
+      }
     };
 
     window.addEventListener("message", handleMessage);
