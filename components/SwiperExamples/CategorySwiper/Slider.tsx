@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Grid, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CategorySwiperSuspense from "./CategorySwiperSuspense";
+import { Link } from "@/components/Link";
 
 interface LoopCheckParams {
   totalSlides: number;
@@ -20,6 +21,7 @@ interface Slide {
   id: number;
   imageUrl: string;
   label: string;
+  slug: string;
 }
 
 interface SliderProps {
@@ -77,14 +79,14 @@ const Slider: React.FC<SliderProps> = ({
   const slidesPerGroup = 1;
 
   return (
-    <div className={clsx("relative", "w-full", "overflow-hidden")} ref={ref}>
+    <div className={clsx("relative", "overflow-hidden")} ref={ref}>
       <Swiper
         slidesPerView={slidesPerView}
         grid={{
           fill: "row",
           rows: 1,
         }}
-        spaceBetween={10}
+        spaceBetween={5}
         slidesPerGroup={slidesPerGroup}
         pagination={{
           clickable: true,
@@ -99,17 +101,20 @@ const Slider: React.FC<SliderProps> = ({
         })}
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <div className={imageWrapperClasses}>
+          <SwiperSlide key={slide.id} className={clsx(imageWrapperClasses)}>
+            <Link
+              href={`/${slide.slug}`}
+              className={"flex items-start justify-center"}
+            >
               <Image
-                src={getImageUrlFromPath(slide.imageUrl, 130)}
+                src={getImageUrlFromPath(slide.imageUrl, slideWidth)}
                 alt={slide.label}
-                className="rounded-full object-contain w-full"
+                className="rounded-full object-contain ring ring-primary-300 my-1"
                 width={slideWidth}
                 height={slideWidth}
                 priority
               />
-            </div>
+            </Link>
             <span
               className={clsx(
                 "block",

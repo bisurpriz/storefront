@@ -41,7 +41,6 @@ export async function getAccessToken() {
 
 export async function createJwt() {
   try {
-    console.log("JWT_CONFIG", process.env.JWT_CONFIG);
     const JWT_CONFIG =
       typeof process.env.JWT_CONFIG === "object"
         ? process.env.JWT_CONFIG

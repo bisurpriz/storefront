@@ -19,6 +19,8 @@ const ServerCategorySwiper = async () => {
     fetchPolicy: "cache-first",
   });
 
+  if (!(category.length > 8)) return null;
+
   return <CategorySwiper categories={category} />;
 };
 

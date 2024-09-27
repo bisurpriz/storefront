@@ -6,7 +6,6 @@ import { parseJson } from "./format";
 export const createTypesenseQueryMapper = (searchParams: {
   [key: string]: string | string[] | undefined;
 }) => {
-  console.log(searchParams, "searchParams");
   const filter_by = Object.keys(searchParams).map((key) => {
     switch (key) {
       case FILTER_KEYS.CATEGORY:
@@ -42,8 +41,6 @@ export const createTypesenseQueryMapper = (searchParams: {
   if (locationId && locationType) {
     filter_by.push(locationFilterQuery[locationType]);
   }
-
-  console.log(filter_by.filter(Boolean).join("&&"), "filter_by");
 
   return {
     filter_by: filter_by.filter(Boolean).join("&&"),

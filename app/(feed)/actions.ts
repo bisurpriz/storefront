@@ -153,7 +153,7 @@ export const searchProductsv1 = async (
   params: SearchParams = {},
   filters: { [key: string]: string | string[] | undefined } = {}
 ) => {
-  if (!filters) return { hits:[], found:0 };
+  if (!filters) return { hits: [], found: 0 };
   const filterBy = createTypesenseQueryMapper(filters);
   try {
     const response = await searchClient
@@ -171,7 +171,6 @@ export const searchProductsv1 = async (
         },
         {}
       );
-      console.log(response,"search response")
     return response;
   } catch (error) {
     console.error("Error fetching suggestions:", error);

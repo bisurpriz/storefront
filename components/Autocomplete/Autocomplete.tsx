@@ -15,6 +15,7 @@ interface AutocompleteProps {
   onClear?: () => void;
   placeholder?: string;
   value?: any;
+  disabled?: boolean;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -24,6 +25,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   onClear,
   placeholder,
   value,
+  disabled,
 }) => {
   const [activeSuggestion, setActiveSuggestion] = useState(0);
   const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]);
@@ -35,6 +37,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const suggestionsListRef = useRef<HTMLUListElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -66,10 +69,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     const value = e.currentTarget.value;
     setUserInput(value);
     setSelectedValue(null);
-
-    if (onChange) {
-      onChange({ inputValue: value, selectedValue: null });
-    }
 
     clearTimeout(debounceTimeout.current);
 
@@ -191,7 +190,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           "z-10",
           "overflow-y-auto",
           "max-h-60",
-          "mt-1"
+          "mt-1",
+          "text-lg"
         );
   }, [isTablet]);
 
@@ -244,6 +244,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                   "font-semibold",
                   "hover:text-primary-light"
                 )}
+                onBlur={() => setShowSuggestions(false)}
               >
                 Kapat
               </button>
@@ -260,13 +261,16 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                   ref={index === activeSuggestion ? activeItemRef : null}
                   className={clsx(
                     "p-2",
+                    "py-4",
                     "cursor-pointer",
                     index === activeSuggestion
                       ? "bg-lime-100"
                       : "hover:bg-lime-100",
                     index === filteredSuggestions.length - 1
                       ? "rounded-b-md"
-                      : ""
+                      : "",
+                    "last:border-b-0",
+                    "border-b"
                   )}
                 >
                   {renderOptionLabel(suggestion)}
@@ -276,7 +280,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           ) : (
             <div
               className={clsx(
-                "p-2",
+                "p-4",
                 "flex",
                 "items-center",
                 "gap-2",
@@ -309,27 +313,38 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           )}
         />
         <input
+          ref={inputRef}
           type="text"
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={userInput}
           placeholder={placeholder}
           className={clsx(
+            // fancy design
             "w-full",
-            "text-base",
-            "font-semibold",
+            "py-2",
+            "pl-10",
+            "pr-12",
             "rounded-md",
             "border",
             "border-lime-300",
-            "focus:border-primary-light",
-            "outline-none",
-            "py-3",
-            "px-10",
-            "pr-20",
-            { "border-2": selectedValue },
-            "text-slate-600",
-            "truncate"
+            "focus:outline-none",
+            "focus:border-lime-500",
+            "focus:ring",
+            "focus:ring-lime-500",
+            "focus:ring-opacity-50",
+            "transition-all",
+            "duration-200",
+            "ease-in-out",
+            "text-sm",
+            "text-gray-900",
+            "placeholder-gray-400",
+            "focus:text-2xl focus:py-6",
+            "disabled:bg-gray-100",
+            "disabled:text-gray-500",
+            "disabled:cursor-not-allowed"
           )}
+          disabled={disabled}
         />
         <div
           className={clsx(
