@@ -14,28 +14,11 @@ import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
 import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import { useProgress } from "react-transition-progress";
+import SearchList from "./SearchList";
 
 type Props = {
   className?: string;
 };
-
-const Skeleton = () => (
-  <div
-    role="status"
-    className="max-w-md p-4 space-y-4 border divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6"
-  >
-    {[...Array(5)].map((_, i) => (
-      <div key={i} className="flex items-center justify-between pt-3">
-        <div>
-          <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-          <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-      </div>
-    ))}
-    <span className="sr-only">Yükleniyor...</span>
-  </div>
-);
 
 const Search: FC<Props> = ({ className }) => {
   const [products, setProducts] = useState<
@@ -87,6 +70,7 @@ const Search: FC<Props> = ({ className }) => {
     // clearTimeout(debounceTimeout.current);
     setInputVal(value);
     handleSearchProducts(value);
+    setIsOpen(true);
     // debounceTimeout.current = setTimeout(() => {
     //
     // }, 500);
@@ -119,7 +103,8 @@ const Search: FC<Props> = ({ className }) => {
       setProducts([]);
       ref.current.value = "";
       onChange(null, "");
-      push("/?search=");
+      push("/");
+      setIsOpen(false);
     });
   };
 
@@ -136,7 +121,6 @@ const Search: FC<Props> = ({ className }) => {
         placeholder="Çiçek, hediye, süprizler..."
         ref={ref}
         onChange={onChange}
-        onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
         fullWidth
       />
@@ -173,59 +157,13 @@ const Search: FC<Props> = ({ className }) => {
           <SearchIcon className="group-hover:animate-bounce text-2xl" />
         </button>
       </div>
-
-      {isOpen && (
-        <div
-          ref={modalRef}
-          className="absolute z-10 w-full bg-white shadow-lg rounded-lg mt-2 max-h-80 overflow-y-auto"
-        >
-          {products.map((product) => (
-            <Link
-              prefetch
-              key={product.id}
-              href={goToProductDetail({
-                category: {
-                  slug: product.product_categories[0]?.category?.slug,
-                },
-                id: product.id,
-                slug: product.slug,
-              })}
-              onClick={() => setIsOpen(false)}
-            >
-              <div
-                key={product.id}
-                className="p-2 border-b hover:bg-gray-100 transition-colors"
-              >
-                <div className="flex items-start">
-                  {product?.image_url?.[0] ? (
-                    <div className="w-20 h-20">
-                      <Image
-                        src={getImageUrlFromPath(product.image_url[0])}
-                        width={100}
-                        height={100}
-                        className="w-full h-full rounded-lg"
-                        alt={product.name}
-                      />
-                    </div>
-                  ) : null}
-                  <div className="text-sm font-semibold text-gray-500 ml-3">
-                    {product.name}
-                  </div>
-                  <div className="text-xs ml-auto text-primary font-semibold mt-auto">
-                    {product.product_categories[0].category.name}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-
-          {isLoading && <Skeleton />}
-
-          {products.length === 0 && !isLoading && (
-            <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
-          )}
-        </div>
-      )}
+      <SearchList
+        isLoading={isLoading}
+        isOpen={isOpen}
+        modalRef={modalRef}
+        products={products}
+        setIsOpen={setIsOpen}
+      />
     </div>
   );
 };

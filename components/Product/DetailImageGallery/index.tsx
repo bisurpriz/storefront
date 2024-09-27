@@ -59,7 +59,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       >
         {images?.map((image, index) => (
           <SwiperSlide
-            key={image}
+            key={`first-${image}-${index}`}
             className={clsx(
               "flex items-center justify-center border-2 border-transparent rounded-md overflow-hidden shadow-sm",
               activeIndex === index && "!border-primary"
@@ -105,7 +105,7 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
       >
         {images?.map((image, index) => (
           <SwiperSlide
-            key={image}
+            key={`slide-${image}-${index}`}
             className={clsx(
               "w-full flex items-center justify-center",
               "max-xl:w-full "
