@@ -104,7 +104,6 @@ const SearchList: FC<Props> = ({
       <div>
         {isTablet && (
           <div
-            ref={tabletViewRef}
             onClick={() => setIsOpen(false)}
             className={clsx(
               "fixed",
@@ -121,6 +120,7 @@ const SearchList: FC<Props> = ({
         <div className={likeBottomSheetStyle()}>
           {isTablet ? (
             <div
+              ref={tabletViewRef}
               className={clsx(
                 "text-lg",
                 "font-semibold",
