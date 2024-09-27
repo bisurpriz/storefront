@@ -35,7 +35,7 @@ export default async function ProductExample({
           {information}
           <Suspense
             fallback={
-              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
+              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
             }
           >
             <ServerQuerySelector />
