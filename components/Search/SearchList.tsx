@@ -80,7 +80,15 @@ const SearchList: FC<Props> = ({
   const tabletViewRef = React.useRef<HTMLDivElement>(null);
 
   const listener = (e) => {
-    tabletViewRef.current.style.top = `${e.currentTarget.height}px`;
+    // we need to position the search list to the bottom of the input
+    // so we need to get the input's bottom position
+
+    if (tabletViewRef.current) {
+      const inputRect = window.innerHeight;
+      const inputBottom = inputRect - e.target.visualViewport.height;
+      console.log(inputBottom);
+      tabletViewRef.current.style.top = `${inputBottom}px`;
+    }
   };
 
   useEffect(() => {
