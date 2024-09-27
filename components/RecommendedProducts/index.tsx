@@ -31,7 +31,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
       />
       <motion.div
         key={"products"}
-        className="flex items-start justify-start gap-4 overflow-x-auto flex-nowrap relative snap-x snap-mandatory mt-2"
+        className="flex items-start justify-start gap-4 overflow-x-auto flex-nowrap relative snap-x snap-mandatory mt-2 z-0"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
