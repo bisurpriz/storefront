@@ -54,6 +54,7 @@ const Search: FC<Props> = ({ className }) => {
           isTablet ? null : setIsOpen(true);
         }}
         onClick={() => setIsOpen(true)}
+        readOnly={isTablet}
       />
 
       <div

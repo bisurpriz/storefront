@@ -44,7 +44,7 @@ const SearchList: FC<Props> = ({
           "p-4",
           "pt-0",
           "z-[51]",
-          "max-h-[50vh]",
+          "max-h-[70vh]",
           "overflow-y-auto"
         )
       : clsx(
@@ -76,6 +76,14 @@ const SearchList: FC<Props> = ({
       document.body.style.overflow = "auto";
     };
   }, [isTablet, isOpen]);
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current && isOpen) {
+      inputRef.current.focus();
+    }
+  }, [inputRef.current, isOpen]);
 
   return (
     isOpen && (
@@ -114,11 +122,12 @@ const SearchList: FC<Props> = ({
               <TextField
                 type="text"
                 className=""
-                id="header-search"
+                id="header-search-sheet"
                 placeholder="Çiçek, hediye, süprizler..."
                 onChange={onChange}
                 fullWidth
                 value={inputVal}
+                ref={inputRef}
               />
             </div>
           ) : (

@@ -29,6 +29,7 @@ const TextField: FC<TextFieldProps> = (props) => {
     onKeyDown,
     spellCheck,
     ref,
+    readOnly,
     ...rest
   } = props;
 
@@ -101,6 +102,7 @@ const TextField: FC<TextFieldProps> = (props) => {
         <input
           {...getInputProps()}
           {...rest}
+          readOnly={readOnly}
           spellCheck={spellCheck ?? false}
           tabIndex={0}
           onKeyDown={onKeyDown}
