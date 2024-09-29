@@ -8,6 +8,13 @@ import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { query } from "@/graphql/lib/client";
+import {
+  GetAllCategoriesDocument,
+  GetAllCategoriesQuery,
+  GetAllCategoriesQueryVariables,
+} from "@/graphql/queries/categories/getCategories.generated";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +27,15 @@ export default async function Page({
 }) {
   const searchText = searchParams.hasOwnProperty("search");
 
+  const viewport = await getServerSideViewPort();
+
+  const {
+    data: { category },
+  } = await query<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({
+    query: GetAllCategoriesDocument,
+    fetchPolicy: "cache-first",
+  });
+
   return (
     <>
       {searchText && (
@@ -27,9 +43,9 @@ export default async function Page({
           <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
         </Suspense>
       )}
-      {!searchText && (
+      {!searchText && !(category.length < 8 && viewport === "desktop") && (
         <Suspense fallback={<CategorySwiperSuspense />}>
-          <ServerCategorySwiper />
+          <ServerCategorySwiper category={category} />
         </Suspense>
       )}
       {!searchText && (

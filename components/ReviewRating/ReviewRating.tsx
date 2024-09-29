@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Rating from "./CustomRating";
 import clsx from "clsx";
+import { Link } from "../Link";
 
 const ReviewRating = ({
   value = 0,
@@ -31,7 +32,10 @@ const ReviewRating = ({
     "leading-normal text-slate-400 whitespace-nowrap cursor-pointer";
 
   return (
-    <div className="flex items-center font-semibold gap-1 max-sm:flex-wrap">
+    <Link
+      href={"#yorumlar"}
+      className="flex items-center font-semibold gap-1 max-sm:flex-wrap"
+    >
       {showReviewCount && (
         <>
           <p className={clsx(textStyle, "text-sm")}>
@@ -57,7 +61,7 @@ const ReviewRating = ({
           </p>
         </>
       )}
-    </div>
+    </Link>
   );
 };
 
