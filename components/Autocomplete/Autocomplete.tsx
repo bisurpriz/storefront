@@ -177,7 +177,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           "pt-0",
           "z-[1000]",
           "max-h-[50vh]",
-          "overflow-y-auto"
+          "overflow-y-auto",
+          "border-t"
         )
       : clsx(
           "absolute",
@@ -344,7 +345,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           value={userInput}
           placeholder={placeholder}
           className={clsx(
-            // fancy design
             "w-full",
             "py-2",
             "pl-10",
@@ -363,12 +363,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "text-sm",
             "text-gray-900",
             "placeholder-gray-400",
-            "focus:text-2xl focus:py-6",
+            "focus:text-2xl focus:py-3",
             "disabled:bg-gray-100",
             "disabled:text-gray-500",
             "disabled:cursor-not-allowed",
             {
-              "bg-orange-100 py-4 !text-2xl font-semibold text-orange-600 border-orange-600 focus:ring-orange-500 focus:border-orange-500":
+              "bg-orange-100 py-2 !text-2xl font-semibold text-orange-600 border-orange-600 focus:ring-orange-500 focus:border-orange-500":
                 selectedValue,
             },
             "truncate"

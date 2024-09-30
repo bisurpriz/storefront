@@ -32,7 +32,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold">{rating.toFixed(1)} Puan</p>
         <Link
-          href="/#yorumlar"
+          href="#yorumlar"
           className="text-primary-500 text-sm font-semibold"
         >
           ({totalRating} Yorum)

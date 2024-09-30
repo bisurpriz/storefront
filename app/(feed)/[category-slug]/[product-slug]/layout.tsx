@@ -70,9 +70,9 @@ export default async function ProductExample({
       </section>
       <section
         className="mt-6"
-        id="reviews"
-        aria-labelledby="reviews"
-        aria-describedby="Yorumlar"
+        id="yorumlar"
+        aria-labelledby="yorumlar"
+        aria-describedby="Kullanıcı Yorumları"
       >
         {comments}
       </section>

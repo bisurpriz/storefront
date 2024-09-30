@@ -22,4 +22,5 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   minLength?: number;
   ref?: React.Ref<HTMLInputElement>;
   spellCheck?: boolean;
+  readOnly?: boolean;
 }
