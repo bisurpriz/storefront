@@ -74,11 +74,11 @@ const ProductItem5 = ({
           loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
-          sizes="(max-width: 576px) 15vw,
-          (max-width: 768px) 25vw,
-          (max-width: 992px) 20vw,
-          (max-width: 1200px) 20vw,
-          20vw"
+          sizes="(max-width: 576px) 30vw,
+          (max-width: 768px) 30vw,
+          (max-width: 992px) 30vw,
+          (max-width: 1200px) 30vw,
+          30vw"
         />
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">
