@@ -49,7 +49,6 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
         value={value}
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => {
-          console.log("Render");
           starTransition(() => {
             if (selectedValue?.id && selectedValue?.type) {
               Cookies.set(
