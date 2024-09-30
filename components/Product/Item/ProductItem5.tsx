@@ -82,9 +82,9 @@ const ProductItem5 = ({
         />
         <div className="px-2 pb-6 pt-4">
           <div className="flex flex-col gap-2 justify-between flex-grow">
-            <span className="text-xs text-green-500 font-semibold">
+            <span className="text-xs text-green-500 font-normal">
               {is_service_free && isSameDayDelivery && "Ücretsiz /"}
-              {isSameDayDelivery && "Aynı gün teslimat"}
+              {isSameDayDelivery && " Aynı gün teslimat"}
             </span>
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
@@ -96,7 +96,7 @@ const ProductItem5 = ({
               {score > 0 && `(${score})`}
             </span>
             <h1
-              className="text-sm font-normal text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"
+              className="text-sm font-semibold text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"
               title={name}
             >
               {name}

@@ -23,17 +23,17 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
     );
 
   return (
-    <div className="flex items-end gap-2 min-h-[28px]">
+    <div className="flex items-end gap-2 max-md:gap-1 min-h-[28px]">
       {price && discountRate > 0 && (
         <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-md max-md:text-xs">
           %{discountRate}
         </span>
       )}
-      <div className="flex gap-1 items-end max-sm:mb-0 max-md:text-xs">
+      <div className="flex gap-1 items-end max-sm:mb-0">
         {discount > 0 && (
           <span
             className={clsx([
-              "font-semibold leading-none text-xl text-green-500 max-md:text-xs whitespace-nowrap",
+              "font-semibold leading-none text-xl text-green-500 max-md:text-base whitespace-nowrap",
               discount > 0 ? "" : "font-normal",
             ])}
           >
@@ -43,7 +43,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {price && (
           <span
             className={clsx([
-              "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap",
+              "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap mb-0.5",
               discount > 0
                 ? "text-xs line-through"
                 : "text-xl font-normal text-green-500",
