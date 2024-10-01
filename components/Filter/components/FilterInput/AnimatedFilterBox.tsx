@@ -68,7 +68,7 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
           key="submenu"
           className={clsx(
             "absolute bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50 min-w-fit w-[300px]",
-            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:h-auto max-h-[65vh] max-sm:bottom-14 xs:bottom-[72px]  max-md:rounded-bl-none max-md:rounded-br-none",
+            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:h-auto max-h-[65vh] max-sm:bottom-14 max-md:bottom-[72px] max-md:rounded-bl-none max-md:rounded-br-none",
             className
           )}
           variants={subMenuVariants}
