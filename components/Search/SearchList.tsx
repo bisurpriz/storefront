@@ -83,9 +83,12 @@ const SearchList: FC<Props> = ({
 
   const animates = isTablet
     ? {
-        initial: { y: "100%" },
-        animate: { y: "0%" },
-        exit: { y: "100%" },
+        initial: { y: "100%", height: 0 },
+        animate: { y: "0%", height: "auto" },
+        exit: {
+          y: "100%",
+          height: 0,
+        },
         transition: { type: "tween" },
       }
     : {
@@ -125,58 +128,68 @@ const SearchList: FC<Props> = ({
             <TextField
               type="text"
               className=""
-              id="header-search-sheet"
+              id="search"
               placeholder="Ürün ara"
               onChange={onChange}
               fullWidth
               value={inputVal}
               ref={inputRef}
+              autoComplete="off"
             />
           </div>
 
           {!isLoading ? (
             products.map((product) => (
-              <Link
-                prefetch
+              <motion.li
                 key={product.id}
-                href={goToProductDetail({
-                  category: {
-                    slug: product.product_categories[0]?.category?.slug,
-                  },
-                  id: product.id,
-                  slug: product.slug,
-                })}
-                onClick={() => {
-                  setIsOpen(false);
-                  setInputVal("");
-                  setProducts([]);
-                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}
+                className="list-none"
               >
-                <div
+                <Link
+                  prefetch
                   key={product.id}
-                  className="p-2 border-b hover:bg-gray-100 transition-colors"
+                  href={goToProductDetail({
+                    category: {
+                      slug: product.product_categories[0]?.category?.slug,
+                    },
+                    id: product.id,
+                    slug: product.slug,
+                  })}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setInputVal("");
+                    setProducts([]);
+                  }}
                 >
-                  <div className="flex items-start">
-                    {product?.image_url?.[0] ? (
-                      <div className="w-20 h-20 min-w-[5rem] min-h-[5rem]">
-                        <Image
-                          src={getImageUrlFromPath(product.image_url[0])}
-                          width={100}
-                          height={100}
-                          className="w-full h-full rounded-lg"
-                          alt={product.name}
-                        />
+                  <div
+                    key={product.id}
+                    className="p-2 border-b hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-start">
+                      {product?.image_url?.[0] ? (
+                        <div className="w-20 h-20 min-w-[5rem] min-h-[5rem]">
+                          <Image
+                            src={getImageUrlFromPath(product.image_url[0])}
+                            width={100}
+                            height={100}
+                            className="w-full h-full rounded-lg"
+                            alt={product.name}
+                          />
+                        </div>
+                      ) : null}
+                      <div className="text-sm font-semibold text-gray-500 ml-3 truncate">
+                        {product.name}
                       </div>
-                    ) : null}
-                    <div className="text-sm font-semibold text-gray-500 ml-3 truncate">
-                      {product.name}
-                    </div>
-                    <div className="text-xs ml-auto text-primary font-semibold mt-auto">
-                      {product.product_categories[0].category.name}
+                      <div className="text-xs ml-auto text-primary font-semibold mt-auto">
+                        {product.product_categories[0].category.name}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.li>
             ))
           ) : (
             <Skeleton />
