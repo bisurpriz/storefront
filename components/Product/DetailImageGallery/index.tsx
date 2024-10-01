@@ -71,14 +71,6 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
               className="w-full object-contain"
               width={120}
               height={120}
-              sizes="
-              (max-width: 375px) 25vw,
-              (max-width: 576px) 25vw,
-              (max-width: 768px) 25vw,
-              (max-width: 992px) 25vw,
-              (max-width: 1200px) 25vw,
-              10vw
-              "
             />
           </SwiperSlide>
         ))}
@@ -114,14 +106,13 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           >
             <div className="swiper-zoom-container">
               <Image
-                src={getImageUrlFromPath(image)}
+                src={getImageUrlFromPath(image, 500)}
                 alt={image}
                 className="h-full w-full object-contain"
-                width={500}
-                height={500}
+                width={1000}
+                height={1000}
                 priority={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
-                sizes="(max-width: 375px) 100vw, (max-width: 576px) 100vw, (max-width: 768px) 100vw, (max-width: 992px) 50vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </SwiperSlide>

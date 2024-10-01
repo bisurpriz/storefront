@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
@@ -60,16 +59,12 @@ const InfinityScroll = <T,>({
   };
 
   useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
-
-  useEffect(() => {
     if (isPending) return;
 
     if (inView && totalCount >= data?.length) {
       loadMoreData();
     }
-  }, [inView, isPending]);
+  }, [inView, isPending, totalCount, data]);
 
   if (totalCount === 0) return <EmptyPage />;
 
