@@ -59,6 +59,12 @@ const InfinityScroll = <T,>({
   };
 
   useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+    }
+  }, [initialData]);
+
+  useEffect(() => {
     if (isPending) return;
 
     if (inView && totalCount >= data?.length) {
