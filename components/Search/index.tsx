@@ -1,7 +1,6 @@
 "use client";
 
 import { FC } from "react";
-import TextField from "../TextField";
 import clsx from "clsx";
 import RemoveSquare from "../Icons/RemoveSquare";
 import SearchIcon from "../Icons/SearchBotttomMenu";
@@ -41,21 +40,22 @@ const Search: FC<Props> = ({ className }) => {
         [className]: className,
       })}
     >
-      <TextField
-        type="text"
-        className=""
+      <div
+        className={clsx(
+          "h-10 bg-white flex items-center rounded-md px-4 select-none",
+          "transition-all duration-300 text-sm text-slate-400",
+          "border border-primary-300",
+          { "border-b-0": isTablet },
+          { "border-b-2": !isTablet }
+        )}
         id="header-search"
-        placeholder="Çiçek, hediye, süprizler..."
-        value={inputVal}
-        onChange={onChange}
-        onKeyDown={handleKeyDown}
-        fullWidth
         onFocus={() => {
           isTablet ? null : setIsOpen(true);
         }}
         onClick={() => setIsOpen(true)}
-        readOnly={isTablet}
-      />
+      >
+        <span>Çiçek, hediye, süprizler ve dahası...</span>
+      </div>
 
       <div
         className={clsx(
@@ -78,7 +78,7 @@ const Search: FC<Props> = ({ className }) => {
         )}
         <button
           className={clsx(
-            "h-full bg-primary text-white rounded-r-lg px-6",
+            "h-full bg-primary text-white rounded-r-md px-6",
             "flex items-center justify-center outline-none",
             "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
             "transition-all duration-300 group"

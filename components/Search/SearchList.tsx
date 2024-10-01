@@ -6,7 +6,8 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import TextField from "../TextField";
-import Close from "../Icons/Close";
+import { motion } from "framer-motion";
+import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
 type Props = {
   products: any[];
@@ -52,14 +53,15 @@ const SearchList: FC<Props> = ({
           "w-full",
           "bg-white",
           "border",
-          "border-lime-300",
+          "border-primary-300",
           "rounded-md",
           "shadow-md",
           "z-[51]",
           "overflow-y-auto",
           "max-h-80",
           "mt-1",
-          "text-lg"
+          "text-lg",
+          "p-4"
         );
   };
 
@@ -79,65 +81,59 @@ const SearchList: FC<Props> = ({
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (inputRef.current && isOpen) {
-      inputRef.current.focus();
-    }
-  }, [inputRef.current, isOpen]);
+  const animates = isTablet
+    ? {
+        initial: { y: "100%" },
+        animate: { y: "0%" },
+        exit: { y: "100%" },
+        transition: { type: "tween" },
+      }
+    : {
+        initial: { y: "10%" },
+        animate: { y: "0%" },
+        exit: { y: "10%" },
+        transition: { duration: 0.2 },
+      };
 
   return (
-    isOpen && (
+    <AnimationExitProvider show={isOpen}>
       <div>
-        {isTablet && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsOpen(false)}
+          className={clsx("fixed top-0 left-0 right-0 bottom-0 z-[1]", {
+            "bg-black bg-opacity-50": isTablet,
+          })}
+        />
+        <motion.div className={likeBottomSheetStyle()} {...animates}>
           <div
-            onClick={() => setIsOpen(false)}
             className={clsx(
-              "fixed",
+              "text-lg",
+              "font-semibold",
+              "text-gray-500",
+              "border-b",
+              "py-2",
+              "border-gray-200",
+              "sticky",
               "top-0",
-              "left-0",
-              "right-0",
-              "bottom-0",
-              "bg-black",
-              "bg-opacity-50",
-              "z-[1]"
+              "bg-white",
+              "z-[52]"
             )}
-          />
-        )}
-        <div className={likeBottomSheetStyle()}>
-          {isTablet ? (
-            <div
-              className={clsx(
-                "text-lg",
-                "font-semibold",
-                "text-gray-500",
-                "border-b",
-                "py-2",
-                "border-gray-200",
-                "sticky",
-                "top-0",
-                "bg-white",
-                "z-[52]"
-              )}
-            >
-              <TextField
-                type="text"
-                className=""
-                id="header-search-sheet"
-                placeholder="Çiçek, hediye, süprizler..."
-                onChange={onChange}
-                fullWidth
-                value={inputVal}
-                ref={inputRef}
-              />
-            </div>
-          ) : (
-            <div className="w-full p-2 flex justify-end border-b border-gray-200">
-              <Close
-                onClick={() => setIsOpen(false)}
-                className="text-primary cursor-pointer"
-              />
-            </div>
-          )}
+          >
+            <TextField
+              type="text"
+              className=""
+              id="header-search-sheet"
+              placeholder="Ürün ara"
+              onChange={onChange}
+              fullWidth
+              value={inputVal}
+              ref={inputRef}
+            />
+          </div>
+
           {!isLoading ? (
             products.map((product) => (
               <Link
@@ -189,9 +185,9 @@ const SearchList: FC<Props> = ({
           {products.length === 0 && !isLoading && (
             <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
           )}
-        </div>
+        </motion.div>
       </div>
-    )
+    </AnimationExitProvider>
   );
 };
 
