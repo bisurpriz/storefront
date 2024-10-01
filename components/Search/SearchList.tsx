@@ -6,6 +6,8 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import TextField from "../TextField";
+import { motion } from "framer-motion";
+import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
 type Props = {
   products: any[];
@@ -79,22 +81,33 @@ const SearchList: FC<Props> = ({
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current?.focus();
-    }
-  }, [isOpen, inputRef]);
+  const animates = isTablet
+    ? {
+        initial: { y: "100%" },
+        animate: { y: "0%" },
+        exit: { y: "100%" },
+        transition: { type: "tween" },
+      }
+    : {
+        initial: { y: "10%" },
+        animate: { y: "0%" },
+        exit: { y: "10%" },
+        transition: { duration: 0.2 },
+      };
 
   return (
-    isOpen && (
+    <AnimationExitProvider show={isOpen}>
       <div>
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           onClick={() => setIsOpen(false)}
           className={clsx("fixed top-0 left-0 right-0 bottom-0 z-[1]", {
             "bg-black bg-opacity-50": isTablet,
           })}
         />
-        <div className={likeBottomSheetStyle()}>
+        <motion.div className={likeBottomSheetStyle()} {...animates}>
           <div
             className={clsx(
               "text-lg",
@@ -172,9 +185,9 @@ const SearchList: FC<Props> = ({
           {products.length === 0 && !isLoading && (
             <div className="p-2 text-gray-500">Sonuç bulunamadı</div>
           )}
-        </div>
+        </motion.div>
       </div>
-    )
+    </AnimationExitProvider>
   );
 };
 
