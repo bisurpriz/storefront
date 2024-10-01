@@ -50,7 +50,7 @@ const TextField: FC<TextFieldProps> = (props) => {
     onChange: (e) =>
       onChange?.(e as React.ChangeEvent<HTMLInputElement>, e.target.value),
     onClick,
-    onFocus,
+    onFocus: (e) => onFocus?.(e as React.FocusEvent<HTMLInputElement>),
     required,
     value,
   });

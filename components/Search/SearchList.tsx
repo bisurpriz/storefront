@@ -6,7 +6,6 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import TextField from "../TextField";
-import Close from "../Icons/Close";
 
 type Props = {
   products: any[];
@@ -52,14 +51,15 @@ const SearchList: FC<Props> = ({
           "w-full",
           "bg-white",
           "border",
-          "border-lime-300",
+          "border-primary-300",
           "rounded-md",
           "shadow-md",
           "z-[51]",
           "overflow-y-auto",
           "max-h-80",
           "mt-1",
-          "text-lg"
+          "text-lg",
+          "p-4"
         );
   };
 
@@ -80,64 +80,47 @@ const SearchList: FC<Props> = ({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (inputRef.current && isOpen) {
-      inputRef.current.focus();
+    if (isOpen && inputRef.current) {
+      inputRef.current?.focus();
     }
-  }, [inputRef.current, isOpen]);
+  }, [isOpen, inputRef]);
 
   return (
     isOpen && (
       <div>
-        {isTablet && (
-          <div
-            onClick={() => setIsOpen(false)}
-            className={clsx(
-              "fixed",
-              "top-0",
-              "left-0",
-              "right-0",
-              "bottom-0",
-              "bg-black",
-              "bg-opacity-50",
-              "z-[1]"
-            )}
-          />
-        )}
+        <div
+          onClick={() => setIsOpen(false)}
+          className={clsx("fixed top-0 left-0 right-0 bottom-0 z-[1]", {
+            "bg-black bg-opacity-50": isTablet,
+          })}
+        />
         <div className={likeBottomSheetStyle()}>
-          {isTablet ? (
-            <div
-              className={clsx(
-                "text-lg",
-                "font-semibold",
-                "text-gray-500",
-                "border-b",
-                "py-2",
-                "border-gray-200",
-                "sticky",
-                "top-0",
-                "bg-white",
-                "z-[52]"
-              )}
-            >
-              <TextField
-                type="text"
-                className=""
-                id="header-search-sheet"
-                placeholder="Çiçek, hediye, süprizler..."
-                onChange={onChange}
-                fullWidth
-                value={inputVal}
-                ref={inputRef}
-              />
-            </div>
-          ) : (
-            <div className="w-full p-2 flex justify-end border-b border-gray-200">
-              <Close
-                onClick={() => setIsOpen(false)}
-                className="text-primary cursor-pointer"
-              />
-            </div>
-          )}
+          <div
+            className={clsx(
+              "text-lg",
+              "font-semibold",
+              "text-gray-500",
+              "border-b",
+              "py-2",
+              "border-gray-200",
+              "sticky",
+              "top-0",
+              "bg-white",
+              "z-[52]"
+            )}
+          >
+            <TextField
+              type="text"
+              className=""
+              id="header-search-sheet"
+              placeholder="Ürün ara"
+              onChange={onChange}
+              fullWidth
+              value={inputVal}
+              ref={inputRef}
+            />
+          </div>
+
           {!isLoading ? (
             products.map((product) => (
               <Link
