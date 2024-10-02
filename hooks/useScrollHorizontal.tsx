@@ -1,7 +1,10 @@
 import ArrowLeft from "@/components/Icons/ArrowLeft";
 import { useCallback, useEffect, useState } from "react";
 
-const useScrollHorizontal = (scrollRef: React.RefObject<HTMLDivElement>) => {
+const useScrollHorizontal = (
+  scrollRef: React.RefObject<HTMLDivElement>,
+  autoPlay = false
+) => {
   const [showState, setShowState] = useState({
     showLeft: false,
     showRight: false,
@@ -25,6 +28,78 @@ const useScrollHorizontal = (scrollRef: React.RefObject<HTMLDivElement>) => {
       });
     }
   }, [scrollRef]);
+
+  useEffect(() => {
+    if (autoPlay && scrollRef.current) {
+      const isScrollable =
+        scrollRef.current?.scrollWidth > scrollRef.current?.clientWidth;
+
+      if (!isScrollable) return;
+
+      let interval = setInterval(() => {
+        const isEnd =
+          scrollRef.current?.scrollLeft + scrollRef.current?.clientWidth ===
+          scrollRef.current?.scrollWidth;
+
+        if (isEnd) {
+          scrollLeft();
+          return;
+        }
+
+        scrollRight();
+      }, 3000);
+
+      if (scrollRef.current) {
+        scrollRef.current.addEventListener("mouseenter", () => {
+          clearInterval(interval);
+        });
+
+        scrollRef.current.addEventListener("touchstart", () => {
+          clearInterval(interval);
+        });
+
+        scrollRef.current.addEventListener("mouseleave", () => {
+          interval = setInterval(() => {
+            const isEnd =
+              scrollRef.current?.scrollLeft + scrollRef.current?.clientWidth ===
+              scrollRef.current?.scrollWidth;
+
+            if (isEnd) {
+              scrollRef.current.scrollBy({
+                behavior: "smooth",
+                left: -scrollRef.current.scrollWidth,
+              });
+              return;
+            }
+
+            scrollRight();
+          }, 3000);
+        });
+
+        scrollRef.current.addEventListener("touchend", () => {
+          interval = setInterval(() => {
+            const isEnd =
+              scrollRef.current?.scrollLeft + scrollRef.current?.clientWidth ===
+              scrollRef.current?.scrollWidth;
+
+            if (isEnd) {
+              scrollRef.current.scrollBy({
+                behavior: "smooth",
+                left: -scrollRef.current.scrollWidth,
+              });
+              return;
+            }
+
+            scrollRight();
+          }, 3000);
+        });
+      }
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [scrollRef, autoPlay]);
 
   useEffect(() => {
     const handleScroll = () => {

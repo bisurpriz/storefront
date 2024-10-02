@@ -21,6 +21,7 @@ import {
   GetCommentsForHomePageDocument,
   GetCommentsForHomePageQuery,
 } from "@/graphql/queries/review/review.generated";
+import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,20 @@ export default async function Page({
       {category.length < 8 && viewport === "desktop" && (
         <CategorySection category={category} />
       )}
+
+      <FeaturedProducts
+        products={Array.from({
+          length: 25,
+        }).map((_, i) => ({
+          id: i,
+          imageSrc: "https://via.placeholder.com/300",
+          name: "Product Name",
+          badge: "Yeni",
+          price: 100,
+          discountPrice: 80,
+          href: "/",
+        }))}
+      />
 
       {review.length > 0 && <ReviewSection reviews={review} />}
 

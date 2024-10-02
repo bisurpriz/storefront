@@ -13,7 +13,7 @@ type ReviewSectionProps = {
 
 const ReviewSection: FC<ReviewSectionProps> = ({ reviews }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { ScrollButtons } = useScrollHorizontal(scrollRef);
+  const { ScrollButtons } = useScrollHorizontal(scrollRef, true);
 
   return (
     <div className="bg-gradient-to-l from-white via-lime-100  to-white py-8 rounded-md">
@@ -30,7 +30,7 @@ const ReviewSection: FC<ReviewSectionProps> = ({ reviews }) => {
             return (
               <div
                 key={review.id}
-                className="flex-none w-80 bg-white rounded-lg shadow-md transition-all duration-300 ease-in-out transform md:hover:scale-105"
+                className="flex-none w-80 bg-gray-50 rounded-lg shadow-md transition-all duration-300 ease-in-out transform md:hover:scale-105"
               >
                 <div className="p-3">
                   <div className="flex items-center">
