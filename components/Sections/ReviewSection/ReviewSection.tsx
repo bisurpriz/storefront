@@ -1,14 +1,13 @@
 "use client";
 
 import Rating from "@/components/ReviewRating/CustomRating";
-import { GetCommentsForHomePageQuery } from "@/graphql/queries/review/review.generated";
 import useScrollHorizontal from "@/hooks/useScrollHorizontal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import React, { FC, useRef } from "react";
 
 type ReviewSectionProps = {
-  reviews: GetCommentsForHomePageQuery["review"];
+  reviews: any;
 };
 
 const ReviewSection: FC<ReviewSectionProps> = ({ reviews }) => {

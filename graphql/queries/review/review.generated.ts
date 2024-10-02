@@ -27,11 +27,6 @@ export type GetProductReviewsQueryVariables = Types.Exact<{
 
 export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, user: { firstname?: string | null, lastname?: string | null } }>, review_aggregate: { aggregate?: { count: number } | null } };
 
-export type GetCommentsForHomePageQueryVariables = Types.Exact<{ [key: string]: never; }>;
-
-
-export type GetCommentsForHomePageQuery = { review: Array<{ comment?: string | null, id: number, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null } }> };
-
 
 export const GetOrdersWithReviewsDocument = gql`
     query getOrdersWithReviews($user_id: uuid!) {
@@ -121,18 +116,3 @@ export const GetProductReviewsDocument = gql`
 }
     `;
 export type GetProductReviewsQueryResult = Apollo.QueryResult<GetProductReviewsQuery, GetProductReviewsQueryVariables>;
-export const GetCommentsForHomePageDocument = gql`
-    query GetCommentsForHomePage {
-  review(limit: 10) {
-    comment
-    id
-    score
-    user {
-      firstname
-      lastname
-      picture
-    }
-  }
-}
-    `;
-export type GetCommentsForHomePageQueryResult = Apollo.QueryResult<GetCommentsForHomePageQuery, GetCommentsForHomePageQueryVariables>;

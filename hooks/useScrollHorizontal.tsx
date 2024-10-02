@@ -128,7 +128,7 @@ const useScrollHorizontal = (
 
   const ScrollButtons = () =>
     showState.showComponent && (
-      <div className="flex space-x-2">
+      <div className="flex gap-2">
         {showState.showLeft ? (
           <button
             onClick={scrollLeft}
