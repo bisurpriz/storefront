@@ -5,6 +5,26 @@
 * {
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
+
+
+  /* Scroll */
+  scrollbar-width: thin;
+  scrollbar-color: #a8bbbf transparent;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a8bbbf;
+  border-radius: 20px;
 }
 
 @layer components {
@@ -66,18 +86,6 @@
 
 
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #a8bbbf;
-  border-radius: 20px;
-}
 
 .backdrop {
   background-color: rgba(0, 0, 0, 0.5);

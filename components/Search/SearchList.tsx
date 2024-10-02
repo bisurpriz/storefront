@@ -60,8 +60,7 @@ const SearchList: FC<Props> = ({
           "overflow-y-auto",
           "max-h-80",
           "mt-1",
-          "text-lg",
-          "p-4"
+          "text-lg"
         );
   };
 
@@ -122,7 +121,8 @@ const SearchList: FC<Props> = ({
               "sticky",
               "top-0",
               "bg-white",
-              "z-[52]"
+              "z-[52]",
+              "p-4"
             )}
           >
             <TextField
@@ -166,7 +166,7 @@ const SearchList: FC<Props> = ({
                 >
                   <div
                     key={product.id}
-                    className="p-2 border-b hover:bg-gray-100 transition-colors"
+                    className="py-2 px-4 border-b hover:bg-gray-100 transition-colors no-scrollbar"
                   >
                     <div className="flex items-start">
                       {product?.image_url?.[0] ? (
