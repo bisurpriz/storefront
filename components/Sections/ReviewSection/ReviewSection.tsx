@@ -52,7 +52,7 @@ const ReviewSection: FC<ReviewSectionProps> = ({ reviews }) => {
                       />
                     </div>
                   </div>
-                  <p className="mt-4 text-base text-gray-500 line-clamp-3">
+                  <p className="mt-4 text-sm text-gray-500 line-clamp-3 font-sans">
                     {review.comment}
                   </p>
                 </div>
