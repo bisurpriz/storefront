@@ -11285,7 +11285,7 @@ export type Product = {
   order_items: Array<Order_Item>;
   /** An aggregate relationship */
   order_items_aggregate: Order_Item_Aggregate;
-  price: Scalars['numeric']['output'];
+  price?: Maybe<Scalars['numeric']['output']>;
   /** An array relationship */
   product_categories: Array<Product_Category>;
   /** An aggregate relationship */

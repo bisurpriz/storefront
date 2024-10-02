@@ -10,7 +10,7 @@ export type GetVendorProductsWithPaginationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetVendorProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, description?: string | null, name: string, image_url?: Array<string> | null, price: number, quantity?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }> }> };
+export type GetVendorProductsWithPaginationQuery = { product_aggregate: { aggregate?: { count: number } | null }, product: Array<{ id: any, description?: string | null, name: string, image_url?: Array<string> | null, price?: number | null, quantity?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }> }> };
 
 
 export const GetVendorProductsWithPaginationDocument = gql`

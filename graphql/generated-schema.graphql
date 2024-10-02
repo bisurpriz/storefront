@@ -13387,7 +13387,7 @@ type product {
     """filter the rows returned"""
     where: order_item_bool_exp
   ): order_item_aggregate!
-  price: numeric!
+  price: numeric
 
   """An array relationship"""
   product_categories(

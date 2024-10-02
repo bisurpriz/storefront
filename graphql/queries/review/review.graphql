@@ -94,3 +94,16 @@ query getProductReviews($productId: Int, $limit: Int = 10, $offset: Int = 0) {
     }
   }
 }
+
+query GetCommentsForHomePage {
+  review(limit: 10) {
+    comment
+    id
+    score
+    user {
+      firstname
+      lastname
+      picture
+    }
+  }
+}

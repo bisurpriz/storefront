@@ -15,6 +15,12 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
+import CategorySection from "@/components/Sections/CategorySection/CategorySection";
+import ReviewSection from "@/components/Sections/ReviewSection/ReviewSection";
+import {
+  GetCommentsForHomePageDocument,
+  GetCommentsForHomePageQuery,
+} from "@/graphql/queries/review/review.generated";
 
 export const dynamic = "force-dynamic";
 
@@ -36,8 +42,15 @@ export default async function Page({
     fetchPolicy: "cache-first",
   });
 
+  const {
+    data: { review },
+  } = await query<GetCommentsForHomePageQuery>({
+    query: GetCommentsForHomePageDocument,
+    fetchPolicy: "cache-first",
+  });
+
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {searchText && (
         <Suspense fallback={<FilterSuspense />}>
           <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
@@ -60,6 +73,13 @@ export default async function Page({
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && <CampaignGrid />}
       </Suspense>
+
+      {category.length < 8 && viewport === "desktop" && (
+        <CategorySection category={category} />
+      )}
+
+      {review.length > 0 && <ReviewSection reviews={review} />}
+
       <Suspense
         fallback={
           <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
@@ -73,6 +93,6 @@ export default async function Page({
       >
         <ServerInfinityScroll searchParams={searchParams} />
       </Suspense>
-    </>
+    </div>
   );
 }
