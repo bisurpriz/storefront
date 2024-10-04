@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,7 +16,7 @@ import {
 import { FC } from "react";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
-import clsx from "clsx";
+
 interface CustomTabProps {
   id: string;
   label: string;

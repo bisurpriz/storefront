@@ -84,7 +84,7 @@ function VerifyPage() {
             </div>
             {result === ResultTypes.TOKEN_EXPIRED && (
               <Button
-                variant="outlined"
+                variant="outline"
                 onClick={() => {
                   mutate({
                     variables: {
@@ -94,8 +94,7 @@ function VerifyPage() {
                   });
                 }}
                 loading={false}
-                className="mt-4 flex items-center justify-center"
-                fullWidth
+                className="w-full mt-4 flex items-center justify-center"
               >
                 Tekrar Gönder
               </Button>
@@ -110,9 +109,8 @@ function VerifyPage() {
                 {resultMessages[result]}
               </p>
               <Button
-                variant="outlined"
-                className="mt-4 flex items-center justify-center"
-                fullWidth
+                variant="outline"
+                className="mt-4 w-full flex items-center justify-center"
               >
                 <Link href="/login">Giriş Yap</Link>
               </Button>
@@ -136,7 +134,7 @@ function VerifyPage() {
               {resultMessages[result]}
             </p>
             <Button
-              variant="outlined"
+              variant="outline"
               onClick={() => {
                 mutate({
                   variables: {
@@ -146,8 +144,7 @@ function VerifyPage() {
                 });
               }}
               loading={false}
-              className="mt-4 flex items-center justify-center"
-              fullWidth
+              className="mt-4 w-full flex items-center justify-center"
             >
               Tekrar Gönder
             </Button>

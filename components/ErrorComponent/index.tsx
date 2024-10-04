@@ -32,7 +32,7 @@ const ErrorComponent = ({
         <br />
         Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin.
       </p>
-      <Button variant="outlined" color="error" onClick={handleRefresh}>
+      <Button variant="destructive" onClick={handleRefresh}>
         Sayfayı Yenile
       </Button>
     </div>
