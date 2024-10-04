@@ -50,7 +50,7 @@ const Tooltip: FC<TooltipProps> = ({
 
   const contentClasses = "text-sm";
 
-  const arrowClasses = `absolute w-2 h-2 bg-7 ${arrowPositionClasses[position]} bg-gray-100 transform rotate-45`;
+  const arrowClasses = `absolute w-2 h-2 bg-orange-200 ${arrowPositionClasses[position]} bg-gray-100 transform rotate-45`;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
 

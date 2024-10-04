@@ -8,7 +8,6 @@ const nextConfig = {
     scrollRestoration: true,
     optimizePackageImports: [
       "framer-motion",
-      "@mui/base",
       "@hookform/resolvers",
       "date-fns",
       "graphql",
@@ -17,6 +16,7 @@ const nextConfig = {
       "react-hook-form",
       "swiper",
       "react-transition-progress",
+      "@radix-ui",
     ],
     serverActions: {
       bodySizeLimit: "20mb",

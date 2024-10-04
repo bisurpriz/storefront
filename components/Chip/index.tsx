@@ -61,14 +61,14 @@ const Chip: React.FC<ChipProps> = ({
 
   const colorClasses = {
     primary: {
-      outlined: "border border-primary text-primary-dark",
+      outlined: "border border-primary text-primary",
       filled: "bg-primary text-white",
-      soft: "bg-primary-100 text-primary-800",
+      soft: "bg-primary text-primary",
     },
     secondary: {
-      outlined: "border border-secondary text-secondary-dark",
+      outlined: "border border-secondary text-secondary",
       filled: "bg-secondary text-white",
-      soft: "bg-slate-200 text-secondary-dark",
+      soft: "bg-slate-200 text-secondary",
     },
     error: {
       outlined: "border border-red-500 text-red-700",

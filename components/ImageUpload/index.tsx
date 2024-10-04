@@ -49,7 +49,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         className={clsx(
           "p-4 rounded-md border border-gray-300 cursor-pointer text-sm text-slate-500 whitespace-nowrap",
           {
-            "bg-primary-700 text-white": selectedImages?.length,
+            "bg-primary text-white": selectedImages?.length,
           }
         )}
       >

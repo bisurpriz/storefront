@@ -28,7 +28,7 @@ export default function ProductItem3({
           aspectRatio: "400/500",
         }}
       />
-      <div className=" p-4 bg-2">
+      <div className=" p-4 bg-purple-100">
         <h3 className="font-semibold text-lg md:text-xl">
           {loading ? "Loading..." : name}
         </h3>

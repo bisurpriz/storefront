@@ -262,7 +262,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                   "text-lime-500",
                   "text-lg",
                   "font-semibold",
-                  "hover:text-primary-light",
+                  "hover:text-primary",
                   {
                     "text-orange-600": selectedValue,
                   }

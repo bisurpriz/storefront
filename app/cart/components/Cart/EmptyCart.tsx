@@ -14,9 +14,9 @@ const EmptyCart = () => {
         </span>
       </span>
 
-      <Link href="/" variant="default">
-        Alışverişe Başla
-      </Link>
+      <Button variant="default" onClick={(e) => e.preventDefault()}>
+        <Link href="/">Alışverişe Başla</Link>
+      </Button>
     </div>
   );
 };

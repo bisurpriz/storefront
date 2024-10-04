@@ -13,7 +13,7 @@ function ProductItem4({
 }: ProductItemProps) {
   return !loading ? (
     <div
-      className="flex flex-col border border-primary-200 dark:border-primary-800 p-4 rounded-lg w-full max-w-sm mx-auto overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+      className="flex flex-col border border-primary dark:border-primary p-4 rounded-lg w-full max-w-sm mx-auto overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
       key={id}
     >
       <ProductItemImage

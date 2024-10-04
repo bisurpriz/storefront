@@ -85,7 +85,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                   </div>
                 </div>
                 {comment.comment && (
-                  <div className="rounded-lg h-fit bg-4 w-fit">
+                  <div className="rounded-lg h-fit bg-purple-200 w-fit">
                     <p
                       className="text-sm font-normal text-slate-600 whitespace-pre-wrap font-sans p-4"
                       aria-label={`comment-${index}-comment`}

@@ -22,7 +22,7 @@ export default function ProductItem2() {
           aspectRatio: "400/300",
         }}
       />
-      <div className=" p-4 bg-2">
+      <div className=" p-4 bg-purple-100">
         <h3 className="font-semibold text-lg md:text-xl">Product Name</h3>
         <h4 className="font-semibold text-base md:text-lg">$29.99</h4>
         <Button className="mt-2">Add to Cart</Button>

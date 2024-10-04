@@ -77,7 +77,7 @@ const OrderMessage = ({
                 name="review-comment"
                 id="review-comment"
                 rows={3}
-                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-2"
+                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2"
                 placeholder="Mesajınızı yazın..."
                 value={message}
                 onChange={(e) => {
