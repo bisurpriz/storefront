@@ -1,7 +1,7 @@
 "use client";
 
 import { Category } from "@/common/types/Category/category";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Drawer from "@/components/Drawer";
 import HamburgerMenu from "@/components/Icons/HamburgerMenu";
 import MobileMenu from "@/components/Menu/MobileMenu";

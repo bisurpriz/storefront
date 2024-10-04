@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getOrderTrackingInformation } from "../actions";
 import StatusBadge from "@/components/StatusBadge";

@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import DistanceSalesContract from "@/components/ContractPreview/DistanceSalesContract";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import React from "react";
@@ -64,10 +64,8 @@ export const ContractProvider = ({ children }: ContractContextProps) => {
               okudum.
             </p>
             <Button
-              variant="fullfilled"
-              color="primary"
-              fullWidth
-              className="justify-center text-xl"
+              variant="default"
+              className="justify-center text-xl w-full"
               onClick={() => {
                 setApproveContract(true);
                 setOpenModal(false);

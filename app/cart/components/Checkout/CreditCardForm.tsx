@@ -25,7 +25,7 @@ import {
 } from "@/app/iyzico-payment/types";
 import clsx from "clsx";
 import usePopup from "@/hooks/usePopup";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
@@ -298,7 +298,7 @@ const CreditCardForm = () => {
           <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
           <Button
             onClick={handleClosePopupWithClearStates}
-            color="error"
+            variant="destructive"
             className="mt-2"
           >
             Kapat

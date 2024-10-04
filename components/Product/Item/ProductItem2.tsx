@@ -4,7 +4,7 @@
  */
 import { Link } from "@/components/Link";
 import Image from "next/image";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 
 export default function ProductItem2() {
   return (

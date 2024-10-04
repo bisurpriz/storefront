@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import React, { FC } from "react";
 

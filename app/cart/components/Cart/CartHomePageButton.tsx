@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import ArrowLeft from "@/components/Icons/ArrowLeft";
 import { Link } from "@/components/Link";
 

@@ -1,6 +1,6 @@
 import { Link } from "@/components/Link";
 import Image from "next/image";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { ProductItemProps } from ".";
 import Basket from "@/components/Icons/Basket";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -38,7 +38,7 @@ export default function ProductItem3({
         <h4 className="font-semibold text-base md:text-lg">
           {loading ? "Loading..." : price}
         </h4>
-        <Button className="mt-2" size="medium" icon={<Basket />}>
+        <Button className="mt-2" icon={<Basket />}>
           <span className="max-sm:hidden">Sepete Ekle</span>
         </Button>
       </div>

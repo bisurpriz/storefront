@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { TimeRange } from "./utils";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import AnimatedFilterBox from "@/components/Filter/components/FilterInput/AnimatedFilterBox";
 
@@ -48,10 +48,8 @@ const HourSelect: FC<HourSelectProps> = ({
   return (
     <div ref={containerRef} className="w-full relative">
       <Button
-        fullWidth
-        color="secondary"
-        variant="fullfilled"
-        className="max-md:text-xs justify-center"
+        variant="outline"
+        className="max-md:text-xs justify-center w-full"
         onClick={() => {
           if (disabled) return;
           setShowHourDropdown(true);

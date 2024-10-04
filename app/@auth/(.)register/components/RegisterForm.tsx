@@ -1,7 +1,7 @@
 "use client";
 
 import { registerUser } from "@/app/account/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
 import Image from "next/image";
 import { Link } from "@/components/Link";

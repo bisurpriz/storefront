@@ -65,7 +65,7 @@ export default async function Page({
         {!searchText && <CampaignGrid />}
       </Suspense>
       {category.length < 8 && viewport === "desktop" && (
-        <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+        <Suspense fallback={<CategorySectionSkeleton />}>
           <CategorySection category={category} />
         </Suspense>
       )}

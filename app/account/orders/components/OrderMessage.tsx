@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";
 import { useState, startTransition } from "react";
 import { startMessageForOrder } from "../actions";
@@ -43,9 +43,8 @@ const OrderMessage = ({
   return (
     <>
       <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
+        variant="outline"
+        size="sm"
         onClick={() => {
           setOpen(true);
         }}
@@ -87,12 +86,13 @@ const OrderMessage = ({
               />
             </div>
             <Button
-              label="Mesajı Gönder"
-              color="primary"
-              size="small"
+              variant="default"
+              size="sm"
               className="w-full justify-center"
               onClick={sendMessage}
-            />
+            >
+              Mesajı Gönder
+            </Button>
           </div>
         </div>
       </Modal>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Error from "../Icons/Error";
 
 const ErrorComponent = ({

@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/LogoutButton";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
@@ -237,7 +237,7 @@ const ProfileForm = ({
       <p>
         Tekrar giriş yapmak sorununuzu çözebilir.{" "}
         <Link href="/api/auth/logout">
-          <Button>Çıkış yap</Button>
+          <Button variant="destructive">Çıkış yap</Button>
         </Link>
       </p>
     </div>

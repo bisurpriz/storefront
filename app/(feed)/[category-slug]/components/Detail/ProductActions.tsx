@@ -4,7 +4,7 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Heart from "@/components/Icons/Heart";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
@@ -79,7 +79,7 @@ const ProductActions = ({
   return (
     <>
       {showPlaceWarning && (
-        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-1 bg-opacity-50 rounded-md my-2">
+        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
           <p className="text-sm font-semibold text-slate-500 max-md:text-xs max-md:font-normal">
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
           </p>
@@ -87,9 +87,9 @@ const ProductActions = ({
       )}
       <div className="flex items-center justify-start gap-4 py-4 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
         <Button
-          size="large"
-          color={error ? "error" : "primary"}
-          className={clsx("text-base w-full justify-center sm:text-xl")}
+          size="lg"
+          variant={error ? "destructive" : "default"}
+          className={clsx("w-full")}
           disabled={loading || error || !locationId || showPlaceWarning}
           onClick={() => {
             if (parseJson(selectedProduct?.delivery_time_ranges)?.length > 0) {
@@ -126,19 +126,9 @@ const ProductActions = ({
 
         <div className="flex items-end gap-2 flex-1">
           <Button
-            size="large"
-            iconSize={28}
-            variant="outlined"
-            className={`group border-red-300 hover:bg-red-400 rounded-xl ${
-              isFavoriteState ? "bg-red-400" : ""
-            }`}
-            icon={
-              <Heart
-                className={`text-red-300 group-hover:text-white ${
-                  isFavoriteState ? "text-white" : ""
-                }`}
-              />
-            }
+            size="lg"
+            variant={isFavoriteState ? "destructive" : "outline"}
+            icon={<Heart className="w-8 h-8" />}
             onClick={handleFavorite}
           />
           {favoriteCount > 0 && (

@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Modal from "@/components/Modal";
 import Tooltip from "@/components/Tooltip";
 import { localeFormat } from "@/utils/format";
@@ -47,14 +47,14 @@ const ClientModal = ({
   return (
     <>
       <Button
-        label="Değerlendir"
-        variant="outlined"
-        color="primary"
-        size="small"
+        variant="outline"
+        size="sm"
         onClick={() => {
           setOpen(true);
         }}
-      />
+      >
+        Değerlendir
+      </Button>
       <Modal
         isOpen={open}
         onClose={() => {
@@ -152,14 +152,14 @@ const ClientModal = ({
             </label>
           </form>
           <Button
-            label="Değerlendir"
-            variant="fullfilled"
-            color="primary"
-            size="small"
+            variant="default"
+            size="sm"
             className="w-full justify-center"
             disabled={selectedRating === 0}
             onClick={handleSubmit}
-          />
+          >
+            Değerlendir
+          </Button>
         </div>
       </Modal>
     </>

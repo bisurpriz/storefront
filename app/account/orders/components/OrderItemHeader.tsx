@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { useOrderCustomizableModal } from "@/contexts/OrderCustomizableModal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import React, { FC } from "react";
@@ -55,26 +55,30 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
       {showUploadButton && (
         <Button
           type="button"
-          size="small"
-          color="warning"
-          label="Yükle"
+          size="sm"
+          variant="secondary"
           onClick={() => {
             onOpen(order);
           }}
-        />
+        >
+          Yükle
+        </Button>
       )}
       {wasCustomized && haveAnyCustomizeEmpty && (
         <Button
           type="button"
-          size="small"
-          color="info"
-          label="Tamamla"
+          size="sm"
+          variant="default"
           onClick={() => {
             onOpen(order);
           }}
-        />
+        >
+          Tamamla
+        </Button>
       )}
-      <Button type="button" size="small" color="secondary" label="Detaylar" />
+      <Button type="button" size="sm" variant="outline">
+        Detaylar
+      </Button>
       <OrderMessage
         tenant={tenant_orders.tenant}
         orderTenantId={tenant_orders.id}

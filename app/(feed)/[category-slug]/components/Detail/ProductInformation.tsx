@@ -215,7 +215,7 @@ const ProductInformation = ({
           ]}
         />
         {showExactTime && (
-          <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
+          <div className="p-1 px-4 bg-purple-100 bg-opacity-50 rounded-xl my-2">
             <p className="text-xs text-gray-500">
               Ürün gün içinde herhangi bir saatte teslim edilecektir.
             </p>

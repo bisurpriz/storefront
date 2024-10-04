@@ -1,7 +1,7 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 
 import { useCart } from "@/contexts/CartContext";
 import { usePathname } from "next/navigation";
@@ -166,22 +166,21 @@ const CartSummary = () => {
               ? "submit"
               : "button"
           }
-          size="large"
-          color="primary"
+          size="lg"
+          variant="default"
           form={
             pagePathForm[pathname as keyof typeof pagePathForm] || undefined
-          }
-          label={
-            pathname === CartStepPaths.CHECKOUT
-              ? "Ödeme Yap"
-              : "Onayla ve Devam Et"
           }
           className={clsx(
             "flex justify-center rounded-t-none w-full",
             "max-md:rounded-none max-md:col-span-2"
           )}
           onClick={changeStep}
-        />
+        >
+          {pathname === CartStepPaths.CHECKOUT
+            ? "Ödeme Yap"
+            : "Onayla ve Devam Et"}
+        </Button>
       </div>
     </div>
   );

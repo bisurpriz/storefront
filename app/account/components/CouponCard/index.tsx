@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { differenceInDays, parseISO } from "date-fns";
 
 interface CouponCardProps {
@@ -43,12 +43,7 @@ const CouponCard = ({
             <h4 className="text-xl font-semibold text-orange-500">
               {discountAmount} TL
             </h4>
-            <Button
-              size="small"
-              variant="outlined"
-              color="warning"
-              className="text-xs"
-            >
+            <Button size="sm" variant="outline">
               Kullan
             </Button>
           </div>

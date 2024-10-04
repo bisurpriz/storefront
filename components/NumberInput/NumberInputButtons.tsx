@@ -1,4 +1,4 @@
-import Button from "../Button";
+import { Button } from "../ui/button";
 
 export const IncrementButton = (
   props: React.ComponentPropsWithoutRef<typeof Button> & {
@@ -10,8 +10,8 @@ export const IncrementButton = (
       ref={props.ref}
       {...props}
       className="order-1 rounded-l-none border-l-0"
-      color={props.color}
-      size="small"
+      variant="default"
+      size="sm"
       disabled={props.disabled}
     />
   );
@@ -26,8 +26,8 @@ export const DecrementButton = (
     <Button
       ref={props.ref}
       {...props}
-      color={props.color}
-      size="small"
+      variant="default"
+      size="sm"
       className="rounded-r-none border-r-0"
       disabled={props.disabled}
     />

@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
-import Button from "../Button";
 import clsx from "clsx";
 import Close from "../Icons/Close";
+import { Button } from "../ui/button";
 
 interface ImageUploadProps {
   onChange: (files: File[] | null) => void;
@@ -92,8 +92,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                   setSelectedImages(data);
                   onChange(data);
                 }}
-                color="secondary"
-                variant="outlined"
+                variant="outline"
                 className="!absolute !top-1 !right-1 !p-[2px] rounded-full"
               >
                 <Close />

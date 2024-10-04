@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { addDays, format } from "date-fns";
 import { motion } from "framer-motion";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
@@ -11,8 +11,7 @@ import { DeliveryTime } from "@/contexts/CartContext";
 const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
-      variant="outlined"
-      color="secondary"
+      variant="default"
       className={clsx(
         { "bg-secondary text-white ": isSelected },
         "max-sm:px-0 flex flex-col justify-center items-center",
