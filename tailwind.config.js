@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
+  darkMode: ["class"],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,66 +10,48 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        secondary: "#F075AA",
-        ["secondary-dark"]: "#D6458D",
-        ["secondary-light"]: "#BC5A94",
-        primary: "#ADD899",
-        ["primary-dark"]: "#8dbb6b",
-        ["primary-light"]: "#c4e1b6",
-        tertiary: "#FFDE95",
-        ["tertiary-dark"]: "#e9c46a",
-        ["tertiary-light"]: "#ffedc1",
-        error: "#dc2626",
-        ["error-dark"]: "#b91c1c",
-        ["error-light"]: "#ef4444",
-        info: "#0891b2",
-        ["info-dark"]: "#0e7490",
-        ["info-light"]: "#06b6d4",
-        success: "#16a34a",
-        ["success-dark"]: "#15803d",
-        ["success-light"]: "#22c55e",
-        warning: "#ea580c",
-        ["warning-dark"]: "#c2410c",
-        ["warning-light"]: "#f97316",
-        1: "#fddde4",
-        2: "#cdebbc",
-        3: "#d1e8f2",
-        4: "#cdd4f8",
-        5: "#f6dbf6",
-        6: "#fff2e5",
-        7: "#d77f7a",
-        8: "#63a2c1",
-        9: "#f2fce4",
-        10: "#fffceb",
-        11: "#ecffec",
-        12: "#feefea",
-        13: "#fff3eb",
-        14: "#fff3ff",
-        15: "#f2fce4",
-      },
-      backgroundImage: {
-        "slider-1": "url('/slider/slider-1.png')",
-        "slider-2": "url('/slider/slider-2.png')",
-        "slider-0": "url('/slider/slider-0.png')",
-      },
-      keyframes: {
-        marqueeLeft: {
-          "0%": { transform: "translateX(100%)" },
-          "100%": { transform: "translateX(-100%)" },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
-        marqueeRight: {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
-        marqueeUp: {
-          "0%": { transform: "translateY(100%)" },
-          "100%": { transform: "translateY(-100%)" },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
-        marqueeDown: {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100%)" },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
         },
       },
+
       screens: {
         xs: "480px",
         sm: "576px",
@@ -86,15 +69,14 @@ module.exports = {
         mono: ["var(--font-quicksand)"],
         manrope: ["var(--font-manrope)"],
       },
-      animation: {
-        "marquee-left": "marqueeLeft linear infinite",
-        "marquee-right": "marqueeRight linear infinite",
-        "marquee-up": "marqueeUp linear infinite",
-        "marquee-down": "marqueeDown linear infinite",
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
   screens: {
     xs: "480px",
     sm: "576px",

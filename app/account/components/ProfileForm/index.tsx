@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/LogoutButton";
 import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
@@ -15,7 +15,7 @@ import { useMutation } from "@apollo/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { useEffect } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -237,7 +237,7 @@ const ProfileForm = ({
       <p>
         Tekrar giriş yapmak sorununuzu çözebilir.{" "}
         <Link href="/api/auth/logout">
-          <Button>Çıkış yap</Button>
+          <Button variant="destructive">Çıkış yap</Button>
         </Link>
       </p>
     </div>

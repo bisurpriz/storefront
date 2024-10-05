@@ -3,7 +3,6 @@
 import {
   createNewUserAddress,
   getAvailableCitiesForProduct,
-  getUserAddressById,
 } from "@/app/account/actions";
 import {
   CityResponse,
@@ -18,12 +17,16 @@ import TextField from "@/components/TextField";
 import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
 import { useQuarters } from "@/hooks/useQuarters";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import toast from "react-hot-toast";
-import { AnyObject, ObjectSchema, boolean, object, string } from "yup";
+import { FC, useEffect, useMemo, useState, startTransition } from "react";
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+  useWatch,
+} from "react-hook-form";
+import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
 import clsx from "clsx";
@@ -33,8 +36,14 @@ import User from "@/components/Icons/User";
 import Phone from "@/components/Icons/Phone";
 import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
-import { CartStepPaths } from "../../constants";
 import { useCart } from "@/contexts/CartContext";
+import { OrderDetailSchema } from "./schema";
+import { GetProductDeliveryCitiesQuery } from "@/graphql/queries/products/getProductLocation.generated";
+import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { parseJson } from "@/utils/format";
+import { CartStepPaths } from "../../constants";
+import toast from "react-hot-toast";
+import { useProgress } from "react-transition-progress";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -48,7 +57,7 @@ const SubTitle = ({ children }: { children: React.ReactNode }) => (
 
 export interface OrderDetailPartialFormData
   extends Partial<OrderDetailFormData> {
-  saved_address?: string;
+  saved_address?: AutoCompleteOption;
   wantToSaveAddress?: boolean;
 }
 
@@ -65,61 +74,6 @@ interface ReceiverFormProps {
   defaultQuarter?: QuarterResponse;
 }
 
-const OrderDetailSchema = object({
-  city: object().required("İl alanı zorunludur."),
-  district: object().required("İlçe alanı zorunludur."),
-  quarter: object().required("Mahalle alanı zorunludur."),
-  address: string().required("Adres alanı zorunludur."),
-  receiver_name: string().required("Alıcı adı zorunludur."),
-  receiver_phone: string().required("Alıcı telefonu zorunludur."),
-  sender_name: string().required("Gönderici adı zorunludur."),
-  sender_phone: string().required("Gönderici telefonu zorunludur."),
-  sender_email: string()
-    .required("Gönderici e-posta adresi zorunludur.")
-    .email("Geçerli bir e-posta adresi giriniz."),
-  address_title: string().optional().nullable(),
-  saved_address: string().optional().nullable(),
-  wantToSaveAddress: boolean().optional().nullable(),
-  invoice_type: string()
-    .default("person")
-    .equals(["person", "company"], "Invalid invoice type"),
-  invoice_address: string().when("invoice_type", {
-    is: "person",
-    then: (schema) => schema.required("Fatura adresi zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_name: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Firma adı zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_tax_number: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Vergi numarası zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_tax_office: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Vergi dairesi zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_address: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Firma adresi zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_city: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Firma adresi zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-  invoice_company_district: string().when("invoice_type", {
-    is: "company",
-    then: (schema) => schema.required("Firma adresi zorunludur."),
-    otherwise: (schema) => schema.optional().nullable(),
-  }),
-});
-
 const defaultValues: OrderDetailPartialFormData = {
   address: "",
   address_title: "",
@@ -127,14 +81,13 @@ const defaultValues: OrderDetailPartialFormData = {
   district: null,
   quarter: null,
   receiver_name: "",
-  receiver_phone: "",
-  saved_address: "",
+  receiver_phone: null,
+  saved_address: null,
   wantToSaveAddress: false,
   sender_email: "",
   sender_name: "",
-  sender_phone: "",
+  sender_phone: null,
   invoice_type: "person",
-  id: null,
   invoice_address: "",
   invoice_company_address: "",
   invoice_company_city: "",
@@ -142,25 +95,33 @@ const defaultValues: OrderDetailPartialFormData = {
   invoice_company_name: "",
   invoice_company_tax_number: "",
   invoice_company_tax_office: "",
-  user_id: null,
 };
 
-const ReceiverForm = ({ cities }: ReceiverFormProps) => {
-  const { user } = useUser();
-  const [userAddresses, setUserAddresses] = useState(null);
-  const [availableCities, setAvailableCities] = useState([]);
+const ReceiverForm: FC<ReceiverFormProps> = ({
+  defaultCity,
+  defaultDistrict,
+  defaultQuarter,
+}) => {
+  const { user, userAddresses } = useUser();
+  const [availableCities, setAvailableCities] = useState<
+    GetProductDeliveryCitiesQuery["get_product_delivery_cities"]
+  >([]);
   const { push } = useRouter();
   const { cartState } = useCart();
   const {
     control,
     reset,
     watch,
-    getValues,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<OrderDetailPartialFormData>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      city: defaultCity,
+      district: defaultDistrict,
+      quarter: defaultQuarter,
+    },
     mode: "all",
     delayError: 500,
     resolver: yupResolver<OrderDetailPartialFormData>(
@@ -173,148 +134,137 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     ),
   });
 
-  useEffect(() => {
-    getUserAddressById().then(({ userAddresses }) => {
-      setUserAddresses(userAddresses);
-    });
+  const setSessionStorage = (data: OrderDetailPartialFormData) => {
+    sessionStorage?.setItem("order-detail-form", JSON.stringify(data));
+  };
 
+  const getSessionStorage = () => {
+    if (typeof sessionStorage === "undefined") return null;
+    return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
+  };
+
+  const startProgress = useProgress();
+  const onSubmit: SubmitHandler<OrderDetailPartialFormData> = async (data) => {
+    startTransition(() => {
+      startProgress();
+      if (data && Object.keys(errors).length === 0) {
+        if (data.wantToSaveAddress && !data.saved_address && user?.id) {
+          try {
+            createNewUserAddress({
+              address: data.address,
+              city_id: data.city?.id,
+              district_id: data.district?.id,
+              quarter_id: data.quarter?.id,
+              receiver_firstname: data.receiver_name?.split(" ")[0],
+              receiver_surname: data.receiver_name
+                ?.split(" ")
+                .slice(1)
+                .join(" "),
+              receiver_phone: data.receiver_phone,
+              address_title: data.address_title,
+              user_id: user?.id,
+            });
+          } catch (e) {
+            console.error(e);
+            toast.error("Adres kaydedilirken bir hata oluştu.", {
+              duration: 4000,
+            });
+          }
+        }
+        setSessionStorage(data);
+        push(CartStepPaths.CHECKOUT);
+      }
+    });
+  };
+
+  const onError: SubmitErrorHandler<OrderDetailPartialFormData> = (
+    error: any
+  ) => {
+    console.log(error);
+  };
+
+  useEffect(() => {
     getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
       (cities) => {
         setAvailableCities(cities);
       }
     );
+    const session = getSessionStorage();
+    if (session) {
+      reset({
+        ...session,
+        receiver_phone: formatPhoneNumber(session.receiver_phone),
+        sender_phone: formatPhoneNumber(session.sender_phone),
+      });
+    }
   }, []);
 
-  const [city, district, invoice_type] = useWatch({
+  const [city, district, invoice_type, savedAddressValue] = useWatch({
     control,
-    name: ["city", "district", "invoice_type"],
+    name: ["city", "district", "invoice_type", "saved_address"],
   });
-  const savedAddressValue = watch("saved_address");
 
-  useEffect(() => {
-    const serializeLocale = localStorage.getItem("detail-data");
-    const localStorageData = JSON.parse(serializeLocale);
+  const { districts, loading: districtLoading } = useDiscrits(
+    city?.id,
+    cartState?.cartItems?.[0]?.id
+  );
+  const { quarters, loading: quarterLoading } = useQuarters(
+    district?.id,
+    cartState?.cartItems?.[0]?.id
+  );
 
-    if (localStorageData) {
+  const getFilteredSavedAddress = useMemo(() => {
+    if (!user?.id) return null;
+    return userAddresses.filter((ad) =>
+      availableCities.some((city) => city.id === ad.city.id)
+    );
+  }, [userAddresses, availableCities]);
+
+  const savedAdressInputChange = (option: AutoCompleteOption) => {
+    if (!option) {
       reset({
-        ...getValues(),
-        saved_address: savedAddressValue ?? localStorageData.saved_address,
-        address: localStorageData.address,
-        receiver_name: localStorageData.receiver_name,
-        receiver_phone: localStorageData.receiver_phone,
-        address_title: localStorageData.address_title,
-        sender_email: localStorageData.sender_email,
-        sender_phone: localStorageData.sender_phone,
-        sender_name: localStorageData.sender_name,
-        invoice_type: localStorageData.invoice_type,
-        invoice_address: localStorageData.invoice_address,
-        invoice_company_address: localStorageData.invoice_company_address,
-        invoice_company_city: localStorageData.invoice_company_city,
-        invoice_company_district: localStorageData.invoice_company_district,
-        invoice_company_name: localStorageData.invoice_company_name,
-        invoice_company_tax_number: localStorageData.invoice_company_tax_number,
-        invoice_company_tax_office: localStorageData.invoice_company_tax_office,
+        ...defaultValues,
+        sender_phone: formatPhoneNumber(""),
+        receiver_phone: formatPhoneNumber(""),
       });
-
-      const savedAddress = userAddresses?.find(
-        (address) => address.id === parseInt(savedAddressValue)
-      );
-
-      if (savedAddress) {
-        const receiver_phone = formatPhoneNumber(savedAddress.receiver_phone);
-        reset({
-          ...getValues(),
-          address: savedAddress.address,
-          receiver_name:
-            savedAddress.receiver_firstname +
-            " " +
-            savedAddress.receiver_surname,
-          receiver_phone,
-          address_title: savedAddress.address_title,
-        });
-      }
-
       return;
     }
-
-    if (!localStorageData && user) {
-      reset({
-        sender_name: user?.firstname + " " + user?.lastname,
-        sender_phone: user?.phone?.match(/^90(\d{10})$/)?.[1],
-        sender_email: user?.email,
-      });
-    }
-  }, [savedAddressValue, userAddresses]);
-
-  const { districts } = useDiscrits(city?.id);
-  const { quarters } = useQuarters(district?.id);
-
-  const onSubmit = async (values) => {
-    const cartId = user?.carts[0]?.id;
-    const user_id = user?.id;
-    if (values && Object.keys(errors).length === 0) {
-      if (values.wantToSaveAddress && !values.saved_address) {
-        try {
-          createNewUserAddress({
-            address: values.address,
-            city_id: values.city?.id,
-            district_id: values.district?.id,
-            quarter_id: values.quarter?.id,
-            receiver_firstname: values.receiver_name?.split(" ")[0],
-            receiver_surname: values.receiver_name
-              ?.split(" ")
-              .slice(1)
-              .join(" "),
-            receiver_phone: values.receiver_phone,
-            user_id,
-            address_title: values.address_title,
-          });
-        } catch (e) {
-          console.error(e);
-          toast.error("Adres kaydedilirken bir hata oluştu.", {
-            duration: 4000,
-          });
-        }
-      }
-      console.log(values, !errors);
-
-      localStorage.setItem("detail-data", JSON.stringify(values));
-      push(CartStepPaths.CHECKOUT);
-    }
+    const city = availableCities.find((ct) => ct.id === option.city.id);
+    setValue("saved_address", option);
+    setValue("city", {
+      code: city?.city_code,
+      name: city?.city_name,
+      id: city?.id,
+    });
+    setValue(
+      "receiver_name",
+      option.receiver_firstname + " " + option.receiver_surname
+    );
+    setValue("receiver_phone", formatPhoneNumber(option.receiver_phone));
+    setValue("sender_email", user.email);
+    setValue("sender_name", user.firstname + " " + user.lastname);
+    setValue("sender_phone", formatPhoneNumber(user.phone));
+    setValue("address", option.address);
   };
 
-  const onError = (errors) => {};
-
   const renderSavedAddress = () => {
-    if (userAddresses?.length > 0) {
+    if (getFilteredSavedAddress?.length > 0) {
       return (
         <Controller
           control={control}
           name="saved_address"
-          render={({ field }) => {
-            const selectedAddress = userAddresses.find(
-              (address) => address.id === field.value
-            );
-
+          render={({ field: { value, onChange } }) => {
             return (
               <AutoComplete
-                value={
-                  selectedAddress
-                    ? {
-                        label: selectedAddress.address_title,
-                        value: selectedAddress.id,
-                      }
-                    : null
-                }
+                value={value}
                 label="Kayıtlı Adresler"
                 getOptionLabel={(option) => option.label}
-                options={userAddresses.map((address) => ({
-                  label: address.address_title,
-                  value: address.id,
+                options={getFilteredSavedAddress.map((ad) => ({
+                  ...ad,
+                  label: ad.address_title,
+                  value: ad.id,
                 }))}
-                onChange={(option: AutoCompleteOption) => {
-                  field.onChange(option?.value ?? "");
-                }}
+                onChange={savedAdressInputChange}
                 placeholder="Kayıtlı adres seçiniz"
                 id="saved_address"
               />
@@ -330,6 +280,7 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
     <Card>
       <Title>Teslimat Detay</Title>
       <form
+        onSubmit={handleSubmit(onSubmit, onError)}
         id="order-detail-form"
         name="order-detail-form"
         autoComplete="off"
@@ -337,7 +288,6 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
           "grid grid-cols-2 w-full gap-6 max-md:grid-cols-1 max-md:gap-3",
           "text-sm font-manrope"
         )}
-        onSubmit={handleSubmit(onSubmit, onError)}
       >
         <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
           {renderSavedAddress()}
@@ -494,9 +444,11 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
         <CompanyDetail control={control} invoice_type={invoice_type} />
         <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
           <SubTitle>Alıcı Adres Bilgileri</SubTitle>
-
           <RenderAddress
-            selectedSavedAddress={savedAddressValue}
+            isSelectedSavedAddress={
+              Boolean(savedAddressValue) ||
+              Boolean(getSessionStorage()?.saved_address)
+            }
             control={control}
             user={user}
             setValue={setValue}
@@ -522,14 +474,17 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                     value: city.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
+                    console.log(option, "burada la");
                     onChange(option);
                     reset({
                       ...watch(),
-                      city: {
-                        code: null,
-                        name: option.label as string,
-                        id: option.value as number,
-                      },
+                      city: option
+                        ? {
+                            code: null,
+                            name: option.label as string,
+                            id: option.value as number,
+                          }
+                        : null,
                       district: null,
                       quarter: null,
                     });
@@ -562,23 +517,28 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                       : null
                   }
                   label="İlçe"
-                  options={districts.map((district) => ({
-                    label: district.name,
-                    value: district.id,
-                  }))}
+                  options={
+                    districts?.map((district) => ({
+                      label: district.name,
+                      value: district.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
                     onChange(option);
                     reset({
                       ...watch(),
-                      district: {
-                        id: option.value as number,
-                        name: option.label as string,
-                      },
+                      district: option
+                        ? {
+                            id: option.value as number,
+                            name: option.label as string,
+                          }
+                        : null,
                       quarter: null,
                     });
                   }}
                   placeholder="İlçe Seçiniz"
                   id="district"
+                  disabled={!city || districtLoading}
                   error={!!error}
                   errorMessage={error?.message}
                 />
@@ -601,19 +561,26 @@ const ReceiverForm = ({ cities }: ReceiverFormProps) => {
                       : null
                   }
                   label="Mahalle"
-                  options={quarters.map((option) => ({
-                    label: option.name,
-                    value: option.id,
-                  }))}
+                  options={
+                    quarters?.map((option) => ({
+                      label: option.name,
+                      value: option.id,
+                    })) ?? []
+                  }
                   onChange={(option: AutoCompleteOption) => {
-                    onChange({
-                      id: option.value as number,
-                      name: option.label as string,
-                    });
+                    onChange(
+                      option
+                        ? {
+                            id: option.value as number,
+                            name: option.label as string,
+                          }
+                        : null
+                    );
                   }}
                   placeholder="Mahalle Seçiniz"
                   id="quarter"
                   error={!!error}
+                  disabled={!district || quarterLoading}
                   errorMessage={error?.message}
                 />
               );

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ChevronDown from "@/components/Icons/ChevronDown";

@@ -36,13 +36,19 @@ export const authLink = setContext(async (_, { headers }) => {
   let token = null;
   try {
     // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get(CookieTokens.REFRESH_TOKEN)?.value;
+    const ntoken = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
     token = ntoken;
   } catch (e) {
     console.error(e, "error getting session");
   }
 
   const hasToken = token ? { authorization: `Bearer ${token}` } : {};
+
+  /* const user_id = cookies().get(CookieTokens.USER_ID)?.value;
+  const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
+
+  const newHeaders =
+    !user_id && guest_id ? { ["x-hasura-guest-id"]: guest_id } : {}; */
 
   return {
     headers: {

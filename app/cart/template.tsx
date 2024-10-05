@@ -55,18 +55,25 @@ const CartTemplate = ({ children }: { children: React.ReactNode }) => {
     cartState: { count },
   } = useCart();
   const pathname = usePathname();
-  if (!count && pathname !== CartStepPaths.COMPLETE) {
+  const customizePath = pathname.split("/").slice(0, 3).join("/");
+  if (
+    !count &&
+    pathname !== CartStepPaths.COMPLETE &&
+    customizePath !== CartStepPaths.CUSTOMIZE
+  ) {
     return <EmptyCart />;
   }
 
   return (
-    <section id="cart" className="flex flex-col gap-4 max-md:mb-[60px]">
+    <section id="cart" className="flex flex-col max-md:mb-[60px]">
       <CartSteps />
       <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
         <div
           className={clsx(
             `col-span-1 md:col-span-2 flex flex-col gap-3`,
-            pathname === CartStepPaths.COMPLETE && "col-span-3 md:col-span-3"
+            (pathname === CartStepPaths.COMPLETE ||
+              pathname.startsWith(CartStepPaths.CUSTOMIZE)) &&
+              "col-span-3 md:col-span-3"
           )}
         >
           {children}

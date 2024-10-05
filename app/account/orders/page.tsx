@@ -48,7 +48,7 @@ const OrdersPage = async () => {
                       ürün bulunmaktadır.
                     </p>
                   </div>
-                  <div className="h-px bg-2 my-3"></div>
+                  <div className="h-px bg-purple-100 my-3"></div>
                   <TenantOrders tenants={order.tenant_orders} order={order} />
                 </div>
               </li>

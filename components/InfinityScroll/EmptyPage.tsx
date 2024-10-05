@@ -1,19 +1,17 @@
-import Link from "next/link";
 import React from "react";
 import Package from "../Icons/Package";
+import { Link } from "@/components/Link";
 
 const EmptyPage = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-md text-center">
+      <div className="mx-auto max-w-lg text-center">
         <Package className="w-24 h-24 text-primary mx-auto" />
-        <h1 className="mt-4 text-3xl max-md:text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Aradığınız Ürünü Bulamadık
+        <h1 className="mt-4 text-3xl max-md:text-2xl font-bold tracking-tight text-slate-700 sm:text-4xl">
+          Henüz aramanızla eşleşen bir ürünümüz bulunmamaktadır.
         </h1>
-        <p className="mt-4 text-muted-foreground">
-          Görünüşe göre kayboldunuz.
-          <br />
-          Lütfen tekrar deneyin.
+        <p className="mt-4 text-slate-500">
+          Yakın zamanda daha fazla ürün çeşidiyle karşınızda olacağız.
         </p>
         <div className="mt-6">
           <Link

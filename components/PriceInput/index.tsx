@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import NumberInput from "../NumberInput";
+import NumberInput from "../QuantityInput";
 
 type Values = {
   min: number;
@@ -25,8 +25,8 @@ const PriceInput: FC<PriceInputProps> = ({
       <span className="flex items-center gap-1 justify-between mb-2">
         <span className="text-gray-500 text-sm font-semibold ">En az</span>
         <NumberInput
-          value={values.min}
-          onChange={(e, min) => {
+          defaultValue={values.min}
+          onChange={(min) => {
             onChange({ ...values, min });
           }}
           min={min}
@@ -37,8 +37,8 @@ const PriceInput: FC<PriceInputProps> = ({
       <span className="flex items-center gap-1 justify-between">
         <span className="text-gray-500 text-sm font-semibold ">En fazla</span>
         <NumberInput
-          value={values.max}
-          onChange={(e, max) => {
+          defaultValue={values.max}
+          onChange={(max) => {
             onChange({ ...values, max });
           }}
           min={values.min}

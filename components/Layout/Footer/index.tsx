@@ -3,7 +3,7 @@ import InstagramIcon from "@/components/CustomIcons/Instagram";
 import TwitterIcon from "@/components/CustomIcons/Twitter";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const footerData = [
   {
@@ -48,8 +48,8 @@ const footerData = [
         path: "/mesafeli-satis-sozlesmesi",
       },
       {
-        name: "KVK Politikası",
-        path: "/kvk-politikasi",
+        name: "KVKK Politikası",
+        path: "/kvkk-politikasi",
       },
     ],
   },

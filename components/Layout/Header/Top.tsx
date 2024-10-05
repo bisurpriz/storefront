@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const headerTopLeftMenu = [
   {
@@ -15,7 +15,7 @@ const headerTopLeftMenu = [
   },
   {
     label: "Sipariş Takibi",
-    link: "order-tracking",
+    link: "siparis-takip",
   },
 ];
 
@@ -28,14 +28,14 @@ const HeaderTop = () => {
             <div key={item.link}>
               <Link
                 href={`/${item.link}`}
-                className="hover:text-primary-dark whitespace-nowrap w-fit font-normal"
+                className="hover:text-primary whitespace-nowrap w-fit font-normal"
               >
                 {item.label}
               </Link>
             </div>
           ))}
         </div>
-        <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
+        {/*  <p className="flex flex-grow-1 w-full justify-center gap-1 text-gray-500 font-medium flex-wrap max-lg:hidden">
           Sevgililer gününe özel&nbsp;
           <Link
             href="/campaign-details"
@@ -43,14 +43,14 @@ const HeaderTop = () => {
           >
             ürünler!
           </Link>
-        </p>
+        </p> */}
         <ul className="text-right whitespace-nowrap">
           <li>
             Bonnmarşe&apos;de satış yapmak ister misiniz?&nbsp;
             <Link
               href={process.env.NEXT_PUBLIC_SELLER_PANEL_URL}
               target="_blank"
-              className="text-primary hover:text-primary-dark"
+              className="text-primary hover:text-primary"
             >
               Satıcı Paneli
             </Link>

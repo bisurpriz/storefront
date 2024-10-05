@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import SearchStop from "../Icons/SearchStop";
@@ -6,6 +6,7 @@ import Location from "../Icons/Location";
 import RemoveSquare from "../Icons/RemoveSquare";
 import ChevronDown from "../Icons/ChevronDown";
 import Spinner from "../Spinner";
+import useResponsive from "@/hooks/useResponsive";
 
 interface AutocompleteProps {
   suggestions: (input: string) => Promise<any[]>;
@@ -14,6 +15,7 @@ interface AutocompleteProps {
   onClear?: () => void;
   placeholder?: string;
   value?: any;
+  disabled?: boolean;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -23,6 +25,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   onClear,
   placeholder,
   value,
+  disabled,
 }) => {
   const [activeSuggestion, setActiveSuggestion] = useState(0);
   const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]);
@@ -34,6 +37,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const suggestionsListRef = useRef<HTMLUListElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -65,10 +69,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     const value = e.currentTarget.value;
     setUserInput(value);
     setSelectedValue(null);
-
-    if (onChange) {
-      onChange({ inputValue: value, selectedValue: null });
-    }
 
     clearTimeout(debounceTimeout.current);
 
@@ -161,29 +161,118 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     return option;
   };
 
+  const { isTablet } = useResponsive();
+
+  const likeBottomSheetStyle = useMemo(() => {
+    return isTablet
+      ? clsx(
+          "fixed",
+          "bottom-0",
+          "left-0",
+          "right-0",
+          "bg-white",
+          "shadow-lg",
+          "rounded-t-lg",
+          "p-4",
+          "pt-0",
+          "z-[1000]",
+          "max-h-[50vh]",
+          "overflow-y-auto",
+          "border-t",
+          "max-h-[65vh] max-sm:bottom-14 xs:bottom-[72px]  max-md:rounded-bl-none max-md:rounded-br-none"
+        )
+      : clsx(
+          "absolute",
+          "w-full",
+          "bg-white",
+          "border",
+          "border-lime-300",
+          "rounded-md",
+          "shadow-md",
+          "z-10",
+          "overflow-y-auto",
+          "max-h-60",
+          "mt-1",
+          "text-lg"
+        );
+  }, [isTablet]);
+
+  const likeBottomSheetAnimation = useMemo(
+    () =>
+      isTablet
+        ? {
+            initial: { y: "100%" },
+            animate: { y: 0 },
+            exit: { y: "100%" },
+            transition: { duration: 0.2 },
+          }
+        : {
+            initial: { opacity: 0, height: 0 },
+            animate: { opacity: 1, height: "auto" },
+            exit: { opacity: 0, height: 0 },
+            transition: { duration: 0.2 },
+          },
+    [isTablet]
+  );
+
+  useEffect(() => {
+    if (isTablet) {
+      if (showSuggestions && userInput) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isTablet, showSuggestions, userInput]);
+
   const suggestionsListComponent = (
     <AnimatePresence>
       {showSuggestions && userInput && (
         <motion.ul
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.2 }}
           ref={suggestionsListRef}
-          className={clsx(
-            "absolute",
-            "w-full",
-            "bg-white",
-            "border",
-            "border-lime-300",
-            "rounded-md",
-            "shadow-md",
-            "z-10",
-            "overflow-y-auto",
-            "max-h-60",
-            "mt-1"
-          )}
+          className={likeBottomSheetStyle}
+          {...likeBottomSheetAnimation}
         >
+          {isTablet && (
+            <div
+              className={clsx(
+                "flex",
+                "items-center",
+                "justify-between",
+                "sticky",
+                "top-0",
+                "bg-white",
+                "py-4"
+              )}
+            >
+              <p
+                className={clsx("text-lg", "font-semibold", "text-lime-500", {
+                  "text-orange-600": selectedValue,
+                })}
+              >
+                Sonuçlar
+              </p>
+              <button
+                onClick={() => setShowSuggestions(false)}
+                className={clsx(
+                  "text-lime-500",
+                  "text-lg",
+                  "font-semibold",
+                  "hover:text-primary",
+                  {
+                    "text-orange-600": selectedValue,
+                  }
+                )}
+                onBlur={() => setShowSuggestions(false)}
+              >
+                Kapat
+              </button>
+            </div>
+          )}
           {isLoading ? (
             <Spinner className="animate-spin h-5 w-5 inline-block" />
           ) : filteredSuggestions?.length ? (
@@ -195,13 +284,16 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                   ref={index === activeSuggestion ? activeItemRef : null}
                   className={clsx(
                     "p-2",
+                    "py-4",
                     "cursor-pointer",
                     index === activeSuggestion
                       ? "bg-lime-100"
                       : "hover:bg-lime-100",
                     index === filteredSuggestions.length - 1
                       ? "rounded-b-md"
-                      : ""
+                      : "",
+                    "last:border-b-0",
+                    "border-b"
                   )}
                 >
                   {renderOptionLabel(suggestion)}
@@ -211,7 +303,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           ) : (
             <div
               className={clsx(
-                "p-2",
+                "p-4",
                 "flex",
                 "items-center",
                 "gap-2",
@@ -240,10 +332,14 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             "transform",
             "-translate-y-1/2",
             "text-lime-500",
-            "text-2xl"
+            "text-2xl",
+            {
+              "text-orange-600": selectedValue,
+            }
           )}
         />
         <input
+          ref={inputRef}
           type="text"
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -251,20 +347,34 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           placeholder={placeholder}
           className={clsx(
             "w-full",
-            "text-base",
-            "font-semibold",
+            "py-2",
+            "pl-10",
+            "pr-12",
             "rounded-md",
             "border",
             "border-lime-300",
-            "focus:border-primary-light",
-            "outline-none",
-            "py-3",
-            "px-10",
-            "pr-20",
-            { "border-2": selectedValue },
-            "text-slate-600",
+            "focus:outline-none",
+            "focus:border-lime-500",
+            "focus:ring",
+            "focus:ring-lime-500",
+            "focus:ring-opacity-50",
+            "transition-all",
+            "duration-200",
+            "ease-in-out",
+            "text-sm",
+            "text-gray-900",
+            "placeholder-gray-400",
+            "focus:text-2xl focus:py-3",
+            "disabled:bg-gray-100",
+            "disabled:text-gray-500",
+            "disabled:cursor-not-allowed",
+            {
+              "bg-orange-100 py-2 !text-2xl font-semibold text-orange-600 border-orange-600 focus:ring-orange-500 focus:border-orange-500":
+                selectedValue,
+            },
             "truncate"
           )}
+          disabled={disabled}
         />
         <div
           className={clsx(
@@ -285,7 +395,11 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 onClear?.();
               }}
             >
-              <RemoveSquare className="text-2xl text-lime-500" />
+              <RemoveSquare
+                className={clsx("text-2xl text-lime-500", {
+                  "text-orange-600": selectedValue,
+                })}
+              />
             </button>
           )}
           <button
@@ -296,7 +410,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               "duration-200",
               "ease-in-out",
               showSuggestions ? "rotate-180" : "",
-              "text-lime-500"
+              "text-lime-500",
+              {
+                "text-orange-600": selectedValue,
+              }
             )}
           >
             <ChevronDown className="text-2xl" />

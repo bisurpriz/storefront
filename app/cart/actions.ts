@@ -2,7 +2,7 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
-import { readIdFromCookies } from "../actions";
+import { createJwt, readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
 
@@ -36,25 +36,6 @@ export const checkUserId = async () => {
   return userId;
 };
 
-const uploadOrderItemImages = async () => {
-  const images = [];
-  const formData = new FormData();
-  images.map((file: File) => {
-    formData.append("items", file as Blob);
-  });
-  formData.append("order_item_id", "120");
-
-  axios.post(
-    "https://mmcvpm3nmlyqbt2uiyr5h5optm0pihfu.lambda-url.eu-north-1.on.aws",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-};
-
 export const createOrderAction = async (
   cartItems: ProductForCart[],
   orderDetail: OrderDetailPartialFormData,
@@ -63,6 +44,7 @@ export const createOrderAction = async (
 ) => {
   if (!orderDetail || !cartItems)
     return {
+      data: null,
       status: "error",
     };
 
@@ -95,26 +77,26 @@ export const createOrderAction = async (
     },
   };
 
-  const response = await fetch(
-    "https://nwob6vw2nr3rinv2naqn3cexei0qubqd.lambda-url.eu-north-1.on.aws",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        ...variables.object,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  const jwtToken = await createJwt();
+  const response = await fetch(process.env.CREATE_ORDER_ACTION_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      ...variables.object,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      authorization: jwtToken,
+    },
+  }).then((res) => res.json());
 
-  if (!response) {
+  if (response.errors) {
     return {
       status: "error",
     };
   } else {
     return {
       status: "success",
+      data: response.data,
     };
   }
 };
@@ -123,16 +105,13 @@ export const getCartCost = async (
   cartItems: Pick<ProductForCart, "id" | "quantity">[],
   couponCode?: string
 ) => {
-  const { data: costData } = await axios.post(
-    "https://llt4tsk3fqsilcccjrst76njyq0eiqne.lambda-url.eu-north-1.on.aws/",
-    {
-      products: cartItems.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-      couponCode,
-    }
-  );
+  const { data: costData } = await axios.post(process.env.CART_COST_URL, {
+    products: cartItems.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+    })),
+    couponCode,
+  });
   return costData;
 };
 
@@ -150,7 +129,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     }));
 
     const userId = await checkUserId();
-
+    const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
     const { data: cartData } = await mutate<
       UpdateDbCartMutation,
       UpdateDbCartMutationVariables
@@ -161,15 +140,12 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
           {
             user_id: userId,
             content: JSON.stringify(content),
-            guest_id: userId
-              ? undefined
-              : cookies().get(CookieTokens.GUEST_ID)?.value,
+            guest_id: userId ? undefined : guest_id,
           },
         ],
         CONSTRAINT: userId ? "cart_user_id_key" : "cart_guest_id_key",
       },
     });
-
     const costData = await getCartCost(cartItems);
 
     return {
@@ -189,6 +165,20 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 export const getCart = async (user_id: string) => {
   const userId = user_id || (await checkUserId());
   const guestId = cookies().get(CookieTokens.GUEST_ID)?.value;
+
+  if (!userId && !guestId) {
+    return {
+      cartItems: [],
+      costData: {
+        totalPrice: 0,
+        couponMessage: "",
+        isCouponApplied: false,
+      },
+    } as {
+      cartItems: ProductForCart[];
+      costData: CostData;
+    };
+  }
 
   const headers =
     !userId && guestId
@@ -232,23 +222,38 @@ export const getCart = async (user_id: string) => {
       variables: {
         ids,
       },
+      fetchPolicy: "no-cache",
     });
+
+    const cartItems = product
+      ?.map((item) => {
+        const hasProduct = parsedContent.find((p) => p.product_id === item.id);
+        // Check if delivery date is in the past
+        if (hasProduct.deliveryDate && hasProduct.deliveryTime) {
+          const currentDate = new Date();
+
+          const deliveryDate = new Date(hasProduct.deliveryDate);
+
+          if (deliveryDate < currentDate) {
+            return null;
+          }
+        }
+
+        return {
+          ...hasProduct,
+          ...item,
+          quantity: hasProduct.quantity,
+          product_customizable_areas: item.product_customizable_areas,
+          deliveryTime: hasProduct.deliveryTime,
+          deliveryDate: hasProduct.deliveryDate,
+        };
+      })
+      // Remove products with delivery date in the past
+      .filter((_) => _ !== null);
 
     const costData = await getCartCost(
-      parsedContent.map((_) => ({ id: _.product_id, quantity: _.quantity }))
+      cartItems.map((_) => ({ id: _.id, quantity: _.quantity }))
     );
-
-    const cartItems = parsedContent.map((item) => {
-      const hasProduct = product.find((p) => p.id === item.product_id);
-      return {
-        ...item,
-        ...hasProduct,
-        quantity: item.quantity,
-        product_customizable_areas: item.product_customizable_areas,
-        deliveryTime: item.deliveryTime,
-        deliveryDate: item.deliveryDate,
-      };
-    });
 
     return {
       cartItems,
@@ -284,11 +289,7 @@ export const getProductByIdForCart = async (id: number) => {
   });
 
   const product: ProductForCart = {
-    category: {
-      id: response.data.product_by_pk.category.id,
-      name: response.data.product_by_pk.category.name,
-      slug: response.data.product_by_pk.category.slug,
-    },
+    product_categories: response.data.product_by_pk.product_categories,
     discount_price: response.data.product_by_pk.discount_price,
     id: response.data.product_by_pk.id,
     image_url: response.data.product_by_pk.image_url,

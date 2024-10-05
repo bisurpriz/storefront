@@ -8,6 +8,17 @@ import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { query } from "@/graphql/lib/client";
+import {
+  GetAllCategoriesDocument,
+  GetAllCategoriesQuery,
+  GetAllCategoriesQueryVariables,
+} from "@/graphql/queries/categories/getCategories.generated";
+import CategorySection from "@/components/Sections/CategorySection/CategorySection";
+import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
+import FeaturedProductSectionSkeleton from "@/components/Sections/FeaturedProductSection/FeaturedProductSectionSkeleton";
+import CategorySectionSkeleton from "@/components/Sections/CategorySection/CategorySectionSkeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -18,43 +29,33 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const searchText = searchParams["search"];
+  const searchText = searchParams.hasOwnProperty("search");
+
+  const viewport = await getServerSideViewPort();
+
+  const {
+    data: { category },
+  } = await query<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({
+    query: GetAllCategoriesDocument,
+    fetchPolicy: "cache-first",
+  });
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {searchText && (
         <Suspense fallback={<FilterSuspense />}>
-          <Filter
-            filterTypes={[
-              "price",
-              "sameDayDelivery",
-              "specialOffers",
-              "customizable",
-            ]}
-          />
+          <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
         </Suspense>
       )}
-      {!searchText && (
+      {!searchText && !(category.length < 8 && viewport === "desktop") && (
         <Suspense fallback={<CategorySwiperSuspense />}>
-          <ServerCategorySwiper />
+          <ServerCategorySwiper category={category} />
         </Suspense>
       )}
       {!searchText && (
         <Suspense
           fallback={
-            <>
-              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
-              <div className="my-4 flex items-center justify-between gap-6">
-                {Array.from({
-                  length: 3,
-                }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
-                  />
-                ))}
-              </div>
-            </>
+            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
           }
         >
           <ServerQuerySelector />
@@ -63,15 +64,41 @@ export default async function Page({
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && <CampaignGrid />}
       </Suspense>
+      {category.length < 8 && viewport === "desktop" && (
+        <Suspense fallback={<CategorySectionSkeleton />}>
+          <CategorySection category={category} />
+        </Suspense>
+      )}
+
+      <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+        <FeaturedProducts
+          products={Array.from({
+            length: 25,
+          }).map((_, i) => ({
+            id: i,
+            imageSrc: "https://via.placeholder.com/300",
+            name: "Product Name",
+            badge: "Yeni",
+            price: 100,
+            discountPrice: 80,
+            href: "/",
+          }))}
+        />
+      </Suspense>
+
       <Suspense
-        fallback={Array.from({
-          length: 15,
-        }).map((_, i) => (
-          <ProductItemSkeleton key={i} />
-        ))}
+        fallback={
+          <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
+            {Array.from({
+              length: 5,
+            }).map((_, i) => (
+              <ProductItemSkeleton key={i} />
+            ))}
+          </div>
+        }
       >
         <ServerInfinityScroll searchParams={searchParams} />
       </Suspense>
-    </>
+    </div>
   );
 }

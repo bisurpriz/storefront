@@ -1,139 +1,134 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { motion, PanInfo } from "framer-motion";
-import Image from "next/image";
+"use client";
 
-interface SliderProps {
-  images: string[];
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  showArrows?: boolean;
-  imageWidth?: number;
-  imageHeight?: number;
-  gap?: number;
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { useMeasure } from "@uidotdev/usehooks";
+import clsx from "clsx";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Grid, Navigation } from "swiper/modules";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import CategorySwiperSuspense from "./CategorySwiperSuspense";
+import { Link } from "@/components/Link";
+
+interface LoopCheckParams {
+  totalSlides: number;
+  slidesPerView: number;
+  slidesPerGroup: number;
+  gridRows?: number; // Opsiyonel, grid sisteminde satır sayısı
 }
 
-const Slider: FC<SliderProps> = ({
-  images,
-  autoPlay = false,
-  autoPlayInterval = 3000,
-  showArrows = true,
-  imageWidth = 200,
-  imageHeight = 200,
-  gap = 16,
+interface Slide {
+  id: number;
+  imageUrl: string;
+  label: string;
+  slug: string;
+}
+
+interface SliderProps {
+  slides: Slide[];
+  autoPlayTime?: number;
+  slideWidth?: number;
+}
+
+const Slider: React.FC<SliderProps> = ({
+  slides,
+  autoPlayTime = 3000,
+  slideWidth = 130,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleImagesCount, setVisibleImagesCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<any>(null);
+  const [mounted, setMounted] = useState<boolean>();
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   useEffect(() => {
-    if (ref.current) {
-      // Calculate visibleImagesCount based on the width of the container
-      const containerWidth = ref.current.clientWidth;
-      const count = Math.floor(containerWidth / (imageWidth + gap));
-      setVisibleImagesCount(count);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <CategorySwiperSuspense />;
+
+  const slidesPerView = Math.floor(width / slideWidth);
+
+  const slidesLength = slides.length;
+
+  const imageWrapperClasses = clsx(
+    `w-[${slideWidth}px]`,
+    `h-[${slideWidth}px]`,
+    "bg-transparent",
+    "rounded-lg",
+    "mx-auto"
+  );
+
+  function canEnableLoop({
+    totalSlides,
+    slidesPerView,
+    slidesPerGroup,
+    gridRows = 1,
+  }: LoopCheckParams): boolean {
+    const minRequiredSlides = slidesPerView + slidesPerGroup;
+
+    const isGridValid = totalSlides % gridRows === 0;
+
+    const isGroupValid = totalSlides % slidesPerGroup === 0;
+
+    if (totalSlides >= minRequiredSlides && isGroupValid && isGridValid) {
+      return true;
+    } else {
+      return false;
     }
-  }, [ref, imageWidth, gap]);
+  }
 
-  useEffect(() => {
-    if (autoPlay) {
-      intervalRef.current = setInterval(() => {
-        handleNext();
-      }, autoPlayInterval);
+  const navigation = slidesLength > Math.floor(window.innerWidth / slideWidth);
+  const slidesPerGroup = 1;
 
-      return () => {
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-        }
-      };
-    }
-  }, [currentIndex, autoPlay, autoPlayInterval]);
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - visibleImagesCount ? 0 : prevIndex + 1
-    );
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - visibleImagesCount : prevIndex - 1
-    );
-  };
-
-  const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    if (info.offset.x < -50) {
-      handleNext();
-    } else if (info.offset.x > 50) {
-      handlePrev();
-    }
-  };
   return (
-    <div className="relative w-full mx-auto overflow-hidden" ref={ref}>
-      <motion.div
-        className="flex items-center"
-        style={{
-          width: images.length * (imageWidth + gap),
-          gap,
+    <div className={clsx("relative", "overflow-hidden", "z-0")} ref={ref}>
+      <Swiper
+        slidesPerView={slidesPerView}
+        grid={{
+          fill: "row",
+          rows: 1,
         }}
-        drag="x"
-        dragConstraints={{
-          left: -currentIndex * (imageWidth + gap),
-          right: 0,
+        spaceBetween={5}
+        slidesPerGroup={slidesPerGroup}
+        pagination={{
+          clickable: true,
         }}
-        onDragEnd={handleDragEnd}
-        onDragStart={() => {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-          }
-        }}
-        initial={{ x: 0 }}
-        animate={{ x: -currentIndex * (imageWidth + gap) }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        grabCursor
+        navigation={navigation}
+        modules={[Grid, Navigation]}
+        loop={canEnableLoop({
+          totalSlides: slidesLength,
+          slidesPerView,
+          slidesPerGroup,
+        })}
       >
-        {images
-          .concat(images.slice(0, visibleImagesCount))
-          .map((image, index) => (
-            <div
-              key={index}
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-                flex: "0 0 auto",
-              }}
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id} className={clsx(imageWrapperClasses)}>
+            <Link
+              href={`/${slide.slug}`}
+              className={"flex items-start justify-center"}
             >
               <Image
-                src={image}
-                alt={`Slide ${index}`}
-                className="object-cover rounded-lg w-full h-full"
-                style={{ pointerEvents: "none" }}
-                width={imageWidth}
-                height={imageHeight}
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                src={getImageUrlFromPath(slide.imageUrl, slideWidth)}
+                alt={slide.label}
+                className="rounded-full object-contain ring ring-primary my-1"
+                width={slideWidth}
+                height={slideWidth}
+                priority
               />
-            </div>
-          ))}
-      </motion.div>
-      {showArrows && (
-        <>
-          <button
-            onClick={handlePrev}
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
-          >
-            Prev
-          </button>
-          <button
-            onClick={handleNext}
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
-          >
-            Next
-          </button>
-        </>
-      )}
+            </Link>
+            <span
+              className={clsx(
+                "block",
+                "text-xs",
+                "text-center",
+                "text-gray-600",
+                "mt-1"
+              )}
+            >
+              {slide.label}
+            </span>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

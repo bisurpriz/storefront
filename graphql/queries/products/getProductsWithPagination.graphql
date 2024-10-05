@@ -7,7 +7,7 @@ query getProductsWithPagination(
   product_aggregate(
     where: {
       is_active: { _eq: $is_active }
-      category: { slug: { _eq: $category_slug } }
+      product_categories: { category: { slug: { _eq: $category_slug } } }
     }
   ) {
     aggregate {
@@ -19,7 +19,7 @@ query getProductsWithPagination(
     offset: $offset
     where: {
       is_active: { _eq: $is_active }
-      category: { slug: { _eq: $category_slug } }
+      product_categories: { category: { slug: { _eq: $category_slug } } }
     }
   ) {
     id
@@ -28,9 +28,11 @@ query getProductsWithPagination(
     name
     slug
     score
-    category {
-      name
-      slug
+    product_categories {
+      category {
+        name
+        slug
+      }
     }
     image_url
     price
@@ -83,9 +85,11 @@ query getProductsWithFilteredPagination(
     name
     slug
     score
-    category {
-      name
-      slug
+    product_categories {
+      category {
+        name
+        slug
+      }
     }
     image_url
     price
@@ -93,6 +97,8 @@ query getProductsWithFilteredPagination(
     slug
     properties
     discount_price
+    is_service_free
+    delivery_type
     product_customizable_areas {
       count
       customizable_area {

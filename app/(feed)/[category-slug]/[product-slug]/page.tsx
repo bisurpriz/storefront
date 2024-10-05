@@ -8,6 +8,7 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import dynamic from "next/dynamic";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -26,16 +27,25 @@ const DynamicGallery = dynamic(
 const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
   const id = Number(searchParams["pid"]);
 
-  const {
-    data: { product },
-  } = await query<GetProductImagesQuery, GetProductImagesQueryVariables>({
+  if (!id) {
+    return redirect("/");
+  }
+
+  const { data } = await query<
+    GetProductImagesQuery,
+    GetProductImagesQueryVariables
+  >({
     query: GetProductImagesDocument,
     variables: {
       id,
     },
   });
 
-  return <DynamicGallery images={product.image_url} />;
+  if (!data?.product) {
+    redirect("/");
+  }
+
+  return <DynamicGallery images={data?.product.image_url} />;
 };
 
 export default ProductImageCarouselPage;

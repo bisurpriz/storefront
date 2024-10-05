@@ -1,7 +1,7 @@
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Trash from "@/components/Icons/Trash";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 
@@ -56,9 +56,8 @@ const ReviewedCard = async ({
         </p>
 
         <Button
-          variant="outlined"
-          color="secondary"
-          size="small"
+          variant="outline"
+          size="sm"
           type="submit"
           icon={<Trash className="text-base" />}
         />

@@ -1,10 +1,22 @@
 "use client";
 
-import clsx from "clsx";
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useMemo, useState } from "react";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { Controlled as ControlledZoom } from "react-medium-image-zoom";
+import { FreeMode, Navigation, Thumbs, Virtual, Zoom } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/zoom";
+import "swiper/css/thumbs";
+import "swiper/css/free-mode";
+import "swiper/css/virtual";
+
+import useResponsive from "@/hooks/useResponsive";
+import clsx from "clsx";
+import { useMeasure } from "@uidotdev/usehooks";
+import { Swiper as SwiperType } from "swiper/types";
 
 type ProductDetailImageGalleryProps = {
   images: string[];
@@ -13,73 +25,99 @@ type ProductDetailImageGalleryProps = {
 const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
   images,
 }) => {
-  const [selectedImage, setSelectedImage] = useState(images?.[0]);
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType>(null);
+  const { isLargeDesktop } = useResponsive();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
+  const [ref, { width, height }] = useMeasure<HTMLDivElement>();
 
-  const getImageUrl = (image: string) => {
-    if (!image) return "https://via.placeholder.com/500";
-
-    return `${getImageUrlFromPath(
-      image
-    )}?width=500&height=500&format=wepb&quality=75`;
-  };
-  const handleZoomChange = useCallback((shouldZoom) => {
-    setIsZoomed(shouldZoom);
-  }, []);
+  const slidePerview = useMemo(() => {
+    return isLargeDesktop ? Math.floor(width / 120) : Math.floor(height / 120);
+  }, [isLargeDesktop, width, height]);
 
   return (
-    <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
-      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-y-auto ">
-        {images?.map((image) => (
-          <div
-            key={image}
-            className={clsx(
-              "flex items-center justify-center relative overflow-hidden",
-              "h-20 w-20 object-contain border border-gray-200 rounded-lg flex-1 aspect-square"
-            )}
-            onClick={() => handleImageClick(image)}
-            onMouseEnter={() => handleImageClick(image)}
-          >
-            <Image
-              src={getImageUrl(image)}
-              alt={image}
-              className="h-full w-full object-cover"
-              width={100}
-              height={100}
-            />
-          </div>
-        ))}
-      </div>
-      <div
+    <div
+      className={clsx(
+        "flex justify-start items-start max-h-[800px] h-[500px] min-h-[500px] gap-2 max-xl:flex-col max-xl:h-full max-xl:w-full",
+        "max-xl:flex-col-reverse max-xl:gap-0 max-xl:w-full"
+      )}
+      ref={ref}
+    >
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        loop={true}
+        spaceBetween={10}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
+        direction={isLargeDesktop ? "horizontal" : "vertical"}
+        slidesPerView={slidePerview}
         className={clsx(
-          "flex flex-1 items-start justify-center overflow-hidden relative",
-          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-white"
+          "h-full m-0 w-[120px] ",
+          "max-xl:w-full max-xl:mb-2 max-xl:mt-2 max-xl:gap-2"
         )}
       >
-        {/* <ZoomableImage
-          src={selectedImage.url}
-          alt="Product Image"
-          width={1200}
-          height={1200}
-          resultWidth={400}
-          resultHeight={400}
-        /> */}
-
-        <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
-          <Image
-            src={getImageUrl(selectedImage)}
-            alt="Product Image"
-            className="h-full w-full object-contain"
-            width={500}
-            height={500}
-            priority
-          />
-        </ControlledZoom>
-      </div>
+        {images?.map((image, index) => (
+          <SwiperSlide
+            key={`first-${image}-${index}`}
+            className={clsx(
+              "flex items-center justify-center border-2 border-transparent rounded-md overflow-hidden shadow-sm",
+              activeIndex === index && "!border-primary"
+            )}
+          >
+            <Image
+              src={getImageUrlFromPath(image)}
+              alt={image}
+              className="w-full object-contain"
+              width={120}
+              height={120}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <Swiper
+        loop={true}
+        zoom={true}
+        virtual={true}
+        navigation={true}
+        spaceBetween={10}
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[Zoom, FreeMode, Navigation, Thumbs, Virtual]}
+        slidesPerView={1}
+        onActiveIndexChange={(swiper) => {
+          setActiveIndex(swiper.realIndex);
+        }}
+        className={clsx(
+          "flex-1 ring-1 ring-gray-200 rounded-lg w-full",
+          "max-xl:w-full  max-xl:mt-2 max-xl:mb-2"
+        )}
+        style={{
+          height: "-webkit-fill-available",
+        }}
+      >
+        {images?.map((image, index) => (
+          <SwiperSlide
+            key={`slide-${image}-${index}`}
+            className={clsx(
+              "w-full flex items-center justify-center",
+              "max-xl:w-full "
+            )}
+            virtualIndex={index}
+          >
+            <div className="swiper-zoom-container">
+              <Image
+                src={getImageUrlFromPath(image, 500)}
+                alt={image}
+                className="h-full w-full object-contain"
+                width={1000}
+                height={1000}
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import useResponsive from "@/hooks/useResponsive";
-import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { Variants, motion } from "framer-motion";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 type AnimatedFilterBoxProps = {
   children: React.ReactNode;
@@ -38,6 +37,20 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
         },
       };
 
+  useEffect(() => {
+    if (isTablet) {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isTablet, isOpen]);
+
   return (
     <>
       <AnimationExitProvider show={isOpen}>
@@ -55,7 +68,7 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
           key="submenu"
           className={clsx(
             "absolute bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50 min-w-fit w-[300px]",
-            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0 max-md:h-auto max-h-[65vh]",
+            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:h-auto max-h-[65vh] max-sm:bottom-14 max-md:bottom-[72px] max-md:rounded-bl-none max-md:rounded-br-none",
             className
           )}
           variants={subMenuVariants}

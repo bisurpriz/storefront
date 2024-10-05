@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import Close from "../Icons/Close";
 
 export enum ChipColor {
@@ -24,9 +24,10 @@ type ChipProps = {
   color?: ChipColorType;
   withClose?: boolean;
   onClose?: () => void;
-  rounded?: "full" | "semi" | "none";
+  rounded?: "full" | "semi" | "low" | "none";
   as?: "button" | "link";
-  href?: string; // If as='link', href is required
+  href?: string;
+  className?: string;
 };
 
 const Chip: React.FC<ChipProps> = ({
@@ -40,9 +41,11 @@ const Chip: React.FC<ChipProps> = ({
   rounded = "full",
   as = "button",
   href,
+  className = "",
 }) => {
-  const baseClasses =
-    "w-fit flex items-center font-medium cursor-pointer whitespace-nowrap";
+  const baseClasses = `w-fit flex items-center font-medium whitespace-nowrap ${
+    href ? "cursor-pointer" : "cursor-default"
+  } ${className}`;
 
   const sizeClasses = {
     small: "px-2 py-1 text-xs",
@@ -58,14 +61,14 @@ const Chip: React.FC<ChipProps> = ({
 
   const colorClasses = {
     primary: {
-      outlined: "border border-primary text-primary-dark",
+      outlined: "border border-primary text-primary",
       filled: "bg-primary text-white",
-      soft: "bg-slate-200 text-primary-dark",
+      soft: "bg-primary text-primary",
     },
     secondary: {
-      outlined: "border border-secondary text-secondary-dark",
+      outlined: "border border-secondary text-secondary",
       filled: "bg-secondary text-white",
-      soft: "bg-slate-200 text-secondary-dark",
+      soft: "bg-slate-200 text-secondary",
     },
     error: {
       outlined: "border border-red-500 text-red-700",
@@ -101,7 +104,8 @@ const Chip: React.FC<ChipProps> = ({
 
   const roundedClasses = {
     full: "rounded-full",
-    semi: "rounded-lg",
+    semi: "rounded-tl-lg rounded-br-lg",
+    low: "rounded-tl-md rounded-br-md",
     none: "rounded-none",
   };
 

@@ -1,6 +1,7 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
+import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import CustomizeCartItem from "@/components/Customize/CustomizeCartItem";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -37,6 +38,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
 
   const handleUpload = async () => {
     setLoading(true);
+    const jwt = await createJwt();
     if (selectedImageData.length > 0) {
       const all = selectedImageData.map((d) => {
         const formData = new FormData();
@@ -46,13 +48,13 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
           formData.append("quantity_index", d.quantity_index.toString());
         });
 
-        return fetch(
-          "https://mmcvpm3nmlyqbt2uiyr5h5optm0pihfu.lambda-url.eu-north-1.on.aws/ ",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        return fetch(process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL, {
+          method: "POST",
+          body: formData,
+          headers: {
+            authorization: jwt,
+          },
+        });
       });
 
       const res = await Promise.all(all);
@@ -149,45 +151,47 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                       {oi.product.name}
                     </span>
                     <Image
-                      src={getImageUrlFromPath(oi.product.image_url[0])}
+                      src={getImageUrlFromPath(oi?.product?.image_url[0])}
                       width={100}
                       height={100}
                       alt={oi.product.name}
                       className="object-contain w-20 h-20 rounded-lg my-2"
                       priority
                     />
-                    {oi.product.product_customizable_areas.map((area, _id) => {
-                      return (
-                        <div className="w-full my-2" key={_id}>
-                          <CustomizeCartItem
-                            count={area.count}
-                            keyIndex={index}
-                            values={[
-                              ...oi.order_item_special_texts,
-                              ...oi.order_item_special_images,
-                            ]}
-                            maxCharacter={area.max_character}
-                            isDisabled={loading}
-                            onChange={(inputIndex, type, value) =>
-                              handleChange({
-                                inputIndex,
-                                type,
-                                value,
-                                order_item_id: oi.id,
-                                specialTextId:
-                                  oi.order_item_special_texts[i]?.id,
-                              })
-                            }
-                            id={area?.customizable_area.id}
-                            key={area?.customizable_area.type}
-                            type={
-                              area?.customizable_area
-                                .type as CustomizableAreaType
-                            }
-                          />
-                        </div>
-                      );
-                    })}
+                    {oi?.product?.product_customizable_areas.map(
+                      (area, _id) => {
+                        return (
+                          <div className="w-full my-2" key={_id}>
+                            <CustomizeCartItem
+                              count={area.count}
+                              keyIndex={index}
+                              values={[
+                                ...oi.order_item_special_texts,
+                                ...oi.order_item_special_images,
+                              ]}
+                              maxCharacter={area.max_character}
+                              isDisabled={loading}
+                              onChange={(inputIndex, type, value) =>
+                                handleChange({
+                                  inputIndex,
+                                  type,
+                                  value,
+                                  order_item_id: oi.id,
+                                  specialTextId:
+                                    oi.order_item_special_texts[i]?.id,
+                                })
+                              }
+                              id={area?.customizable_area.id}
+                              key={area?.customizable_area.type}
+                              type={
+                                area?.customizable_area
+                                  .type as CustomizableAreaType
+                              }
+                            />
+                          </div>
+                        );
+                      }
+                    )}
                   </>
                 ))}
               </div>
@@ -197,9 +201,8 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
       </div>
       <Button
         type="button"
-        size="small"
-        color="primary"
-        label="Tamamla"
+        size="sm"
+        variant="default"
         className="mt-2 self-end"
         onClick={handleUpload}
         disabled={loading}

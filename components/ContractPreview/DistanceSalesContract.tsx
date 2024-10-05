@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import React, { FC } from "react";
-import Button from "../Button";
 
 interface DistanceSalesContractProps {
   aliciAdi: string;

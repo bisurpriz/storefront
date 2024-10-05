@@ -6,8 +6,9 @@ query searchProducts($search: String) {
           _or: [
             { name: { _ilike: $search } }
             { name: { _similar: $search } }
-            { category: { name: { _similar: $search } } }
-            { category: { name: { _ilike: $search } } }
+            {
+              product_categories: { category: { name: { _similar: $search } } }
+            }
           ]
         }
         { is_active: { _eq: true } }

@@ -2,7 +2,9 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -54,6 +56,8 @@ interface CartContextType {
   isProductInCart: ProductForCart;
   applyCouponCode: (code: string) => Promise<void>;
   updateCartItemNote: (id: number, note: string) => void;
+  hasCustomizableProduct: boolean;
+  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface CartState {
@@ -91,6 +95,8 @@ export const CartContext = createContext<CartContextType>({
   isProductInCart: null,
   applyCouponCode: async () => {},
   updateCartItemNote: () => {},
+  hasCustomizableProduct: false,
+  setHasCustomizableProduct: () => {},
 });
 
 export const CartProvider = ({
@@ -102,6 +108,7 @@ export const CartProvider = ({
   cartDbItems: ProductForCart[];
   dbCost: CostData;
 }) => {
+  const [hasCustomizableProduct, setHasCustomizableProduct] = useState(false);
   const [cartState, dispatch] = useReducer(cartReducer, {
     cartItems: cartDbItems,
     count: cartDbItems.reduce((acc, item) => acc + item.quantity, 0),
@@ -119,22 +126,15 @@ export const CartProvider = ({
   const { isTablet } = useResponsive();
 
   useEffect(() => {
-    if (cartDbItems.length === 0) {
-      const cartItems = localStorage.getItem("cart");
-      const count = localStorage.getItem("count");
-      const cost = localStorage.getItem("cost");
+    setHasCustomizableProduct(
+      cartState.cartItems.some((item) =>
+        item.product_customizable_areas.some((area) => area.count > 0)
+      )
+    );
+  }, [cartState.cartItems]);
 
-      if (cartItems && count && cost) {
-        dispatch({
-          type: "ADD_TO_CART",
-          payload: {
-            cartItems: JSON.parse(cartItems),
-            count: JSON.parse(count),
-            cost: JSON.parse(cost),
-          },
-        });
-      }
-    } else {
+  useEffect(() => {
+    if (cartDbItems.length === 0) {
       localStorage.removeItem("cart");
       localStorage.removeItem("count");
       localStorage.removeItem("cost");
@@ -367,6 +367,8 @@ export const CartProvider = ({
     isProductInCart: isProductInCart,
     applyCouponCode,
     updateCartItemNote,
+    hasCustomizableProduct,
+    setHasCustomizableProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

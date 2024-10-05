@@ -16,6 +16,8 @@ export const decodeToken = async (token: string) => {
 };
 
 export const login = async ({ email, password }, headers = {}) => {
+  const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
+
   const response = await mutate<
     LoginMutationMutation,
     LoginMutationMutationVariables
@@ -28,6 +30,7 @@ export const login = async ({ email, password }, headers = {}) => {
     context: {
       headers: {
         ...headers,
+        "x-hasura-guest-id": guest_id,
       },
     },
   });
@@ -38,10 +41,15 @@ export const login = async ({ email, password }, headers = {}) => {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
 
+    if (guest_id) {
+      cookies().delete(CookieTokens.GUEST_ID);
+    }
+
     cookies().set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
     cookies().set(
       CookieTokens.REFRESH_TOKEN,
@@ -50,12 +58,14 @@ export const login = async ({ email, password }, headers = {}) => {
         httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       }
     );
     cookies().set(CookieTokens.USER_ID, user.id, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
   }
   return response;

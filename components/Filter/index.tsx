@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, startTransition } from "react";
 import { useCategory } from "@/contexts/CategoryContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -13,6 +13,7 @@ import SelectedFilters from "./components/SelectedFilters";
 import PriceFilter from "./components/PriceFilter";
 import CustomizableFilter from "./components/CustomizableFilter";
 import { VisibleChecker } from "./components/FilterVisibleChecker";
+import { useProgress } from "react-transition-progress";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
@@ -40,20 +41,23 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
   const searchParams = useSearchParams();
   const { push } = useRouter();
   const pathname = usePathname();
-
+  const startProgress = useProgress();
   const categories: FilterInputOption[] = category.map((c) => ({
     key: c.name,
     value: c.slug,
   }));
 
   const handleFilterSubmit: HandleFilterSubmit = (name, value) => {
-    const queryString = createQueryString(name, value, searchParams);
+    startTransition(() => {
+      startProgress();
+      const queryString = createQueryString(name, value, searchParams);
 
-    if (queryString) {
-      push(`?${queryString}`);
-    } else {
-      push(pathname);
-    }
+      if (queryString) {
+        push(`?${queryString}`);
+      } else {
+        push(pathname);
+      }
+    });
   };
 
   const selectedCategories =

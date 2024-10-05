@@ -44,13 +44,13 @@ const authLink = setContext((_, { headers }) => {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://bisurprizdev.hasura.app/v1/graphql",
+    uri: process.env.HASURA_URL,
   });
 
   const wsLink =
     typeof window !== "undefined"
       ? new WebSocketLink({
-          uri: "wss://bisurprizdev.hasura.app/v1/graphql",
+          uri: process.env.HASURA_WS_URL,
           options: {
             lazy: true,
             timeout: 30000,

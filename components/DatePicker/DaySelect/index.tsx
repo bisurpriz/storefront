@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { addDays } from "date-fns";
+import React, { useEffect, useMemo, useState } from "react";
+import { addDays, format } from "date-fns";
 import { motion } from "framer-motion";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
@@ -11,8 +11,7 @@ import { DeliveryTime } from "@/contexts/CartContext";
 const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
-      variant="outlined"
-      color="secondary"
+      variant="default"
       className={clsx(
         { "bg-secondary text-white ": isSelected },
         "max-sm:px-0 flex flex-col justify-center items-center",
@@ -33,12 +32,14 @@ type Props = {
   deliveryTimes: TimeRange[] | null;
   onSelect: (deliveryTime: DeliveryTime) => void;
   deliveryTime: DeliveryTime;
+  lastOrderTime: string;
 };
 
 const DaySelect: React.FC<Props> = ({
   deliveryTimes,
   onSelect,
   deliveryTime,
+  lastOrderTime,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
@@ -109,11 +110,44 @@ const DaySelect: React.FC<Props> = ({
     }
   }, [deliveryTime]);
 
+  const isTodayDisabled = useMemo(() => {
+    const today = new Date();
+    const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
+    return (
+      today.getHours() >= parseInt(hour) &&
+      today.getMinutes() >= parseInt(minute)
+    );
+  }, [lastOrderTime]);
+
+  const remainTime = useMemo(() => {
+    const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
+    const today = new Date();
+    const lastOrderDate = new Date();
+    lastOrderDate.setHours(parseInt(hour));
+    lastOrderDate.setMinutes(parseInt(minute));
+    lastOrderDate.setSeconds(0);
+
+    const diff = lastOrderDate.getTime() - today.getTime();
+    const hours = Math.floor(diff / 1000 / 60 / 60);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+
+    return { hours, minutes };
+  }, [lastOrderTime]);
+
   return (
     <div className="w-full flex flex-col gap-4  font-sans mb-2">
+      {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
+        <span className="leading-5 text-slate-400 whitespace-nowrap cursor-pointer text-xs ml-1 mt-1">
+          {!isTodayDisabled && `Bugün teslimat için son: `}{" "}
+          <span className={clsx("p-2 rounded-lg bg-orange-200 text-slate-500")}>
+            {remainTime.hours} saat {remainTime.minutes} dakika.{" "}
+          </span>
+        </span>
+      )}
       <div className={clsx("grid grid-cols-3 gap-2")}>
         {Array.from({ length: 3 }).map((_, index) => (
           <CustomButton
+            disabled={index === 0 && isTodayDisabled && lastOrderTime}
             key={index}
             isSelected={selectedButton === index}
             onClick={() => handleButtonClick(index)}
@@ -151,8 +185,7 @@ const DaySelect: React.FC<Props> = ({
       {selectedHour && (
         <span
           className={clsx(
-            "text-xs text-gray-500",
-            "p-2 rounded-lg bg-6 text-slate-500"
+            "text-xs p-2 rounded-lg bg-orange-200 text-slate-500"
           )}
         >
           Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}

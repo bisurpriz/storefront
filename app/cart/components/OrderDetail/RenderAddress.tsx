@@ -11,21 +11,21 @@ import {
 import { OrderDetailPartialFormData } from "./ReceiverForm";
 
 type RenderAddressProps = {
-  selectedSavedAddress?: any;
+  isSelectedSavedAddress?: boolean;
   control: Control<FieldValues>;
   user?: GetUserByIdQuery["user_by_pk"];
   setValue?: UseFormSetValue<OrderDetailPartialFormData>;
 };
 
 const RenderAddress: FC<RenderAddressProps> = ({
-  selectedSavedAddress,
+  isSelectedSavedAddress,
   control,
   user,
   setValue,
 }) => {
   return (
     <>
-      {(!selectedSavedAddress || user) && (
+      {user && !isSelectedSavedAddress && (
         <>
           <Controller
             control={control}
@@ -38,17 +38,16 @@ const RenderAddress: FC<RenderAddressProps> = ({
                 ref={ref}
                 label="Adres Başlığı"
                 placeholder="Adres başlığı giriniz. (Ev, İş, Diğer)"
-                fullWidth
                 id="address_title"
                 value={value}
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                disabled={!!selectedSavedAddress}
+                disabled={!!isSelectedSavedAddress}
               />
             )}
           />
-          {!selectedSavedAddress && (
+          {!isSelectedSavedAddress && (
             <Controller
               control={control}
               name="wantToSaveAddress"

@@ -26,33 +26,19 @@ export default async function ProductExample({
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-full">
+        <div className="w-1/2 max-md:w-full z-0">
           <Suspense fallback={<ProductImageGalleryLoading />}>
             {children}
           </Suspense>
         </div>
-        <div className="w-1/2 max-md:w-full">
+        <div className="w-1/2 max-md:w-full z-0">
           {information}
           <Suspense
             fallback={
-              <>
-                <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg" />
-                <div className="my-4 flex items-center justify-between gap-6">
-                  {Array.from({
-                    length: 3,
-                  }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-full h-32 bg-gray-100 animate-pulse rounded-lg"
-                    />
-                  ))}
-                </div>
-              </>
+              <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
             }
           >
-            <div className="mb-2">
-              <ServerQuerySelector />
-            </div>
+            <ServerQuerySelector />
           </Suspense>
           {action}
         </div>
@@ -84,15 +70,11 @@ export default async function ProductExample({
       </section>
       <section
         className="mt-6"
-        id="reviews"
-        aria-labelledby="reviews"
-        aria-describedby="Yorumlar"
+        id="yorumlar"
+        aria-labelledby="yorumlar"
+        aria-describedby="Kullanıcı Yorumları"
       >
         {comments}
-        {/* <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
-        /> */}
       </section>
     </div>
   );

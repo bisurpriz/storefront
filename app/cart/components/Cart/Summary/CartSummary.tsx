@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Button from "@/components/Button";
+import { startTransition, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 import { useCart } from "@/contexts/CartContext";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitPro
 import { motion } from "framer-motion";
 import { useContract } from "@/contexts/ContractContext";
 import CheckContract from "./CheckContract";
+import { useProgress } from "react-transition-progress";
 
 const CartSummary = () => {
   const {
@@ -30,11 +31,14 @@ const CartSummary = () => {
   const pathname = usePathname();
   const { push } = useRouter();
   const { isTablet } = useResponsive();
-
+  const startProgress = useProgress();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const changeStep = () => {
-    if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    startTransition(() => {
+      startProgress();
+      if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    });
   };
 
   useEffect(() => {
@@ -48,8 +52,12 @@ const CartSummary = () => {
   if (typeof document === "undefined") {
     return null;
   }
+  const customizePath = pathname.split("/").slice(0, 3).join("/");
 
-  if (pathname === CartStepPaths.COMPLETE) {
+  if (
+    customizePath === CartStepPaths.COMPLETE ||
+    customizePath.startsWith(CartStepPaths.CUSTOMIZE)
+  ) {
     return null;
   }
 
@@ -69,7 +77,7 @@ const CartSummary = () => {
   return (
     <div
       className={clsx(
-        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-xl relative",
+        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-md relative",
         "max-md:border-none md:overflow-hidden"
       )}
     >
@@ -93,10 +101,12 @@ const CartSummary = () => {
                 totalWithDiscount={cost.totalWithDiscount}
                 handleRemoveCoupon={handleRemoveCoupon}
               />
-              <CheckContract
-                openApproveContract={openApproveContract}
-                approveContract={approveContract}
-              />
+              {pathname === CartStepPaths.CHECKOUT && (
+                <CheckContract
+                  openApproveContract={openApproveContract}
+                  approveContract={approveContract}
+                />
+              )}
             </motion.div>
           </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body
@@ -113,11 +123,13 @@ const CartSummary = () => {
             totalWithDiscount={cost.totalWithDiscount}
             handleRemoveCoupon={handleRemoveCoupon}
           />
-          <CheckContract
-            setApproveContract={setApproveContract}
-            openApproveContract={openApproveContract}
-            approveContract={approveContract}
-          />
+          {pathname === CartStepPaths.CHECKOUT && (
+            <CheckContract
+              setApproveContract={setApproveContract}
+              openApproveContract={openApproveContract}
+              approveContract={approveContract}
+            />
+          )}
         </>
       )}
       <div
@@ -148,30 +160,27 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={
-            loading || (!approveContract && pathname === CartStepPaths.CHECKOUT)
-          }
+          disabled={loading}
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"
               : "button"
           }
-          size="large"
-          color="primary"
+          size="lg"
+          variant="default"
           form={
             pagePathForm[pathname as keyof typeof pagePathForm] || undefined
-          }
-          label={
-            pathname === CartStepPaths.CHECKOUT
-              ? "Ödeme Yap"
-              : "Onayla ve Devam Et"
           }
           className={clsx(
             "flex justify-center rounded-t-none w-full",
             "max-md:rounded-none max-md:col-span-2"
           )}
           onClick={changeStep}
-        />
+        >
+          {pathname === CartStepPaths.CHECKOUT
+            ? "Ödeme Yap"
+            : "Onayla ve Devam Et"}
+        </Button>
       </div>
     </div>
   );

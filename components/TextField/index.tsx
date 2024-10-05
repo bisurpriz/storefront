@@ -1,131 +1,72 @@
 "use client";
 
 import clsx from "clsx";
-import { useInput } from "@mui/base/useInput";
-import { forwardRef } from "react";
-import { motion } from "framer-motion";
-import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  (
-    {
-      defaultValue,
-      disabled,
-      error,
-      errorMessage,
-      label,
-      onBlur,
-      onChange,
-      onClick,
-      onFocus,
-      placeholder,
-      required,
-      value,
-      className,
-      fullWidth,
-      autoComplete = "off",
-      id,
-      type = "text",
-      icon,
-      onKeyDown,
-      ...rest
-    },
-    ref
-  ) => {
-    const {
-      disabled: isDisabled,
-      error: isError,
-      focused,
-      getInputProps,
-      getRootProps,
-      inputRef,
-      required: isRequired,
-    } = useInput({
-      defaultValue,
-      disabled,
-      error,
-      inputRef: ref,
-      onBlur,
-      onChange: (e) =>
-        onChange?.(e as React.ChangeEvent<HTMLInputElement>, e.target.value),
-      onClick,
-      onFocus,
-      required,
-      value,
-    });
+import { FC } from "react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
-    const isErrorClasses = isError
-      ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
-      : "";
+const TextField: FC<TextFieldProps> = (props) => {
+  const {
+    defaultValue,
+    disabled,
+    error,
+    errorMessage,
+    label,
+    onBlur,
+    onChange,
+    onClick,
+    onFocus,
+    placeholder,
+    required,
+    value,
+    className,
+    fullWidth,
+    autoComplete = "off",
+    id,
+    type = "text",
+    icon,
+    onKeyDown,
+    spellCheck,
+    ref,
+    readOnly,
+    ...rest
+  } = props;
 
-    const focusedClasses = focused
-      ? "focus-within:ring-1 focus-within:ring-primary focus-visible:outline-none"
-      : "";
+  const fullWidthClasses = fullWidth ? "w-full" : "";
 
-    const disabledClasses = isDisabled
-      ? "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed"
-      : "";
-
-    const fullWidthClasses = fullWidth ? "w-full" : "";
-
-    const hasIconClasses = icon ? "pl-10" : "";
-
-    return (
-      <label
-        {...getRootProps()}
-        className={clsx(
-          "flex flex-col gap-1 text-xs font-normal text-gray-700 relative whitespace-nowrap",
-          {
-            "text-red-500": isError,
-          },
-          fullWidthClasses
-        )}
-      >
-        {label ?? null}
-        <div className="relative">
-          <AnimationExitProvider show={!!icon}>
-            <motion.span
-              className={clsx(
-                "absolute inset-y-0 left-0 flex items-center ml-3 pointer-events-none text-sm",
-                "object-fill text-current"
-              )}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {icon}
-            </motion.span>
-          </AnimationExitProvider>
-          <input
-            {...getInputProps()}
-            {...rest}
-            tabIndex={0}
-            onKeyDown={onKeyDown}
-            type={type}
-            name={id}
-            id={id}
-            autoComplete={autoComplete}
-            ref={inputRef}
-            required={isRequired}
-            placeholder={placeholder}
-            value={value as string}
-            className={clsx(
-              "w-full px-3 py-2 text-sm text-gray-700 placeholder-gray-400 border rounded-lg shadow-sm appearance-none transition-colors duration-200",
-              className,
-              focusedClasses,
-              disabledClasses,
-              isErrorClasses,
-              hasIconClasses
-            )}
-            disabled={isDisabled}
-          />
-        </div>
-        {isError && errorMessage && (
-          <span className="text-xs text-red-500">{errorMessage}</span>
-        )}
-      </label>
-    );
-  }
-);
+  return (
+    <label
+      className={clsx(
+        "relative text-xs font-medium text-gray-700 flex flex-col gap-1",
+        fullWidthClasses
+      )}
+    >
+      {label ? <Label htmlFor={id}>{label}</Label> : null}
+      <Input
+        {...rest}
+        readOnly={readOnly}
+        spellCheck={spellCheck ?? false}
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+        type={type}
+        name={id}
+        id={id}
+        autoComplete={autoComplete}
+        ref={ref}
+        required={required}
+        placeholder={placeholder}
+        value={value as string}
+        disabled={disabled}
+        className={className}
+        onChange={(e) => onChange?.(e, e.target.value)}
+        variant={error ? "error" : "default"}
+        icon={icon}
+        error={error}
+        errorMessage={errorMessage}
+      />
+    </label>
+  );
+};
 
 export default TextField;

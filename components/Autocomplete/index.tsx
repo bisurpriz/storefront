@@ -1,14 +1,27 @@
-import * as React from "react";
-import { useAutocomplete } from "@mui/base/useAutocomplete";
-import Clear from "../Icons/Clear";
-import ChevronDown from "../Icons/ChevronDown";
+"use client";
 
-export type AutoCompleteOption = Pick<DropdownOption, "label" | "value">;
+import { Button } from "@/components/ui/button";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useState } from "react";
+import useResponsive from "@/hooks/useResponsive";
+import OptionList from "./AutoCompleteList";
+import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { Label } from "../ui/label";
+
+export type AutoCompleteOption = Pick<DropdownOption, "label" | "value"> & {
+  [key: string]: any;
+};
 
 export interface AutoCompleteProps {
   options: AutoCompleteOption[];
   onChange: (value: AutoCompleteOption | AutoCompleteOption[]) => void;
-  value?: AutoCompleteOption | AutoCompleteOption[] | null;
+  value?: AutoCompleteOption | null;
   placeholder?: string;
   id?: string;
   label?: string;
@@ -35,175 +48,86 @@ export default function AutoComplete({
   value,
   inputValue,
   onInputChange,
-  multiple,
   getOptionLabel,
   disabled,
   readOnly,
-  disableCloseOnSelect,
-  autoComplete = "off",
   error,
   errorMessage,
 }: AutoCompleteProps) {
-  const {
-    getRootProps,
-    getInputProps,
-    getListboxProps,
-    getOptionProps,
-    groupedOptions,
-    focused,
-    dirty,
-    getClearProps,
-    getPopupIndicatorProps,
-    popupOpen,
-    value: selectedValue,
-  } = useAutocomplete<DropdownOption, typeof multiple, false, false>({
-    id,
-    options,
-    value,
-    onChange: (event, newValue) => onChange(newValue),
-    inputValue,
-    onInputChange: (event, newInputValue) => onInputChange?.(newInputValue),
-    multiple,
-    getOptionLabel,
-    disableCloseOnSelect,
-    readOnly,
-    disabled,
-    isOptionEqualToValue: (option, value) => option.value === value.value,
-  });
+  const [open, setOpen] = useState(false);
+  const { isTablet } = useResponsive();
 
-  const hasClearIcon = !disabled && dirty && !readOnly;
-
-  const hasErrorClass = error
-    ? "border-red-500 ring-red-500 focus-within:ring-1 focus-within:ring-red-500"
-    : "";
-
-  const disabledClass = disabled ? "bg-gray-100 text-gray-500" : "";
+  if (!isTablet) {
+    return (
+      <Popover open={open} onOpenChange={readOnly ? undefined : setOpen}>
+        <PopoverTrigger asChild aria-readonly={readOnly}>
+          <Label className="flex flex-col gap-1">
+            {label}
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="justify-between"
+              type="button"
+              aria-readonly={readOnly}
+            >
+              {value
+                ? options.find((option) => option.value === value.value)?.label
+                : placeholder}
+              <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+            {error && errorMessage && (
+              <span className="text-xs text-red-500">{errorMessage}</span>
+            )}
+          </Label>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0" align="start" side="bottom">
+          <OptionList
+            onInputChange={onInputChange}
+            getOptionLabel={getOptionLabel}
+            onChange={(value) => {
+              console.log(value, "burada la");
+              onChange(value);
+              setOpen(false);
+            }}
+            options={options}
+            inputValue={inputValue}
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  }
 
   return (
-    <div className="relative">
-      <label
-        className={`text-xs font-medium text-gray-700 flex flex-col gap-1 
-      ${error ? "text-red-500" : ""}
-      `}
-      >
-        {label ? <p>{label}</p> : null}
-        <div
-          {...getRootProps()}
-          className={` ${focused ? "ring-1 ring-primary" : ""} 
-            rounded-md
-            bg-white 
-            border 
-            shadow-sm
-            focus-within:ring-1 focus-within:ring-primary
-            transition-colors duration-200
-            focus-visible:outline-none
-            overflow-hidden
-            flex items-center gap-2
-            ${hasErrorClass}
-            ${disabledClass}
-            `}
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className=" justify-between"
+          type="button"
         >
-          {multiple && (
-            <div className="flex gap-1 flex-nowrap whitespace-nowrap">
-              {(selectedValue as DropdownOption[])?.map((option) => (
-                <span
-                  key={option.value}
-                  className="px-2 py-1 bg-primary text-white rounded-lg"
-                >
-                  {option.label}
-                </span>
-              ))}
-            </div>
-          )}
-          <input
-            {...getInputProps()}
-            className={`
-            text-sm font-normal leading-normal
-            text-gray-900
-            bg-inherit
-            border-none
-            px-3 py-2
-            outline-none
-            flex-1
-            ${disabledClass}
-            ${className ?? ""}`}
-            placeholder={placeholder}
-            aria-label={label}
-            autoComplete={"off"}
-            readOnly={readOnly}
-            disabled={disabled}
+          {value
+            ? options.find((option) => option.value === value.value)?.label
+            : placeholder}
+          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="mt-4 border-t">
+          <OptionList
+            onInputChange={onInputChange}
+            getOptionLabel={getOptionLabel}
+            onChange={(value) => {
+              onChange(value);
+              setOpen(false);
+            }}
+            options={options}
+            inputValue={inputValue}
           />
-
-          {hasClearIcon && (
-            <button
-              {...getClearProps()}
-              type="button"
-              className="flex items-center justify-center p-1 text-gray-500 hover:text-gray-700 rounded-lg
-            transition-transform duration-200 shadow-sm hover:bg-gray-50"
-            >
-              <Clear />
-            </button>
-          )}
-
-          <button
-            {...getPopupIndicatorProps()}
-            className={`${popupOpen ? "rotate-180" : ""}
-            flex items-center justify-center mr-2 p-1 text-gray-500 hover:text-gray-700 rounded-lg
-            transition-transform duration-200 shadow-sm hover:bg-gray-50
-            ${error ? "text-red-500 hover:text-red-700" : ""}
-          `}
-            disabled={disabled}
-          >
-            <ChevronDown />
-          </button>
         </div>
-        {error && errorMessage && (
-          <span className="text-xs text-red-500">{errorMessage}</span>
-        )}
-      </label>
-      {groupedOptions.length > 0 && (
-        <ul
-          {...getListboxProps()}
-          className={`
-            absolute text-sm
-            left-0
-            right-0
-            z-10
-            overflow-auto
-            max-h-60
-            outline-none
-            rounded-md
-            my-3
-            bg-white dark:bg-slate-50
-            border dark:border-slate-200
-            shadow-sm
-            focus-within:ring-1 focus-within:ring-primary
-            transition-colors duration-200
-            focus-visible:outline-none
-            w-full
-            p-1
-            `}
-        >
-          {(groupedOptions as DropdownOption[]).map((option, index) => (
-            <li
-              {...getOptionProps({ option, index })}
-              key={option.value}
-              className={`
-              list-none
-              p-2
-              my-1
-              rounded-sm
-              cursor-pointer
-              ${index === groupedOptions.length - 1 ? "border-b-0" : ""}
-              hover:bg-primary-light hover:text-white
-              aria-selected:bg-primary aria-selected:text-white
-              `}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+      </DrawerContent>
+    </Drawer>
   );
 }

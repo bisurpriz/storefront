@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import ProductItemSkeleton from "./ProductItemSkeleton";
 import { Product } from "@/common/types/Product/product";
 import clsx from "clsx";
@@ -24,7 +24,7 @@ const ProductItem = ({
   discount_price,
   isFavorite,
   product_customizable_areas,
-  category,
+  product_categories,
   slug,
   totalReviewCount,
   tenant,
@@ -47,8 +47,11 @@ const ProductItem = ({
         />
         <div className="w-full flex flex-col items-start justify-start gap-2 py-4 px-6 max-xs:gap-1 flex-1 max-xs:p-2">
           <PriceTag discount={discount_price} price={price} />
+
           <div className="w-full max-sm:h-full max-sm:flex max-sm:flex-col max-sm:justify-between">
-            <Link href={`/${category.slug}/${slug}?pid=${id}`}>
+            <Link
+              href={`/${product_categories?.[0].category.slug}/${slug}?pid=${id}`}
+            >
               <h3
                 className="text-base font-semibold text-gray-700 font-mono line-clamp-2 capitalize"
                 title={name}

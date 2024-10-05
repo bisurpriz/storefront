@@ -1,10 +1,10 @@
 "use client";
 
 import { registerUser } from "@/app/account/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { FC, useState } from "react";
 import { AuthErrorMessages } from "../../contants";
 import toast from "react-hot-toast";

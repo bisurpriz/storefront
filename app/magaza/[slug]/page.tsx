@@ -1,14 +1,10 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
 import Filter from "@/components/Filter";
-import { searchProducts } from "@/app/(feed)/actions";
+import { searchProductsv1 } from "@/app/(feed)/actions";
 import TenantHeader from "../components/TenantHeader";
 import { getVendorDetails } from "../actions";
-
-type Props = {
-  products: any;
-  totalCount: number;
-};
+import { PER_REQUEST } from "@/app/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = `Mağaza`;
@@ -34,10 +30,10 @@ const Vendor = async ({
   // promise all
   // getVendorDetails
   const responses = await Promise.all([
-    searchProducts(
+    searchProductsv1(
       {
         offset: 0,
-        limit: 15,
+        limit: PER_REQUEST,
       },
       {
         ...searchParams,
@@ -49,8 +45,8 @@ const Vendor = async ({
     }),
   ]);
 
-  const products = responses[0].products;
-  const totalCount = responses[0].totalCount;
+  const data = responses?.[0]?.hits.map((hit) => hit.document);
+  const totalCount = responses?.[0]?.found;
   const tenantDetails = responses[1];
 
   return (
@@ -63,20 +59,13 @@ const Vendor = async ({
         productsCount={tenantDetails.owner.products_aggregate.aggregate.count}
         reviewsCount={tenantDetails.owner.reviews_aggregate.aggregate.count}
       />
-      <Filter
-        filterTypes={[
-          "price",
-          "sameDayDelivery",
-          "specialOffers",
-          "customizable",
-        ]}
-      />
+      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
 
       <InfinityScroll
         totalCount={totalCount}
-        initialData={products}
+        initialData={data}
         dataKey="products"
-        query={searchProducts}
+        query={searchProductsv1}
         params={{
           ...searchParams,
           tenant: vendorId,

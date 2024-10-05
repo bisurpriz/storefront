@@ -1,5 +1,5 @@
 import Chip, { ChipColor } from "@/components/Chip";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 type Promotions = {
   icon: string | React.ReactElement;
@@ -21,7 +21,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
           .map((promotion, index) => (
             <Chip
               key={promotion?.description}
-              href={`/products?filter=${promotion.filterKey}`}
+              href={`/?search=&${promotion.filterKey}=true`}
               label={promotion.description}
               as="link"
               color={promotion.color}

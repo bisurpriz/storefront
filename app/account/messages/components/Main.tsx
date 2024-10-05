@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import useDelayUnmount from "@/hooks/useDelayUnmount";
 import useChatStore from "@/store";
 import { useState } from "react";
@@ -69,11 +69,10 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
           >
             <div className="flex items-center">
               <Button
-                icon={<ArrowBackCircleSharp />}
+                icon={<ArrowBackCircleSharp className="h-7 w-7" />}
                 type="button"
-                size="small"
+                size="sm"
                 variant="link"
-                iconSize={24}
                 className="gap-2 py-0 px-0 pl-0"
                 onClick={() => setIsMessageOpen(false)}
               />

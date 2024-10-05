@@ -37,6 +37,8 @@ const PhoneInput: FC<PhoneInputProps> = ({
       handleChange({
         target: { value },
       } as ChangeEvent<HTMLInputElement>);
+    } else {
+      setPhoneNumber("");
     }
   }, [value]);
 
@@ -99,6 +101,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
       className={className}
       id={id}
       icon={icon}
+      fullWidth
     />
   );
 };

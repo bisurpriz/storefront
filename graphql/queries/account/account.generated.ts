@@ -67,10 +67,26 @@ export type GetCityByIdQueryVariables = Types.Exact<{
 
 export type GetCityByIdQuery = { city: Array<{ code: number, id: number, name: string }> };
 
+export type GetDistrictForProductQueryVariables = Types.Exact<{
+  cityId: Types.Scalars['Int']['input'];
+  pid: Types.Scalars['bigint']['input'];
+}>;
+
+
+export type GetDistrictForProductQuery = { district: Array<{ name: string, id: number, code: number }> };
+
+export type GetQuartersForProductQueryVariables = Types.Exact<{
+  pid: Types.Scalars['bigint']['input'];
+  districtId: Types.Scalars['Int']['input'];
+}>;
+
+
+export type GetQuartersForProductQuery = { quarter: Array<{ id: number, name: string, code: number }> };
+
 export type GetUserOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, order_item_special_images: Array<{ image_url: string, quantity_index?: number | null, id: any }>, order_item_special_texts: Array<{ content: string, quantity_index?: number | null, id: any }>, product: { slug?: string | null, image_url?: Array<string> | null, name: string, quantity?: number | null, category: { name: string, slug?: string | null }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null, order_items_aggregate: { aggregate?: { count: number } | null } }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, order_item_special_images: Array<{ image_url: string, quantity_index?: number | null, id: any }>, order_item_special_texts: Array<{ content: string, quantity_index?: number | null, id: any }>, product: { slug?: string | null, image_url?: Array<string> | null, name: string, quantity?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null, order_items_aggregate: { aggregate?: { count: number } | null } }> }> };
 
 export type CreateNewAddressMutationVariables = Types.Exact<{
   address?: Types.InputMaybe<Types.Scalars['String']['input']>;
@@ -248,6 +264,30 @@ export const GetCityByIdDocument = gql`
 }
     `;
 export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;
+export const GetDistrictForProductDocument = gql`
+    query getDistrictForProduct($cityId: Int!, $pid: bigint!) {
+  district(
+    where: {_and: [{city: {id: {_eq: $cityId}}}, {quarters: {tenant_shipping_places: {tenant: {owner: {products: {id: {_eq: $pid}}}}}}}]}
+  ) {
+    name
+    id
+    code
+  }
+}
+    `;
+export type GetDistrictForProductQueryResult = Apollo.QueryResult<GetDistrictForProductQuery, GetDistrictForProductQueryVariables>;
+export const GetQuartersForProductDocument = gql`
+    query getQuartersForProduct($pid: bigint!, $districtId: Int!) {
+  quarter(
+    where: {_and: [{district: {id: {_eq: $districtId}}}, {tenant_shipping_places: {tenant: {owner: {products: {id: {_eq: $pid}}}}}}]}
+  ) {
+    id
+    name
+    code
+  }
+}
+    `;
+export type GetQuartersForProductQueryResult = Apollo.QueryResult<GetQuartersForProductQuery, GetQuartersForProductQueryVariables>;
 export const GetUserOrdersDocument = gql`
     query getUserOrders {
   order(where: {payment_status: {_eq: PAID}}) {
@@ -279,9 +319,11 @@ export const GetUserOrdersDocument = gql`
           id
         }
         product {
-          category {
-            name
-            slug
+          product_categories {
+            category {
+              name
+              slug
+            }
           }
           slug
           image_url

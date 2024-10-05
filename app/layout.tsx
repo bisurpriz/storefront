@@ -10,6 +10,7 @@ import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
+import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { query } from "@/graphql/lib/client";
@@ -24,6 +25,7 @@ import {
 } from "@/graphql/queries/categories/getCategories.generated";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import { ProductProvider } from "@/contexts/ProductContext";
+import { SearchProductProvider } from "@/contexts/SearchContext";
 
 export const experimental_ppr = true;
 
@@ -66,38 +68,12 @@ export const metadata: Metadata = {
     },
   ],
   keywords: [
-    "sürpriz",
-    "sevgiliye sürpriz",
-    "sevgiliye hediye",
-    "sevgiliye doğum günü hediyesi",
-    "sevgiliye doğum günü sürprizi",
-    "sevgiliye doğum günü",
-    "sevgiliye doğum günü hediyesi ne alınır",
-    "sevgiliye doğum günü hediyesi fikirleri",
-    "sevgiliye doğum günü hediyesi ne alabilirim",
-    "sevgiliye doğum günü hediyesi ne yapabilirim",
-    "sevgiliye doğum günü hediyesi ne alınır ekşi",
-    "sevgiliye doğum günü hediyesi ne alınır kadın",
-    "sevgiliye doğum günü hediyesi ne alınır erkek",
-    "çiçek",
-    "çiçek siparişi",
-    "çiçek siparişi ankara",
-    "çiçek siparişi istanbul",
-    "hediyelik eşya",
-    "hediyelik eşya ankara",
-    "hediye",
-    "hediye ankara",
-    "hediye istanbul",
-    "hediye fikirleri",
-    "çikolata",
-    "çikolata ankara",
-    "çikolata istanbul",
-    "çikolata çeşitleri",
-    "çikolata çeşitleri ankara",
-    "çikolata çeşitleri istanbul",
-    "çikolata çeşitleri fiyatları",
-    "çikolata çeşitleri fiyatları ankara",
-    "çikolata çeşitleri fiyatları istanbul",
+    "Bonnmarşe",
+    "Bonnmarşe.com",
+    "Sevdiklerinize sürpriz yapın",
+    "Hediye",
+    "Çiçek",
+    "Çikolata",
   ],
   robots: "index, follow",
   manifest: "/manifest.json",
@@ -119,11 +95,13 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const { user } = await getUserById();
-  const { cartItems, costData } = await getCart(user?.id);
-  const {
-    data: { category },
-  } = await query<GetMainCategoriesQuery, GetMainCategoriesQueryVariables>({
+  const data = await getUserById();
+  const { cartItems, costData } = await getCart(data?.user?.id);
+
+  const { data: categoryData } = await query<
+    GetMainCategoriesQuery,
+    GetMainCategoriesQueryVariables
+  >({
     query: GetMainCategoriesDocument,
     fetchPolicy: "no-cache",
   });
@@ -137,28 +115,36 @@ export default async function RootLayout({
         font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
         id="root"
       >
-        <TagManagerNoscript />
-        <AuthProvider user={user}>
-          <ApolloWrapper>
-            <ProductProvider>
-              <CategoryProvider category={category}>
-                <CartProvider cartDbItems={cartItems} dbCost={{
-                  totalPrice: costData.totalPrice,
-                  isCouponApplied: false,
-                  couponMessage: "",
-                  discountAmount: 0,
-                }}>
-                  <Suspense fallback={<HeaderSuspense />}>
-                    <Header category={category} />
-                    <StickyHeader />
-                  </Suspense>
-                  <Content>{children}</Content>
-                  {auth}
-                </CartProvider>
-              </CategoryProvider>
-            </ProductProvider>
-          </ApolloWrapper>
-        </AuthProvider>
+        <ProgressBarProvider>
+          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
+          <TagManagerNoscript />
+          <AuthProvider user={data?.user}>
+            <ApolloWrapper>
+              <ProductProvider>
+                <CategoryProvider category={categoryData?.category}>
+                  <CartProvider
+                    cartDbItems={cartItems}
+                    dbCost={{
+                      totalPrice: costData.totalPrice,
+                      isCouponApplied: false,
+                      couponMessage: "",
+                      discountAmount: 0,
+                    }}
+                  >
+                    <SearchProductProvider>
+                      <Suspense fallback={<HeaderSuspense />}>
+                        <Header category={categoryData?.category} />
+                        <StickyHeader />
+                      </Suspense>
+                      <Content>{children}</Content>
+                      {auth}
+                    </SearchProductProvider>
+                  </CartProvider>
+                </CategoryProvider>
+              </ProductProvider>
+            </ApolloWrapper>
+          </AuthProvider>
+        </ProgressBarProvider>
       </body>
     </html>
   );

@@ -45,10 +45,12 @@ query getOrdersWithReviews($user_id: uuid!) {
       name
       id
       image_url
-      category {
-        name
-        slug
-        id
+      product_categories {
+        category {
+          name
+          slug
+          id
+        }
       }
       tenant {
         id

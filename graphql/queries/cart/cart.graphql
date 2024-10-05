@@ -30,10 +30,12 @@ query getProductByIdForCart($id: bigint!) {
     delivery_type
     is_service_free
     score
-    category {
-      id
-      name
-      slug
+    product_categories {
+      category {
+        id
+        name
+        slug
+      }
     }
     tenant {
       id
@@ -41,6 +43,7 @@ query getProductByIdForCart($id: bigint!) {
         id
         name
         commision_rate
+        iyzi_sub_merchant_key
       }
     }
     discount_price

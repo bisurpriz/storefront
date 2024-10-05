@@ -36,3 +36,78 @@ mutation updateOrderItemApprove(
     }
   }
 }
+
+query getOrderForTracking($orderNo: bigint!) {
+  order(where: { order_no: { _eq: $orderNo }, payment_status: { _eq: PAID } }) {
+    created_at
+    order_no
+    tenant_orders {
+      id
+      status
+      order_items {
+        quantity
+        id
+        delivery_date
+        delivery_time
+        product {
+          name
+          id
+          slug
+          product_categories {
+            category {
+              name
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetOrderById($id: uuid = "") {
+  order_by_pk(id: $id) {
+    created_at
+    tenant_orders {
+      tenant {
+        tenants {
+          logo
+          name
+        }
+      }
+      order_items {
+        id
+        order_item_special_images {
+          id
+          image_url
+          order_item_id
+          quantity_index
+        }
+        order_item_special_texts {
+          id
+          order_item_id
+          quantity_index
+          content
+        }
+        status
+        sell_price
+        quantity
+        product {
+          image_url
+          slug
+          name
+          product_customizable_areas {
+            customizable_area {
+              id
+              type
+            }
+            id
+            max_character
+            count
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import InfinityScroll from "@/components/InfinityScroll";
 import Filter from "@/components/Filter";
-import { searchProducts } from "../actions";
+import { searchProductsv1 } from "../actions";
+import { PER_REQUEST } from "@/app/constants";
 
 export default async function CategoryPage({
   params,
@@ -11,10 +12,10 @@ export default async function CategoryPage({
 }) {
   const slug = params["category-slug"];
 
-  const data = await searchProducts(
+  const response = await searchProductsv1(
     {
       offset: 0,
-      limit: 15,
+      limit: PER_REQUEST,
     },
     {
       ...searchParams,
@@ -22,23 +23,17 @@ export default async function CategoryPage({
     }
   );
 
-  const { products, totalCount } = data;
+  const data = response?.hits.map((hit) => hit.document);
+  const totalCount = response?.found;
 
   return (
     <>
-      <Filter
-        filterTypes={[
-          "price",
-          "sameDayDelivery",
-          "specialOffers",
-          "customizable",
-        ]}
-      />
+      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
       <InfinityScroll
         totalCount={totalCount}
-        initialData={products}
+        initialData={data}
         dataKey="products"
-        query={searchProducts}
+        query={searchProductsv1}
         params={searchParams}
       />
     </>

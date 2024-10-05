@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import MenuItem from "./MenuItem";
 import { logout } from "@/app/@auth/actions";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
             key={item.text}
             href={item.link}
             className={clsx([
-              "flex flex-col items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary hover:bg-primary-light hover:text-white transition-colors duration-200 ease-in-out",
+              "flex flex-col items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary hover:text-white transition-colors duration-200 ease-in-out",
               !user && item.private && "hidden",
               user && !item.private && "hidden",
             ])}

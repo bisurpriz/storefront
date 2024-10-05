@@ -41,3 +41,14 @@ next-env.d.ts
 **/public/worker-*.js.map
 
 certs
+
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+
+.idea
+.vscode
+.yarn/install-state.gz

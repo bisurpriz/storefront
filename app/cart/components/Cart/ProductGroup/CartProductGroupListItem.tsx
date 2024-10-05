@@ -3,7 +3,7 @@ import { ProductForCart } from "@/common/types/Cart/cart";
 import PriceTag from "@/components/PriceTag";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
 import { DeliveryType } from "@/common/enums/Product/product";
@@ -11,6 +11,9 @@ import GiftCardNote from "./GiftCardNote";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import Palette from "@/components/Icons/Palette";
 import FreeTruck from "@/components/Icons/FreeTruck";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { localeFormat } from "@/utils/format";
+import Chip from "@/components/Chip";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -21,15 +24,29 @@ const CartProductGroupListItem = (product: ProductForCart) => {
     product_customizable_areas: customize,
     image_url,
     discount_price,
-    category,
+    product_categories,
     is_service_free,
     delivery_type,
   } = product;
 
   const image = getImageUrlFromPath(image_url?.[0]);
 
+  const specialTextCount = customize?.filter(
+    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT
+  ).length;
+  const specialImageCount = customize?.filter(
+    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
+  ).length;
+
+  const getEstimatedDeliveryDateText = () => {
+    return `Tahmini teslimat tarihi: ${localeFormat(
+      new Date(product.deliveryDate),
+      "dd MMMM yyyy"
+    )}${product.deliveryTime ? ` - ${product.deliveryTime}` : ""}`;
+  };
+
   return (
-    <li className="py-4" key={id}>
+    <li className="p-0 pt-4" key={id}>
       <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
         <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
           <Image
@@ -42,7 +59,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <div className="flex flex-col gap-2">
             <Link
               className="text-base font-semibold text-gray-800 uppercase max-md:text-xs"
-              href={`/${category.slug}/${name}?pid=${id}`}
+              href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
             </Link>
@@ -53,6 +70,30 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           </div>
 
           <ProductGroupListItemInfo customize={customize} id={id} />
+        </div>
+        <div className="flex gap-2 items-start flex-wrap mb-4">
+          {delivery_type === "SAME_DAY" && product.deliveryDate && (
+            <Chip
+              rounded="low"
+              label={getEstimatedDeliveryDateText()}
+              size="small"
+              color="primary"
+              variant="soft"
+              className="font-sans max-sm:w-full"
+            />
+          )}
+          {(specialImageCount > 0 || specialTextCount > 0) && (
+            <Chip
+              rounded="semi"
+              label={
+                "Siparişi tamamladıktan sonra, tasarlanabilir alanları doldurabilirsiniz."
+              }
+              size="small"
+              color="purple"
+              variant="soft"
+              className="font-sans whitespace-break-spaces"
+            />
+          )}
         </div>
         <Promotions
           promotions={[
@@ -81,6 +122,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
           ]}
         />
+
         <GiftCardNote id={id} quantity={quantity} />
       </div>
     </li>

@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
-import Button from "../Button";
 import clsx from "clsx";
 import Close from "../Icons/Close";
+import { Button } from "../ui/button";
 
 interface ImageUploadProps {
   onChange: (files: File[] | null) => void;
@@ -47,9 +47,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div className={clsx("flex items-center justify-start gap-2")}>
       <label
         className={clsx(
-          "p-4 rounded-md border border-gray-300 cursor-pointer text-sm text-slate-500",
+          "p-4 rounded-md border border-gray-300 cursor-pointer text-sm text-slate-500 whitespace-nowrap",
           {
-            "bg-gray-200": selectedImages?.length,
+            "bg-primary text-white": selectedImages?.length,
           }
         )}
       >
@@ -73,7 +73,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <div className="w-full flex gap-2 max-w-lg overflow-hidden overflow-y-auto">
           {selectedImages?.map((image, index) => (
             <div
-              className="relative w-28 h-28 rounded-lg overflow-hidden"
+              className="relative w-24 h-24 rounded-lg overflow-hidden"
               key={image.name}
             >
               <Image
@@ -92,8 +92,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                   setSelectedImages(data);
                   onChange(data);
                 }}
-                color="secondary"
-                variant="outlined"
+                variant="outline"
                 className="!absolute !top-1 !right-1 !p-[2px] rounded-full"
               >
                 <Close />

@@ -1,5 +1,5 @@
 import { CustomStar } from "@/components/ReviewRating/CustomStar";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { motion } from "framer-motion";
 
 export type RatingProps = {
@@ -12,15 +12,9 @@ export type RatingProps = {
     5: number;
   };
   totalRating: number;
-  totalUserCommentCount: number;
 };
 
-const RatingDetail = ({
-  rateCounts,
-  rating,
-  totalRating,
-  totalUserCommentCount,
-}: RatingProps) => {
+const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   const percentage = (val: number) => {
     return (val / totalRating) * 100;
   };
@@ -34,14 +28,11 @@ const RatingDetail = ({
   };
 
   return rateCounts ? (
-    <div className="bg-white p-4 rounded-lg flex flex-col gap-4 shadow-md ring ring-gray-100">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold">{rating.toFixed(1)} Puan</p>
-        <Link
-          href="/#yorumlar"
-          className="text-primary-500 text-sm font-semibold"
-        >
-          ({totalUserCommentCount} Yorum)
+        <Link href="#yorumlar" className="text-primary text-sm font-semibold">
+          ({totalRating} Yorum)
         </Link>
       </div>
       {Object.keys(rateCounts).map((key) => {

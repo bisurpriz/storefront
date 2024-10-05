@@ -25,18 +25,18 @@ const CheckContract: FC<CheckContractProps> = ({
           <span className="text-slate-600 text-xs">
             <strong
               onClick={openApproveContract}
-              className="cursor-pointer underline hover:text-primary-dark"
+              className="cursor-pointer underline hover:text-primary"
             >
               Ön Bilgilendirme Koşulları
             </strong>
             'nı ve{" "}
             <strong
               onClick={openApproveContract}
-              className="cursor-pointer underline hover:text-primary-dark"
+              className="cursor-pointer underline hover:text-primary"
             >
               Mesafeli Satış Sözleşmesi
             </strong>
-            'ni okudum, kabul onaylıyorum.
+            'ni okudum, onaylıyorum.
           </span>
         }
         onChange={(val) => handleApproveContract(val)}

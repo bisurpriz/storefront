@@ -1,11 +1,12 @@
 import ProductInformation from "../../components/Detail/ProductInformation";
-import { getDiscountRate } from "@/components/PriceTag";
 import { getProductInformation } from "./actions";
 import { FC } from "react";
 import { createJSONLd } from "@/utils/createJSONLd";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Script from "next/script";
-import { DeliveryType } from "@/common/enums/Product/product";
+import { getProductRatings } from "@/app/(feed)/actions";
+import InformationLoadingPage from "./loading";
+import { getDiscountRate } from "@/utils/price";
 
 type Props = {
   searchParams: {
@@ -19,6 +20,12 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
   const {
     data: { product },
   } = await getProductInformation(productId);
+
+  if (!product) {
+    return <InformationLoadingPage />;
+  }
+
+  const ratings = await getProductRatings({ pid: productId });
 
   const jsonLdString = createJSONLd({
     context: "https://schema.org",
@@ -67,25 +74,23 @@ const ProductInformationPage: FC<Props> = async ({ searchParams }) => {
       <ProductInformation
         name={product.name}
         price={product.price}
-        rateCounts={{
-          1: 57,
-          2: 16,
-          3: 39,
-          4: 59,
-          5: 214,
-        }}
+        rateCounts={
+          (ratings?.reduce((acc, curr) => {
+            acc[curr.score] = curr.comment_count;
+            return acc;
+          }, {}) as any) ?? {}
+        }
         rating={product.score ?? 0}
-        totalUserCommentCount={240}
-        reviewCount={385}
-        promotion="Kargo Bedava"
+        reviewCount={product.reviews_aggregate.aggregate.count}
         discountPrice={product.discount_price}
         discountRate={getDiscountRate(product.price, product.discount_price)}
         key={product.id}
         vendor={product.tenant.tenants?.[0]}
-        freeShipping={true}
+        freeShipping={product.is_service_free}
         shippingType={product.delivery_type}
         deliveryTimeRanges={product.delivery_time_ranges}
         isCustomizable={product.product_customizable_areas?.length > 0}
+        lastOrderTime={product.last_order_time}
       />
       <Script
         type="application/ld+json"

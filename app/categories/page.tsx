@@ -3,7 +3,8 @@
 import { useCategory } from "@/contexts/CategoryContext";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/Link";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 const CategoriesPage = () => {
   const { category } = useCategory();
@@ -52,7 +53,8 @@ const CategoriesPage = () => {
               </Link>
               <Image
                 src={
-                  category.image_url ?? "https://via.placeholder.com/400x300"
+                  getImageUrlFromPath(category.image_url) ??
+                  "https://via.placeholder.com/400x300"
                 }
                 alt={category.name}
                 width={400}

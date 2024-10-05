@@ -18,6 +18,12 @@ import {
   SendMessageAloneMutation,
   SendMessageAloneMutationVariables,
 } from "@/graphql/queries/chat/mutation.generated";
+import {
+  GetOrderByIdDocument,
+  GetOrderByIdQuery,
+  GetOrderByIdQueryResult,
+  GetOrderByIdQueryVariables,
+} from "@/graphql/queries/order/order.generated";
 
 export const getUserOrders = async () => {
   return await query<GetUserOrdersQuery, GetUserOrdersQueryVariables>({
@@ -73,4 +79,14 @@ export const orderTextsUpload = async (payload: OrderTextData[]) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getOrderById = (id: string) => {
+  return query<GetOrderByIdQuery, GetOrderByIdQueryVariables>({
+    query: GetOrderByIdDocument,
+    variables: {
+      id,
+    },
+    fetchPolicy: "no-cache",
+  });
 };

@@ -44,12 +44,13 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
       >
         <h4 className="flex items-center font-medium">{title}</h4>
         <ChevronDown
-          className={`transition-transform transform ${
+          className={`transition-transform transform -z-[1] ${
             open ? "-rotate-180" : ""
           }`}
         />
       </div>
       <motion.div
+        key={title.toString()}
         ref={nodeRef}
         initial={false}
         animate={open ? "open" : "closed"}

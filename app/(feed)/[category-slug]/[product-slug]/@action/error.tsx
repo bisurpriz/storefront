@@ -3,7 +3,7 @@
 import React from "react";
 
 const ActionErrorPage = () => {
-  return <div>Burada bir error mevcut</div>;
+  return <div>Has error this page</div>;
 };
 
 export default ActionErrorPage;

@@ -7,28 +7,28 @@ export type GetProductByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, properties?: any | null, score?: number | null, discount_price?: number | null, category: { name: string, id: number, slug?: string | null }, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price?: number | null, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, properties?: any | null, score?: number | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }>, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductForCartQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
 }>;
 
 
-export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, score?: number | null, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, category: { name: string }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> } } | null, category: Array<{ name: string }> };
+export type GetProductForCartQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price?: number | null, score?: number | null, discount_price?: number | null, product_customizable_areas: Array<{ count: number, customizable_area: { type: string } }>, product_categories: Array<{ category: { name: string } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> } } | null, category: Array<{ name: string }> };
 
 export type GetProductPricesByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
 }>;
 
 
-export type GetProductPricesByIdQuery = { product?: { id: any, price: number, discount_price?: number | null } | null };
+export type GetProductPricesByIdQuery = { product?: { id: any, price?: number | null, discount_price?: number | null } | null };
 
 export type GetProductsForInitialCartQueryVariables = Types.Exact<{
   ids?: Types.InputMaybe<Array<Types.Scalars['bigint']['input']> | Types.Scalars['bigint']['input']>;
 }>;
 
 
-export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price: number, discount_price?: number | null, score?: number | null, stock?: number | null, image_url?: Array<string> | null, category: { id: number, name: string, slug?: string | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price?: number | null, discount_price?: number | null, score?: number | null, stock?: number | null, image_url?: Array<string> | null, product_categories: Array<{ category: { id: number, name: string, slug?: string | null } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
 
 export type GetProductActionDataQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -49,7 +49,7 @@ export type GetProductInformationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price: number, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, score?: number | null, properties?: any | null, discount_price?: number | null, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number, avg?: { score?: number | null } | null } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
+export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, score?: number | null, properties?: any | null, discount_price?: number | null, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number, avg?: { score?: number | null } | null } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
 
 export type GetProductImagesQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -76,8 +76,10 @@ export type GetProductCommentsQuery = { product?: { reviews: Array<{ id: number,
 export const GetProductByIdDocument = gql`
     query getProductById($id: bigint = 0) {
   product: product_by_pk(id: $id) {
-    category {
-      name
+    product_categories {
+      category {
+        name
+      }
     }
     description
     id
@@ -88,6 +90,7 @@ export const GetProductByIdDocument = gql`
     is_service_free
     delivery_time_ranges
     delivery_type
+    last_order_time
     properties
     score
     discount_price
@@ -124,10 +127,12 @@ export const GetProductByIdDocument = gql`
         count(columns: id)
       }
     }
-    category {
-      name
-      id
-      slug
+    product_categories {
+      category {
+        name
+        id
+        slug
+      }
     }
     tenant {
       id
@@ -168,8 +173,10 @@ export const GetProductForCartDocument = gql`
       }
       count
     }
-    category {
-      name
+    product_categories {
+      category {
+        name
+      }
     }
     tenant {
       id
@@ -209,10 +216,12 @@ export const GetProductsForInitialCartDocument = gql`
     score
     stock
     image_url
-    category {
-      id
-      name
-      slug
+    product_categories {
+      category {
+        id
+        name
+        slug
+      }
     }
     tenant {
       id
@@ -274,6 +283,7 @@ export const GetProductInformationDocument = gql`
     is_service_free
     delivery_time_ranges
     delivery_type
+    last_order_time
     score
     properties
     discount_price

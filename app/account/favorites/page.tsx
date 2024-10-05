@@ -2,7 +2,7 @@ import { getUserFavorites } from "./actions";
 import clsx from "clsx";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 
 export const dynamic = "force-dynamic";
@@ -65,7 +65,7 @@ const FavoritesPage = async () => {
               <Link
                 href={goToProductDetail({
                   category: {
-                    slug: item.product.category.slug,
+                    slug: item.product.product_categories[0].category.slug,
                   },
                   id: item.product.id,
                   slug: item.product.slug,

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useTransition } from "react";
 import { useLazyQuery } from "@apollo/client";
 
 import Autocomplete from "../Autocomplete/Autocomplete";
@@ -26,6 +26,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
     GetLocationQueryQuery,
     GetLocationQueryQueryVariables
   >(GetLocationQueryDocument);
+  const [isPending, starTransition] = useTransition();
 
   const fetchLocations = async (input: string) => {
     try {
@@ -42,22 +43,25 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label className={clsx("max-xl:col-span-full")}>
+    <label className={clsx("max-xl:col-span-full")} tabIndex={0}>
       <Autocomplete
+        disabled={isPending}
         value={value}
         suggestions={fetchLocations}
         onChange={({ selectedValue }) => {
-          if (selectedValue?.id && selectedValue?.type) {
-            Cookies.set(
-              CookieTokens.LOCATION_ID,
-              JSON.stringify({
-                id: selectedValue.id,
-                type: selectedValue.type,
-              })
-            );
-            refresh();
-            onChange && onChange(selectedValue);
-          }
+          starTransition(() => {
+            if (selectedValue?.id && selectedValue?.type) {
+              Cookies.set(
+                CookieTokens.LOCATION_ID,
+                JSON.stringify({
+                  id: selectedValue.id,
+                  type: selectedValue.type,
+                })
+              );
+              refresh();
+              onChange && onChange(selectedValue);
+            }
+          });
         }}
         getOptionLabel={createQuarterSelectorLabel}
         placeholder="Gönderim yerini seçin"

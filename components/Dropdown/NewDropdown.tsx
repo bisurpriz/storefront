@@ -1,6 +1,6 @@
 import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import React, { FC, useRef, useState } from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 import { motion } from "framer-motion";

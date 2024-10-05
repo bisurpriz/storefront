@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import InfinityScroll from ".";
-import { searchProducts } from "@/app/(feed)/actions";
+import { searchProductsv1 } from "@/app/(feed)/actions";
+import { PER_REQUEST } from "@/app/constants";
 
 type ServerInfinityScrollProps = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -9,20 +10,20 @@ type ServerInfinityScrollProps = {
 const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
   searchParams,
 }) => {
-  const { products, totalCount } = await searchProducts(
-    {
-      offset: 0,
-      limit: 15,
-    },
-    searchParams
-  );
+  const response = await searchProductsv1({
+    offset: 0,
+    limit: PER_REQUEST,
+  });
+
+  const data = response?.hits.map((hit) => hit.document);
+  const totalCount = response?.found;
 
   return (
     <InfinityScroll
       totalCount={totalCount}
-      initialData={products}
+      initialData={data}
       dataKey="products"
-      query={searchProducts}
+      query={searchProductsv1}
       params={searchParams}
     />
   );

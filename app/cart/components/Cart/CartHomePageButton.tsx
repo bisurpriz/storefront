@@ -1,17 +1,11 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import ArrowLeft from "@/components/Icons/ArrowLeft";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 const CartHomePageButton = () => {
   return (
     <Link href="/">
-      <Button
-        icon={<ArrowLeft />}
-        type="button"
-        size="small"
-        variant="link"
-        className="gap-2 !px-0 !font-normal"
-      >
+      <Button icon={<ArrowLeft />} type="button" size="sm" variant="link">
         Alışverişe Devam Et
       </Button>
     </Link>

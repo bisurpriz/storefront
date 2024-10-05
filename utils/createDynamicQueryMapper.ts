@@ -1,17 +1,7 @@
 import { CookieTokens } from "@/app/@auth/contants";
 import { cookies } from "next/headers";
 import { parseJson } from "./format";
-
-export enum FILTER_KEYS {
-  SEARCH = "search",
-  QUARTER_CODE = "quarter_code",
-  CATEGORY = "category",
-  PRICE = "price",
-  DELIVERY_TYPE = "delivery_type",
-  CUSTOMIZABLE = "customizable",
-  SAME_DAY_DELIVERY = "sameDayDelivery",
-  TENANT = "tenant",
-}
+import { FILTER_KEYS } from "@/common/enums/Product/product";
 
 export type FilterSearchParams = {
   [FILTER_KEYS.SEARCH]?: string;
@@ -22,6 +12,7 @@ export type FilterSearchParams = {
   [FILTER_KEYS.CUSTOMIZABLE]?: boolean;
   [FILTER_KEYS.SAME_DAY_DELIVERY]?: boolean;
   [FILTER_KEYS.TENANT]?: string;
+  [FILTER_KEYS.FREE_SHIPPING]?: boolean;
 };
 
 export const createDynamicQueryMapper = (searchParams: {
@@ -43,16 +34,20 @@ export const createDynamicQueryMapper = (searchParams: {
               },
             },
             {
-              category: {
-                name: {
-                  _ilike: `%${searchParams[key]}%`,
+              product_categories: {
+                category: {
+                  name: {
+                    _ilike: `%${searchParams[key]}%`,
+                  },
                 },
               },
             },
             {
-              category: {
-                slug: {
-                  _ilike: `%${searchParams[key]}%`,
+              product_categories: {
+                category: {
+                  slug: {
+                    _ilike: `%${searchParams[key]}%`,
+                  },
                 },
               },
             },
@@ -60,9 +55,11 @@ export const createDynamicQueryMapper = (searchParams: {
         };
       case FILTER_KEYS.CATEGORY:
         return {
-          category: {
-            slug: {
-              _in: (searchParams[key] as string).split(","),
+          product_categories: {
+            category: {
+              slug: {
+                _in: (searchParams[key] as string).split(","),
+              },
             },
           },
         };
@@ -94,6 +91,13 @@ export const createDynamicQueryMapper = (searchParams: {
             _in: searchParams[key] === "true" && ["SAME_DAY"],
           },
         };
+      case FILTER_KEYS.FREE_SHIPPING:
+        if (!(searchParams[key] === "true")) return {};
+        return {
+          is_service_free: {
+            _eq: true,
+          },
+        };
       case FILTER_KEYS.TENANT:
         return {
           tenant: { tenants: { id: { _eq: searchParams[key] } } },
@@ -107,7 +111,9 @@ export const createDynamicQueryMapper = (searchParams: {
   const locationType = parseJson(cookie)?.type;
 
   const locationWhereExpression = {
-    quarter: { quarter_code: { _in: locationId ? [locationId] : undefined } },
+    quarter: {
+      quarter: { id: { _in: locationId ? [locationId] : undefined } },
+    },
     district: { quarter: { district: { id: { _in: [locationId] } } } },
     city: { quarter: { district: { city: { id: { _in: [locationId] } } } } },
   };

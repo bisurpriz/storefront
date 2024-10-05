@@ -12,6 +12,8 @@ if (!fs.existsSync(iconsDir)) {
   fs.mkdirSync(iconsDir);
 }
 
+console.log("\x1b[36m%s\x1b[0m", `Generating ${svgs.length} icons...`);
+
 svgs.forEach(async (svg) => {
   const svgPath = path.resolve(svgsDir, svg);
   const svgContent = fs.readFileSync(svgPath, "utf-8");
@@ -33,3 +35,5 @@ svgs.forEach(async (svg) => {
 
   fs.writeFileSync(iconPath, code);
 });
+
+console.log("\x1b[32m%s\x1b[0m", `Generated ${svgs.length} icons!`);

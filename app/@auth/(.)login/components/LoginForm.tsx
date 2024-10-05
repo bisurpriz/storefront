@@ -1,8 +1,8 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
 import { login } from "../../actions";
@@ -113,10 +113,11 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       </div>
       <Button
         type="submit"
-        icon={<Login className="mr-2" />}
-        label="Giriş Yap"
+        icon={<Login className="mr-2 h-4 w-4" />}
         loading={loading}
-      />
+      >
+        Giriş Yap
+      </Button>
       <p className="flex gap-2">
         Hesabınız yok mu?
         <Link href="/register" className="text-center text-blue-500" replace>

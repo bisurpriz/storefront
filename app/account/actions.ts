@@ -10,10 +10,16 @@ import {
   GetCitiesDocument,
   GetCitiesQuery,
   GetCitiesQueryVariables,
+  GetDistrictForProductDocument,
+  GetDistrictForProductQuery,
+  GetDistrictForProductQueryVariables,
   GetDistrictsDocument,
   GetDistrictsQuery,
   GetDistrictsQueryVariables,
   GetQuartersDocument,
+  GetQuartersForProductDocument,
+  GetQuartersForProductQuery,
+  GetQuartersForProductQueryVariables,
   GetQuartersQuery,
   GetQuartersQueryVariables,
   GetUserAddressByIdDocument,
@@ -79,6 +85,52 @@ export const getDiscrits = async (cityId: string) => {
   };
 };
 
+export const getAvailableDistrictsForProduct = async (
+  pid: number,
+  cityId: number
+) => {
+  const { data, loading } = await query<
+    GetDistrictForProductQuery,
+    GetDistrictForProductQueryVariables
+  >({
+    query: GetDistrictForProductDocument,
+    variables: {
+      pid: pid,
+      cityId: cityId,
+    },
+  });
+
+  const { district } = data;
+
+  return {
+    district,
+    loading,
+  };
+};
+
+export const getAvailableQuartersForProduct = async (
+  pid: number,
+  districtId: number
+) => {
+  const { data, loading } = await query<
+    GetQuartersForProductQuery,
+    GetQuartersForProductQueryVariables
+  >({
+    query: GetQuartersForProductDocument,
+    variables: {
+      pid: pid,
+      districtId: districtId,
+    },
+  });
+
+  const { quarter } = data;
+
+  return {
+    quarter,
+    loading,
+  };
+};
+
 export const getCities = async () => {
   const { data, loading } = await query<
     GetCitiesQuery,
@@ -111,35 +163,15 @@ export const getAvailableCitiesForProduct = async (pid: number) => {
   return get_product_delivery_cities;
 };
 
-export const getUserAddressById = async (id?: string) => {
-  const userId = id || (await readIdFromCookies());
-
-  if (!userId) {
-    return {
-      userAddresses: [],
-      loading: false,
-    };
-  }
-
-  const { data, loading } = await query<
-    GetUserAddressByIdQuery,
-    GetUserAddressByIdQueryVariables
-  >({
-    query: GetUserAddressByIdDocument,
-    variables: {
-      id: userId,
-    },
-  });
-
-  const {
-    user_by_pk: { user_addresses },
-  } = data;
-
-  return {
-    userAddresses: user_addresses,
-    loading,
-    user_id: userId,
-  };
+export const getUserAddressById = async (id: string) => {
+  return await query<GetUserAddressByIdQuery, GetUserAddressByIdQueryVariables>(
+    {
+      query: GetUserAddressByIdDocument,
+      variables: {
+        id,
+      },
+    }
+  );
 };
 
 export const getUserById = async (id?: string) => {
@@ -164,11 +196,7 @@ export const getUserById = async (id?: string) => {
       id: userId,
     };
   } catch (error) {
-    return {
-      user: null,
-      loading: false,
-      id: userId,
-    };
+    return error;
   }
 };
 

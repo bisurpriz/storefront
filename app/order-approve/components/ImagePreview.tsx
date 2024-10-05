@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -107,14 +107,14 @@ const ImagePreview = ({
         <div className="flex gap-3">
           <Button
             disabled={!note}
-            color="error"
+            variant="destructive"
             onClick={() => onSubmit(false)}
           >
             İtiraz Et
           </Button>
           <Button
             disabled={approveButtonDisabled}
-            color="success"
+            variant="default"
             onClick={() => onSubmit(true)}
           >
             Onayla
