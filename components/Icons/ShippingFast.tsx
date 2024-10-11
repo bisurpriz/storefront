@@ -1,5 +1,5 @@
-import * as React from "react";
-const ShippingFast = (props) => (
+import type { SVGProps } from "react";
+const ShippingFast = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1.25em"

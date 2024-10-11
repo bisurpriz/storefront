@@ -82,7 +82,7 @@ const Footer = () => {
       aria-describedby="Alt bilgi"
       className="flex items-center justify-center w-full max-md:hidden  mt-10 max-md:mt-20 max-sm:mt-16 bg-gray-50"
     >
-      <div className="w-full px-4 pt-4 pb-8 text-gray-700 md:container mx-auto">
+      <div className="w-full px-4 pt-4 pb-8 text-gray-700 max-w-screen-xl mx-auto">
         <div className="flex items-start justify-between w-full ">
           {footerData.map((item, index) => (
             <div
