@@ -68,7 +68,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
         onChange={(value) => {
           starTransition(() => {
             const selectedValue = suggestions.find(
-              (suggestion) => suggestion.id === (value as any).id
+              (suggestion) => suggestion?.id === (value as any)?.id
             );
             if (selectedValue?.id && selectedValue?.type) {
               Cookies.set(

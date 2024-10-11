@@ -44,26 +44,28 @@ const Input: FC<InputProps> = ({
   const hasIconClasses = icon ? "pl-10" : "";
 
   return (
-    <div className="relative">
-      {!!icon && (
-        <span
-          className={cn(
-            "absolute left-2 top-1/2 -translate-y-1/2 flex items-center ointer-events-none"
-          )}
-        >
-          {icon}
-        </span>
-      )}
-      <input
-        type={type}
-        className={cn(inputVariants({ variant }), className, hasIconClasses)}
-        ref={ref}
-        {...props}
-      />
+    <>
+      <div className="relative">
+        {!!icon && (
+          <span
+            className={cn(
+              "absolute left-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none"
+            )}
+          >
+            {icon}
+          </span>
+        )}
+        <input
+          type={type}
+          className={cn(inputVariants({ variant }), className, hasIconClasses)}
+          ref={ref}
+          {...props}
+        />
+      </div>
       {error && errorMessage && (
         <span className="text-xs text-red-500">{errorMessage}</span>
       )}
-    </div>
+    </>
   );
 };
 
