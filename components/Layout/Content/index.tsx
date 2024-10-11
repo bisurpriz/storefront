@@ -1,7 +1,7 @@
 import MobileBottomNav from "@/components/MobileBottomNav";
 
-import { Toaster } from "react-hot-toast";
 import Footer from "../Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 type ContentProps = {
   children: React.ReactNode;

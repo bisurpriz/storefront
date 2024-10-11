@@ -19,7 +19,6 @@ import {
   UPDATE_CART,
 } from "./constants";
 import { cartReducer } from "./reducer";
-import toast from "react-hot-toast";
 import {
   getCartCost,
   getProductByIdForCart,
@@ -29,6 +28,8 @@ import useResponsive from "@/hooks/useResponsive";
 import { useProduct } from "../ProductContext";
 import { isDate } from "date-fns";
 import { DeliveryLocation } from "@/common/types/Order/order";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type AddToCart = ({
   id,
@@ -124,6 +125,7 @@ export const CartProvider = ({
   const { selectedProduct } = useProduct();
 
   const { isTablet } = useResponsive();
+  const { push } = useRouter();
 
   useEffect(() => {
     setHasCustomizableProduct(
@@ -142,15 +144,53 @@ export const CartProvider = ({
   }, [cartDbItems]);
 
   const handleChangeDb = async (cartItems: ProductForCart[], type?: Type) => {
+    toast.loading(messages(type).loading, {
+      id: type,
+    });
     setLoading(true);
-    const response = await toast.promise(
-      updateCart(cartItems),
-      messages(type),
-      {
-        position: isTablet ? "top-center" : "bottom-right",
-      }
-    );
+    const response = await updateCart(cartItems);
     setLoading(false);
+    if (response.error) {
+      toast.error(messages(type).error, {
+        id: type,
+      });
+      return response;
+    }
+
+    let toastActons;
+
+    switch (type) {
+      case "add":
+        toastActons = {
+          action: {
+            label: "Sepete Git",
+            onClick: () => push("/cart"),
+          },
+        };
+        break;
+      case "clear":
+        toastActons = {
+          action: {
+            label: "Alışverişe Devam et",
+            onClick: () => push("/"),
+          },
+        };
+        break;
+      default:
+        toastActons = {
+          action: {
+            label: "Kapat",
+            onClick: () => {
+              toast.dismiss(type);
+            },
+          },
+        };
+    }
+
+    toast.success(messages(type).success, {
+      id: type,
+      action: toastActons.action,
+    });
 
     return response;
   };

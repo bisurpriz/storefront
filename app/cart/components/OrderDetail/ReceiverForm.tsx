@@ -42,8 +42,8 @@ import { GetProductDeliveryCitiesQuery } from "@/graphql/queries/products/getPro
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { parseJson } from "@/utils/format";
 import { CartStepPaths } from "../../constants";
-import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
+import { toast } from "sonner";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">

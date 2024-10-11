@@ -71,8 +71,15 @@ export default function AutoComplete({
 
   if (!isTablet) {
     return (
-      <Popover open={open} onOpenChange={readOnly ? undefined : setOpen}>
-        <PopoverTrigger asChild aria-readonly={readOnly}>
+      <Popover
+        open={open}
+        onOpenChange={readOnly || disabled ? undefined : setOpen}
+      >
+        <PopoverTrigger
+          asChild
+          aria-readonly={readOnly || disabled}
+          disabled={readOnly || disabled}
+        >
           <Label className="flex flex-col gap-1">
             {label}
             <Button
@@ -123,8 +130,11 @@ export default function AutoComplete({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Drawer
+      open={open}
+      onOpenChange={readOnly || disabled ? undefined : setOpen}
+    >
+      <DrawerTrigger asChild disabled={readOnly || disabled}>
         <Button
           variant="outline"
           role="combobox"

@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useFormStatus } from "react-dom";
-import toast from "react-hot-toast";
 import { Button, ButtonProps } from "../ui/button";
+import { toast } from "sonner";
 
 const SubmitButton = (props: ButtonProps) => {
   const { pending } = useFormStatus();

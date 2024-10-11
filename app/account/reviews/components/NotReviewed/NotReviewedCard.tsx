@@ -7,7 +7,7 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { createReview } from "../../actions";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface Props {
   imageUrl: string;

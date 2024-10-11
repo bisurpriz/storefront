@@ -160,7 +160,7 @@ const CartSummary = () => {
           </span>
         </span>
         <Button
-          disabled={loading}
+          loading={loading}
           type={
             pagePathForm[pathname as keyof typeof pagePathForm]
               ? "submit"

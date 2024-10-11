@@ -70,7 +70,6 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
             const selectedValue = suggestions.find(
               (suggestion) => suggestion.id === (value as any).id
             );
-            console.log(selectedValue);
             if (selectedValue?.id && selectedValue?.type) {
               Cookies.set(
                 CookieTokens.LOCATION_ID,
@@ -81,6 +80,10 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
               );
               refresh();
               onChange && onChange(selectedValue);
+            } else {
+              console.error("Invalid value:", value);
+              Cookies.remove(CookieTokens.LOCATION_ID);
+              refresh();
             }
           });
         }}
