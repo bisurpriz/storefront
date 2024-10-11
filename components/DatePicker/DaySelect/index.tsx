@@ -135,7 +135,7 @@ const DaySelect: React.FC<Props> = ({
   }, [lastOrderTime]);
 
   return (
-    <div className="w-full flex flex-col gap-4  font-sans mb-2">
+    <div className="w-full flex flex-col gap-4 font-sans">
       {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
         <span className="leading-5 text-slate-400 whitespace-nowrap cursor-pointer text-xs ml-1 mt-1">
           {!isTodayDisabled && `Bugün teslimat için son: `}{" "}

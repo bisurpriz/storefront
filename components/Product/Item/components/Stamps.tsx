@@ -69,6 +69,8 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
       )}
     >
       {itemObject.firstThree.map((stamp, index) => {
+        if (!stamp) return null;
+
         const colors = {
           gradient: gradients[stamp.color],
           text: textColors[stamp.color],

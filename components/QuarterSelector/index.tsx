@@ -15,6 +15,7 @@ import {
 } from "@/graphql/queries/account/account.generated";
 import AutoComplete from "../Autocomplete";
 import { LocateFixedIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type QuarterSelectorProps = {
   value?: any;
@@ -46,7 +47,7 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
   };
 
   return (
-    <label className={clsx("max-xl:col-span-full")} tabIndex={0}>
+    <label className={clsx("max-xl:col-span-full block py-2")} tabIndex={0}>
       <AutoComplete
         disabled={isPending}
         value={
@@ -64,7 +65,9 @@ const QuarterSelector: FC<QuarterSelectorProps> = ({ value, onChange }) => {
         }))}
         startIcon={<LocateFixedIcon className="h-6 w-6 shrink-0 " />}
         onInputChange={fetchLocations}
-        buttonClass="justify-between w-full bg-primary ring-2 ring-primary text-white"
+        buttonClass={cn("justify-between w-full py-4 h-auto ring-2", {
+          "ring-2 ring-primary text-white bg-primary": value,
+        })}
         onChange={(value) => {
           starTransition(() => {
             const selectedValue = suggestions.find(

@@ -84,12 +84,12 @@ const ProductActions = ({
     <>
       {showPlaceWarning && (
         <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
-          <p className="text-sm font-semibold text-slate-500 max-md:text-xs max-md:font-normal">
+          <p className="text-xs text-slate-700 font-normal">
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
           </p>
         </div>
       )}
-      <div className="flex items-center justify-start gap-4 py-4 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
+      <div className="flex items-center justify-start gap-4 py-2 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}

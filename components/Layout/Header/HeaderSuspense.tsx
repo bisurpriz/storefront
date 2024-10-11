@@ -2,7 +2,7 @@ import React from "react";
 
 const HeaderSuspense = () => {
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col items-center justify-start gap-2">
+    <div className="max-w-screen-2xl mx-auto flex flex-col items-center justify-start gap-2">
       <div className="bg-slate-400 animate-pulse w-full h-2 rounded-lg" />
       <div className="flex items-center justify-between w-full gap-12">
         <div className="bg-slate-400 animate-pulse w-60 h-14 rounded-lg" />
