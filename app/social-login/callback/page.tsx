@@ -2,8 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, startTransition } from "react";
-import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
+import { toast } from "sonner";
 
 const SocialCallback = () => {
   const searchParams = useSearchParams();
@@ -17,10 +17,6 @@ const SocialCallback = () => {
         startProgress();
         toast.success("Giriş başarılı", {
           position: "bottom-right",
-          ariaProps: {
-            "aria-live": "polite",
-            role: "status",
-          },
           id: "login-success",
           duration: 1500,
         });

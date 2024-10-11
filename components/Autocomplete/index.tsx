@@ -7,12 +7,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useResponsive from "@/hooks/useResponsive";
 import OptionList from "./AutoCompleteList";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Label } from "../ui/label";
+import { cn } from "@/lib/utils";
+import { ChevronsUpDown, SquareX } from "lucide-react";
 
 export type AutoCompleteOption = Pick<DropdownOption, "label" | "value"> & {
   [key: string]: any;
@@ -36,11 +37,12 @@ export interface AutoCompleteProps {
   disableCloseOnSelect?: boolean;
   error?: boolean;
   errorMessage?: string;
+  startIcon?: React.ReactNode;
+  buttonClass?: string;
 }
 
 export default function AutoComplete({
   options,
-  className,
   id,
   label,
   onChange,
@@ -53,28 +55,57 @@ export default function AutoComplete({
   readOnly,
   error,
   errorMessage,
+  startIcon,
+  buttonClass,
 }: AutoCompleteProps) {
   const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<AutoCompleteOption | null>(
+    value
+  );
+
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
+
   const { isTablet } = useResponsive();
 
   if (!isTablet) {
     return (
-      <Popover open={open} onOpenChange={readOnly ? undefined : setOpen}>
-        <PopoverTrigger asChild aria-readonly={readOnly}>
+      <Popover
+        open={open}
+        onOpenChange={readOnly || disabled ? undefined : setOpen}
+      >
+        <PopoverTrigger
+          asChild
+          aria-readonly={readOnly || disabled}
+          disabled={readOnly || disabled}
+        >
           <Label className="flex flex-col gap-1">
             {label}
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="justify-between"
+              className={cn("justify-between", buttonClass)}
               type="button"
               aria-readonly={readOnly}
             >
-              {value
-                ? options.find((option) => option.value === value.value)?.label
-                : placeholder}
-              <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+              <div className="flex items-center gap-2 truncate max-w-full">
+                {startIcon && startIcon}
+                {selectedValue ? selectedValue.label : placeholder}
+              </div>
+              {selectedValue ? (
+                <SquareX
+                  className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedValue(null);
+                    onChange(null);
+                  }}
+                />
+              ) : (
+                <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+              )}
             </Button>
             {error && errorMessage && (
               <span className="text-xs text-red-500">{errorMessage}</span>
@@ -86,7 +117,7 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
-              console.log(value, "burada la");
+              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}
@@ -99,19 +130,23 @@ export default function AutoComplete({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Drawer
+      open={open}
+      onOpenChange={readOnly || disabled ? undefined : setOpen}
+    >
+      <DrawerTrigger asChild disabled={readOnly || disabled}>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between"
+          className={cn("justify-between", buttonClass)}
           type="button"
         >
-          {value
-            ? options.find((option) => option.value === value.value)?.label
-            : placeholder}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <div className="flex items-center gap-2 truncate max-w-full">
+            {startIcon && startIcon}
+            {selectedValue ? selectedValue.label : placeholder}
+          </div>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
@@ -120,6 +155,7 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
+              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}

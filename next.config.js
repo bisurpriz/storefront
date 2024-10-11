@@ -17,6 +17,7 @@ const nextConfig = {
       "swiper",
       "react-transition-progress",
       "@radix-ui",
+      "sonner",
     ],
     serverActions: {
       bodySizeLimit: "20mb",

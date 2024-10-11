@@ -33,9 +33,9 @@ import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
 import { CartStepPaths } from "../../constants";
-import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
 import { useContract } from "@/contexts/ContractContext";
+import { toast } from "sonner";
 
 export type CreditCardForm = {
   creditCardNumber: string;

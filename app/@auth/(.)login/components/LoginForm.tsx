@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
 import { Link } from "@/components/Link";
 import { FC, useState } from "react";
-import toast from "react-hot-toast";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 import { signIn } from "next-auth/react";
@@ -12,6 +11,7 @@ import clsx from "clsx";
 import GoogleIcon from "@/components/CustomIcons/Google";
 import Image from "next/image";
 import Login from "@/components/Icons/Login";
+import { toast } from "sonner";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -48,10 +48,6 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       setError(errorMessage);
       toast.error(errorMessage, {
         position: "bottom-right",
-        ariaProps: {
-          "aria-live": "polite",
-          role: "status",
-        },
         id: "login-error",
         duration: 1500,
       });
@@ -62,10 +58,6 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
     setError("");
     toast.success("Giriş başarılı", {
       position: "bottom-right",
-      ariaProps: {
-        "aria-live": "polite",
-        role: "status",
-      },
       id: "login-success",
       duration: 1500,
     });

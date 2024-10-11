@@ -7,14 +7,7 @@ const ServerQuerySelector = async () => {
   const location = await getLocationFromCookie();
 
   const data = await getAvailableLocation(location);
-
-  const value = data?.value;
-
-  return (
-    <>
-      <QuarterSelector value={value} />
-    </>
-  );
+  return <QuarterSelector value={data?.value} />;
 };
 
 export default ServerQuerySelector;

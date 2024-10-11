@@ -5,7 +5,7 @@ import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated"
 import clsx from "clsx";
 import { ReactNode, createContext, useContext, useState } from "react";
 import OrderCustomize from "./OrderCustomize";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface OrderCustomizableModalType {
   onOpen: (orderItem: GetUserOrdersQuery["order"][0]) => void;

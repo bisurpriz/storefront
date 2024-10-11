@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, startTransition } from "react";
 import { checkProductLocation } from "@/app/(feed)/actions";
 import { useProgress } from "react-transition-progress";
+import HeartFill from "@/components/Icons/HeartFill";
 
 interface Props {
   productId: number;
@@ -39,6 +40,7 @@ const ProductActions = ({
   const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
   const startProgress = useProgress();
+
   const handleFavorite = () => {
     startTransition(() => {
       startProgress();
@@ -54,7 +56,9 @@ const ProductActions = ({
         return;
       }
 
-      addToFavorites({ productId });
+      addToFavorites({ productId }).catch(() => {
+        setIsFavoriteState(false);
+      });
       setIsFavoriteState(true);
     });
   };
@@ -128,14 +132,15 @@ const ProductActions = ({
           <Button
             size="lg"
             variant={isFavoriteState ? "destructive" : "outline"}
-            icon={<Heart className="w-8 h-8" />}
+            icon={
+              isFavoriteState ? (
+                <HeartFill className="w-8 h-8 text-white" />
+              ) : (
+                <Heart className="w-8 h-8 text-red-500" />
+              )
+            }
             onClick={handleFavorite}
           />
-          {favoriteCount > 0 && (
-            <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden whitespace-nowrap">
-              <strong>{favoriteCount}</strong> Favori
-            </p>
-          )}
         </div>
       </div>
       {error && (

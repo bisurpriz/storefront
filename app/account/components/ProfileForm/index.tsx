@@ -18,8 +18,8 @@ import Image from "next/image";
 import { Link } from "@/components/Link";
 import { useEffect } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { object, string } from "yup";
+import { toast } from "sonner";
 
 const schema = object().shape({
   firstname: string().required("Adınızı girin"),
@@ -62,10 +62,6 @@ const ProfileForm = ({
     });
     toast.success("Profil bilgileriniz başarıyla güncellendi.", {
       position: "bottom-right",
-      ariaProps: {
-        "aria-live": "polite",
-        role: "status",
-      },
       id: "login-success",
       duration: 3000,
     });

@@ -1,4 +1,11 @@
-import { FormEvent, FormEventHandler, useState } from "react";
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { AutoCompleteOption } from ".";
 import {
   Command,
@@ -8,6 +15,7 @@ import {
   CommandGroup,
   CommandList,
 } from "../ui/command";
+import { SearchX } from "lucide-react";
 
 function OptionList({
   options,
@@ -23,12 +31,24 @@ function OptionList({
   inputValue?: string;
 }) {
   const [list, setList] = useState(options);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setList(options);
+  }, [options]);
+
+  useLayoutEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
     <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Filter option..."
+        placeholder="Ara..."
         value={inputValue}
+        ref={inputRef}
         onValueChange={(val) => {
           onInputChange?.(val);
           setList(
@@ -41,17 +61,23 @@ function OptionList({
         }}
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty className="w-full flex p-4 pb-3 gap-1 items-center">
+          <SearchX size={24} />
+          <p className="text-gray-500 text-sm">
+            Maalesef aradığınız sonuç bulunamadı. Lütfen farklı bir kelime ile
+            arama yapmayı deneyin.
+          </p>
+        </CommandEmpty>
         <CommandGroup>
           {list.map((option) => (
             <CommandItem
               key={option.value}
-              value={option.value.toString()}
+              value={option?.value?.toString()}
               onSelect={(value) => {
-                onChange(
-                  list.find((option) => option.value.toString() === value) ||
-                    null
+                const selectedOption = options.find(
+                  (option) => option.value?.toString() === value
                 );
+                onChange(selectedOption);
               }}
             >
               {getOptionLabel ? getOptionLabel(option) : option.label}
