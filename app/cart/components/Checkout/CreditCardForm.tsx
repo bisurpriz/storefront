@@ -292,7 +292,7 @@ const CreditCardForm = () => {
           )}
         >
           <Report className="text-red-500 text-5xl" />
-          <h2 className="text-lg font-semibold text-gray-800 m-0">
+          <h2 className="text-lg font-semibold text-gray-700 m-0">
             Ödeme İşlemi Başarısız
           </h2>
           <p className="text-sm text-gray-600 m-0">{errorMessage}</p>

@@ -111,10 +111,10 @@ const ProductInformation = ({
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full  max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
-        <h1 className="text-2xl text-gray-800 max-w-lg mb-2">{name}</h1>
+        <h1 className="text-2xl text-gray-700 max-w-lg mb-2">{name}</h1>
         {vendor && (
           <div className="text-xs flex items-center max-md:mb-2">
-            <label className="text-gray-800 me-1 font-semibold">Satıcı:</label>
+            <label className="text-gray-700 me-1 font-semibold">Satıcı:</label>
             <Link
               href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
               className="text-sky-600 font-bold cursor-pointer me-1"
@@ -200,7 +200,7 @@ const ProductInformation = ({
           </div>
         )}
         {showDaySelect && (
-          <>
+          <div className="w-full my-2">
             <DaySelect
               deliveryTimes={parseJson(deliveryTimeRanges)}
               onSelect={(date) => setDeliveryTimeHandler(date)}
@@ -219,7 +219,7 @@ const ProductInformation = ({
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

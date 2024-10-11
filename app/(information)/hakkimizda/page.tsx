@@ -22,7 +22,7 @@ const AboutUs = () => {
       <div
         id="hakkimizda"
         className={clsx(
-          "w-full max-w-screen-xl",
+          "w-full max-w-screen-2xl",
           "flex flex-col items-center justify-center space-y-6"
         )}
       >

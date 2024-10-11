@@ -43,7 +43,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
               "grid grid-cols-12 items-center justify-start text-xs font-semibold"
             }
           >
-            <p className="text-gray-800 col-span-4 flex items-center justify-start gap-1">
+            <p className="text-gray-700 col-span-4 flex items-center justify-start gap-1">
               {key}
               {Array.from({ length: parseInt(key) }).map((_, index) => (
                 <span key={index}>
