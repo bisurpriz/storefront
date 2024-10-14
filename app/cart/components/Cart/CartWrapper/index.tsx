@@ -3,7 +3,9 @@
 import { useCart } from "@/contexts/CartContext";
 import CartHomePageButton from "../CartHomePageButton";
 import ProductGroup from "../ProductGroup";
-import GreaterThanOneTenant from "./GreaterThanOneTenant";
+import GreaterThanOneTenant from "../ProductGroup/GreaterThanOneTenant";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { TriangleAlert } from "lucide-react";
 
 const CartWrapper = () => {
   const {
@@ -25,9 +27,16 @@ const CartWrapper = () => {
   return (
     <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
       <GreaterThanOneTenant show={greaterThanOne}>
-        Sepetinizde farklı mağazalardan ürünler bulunmaktadır.
-        <br /> Siparişinizi tamamlamadan önce, farklı mağazalardan ürünlerin
-        ayrı ayrı gönderileceğini unutmayın.
+        <Alert variant="destructive">
+          <TriangleAlert className="w-5 h-5" />
+          <AlertTitle>
+            Sepetinizde farklı mağazalardan ürünler bulunmaktadır.
+          </AlertTitle>
+          <AlertDescription>
+            Siparişinizi tamamlamadan önce, farklı mağazalardan ürünlerin ayrı
+            ayrı gönderileceğini unutmayın.
+          </AlertDescription>
+        </Alert>
       </GreaterThanOneTenant>
 
       <ProductGroup products={tenantGroupedProducts} />
