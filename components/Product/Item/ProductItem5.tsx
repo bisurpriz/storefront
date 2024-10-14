@@ -93,17 +93,19 @@ const ProductItem5 = ({
 
         <div className="px-2 pb-6 pt-2 max:sm:px-0">
           <div className="flex flex-col gap-2 justify-between flex-grow max-sm:gap-1">
-            <Chip
-              size="small"
-              label={
-                is_service_free &&
-                isSameDayDelivery &&
-                "Ücretsiz /" + isSameDayDelivery &&
-                " Aynı gün teslimat"
-              }
-              rounded="low"
-              variant="filled"
-            />
+            {is_service_free && isSameDayDelivery && (
+              <Chip
+                size="small"
+                label={
+                  is_service_free &&
+                  isSameDayDelivery &&
+                  "Ücretsiz /" + isSameDayDelivery &&
+                  " Aynı gün teslimat"
+                }
+                rounded="low"
+                variant="filled"
+              />
+            )}
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
                 value={score ?? 0}
