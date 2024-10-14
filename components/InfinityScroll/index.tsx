@@ -81,15 +81,14 @@ const InfinityScroll = <T,>({
       <div
         className={cn(
           "grid grid-cols-4",
-          "max-sm:grid-cols-1",
-          "max-lg:grid-cols-2",
-          "max-xl:grid-cols-3",
+          "max-sm:grid-cols-2",
+          "max-md:grid-cols-3",
+          "max-lg:grid-cols-4",
           "gap-4"
         )}
       >
         {data?.map((item: any) => {
-          console.log(item);
-          return <ProductItem2 {...item} />;
+          return <DynamicProductItem {...item} key={item.id} />;
         })}
         {isPending && (
           <>

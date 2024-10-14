@@ -16,6 +16,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
 
 interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -23,96 +25,53 @@ interface ProductItemProps extends Partial<Product> {
   totalReviewCount?: number;
 }
 
-function PriceTag({
-  originalPrice,
-  discountedPrice,
-}: {
-  originalPrice: number;
-  discountedPrice: number;
-}) {
-  const calculateDiscountPercentage = (
-    original: number,
-    discounted: number
-  ) => {
-    const discount = ((original - discounted) / original) * 100;
-    return Math.round(discount);
-  };
-
-  const discountPercentage = calculateDiscountPercentage(
-    originalPrice,
-    discountedPrice
-  );
-
-  return (
-    <div className="flex space-x-2 whitespace-nowrap w-full">
-      {discountPercentage > 0 && (
-        <Chip
-          variant="filled"
-          color="error"
-          label={`%${discountPercentage}`}
-          className="!py-1 !px-2 text-xs"
-          rounded="low"
-        />
-      )}
-      <div className="flex space-x-2 items-end">
-        <span className="text-lg font-bold text-primary leading-none">
-          {discountedPrice.toFixed(2)} TL
-        </span>
-        {discountPercentage > 0 && (
-          <span className="text-sm text-muted-foreground line-through leading-none">
-            {originalPrice.toFixed(2)} TL
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function ProductItem2({
-  category_id,
-  delivery_end_time,
-  delivery_start_time,
-  delivery_time_ranges,
-  delivery_type,
-  delivery_type_rel,
-  description,
-  discount_price,
-  id,
-  image_url,
-  isFavorite: isFavoriteProp,
-  is_active,
-  is_approved,
-  is_service_free,
-  last_order_time,
-  loading,
-  name,
-  order_items,
-  order_items_aggregate,
-  price,
-  product_categories,
-  product_categories_aggregate,
-  product_customizable_areas,
-  product_customizable_areas_aggregate,
-  product_no,
-  properties,
-  quantity,
-  questions,
-  questions_aggregate,
-  reviews,
-  reviews_aggregate,
-  score,
-  slug,
-  stock,
-  stock_track,
-  supplier_product_code,
-  tenant,
-  tenant_id,
-  totalReviewCount,
-  user_favorites,
-  user_favorites_aggregate,
-}: ProductItemProps) {
+export default function ProductItem2(props: ProductItemProps) {
+  const {
+    category_id,
+    delivery_end_time,
+    delivery_start_time,
+    delivery_time_ranges,
+    delivery_type,
+    delivery_type_rel,
+    description,
+    discount_price,
+    id,
+    image_url,
+    isFavorite: isFavoriteProp,
+    is_active,
+    is_approved,
+    is_service_free,
+    last_order_time,
+    loading,
+    name,
+    order_items,
+    order_items_aggregate,
+    price,
+    product_categories,
+    product_categories_aggregate,
+    product_customizable_areas,
+    product_customizable_areas_aggregate,
+    product_no,
+    properties,
+    quantity,
+    questions,
+    questions_aggregate,
+    reviews,
+    reviews_aggregate,
+    score,
+    slug,
+    stock,
+    stock_track,
+    supplier_product_code,
+    tenant,
+    tenant_id,
+    totalReviewCount,
+    user_favorites,
+    user_favorites_aggregate,
+  } = props;
   const [isFavorite, setIsFavorite] = useState(isFavoriteProp);
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
+  const { openDialog, closeDialog } = useResponsiveDialog();
 
   useEffect(() => {
     setIsFavorite(isFavoriteProp);
@@ -242,7 +201,7 @@ export default function ProductItem2({
             />
             {score > 0 && `(${score})`}
           </span>
-          <PriceTag originalPrice={price} discountedPrice={discount_price} />
+          <PriceTagv2 originalPrice={price} discountedPrice={discount_price} />
         </div>
 
         <div className="flex space-x-2 mt-auto">
@@ -265,7 +224,6 @@ export default function ProductItem2({
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              console.log("Hızlı Bakış");
             }}
           >
             Hızlı Bakış

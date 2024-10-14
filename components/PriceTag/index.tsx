@@ -12,24 +12,26 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
 
   if (discountRate <= 0 || !discount)
     return (
-      <span
-        className={clsx([
-          "font-semibold leading-none text-xl text-slate-500 max-md:text-xs whitespace-nowrap",
-          discount > 0 ? "" : "font-normal",
-        ])}
-      >
-        {getPriceTR(price)}
-      </span>
+      <div className="max-sm:min-h-[44px] max-sm:flex max-sm:items-end">
+        <span
+          className={clsx([
+            "font-semibold block text-xl text-slate-500 max-md:text-base whitespace-nowrap",
+            discount > 0 ? "" : "font-normal",
+          ])}
+        >
+          {getPriceTR(discount)}
+        </span>
+      </div>
     );
 
   return (
-    <div className="flex items-end gap-2 max-md:gap-1 min-h-[28px]">
+    <div className="flex items-end gap-2 max-md:gap-1 min-h-[28px] max-sm:w-full max-sm:justify-between max-sm:px-2">
       {price && discountRate > 0 && (
-        <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-md max-md:text-xs">
+        <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-md max-md:text-xs max-sm:w-full max-sm:text-center">
           %{discountRate}
         </span>
       )}
-      <div className="flex gap-1 items-end max-sm:mb-0">
+      <div className="flex gap-1 items-end max-sm:mb-0 max-sm:flex-col-reverse max-sm:space-y-0">
         {discount > 0 && (
           <span
             className={clsx([
