@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Error from "../Icons/Error";
 
 const ErrorComponent = ({
@@ -32,7 +32,7 @@ const ErrorComponent = ({
         <br />
         Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin.
       </p>
-      <Button variant="outlined" color="error" onClick={handleRefresh}>
+      <Button variant="destructive" onClick={handleRefresh}>
         Sayfayı Yenile
       </Button>
     </div>

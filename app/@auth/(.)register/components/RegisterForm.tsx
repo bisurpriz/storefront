@@ -1,15 +1,15 @@
 "use client";
 
 import { registerUser } from "@/app/account/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
 import Image from "next/image";
 import { Link } from "@/components/Link";
 import { FC, useState } from "react";
 import { AuthErrorMessages } from "../../contants";
-import toast from "react-hot-toast";
 import { login } from "../../actions";
 import clsx from "clsx";
+import { toast } from "sonner";
 
 type RegisterFormProps = {
   onSuccessfulRegister?: (status: boolean) => void;
@@ -40,10 +40,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       setError(errorMessage);
       toast.error(errorMessage, {
         position: "bottom-right",
-        ariaProps: {
-          "aria-live": "polite",
-          role: "status",
-        },
+
         id: "login-error",
         duration: 1500,
       });
@@ -61,10 +58,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
         setError(errorMessage);
         toast.error(errorMessage, {
           position: "bottom-right",
-          ariaProps: {
-            "aria-live": "polite",
-            role: "status",
-          },
+
           id: "login-error",
           duration: 1500,
         });
@@ -74,10 +68,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
         setError("");
         toast.success("Giriş başarılı", {
           position: "bottom-right",
-          ariaProps: {
-            "aria-live": "polite",
-            role: "status",
-          },
+
           id: "login-success",
           duration: 1500,
         });

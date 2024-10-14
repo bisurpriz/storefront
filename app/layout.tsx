@@ -26,6 +26,8 @@ import {
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
 import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 
 export const experimental_ppr = true;
 
@@ -119,30 +121,34 @@ export default async function RootLayout({
           <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
           <TagManagerNoscript />
           <AuthProvider user={data?.user}>
-            <ApolloWrapper>
-              <ProductProvider>
-                <CategoryProvider category={categoryData?.category}>
-                  <CartProvider
-                    cartDbItems={cartItems}
-                    dbCost={{
-                      totalPrice: costData.totalPrice,
-                      isCouponApplied: false,
-                      couponMessage: "",
-                      discountAmount: 0,
-                    }}
-                  >
-                    <SearchProductProvider>
-                      <Suspense fallback={<HeaderSuspense />}>
-                        <Header category={categoryData?.category} />
-                        <StickyHeader />
-                      </Suspense>
-                      <Content>{children}</Content>
-                      {auth}
-                    </SearchProductProvider>
-                  </CartProvider>
-                </CategoryProvider>
-              </ProductProvider>
-            </ApolloWrapper>
+            <TooltipProvider>
+              <ResponsiveDialogProvider>
+                <ApolloWrapper>
+                  <ProductProvider>
+                    <CategoryProvider category={categoryData?.category}>
+                      <CartProvider
+                        cartDbItems={cartItems}
+                        dbCost={{
+                          totalPrice: costData.totalPrice,
+                          isCouponApplied: false,
+                          couponMessage: "",
+                          discountAmount: 0,
+                        }}
+                      >
+                        <SearchProductProvider>
+                          <Suspense fallback={<HeaderSuspense />}>
+                            <Header category={categoryData?.category} />
+                            <StickyHeader />
+                          </Suspense>
+                          <Content>{children}</Content>
+                          {auth}
+                        </SearchProductProvider>
+                      </CartProvider>
+                    </CategoryProvider>
+                  </ProductProvider>
+                </ApolloWrapper>
+              </ResponsiveDialogProvider>
+            </TooltipProvider>
           </AuthProvider>
         </ProgressBarProvider>
       </body>

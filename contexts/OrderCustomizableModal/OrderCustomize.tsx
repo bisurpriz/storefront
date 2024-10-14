@@ -1,7 +1,7 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import CustomizeCartItem from "@/components/Customize/CustomizeCartItem";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -48,16 +48,13 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
           formData.append("quantity_index", d.quantity_index.toString());
         });
 
-        return fetch(
-          process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL,
-          {
-            method: "POST",
-            body: formData,
-            headers: {
-              authorization: jwt,
-            }
-          }
-        );
+        return fetch(process.env.NEXT_PUBLIC_UPDATE_ORDER_ITEM_IMAGE_URL, {
+          method: "POST",
+          body: formData,
+          headers: {
+            authorization: jwt,
+          },
+        });
       });
 
       const res = await Promise.all(all);
@@ -204,9 +201,8 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
       </div>
       <Button
         type="button"
-        size="small"
-        color="primary"
-        label="Tamamla"
+        size="sm"
+        variant="default"
         className="mt-2 self-end"
         onClick={handleUpload}
         disabled={loading}

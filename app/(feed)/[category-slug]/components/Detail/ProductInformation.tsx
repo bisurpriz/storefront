@@ -9,13 +9,17 @@ import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
-import { Popper } from "@mui/base/Popper";
 import { useCart } from "@/contexts/CartContext";
 import Error from "@/components/Icons/Error";
 import SevenOclock from "@/components/Icons/SevenOclock";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
 import { getPriceTR } from "@/utils/getPriceTR";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type ProductInformationProps = {
   name: string;
@@ -104,20 +108,13 @@ const ProductInformation = ({
     };
   }, []);
 
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const open = Boolean(anchorEl);
-  const id = open ? "rating-popper" : undefined;
-
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full  max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
-        <h1 className="text-3xl text-gray-800 max-w-lg mb-2">{name}</h1>
+        <h1 className="text-2xl text-gray-700 max-w-lg mb-2">{name}</h1>
         {vendor && (
           <div className="text-xs flex items-center max-md:mb-2">
-            <label className="text-gray-800 me-1 font-semibold">Satıcı:</label>
+            <label className="text-gray-700 me-1 font-semibold">Satıcı:</label>
             <Link
               href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
               className="text-sky-600 font-bold cursor-pointer me-1"
@@ -141,7 +138,7 @@ const ProductInformation = ({
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:text-start max-xl:flex-row max-xl:items-center">
-                <h1 className="text-3xl leading-none text-primary-dark font-semibold max-w-lg mt-0 whitespace-nowrap">
+                <h1 className="text-3xl leading-none text-primary font-semibold max-w-lg mt-0 whitespace-nowrap">
                   {getPriceTR(discountPrice)}
                 </h1>
                 {promotion && (
@@ -152,42 +149,23 @@ const ProductInformation = ({
               </span>
             </span>
           </div>
-          <div
-            className="xl:ml-auto"
-            onMouseLeave={() => setAnchorEl(null)}
-            onMouseEnter={(event: MouseEvent<HTMLElement>) =>
-              setAnchorEl(event.currentTarget)
-            }
-          >
-            <ReviewRating
-              value={rating}
-              reviewCount={reviewCount}
-              showReviewCount
-              readOnly
-            />
-            <Popper
-              id={id}
-              open={open && reviewCount > 0}
-              anchorEl={anchorEl}
-              placement="bottom"
-              modifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 10],
-                  },
-                },
-              ]}
-            >
-              <div ref={wrapperRef}>
-                <RatingDetail
-                  rateCounts={manipulatedRateCounts}
-                  rating={rating}
-                  totalRating={reviewCount}
-                />
-              </div>
-            </Popper>
-          </div>
+          <HoverCard>
+            <HoverCardTrigger className="xl:ml-auto">
+              <ReviewRating
+                value={rating}
+                reviewCount={reviewCount}
+                showReviewCount
+                readOnly
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="max-w-md w-full">
+              <RatingDetail
+                rateCounts={manipulatedRateCounts}
+                rating={rating}
+                totalRating={reviewCount}
+              />
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <Promotions
           promotions={[
@@ -215,14 +193,14 @@ const ProductInformation = ({
           ]}
         />
         {showExactTime && (
-          <div className="p-1 px-4 bg-1 bg-opacity-50 rounded-xl my-2">
+          <div className="p-1 px-4 bg-purple-100 bg-opacity-50 rounded-xl my-2">
             <p className="text-xs text-gray-500">
               Ürün gün içinde herhangi bir saatte teslim edilecektir.
             </p>
           </div>
         )}
         {showDaySelect && (
-          <>
+          <div className="w-full my-2">
             <DaySelect
               deliveryTimes={parseJson(deliveryTimeRanges)}
               onSelect={(date) => setDeliveryTimeHandler(date)}
@@ -241,7 +219,7 @@ const ProductInformation = ({
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

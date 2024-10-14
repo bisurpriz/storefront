@@ -25,7 +25,7 @@ import {
 } from "@/app/iyzico-payment/types";
 import clsx from "clsx";
 import usePopup from "@/hooks/usePopup";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Modal from "@/components/Modal/FramerModal/Modal";
 import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
@@ -33,9 +33,9 @@ import User from "@/components/Icons/User";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
 import { CartStepPaths } from "../../constants";
-import toast from "react-hot-toast";
 import { useProgress } from "react-transition-progress";
 import { useContract } from "@/contexts/ContractContext";
+import { toast } from "sonner";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -292,13 +292,13 @@ const CreditCardForm = () => {
           )}
         >
           <Report className="text-red-500 text-5xl" />
-          <h2 className="text-lg font-semibold text-gray-800 m-0">
+          <h2 className="text-lg font-semibold text-gray-700 m-0">
             Ödeme İşlemi Başarısız
           </h2>
           <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
           <Button
             onClick={handleClosePopupWithClearStates}
-            color="error"
+            variant="destructive"
             className="mt-2"
           >
             Kapat

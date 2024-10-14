@@ -28,13 +28,10 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   };
 
   return rateCounts ? (
-    <div className="bg-white p-4 rounded-lg flex flex-col gap-4 shadow-md ring ring-gray-100">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold">{rating.toFixed(1)} Puan</p>
-        <Link
-          href="#yorumlar"
-          className="text-primary-500 text-sm font-semibold"
-        >
+        <Link href="#yorumlar" className="text-primary text-sm font-semibold">
           ({totalRating} Yorum)
         </Link>
       </div>
@@ -46,7 +43,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
               "grid grid-cols-12 items-center justify-start text-xs font-semibold"
             }
           >
-            <p className="text-gray-800 col-span-4 flex items-center justify-start gap-1">
+            <p className="text-gray-700 col-span-4 flex items-center justify-start gap-1">
               {key}
               {Array.from({ length: parseInt(key) }).map((_, index) => (
                 <span key={index}>

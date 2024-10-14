@@ -16,15 +16,13 @@ const ProductGroupListItemInfo = ({
 
   return (
     <span className="absolute right-2 top-0 flex gap-2 items-center">
-      {customize.length && (
-        <Close
-          onClick={() => {
-            if (loading) return;
-            removeFromCart(id);
-          }}
-          className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out text-xl"
-        />
-      )}
+      <Close
+        onClick={() => {
+          if (loading) return;
+          removeFromCart(id);
+        }}
+        className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out text-xl"
+      />
     </span>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { addDays, format } from "date-fns";
 import { motion } from "framer-motion";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
@@ -11,8 +11,7 @@ import { DeliveryTime } from "@/contexts/CartContext";
 const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
-      variant="outlined"
-      color="secondary"
+      variant="default"
       className={clsx(
         { "bg-secondary text-white ": isSelected },
         "max-sm:px-0 flex flex-col justify-center items-center",
@@ -136,11 +135,11 @@ const DaySelect: React.FC<Props> = ({
   }, [lastOrderTime]);
 
   return (
-    <div className="w-full flex flex-col gap-4  font-sans mb-2">
+    <div className="w-full flex flex-col gap-4 font-sans">
       {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
         <span className="leading-5 text-slate-400 whitespace-nowrap cursor-pointer text-xs ml-1 mt-1">
           {!isTodayDisabled && `Bugün teslimat için son: `}{" "}
-          <span className={clsx("p-2 rounded-lg bg-6 text-slate-500")}>
+          <span className={clsx("p-2 rounded-lg bg-orange-200 text-slate-500")}>
             {remainTime.hours} saat {remainTime.minutes} dakika.{" "}
           </span>
         </span>
@@ -184,7 +183,11 @@ const DaySelect: React.FC<Props> = ({
         )}
       </div>
       {selectedHour && (
-        <span className={clsx("text-xs p-2 rounded-lg bg-6 text-slate-500")}>
+        <span
+          className={clsx(
+            "text-xs p-2 rounded-lg bg-orange-200 text-slate-500"
+          )}
+        >
           Ürününüz <strong>{localeFormat(selectedDate, "PPP")}</strong>{" "}
           tarihinde <strong>{selectedHour}</strong> saatleri arasında teslim
           edilecektir.

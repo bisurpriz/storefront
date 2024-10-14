@@ -4,7 +4,7 @@ const InformationLoadingPage = () => {
   return (
     <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full max-md:p-2 max-md:rounded-none max-md:shadow-none">
       <div className="rounded-lg w-full flex items-start justify-start flex-col">
-        <div className="h-14 w-full text-gray-800 mb-2 bg-slate-300 animate-pulse rounded-lg" />
+        <div className="h-14 w-full text-gray-700 mb-2 bg-slate-300 animate-pulse rounded-lg" />
         <div className="h-4 w-96 flex items-center max-md:mb-2 bg-slate-300 animate-pulse rounded-lg" />
 
         <div className="flex items-end justify-start gap-2 w-full mb-4 md:mt-4">

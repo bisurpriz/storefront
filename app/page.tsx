@@ -64,13 +64,14 @@ export default async function Page({
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && <CampaignGrid />}
       </Suspense>
-      {category.length < 8 && viewport === "desktop" && (
-        <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+
+      {/* {category.length < 8 && viewport === "desktop" && (
+        <Suspense fallback={<CategorySectionSkeleton />}>
           <CategorySection category={category} />
         </Suspense>
-      )}
+      )} */}
 
-      <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+      {/* <Suspense fallback={<FeaturedProductSectionSkeleton />}>
         <FeaturedProducts
           products={Array.from({
             length: 25,
@@ -84,7 +85,7 @@ export default async function Page({
             href: "/",
           }))}
         />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense
         fallback={

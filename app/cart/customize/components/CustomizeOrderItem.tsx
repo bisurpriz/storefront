@@ -1,7 +1,7 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import ImageUpload from "@/components/ImageUpload";
 import TextField from "@/components/TextField";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
@@ -226,8 +226,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
         </div>
       ))}
       <Button
-        variant="fullfilled"
-        color="primary"
+        variant="default"
         type="button"
         className="mt-4 w-full justify-center"
         loading={loading}

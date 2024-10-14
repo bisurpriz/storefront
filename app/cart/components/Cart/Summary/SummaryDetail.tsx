@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import TextField from "@/components/TextField";
 import { FC, useRef, useState } from "react";
 import Ticket from "@/components/Icons/Ticket";
@@ -71,26 +71,28 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
               {isCouponApplied ? (
                 <Button
                   type="button"
-                  size="small"
-                  color="warning"
+                  size="sm"
+                  variant="destructive"
                   className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
-                  label="Kaldır"
                   onClick={() => {
                     handleRemoveCoupon?.();
                     inputRef.current!.value = "";
                   }}
                   icon={<RemoveTag className="w-4 h-4 mr-2" />}
-                />
+                >
+                  Kaldır
+                </Button>
               ) : (
                 <Button
                   type="button"
-                  size="small"
-                  color="primary"
+                  size="sm"
+                  color="default"
                   className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
-                  label="Kullan"
                   onClick={() => onDiscountCodeSubmit(inputRef.current?.value)}
                   icon={<ApplyTag className="w-4 h-4 mr-2" />}
-                />
+                >
+                  Kullan
+                </Button>
               )}
             </div>
             <AnimationExitProvider

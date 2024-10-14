@@ -58,7 +58,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           />
           <div className="flex flex-col gap-2">
             <Link
-              className="text-base font-semibold text-gray-800 uppercase max-md:text-xs"
+              className="text-base font-semibold text-gray-700 uppercase max-md:text-xs"
               href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
