@@ -64,8 +64,7 @@ function OptionList({
         <CommandEmpty className="w-full flex p-4 pb-3 gap-1 items-center">
           <SearchX size={24} />
           <p className="text-gray-500 text-sm">
-            Maalesef aradığınız sonuç bulunamadı. Lütfen farklı bir kelime ile
-            arama yapmayı deneyin.
+            Arama yaparak sonuçları filtreleyebilirsiniz.
           </p>
         </CommandEmpty>
         <CommandGroup>
