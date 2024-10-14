@@ -1,11 +1,7 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
-import CartProductGroupListItem from "./CartProductGroupListItem";
 import EmptyCart from "../EmptyCart";
-import clsx from "clsx";
 import CartItem from "./CartProductItem";
-import { X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const ProductGroup = ({
   products,

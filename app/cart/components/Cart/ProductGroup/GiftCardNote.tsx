@@ -22,7 +22,14 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
       content: Array.from({ length: quantity }, (_, i) => {
         return (
           <Fragment key={i}>
-            {quantity > 1 && <span key={`quantity-${i}`}>{i + 1}. ürün</span>}
+            {quantity > 1 && (
+              <span
+                className="text-xs font-semibold text-gray-600"
+                key={`quantity-${i}`}
+              >
+                {i + 1}. ürün
+              </span>
+            )}
             <Textarea
               key={`textarea-${i}`}
               fullWidth
@@ -44,7 +51,7 @@ const GiftCardNote = ({ id, quantity }: { id: number; quantity: number }) => {
     },
   ];
 
-  return <div className="grid gap-4">{data.map((item) => item.content)}</div>;
+  return <>{data.map((item) => item.content)}</>;
 };
 
 export default GiftCardNote;

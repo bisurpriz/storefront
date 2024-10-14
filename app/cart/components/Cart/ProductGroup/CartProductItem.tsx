@@ -19,6 +19,7 @@ import { localeFormat } from "@/utils/format";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DeliveryType } from "@/common/enums/Product/product";
 import GiftCardNote from "./GiftCardNote";
+import { Link } from "@/components/Link";
 
 export default function CartItem({
   delivery_type,
@@ -73,9 +74,14 @@ export default function CartItem({
 
         <div className="flex flex-col items-start w-full">
           <div className="flex justify-between items-start w-full">
-            <h2 className="w-full max-sm:text-base text-lg line-clamp-2 font-semibold text-gray-800">
-              {name}
-            </h2>
+            <Link
+              href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
+            >
+              <h2 className="w-full max-sm:text-base text-lg line-clamp-2 font-semibold text-gray-800">
+                {name}
+              </h2>
+            </Link>
+
             <button className="text-gray-400 hover:text-gray-600">
               <X
                 size={20}
