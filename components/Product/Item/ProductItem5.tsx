@@ -1,5 +1,4 @@
 import React from "react";
-import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
@@ -10,6 +9,13 @@ import clsx from "clsx";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { motion } from "framer-motion";
 import Chip from "@/components/Chip";
+import { Product } from "@/common/types/Product/product";
+
+export interface ProductItemProps extends Partial<Product> {
+  loading?: boolean;
+  isFavorite?: boolean;
+  totalReviewCount?: number;
+}
 
 const ProductItem5 = ({
   name,

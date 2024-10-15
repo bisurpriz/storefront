@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Link } from "@/components/Link";
-import { ProductItemProps } from "../Item";
+import { ProductItemProps } from "../Item/ProductItem5";
 
 interface ProductItemImageProps extends Pick<ProductItemProps, "id"> {
   style?: React.CSSProperties;

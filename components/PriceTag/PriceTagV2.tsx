@@ -28,7 +28,7 @@ function PriceTagv2({
   return (
     <div
       className={cn(
-        "flex space-x-2 whitespace-nowrap w-full font-manrope",
+        "flex space-x-2 whitespace-nowrap w-full font-manrope h-6",
         className
       )}
     >
@@ -42,11 +42,11 @@ function PriceTagv2({
         />
       )}
       <div className="flex space-x-2 items-end">
-        <span className="text-lg font-bold text-primary leading-none">
+        <span className="text-lg font-bold text-primary leading-none max-sm:text-sm">
           ₺{discountedPrice.toFixed(2)}
         </span>
         {discountPercentage > 0 && (
-          <span className="text-sm text-muted-foreground line-through leading-none">
+          <span className="text-sm text-muted-foreground line-through leading-none max-sm:text-xs">
             ₺{originalPrice.toFixed(2)}
           </span>
         )}

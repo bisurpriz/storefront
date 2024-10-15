@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Leaf, View } from "lucide-react";
+import { Heart, Leaf, LucideTruck, Truck, TruckIcon, View } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Chip from "@/components/Chip";
 import { Product } from "@/graphql/generated-types";
@@ -86,12 +86,12 @@ export default function ProductItem2(props: ProductItemProps) {
         id,
         slug,
       })}
-      className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden"
+      className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
     >
-      <div className="relative">
+      <div className="relative flex-1 col-span-4">
         <motion.div
           key={id}
-          className="relative w-full h-80"
+          className="w-full h-80 max-sm:h-fit"
           layoutId={`image-${id}`}
           animate={{ opacity: 1 }}
         >
@@ -144,28 +144,30 @@ export default function ProductItem2(props: ProductItemProps) {
           </div>
         </motion.div>
 
-        <ProductCardStamps
-          id={id.toString()}
-          stamps={[
-            product_customizable_areas.length > 0 && {
-              color: "orange",
-              icon: "🎨",
-              name: "Tasarlanabilir",
-            },
-            delivery_type === "SAME_DAY" && {
-              color: "green",
-              icon: "🚚",
-              name: "Aynı Gün Teslimat",
-            },
-          ]}
-        />
+        <div className="max-sm:hidden">
+          <ProductCardStamps
+            id={id.toString()}
+            stamps={[
+              product_customizable_areas.length > 0 && {
+                color: "orange",
+                icon: "🎨",
+                name: "Tasarlanabilir",
+              },
+              delivery_type === "SAME_DAY" && {
+                color: "green",
+                icon: "🚚",
+                name: "Aynı Gün Teslimat",
+              },
+            ]}
+          />
+        </div>
       </div>
 
-      <div className="p-4 pt-2 space-y-4">
+      <div className="p-4 pt-2 space-y-4 max-sm:space-y-1 max-sm:p-2 col-span-8">
         <div className="flex justify-between items-start">
           <Tooltip>
             <TooltipTrigger>
-              <h3 className="text-lg text-start leading-none min-h-[36px] font-semibold text-gray-800 line-clamp-2">
+              <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
                 {name}
               </h3>
             </TooltipTrigger>
@@ -182,6 +184,7 @@ export default function ProductItem2(props: ProductItemProps) {
               e.preventDefault();
               setIsFavorite(!isFavorite);
             }}
+            className="max-sm:p-2 h-fit"
           >
             <Heart
               className={`w-6 h-6 ${
@@ -191,44 +194,74 @@ export default function ProductItem2(props: ProductItemProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col items-start justify-end">
-          <span className="text-xs flex text-slate-400 gap-2 items-center mb-2">
-            <ReviewRating
-              value={score ?? 0}
-              readOnly
-              showReviewCount={false}
-              reviewCount={totalReviewCount}
-            />
-            {score > 0 && `(${score})`}
-          </span>
+        <div className="flex flex-col items-start justify-end max-sm:mb-2">
           <PriceTagv2 originalPrice={price} discountedPrice={discount_price} />
+          <span className="text-xs h-4 flex text-slate-400 gap-2 items-center mt-2">
+            {score > 0 ? (
+              <>
+                <ReviewRating
+                  value={score ?? 0}
+                  readOnly
+                  showReviewCount={false}
+                  reviewCount={totalReviewCount}
+                />
+                ({score})
+              </>
+            ) : (
+              <span className="text-xs text-gray-400">
+                Henüz Değerlendirme Yapılmamış
+              </span>
+            )}
+          </span>
         </div>
 
-        <div className="flex space-x-2 mt-auto">
-          <Button
-            className="flex-1"
-            variant="default"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              console.log("Sepete Eklendi");
-            }}
-          >
-            Hemen Al
-          </Button>
+        {is_active ? (
+          <div>
+            {/* <div className="flex space-x-2 mt-auto max-sm:space-x-1">
+              <Button
+                className="flex-1 max-sm:p-2 h-fit"
+                variant="default"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  console.log("Sepete Eklendi");
+                }}
+              >
+                Hemen Al
+              </Button>
 
-          <Button
-            variant="outline"
-            className="flex-1"
-            icon={<View className="w-5 h-5 mr-2" />}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-            }}
-          >
-            Hızlı Bakış
-          </Button>
-        </div>
+              <Button
+                variant="outline"
+                className="flex-1 max-sm:p-2 h-fit"
+                icon={<View className="w-5 h-5 mr-2" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}
+              >
+                Hızlı Bakış
+              </Button>
+            </div> */}
+
+            {is_service_free && (
+              <span
+                className={cn(
+                  "inline-flex items-center text-xs gap-1 text-green-500",
+                  "max-sm:text-xs"
+                )}
+              >
+                <LucideTruck className="w-4 h-4 block" />
+                Ücretsiz Kargo
+              </span>
+            )}
+          </div>
+        ) : (
+          <div className="flex space-x-2 mt-auto">
+            <Button className="flex-1" variant="outline">
+              Stokta Yok
+            </Button>
+          </div>
+        )}
 
         {/* <div className={cn("pt-4 border-t border-gray-200")}>
           <h4 className="font-semibold text-gray-700 mb-2">
@@ -255,10 +288,10 @@ export default function ProductItem2(props: ProductItemProps) {
           </div>
         </div> */}
 
-        <div className="flex items-center justify-center space-x-2 text-xs text-gray-700 border-t pt-4">
+        {/* <div className="flex items-center justify-center space-x-2 text-xs text-gray-700 border-t max-sm:hidden pt-4 !m-0">
           <Leaf className="w-4 h-4 text-emerald-500" />
           <span>Bu ürün %30 daha az karbon ayak izi bırakır</span>
-        </div>
+        </div> */}
       </div>
     </Link>
   );
