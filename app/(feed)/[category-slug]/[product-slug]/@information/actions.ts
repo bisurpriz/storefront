@@ -8,8 +8,6 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 
 export const getProductInformation = async (productId) => {
-  if (!productId) throw new Error("Product ID is required");
-
   return await query<
     GetProductInformationQuery,
     GetProductInformationQueryVariables

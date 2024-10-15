@@ -1,5 +1,5 @@
 import useResponsive from "@/hooks/useResponsive";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export const useErrorMessage = () => {
   const { isDesktop } = useResponsive();

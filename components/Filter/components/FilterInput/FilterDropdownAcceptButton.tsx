@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import React, { FC } from "react";
 
@@ -17,18 +17,13 @@ const FilterDropdownAcceptButton: FC<FilterDropdownAcceptButtonProps> = ({
         "py-2 px-4 w-full flex items-end justify-between border-t"
       )}
     >
-      <Button
-        variant="outlined"
-        color="info"
-        size="small"
-        onClick={handleClear}
-      >
+      <Button variant="outline" color="info" size="sm" onClick={handleClear}>
         Sıfırla
       </Button>
       <Button
-        variant="outlined"
+        variant="outline"
         color="secondary"
-        size="small"
+        size="sm"
         onClick={handleFilterSubmit && handleFilterSubmit}
       >
         Uygula

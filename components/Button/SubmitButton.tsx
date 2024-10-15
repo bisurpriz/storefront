@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Button, { ButtonProps } from '.';
-import { useFormStatus } from 'react-dom';
-import toast from 'react-hot-toast';
+import { useEffect } from "react";
+import { useFormStatus } from "react-dom";
+import { Button, ButtonProps } from "../ui/button";
+import { toast } from "sonner";
 
 const SubmitButton = (props: ButtonProps) => {
   const { pending } = useFormStatus();
 
   useEffect(() => {
     if (pending) {
-      toast.loading('İşlem yapılıyor...', {
-        id: 'submit-button',
-        position: 'bottom-right',
+      toast.loading("İşlem yapılıyor...", {
+        id: "submit-button",
+        position: "bottom-right",
       });
     } else {
-      toast.dismiss('submit-button');
+      toast.dismiss("submit-button");
     }
   }, [pending]);
 

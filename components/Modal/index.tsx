@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       ></div>
       <div
         className={`bg-white z-10 transform transition-all duration-300 
-          rounded-md shadow-md max-sm:w-full max-sm:mx-auto max-sm:mt-4 max-w-screen-xl w-fit
+          rounded-md shadow-md max-sm:w-full max-sm:mx-auto max-sm:mt-4 max-w-screen-2xl w-fit
         ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
       >
         <Close

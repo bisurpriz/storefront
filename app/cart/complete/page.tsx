@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import clsx from "clsx";
 import { Link } from "@/components/Link";
@@ -24,7 +24,7 @@ const OrderCompletePage: React.FC = async () => {
         Sipariş detaylarınızı mail adresinize gönderdik.
       </p>
       <Link href="/">
-        <Button color="primary">Alışverişe Devam Et</Button>
+        <Button variant="default">Alışverişe Devam Et</Button>
       </Link>
     </div>
   );

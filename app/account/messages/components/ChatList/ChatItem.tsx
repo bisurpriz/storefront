@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export interface IChatItem {
   name: string;
@@ -26,19 +26,21 @@ const ChatItem = ({
     >
       <div className="flex-2">
         <div className="w-12 h-12 relative">
-          { imgPath ? <Image
-            className="w-12 h-12 rounded-full mx-auto"
-            src={imgPath}
-            alt="chat-user"
-            width="48"
-            height="48"
-          /> : null}
+          {imgPath ? (
+            <Image
+              className="w-12 h-12 rounded-full mx-auto"
+              src={imgPath}
+              alt="chat-user"
+              width="48"
+              height="48"
+            />
+          ) : null}
           <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
         </div>
       </div>
       <div className="flex-1 px-2">
         <div className="truncate w-32">
-          <span className="text-gray-800">{name}</span>
+          <span className="text-gray-700">{name}</span>
         </div>
         <div>
           <small className="text-gray-600">{message}</small>

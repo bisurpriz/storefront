@@ -1,5 +1,4 @@
 import React from "react";
-import { ProductItemProps } from ".";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import PriceTag from "@/components/PriceTag";
@@ -9,6 +8,14 @@ import { goToProductDetail } from "@/utils/linkClickEvent";
 import clsx from "clsx";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { motion } from "framer-motion";
+import Chip from "@/components/Chip";
+import { Product } from "@/common/types/Product/product";
+
+export interface ProductItemProps extends Partial<Product> {
+  loading?: boolean;
+  isFavorite?: boolean;
+  totalReviewCount?: number;
+}
 
 const ProductItem5 = ({
   name,
@@ -90,12 +97,21 @@ const ProductItem5 = ({
           />
         </motion.div>
 
-        <div className="px-2 pb-6 pt-4">
-          <div className="flex flex-col gap-2 justify-between flex-grow">
-            <span className="text-xs text-green-500 font-normal">
-              {is_service_free && isSameDayDelivery && "Ücretsiz /"}
-              {isSameDayDelivery && " Aynı gün teslimat"}
-            </span>
+        <div className="px-2 pb-6 pt-2 max:sm:px-0">
+          <div className="flex flex-col gap-2 justify-between flex-grow max-sm:gap-1">
+            {is_service_free && isSameDayDelivery && (
+              <Chip
+                size="small"
+                label={
+                  is_service_free &&
+                  isSameDayDelivery &&
+                  "Ücretsiz /" + isSameDayDelivery &&
+                  " Aynı gün teslimat"
+                }
+                rounded="low"
+                variant="filled"
+              />
+            )}
             <span className="text-xs flex text-slate-400 gap-2 items-center">
               <ReviewRating
                 value={score ?? 0}

@@ -66,7 +66,6 @@ const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
       }
       fullWidth
       label="Kart Numarası"
-      className="tracking-wider"
       {...props}
     />
   );

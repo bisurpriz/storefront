@@ -62,7 +62,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       {!childTrigger ? (
         <button
           type="button"
-          className="relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary-light focus-within:ring-primary-light"
+          className="relative flex items-center justify-start bg-white border-2 rounded-sm px-4 py-3 w-full text-sm font-medium text-gray-700 hover:bg-gray-50  h-full transition-colors duration-300 ring-1 ring-primary focus-within:ring-primary"
           onClick={(e) => {
             e.preventDefault();
             setIsOpen(!isOpen);
@@ -134,7 +134,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               <div className="relative">
                 <input
                   type="text"
-                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary-light focus:border-primary-light border-gray-300 rounded-sm rounded-b-none"
+                  className="block w-full px-4 py-2 text-sm text-gray-700 outline-none border border-transparent focus:border focus:ring-primary focus:border-primary border-gray-300 rounded-sm rounded-b-none"
                   placeholder="Arama yapın"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}

@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useRef, useState } from "react";
-import toast from "react-hot-toast";
 import { approveOrderImages } from "../actions";
+import { toast } from "sonner";
 
 const ImagePreview = ({
   initialImages,
@@ -34,20 +34,14 @@ const ImagePreview = ({
       setApproveButtonDisabled(true);
       toast.success("Siparişiniz başarıyla onaylandı.", {
         position: "bottom-right",
-        ariaProps: {
-          "aria-live": "polite",
-          role: "status",
-        },
+
         id: "login-success",
         duration: 1500,
       });
     } else {
       toast.success("Geri bildirim gönderildi.", {
         position: "bottom-right",
-        ariaProps: {
-          "aria-live": "polite",
-          role: "status",
-        },
+
         id: "login-success",
         duration: 1500,
       });
@@ -107,14 +101,14 @@ const ImagePreview = ({
         <div className="flex gap-3">
           <Button
             disabled={!note}
-            color="error"
+            variant="destructive"
             onClick={() => onSubmit(false)}
           >
             İtiraz Et
           </Button>
           <Button
             disabled={approveButtonDisabled}
-            color="success"
+            variant="default"
             onClick={() => onSubmit(true)}
           >
             Onayla

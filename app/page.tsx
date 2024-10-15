@@ -15,6 +15,10 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
+import CategorySection from "@/components/Sections/CategorySection/CategorySection";
+import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
+import FeaturedProductSectionSkeleton from "@/components/Sections/FeaturedProductSection/FeaturedProductSectionSkeleton";
+import CategorySectionSkeleton from "@/components/Sections/CategorySection/CategorySectionSkeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +41,7 @@ export default async function Page({
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {searchText && (
         <Suspense fallback={<FilterSuspense />}>
           <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
@@ -60,6 +64,29 @@ export default async function Page({
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && <CampaignGrid />}
       </Suspense>
+
+      {/* {category.length < 8 && viewport === "desktop" && (
+        <Suspense fallback={<CategorySectionSkeleton />}>
+          <CategorySection category={category} />
+        </Suspense>
+      )} */}
+
+      {/* <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+        <FeaturedProducts
+          products={Array.from({
+            length: 25,
+          }).map((_, i) => ({
+            id: i,
+            imageSrc: "https://via.placeholder.com/300",
+            name: "Product Name",
+            badge: "Yeni",
+            price: 100,
+            discountPrice: 80,
+            href: "/",
+          }))}
+        />
+      </Suspense> */}
+
       <Suspense
         fallback={
           <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
@@ -73,6 +100,6 @@ export default async function Page({
       >
         <ServerInfinityScroll searchParams={searchParams} />
       </Suspense>
-    </>
+    </div>
   );
 }

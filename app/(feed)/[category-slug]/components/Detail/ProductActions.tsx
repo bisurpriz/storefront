@@ -4,7 +4,7 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Heart from "@/components/Icons/Heart";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, startTransition } from "react";
 import { checkProductLocation } from "@/app/(feed)/actions";
 import { useProgress } from "react-transition-progress";
+import HeartFill from "@/components/Icons/HeartFill";
 
 interface Props {
   productId: number;
@@ -39,6 +40,7 @@ const ProductActions = ({
   const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
   const startProgress = useProgress();
+
   const handleFavorite = () => {
     startTransition(() => {
       startProgress();
@@ -54,7 +56,9 @@ const ProductActions = ({
         return;
       }
 
-      addToFavorites({ productId });
+      addToFavorites({ productId }).catch(() => {
+        setIsFavoriteState(false);
+      });
       setIsFavoriteState(true);
     });
   };
@@ -79,17 +83,17 @@ const ProductActions = ({
   return (
     <>
       {showPlaceWarning && (
-        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-1 bg-opacity-50 rounded-md my-2">
-          <p className="text-sm font-semibold text-slate-500 max-md:text-xs max-md:font-normal">
+        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
+          <p className="text-xs text-slate-700 font-normal">
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
           </p>
         </div>
       )}
-      <div className="flex items-center justify-start gap-4 py-4 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
+      <div className="flex items-center justify-start gap-4 py-2 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
         <Button
-          size="large"
-          color={error ? "error" : "primary"}
-          className={clsx("text-base w-full justify-center sm:text-xl")}
+          size="lg"
+          variant={error ? "destructive" : "default"}
+          className={clsx("w-full")}
           disabled={loading || error || !locationId || showPlaceWarning}
           onClick={() => {
             if (parseJson(selectedProduct?.delivery_time_ranges)?.length > 0) {
@@ -126,26 +130,17 @@ const ProductActions = ({
 
         <div className="flex items-end gap-2 flex-1">
           <Button
-            size="large"
-            iconSize={28}
-            variant="outlined"
-            className={`group border-red-300 hover:bg-red-400 rounded-xl ${
-              isFavoriteState ? "bg-red-400" : ""
-            }`}
+            size="lg"
+            variant={isFavoriteState ? "destructive" : "outline"}
             icon={
-              <Heart
-                className={`text-red-300 group-hover:text-white ${
-                  isFavoriteState ? "text-white" : ""
-                }`}
-              />
+              isFavoriteState ? (
+                <HeartFill className="w-8 h-8 text-white" />
+              ) : (
+                <Heart className="w-8 h-8 text-red-500" />
+              )
             }
             onClick={handleFavorite}
           />
-          {favoriteCount > 0 && (
-            <p className="text-sm leading-none text-slate-400 mt-0 max-w-[100px] max-lg:hidden whitespace-nowrap">
-              <strong>{favoriteCount}</strong> Favori
-            </p>
-          )}
         </div>
       </div>
       {error && (

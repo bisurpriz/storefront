@@ -53,7 +53,7 @@ const SearchList: FC<Props> = ({
           "w-full",
           "bg-white",
           "border",
-          "border-primary-300",
+          "border-primary",
           "rounded-md",
           "shadow-md",
           "z-[51]",

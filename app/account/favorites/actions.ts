@@ -14,25 +14,13 @@ import {
 } from "@/graphql/queries/account/favorites.generated";
 
 export const getUserFavorites = async ({ offset }: { offset: number }) => {
-  const { data, error } = await query<
-    GetUserFavoritesQuery,
-    GetUserFavoritesQueryVariables
-  >({
+  return await query<GetUserFavoritesQuery, GetUserFavoritesQueryVariables>({
     query: GetUserFavoritesDocument,
     variables: {
       offset,
     },
     fetchPolicy: "no-cache",
   });
-
-  if (error) {
-    return { user_favorite: [], totalCount: 0, message: error.message };
-  }
-
-  return {
-    user_favorite: data?.user_favorite,
-    totalCount: data.user_favorite_aggregate.aggregate.count,
-  };
 };
 
 export const removeFromFavorites = async ({

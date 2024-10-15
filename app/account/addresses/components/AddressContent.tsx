@@ -1,5 +1,5 @@
 import { UserAddressesResponse } from "@/common/types/User/user";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Edit from "@/components/Icons/Edit";
 import Trash from "@/components/Icons/Trash";
 import TextField from "@/components/TextField";
@@ -40,12 +40,12 @@ const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
       <div className="w-full justify-end flex gap-4">
         <Button
           className="text-sm"
-          color="error"
+          variant="destructive"
           icon={<Trash className="mr-2 text-xl" />}
         >
           Sil
         </Button>
-        <Button color="primary" icon={<Edit className="mr-2 text-xl" />}>
+        <Button variant="default" icon={<Edit className="mr-2 text-xl" />}>
           Düzenle
         </Button>
       </div>

@@ -44,7 +44,7 @@ const Search: FC<Props> = ({ className }) => {
         className={clsx(
           "h-10 bg-white flex items-center rounded-md px-4 select-none",
           "transition-all duration-300 text-sm text-slate-400",
-          "border border-primary-300"
+          "border border-primary"
         )}
         id="header-search"
         onFocus={() => {
@@ -78,7 +78,7 @@ const Search: FC<Props> = ({ className }) => {
           className={clsx(
             "h-full bg-primary text-white rounded-r-md px-6",
             "flex items-center justify-center outline-none",
-            "hover:bg-primary-light  focus:ring-2 focus:ring-primary-light focus:ring-opacity-50",
+            "hover:bg-primary focus:ring-2 focus:ring-primary focus:ring-opacity-50",
             "transition-all duration-300 group"
           )}
           onClick={pushToSearch}

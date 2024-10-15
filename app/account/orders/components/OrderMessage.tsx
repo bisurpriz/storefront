@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";
 import { useState, startTransition } from "react";
 import { startMessageForOrder } from "../actions";
@@ -43,9 +43,8 @@ const OrderMessage = ({
   return (
     <>
       <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
+        variant="outline"
+        size="sm"
         onClick={() => {
           setOpen(true);
         }}
@@ -78,7 +77,7 @@ const OrderMessage = ({
                 name="review-comment"
                 id="review-comment"
                 rows={3}
-                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-2"
+                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2"
                 placeholder="Mesajınızı yazın..."
                 value={message}
                 onChange={(e) => {
@@ -87,12 +86,13 @@ const OrderMessage = ({
               />
             </div>
             <Button
-              label="Mesajı Gönder"
-              color="primary"
-              size="small"
+              variant="default"
+              size="sm"
               className="w-full justify-center"
               onClick={sendMessage}
-            />
+            >
+              Mesajı Gönder
+            </Button>
           </div>
         </div>
       </Modal>

@@ -27,6 +27,11 @@ svgs.forEach(async (svg) => {
         "@svgr/plugin-jsx",
         "@svgr/plugin-prettier",
       ],
+      prettier: true,
+      typescript: true,
+      expandProps: "end",
+      index: false,
+      jsxRuntime: "automatic",
     },
     {
       componentName: iconName,

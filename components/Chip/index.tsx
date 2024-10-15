@@ -61,14 +61,14 @@ const Chip: React.FC<ChipProps> = ({
 
   const colorClasses = {
     primary: {
-      outlined: "border border-primary text-primary-dark",
+      outlined: "border border-primary text-primary",
       filled: "bg-primary text-white",
-      soft: "bg-primary-100 text-primary-800",
+      soft: "bg-primary text-primary",
     },
     secondary: {
-      outlined: "border border-secondary text-secondary-dark",
+      outlined: "border border-secondary text-secondary",
       filled: "bg-secondary text-white",
-      soft: "bg-slate-200 text-secondary-dark",
+      soft: "bg-slate-200 text-secondary",
     },
     error: {
       outlined: "border border-red-500 text-red-700",
@@ -96,9 +96,9 @@ const Chip: React.FC<ChipProps> = ({
       soft: "bg-purple-100 text-purple-800",
     },
     gray: {
-      outlined: "border border-gray-400 text-gray-800",
+      outlined: "border border-gray-400 text-gray-700",
       filled: "bg-gray-400 text-white",
-      soft: "bg-gray-200 text-gray-800",
+      soft: "bg-gray-200 text-gray-700",
     },
   };
 
@@ -125,7 +125,7 @@ const Chip: React.FC<ChipProps> = ({
       <span>{label}</span>
       {withClose && (
         <button
-          className="ml-2 text-gray-500 hover:text-gray-800"
+          className="ml-2 text-gray-500 hover:text-gray-700"
           onClick={onClose}
         >
           <Close />

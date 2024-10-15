@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Send from "@/components/Icons/Send";
 import TextField from "@/components/TextField";
 
@@ -30,11 +30,9 @@ const Input = ({
           disabled={!value}
           onClick={onMessageSend}
           type="button"
-          size="small"
-          rounded
+          size="sm"
           className="w-auto rounded-full"
-          icon={<Send />}
-          iconSize={24}
+          icon={<Send className="rounded-full w-6 h-6" />}
         />
       </div>
     </div>

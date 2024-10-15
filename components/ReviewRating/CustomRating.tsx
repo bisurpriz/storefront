@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import clsx from "clsx";
 import { CustomStar } from "./CustomStar";
@@ -85,7 +87,9 @@ const Rating: React.FC<RatingProps> = ({
 
   return (
     <div
-      className={clsx("flex")}
+      className={clsx("flex", {
+        "cursor-default select-none pointer-events-none": readOnly || disabled,
+      })}
       role="radiogroup"
       aria-disabled={disabled}
       tabIndex={0}

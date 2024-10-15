@@ -4,7 +4,7 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Heart from "@/components/Icons/Heart";
 import HeartFill from "@/components/Icons/HeartFill";
 import clsx from "clsx";
@@ -33,9 +33,15 @@ const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
       onClick={() => handleAddToFavorites()}
       variant="link"
       color="secondary"
-      size="large"
+      size="lg"
       name="favorite-button"
-      icon={isFavoriteState ? <HeartFill /> : <Heart />}
+      icon={
+        isFavoriteState ? (
+          <HeartFill className="text-red-500" />
+        ) : (
+          <Heart className="text-red-500" />
+        )
+      }
       className={clsx([
         isFavoriteState ? "animate-pulse" : "",
         "!absolute top-2 right-2 !p-0 shadow-lg shadow-cyan-500/50 rounded-full",

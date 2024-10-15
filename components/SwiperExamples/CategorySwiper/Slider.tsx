@@ -109,7 +109,7 @@ const Slider: React.FC<SliderProps> = ({
               <Image
                 src={getImageUrlFromPath(slide.imageUrl, slideWidth)}
                 alt={slide.label}
-                className="rounded-full object-contain ring ring-primary-300 my-1"
+                className="rounded-full object-contain ring ring-primary my-1"
                 width={slideWidth}
                 height={slideWidth}
                 priority
