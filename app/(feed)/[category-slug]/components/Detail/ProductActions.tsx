@@ -38,14 +38,14 @@ const ProductActions = ({
   const { selectedProduct } = useProduct();
 
   const { addToCart, loading, deliveryTime } = useCart();
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const startProgress = useProgress();
 
   const handleFavorite = () => {
     startTransition(() => {
       startProgress();
       if (!user) {
-        push("/login");
+        replace("/login");
         return;
       }
 

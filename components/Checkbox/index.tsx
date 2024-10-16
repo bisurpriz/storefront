@@ -44,7 +44,7 @@ const Checkbox = ({
   tabIndex,
   value,
   label,
-  ref
+  ref,
 }: CheckboxProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
@@ -80,7 +80,7 @@ const Checkbox = ({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         aria-checked={ariaChecked}
-        aria-describedby={ariaDescribedBy || `${id}-description`}
+        aria-describedby={ariaDescribedBy ?? `${id}-description`}
         aria-disabled={ariaDisabled || disabled}
         aria-invalid={ariaInvalid || false}
         aria-label={ariaLabel || label}

@@ -71,6 +71,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
               !user && item.private && "hidden",
               user && !item.private && "hidden",
             ])}
+            replace={item.link === "/login"}
           >
             <item.icon className="w-4 h-4" />
             <span className="text-xs">{item.text}</span>

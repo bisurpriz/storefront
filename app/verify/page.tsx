@@ -112,7 +112,9 @@ function VerifyPage() {
                 variant="outline"
                 className="mt-4 w-full flex items-center justify-center"
               >
-                <Link href="/login">Giriş Yap</Link>
+                <Link href="/login" replace>
+                  Giriş Yap
+                </Link>
               </Button>
             </div>
           </>
