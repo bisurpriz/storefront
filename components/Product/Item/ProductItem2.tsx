@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
-import { Heart, Leaf, LucideTruck, Truck, TruckIcon, View } from "lucide-react";
+import { Heart, LucideTruck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Chip from "@/components/Chip";
 import { Product } from "@/graphql/generated-types";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
@@ -16,8 +15,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
+import { useUser } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/app/account/favorites/actions";
 
 interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -71,11 +75,38 @@ export default function ProductItem2(props: ProductItemProps) {
   } = props;
   const [isFavorite, setIsFavorite] = useState(isFavoriteProp);
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
-  const { openDialog, closeDialog } = useResponsiveDialog();
+  const [isPending, startTransition] = useTransition();
+  const { user } = useUser();
+  const { replace } = useRouter();
+
+  console.log(isFavorite);
 
   useEffect(() => {
     setIsFavorite(isFavoriteProp);
   }, [isFavoriteProp]);
+
+  const handleFavorite = () => {
+    if (isPending) return;
+
+    startTransition(() => {
+      if (!user) {
+        replace("/login");
+        return;
+      }
+
+      if (isFavorite) {
+        removeFromFavorites({ productId: id });
+        setIsFavorite(false);
+
+        return;
+      }
+
+      addToFavorites({ productId: id }).catch(() => {
+        setIsFavorite(false);
+      });
+      setIsFavorite(true);
+    });
+  };
 
   return (
     <Link
@@ -130,17 +161,25 @@ export default function ProductItem2(props: ProductItemProps) {
                   e.preventDefault();
                   setHoveredImageIndex(i);
                 }}
-              >
-                <span
-                  className={cn(
-                    "block mt-auto bg-black/20 w-full h-1 last:border-r-0 border-r transition-all duration-200",
-                    {
-                      "bg-black": i === hoveredImageIndex,
-                    }
-                  )}
-                />
-              </div>
+              />
             ))}
+            <div
+              className={cn(
+                "absolute bottom-2 left-0 w-full flex items-center justify-center",
+                {
+                  hidden: !(Array.isArray(image_url) && image_url.length > 1),
+                }
+              )}
+            >
+              {Array.from({ length: image_url.length }).map((_, i) => (
+                <span
+                  key={i}
+                  className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
+                    "bg-gray-400": i !== hoveredImageIndex,
+                  })}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
 
@@ -182,7 +221,7 @@ export default function ProductItem2(props: ProductItemProps) {
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setIsFavorite(!isFavorite);
+              handleFavorite();
             }}
             className="max-sm:p-2 h-fit"
           >

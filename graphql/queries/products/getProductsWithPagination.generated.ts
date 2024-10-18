@@ -5,7 +5,6 @@ import * as Apollo from '@apollo/client';
 export type GetProductsWithPaginationQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-  is_active?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
   category_slug?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
@@ -23,9 +22,9 @@ export type GetProductsWithFilteredPaginationQuery = { product_aggregate: { aggr
 
 
 export const GetProductsWithPaginationDocument = gql`
-    query getProductsWithPagination($limit: Int = 15, $offset: Int = 0, $is_active: Boolean = true, $category_slug: String) {
+    query getProductsWithPagination($limit: Int = 15, $offset: Int = 0, $category_slug: String) {
   product_aggregate(
-    where: {is_active: {_eq: $is_active}, product_categories: {category: {slug: {_eq: $category_slug}}}}
+    where: {product_categories: {category: {slug: {_eq: $category_slug}}}}
   ) {
     aggregate {
       count
@@ -34,7 +33,7 @@ export const GetProductsWithPaginationDocument = gql`
   product(
     limit: $limit
     offset: $offset
-    where: {is_active: {_eq: $is_active}, product_categories: {category: {slug: {_eq: $category_slug}}}}
+    where: {product_categories: {category: {slug: {_eq: $category_slug}}}}
   ) {
     id
     tenant_id
