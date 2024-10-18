@@ -79,8 +79,6 @@ export default function ProductItem2(props: ProductItemProps) {
   const { user } = useUser();
   const { replace } = useRouter();
 
-  console.log(isFavorite);
-
   useEffect(() => {
     setIsFavorite(isFavoriteProp);
   }, [isFavoriteProp]);

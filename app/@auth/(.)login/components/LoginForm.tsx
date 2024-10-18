@@ -150,7 +150,12 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
-        <Button variant="outline" className="w-full" loading={isPending}>
+        <Button
+          variant="outline"
+          className="w-full"
+          loading={isPending}
+          onClick={() => signIn("google")}
+        >
           <svg
             className="mr-2 h-4 w-4"
             xmlns="http://www.w3.org/2000/svg"

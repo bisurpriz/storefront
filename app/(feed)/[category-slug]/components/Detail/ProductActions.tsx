@@ -66,7 +66,8 @@ const ProductActions = ({
   const [error, setError] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  const willShowError = !deliveryTime?.day || !deliveryTime?.hour;
+  const willShowError =
+    !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
     if (!locationId || !locType) return;
@@ -94,9 +95,12 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("w-full")}
-          disabled={loading || error || !locationId || showPlaceWarning}
+          disabled={loading || error || showPlaceWarning}
           onClick={() => {
-            if (parseJson(selectedProduct?.delivery_time_ranges)?.length > 0) {
+            if (
+              parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
+              !locationId
+            ) {
               if (willShowError) {
                 setError(true);
                 timeoutRef.current = setTimeout(() => {

@@ -36,7 +36,7 @@ const OrdersPage = async () => {
                       <p className="text-sm">
                         Toplam:{" "}
                         <span className="text-sm font-bold font-sans text-secondary whitespace-nowrap">
-                          {order?.total_amount?.toFixed(2)} ₺
+                          {order?.total_amount} ₺
                         </span>
                       </p>
                     </div>
