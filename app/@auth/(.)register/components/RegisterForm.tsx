@@ -79,12 +79,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
   };
 
   return (
-    <form
-      onSubmit={handleRegister}
-      className={clsx(
-        "flex flex-col items-center justify-center rounded-lg p-12 m-auto gap-4 font-mono w-[500px] bg-white max-md:w-full max-md:h-full max-md:rounded-none"
-      )}
-    >
+    <form onSubmit={handleRegister}>
       <div className="w-full">
         <div className="space-y-2 text-center">
           <Image

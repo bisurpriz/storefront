@@ -1,7 +1,6 @@
 import StatusBadge from "@/components/StatusBadge";
 import { Link } from "@/components/Link";
 import OrderItem from "./OrderItem";
-import OrderMessage from "./OrderMessage";
 import { OrderItemStatus } from "@/common/enums/Order/product";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import OrderItemHeader from "./OrderItemHeader";

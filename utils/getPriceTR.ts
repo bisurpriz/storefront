@@ -1,3 +1,3 @@
 export const getPriceTR = (price: number) => {
-  return `₺${price.toFixed(2)}`;
+  return price ? `₺${price.toFixed(2)}` : price;
 };

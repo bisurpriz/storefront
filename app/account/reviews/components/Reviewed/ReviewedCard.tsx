@@ -1,68 +1,53 @@
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { Button } from "@/components/ui/button";
-import Trash from "@/components/Icons/Trash";
-import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
+import Rating from "@/components/ReviewRating/CustomRating";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { MessageSquare } from "lucide-react";
 
-interface Props {
-  imageUrl: string;
-  productName: string;
-  reviewDate: string;
-  rating: number;
-  reviewCount: number;
-  productId: number;
-  comment: string;
-}
-
-const ReviewedCard = async ({
-  imageUrl,
-  productName,
-  reviewDate,
-  rating,
-  reviewCount,
-  comment,
-}: Props) => {
-  const handleDeleteReview = async () => {
-    "use server";
-  };
-
+const ReviewedCard = ({
+  reviews,
+}: {
+  reviews: GetOrdersWithReviewsQuery["review"];
+}) => {
   return (
-    <form
-      action={handleDeleteReview}
-      className="flex items-center gap-4 border p-4 shadow-md rounded-md max-sm:flex-col max-sm:items-center max-sm:w-full"
-    >
-      <Image
-        src={getImageUrlFromPath(imageUrl)}
-        alt="product"
-        width={200}
-        height={200}
-        className="rounded-md object-cover w-32 h-32 shadow-md"
-      />
-      <div className="flex flex-col items-start justify-end font-mono">
-        <h4 className="text-lg font-semibold text-slate-700 max-w-xs m-0">
-          {productName}
-        </h4>
-        <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          Değerlendirme tarihi: {localeFormat(new Date(reviewDate), "PPP")}
-        </p>
-        <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
-          <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
-          {reviewCount} değerlendirme
+    <div className="grid gap-4">
+      {reviews.map(({ product, created_at, id, comment, score }) => (
+        <div
+          key={id}
+          className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 p-4 border rounded-lg"
+        >
+          <Image
+            src={getImageUrlFromPath(product.image_url[0])}
+            alt={product.name}
+            width={96}
+            height={96}
+            className="w-24 h-24 object-cover rounded"
+          />
+          <div className="flex-grow text-center sm:text-left">
+            <h3 className="font-semibold text-lg">{product.name}</h3>
+            <p className="text-xs font-semibold text-gray-500">
+              Değerlendirme Tarihi:{" "}
+              {localeFormat(new Date(created_at), "LLLL dd, yyyy")}
+            </p>
+            <div className="flex items-center justify-center sm:justify-start mt-2">
+              <Rating defaultValue={score} disabled />
+              <span className="text-xs text-gray-500 font-bold ml-2">
+                Bu ürüne {score} puan verdiniz.
+              </span>
+            </div>
+            {comment && (
+              <Alert variant="default" className="mt-4 space-x-2 text-start">
+                <MessageSquare className="w-5 h-5" />
+                <AlertTitle>Ürün hakkında yorumunuz:</AlertTitle>
+                <AlertDescription>"{comment}"</AlertDescription>
+              </Alert>
+            )}
+          </div>
         </div>
-
-        <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          {comment}
-        </p>
-
-        <Button
-          variant="outline"
-          size="sm"
-          type="submit"
-          icon={<Trash className="text-base" />}
-        />
-      </div>
-    </form>
+      ))}
+    </div>
   );
 };
 

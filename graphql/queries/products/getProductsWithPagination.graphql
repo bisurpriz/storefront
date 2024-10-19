@@ -1,12 +1,10 @@
 query getProductsWithPagination(
   $limit: Int = 15
   $offset: Int = 0
-  $is_active: Boolean = true
   $category_slug: String
 ) {
   product_aggregate(
     where: {
-      is_active: { _eq: $is_active }
       product_categories: { category: { slug: { _eq: $category_slug } } }
     }
   ) {
@@ -18,7 +16,6 @@ query getProductsWithPagination(
     limit: $limit
     offset: $offset
     where: {
-      is_active: { _eq: $is_active }
       product_categories: { category: { slug: { _eq: $category_slug } } }
     }
   ) {
