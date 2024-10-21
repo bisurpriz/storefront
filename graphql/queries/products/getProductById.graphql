@@ -125,7 +125,7 @@ query getProductPricesById($id: bigint = 0) {
 }
 
 query getProductsForInitialCart($ids: [bigint!]) {
-  product(where: { id: { _in: $ids }, is_active: { _eq: true } }) {
+  product(where: { id: { _in: $ids }, is_approved: { _eq: true } }) {
     name
     description
     id
@@ -162,7 +162,6 @@ query getProductsForInitialCart($ids: [bigint!]) {
   }
 }
 
-
 query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
     user_favorites_aggregate {
@@ -170,7 +169,7 @@ query getProductActionData($id: bigint!) @cached(ttl: 180) {
         count
       }
     }
-    user_favorites(where: {product: {id: {_eq: $id}}}) {
+    user_favorites(where: { product: { id: { _eq: $id } } }) {
       product_id
     }
   }
@@ -200,7 +199,7 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     score
     properties
     discount_price
-     product_customizable_areas {
+    product_customizable_areas {
       customizable_area {
         id
         type
@@ -225,7 +224,6 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
   }
 }
 
-
 query getProductImages($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
     image_url
@@ -239,7 +237,7 @@ query getProductDescription($id: bigint!) @cached(ttl: 180) {
   }
 }
 
-query getProductComments ($id: bigint!) @cached(ttl: 180) {
+query getProductComments($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
     reviews {
       id
