@@ -32,6 +32,7 @@ export const getProductActions = async (
       product: {
         user_favorites: favs?.data?.product?.user_favorites,
         user_favorites_aggregate: favs?.data?.product?.user_favorites_aggregate,
+        tenant: favs.data.product.tenant
       },
     };
   } else {
@@ -49,6 +50,7 @@ export const getProductActions = async (
       product: {
         user_favorites: [],
         user_favorites_aggregate: anon?.data?.product?.user_favorites_aggregate,
+        tenant: anon.data.product.tenant
       },
     };
   }

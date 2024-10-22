@@ -1,5 +1,6 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
 import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import { ReactNode, Suspense } from "react";
 
@@ -38,7 +39,7 @@ export default async function ProductExample({
               <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
             }
           >
-            <ServerQuerySelector />
+            <GoogleLocationSelect />
           </Suspense>
           {action}
         </div>

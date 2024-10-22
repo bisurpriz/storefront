@@ -16,21 +16,23 @@ import { useEffect, useRef, useState, startTransition } from "react";
 import { checkProductLocation } from "@/app/(feed)/actions";
 import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
+import { IPlace } from "@/common/types/Product/product";
+import { isWithinBounds } from "@/utils/isWithinBounds";
 
 interface Props {
   productId: number;
   isFavorite: boolean;
   favoriteCount?: number;
-  locationId: number;
-  locType: string;
+  places: IPlace[];
+  selectedLocation: IPlace;
 }
 
 const ProductActions = ({
   productId,
   isFavorite,
   favoriteCount,
-  locType,
-  locationId,
+  places,
+  selectedLocation,
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
@@ -70,16 +72,54 @@ const ProductActions = ({
     !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
-    if (!locationId || !locType) return;
+    if (!selectedLocation) return;
 
-    checkProductLocation(locationId, locType, productId).then((isAvailable) => {
-      if (!isAvailable) {
-        setShowPlaceWarning(true);
-      } else {
-        setShowPlaceWarning(false);
+    const anyAvailable = places.some((place) => {
+      if (place.placeId === selectedLocation.placeId) {
+        return true;
       }
+
+      console.log(place, "place");
+      console.log(selectedLocation, "selectedLocation");
+
+      const {
+        viewport: { south, north, east, west },
+        lat,
+        lng,
+      } = place;
+      const {
+        lat: selectedLat,
+        lng: selectedLng,
+        viewport: {
+          south: selectedSouth,
+          north: selectedNorth,
+          east: selectedEast,
+          west: selectedWest,
+        },
+      } = selectedLocation;
+
+      const isWithin1 = isWithinBounds(selectedLat, selectedLng, {
+        south,
+        north,
+        east,
+        west,
+      });
+      const isWithin2 = isWithinBounds(lat, lng, {
+        south: selectedSouth,
+        north: selectedNorth,
+        east: selectedEast,
+        west: selectedWest,
+      });
+
+      if (isWithin1 || isWithin2) {
+        return true;
+      }
+
+      return false;
     });
-  }, [locationId, locType]);
+
+    setShowPlaceWarning(!anyAvailable);
+  }, [selectedLocation]);
 
   return (
     <>
@@ -99,7 +139,7 @@ const ProductActions = ({
           onClick={() => {
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
-              !locationId
+              !selectedLocation
             ) {
               if (willShowError) {
                 setError(true);
@@ -111,8 +151,8 @@ const ProductActions = ({
                   id: productId,
                   type: "add",
                   deliveryLocation: {
-                    id: locationId,
-                    type: locType,
+                    id: 0,
+                    type: "",
                   },
                 });
               }
@@ -122,8 +162,8 @@ const ProductActions = ({
               id: productId,
               type: "add",
               deliveryLocation: {
-                id: locationId,
-                type: locType,
+                id: 0,
+                type: "",
               },
             });
           }}
