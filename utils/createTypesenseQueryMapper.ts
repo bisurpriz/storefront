@@ -28,7 +28,7 @@ export const createTypesenseQueryMapper = (searchParams: {
     }
   });
 
-  // filter_by.push("is_active:true");
+  filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
 
   const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;

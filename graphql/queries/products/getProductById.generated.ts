@@ -207,7 +207,7 @@ export const GetProductPricesByIdDocument = gql`
 export type GetProductPricesByIdQueryResult = Apollo.QueryResult<GetProductPricesByIdQuery, GetProductPricesByIdQueryVariables>;
 export const GetProductsForInitialCartDocument = gql`
     query getProductsForInitialCart($ids: [bigint!]) {
-  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
+  product(where: {id: {_in: $ids}, is_approved: {_eq: true}}) {
     name
     description
     id

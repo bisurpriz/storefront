@@ -5386,6 +5386,21 @@ input get_product_delivery_cities_args {
 
 scalar json
 
+"""
+Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'.
+"""
+input json_comparison_exp {
+  _eq: json
+  _gt: json
+  _gte: json
+  _in: [json!]
+  _is_null: Boolean
+  _lt: json
+  _lte: json
+  _neq: json
+  _nin: [json!]
+}
+
 scalar jsonb
 
 input jsonb_cast_exp {
@@ -24585,10 +24600,14 @@ columns and relationships of "tenant_shipping_place"
 type tenant_shipping_place {
   id: Int!
   is_active: Boolean
+  places(
+    """JSON select path"""
+    path: String
+  ): json!
 
   """An object relationship"""
-  quarter: quarter!
-  quarter_code: Int!
+  quarter: quarter
+  quarter_code: Int
 
   """An object relationship"""
   tenant: tenant!
@@ -24697,6 +24716,7 @@ input tenant_shipping_place_bool_exp {
   _or: [tenant_shipping_place_bool_exp!]
   id: Int_comparison_exp
   is_active: Boolean_comparison_exp
+  places: json_comparison_exp
   quarter: quarter_bool_exp
   quarter_code: Int_comparison_exp
   tenant: tenant_bool_exp
@@ -24711,6 +24731,11 @@ enum tenant_shipping_place_constraint {
   unique or primary key constraint on columns "id"
   """
   tenant_shipping_place_pkey
+
+  """
+  unique or primary key constraint on columns "tenant_id"
+  """
+  tenant_shipping_place_tenant_id_key
 
   """
   unique or primary key constraint on columns "quarter_code", "tenant_id"
@@ -24732,6 +24757,7 @@ input type for inserting data into table "tenant_shipping_place"
 input tenant_shipping_place_insert_input {
   id: Int
   is_active: Boolean
+  places: json
   quarter: quarter_obj_rel_insert_input
   quarter_code: Int
   tenant: tenant_obj_rel_insert_input
@@ -24794,6 +24820,7 @@ input tenant_shipping_place_on_conflict {
 input tenant_shipping_place_order_by {
   id: order_by
   is_active: order_by
+  places: order_by
   quarter: quarter_order_by
   quarter_code: order_by
   tenant: tenant_order_by
@@ -24814,6 +24841,9 @@ enum tenant_shipping_place_select_column {
 
   """column name"""
   is_active
+
+  """column name"""
+  places
 
   """column name"""
   quarter_code
@@ -24844,6 +24874,7 @@ input type for updating data in table "tenant_shipping_place"
 input tenant_shipping_place_set_input {
   id: Int
   is_active: Boolean
+  places: json
   quarter_code: Int
   tenant_id: uuid
 }
@@ -24905,6 +24936,7 @@ input tenant_shipping_place_stream_cursor_input {
 input tenant_shipping_place_stream_cursor_value_input {
   id: Int
   is_active: Boolean
+  places: json
   quarter_code: Int
   tenant_id: uuid
 }
@@ -24932,6 +24964,9 @@ enum tenant_shipping_place_update_column {
 
   """column name"""
   is_active
+
+  """column name"""
+  places
 
   """column name"""
   quarter_code

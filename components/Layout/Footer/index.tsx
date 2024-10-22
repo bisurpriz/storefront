@@ -4,6 +4,7 @@ import TwitterIcon from "@/components/CustomIcons/Twitter";
 import clsx from "clsx";
 import Image from "next/image";
 import { Link } from "@/components/Link";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 
 const footerData = [
   {
@@ -75,7 +76,9 @@ const footerData = [
   },
 ];
 
-const Footer = () => {
+const Footer = async () => {
+  const viewport = await getServerSideViewPort();
+
   return (
     <footer
       aria-label="Alt Bilgi"
@@ -102,7 +105,7 @@ const Footer = () => {
                   <li key={index} className="group ">
                     <Link
                       href={link.path}
-                      target={link.path.startsWith("http") ? "_blank" : "_self"}
+                      target={viewport === "mobile" ? "_blank" : "_self"}
                       rel={
                         link.path.startsWith("http")
                           ? "noopener noreferrer"

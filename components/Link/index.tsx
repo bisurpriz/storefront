@@ -19,6 +19,11 @@ export function Link({
       href={href}
       onClick={(e) => {
         e.preventDefault();
+        if (rest.target === "_blank") {
+          window.open(href.toString(), "_blank");
+          return;
+        }
+
         startTransition(() => {
           startProgress();
           const url = href.toString();

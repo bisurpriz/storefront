@@ -22,6 +22,7 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
+import useResponsive from "@/hooks/useResponsive";
 
 interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -78,6 +79,7 @@ export default function ProductItem2(props: ProductItemProps) {
   const [isPending, startTransition] = useTransition();
   const { user } = useUser();
   const { replace } = useRouter();
+  const { isTablet } = useResponsive();
 
   useEffect(() => {
     setIsFavorite(isFavoriteProp);
@@ -115,6 +117,7 @@ export default function ProductItem2(props: ProductItemProps) {
         id,
         slug,
       })}
+      target={!isTablet ? "_blank" : "_self"}
       className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
     >
       <div className="relative flex-1 col-span-4">
@@ -140,10 +143,6 @@ export default function ProductItem2(props: ProductItemProps) {
                 hidden: !(Array.isArray(image_url) && image_url.length > 1),
               }
             )}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-            }}
             onMouseLeave={(e) => {
               e.stopPropagation();
               e.preventDefault();
