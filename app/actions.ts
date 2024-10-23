@@ -35,9 +35,17 @@ export async function readIdFromCookies() {
 export async function getAccessToken() {
   const { get } = await cookies();
   const token = get(CookieTokens.ACCESS_TOKEN)?.value;
-  if (!token) return new Promise((resolve, reject) => resolve(null));
+  if (!token) return null;
 
   return token;
+}
+
+export async function readGuestIdFromCookies() {
+  const { get } = await cookies();
+  const guestId = get(CookieTokens.GUEST_ID)?.value;
+  if (!guestId) return null;
+
+  return guestId;
 }
 
 export async function createJwt() {

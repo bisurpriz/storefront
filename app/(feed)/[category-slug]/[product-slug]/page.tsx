@@ -1,5 +1,3 @@
-"use client";
-
 import { query } from "@/graphql/lib/client";
 
 import { FC } from "react";
@@ -8,23 +6,14 @@ import {
   GetProductImagesQuery,
   GetProductImagesQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
-import dynamic from "next/dynamic";
-import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
 import { redirect } from "next/navigation";
+import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
 
 type Props = {
   searchParams: {
     [key: string]: string | number;
   };
 };
-
-const DynamicGallery = dynamic(
-  () => import("@/components/Product/DetailImageGallery"),
-  {
-    ssr: false,
-    loading: () => <ProductImageGalleryLoading />,
-  }
-);
 
 const ProductImageCarouselPage: FC<Props> = async (props) => {
   const searchParams = await props.searchParams;
@@ -48,7 +37,7 @@ const ProductImageCarouselPage: FC<Props> = async (props) => {
     redirect("/");
   }
 
-  return <DynamicGallery images={data?.product.image_url} />;
+  return <ProductDetailImageGallery images={data?.product.image_url} />;
 };
 
 export default ProductImageCarouselPage;

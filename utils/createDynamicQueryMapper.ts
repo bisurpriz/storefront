@@ -1,5 +1,5 @@
 import { CookieTokens } from "@/app/@auth/contants";
-import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
+import { cookies } from "next/headers";
 import { parseJson } from "./format";
 import { FILTER_KEYS } from "@/common/enums/Product/product";
 
