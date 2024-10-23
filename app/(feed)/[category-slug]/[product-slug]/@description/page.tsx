@@ -17,7 +17,8 @@ type Props = {
   };
 };
 
-const ProductDescriptionPage: FC<Props> = async ({ searchParams }) => {
+const ProductDescriptionPage: FC<Props> = async props => {
+  const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
   const {

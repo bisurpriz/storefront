@@ -125,7 +125,7 @@ export const searchProducts = async (
   }
 ) => {
   if (!payload) return { products: [] };
-  const queryMapper = createDynamicQueryMapper(payload);
+  const queryMapper = await createDynamicQueryMapper(payload);
   try {
     const {
       data: { product: products, product_aggregate },
@@ -154,7 +154,7 @@ export const searchProductsv1 = async (
   filters: { [key: string]: string | string[] | undefined } = {}
 ) => {
   if (!filters) return { hits: [], found: 0 };
-  const filterBy = createTypesenseQueryMapper(filters);
+  const filterBy = await createTypesenseQueryMapper(filters);
   try {
     const response = await searchClient
       .collections("products")

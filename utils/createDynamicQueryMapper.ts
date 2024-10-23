@@ -1,5 +1,5 @@
 import { CookieTokens } from "@/app/@auth/contants";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import { parseJson } from "./format";
 import { FILTER_KEYS } from "@/common/enums/Product/product";
 
@@ -15,7 +15,7 @@ export type FilterSearchParams = {
   [FILTER_KEYS.FREE_SHIPPING]?: boolean;
 };
 
-export const createDynamicQueryMapper = (searchParams: {
+export const createDynamicQueryMapper = async (searchParams: {
   [key: string]: string | string[] | undefined;
 }) => {
   const query = Object.keys(searchParams).map((key) => {
@@ -106,7 +106,8 @@ export const createDynamicQueryMapper = (searchParams: {
   });
 
   // TODO: burası location olarak düzenlenecek
-  const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
+  const { get } = await cookies();
+  const cookie = get(CookieTokens.LOCATION_ID)?.value;
   const locationId = parseJson(cookie)?.id;
   const locationType = parseJson(cookie)?.type;
 

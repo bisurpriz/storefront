@@ -4,8 +4,8 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
-import { cookies } from "next/headers";
 import { checkExpire } from "../utils/checkExpire";
+import Cookies from "js-cookie";
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -22,7 +22,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: async () => {
-      const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+      const token = Cookies.get(CookieTokens.ACCESS_TOKEN);
 
       return {
         headers: {
@@ -36,10 +36,10 @@ const wsLink = new WebSocketLink({
 export const authLink = setContext(async (_, { headers }) => {
   let token = null;
   try {
-    token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+    token = Cookies.get(CookieTokens.ACCESS_TOKEN);
 
     if (token && checkExpire(token)) {
-      token = cookies().get(CookieTokens.REFRESH_TOKEN)?.value;
+      token = Cookies.get(CookieTokens.REFRESH_TOKEN);
     }
   } catch (e) {
     console.error(e, "error getting session");

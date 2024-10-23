@@ -1,3 +1,5 @@
+"use client";
+
 import { query } from "@/graphql/lib/client";
 
 import { FC } from "react";
@@ -24,7 +26,8 @@ const DynamicGallery = dynamic(
   }
 );
 
-const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
+const ProductImageCarouselPage: FC<Props> = async (props) => {
+  const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
   if (!id) {

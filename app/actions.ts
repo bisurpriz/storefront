@@ -24,16 +24,17 @@ import {
 import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
-  const auth = cookies();
+  const { get } = await cookies();
 
-  const id = auth.get(CookieTokens.USER_ID);
+  const id = get(CookieTokens.USER_ID);
   if (!id) null;
 
   return id?.value;
 }
 
 export async function getAccessToken() {
-  const token = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+  const { get } = await cookies();
+  const token = get(CookieTokens.ACCESS_TOKEN)?.value;
   if (!token) return new Promise((resolve, reject) => resolve(null));
 
   return token;
@@ -72,7 +73,8 @@ export async function getBanners() {
 }
 
 export async function getLocationFromCookie(): Promise<Location | null> {
-  const value = await cookies().get(CookieTokens.LOCATION_ID)?.value;
+  const { get } = await cookies();
+  const value = get(CookieTokens.LOCATION_ID)?.value;
 
   if (!value) return null;
 
@@ -90,7 +92,7 @@ export const getIpAddress = async () => {
     return parts.every((part) => parseInt(part) >= 0 && parseInt(part) <= 255);
   };
 
-  const ipv6 = headers().get("X-Forwarded-For")?.split(":");
+  const ipv6 = (await headers()).get("X-Forwarded-For")?.split(":");
   const ipv4 = ipv6[ipv6.length - 1];
 
   const ip = ipv4?.split(",")[0];
@@ -105,7 +107,7 @@ export const getIpAddress = async () => {
 };
 
 export const getGeoLocation = async () => {
-  const geo = headers().get("X-Forwarded-For");
+  const geo = (await headers()).get("X-Forwarded-For");
 
   return geo;
 };

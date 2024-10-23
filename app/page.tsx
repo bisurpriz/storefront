@@ -24,11 +24,12 @@ export const dynamic = "force-dynamic";
 
 export const experimental_ppr = true;
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Page(
+  props: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const searchText = searchParams.hasOwnProperty("search");
 
   const viewport = await getServerSideViewPort();

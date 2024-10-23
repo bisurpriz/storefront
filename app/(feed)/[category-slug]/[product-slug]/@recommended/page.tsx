@@ -10,7 +10,8 @@ type Props = {
   };
 };
 
-const ProductRecommendedPage: FC<Props> = async ({ params }) => {
+const ProductRecommendedPage: FC<Props> = async props => {
+  const params = await props.params;
   const { products: categoryProducts } = await getPaginatedProducts({
     offset: 0,
     category_slug: params["category-slug"],

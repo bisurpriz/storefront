@@ -3,7 +3,7 @@ import { FC } from "react";
 import { getProductActions } from "./actions";
 import ActionPageLoading from "./loading";
 import { parseJson } from "@/utils/format";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import { IPlace } from "@/common/types/Product/product";
 
 type Props = {
@@ -12,7 +12,8 @@ type Props = {
   };
 };
 
-const ProductActionsPage: FC<Props> = async ({ searchParams }) => {
+const ProductActionsPage: FC<Props> = async (props) => {
+  const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
 
   const { product } = await getProductActions(productId);
@@ -28,10 +29,11 @@ const ProductActionsPage: FC<Props> = async ({ searchParams }) => {
   );
   const favoriteCount = product.user_favorites_aggregate.aggregate.count;
 
-  const handleCookie = () => {
+  const handleCookie = async () => {
+    const { get } = await cookies();
     try {
-      const locationCookie = cookies().get("location_id")?.value
-        ? parseJson(cookies().get("location_id")?.value)
+      const locationCookie = get("location_id")?.value
+        ? parseJson(get("location_id")?.value)
         : null;
       return locationCookie;
     } catch (error) {
@@ -40,8 +42,7 @@ const ProductActionsPage: FC<Props> = async ({ searchParams }) => {
     }
   };
 
-
-  const selectedLocation = handleCookie() as IPlace ;
+  const selectedLocation = (await handleCookie()) as IPlace;
   const places = parseJson(
     product.tenant?.tenants?.[0].tenant_shipping_places?.[0].places
   ) as IPlace[];
