@@ -8,7 +8,6 @@ import dynamic from "next/dynamic";
 import { PER_REQUEST } from "@/app/constants";
 import { useProgress } from "react-transition-progress";
 import Spinner from "../Spinner";
-import ProductItem2 from "../Product/Item/ProductItem2";
 import { cn } from "@/lib/utils";
 
 interface InfinityScrollProps<T> {
@@ -20,7 +19,7 @@ interface InfinityScrollProps<T> {
 }
 
 const DynamicProductItem = dynamic(
-  () => import("../Product/Item/ProductItem5"),
+  () => import("../Product/Item/ProductItem2"),
   {
     loading: () => <ProductItemSkeleton />,
   }
@@ -81,10 +80,10 @@ const InfinityScroll = <T,>({
       <div
         className={cn(
           "grid grid-cols-4",
-          "max-sm:grid-cols-2",
-          "max-md:grid-cols-3",
-          "max-lg:grid-cols-4",
-          "gap-4"
+          "max-sm:grid-cols-1 gap-2",
+          "max-md:grid-cols-2 gap-2",
+          "max-lg:grid-cols-3 gap-4",
+          "max-xl:grid-cols-4 gap-6"
         )}
       >
         {data?.map((item: any) => {

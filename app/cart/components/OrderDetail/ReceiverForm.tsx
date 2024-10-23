@@ -474,7 +474,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                     value: city.id,
                   }))}
                   onChange={(option: AutoCompleteOption) => {
-                    console.log(option, "burada la");
                     onChange(option);
                     reset({
                       ...watch(),

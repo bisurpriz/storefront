@@ -9,8 +9,8 @@ type Props = {
 };
 
 const variant = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const GreaterThanOneTenant: FC<Props> = ({ children, show }) => {
@@ -21,14 +21,6 @@ const GreaterThanOneTenant: FC<Props> = ({ children, show }) => {
         animate="visible"
         exit="hidden"
         variants={variant}
-        className={clsx(
-          "text-xs text-red-500",
-          "bg-red-100 p-2 rounded-lg",
-          "transition-all duration-200",
-          "border border-red-200",
-          "tracking-wider",
-          "overflow-hidden"
-        )}
       >
         {children}
       </motion.div>

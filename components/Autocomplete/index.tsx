@@ -146,7 +146,18 @@ export default function AutoComplete({
             {startIcon && startIcon}
             {selectedValue ? selectedValue.label : placeholder}
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {selectedValue ? (
+            <SquareX
+              className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedValue(null);
+                onChange(null);
+              }}
+            />
+          ) : (
+            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          )}
         </Button>
       </DrawerTrigger>
       <DrawerContent>

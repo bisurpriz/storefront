@@ -35,14 +35,14 @@ export type GetProductActionDataQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductActionDataQuery = { product?: { user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> } | null };
+export type GetProductActionDataQuery = { product?: { tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> } | null };
 
 export type GetProductActionDataForAnonymousQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductActionDataForAnonymousQuery = { product?: { user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductActionDataForAnonymousQuery = { product?: { tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductInformationQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -207,7 +207,7 @@ export const GetProductPricesByIdDocument = gql`
 export type GetProductPricesByIdQueryResult = Apollo.QueryResult<GetProductPricesByIdQuery, GetProductPricesByIdQueryVariables>;
 export const GetProductsForInitialCartDocument = gql`
     query getProductsForInitialCart($ids: [bigint!]) {
-  product(where: {id: {_in: $ids}, is_active: {_eq: true}}) {
+  product(where: {id: {_in: $ids}, is_approved: {_eq: true}}) {
     name
     description
     id
@@ -248,6 +248,13 @@ export type GetProductsForInitialCartQueryResult = Apollo.QueryResult<GetProduct
 export const GetProductActionDataDocument = gql`
     query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    tenant {
+      tenants {
+        tenant_shipping_places {
+          places
+        }
+      }
+    }
     user_favorites_aggregate {
       aggregate {
         count
@@ -263,6 +270,13 @@ export type GetProductActionDataQueryResult = Apollo.QueryResult<GetProductActio
 export const GetProductActionDataForAnonymousDocument = gql`
     query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    tenant {
+      tenants {
+        tenant_shipping_places {
+          places
+        }
+      }
+    }
     user_favorites_aggregate {
       aggregate {
         count

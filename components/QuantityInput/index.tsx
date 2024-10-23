@@ -40,11 +40,11 @@ export default function NumberInput({
         onClick={handleDecrement}
         disabled={disabled || defaultValue <= min}
         aria-label="Azalt"
-        className="rounded-l-md rounded-r-none border-r-0 h-10"
+        className="rounded-l-md rounded-r-none border-r-0 h-8 p-0"
       >
         <Minus className="h-4 w-4" />
       </Button>
-      <div className="flex items-center justify-center h-10 w-16 border-y border-input bg-background text-center text-sm font-medium">
+      <div className="flex items-center justify-center h-8 w-10 border-y border-input bg-background text-center text-sm font-medium">
         <span aria-live="polite" aria-label="Adet Sayısı">
           {defaultValue}
         </span>
@@ -55,7 +55,7 @@ export default function NumberInput({
         onClick={handleIncrement}
         disabled={disabled || defaultValue >= max}
         aria-label="Artır"
-        className="rounded-r-md rounded-l-none border-l-0 h-10"
+        className="rounded-r-md rounded-l-none border-l-0 h-8 p-0"
       >
         <Plus className="h-4 w-4" />
       </Button>

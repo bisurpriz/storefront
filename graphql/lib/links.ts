@@ -1,10 +1,10 @@
-import { CookieTokens } from "@/app/@auth/contants";
 import { HttpLink, from, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
-import { cookies } from "next/headers";
+import { checkExpire } from "../utils/checkExpire";
+import { getAccessToken, readGuestIdFromCookies } from "@/app/actions";
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -21,7 +21,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: async () => {
-      const token = cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
+      const token = await getAccessToken();
 
       return {
         headers: {
@@ -33,27 +33,24 @@ const wsLink = new WebSocketLink({
 });
 
 export const authLink = setContext(async (_, { headers }) => {
-  let token = null;
-  try {
-    // TODO: Refresh Fetch işlemi yapılacak
-    const ntoken = await cookies().get(CookieTokens.ACCESS_TOKEN)?.value;
-    token = ntoken;
-  } catch (e) {
-    console.error(e, "error getting session");
+  const cookieToken = await getAccessToken();
+  const isExpired = checkExpire(cookieToken);
+
+  if (cookieToken && !isExpired) {
+    return {
+      headers: {
+        ...headers,
+        authorization: `Bearer ${cookieToken}`,
+      },
+    };
   }
 
-  const hasToken = token ? { authorization: `Bearer ${token}` } : {};
-
-  /* const user_id = cookies().get(CookieTokens.USER_ID)?.value;
-  const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
-
-  const newHeaders =
-    !user_id && guest_id ? { ["x-hasura-guest-id"]: guest_id } : {}; */
+  const guestId = await readGuestIdFromCookies();
 
   return {
     headers: {
       ...headers,
-      ...hasToken,
+      "x-hasura-guest-id": guestId,
     },
   };
 });

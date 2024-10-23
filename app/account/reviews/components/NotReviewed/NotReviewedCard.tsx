@@ -2,31 +2,29 @@
 
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
-import ClientModal from "./ClientModal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { createReview } from "../../actions";
-import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
 
-interface Props {
-  imageUrl: string;
-  productName: string;
-  deliveryDate: string;
-  rating: number;
-  reviewCount: number;
-  productId: number;
-}
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import CreateReview from "../CreateReview/CreateReview";
+import { OrderItemStatus } from "@/common/enums/Order/product";
+import StatusBadge from "@/components/StatusBadge";
 
 const NotReviewedCard = ({
-  imageUrl,
-  productName,
-  deliveryDate,
-  rating,
-  reviewCount,
-  productId,
-}: Props) => {
+  orders,
+}: {
+  orders: GetOrdersWithReviewsQuery["order_item"];
+}) => {
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const { openDialog, closeDialog } = useResponsiveDialog();
+
   const { refresh } = useRouter();
+
   const handleCreateReview = async ({
     product_id,
     score,
@@ -42,44 +40,60 @@ const NotReviewedCard = ({
       comment,
     });
     if (response?.created_at) {
+      closeDialog();
       toast.success("Değerlendirme başarıyla eklendi.");
     }
     refresh();
   };
 
-  return (
-    <div className="flex items-center gap-4 border p-4 shadow-md rounded-md max-sm:flex-col max-sm:items-center max-sm:w-full">
-      <Image
-        src={getImageUrlFromPath(imageUrl)}
-        alt="product"
-        width={200}
-        height={200}
-        className="rounded-md object-cover w-32 h-32 shadow-md"
-      />
-      <div className="flex flex-col items-start justify-end font-mono">
-        <h4 className="text-lg font-semibold text-slate-700 max-w-xs m-0">
-          {productName}
-        </h4>
-        <p className="text-xs m-0 leading-none text-slate-500 max-w-lg mt-0 whitespace-nowrap mb-2">
-          Teslim tarihi: {localeFormat(new Date(deliveryDate), "PPP")}
-        </p>
-        <div className="flex gap-2 items-end mb-2 text-xs text-slate-400">
-          {/* 
-            Halihazırda bu ürünün kendi değerlendirmesi görüntülenecek
-          */}
-          <ReviewRating value={rating ?? 3} readOnly showReviewCount={false} />
-          {reviewCount}
-        </div>
+  useEffect(() => {
+    return () => {
+      closeDialog();
+    };
+  }, []);
 
-        <ClientModal
-          productId={productId}
-          onSubmit={handleCreateReview}
-          deliveryDate={deliveryDate}
-          image={getImageUrlFromPath(imageUrl)}
-          productName={productName}
-          reviewCount={reviewCount}
-        />
-      </div>
+  return (
+    <div className="grid gap-4">
+      {orders.map(({ id, product, created_at, order_tenant }) => (
+        <div
+          key={id}
+          className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 max-sm:items-center sm:space-x-4 p-4 border rounded-lg"
+        >
+          <Image
+            src={getImageUrlFromPath(product.image_url[0])}
+            alt={product.name}
+            className="w-24 h-24 object-cover rounded"
+            width={96}
+            height={96}
+          />
+          <div className="flex-grow text-center sm:text-left">
+            <h3 className="font-semibold text-lg">{product.name}</h3>
+            <p className="text-xs font-semibold text-gray-500">
+              Sipariş Tarihi:{" "}
+              {localeFormat(new Date(created_at), "LLLL dd, yyyy")}
+            </p>
+            <div className="flex items-center justify-center sm:justify-start mt-2">
+              <StatusBadge
+                status={OrderItemStatus[order_tenant.order_status.value]}
+              />
+            </div>
+          </div>
+
+          <Button
+            onClick={() =>
+              openDialog(
+                <CreateReview
+                  selectedProduct={product}
+                  handleCreateReview={handleCreateReview}
+                />
+              )
+            }
+            className="w-full sm:w-auto self-center"
+          >
+            Değerlendir
+          </Button>
+        </div>
+      ))}
     </div>
   );
 };

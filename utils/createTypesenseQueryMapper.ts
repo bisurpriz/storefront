@@ -3,7 +3,7 @@ import { FILTER_KEYS } from "@/common/enums/Product/product";
 import { cookies } from "next/headers";
 import { parseJson } from "./format";
 
-export const createTypesenseQueryMapper = (searchParams: {
+export const createTypesenseQueryMapper = async (searchParams: {
   [key: string]: string | string[] | undefined;
 }) => {
   let filter_by = Object.keys(searchParams).map((key) => {
@@ -30,8 +30,8 @@ export const createTypesenseQueryMapper = (searchParams: {
 
   filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
-
-  const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
+  const { get } = await cookies();
+  const cookie = get(CookieTokens.LOCATION_ID)?.value;
   const locationId = parseJson(cookie)?.id;
   const locationType = parseJson(cookie)?.type;
 

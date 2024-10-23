@@ -13,24 +13,36 @@ import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, startTransition } from "react";
-import { checkProductLocation } from "@/app/(feed)/actions";
 import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
+import { IPlace } from "@/common/types/Product/product";
+import { isWithinBounds } from "@/utils/isWithinBounds";
+import dynamic from "next/dynamic";
 
 interface Props {
   productId: number;
   isFavorite: boolean;
   favoriteCount?: number;
-  locationId: number;
-  locType: string;
+  places: IPlace[];
+  selectedLocation: IPlace;
 }
+
+const DynamicGoogleLocationSelect = dynamic(
+  () => import("@/components/QuarterSelector/GoogleLocationSelect"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+    ),
+  }
+);
 
 const ProductActions = ({
   productId,
   isFavorite,
   favoriteCount,
-  locType,
-  locationId,
+  places,
+  selectedLocation,
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
@@ -38,14 +50,14 @@ const ProductActions = ({
   const { selectedProduct } = useProduct();
 
   const { addToCart, loading, deliveryTime } = useCart();
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const startProgress = useProgress();
 
   const handleFavorite = () => {
     startTransition(() => {
       startProgress();
       if (!user) {
-        push("/login");
+        replace("/login");
         return;
       }
 
@@ -66,22 +78,63 @@ const ProductActions = ({
   const [error, setError] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  const willShowError = !deliveryTime?.day || !deliveryTime?.hour;
+  const willShowError =
+    !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
-    if (!locationId || !locType) return;
+    if (!selectedLocation) return;
 
-    checkProductLocation(locationId, locType, productId).then((isAvailable) => {
-      if (!isAvailable) {
-        setShowPlaceWarning(true);
-      } else {
-        setShowPlaceWarning(false);
+    const anyAvailable = places?.some((place) => {
+      if (place.placeId === selectedLocation.placeId) {
+        return true;
       }
+
+      console.log(place, "place");
+      console.log(selectedLocation, "selectedLocation");
+
+      const {
+        viewport: { south, north, east, west },
+        lat,
+        lng,
+      } = place;
+      const {
+        lat: selectedLat,
+        lng: selectedLng,
+        viewport: {
+          south: selectedSouth,
+          north: selectedNorth,
+          east: selectedEast,
+          west: selectedWest,
+        },
+      } = selectedLocation;
+
+      const isWithin1 = isWithinBounds(selectedLat, selectedLng, {
+        south,
+        north,
+        east,
+        west,
+      });
+      const isWithin2 = isWithinBounds(lat, lng, {
+        south: selectedSouth,
+        north: selectedNorth,
+        east: selectedEast,
+        west: selectedWest,
+      });
+
+      if (isWithin1 || isWithin2) {
+        return true;
+      }
+
+      return false;
     });
-  }, [locationId, locType]);
+
+    setShowPlaceWarning(!anyAvailable);
+  }, [selectedLocation]);
 
   return (
     <>
+      <DynamicGoogleLocationSelect />
+
       {showPlaceWarning && (
         <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
           <p className="text-xs text-slate-700 font-normal">
@@ -94,9 +147,12 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("w-full")}
-          disabled={loading || error || !locationId || showPlaceWarning}
+          disabled={loading || error || showPlaceWarning}
           onClick={() => {
-            if (parseJson(selectedProduct?.delivery_time_ranges)?.length > 0) {
+            if (
+              parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
+              !selectedLocation
+            ) {
               if (willShowError) {
                 setError(true);
                 timeoutRef.current = setTimeout(() => {
@@ -107,8 +163,8 @@ const ProductActions = ({
                   id: productId,
                   type: "add",
                   deliveryLocation: {
-                    id: locationId,
-                    type: locType,
+                    id: 0,
+                    type: "",
                   },
                 });
               }
@@ -118,8 +174,8 @@ const ProductActions = ({
               id: productId,
               type: "add",
               deliveryLocation: {
-                id: locationId,
-                type: locType,
+                id: 0,
+                type: "",
               },
             });
           }}

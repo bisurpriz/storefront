@@ -1,91 +1,81 @@
-import { getUserFavorites } from "./actions";
+import { getUserFavorites, removeFromFavorites } from "./actions";
 import clsx from "clsx";
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { Link } from "@/components/Link";
 import { goToProductDetail } from "@/utils/linkClickEvent";
+import { Heart, ShoppingCart, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import RatingDetail from "@/app/(feed)/[category-slug]/components/Detail/RatingDetail";
+import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
 
 export const dynamic = "force-dynamic";
 
 const FavoritesPage = async () => {
-  const { user_favorite, totalCount } = await getUserFavorites({
+  const {
+    data: { user_favorite, user_favorite_aggregate },
+  } = await getUserFavorites({
     offset: 0,
   });
 
+  const totalCount = user_favorite_aggregate.aggregate.count;
+
   return (
-    <div>
-      <h1
-        className={clsx(
-          "text-2xl",
-          "text-slate-900",
-          "mb-4",
-          "max-sm:text-xl",
-          "max-sm:mb-2"
-        )}
-      >
-        Favorilerim ({totalCount})
-      </h1>
-      <div className="flex gap-4 items-start justify-start flex-wrap font-sans">
-        {user_favorite?.map((item) => (
-          <div
-            key={item.id}
-            className={clsx(
-              "flex justify-between gap-2",
-              "bg-white overflow-hidden",
-              "rounded-md",
-              "shadow-md",
-              "max-w-xs w-full",
-              "group",
-              "select-none"
-            )}
-          >
-            <Image
-              src={getImageUrlFromPath(item.product.image_url[0])}
-              alt={item.product.name}
-              className="w-24 h-24 object-cover -inset-0 group-hover:scale-105 transition-transform duration-300 ease-in-out"
-              width={96}
-              height={96}
-            />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-2">Favorilerim</h1>
+      <p className="text-gray-600 mb-6">{totalCount} ürün</p>
+
+      {totalCount === 0 ? (
+        <div className="text-center py-12">
+          <Heart className="w-16 h-16 mx-auto text-gray-300 mb-4" />
+          <h2 className="text-2xl font-semibold mb-2">Favori Listeniz Boş</h2>
+          <p className="text-gray-600">
+            Henüz favori ürününüz yok. Alışverişe devam etmek için ürünleri
+            keşfedin.
+          </p>
+          <Button className="mt-4">Ürünleri Keşfet</Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {user_favorite.map((product) => (
             <div
-              className={clsx(
-                "flex flex-col gap-2 p-2",
-                "flex-1",
-                "justify-between"
-              )}
+              key={product.id}
+              className="border rounded-lg p-4 hover:shadow-lg transition-shadow relative group"
             >
-              <h1
-                className={clsx(
-                  "text-xs font-normal",
-                  "text-gray-600",
-                  "line-clamp-3"
-                )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
               >
-                {item.product.name}
-              </h1>
-              <Link
-                href={goToProductDetail({
-                  category: {
-                    slug: item.product.product_categories[0].category.slug,
-                  },
-                  id: item.product.id,
-                  slug: item.product.slug,
-                })}
-                className={clsx(
-                  "p-2 w-full mt-auto",
-                  "text-center text-xs",
-                  "bg-tertiary",
-                  "text-slate-500",
-                  "rounded-md",
-                  "hover:bg-tertiary-light hover:text-slate-700",
-                  "transition-all duration-300 ease-in-out"
-                )}
-              >
-                Ürünü Gör
-              </Link>
+                <X className="w-4 h-4" />
+              </Button>
+              <div className="mb-4">
+                <Image
+                  src={getImageUrlFromPath(product.product.image_url[0])}
+                  alt={product.product.name}
+                  width={300}
+                  height={300}
+                  className="rounded-md object-cover w-full h-48"
+                />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-lg font-semibold mb-1 line-clamp-2 h-14 w-full">
+                  {product.product.name}
+                </h2>
+                <PriceTagv2
+                  discountedPrice={product.product.discount_price}
+                  originalPrice={product.product.price}
+                />
+
+                <Button variant="outline" className="w-full mt-auto">
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Sepete Ekle
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

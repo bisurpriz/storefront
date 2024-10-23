@@ -29,8 +29,6 @@ import { SearchProductProvider } from "@/contexts/SearchContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 
-export const experimental_ppr = true;
-
 const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],

@@ -30,8 +30,13 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   return rateCounts ? (
     <div className="w-full flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <p className="text-xl font-semibold">{rating.toFixed(1)} Puan</p>
-        <Link href="#yorumlar" className="text-primary text-sm font-semibold">
+        <p className="text-xl max-sm:text-sm font-semibold">
+          {rating.toFixed(1)} Puan
+        </p>
+        <Link
+          href="#yorumlar"
+          className="text-primary text-sm max-sm:text-xs font-semibold"
+        >
           ({totalRating} Yorum)
         </Link>
       </div>
@@ -47,7 +52,7 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
               {key}
               {Array.from({ length: parseInt(key) }).map((_, index) => (
                 <span key={index}>
-                  <CustomStar className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+                  <CustomStar className="w-4 h-4 fill-yellow-400 stroke-yellow-400 max-sm:w-3 max-sm:h-3" />
                 </span>
               ))}
             </p>

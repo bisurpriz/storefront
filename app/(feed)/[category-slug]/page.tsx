@@ -3,13 +3,14 @@ import Filter from "@/components/Filter";
 import { searchProductsv1 } from "../actions";
 import { PER_REQUEST } from "@/app/constants";
 
-export default async function CategoryPage({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function CategoryPage(
+  props: {
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const slug = params["category-slug"];
 
   const response = await searchProductsv1(

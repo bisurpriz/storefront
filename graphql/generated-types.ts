@@ -4444,6 +4444,19 @@ export type Get_Product_Delivery_Cities_Args = {
   product_id?: InputMaybe<Scalars['bigint']['input']>;
 };
 
+/** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
+export type Json_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['json']['input']>;
+  _gt?: InputMaybe<Scalars['json']['input']>;
+  _gte?: InputMaybe<Scalars['json']['input']>;
+  _in?: InputMaybe<Array<Scalars['json']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['json']['input']>;
+  _lte?: InputMaybe<Scalars['json']['input']>;
+  _neq?: InputMaybe<Scalars['json']['input']>;
+  _nin?: InputMaybe<Array<Scalars['json']['input']>>;
+};
+
 export type Jsonb_Cast_Exp = {
   String?: InputMaybe<String_Comparison_Exp>;
 };
@@ -19647,12 +19660,19 @@ export type Tenant_Set_Input = {
 export type Tenant_Shipping_Place = {
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Boolean']['output']>;
+  places: Scalars['json']['output'];
   /** An object relationship */
-  quarter: Quarter;
-  quarter_code: Scalars['Int']['output'];
+  quarter?: Maybe<Quarter>;
+  quarter_code?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   tenant: Tenant;
   tenant_id: Scalars['uuid']['output'];
+};
+
+
+/** columns and relationships of "tenant_shipping_place" */
+export type Tenant_Shipping_PlacePlacesArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregated selection of "tenant_shipping_place" */
@@ -19751,6 +19771,7 @@ export type Tenant_Shipping_Place_Bool_Exp = {
   _or?: InputMaybe<Array<Tenant_Shipping_Place_Bool_Exp>>;
   id?: InputMaybe<Int_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
+  places?: InputMaybe<Json_Comparison_Exp>;
   quarter?: InputMaybe<Quarter_Bool_Exp>;
   quarter_code?: InputMaybe<Int_Comparison_Exp>;
   tenant?: InputMaybe<Tenant_Bool_Exp>;
@@ -19761,6 +19782,8 @@ export type Tenant_Shipping_Place_Bool_Exp = {
 export type Tenant_Shipping_Place_Constraint =
   /** unique or primary key constraint on columns "id" */
   | 'tenant_shipping_place_pkey'
+  /** unique or primary key constraint on columns "tenant_id" */
+  | 'tenant_shipping_place_tenant_id_key'
   /** unique or primary key constraint on columns "quarter_code", "tenant_id" */
   | 'tenant_shipping_place_tenant_id_quarter_code_key';
 
@@ -19774,6 +19797,7 @@ export type Tenant_Shipping_Place_Inc_Input = {
 export type Tenant_Shipping_Place_Insert_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  places?: InputMaybe<Scalars['json']['input']>;
   quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
   quarter_code?: InputMaybe<Scalars['Int']['input']>;
   tenant?: InputMaybe<Tenant_Obj_Rel_Insert_Input>;
@@ -19827,6 +19851,7 @@ export type Tenant_Shipping_Place_On_Conflict = {
 export type Tenant_Shipping_Place_Order_By = {
   id?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
+  places?: InputMaybe<Order_By>;
   quarter?: InputMaybe<Quarter_Order_By>;
   quarter_code?: InputMaybe<Order_By>;
   tenant?: InputMaybe<Tenant_Order_By>;
@@ -19844,6 +19869,8 @@ export type Tenant_Shipping_Place_Select_Column =
   | 'id'
   /** column name */
   | 'is_active'
+  /** column name */
+  | 'places'
   /** column name */
   | 'quarter_code'
   /** column name */
@@ -19863,6 +19890,7 @@ export type Tenant_Shipping_Place_Select_Column_Tenant_Shipping_Place_Aggregate_
 export type Tenant_Shipping_Place_Set_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  places?: InputMaybe<Scalars['json']['input']>;
   quarter_code?: InputMaybe<Scalars['Int']['input']>;
   tenant_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -19915,6 +19943,7 @@ export type Tenant_Shipping_Place_Stream_Cursor_Input = {
 export type Tenant_Shipping_Place_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  places?: InputMaybe<Scalars['json']['input']>;
   quarter_code?: InputMaybe<Scalars['Int']['input']>;
   tenant_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -19937,6 +19966,8 @@ export type Tenant_Shipping_Place_Update_Column =
   | 'id'
   /** column name */
   | 'is_active'
+  /** column name */
+  | 'places'
   /** column name */
   | 'quarter_code'
   /** column name */

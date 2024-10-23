@@ -3,7 +3,7 @@ import { userAgent } from "next/server";
 
 export const getServerSideViewPort = async () => {
   const { device } = userAgent({
-    headers: headers(),
+    headers: await headers(),
   });
   const viewport = device.type === "mobile" ? "mobile" : "desktop";
   return viewport;

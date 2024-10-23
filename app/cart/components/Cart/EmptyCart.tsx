@@ -1,22 +1,27 @@
 import { Button } from "@/components/ui/button";
-import Basket from "@/components/Icons/Basket";
 import { Link } from "@/components/Link";
+import { ShoppingCart } from "lucide-react";
 
 const EmptyCart = () => {
   return (
-    <div className="w-full flex flex-col items-center gap-9 justify-between bg-white rounded-lg py-14 px-8 border">
-      <span className="flex">
-        <span className="block text-2xl text-primary p-5 rounded-full w-fit bg-green-100">
-          <Basket className="text-2xl" />
-        </span>
-        <span className="flex items-center text-lg font-normal ml-5">
-          Sepetinizde ürün bulunmamaktadır.
-        </span>
-      </span>
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div className="px-4 py-5 sm:p-6">
+        <div className="text-center space-y-4">
+          <div className="mx-auto flex items-center justify-center p-4 w-fit rounded-full bg-primary-foreground ring-[3px] ring-primary">
+            <ShoppingCart className="mx-auto h-12 w-12 text-primary" />
+          </div>
+          <h3 className="text-base font-medium text-gray-800">
+            Sepetinizde ürün bulunmamaktadır
+          </h3>
+          <p className="text-sm text-gray-500">
+            Alışverişe başlamak için aşağıdaki butona tıklayın
+          </p>
 
-      <Button variant="default" onClick={(e) => e.preventDefault()}>
-        <Link href="/">Alışverişe Başla</Link>
-      </Button>
+          <Button variant="default" onClick={(e) => e.preventDefault()}>
+            <Link href="/">Alışverişe Başla</Link>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

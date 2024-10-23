@@ -7,7 +7,13 @@ import { CartStepPaths } from "../../constants";
 
 export const dynamic = "force-dynamic";
 
-export default async function CartCustomizePage({ params: { oId } }) {
+export default async function CartCustomizePage(props) {
+  const params = await props.params;
+
+  const {
+    oId
+  } = params;
+
   if (!oId) return null;
 
   const {
