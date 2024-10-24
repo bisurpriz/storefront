@@ -2,6 +2,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const checkExpire = (token) => {
   try {
+    if (!token) {
+      return true;
+    }
+
     const decoded = jwt.decode(token) as JwtPayload;
 
     const currentTime = Date.now() / 1000;

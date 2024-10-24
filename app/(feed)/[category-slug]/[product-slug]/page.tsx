@@ -6,9 +6,8 @@ import {
   GetProductImagesQuery,
   GetProductImagesQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
-import dynamic from "next/dynamic";
-import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
 import { redirect } from "next/navigation";
+import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
 
 type Props = {
   searchParams: {
@@ -16,15 +15,8 @@ type Props = {
   };
 };
 
-const DynamicGallery = dynamic(
-  () => import("@/components/Product/DetailImageGallery"),
-  {
-    ssr: false,
-    loading: () => <ProductImageGalleryLoading />,
-  }
-);
-
-const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
+const ProductImageCarouselPage: FC<Props> = async (props) => {
+  const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
   if (!id) {
@@ -45,7 +37,7 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
     redirect("/");
   }
 
-  return <DynamicGallery images={data?.product.image_url} />;
+  return <ProductDetailImageGallery images={data?.product.image_url} />;
 };
 
 export default ProductImageCarouselPage;

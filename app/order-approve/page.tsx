@@ -2,11 +2,12 @@ import NotFound from "../not-found";
 import { getOrderApproveImages } from "./actions";
 import ImagePreview from "./components/ImagePreview";
 
-const OrderApprove = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | number };
-}) => {
+const OrderApprove = async (
+  props: {
+    searchParams: Promise<{ [key: string]: string | number }>;
+  }
+) => {
+  const searchParams = await props.searchParams;
   const orderItemId = Number(searchParams["oid"]);
   const date = (searchParams["date"] as string)?.replaceAll(" ", "+");
   const salt = searchParams["salt"];

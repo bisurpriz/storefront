@@ -55,8 +55,9 @@ export const initialize3dsPayment = async (
 
 export async function getConversationId(timeStamps) {
   try {
-    const userId = cookies().get(CookieTokens.USER_ID)?.value;
-    const guestId = cookies().get(CookieTokens.GUEST_ID)?.value;
+    const { get } = await cookies();
+    const userId = get(CookieTokens.USER_ID)?.value;
+    const guestId = get(CookieTokens.GUEST_ID)?.value;
 
     if (!timeStamps) {
       throw new Error("Timestamp is required");

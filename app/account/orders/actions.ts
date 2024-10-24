@@ -81,7 +81,7 @@ export const orderTextsUpload = async (payload: OrderTextData[]) => {
   }
 };
 
-export const getOrderById = (id: string) => {
+export const getOrderById = async (id: string) => {
   return query<GetOrderByIdQuery, GetOrderByIdQueryVariables>({
     query: GetOrderByIdDocument,
     variables: {
