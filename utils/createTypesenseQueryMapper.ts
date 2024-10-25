@@ -2,6 +2,7 @@ import { CookieTokens } from "@/app/@auth/contants";
 import { FILTER_KEYS } from "@/common/enums/Product/product";
 import { cookies } from "next/headers";
 import { parseJson } from "./format";
+import { IPlace } from "@/common/types/Product/product";
 
 export const createTypesenseQueryMapper = async (searchParams: {
   [key: string]: string | string[] | undefined;
@@ -31,18 +32,22 @@ export const createTypesenseQueryMapper = async (searchParams: {
   filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
   const { get } = await cookies();
-  const cookie = get(CookieTokens.LOCATION_ID)?.value;
-  const locationId = parseJson(cookie)?.id;
-  const locationType = parseJson(cookie)?.type;
+  const selectedLocation = parseJson(
+    get(CookieTokens.LOCATION_ID)?.value
+  ) as IPlace;
 
-  const locationFilterQuery = {
-    quarter: `quarters:=[${locationId}]`,
-    district: `districts:=[${locationId}]`,
-    city: `cities:=[${locationId}]`,
-  };
-
-  if (locationId && locationType) {
-    filter_by.push(locationFilterQuery[locationType]);
+  if (selectedLocation) {
+    const {
+      lat,
+      lng,
+      viewport: { north, south, east, west },
+    } = selectedLocation;
+    //const locationQuery =`places.lat:>=${north.toFixed()}`
+    const locationQuery =
+      `(places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east}` +
+      "||" +
+      `places.viewport.south:<=${lat}&&places.viewport.north:>=${lat}&&places.viewport.west:<=${lng}&&places.viewport.east:>=${lng})`;
+    filter_by.push(locationQuery);
   }
 
   return {

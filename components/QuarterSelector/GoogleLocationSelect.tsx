@@ -19,7 +19,7 @@ const GoogleLocationSelect = () => {
   const onChange = async (data) => {
     setValue(data);
     starTransition(async () => {
-      if (data) {
+      if (data?.value?.place_id) {
         const placeId = data.value.place_id;
         const geoDataResponse = await geocodeByPlaceId(placeId);
         const geoData = geoDataResponse[0];

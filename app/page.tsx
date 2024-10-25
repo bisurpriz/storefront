@@ -15,6 +15,7 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
+import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +52,7 @@ export default async function Page(props: {
             <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
           }
         >
-          <ServerQuerySelector />
+          <GoogleLocationSelect />
         </Suspense>
       )}
       <Suspense fallback={<CampaignGridSuspense />}>
