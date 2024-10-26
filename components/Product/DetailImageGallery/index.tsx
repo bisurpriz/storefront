@@ -95,28 +95,32 @@ const ProductDetailImageGallery: React.FC<ProductDetailImageGalleryProps> = ({
           height: "-webkit-fill-available",
         }}
       >
-        {images?.map((image, index) => (
-          <SwiperSlide
-            key={`slide-${image}-${index}`}
-            className={clsx(
-              "w-full flex items-center justify-center",
-              "max-xl:w-full "
-            )}
-            virtualIndex={index}
-          >
-            <div className="swiper-zoom-container">
-              <Image
-                src={getImageUrlFromPath(image, 500)}
-                alt={image}
-                className="h-full w-full object-contain"
-                width={1000}
-                height={1000}
-                priority={index === 0}
-                loading={index === 0 ? "eager" : "lazy"}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
+        {images?.map((image, index) => {
+          const random = Math.floor(Math.random() * 1000);
+
+          return (
+            <SwiperSlide
+              key={random}
+              className={clsx(
+                "w-full flex items-center justify-center",
+                "max-xl:w-full "
+              )}
+              virtualIndex={index}
+            >
+              <div className="swiper-zoom-container">
+                <Image
+                  src={getImageUrlFromPath(image, 500)}
+                  alt={image}
+                  className="h-full w-full object-contain"
+                  width={1000}
+                  height={1000}
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              </div>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );

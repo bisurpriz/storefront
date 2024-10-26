@@ -18,7 +18,7 @@ const CampaignGrid: FC = async () => {
       {banners.map((item, i) => (
         <Link
           href={item.redirect_link}
-          className="w-full h-full relative"
+          className="w-full relative"
           key={item.id}
         >
           <Image

@@ -155,7 +155,6 @@ export const searchProductsv1 = async (
 ) => {
   if (!filters) return { hits: [], found: 0 };
   const filterBy = await createTypesenseQueryMapper(filters);
-  console.log("filterBy", filterBy);
   try {
     const response = await searchClient
       .collections("products")

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
 } from "react-google-places-autocomplete";
@@ -13,8 +13,20 @@ const GoogleLocationSelect = () => {
   const [value, setValue] = useState(
     parseJson(Cookies.get(CookieTokens.LOCATION_ID))
   );
-  const [isPending, starTransition] = useTransition();
+  const [, starTransition] = useTransition();
   const { refresh } = useRouter();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+    );
+  }
 
   const onChange = async (data) => {
     setValue(data);
@@ -61,6 +73,10 @@ const GoogleLocationSelect = () => {
           country: "tr",
         },
       }}
+      onLoadFailed={(error) => {
+        console.error("Could not load Google API", error);
+      }}
+      debounce={300}
     />
   );
 };

@@ -123,7 +123,7 @@ export default function ProductItem2(props: ProductItemProps) {
       <div className="relative flex-1 col-span-4">
         <motion.div
           key={id}
-          className="w-full h-80 max-sm:h-fit"
+          className="w-full h-80 max-sm:h-full"
           layoutId={`image-${id}`}
           animate={{ opacity: 1 }}
         >
@@ -131,16 +131,19 @@ export default function ProductItem2(props: ProductItemProps) {
             src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
             alt={name}
             className="w-full h-full object-cover"
-            fill
             sizes={
               "(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
             }
+            width={200}
+            height={200}
           />
           <div
             className={cn(
               "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
               {
-                hidden: !(Array.isArray(image_url) && image_url.length > 1),
+                hidden:
+                  !(Array.isArray(image_url) && image_url.length > 1) ||
+                  isTablet,
               }
             )}
             onMouseLeave={(e) => {

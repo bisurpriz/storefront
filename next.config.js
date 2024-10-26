@@ -18,6 +18,7 @@ const nextConfig = {
       "react-transition-progress",
       "@radix-ui",
       "sonner",
+      "embla-carousel-react",
     ],
     serverActions: {
       bodySizeLimit: "20mb",

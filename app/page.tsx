@@ -6,7 +6,7 @@ import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/C
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
-import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
+import ServerQuarterSelector from "@/components/QuarterSelector/ServerQuarterSelector";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { query } from "@/graphql/lib/client";
@@ -15,9 +15,8 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
-import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
 
-export const dynamic = "force-dynamic";
+export const experimental_ppr = true;
 
 export default async function Page(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -52,7 +51,7 @@ export default async function Page(props: {
             <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
           }
         >
-          <GoogleLocationSelect />
+          <ServerQuarterSelector />
         </Suspense>
       )}
       <Suspense fallback={<CampaignGridSuspense />}>

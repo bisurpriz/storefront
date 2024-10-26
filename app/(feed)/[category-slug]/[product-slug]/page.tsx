@@ -7,7 +7,8 @@ import {
   GetProductImagesQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
 import { redirect } from "next/navigation";
-import ProductDetailImageGallery from "@/components/Product/DetailImageGallery";
+import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 
 type Props = {
   searchParams: {
@@ -37,7 +38,14 @@ const ProductImageCarouselPage: FC<Props> = async (props) => {
     redirect("/");
   }
 
-  return <ProductDetailImageGallery images={data?.product.image_url} />;
+  const viewport = await getServerSideViewPort();
+
+  return (
+    <NewDesignGallery
+      images={data.product.image_url}
+      isMobile={viewport !== "desktop"}
+    />
+  );
 };
 
 export default ProductImageCarouselPage;

@@ -5,6 +5,7 @@ export const getServerSideViewPort = async () => {
   const { device } = userAgent({
     headers: await headers(),
   });
-  const viewport = device.type === "mobile" ? "mobile" : "desktop";
+
+  const viewport = device.type ?? "desktop";
   return viewport;
 };

@@ -16,8 +16,8 @@ export const decodeToken = async (token: string) => {
 };
 
 export const login = async ({ email, password }, headers = {}) => {
-  const { get, set, ...rest } = await cookies();
-  const guest_id = get(CookieTokens.GUEST_ID)?.value;
+  const cook = await cookies();
+  const guest_id = cook.get(CookieTokens.GUEST_ID)?.value;
 
   const response = await mutate<
     LoginMutationMutation,
@@ -43,22 +43,22 @@ export const login = async ({ email, password }, headers = {}) => {
     };
 
     if (guest_id) {
-      rest.delete(CookieTokens.GUEST_ID);
+      cook.delete(CookieTokens.GUEST_ID);
     }
 
-    set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
+    cook.set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
-    set(CookieTokens.REFRESH_TOKEN, response.data.login.refresh_token, {
+    cook.set(CookieTokens.REFRESH_TOKEN, response.data.login.refresh_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
-    set(CookieTokens.USER_ID, user.id, {
+    cook.set(CookieTokens.USER_ID, user.id, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
