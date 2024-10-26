@@ -89,8 +89,6 @@ const ProductActions = ({
         return true;
       }
 
-      console.log(place, "place");
-      console.log(selectedLocation, "selectedLocation");
 
       const {
         viewport: { south, north, east, west },
@@ -107,6 +105,9 @@ const ProductActions = ({
           west: selectedWest,
         },
       } = selectedLocation;
+
+
+     
 
       const isWithin1 = isWithinBounds(selectedLat, selectedLng, {
         south,
@@ -127,7 +128,6 @@ const ProductActions = ({
 
       return false;
     });
-
     setShowPlaceWarning(!anyAvailable);
   }, [selectedLocation]);
 

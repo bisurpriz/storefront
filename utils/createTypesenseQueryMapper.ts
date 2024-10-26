@@ -43,10 +43,12 @@ export const createTypesenseQueryMapper = async (searchParams: {
       viewport: { north, south, east, west },
     } = selectedLocation;
     //const locationQuery =`places.lat:>=${north.toFixed()}`
-    const locationQuery =
-      `(places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east}` +
+      // 1. selected lat ile places
+      // 2. place lat ile selected bounds
+    const locationQuery = `(places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east})`;
+      /* `((places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east})` +
       "||" +
-      `places.viewport.south:<=${lat}&&places.viewport.north:>=${lat}&&places.viewport.west:<=${lng}&&places.viewport.east:>=${lng})`;
+      `(places.viewport.south:<=${lat}&&places.viewport.north:>=${lat}&&places.viewport.west:<=${lng}&&places.viewport.east:>=${lng}))`; */
     filter_by.push(locationQuery);
   }
 
