@@ -117,8 +117,9 @@ export default function ProductItem2(props: ProductItemProps) {
         id,
         slug,
       })}
-      target={!isTablet ? "_blank" : "_self"}
+      as="image"
       className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
+      {...(!isTablet && { target: "_blank" })}
     >
       <div className="relative flex-1 col-span-4">
         <motion.div
@@ -204,16 +205,22 @@ export default function ProductItem2(props: ProductItemProps) {
 
       <div className="p-4 pt-2 space-y-4 max-sm:space-y-1 max-sm:p-2 col-span-8">
         <div className="flex justify-between items-start">
-          <Tooltip>
-            <TooltipTrigger>
-              <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
-                {name}
-              </h3>
-            </TooltipTrigger>
-            <TooltipContent avoidCollisions={true} sideOffset={10} side="top">
+          {isTablet ? (
+            <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
               {name}
-            </TooltipContent>
-          </Tooltip>
+            </h3>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger>
+                <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
+                  {name}
+                </h3>
+              </TooltipTrigger>
+              <TooltipContent avoidCollisions={true} sideOffset={10} side="top">
+                {name}
+              </TooltipContent>
+            </Tooltip>
+          )}
 
           <Button
             variant="ghost"

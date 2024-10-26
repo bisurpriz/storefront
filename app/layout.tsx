@@ -116,7 +116,7 @@ export default async function RootLayout({
         id="root"
       >
         <ProgressBarProvider>
-          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
+          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0 z-[1000]" />
           <TagManagerNoscript />
           <AuthProvider user={data?.user}>
             <TooltipProvider>

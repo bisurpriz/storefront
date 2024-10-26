@@ -1,5 +1,6 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
+import { unstable_noStore } from "next/cache";
 import { ReactNode, Suspense } from "react";
 
 export const experimental_ppr = true;
@@ -19,6 +20,8 @@ export default async function ProductExample({
   recommended: ReactNode;
   comments: ReactNode;
 }) {
+  unstable_noStore();
+
   return (
     <div className="h-full">
       <section
