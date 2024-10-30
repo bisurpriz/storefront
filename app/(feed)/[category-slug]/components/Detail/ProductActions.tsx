@@ -76,7 +76,7 @@ const ProductActions = ({
   };
 
   const [error, setError] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   const willShowError =
     !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
@@ -88,7 +88,6 @@ const ProductActions = ({
       if (place.placeId === selectedLocation.placeId) {
         return true;
       }
-
 
       const {
         viewport: { south, north, east, west },
@@ -105,9 +104,6 @@ const ProductActions = ({
           west: selectedWest,
         },
       } = selectedLocation;
-
-
-     
 
       const isWithin1 = isWithinBounds(selectedLat, selectedLng, {
         south,
