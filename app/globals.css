@@ -46,12 +46,6 @@
   }
 
 
-  .swiper-button-next,
-  .swiper-button-prev {
-    @apply bg-white rounded-full shadow-md text-primary
-  }
-
-
 
 
 
@@ -101,16 +95,6 @@
 }
 
 
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  color: #8dbb6b;
-
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  text-shadow: 0 0 5px hsl(var(--primary));
-}
 
 
 @layer base {

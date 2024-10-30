@@ -125,7 +125,7 @@ const ProductInformation = ({
         )}
 
         <div className="flex items-end justify-start gap-2 max-xl:flex-col max-xl:items-start w-full mb-4 md:mt-4">
-          <div className="flex items-center justify-start gap-2 max-lg:flex-col max-lg:items-start max-xl:flex-row max-xl:items-center">
+          <div className="flex items-center justify-start gap-2 max-lg:items-start max-xl:flex-row max-xl:items-center">
             {discountRate ? (
               <span className="text-2xl font-medium text-white max-w-lg bg-red-500 p-2 rounded-xl w-max">
                 {discountRate}%

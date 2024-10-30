@@ -1,6 +1,5 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
 import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
-import { unstable_noStore } from "next/cache";
 import { ReactNode, Suspense } from "react";
 
 export const experimental_ppr = true;
@@ -20,12 +19,10 @@ export default async function ProductExample({
   recommended: ReactNode;
   comments: ReactNode;
 }) {
-  unstable_noStore();
-
   return (
     <div className="h-full">
       <section
-        className="flex items-start justify-start max-md:flex-col gap-6 flex-nowrap"
+        className="flex items-start justify-start max-md:flex-col gap-6 max-sm:gap-2 flex-nowrap"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
