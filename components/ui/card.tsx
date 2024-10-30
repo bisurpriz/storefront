@@ -36,7 +36,7 @@ const CardTitle: FC<
   HTMLAttributes<HTMLHeadingElement> & {
     ref?: React.Ref<HTMLHeadingElement>;
   }
-> = ({ className, ...props }, ref) => (
+> = ({ className, ref, ...props }) => (
   <h3
     ref={ref}
     className={cn("font-semibold leading-none tracking-tight", className)}
@@ -49,7 +49,7 @@ const CardDescription: FC<
   HTMLAttributes<HTMLParagraphElement> & {
     ref?: React.Ref<HTMLParagraphElement>;
   }
-> = ({ className, ...props }, ref) => (
+> = ({ className, ref, ...props }) => (
   <p
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}

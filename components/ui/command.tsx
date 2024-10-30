@@ -63,10 +63,11 @@ const CommandInput: FC<ComponentProps<typeof CommandPrimitive.Input>> = ({
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 
-const CommandList: FC<ComponentProps<typeof CommandPrimitive.List>> = (
-  { className, ...props },
-  ref
-) => (
+const CommandList: FC<ComponentProps<typeof CommandPrimitive.List>> = ({
+  className,
+  ref,
+  ...props
+}) => (
   <CommandPrimitive.List
     ref={ref}
     className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
@@ -106,7 +107,7 @@ CommandGroup.displayName = CommandPrimitive.Group.displayName;
 
 const CommandSeparator: FC<
   ComponentProps<typeof CommandPrimitive.Separator>
-> = ({ className, ...props }, ref) => (
+> = ({ className, ref, ...props }) => (
   <CommandPrimitive.Separator
     ref={ref}
     className={cn("-mx-1 h-px bg-border", className)}
