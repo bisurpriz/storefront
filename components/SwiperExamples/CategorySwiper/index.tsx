@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
@@ -52,7 +53,10 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
             }))
             .map((_, index) => (
               <CarouselItem key={index} className={basis}>
-                <div className="p-1">
+                <Link
+                  href={`/${_.slug}`}
+                  className={"flex items-center justify-center flex-col p-1"}
+                >
                   <Image
                     src={getImageUrlFromPath(_.imageUrl)}
                     alt={_.label}
@@ -60,7 +64,8 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
                     width={120}
                     height={120}
                   />
-                </div>
+                  <span className="mt-2 text-xs">{_.label}</span>
+                </Link>
               </CarouselItem>
             ))}
         </CarouselContent>

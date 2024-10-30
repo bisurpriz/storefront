@@ -95,9 +95,7 @@ export default function NewDesignGallery({ images, isMobile }) {
           }}
           className="w-full h-full max-w-[500px] max-h-[500px] mx-auto"
         >
-          <CarouselContent
-            className={cn("w-full h-full", images.length > 1 ? "!m-0" : "")}
-          >
+          <CarouselContent className={cn("w-full h-full m-0")}>
             {images.map((image, index) => (
               <CarouselItem
                 key={image}
