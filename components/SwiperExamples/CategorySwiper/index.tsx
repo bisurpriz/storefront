@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
