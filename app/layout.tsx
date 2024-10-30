@@ -28,6 +28,7 @@ import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import Script from "next/script";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -109,6 +110,12 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
+      <Script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
+        id="googleMapsScript"
+        async={true}
+      />
+
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}

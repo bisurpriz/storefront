@@ -7,19 +7,21 @@ import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
 import { TimeRange } from "../HourSelect/utils";
 import { DeliveryTime } from "@/contexts/CartContext";
+import RemainingTime from "./RemainingTime";
 
 const CustomButton = ({ isSelected, children, ...props }) => {
   return (
     <Button
-      variant="default"
+      variant="outline"
       className={clsx(
-        { "bg-secondary text-white ": isSelected },
+        "border-2 border-primary bg-background hover:bg-accent text-slate-600",
         "max-sm:px-0 flex flex-col justify-center items-center",
         "rounded-md px-2 py-6 w-full max-md:p-2",
         "text-xl max-md:text-sm",
-        "hover:bg-secondary hover:text-white",
-        "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent",
-        "transition-all duration-200 ease-in-out"
+        "transition-all duration-200 ease-in-out h-auto",
+        {
+          "!text-white !border-secondary !bg-secondary": isSelected,
+        }
       )}
       {...props}
     >
@@ -137,12 +139,10 @@ const DaySelect: React.FC<Props> = ({
   return (
     <div className="w-full flex flex-col gap-4 font-sans">
       {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
-        <span className="leading-5 text-slate-400 whitespace-nowrap cursor-pointer text-xs ml-1 mt-1">
-          {!isTodayDisabled && `Bugün teslimat için son: `}{" "}
-          <span className={clsx("p-2 rounded-lg bg-orange-200 text-slate-500")}>
-            {remainTime.hours} saat {remainTime.minutes} dakika.{" "}
-          </span>
-        </span>
+        <RemainingTime
+          remainTime={remainTime}
+          isTodayDisabled={isTodayDisabled}
+        />
       )}
       <div className={clsx("grid grid-cols-3 gap-2")}>
         {Array.from({ length: 3 }).map((_, index) => (
