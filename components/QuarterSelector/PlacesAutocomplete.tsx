@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, SquareX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
 import { CookieTokens } from "@/app/@auth/contants";
@@ -117,6 +117,13 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
     }
   };
 
+  const handleClear = () => {
+    setInput("");
+    setPredictions([]);
+    Cookies.remove(CookieTokens.LOCATION_ID);
+    refresh();
+  };
+
   return (
     <div className="w-full my-2 relative" ref={ref}>
       <div className="relative">
@@ -133,6 +140,12 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
         />
         {isPending && (
           <Loader2 className="animate-spin h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        )}
+        {input && (
+          <SquareX
+            className="h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+            onClick={handleClear}
+          />
         )}
       </div>
       {predictions.length > 0 && (
