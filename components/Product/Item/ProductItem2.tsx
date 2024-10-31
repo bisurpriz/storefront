@@ -122,12 +122,7 @@ export default function ProductItem2(props: ProductItemProps) {
       {...(!isTablet && { target: "_blank" })}
     >
       <div className="relative flex-1 col-span-4">
-        <motion.div
-          key={id}
-          className="w-full h-80 max-sm:h-full"
-          layoutId={`image-${id}`}
-          animate={{ opacity: 1 }}
-        >
+        <div key={id} className="w-full h-80 max-sm:h-full">
           <Image
             src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
             alt={name}
@@ -182,7 +177,7 @@ export default function ProductItem2(props: ProductItemProps) {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="max-sm:hidden">
           <ProductCardStamps

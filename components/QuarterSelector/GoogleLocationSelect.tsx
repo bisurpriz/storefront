@@ -1,57 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import { geocodeByPlaceId } from "react-google-places-autocomplete";
-import Cookies from "js-cookie";
-import { CookieTokens } from "@/app/@auth/contants";
-import { useRouter } from "next/navigation";
-import { parseJson } from "@/utils/format";
-import { ArrowRight, Package, ShieldCheck, SmilePlus } from "lucide-react";
+import React from "react";
+import { Package, ShieldCheck, SmilePlus } from "lucide-react";
 import { motion } from "framer-motion";
 import PlacesAutocomplete from "./PlacesAutocomplete";
-import { Button } from "../ui/button";
 
 const GoogleLocationSelect = () => {
-  const [value, setValue] = useState(
-    parseJson(Cookies.get(CookieTokens.LOCATION_ID))
-  );
-  const [, starTransition] = useTransition();
-  const { refresh } = useRouter();
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const onChange = async (data) => {
-    setValue(data);
-    starTransition(async () => {
-      if (data?.value?.place_id) {
-        const placeId = data.value.place_id;
-        const geoDataResponse = await geocodeByPlaceId(placeId);
-        const geoData = geoDataResponse[0];
-        const { lat, lng } = geoData.geometry?.location;
-        const viewport = geoData?.geometry.viewport?.toJSON();
-        Cookies.set(
-          CookieTokens.LOCATION_ID,
-          JSON.stringify({
-            viewport,
-            lat: lat(),
-            lng: lng(),
-            placeId,
-            label: data.label,
-          })
-        );
-        refresh();
-      } else {
-        Cookies.remove(CookieTokens.LOCATION_ID);
-        refresh();
-      }
-    });
-  };
-
   return (
     <div className="w-full mb-2">
       <motion.div

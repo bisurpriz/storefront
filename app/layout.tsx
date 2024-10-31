@@ -110,11 +110,6 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
-      <Script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
-        id="googleMapsScript"
-        async={true}
-      />
 
       <body
         className={`${lato.variable} ${quickSand.variable} 
@@ -125,6 +120,12 @@ export default async function RootLayout({
         <ProgressBarProvider>
           <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0 z-[1000]" />
           <TagManagerNoscript />
+          <Script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
+            id="googleMapsScript"
+            strategy="beforeInteractive"
+            async={true}
+          />
           <AuthProvider user={data?.user}>
             <TooltipProvider>
               <ResponsiveDialogProvider>

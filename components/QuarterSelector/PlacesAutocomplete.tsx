@@ -1,28 +1,43 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useClickAway } from "@uidotdev/usehooks";
+import { CookieTokens } from "@/app/@auth/contants";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { parseJson } from "@/utils/format";
 
-export default function PlacesAutocomplete() {
+export type PlacesAutocompleteProps = {};
+
+export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   const [input, setInput] = useState("");
   const [predictions, setPredictions] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [isPending, startTransition] = useTransition();
   const [mounted, setMounted] = useState(false);
 
   const autocompleteService = useRef(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef(null);
+  const { refresh } = useRouter();
 
   useEffect(() => {
     if (!mounted) return;
 
-    autocompleteService.current =
-      new window.google.maps.places.AutocompleteService();
-    sessionToken.current =
-      new window.google.maps.places.AutocompleteSessionToken();
+    startTransition(() => {
+      autocompleteService.current =
+        new window.google.maps.places.AutocompleteService();
+      sessionToken.current =
+        new window.google.maps.places.AutocompleteSessionToken();
+
+      const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID));
+      if (hasLocation) {
+        setInput(hasLocation.label);
+      }
+    });
   }, [mounted]);
 
   useEffect(() => {
@@ -35,58 +50,75 @@ export default function PlacesAutocomplete() {
 
     if (e.target.value === "") {
       setPredictions([]);
-      setLoading(false);
       return;
     }
 
-    setLoading(true);
     fetchTimeout.current = setTimeout(() => {
-      if (autocompleteService.current) {
-        autocompleteService.current.getPlacePredictions(
-          {
-            input: e.target.value,
-            sessionToken: sessionToken.current,
-            componentRestrictions: { country: "tr" },
-            language: "tr",
-          },
-          (predictions, status) => {
-            if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-              setPredictions(predictions);
+      startTransition(() => {
+        if (autocompleteService.current) {
+          autocompleteService.current.getPlacePredictions(
+            {
+              input: e.target.value,
+              sessionToken: sessionToken.current,
+              componentRestrictions: { country: "tr" },
+              language: "tr",
+            },
+            (predictions, status) => {
+              if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+                setPredictions(predictions);
+              }
             }
-            setLoading(false);
-          }
-        );
-      }
+          );
+        }
+      });
     }, 300);
   };
 
-  const handleSelect = (placeId) => {
-    const placeService = new window.google.maps.places.PlacesService(
-      document.createElement("div")
-    );
-    placeService.getDetails(
-      {
-        placeId,
-        fields: ["name", "formatted_address"],
-        sessionToken: sessionToken.current,
-      },
-      (place, status) => {
-        console.log(place);
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          setSelectedPlace(place);
-          setInput(`${place.name}, ${place.formatted_address}`);
-          setPredictions([]);
-          sessionToken.current =
-            new window.google.maps.places.AutocompleteSessionToken();
-        }
-      }
-    );
-
+  const ref = useClickAway<HTMLDivElement>(() => {
     setPredictions([]);
+  });
+
+  const geocodeByPlaceId = async (placeId) => {
+    return new Promise((resolve, reject) => {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ placeId }, (results, status) => {
+        if (status === "OK") {
+          resolve(results);
+        } else {
+          reject(status);
+        }
+      });
+    });
+  };
+
+  const handleSelect = (prediction) => {
+    setInput(prediction.description);
+    setPredictions([]);
+    if (prediction.place_id) {
+      geocodeByPlaceId(prediction.place_id).then((results) => {
+        const geoData = results[0];
+        const { lat, lng } = geoData.geometry?.location;
+        const viewport = geoData?.geometry.viewport?.toJSON();
+        Cookies.set(
+          CookieTokens.LOCATION_ID,
+          JSON.stringify({
+            viewport,
+            lat: lat(),
+            lng: lng(),
+            placeId: prediction.place_id,
+            label: results[0].formatted_address,
+          })
+        );
+        refresh();
+      });
+    } else {
+      Cookies.remove(CookieTokens.LOCATION_ID);
+      refresh();
+    }
   };
 
   return (
-    <div className="w-full my-4">
+    <div className="w-full my-2 relative" ref={ref}>
       <div className="relative">
         <Input
           type="text"
@@ -96,17 +128,20 @@ export default function PlacesAutocomplete() {
           aria-label="Yer ara"
           aria-autocomplete="list"
           aria-controls="predictions-list"
-          className="w-full p-4 h-auto"
+          className="w-full p-4 h-auto font-semibold border-2 ring-2"
           title={input}
         />
-        {loading && (
+        {isPending && (
           <Loader2 className="animate-spin h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
         )}
       </div>
       {predictions.length > 0 && (
         <ul
           id="predictions-list"
-          className="mt-2 bg-white border rounded-md shadow-lg max-h-60 overflow-auto"
+          className={cn(
+            "mt-2 bg-white border rounded-md shadow-lg max-h-60 overflow-auto",
+            "absolute w-full z-10 border-gray-200 divide-y divide-gray-200"
+          )}
         >
           {predictions.map((prediction) => (
             <li
@@ -116,8 +151,8 @@ export default function PlacesAutocomplete() {
             >
               <Button
                 variant="ghost"
-                className="w-full text-left justify-start px-4 py-2 hover:bg-gray-100"
-                onClick={() => handleSelect(prediction.place_id)}
+                className="w-full text-left justify-start px-4 py-2 hover:bg-gray-100 bg-white"
+                onClick={() => handleSelect(prediction)}
               >
                 {prediction.description}
               </Button>
@@ -125,15 +160,6 @@ export default function PlacesAutocomplete() {
           ))}
         </ul>
       )}
-      {/* {selectedPlace && (
-        <div className="mt-4">
-          <h3 className="font-semibold">Seçilen Yer:</h3>
-          <p>{selectedPlace.name}</p>
-          <p className="text-sm text-gray-600">
-            {selectedPlace.formatted_address}
-          </p>
-        </div>
-      )} */}
     </div>
   );
 }
