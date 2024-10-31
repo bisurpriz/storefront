@@ -5,6 +5,7 @@ import ActionPageLoading from "./loading";
 import { parseJson } from "@/utils/format";
 import { cookies } from "next/headers";
 import { IPlace } from "@/common/types/Product/product";
+import { WithContext, Place } from "schema-dts";
 
 type Props = {
   searchParams: {
@@ -45,6 +46,27 @@ const ProductActionsPage: FC<Props> = async (props) => {
     product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places
   ) as IPlace[];
 
+  const placesData = parseJson(
+    product.tenant?.tenants[0]?.tenant_shipping_places[0]?.places
+  );
+
+  const shippingPlaces: WithContext<Place>[] = placesData?.map((place) => ({
+    "@context": "https://schema.org",
+    "@type": "Place",
+    name: place.label,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: place.lat,
+      longitude: place.lng,
+    },
+    identifier: place.placeId,
+    additionalProperty: {
+      "@type": "PropertyValue",
+      propertyID: "viewport",
+      value: place.viewport,
+    },
+  }));
+
   return (
     <>
       <ProductActions
@@ -54,6 +76,12 @@ const ProductActionsPage: FC<Props> = async (props) => {
         selectedLocation={selectedLocation}
         places={places}
       />
+      {placesData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(shippingPlaces) }}
+        />
+      )}
     </>
   );
 };

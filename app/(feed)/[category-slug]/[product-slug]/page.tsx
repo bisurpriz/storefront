@@ -9,6 +9,8 @@ import {
 import { redirect } from "next/navigation";
 import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { WithContext, Product } from "schema-dts";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 type Props = {
   searchParams: {
@@ -40,11 +42,23 @@ const ProductImageCarouselPage: FC<Props> = async (props) => {
 
   const viewport = await getServerSideViewPort();
 
+  const productData: WithContext<Product> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    image: getImageUrlFromPath(data.product.image_url[0]),
+  };
+
   return (
-    <NewDesignGallery
-      images={data.product.image_url}
-      isMobile={viewport !== "desktop"}
-    />
+    <>
+      <NewDesignGallery
+        images={data.product.image_url}
+        isMobile={viewport !== "desktop"}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
+      />
+    </>
   );
 };
 

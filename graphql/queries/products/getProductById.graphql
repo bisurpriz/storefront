@@ -212,6 +212,12 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     last_order_time
     score
     properties
+    slug
+    product_categories {
+      category {
+        slug
+      }
+    }
     discount_price
     product_customizable_areas {
       customizable_area {

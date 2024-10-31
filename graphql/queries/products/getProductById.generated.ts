@@ -49,7 +49,7 @@ export type GetProductInformationQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, score?: number | null, properties?: any | null, discount_price?: number | null, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number, avg?: { score?: number | null } | null } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
+export type GetProductInformationQuery = { product?: { description?: string | null, id: any, image_url?: Array<string> | null, name: string, price?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, score?: number | null, properties?: any | null, slug?: string | null, discount_price?: number | null, product_categories: Array<{ category: { slug?: string | null } }>, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number, avg?: { score?: number | null } | null } | null }, tenant: { tenants: Array<{ name?: string | null, id: any }> } } | null };
 
 export type GetProductImagesQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -300,6 +300,12 @@ export const GetProductInformationDocument = gql`
     last_order_time
     score
     properties
+    slug
+    product_categories {
+      category {
+        slug
+      }
+    }
     discount_price
     product_customizable_areas {
       customizable_area {
