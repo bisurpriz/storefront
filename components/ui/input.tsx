@@ -39,6 +39,7 @@ const Input: FC<InputProps> = ({
   icon,
   error,
   errorMessage,
+  placeholder,
   ...props
 }) => {
   const hasIconClasses = icon ? "pl-10" : "";
@@ -59,6 +60,7 @@ const Input: FC<InputProps> = ({
           type={type}
           className={cn(inputVariants({ variant }), className, hasIconClasses)}
           ref={ref}
+          placeholder={placeholder}
           {...props}
         />
       </div>

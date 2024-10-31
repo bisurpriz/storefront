@@ -8,14 +8,9 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import ProductCommentsLoadingPage from "./loading";
 import { Review, WithContext } from "schema-dts";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductCommentsPage: FC<Props> = async (props) => {
+const ProductCommentsPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 

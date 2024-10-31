@@ -147,22 +147,6 @@ export const getCities = async () => {
   };
 };
 
-export const getAvailableCitiesForProduct = async (pid: number) => {
-  if (!pid) return [];
-  const { data, loading } = await query<
-    GetProductDeliveryCitiesQuery,
-    GetProductDeliveryCitiesQueryVariables
-  >({
-    query: GetProductDeliveryCitiesDocument,
-    variables: {
-      product_id: pid,
-    },
-  });
-
-  const { get_product_delivery_cities } = data;
-  return get_product_delivery_cities;
-};
-
 export const getUserAddressById = async (id: string) => {
   return await query<GetUserAddressByIdQuery, GetUserAddressByIdQueryVariables>(
     {

@@ -11,14 +11,9 @@ import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign"
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { WithContext, Product } from "schema-dts";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductImageCarouselPage: FC<Props> = async (props) => {
+const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 

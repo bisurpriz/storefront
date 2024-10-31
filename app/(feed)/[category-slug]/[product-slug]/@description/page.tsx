@@ -11,14 +11,9 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import ProductDescriptionLoadingPage from "./loading";
 import { Product, WithContext } from "schema-dts";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductDescriptionPage: FC<Props> = async (props) => {
+const ProductDescriptionPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 

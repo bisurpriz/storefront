@@ -1,8 +1,5 @@
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
-import { getAvailableLocation } from "@/app/account/addresses/actions";
-import { getLocationFromCookie } from "@/app/actions";
-import { CityResponse } from "@/common/types/Addresses/addresses";
 
 export const dynamic = "force-dynamic";
 
@@ -14,11 +11,6 @@ export const generateMetadata = async () => {
 };
 
 const OrderDetail = async () => {
-  const location = await getLocationFromCookie();
-  const locationData = await getAvailableLocation(location);
-
-  const data = locationData?.data;
-
   return (
     <div className="w-full relative">
       <section
@@ -26,12 +18,7 @@ const OrderDetail = async () => {
         aria-describedby="order-detail-description"
         aria-label="Sipariş Detayı"
       >
-        <ReceiverForm
-          cities={[]}
-          defaultCity={data?.city as CityResponse}
-          defaultDistrict={data?.district}
-          defaultQuarter={data?.quarter}
-        />
+        <ReceiverForm />
       </section>
     </div>
   );

@@ -8,14 +8,9 @@ import { Product, WithContext } from "schema-dts";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { parseJson } from "@/utils/format";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductInformationPage: FC<Props> = async (props) => {
+const ProductInformationPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
 

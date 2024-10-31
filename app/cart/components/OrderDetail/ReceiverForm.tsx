@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  createNewUserAddress,
-  getAvailableCitiesForProduct,
-} from "@/app/account/actions";
-import {
-  CityResponse,
-  DistrictResponse,
-  QuarterResponse,
-} from "@/common/types/Addresses/addresses";
+import { createNewUserAddress } from "@/app/account/actions";
+
 import { OrderDetailFormData } from "@/common/types/Order/order";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import Card from "@/components/Card";
-import PhoneInput from "@/components/PhoneInput";
+import { PhoneInput } from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import { useUser } from "@/contexts/AuthContext";
 import { useDiscrits } from "@/hooks/useDistricts";
@@ -30,11 +23,7 @@ import { AnyObject, ObjectSchema } from "yup";
 import RenderAddress from "./RenderAddress";
 import Textarea from "@/components/Textarea";
 import clsx from "clsx";
-import RadioGroup from "@/components/Radio/RadioGroup";
 import CompanyDetail from "./CompanyDetail";
-import User from "@/components/Icons/User";
-import Phone from "@/components/Icons/Phone";
-import Mail from "@/components/Icons/Mail";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { OrderDetailSchema } from "./schema";
@@ -44,6 +33,9 @@ import { parseJson } from "@/utils/format";
 import { CartStepPaths } from "../../constants";
 import { useProgress } from "react-transition-progress";
 import { toast } from "sonner";
+import { Mail, Phone, User } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const Title = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
@@ -61,25 +53,11 @@ export interface OrderDetailPartialFormData
   wantToSaveAddress?: boolean;
 }
 
-interface AvailableCity {
-  city_code: number;
-  city_name: string;
-  id: number;
-}
-
-interface ReceiverFormProps {
-  cities: AvailableCity[];
-  defaultCity?: CityResponse;
-  defaultDistrict?: DistrictResponse;
-  defaultQuarter?: QuarterResponse;
-}
+interface ReceiverFormProps {}
 
 const defaultValues: OrderDetailPartialFormData = {
   address: "",
   address_title: "",
-  city: null,
-  district: null,
-  quarter: null,
   receiver_name: "",
   receiver_phone: null,
   saved_address: null,
@@ -97,15 +75,9 @@ const defaultValues: OrderDetailPartialFormData = {
   invoice_company_tax_office: "",
 };
 
-const ReceiverForm: FC<ReceiverFormProps> = ({
-  defaultCity,
-  defaultDistrict,
-  defaultQuarter,
-}) => {
+const ReceiverForm: FC<ReceiverFormProps> = ({}) => {
   const { user, userAddresses } = useUser();
-  const [availableCities, setAvailableCities] = useState<
-    GetProductDeliveryCitiesQuery["get_product_delivery_cities"]
-  >([]);
+
   const { push } = useRouter();
   const { cartState } = useCart();
   const {
@@ -118,9 +90,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   } = useForm<OrderDetailPartialFormData>({
     defaultValues: {
       ...defaultValues,
-      city: defaultCity,
-      district: defaultDistrict,
-      quarter: defaultQuarter,
     },
     mode: "all",
     delayError: 500,
@@ -152,9 +121,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
           try {
             createNewUserAddress({
               address: data.address,
-              city_id: data.city?.id,
-              district_id: data.district?.id,
-              quarter_id: data.quarter?.id,
               receiver_firstname: data.receiver_name?.split(" ")[0],
               receiver_surname: data.receiver_name
                 ?.split(" ")
@@ -184,11 +150,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
   };
 
   useEffect(() => {
-    getAvailableCitiesForProduct(cartState?.cartItems?.[0]?.id).then(
-      (cities) => {
-        setAvailableCities(cities);
-      }
-    );
     const session = getSessionStorage();
     if (session) {
       reset({
@@ -213,13 +174,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     cartState?.cartItems?.[0]?.id
   );
 
-  const getFilteredSavedAddress = useMemo(() => {
-    if (!user?.id) return null;
-    return userAddresses.filter((ad) =>
-      availableCities.some((city) => city.id === ad.city.id)
-    );
-  }, [userAddresses, availableCities]);
-
   const savedAdressInputChange = (option: AutoCompleteOption) => {
     if (!option) {
       reset({
@@ -229,13 +183,8 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
       });
       return;
     }
-    const city = availableCities.find((ct) => ct.id === option.city.id);
     setValue("saved_address", option);
-    setValue("city", {
-      code: city?.city_code,
-      name: city?.city_name,
-      id: city?.id,
-    });
+
     setValue(
       "receiver_name",
       option.receiver_firstname + " " + option.receiver_surname
@@ -245,35 +194,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
     setValue("sender_name", user.firstname + " " + user.lastname);
     setValue("sender_phone", formatPhoneNumber(user.phone));
     setValue("address", option.address);
-  };
-
-  const renderSavedAddress = () => {
-    if (getFilteredSavedAddress?.length > 0) {
-      return (
-        <Controller
-          control={control}
-          name="saved_address"
-          render={({ field: { value, onChange } }) => {
-            return (
-              <AutoComplete
-                value={value}
-                label="Kayıtlı Adresler"
-                getOptionLabel={(option) => option.label}
-                options={getFilteredSavedAddress.map((ad) => ({
-                  ...ad,
-                  label: ad.address_title,
-                  value: ad.id,
-                }))}
-                onChange={savedAdressInputChange}
-                placeholder="Kayıtlı adres seçiniz"
-                id="saved_address"
-              />
-            );
-          }}
-        />
-      );
-    }
-    return null;
   };
 
   return (
@@ -289,9 +209,6 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
           "text-sm font-manrope"
         )}
       >
-        <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
-          {renderSavedAddress()}
-        </div>
         <div
           className={clsx(
             "col-span-1 max-md:col-span-full",
@@ -314,7 +231,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 id="sender_name"
                 value={value}
                 onChange={onChange}
-                icon={<User className="text-xl" />}
+                icon={<User className="w-5 h-5" />}
                 error={!!error}
                 errorMessage={error?.message}
               />
@@ -327,12 +244,13 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <PhoneInput
                 label="Telefon Numarası"
+                placeholder="Telefon numarası giriniz."
                 errorMessage={error?.message}
                 error={!!error}
-                onChange={(val, inputVal) => onChange(inputVal)}
+                onChange={(value) => onChange(value)}
                 value={value}
                 id="sender_phone"
-                icon={<Phone className="text-xl" />}
+                icon={<Phone className="w-5 h-5" />}
               />
             )}
           />
@@ -355,7 +273,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<Mail className="text-xl" />}
+                icon={<Mail className="w-5 h-5" />}
               />
             )}
           />
@@ -365,15 +283,20 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
             name="invoice_type"
             render={({ field: { onChange, value } }) => (
               <RadioGroup
-                options={[
-                  { label: "Kişi Adına", value: "person" },
-                  { label: "Firma Adına", value: "company" },
-                ]}
                 name="invoice_type"
                 onChange={onChange}
-                value={value}
+                defaultValue={value}
                 className="flex items-center gap-4"
-              />
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="person" id="r1" />
+                  <Label htmlFor="r1">Bireysel</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="company" id="r2" />
+                  <Label htmlFor="r2">Kurumsal</Label>
+                </div>
+              </RadioGroup>
             )}
           />
         </div>
@@ -402,7 +325,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 onChange={onChange}
                 error={!!error}
                 errorMessage={error?.message}
-                icon={<User className="text-xl" />}
+                icon={<User className="w-5 h-5" />}
               />
             )}
           />
@@ -413,12 +336,13 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <PhoneInput
                 label="Telefon Numarası"
+                placeholder="Telefon numarası giriniz."
                 errorMessage={error?.message}
                 error={!!error}
-                onChange={(val, inputVal) => onChange(inputVal)}
+                onChange={(val) => onChange(val)}
                 value={value}
                 id="receiver_phone"
-                icon={<Phone className="text-xl" />}
+                icon={<Phone className="w-5 h-5" />}
               />
             )}
           />
@@ -454,7 +378,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
             setValue={setValue}
           />
 
-          <Controller
+          {/* <Controller
             control={control}
             name="city"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
@@ -496,8 +420,8 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 />
               );
             }}
-          />
-
+          /> */}
+          {/* 
           <Controller
             control={control}
             name="district"
@@ -543,9 +467,9 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 />
               );
             }}
-          />
+          /> */}
 
-          <Controller
+          {/* <Controller
             control={control}
             name="quarter"
             render={({ field: { onChange, value }, fieldState: { error } }) => {
@@ -584,7 +508,7 @@ const ReceiverForm: FC<ReceiverFormProps> = ({
                 />
               );
             }}
-          />
+          /> */}
 
           <Controller
             control={control}

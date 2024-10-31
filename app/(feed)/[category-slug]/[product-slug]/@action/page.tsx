@@ -7,13 +7,7 @@ import { cookies } from "next/headers";
 import { IPlace } from "@/common/types/Product/product";
 import { WithContext, Place } from "schema-dts";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductActionsPage: FC<Props> = async (props) => {
+const ProductActionsPage = async (props) => {
   const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
 
