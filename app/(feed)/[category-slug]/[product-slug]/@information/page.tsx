@@ -64,7 +64,7 @@ const ProductInformationPage: FC<Props> = async (props) => {
       ratingValue: product.reviews_aggregate.aggregate.avg.score,
       reviewCount: product.reviews_aggregate.aggregate.count,
     },
-    additionalProperty: parseJson(product.properties).map(
+    additionalProperty: parseJson(product?.properties)?.map(
       (prop: { name: string; value: string }) => ({
         "@type": "PropertyValue",
         name: prop.name,

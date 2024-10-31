@@ -44,7 +44,7 @@ const ProductDescriptionPage: FC<Props> = async (props) => {
     "@context": "https://schema.org",
     "@type": "Product",
     description: product.description?.replace(/<[^>]*>/g, ""),
-    additionalProperty: parseJson(product.properties).map(
+    additionalProperty: parseJson(product?.properties)?.map(
       (prop: { name: string; value: string }) => ({
         "@type": "PropertyValue",
         name: prop.name,
