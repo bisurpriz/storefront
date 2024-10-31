@@ -29,6 +29,9 @@ import { SearchProductProvider } from "@/contexts/SearchContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import Script from "next/script";
+import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
+import { cookies } from "next/headers";
+import { CookieTokens } from "./@auth/contants";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -107,10 +110,14 @@ export default async function RootLayout({
     fetchPolicy: "no-cache",
   });
 
+  const cookie = await cookies();
+
+  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
+  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
+
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
-
       <body
         className={`${lato.variable} ${quickSand.variable} 
         ${manrope.variable}
@@ -148,6 +155,11 @@ export default async function RootLayout({
                           </Suspense>
                           <Content>{children}</Content>
                           {auth}
+                          <Suspense>
+                            {!selectedPlaces && !hasSeenLocationModal && (
+                              <QuarterSelectorModal />
+                            )}
+                          </Suspense>
                         </SearchProductProvider>
                       </CartProvider>
                     </CategoryProvider>

@@ -13,4 +13,5 @@ export enum CookieTokens {
   LOCATION_ID = "location_id",
   GUEST_ID = "guest_id",
   NEXT_AUTH_SESSION_TOKEN = "next-auth.session-token",
+  HAS_SEEN_LOCATION_MODAL = "has_seen_location_modal",
 }

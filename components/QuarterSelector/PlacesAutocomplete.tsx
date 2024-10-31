@@ -22,7 +22,6 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   const autocompleteService = useRef(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef(null);
-  const { refresh } = useRouter();
 
   useEffect(() => {
     if (!mounted) return;
@@ -91,6 +90,10 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
     });
   };
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   const handleSelect = (prediction) => {
     setInput(prediction.description);
     setPredictions([]);
@@ -99,6 +102,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
         const geoData = results[0];
         const { lat, lng } = geoData.geometry?.location;
         const viewport = geoData?.geometry.viewport?.toJSON();
+        console.log(results[0]);
         Cookies.set(
           CookieTokens.LOCATION_ID,
           JSON.stringify({
@@ -106,7 +110,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
             lat: lat(),
             lng: lng(),
             placeId: prediction.place_id,
-            label: results[0].formatted_address,
+            label: prediction.description,
           })
         );
         refresh();
@@ -135,7 +139,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
           aria-label="Yer ara"
           aria-autocomplete="list"
           aria-controls="predictions-list"
-          className="w-full p-4 h-auto font-semibold border-2 ring-2"
+          className="w-full p-4 h-auto font-semibold border-2 ring-2 pr-8"
           title={input}
         />
         {isPending && (
