@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, SquareX } from "lucide-react";
+import { Loader2, MapPinnedIcon, SquareX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
 import { CookieTokens } from "@/app/@auth/contants";
@@ -22,6 +22,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   const autocompleteService = useRef(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef(null);
+  const { refresh } = useRouter();
 
   useEffect(() => {
     if (!mounted) return;
@@ -90,10 +91,6 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
     });
   };
 
-  const refresh = () => {
-    window.location.reload();
-  };
-
   const handleSelect = (prediction) => {
     setInput(prediction.description);
     setPredictions([]);
@@ -102,7 +99,6 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
         const geoData = results[0];
         const { lat, lng } = geoData.geometry?.location;
         const viewport = geoData?.geometry.viewport?.toJSON();
-        console.log(results[0]);
         Cookies.set(
           CookieTokens.LOCATION_ID,
           JSON.stringify({
@@ -129,25 +125,45 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   };
 
   return (
-    <div className="w-full my-2 relative" ref={ref}>
+    <div className="w-full relative" ref={ref}>
       <div className="relative">
         <Input
+          icon={
+            <MapPinnedIcon
+              className={cn("text-primary", {
+                "text-white": input,
+              })}
+            />
+          }
           type="text"
           value={input}
           onChange={handleInputChange}
-          placeholder="Bir yer arayın"
+          placeholder="Gönderim adresi girin"
           aria-label="Yer ara"
           aria-autocomplete="list"
           aria-controls="predictions-list"
-          className="w-full p-4 h-auto font-semibold border-2 ring-2 pr-8"
+          className={cn(
+            "w-full p-4 h-auto font-semibold border-2 border-primary focus:ring-2 focus:ring-primary pr-8",
+            {
+              "bg-primary text-white pr-10": input,
+            }
+          )}
           title={input}
         />
         {isPending && (
-          <Loader2 className="animate-spin h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Loader2
+            className={cn(
+              "animate-spin h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400",
+              { "text-white": input }
+            )}
+          />
         )}
         {input && (
           <SquareX
-            className="h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+            className={cn(
+              "h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer",
+              { "text-white": input }
+            )}
             onClick={handleClear}
           />
         )}

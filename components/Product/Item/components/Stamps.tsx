@@ -79,7 +79,7 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
         return (
           <div
             key={index}
-            className={`w-fit flex  items-center gap-1 px-1 py-1 rounded-tl-lg rounded-br-lg text-xs ${colors.gradient} ${colors.text} shadow-md`}
+            className={`w-fit flex  items-center gap-1 px-1 py-1 rounded-sm text-xs ${colors.gradient} ${colors.text} shadow-md`}
           >
             <span>{stamp.icon}</span>
             <span>{stamp.name}</span>
@@ -89,7 +89,7 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
 
       {itemObject.rest.length > 0 && (
         <div
-          className={`w-fit flex items-center gap-1 px-1 py-1 rounded-tl-lg rounded-br-lg text-xs bg-gray-100 text-gray-700 shadow-md`}
+          className={`w-fit flex items-center gap-1 px-1 py-1 rounded-sm text-xs bg-gray-100 text-gray-700 shadow-md`}
         >
           <span>+{itemObject.rest.length}</span>
         </div>

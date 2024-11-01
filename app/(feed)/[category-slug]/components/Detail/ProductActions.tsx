@@ -18,6 +18,9 @@ import HeartFill from "@/components/Icons/HeartFill";
 import { IPlace } from "@/common/types/Product/product";
 import { isWithinBounds } from "@/utils/isWithinBounds";
 import dynamic from "next/dynamic";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Truck } from "lucide-react";
 
 interface Props {
   productId: number;
@@ -26,16 +29,6 @@ interface Props {
   places: IPlace[];
   selectedLocation: IPlace;
 }
-
-const DynamicGoogleLocationSelect = dynamic(
-  () => import("@/components/QuarterSelector/GoogleLocationSelect"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
-    ),
-  }
-);
 
 const ProductActions = ({
   productId,
@@ -129,14 +122,14 @@ const ProductActions = ({
 
   return (
     <>
-      <DynamicGoogleLocationSelect />
-
       {showPlaceWarning && (
-        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
-          <p className="text-xs text-slate-700 font-normal">
+        <Alert variant="destructive">
+          <Truck />
+          <AlertTitle>Dikkat !</AlertTitle>
+          <AlertDescription>
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
       <div className="flex items-center justify-start gap-4 py-2 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
         <Button

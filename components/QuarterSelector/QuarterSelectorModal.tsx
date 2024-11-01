@@ -7,11 +7,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 import { CookieTokens } from "@/app/@auth/contants";
+import { Button } from "../ui/button";
 
 export default function QuarterSelectorModal() {
   const [mounted, setMounted] = useState(false);
@@ -21,15 +23,23 @@ export default function QuarterSelectorModal() {
     setMounted(true);
 
     Cookies.set(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true", {
-      expires: 30,
+      expires: new Date(new Date().getTime() + 1000 * 60 * 60),
     });
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogContent className="max-w-xl w-full">
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
+      modal={true}
+      aria-label="Quarter Selector Modal"
+    >
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        className="max-w-xl w-full"
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             Gönderim Yeri Seçin
@@ -48,6 +58,15 @@ export default function QuarterSelectorModal() {
             adresinizi seçin
           </strong>
         </div>
+        <DialogFooter>
+          <Button
+            onClick={() => setIsDialogOpen(false)}
+            className="justify-self-end"
+            variant="link"
+          >
+            Şimdi Değil
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -1,21 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { FC } from "react";
 import { Package, ShieldCheck, SmilePlus } from "lucide-react";
 import { motion } from "framer-motion";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 
-const GoogleLocationSelect = () => {
-  return (
-    <div className="w-full mb-2">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <PlacesAutocomplete />
+type GoogleLocationSelectProps = {
+  from?: "pdp" | "home";
+};
 
-        <div className="flex items-center gap-2 justify-between p-2 bg-muted/30 backdrop-blur-sm rounded-b-2xl border max-lg:hidden">
+const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
+  from = "pdp",
+}) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="w-full my-2"
+    >
+      <PlacesAutocomplete />
+
+      {from === "home" && (
+        <div className="flex items-center gap-2 justify-between p-2 bg-muted/30 backdrop-blur-sm rounded-b-2xl border max-lg:hidden mt-2">
           {[
             {
               icon: Package,
@@ -55,8 +62,8 @@ const GoogleLocationSelect = () => {
             </motion.div>
           ))}
         </div>
-      </motion.div>
-    </div>
+      )}
+    </motion.div>
   );
 };
 

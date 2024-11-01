@@ -20,6 +20,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import dynamic from "next/dynamic";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { ShoppingBasketIcon } from "lucide-react";
 
 type ProductInformationProps = {
   name: string;
@@ -40,6 +44,16 @@ type ProductInformationProps = {
   isCustomizable?: boolean;
   lastOrderTime?: string;
 };
+
+const DynamicGoogleLocationSelect = dynamic(
+  () => import("@/components/QuarterSelector/GoogleLocationSelect"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+    ),
+  }
+);
 
 const defaultRating = {
   1: 0,
@@ -192,6 +206,8 @@ const ProductInformation = ({
             },
           ]}
         />
+        <DynamicGoogleLocationSelect />
+
         {showExactTime && (
           <div className="p-1 px-4 bg-purple-100 bg-opacity-50 rounded-xl my-2">
             <p className="text-xs text-gray-500">
@@ -208,16 +224,16 @@ const ProductInformation = ({
               lastOrderTime={lastOrderTime}
             />
             {isSettedDeliveryTime && (
-              <div className="w-full flex space-x-4 items-center py-1 px-4 font-semibold rounded-xl my-2 bg-red-50 border border-red-300">
-                <span className="text-xl text-red-500">
-                  <Error className="inline-block" />
-                </span>
-                <p className="text-xs text-slate-700 leading-5">
-                  Bu ürünü daha önce sepetinize eklediniz! <br /> Tarihi ve
-                  saati değiştirirseniz sepetinizdeki ürünün tarih ve saati
-                  güncellenecektir.
-                </p>
-              </div>
+              <Alert variant="informative" className="mt-2">
+                <ShoppingBasketIcon />
+                <AlertTitle>
+                  Bu ürünü daha önce sepetinize eklediniz!
+                </AlertTitle>
+                <AlertDescription>
+                  Tarihi ve saati değiştirirseniz sepetinizdeki ürünün tarih ve
+                  saati güncellenecektir.
+                </AlertDescription>
+              </Alert>
             )}
           </div>
         )}

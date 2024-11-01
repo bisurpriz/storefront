@@ -121,61 +121,58 @@ export default function ProductItem2(props: ProductItemProps) {
       className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
       {...(!isTablet && { target: "_blank" })}
     >
-      <div className="relative flex-1 col-span-4">
-        <div key={id} className="w-full h-80 max-sm:h-full">
-          <Image
-            src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
-            alt={name}
-            className="w-full h-full object-cover"
-            sizes={
-              "(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+      <div className="relative flex-1 col-span-4 row-span-full">
+        <Image
+          src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
+          alt={name}
+          className="w-full h-80 max-lg:h-auto object-cover max-sm:h-full"
+          sizes={
+            "(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+          }
+          width={250}
+          height={250}
+        />
+        <div
+          className={cn(
+            "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
+            {
+              hidden:
+                !(Array.isArray(image_url) && image_url.length > 1) || isTablet,
             }
-            width={200}
-            height={200}
-          />
+          )}
+          onMouseLeave={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setHoveredImageIndex(null);
+          }}
+        >
+          {Array.from({ length: image_url.length }).map((_, i) => (
+            <div
+              key={i}
+              className={cn("h-full w-full flex items-end")}
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setHoveredImageIndex(i);
+              }}
+            />
+          ))}
           <div
             className={cn(
-              "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
+              "absolute bottom-2 left-0 w-full flex items-center justify-center",
               {
-                hidden:
-                  !(Array.isArray(image_url) && image_url.length > 1) ||
-                  isTablet,
+                hidden: !(Array.isArray(image_url) && image_url.length > 1),
               }
             )}
-            onMouseLeave={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setHoveredImageIndex(null);
-            }}
           >
             {Array.from({ length: image_url.length }).map((_, i) => (
-              <div
+              <span
                 key={i}
-                className={cn("h-full w-full flex items-end")}
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  setHoveredImageIndex(i);
-                }}
+                className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
+                  "bg-gray-400": i !== hoveredImageIndex,
+                })}
               />
             ))}
-            <div
-              className={cn(
-                "absolute bottom-2 left-0 w-full flex items-center justify-center",
-                {
-                  hidden: !(Array.isArray(image_url) && image_url.length > 1),
-                }
-              )}
-            >
-              {Array.from({ length: image_url.length }).map((_, i) => (
-                <span
-                  key={i}
-                  className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
-                    "bg-gray-400": i !== hoveredImageIndex,
-                  })}
-                />
-              ))}
-            </div>
           </div>
         </div>
 
