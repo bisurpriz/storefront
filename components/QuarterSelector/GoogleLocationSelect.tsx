@@ -1,9 +1,16 @@
 "use client";
 
 import React, { FC } from "react";
-import { Package, ShieldCheck, SmilePlus } from "lucide-react";
+import {
+  Gem,
+  MousePointerClick,
+  Package,
+  ShieldCheck,
+  SmilePlus,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import PlacesAutocomplete from "./PlacesAutocomplete";
+import { cn } from "@/lib/utils";
 
 type GoogleLocationSelectProps = {
   from?: "pdp" | "home";
@@ -22,24 +29,28 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
       <PlacesAutocomplete />
 
       {from === "home" && (
-        <div className="flex items-center gap-2 justify-between p-2 bg-muted/30 backdrop-blur-sm rounded-b-2xl border max-lg:hidden mt-2">
+        <div
+          className={cn(
+            "flex items-center space-x-4 py-2 justify-center rounded-xl hover:bg-background/50 transition-colors duration-200"
+          )}
+        >
           {[
             {
               icon: Package,
-              title: "Her Gün Aynı",
-              subtitle: "Gün Teslimat",
+              title: "Hızlı Teslimat",
+              subtitle: "Aynı gün içinde",
               delay: 0.3,
             },
             {
-              icon: ShieldCheck,
-              title: "Güvenli",
-              subtitle: "Alışveriş",
+              icon: Gem,
+              title: "Kişiselleştirme",
+              subtitle: "Özel mesajlar",
               delay: 0.4,
             },
             {
-              icon: SmilePlus,
-              title: "Yüksek Müşteri",
-              subtitle: "Memnuniyeti",
+              icon: MousePointerClick,
+              title: "Kolay Alışveriş",
+              subtitle: "Tek tıkla sipariş",
               delay: 0.5,
             },
           ].map((item, index) => (
@@ -48,7 +59,7 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: item.delay }}
-              className="flex items-center space-x-4 py-2 justify-center rounded-xl hover:bg-background/50 transition-colors duration-200 basis-1/3"
+              className="flex basis-1/3 items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-primary/10"
             >
               <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 shrink-0">
                 <item.icon className="w-8 h-8 text-primary" />
