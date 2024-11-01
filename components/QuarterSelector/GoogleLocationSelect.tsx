@@ -31,7 +31,7 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
       {from === "home" && (
         <div
           className={cn(
-            "flex items-center space-x-4 py-2 justify-center rounded-xl hover:bg-background/50 transition-colors duration-200"
+            "flex items-center space-x-4 py-2 justify-center rounded-xl hover:bg-background/50 transition-colors duration-200 max-sm:hidden"
           )}
         >
           {[

@@ -17,13 +17,13 @@ export default function RemainingTime({
   isTodayDisabled?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2 p-2 rounded-lg bg-gradient-to-r from-indigo-50 to-purpfrom-indigo-100/50">
+    <div className="flex items-center gap-2 py-1 px-2 rounded-lg shadow-sm bg-slate-100 text-slate-900">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Clock className="w-4 h-4 text-purpfrom-indigo-500" />
+        <Clock className="w-4 h-4 text-slate-600" />
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-sm font-medium text-slate-600">
             {!isTodayDisabled && "Bugün teslimat için son:"}
@@ -31,12 +31,7 @@ export default function RemainingTime({
           <motion.div
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
-            className={cn(
-              "px-2 py-1 rounded-full bg-gradient-to-r from-indigo-200 to-purpfrom-indigo-300",
-              "text-sm font-semibold text-purpfrom-indigo-900",
-              "shadow-sm shadow-purpfrom-indigo-200/50",
-              "border border-purpfrom-indigo-200/50"
-            )}
+            className={cn("text-sm font-semibold text-orange-500")}
           >
             <span className="tabular-nums">
               {remainTime.hours} saat {remainTime.minutes} dakika

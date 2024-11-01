@@ -4,6 +4,7 @@ import { addDays, format, parse } from "date-fns";
 import { tr } from "date-fns/locale";
 import { Clock, ChevronDown } from "lucide-react";
 
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,7 @@ export default function DeliveryDateTimePicker({
     deliveryTime.hour || null
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   const days = [
     { label: "Bugün", value: new Date() },
@@ -50,6 +52,9 @@ export default function DeliveryDateTimePicker({
     if (deliveryTime.day && deliveryTime.hour) {
       setDate(new Date(deliveryTime.day));
       setSelectedTimeRange(deliveryTime.hour);
+    } else {
+      setDate(new Date());
+      setSelectedTimeRange(null);
     }
   }, [deliveryTime]);
 
@@ -69,45 +74,71 @@ export default function DeliveryDateTimePicker({
 
   return (
     <div className="w-full space-y-2">
-      <div className="flex gap-2 flex-nowrap">
-        {days.map((day) => (
-          <Button
-            key={day.label}
-            variant={
-              date.toDateString() === day.value.toDateString()
-                ? "secondary"
-                : "default"
-            }
-            className="flex-1 lg:py-4 lg:h-auto lg:text-lg text-white"
-            onClick={() => {
-              setDate(day.value);
-              setSelectedTimeRange(null);
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <div className="grid grid-cols-3 gap-2">
+          {days.map((day, index) => (
+            <Button
+              key={day.label}
+              variant={
+                date.toDateString() === day.value.toDateString()
+                  ? "default"
+                  : "soft"
+              }
+              className="col-span-1 lg:py-4 lg:h-auto lg:text-lg"
+              onClick={() => {
+                setDate(day.value);
+                setSelectedTimeRange(null);
+                setSelectedButtonIndex(index);
+              }}
+            >
+              {day.label}
+            </Button>
+          ))}
+          <motion.div
+            key={selectedButtonIndex}
+            className={cn(
+              "col-span-1",
+              {
+                "col-start-1 col-end-2": selectedButtonIndex === 0,
+              },
+              {
+                "col-start-2 col-end-3": selectedButtonIndex === 1,
+              },
+              {
+                "col-start-3 col-end-4": selectedButtonIndex === 2,
+              }
+            )}
+            initial={{ y: -16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -16, opacity: 0 }}
+            transition={{
+              duration: 0.2,
+              type: "tween",
+              ease: "easeInOut",
+              delay: 0.05,
             }}
           >
-            {day.label}
-          </Button>
-        ))}
-      </div>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-between text-left font-normal border-2 border-primary"
+                )}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                icon={<Clock className="h-4 w-4" />}
+              >
+                {selectedTimeRange ? (
+                  formatTimeRange(selectedTimeRange)
+                ) : (
+                  <span>Saat</span>
+                )}
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </SheetTrigger>
+          </motion.div>
+        </div>
 
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-full justify-between text-left font-normal border-2 border-primary"
-            aria-haspopup="listbox"
-            aria-expanded={isOpen}
-          >
-            <div className="flex items-center">
-              <Clock className="mr-2 h-4 w-4" />
-              {selectedTimeRange ? (
-                formatTimeRange(selectedTimeRange)
-              ) : (
-                <span>Teslimat Saati Seç</span>
-              )}
-            </div>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-          </Button>
-        </SheetTrigger>
         <SheetContent side="bottom" className="max-h-[50vh] sm:h-auto">
           <SheetHeader>
             <SheetTitle>Teslimat Saati Seçin</SheetTitle>
@@ -138,18 +169,20 @@ export default function DeliveryDateTimePicker({
         </SheetContent>
       </Sheet>
 
-      <div
-        className={cn(
-          "rounded-lg border p-2 text-center text-sm flex flex-wrap justify-center gap-1 shadow-md",
-          "bg-gradient-to-r from-primary/40 to-secondary/40 text-white"
-        )}
-      >
-        Seçilen Tarih ve Saat Aralığı:{" "}
-        <span className="font-semibold">
-          {format(date, "d MMMM yyyy", { locale: tr })}
-          {selectedTimeRange && ` - ${formatTimeRange(selectedTimeRange)}`}
-        </span>
-      </div>
+      {date && selectedTimeRange && (
+        <div
+          className={cn(
+            "rounded-lg border p-2 text-start text-sm flex flex-wrap justify-start gap-1 shadow-sm",
+            "bg-gradient-to-bl from-primary/20 to-accent text-slate-600"
+          )}
+        >
+          Seçilen Tarih ve Saat Aralığı:{" "}
+          <span className="font-semibold">
+            {format(date, "d MMMM yyyy", { locale: tr })}
+            {selectedTimeRange && ` - ${formatTimeRange(selectedTimeRange)}`}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

@@ -17,9 +17,7 @@ import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
 import { IPlace } from "@/common/types/Product/product";
 import { isWithinBounds } from "@/utils/isWithinBounds";
-import dynamic from "next/dynamic";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Truck } from "lucide-react";
 
 interface Props {
@@ -131,11 +129,11 @@ const ProductActions = ({
           </AlertDescription>
         </Alert>
       )}
-      <div className="flex items-center justify-start gap-4 py-2 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
+      <div className="flex my-2 space-x-2">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}
-          className={clsx("w-full")}
+          className={clsx("basis-4/5 flex items-center justify-center px-0")}
           disabled={loading || error || showPlaceWarning}
           onClick={() => {
             if (
@@ -172,21 +170,30 @@ const ProductActions = ({
         >
           Sepete Ekle
         </Button>
+        <Button
+          size="lg"
+          variant={error ? "destructive" : "secondary"}
+          className={clsx("basis-4/5 flex items-center justify-center px-0")}
+          disabled={loading || error || showPlaceWarning}
+          loading={loading}
+          onClick={() => console.log("Hemen Al butonuna tıklandı")}
+        >
+          Hemen Al
+        </Button>
 
-        <div className="flex items-end gap-2 flex-1">
-          <Button
-            size="lg"
-            variant={isFavoriteState ? "destructive" : "outline"}
-            icon={
-              isFavoriteState ? (
-                <HeartFill className="w-8 h-8 text-white" />
-              ) : (
-                <Heart className="w-8 h-8 text-red-500" />
-              )
-            }
-            onClick={handleFavorite}
-          />
-        </div>
+        <Button
+          size="lg"
+          className="basis-1/5 flex items-center justify-center px-0"
+          variant={isFavoriteState ? "destructive" : "outline"}
+          icon={
+            isFavoriteState ? (
+              <HeartFill className="w-8 h-8 text-white" />
+            ) : (
+              <Heart className="w-8 h-8 text-red-500" />
+            )
+          }
+          onClick={handleFavorite}
+        />
       </div>
       {error && (
         <p
