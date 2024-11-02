@@ -36,20 +36,26 @@ export const createTypesenseQueryMapper = async (searchParams: {
     get(CookieTokens.LOCATION_ID)?.value
   ) as IPlace;
 
+  console.log(selectedLocation, "selectedLocation");
+
   if (selectedLocation) {
-    const {
-      lat,
-      lng,
-      viewport: { north, south, east, west },
-    } = selectedLocation;
-    //const locationQuery =`places.lat:>=${north.toFixed()}`
-      // 1. selected lat ile places
-      // 2. place lat ile selected bounds
-    const locationQuery = `(places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east})`;
-      /* `((places.lat:>=${south}&&places.lat:<=${north}&&places.lng:>=${west}&&places.lng:<=${east})` +
-      "||" +
-      `(places.viewport.south:<=${lat}&&places.viewport.north:>=${lat}&&places.viewport.west:<=${lng}&&places.viewport.east:>=${lng}))`; */
-    filter_by.push(locationQuery);
+    const areaLevel1 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_1")
+    )?.short_name;
+    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_2")
+    )?.short_name;
+
+    if (areaLevel1) {
+      filter_by.push(
+        `places.addressComponents.administrative_area_level_1:=[${areaLevel1}]`
+      );
+    }
+    if (areaLevel2) {
+      filter_by.push(
+        `places.addressComponents.administrative_area_level_2:=[${areaLevel2}]`
+      );
+    }
   }
 
   return {

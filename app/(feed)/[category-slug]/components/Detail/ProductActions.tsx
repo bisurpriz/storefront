@@ -75,47 +75,34 @@ const ProductActions = ({
   useEffect(() => {
     if (!selectedLocation) return;
 
-    const anyAvailable = places?.some((place) => {
-      if (place.placeId === selectedLocation.placeId) {
-        return true;
-      }
+    const areaLevel1 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_1")
+    )?.short_name;
 
-      const {
-        viewport: { south, north, east, west },
-        lat,
-        lng,
-      } = place;
-      const {
-        lat: selectedLat,
-        lng: selectedLng,
-        viewport: {
-          south: selectedSouth,
-          north: selectedNorth,
-          east: selectedEast,
-          west: selectedWest,
-        },
-      } = selectedLocation;
+    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_2")
+    )?.short_name;
 
-      const isWithin1 = isWithinBounds(selectedLat, selectedLng, {
-        south,
-        north,
-        east,
-        west,
-      });
-      const isWithin2 = isWithinBounds(lat, lng, {
-        south: selectedSouth,
-        north: selectedNorth,
-        east: selectedEast,
-        west: selectedWest,
-      });
+    if (areaLevel1 && !areaLevel2) {
+      const isOK = places.some(
+        (place) =>
+          //@ts-ignore
+          place.addressComponents["administrative_area_level_1"] === areaLevel1
+      );
+      setShowPlaceWarning(!isOK);
+    }
 
-      if (isWithin1 || isWithin2) {
-        return true;
-      }
-
-      return false;
-    });
-    setShowPlaceWarning(!anyAvailable);
+    if (areaLevel1 && areaLevel2) {
+      const isOK = places.some(
+        (place) =>
+          //@ts-ignore
+          place.addressComponents["administrative_area_level_1"] ===
+            areaLevel1 &&
+          //@ts-ignore
+          place.addressComponents["administrative_area_level_2"] === areaLevel2
+      );
+      setShowPlaceWarning(!isOK);
+    }
   }, [selectedLocation]);
 
   return (

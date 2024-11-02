@@ -55,13 +55,10 @@ export interface Product {
 
 export interface IPlace {
   label: string;
-  lat: number;
-  lng: number;
   placeId: string;
-  viewport: {
-    east: number;
-    north: number;
-    south: number;
-    west: number;
-  };
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[]
 }

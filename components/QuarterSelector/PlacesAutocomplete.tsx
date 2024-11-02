@@ -97,14 +97,11 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
     if (prediction.place_id) {
       geocodeByPlaceId(prediction.place_id).then((results) => {
         const geoData = results[0];
-        const { lat, lng } = geoData.geometry?.location;
-        const viewport = geoData?.geometry.viewport?.toJSON();
+        const { address_components } = geoData;
         Cookies.set(
           CookieTokens.LOCATION_ID,
           JSON.stringify({
-            viewport,
-            lat: lat(),
-            lng: lng(),
+            address_components,
             placeId: prediction.place_id,
             label: prediction.description,
           })
