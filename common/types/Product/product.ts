@@ -60,5 +60,5 @@ export interface IPlace {
     long_name: string;
     short_name: string;
     types: string[];
-  }[]
+  }[];
 }

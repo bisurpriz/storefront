@@ -198,13 +198,13 @@ export default function ProductItem2(props: ProductItemProps) {
       <div className="p-4 pt-2 space-y-4 max-sm:space-y-1 max-sm:p-2 col-span-8">
         <div className="flex justify-between items-start">
           {isTablet ? (
-            <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
+            <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
               {name}
             </h3>
           ) : (
             <Tooltip>
               <TooltipTrigger>
-                <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
+                <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
                   {name}
                 </h3>
               </TooltipTrigger>

@@ -12,13 +12,13 @@ import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, startTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
 import { IPlace } from "@/common/types/Product/product";
 import { isWithinBounds } from "@/utils/isWithinBounds";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Truck } from "lucide-react";
+import { BadgeCheck, Truck } from "lucide-react";
 
 interface Props {
   productId: number;
@@ -39,6 +39,7 @@ const ProductActions = ({
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
   const { selectedProduct } = useProduct();
+  const [isPending, startTransition] = useTransition();
 
   const { addToCart, loading, deliveryTime } = useCart();
   const { replace } = useRouter();
@@ -73,42 +74,82 @@ const ProductActions = ({
     !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
-    if (!selectedLocation) return;
+    startTransition(() => {
+      if (!selectedLocation) return;
+      const areaLevel1 = selectedLocation?.address_components?.find((x) =>
+        x.types.includes("administrative_area_level_1")
+      )?.short_name;
 
-    const areaLevel1 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_1")
-    )?.short_name;
+      const areaLevel4 = selectedLocation?.address_components?.find((x) =>
+        x.types.includes("administrative_area_level_4")
+      )?.short_name;
 
-    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_2")
-    )?.short_name;
+      if (areaLevel1 && !areaLevel4) {
+        const isOK = places.some(
+          (place) =>
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_1"] ===
+            areaLevel1
+        );
 
-    if (areaLevel1 && !areaLevel2) {
-      const isOK = places.some(
-        (place) =>
-          //@ts-ignore
-          place.addressComponents["administrative_area_level_1"] === areaLevel1
-      );
-      setShowPlaceWarning(!isOK);
-    }
+        return setShowPlaceWarning(!isOK);
+      }
 
-    if (areaLevel1 && areaLevel2) {
-      const isOK = places.some(
-        (place) =>
-          //@ts-ignore
-          place.addressComponents["administrative_area_level_1"] ===
-            areaLevel1 &&
-          //@ts-ignore
-          place.addressComponents["administrative_area_level_2"] === areaLevel2
-      );
-      setShowPlaceWarning(!isOK);
-    }
+      if (areaLevel1 && areaLevel4) {
+        const isOK = places.some(
+          (place) =>
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_1"] ===
+              areaLevel1 &&
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_4"] ===
+              areaLevel4
+        );
+        setShowPlaceWarning(!isOK);
+      }
+    });
   }, [selectedLocation]);
+
+  const getAvailableLevel4 = (
+    places: {
+      addressComponents: {
+        [key: string]: string;
+      };
+      label: string;
+      placeId: string;
+    }[]
+  ) => {
+    const availablePlaces = places.map(
+      (place) => place.addressComponents["administrative_area_level_4"]
+    );
+
+    return availablePlaces.findIndex(
+      (x) =>
+        x ===
+        selectedLocation?.address_components?.find((x) =>
+          x.types.includes("administrative_area_level_4")
+        )?.short_name
+    ) === -1
+      ? availablePlaces
+      : [];
+  };
+
+  const availableLevel4 = selectedLocation && getAvailableLevel4(places as any);
 
   return (
     <>
-      {showPlaceWarning && (
-        <Alert variant="destructive">
+      {availableLevel4?.length > 0 && (
+        <Alert variant="default">
+          <BadgeCheck />
+          <AlertTitle>Uyarı !</AlertTitle>
+          <AlertDescription>
+            Bu ürün sadece <strong>"{availableLevel4.join(", ")}"</strong>{" "}
+            mahallelerine teslimat yapılmaktadır.
+          </AlertDescription>
+        </Alert>
+      )}
+      {availableLevel4?.length === 0 && showPlaceWarning && (
+        <Alert variant="destructive" className="mt-2">
           <Truck />
           <AlertTitle>Dikkat !</AlertTitle>
           <AlertDescription>
@@ -116,12 +157,13 @@ const ProductActions = ({
           </AlertDescription>
         </Alert>
       )}
+
       <div className="flex my-2 space-x-2">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={loading || error || showPlaceWarning}
+          disabled={loading || error || showPlaceWarning || isPending}
           onClick={() => {
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
@@ -161,7 +203,7 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "secondary"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={loading || error || showPlaceWarning}
+          disabled={loading || error || showPlaceWarning || isPending}
           loading={loading}
           onClick={() => console.log("Hemen Al butonuna tıklandı")}
         >

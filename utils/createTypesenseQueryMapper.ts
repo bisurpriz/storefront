@@ -36,8 +36,6 @@ export const createTypesenseQueryMapper = async (searchParams: {
     get(CookieTokens.LOCATION_ID)?.value
   ) as IPlace;
 
-  console.log(selectedLocation, "selectedLocation");
-
   if (selectedLocation) {
     const areaLevel1 = selectedLocation?.address_components?.find((x) =>
       x.types.includes("administrative_area_level_1")
