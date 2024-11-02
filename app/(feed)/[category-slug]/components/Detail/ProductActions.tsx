@@ -74,7 +74,7 @@ const ProductActions = ({
 
   useEffect(() => {
     startTransition(() => {
-      if (!selectedLocation) return;
+      if (!selectedLocation || !places) return;
       const areaLevel1 = selectedLocation?.address_components?.find((x) =>
         x.types.includes("administrative_area_level_1")
       )?.short_name;
@@ -118,11 +118,11 @@ const ProductActions = ({
       placeId: string;
     }[]
   ) => {
-    const availablePlaces = places.map(
+    const availablePlaces = places?.map(
       (place) => place.addressComponents["administrative_area_level_4"]
     );
 
-    return availablePlaces.findIndex(
+    return availablePlaces?.findIndex(
       (x) =>
         x ===
         selectedLocation?.address_components?.find((x) =>
@@ -198,7 +198,7 @@ const ProductActions = ({
         >
           Sepete Ekle
         </Button>
-        <Button
+        {/* <Button
           size="lg"
           variant={error ? "destructive" : "secondary"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
@@ -207,7 +207,7 @@ const ProductActions = ({
           onClick={() => console.log("Hemen Al butonuna tıklandı")}
         >
           Hemen Al
-        </Button>
+        </Button> */}
 
         <Button
           size="lg"
