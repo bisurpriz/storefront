@@ -89,6 +89,7 @@ export default function NewDesignGallery({ images, isMobile }) {
                     src={getImageUrlFromPath(image)}
                     alt={image}
                     width={90}
+                    sizes="90px"
                     height={90}
                     className={cn(
                       "w-full h-full object-contain rounded-md",
@@ -122,7 +123,7 @@ export default function NewDesignGallery({ images, isMobile }) {
                   alt={image}
                   className="h-full w-full object-contain rounded-md flex-1"
                   fill
-                  sizes="(min-width: 640px) 500px, 100vw"
+                  sizes="500px"
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
                 />

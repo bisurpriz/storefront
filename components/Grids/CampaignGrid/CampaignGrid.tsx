@@ -26,10 +26,7 @@ const CampaignGrid: FC = async () => {
             alt={item.name}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
-            sizes="(max-width: 576px) 50vw,
-            (max-width: 768px) 50vw,
-            (max-width: 992px) 50vw,
-            (min-width: 1200px) 50vw"
+            sizes="30vw"
             width={676}
             height={272}
             src={getImageUrl(item.path)}

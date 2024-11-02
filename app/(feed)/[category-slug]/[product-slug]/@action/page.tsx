@@ -1,5 +1,4 @@
 import ProductActions from "../../components/Detail/ProductActions";
-import { FC } from "react";
 import { getProductActions } from "./actions";
 import ActionPageLoading from "./loading";
 import { parseJson } from "@/utils/format";
@@ -12,7 +11,6 @@ const ProductActionsPage = async (props) => {
   const productId = Number(searchParams["pid"]);
 
   const { product } = await getProductActions(productId);
-
   if (!product.user_favorites || !product.user_favorites_aggregate) {
     return <ActionPageLoading />;
   }
@@ -69,6 +67,7 @@ const ProductActionsPage = async (props) => {
         favoriteCount={favoriteCount}
         selectedLocation={selectedLocation}
         places={places}
+        delivery_type={product.delivery_type}
       />
       {placesData && (
         <script

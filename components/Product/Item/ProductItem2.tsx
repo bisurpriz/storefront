@@ -125,10 +125,9 @@ export default function ProductItem2(props: ProductItemProps) {
         <Image
           src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
           alt={name}
-          className="w-full h-80 max-lg:h-auto object-cover max-sm:h-full"
-          sizes={
-            "(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
-          }
+          quality={70}
+          className="w-full h-80 object-cover max-sm:h-full"
+          sizes={"15vw"}
           width={250}
           height={250}
         />
