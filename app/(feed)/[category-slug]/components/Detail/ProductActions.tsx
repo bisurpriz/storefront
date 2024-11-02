@@ -166,7 +166,13 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={loading || error || showPlaceWarning || isPending}
+          disabled={
+            loading ||
+            error ||
+            showPlaceWarning ||
+            isPending ||
+            !(availableLevel4?.length > 0)
+          }
           onClick={() => {
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
