@@ -171,7 +171,7 @@ const ProductActions = ({
             error ||
             showPlaceWarning ||
             isPending ||
-            (isSameDay && places.length === 0) ||
+            (isSameDay && places?.length === 0) ||
             availableLevel4?.length > 0 ||
             (isSameDay && !selectedLocation)
           }
@@ -210,7 +210,7 @@ const ProductActions = ({
           }}
           loading={loading}
         >
-          {isSameDay && places.length === 0
+          {isSameDay && places?.length === 0
             ? "Bu ürün için gönderim yeri mevcut değil"
             : "Sepete Ekle"}
         </Button>
