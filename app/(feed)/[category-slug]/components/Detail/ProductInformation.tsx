@@ -206,8 +206,7 @@ const ProductInformation = ({
             },
           ]}
         />
-        <DynamicGoogleLocationSelect />
-
+        {isSameDay && <DynamicGoogleLocationSelect />}
         {showExactTime && (
           <div className="p-1 px-4 bg-purple-100 bg-opacity-50 rounded-xl my-2">
             <p className="text-xs text-gray-500">

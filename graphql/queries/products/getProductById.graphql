@@ -164,6 +164,7 @@ query getProductsForInitialCart($ids: [bigint!]) {
 
 query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    delivery_type
     tenant {
       tenants {
         tenant_shipping_places {
@@ -184,6 +185,7 @@ query getProductActionData($id: bigint!) @cached(ttl: 180) {
 
 query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    delivery_type
     tenant {
       tenants {
         tenant_shipping_places {

@@ -25,6 +25,7 @@ interface Props {
   favoriteCount?: number;
   places: IPlace[];
   selectedLocation: IPlace;
+  delivery_type: "CARGO_SHIPPING" | "SAME_DAY" | "SAME_DAY_CARGO";
 }
 
 const ProductActions = ({
@@ -33,12 +34,14 @@ const ProductActions = ({
   favoriteCount,
   places,
   selectedLocation,
+  delivery_type,
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
   const { selectedProduct } = useProduct();
   const [isPending, startTransition] = useTransition();
+  const isSameDay = delivery_type === "SAME_DAY";
 
   const { addToCart, loading, deliveryTime } = useCart();
   const { replace } = useRouter();
@@ -74,7 +77,7 @@ const ProductActions = ({
 
   useEffect(() => {
     startTransition(() => {
-      if (!selectedLocation || !places) return;
+      if (!selectedLocation || (!places && !isSameDay)) return;
       const areaLevel1 = selectedLocation?.address_components?.find((x) =>
         x.types.includes("administrative_area_level_1")
       )?.short_name;
@@ -133,7 +136,8 @@ const ProductActions = ({
       : [];
   };
 
-  const availableLevel4 = selectedLocation && getAvailableLevel4(places as any);
+  const availableLevel4 =
+    selectedLocation && isSameDay && getAvailableLevel4(places as any);
 
   return (
     <>
