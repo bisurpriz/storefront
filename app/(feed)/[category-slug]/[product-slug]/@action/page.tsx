@@ -11,7 +11,6 @@ const ProductActionsPage = async (props) => {
   const productId = Number(searchParams["pid"]);
 
   const { product } = await getProductActions(productId);
-  console.log(product);
   if (!product.user_favorites || !product.user_favorites_aggregate) {
     return <ActionPageLoading />;
   }
