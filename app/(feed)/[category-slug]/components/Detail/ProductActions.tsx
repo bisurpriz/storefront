@@ -16,7 +16,6 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
 import { IPlace } from "@/common/types/Product/product";
-import { isWithinBounds } from "@/utils/isWithinBounds";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BadgeCheck, Truck } from "lucide-react";
 
