@@ -166,7 +166,14 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={loading || error || showPlaceWarning || isPending}
+          disabled={
+            loading ||
+            error ||
+            showPlaceWarning ||
+            isPending ||
+            (isSameDay && places.length === 0) ||
+            availableLevel4?.length > 0
+          }
           onClick={() => {
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
@@ -200,7 +207,9 @@ const ProductActions = ({
           }}
           loading={loading}
         >
-          Sepete Ekle
+          {isSameDay && places.length === 0
+            ? "Bu ürün için gönderim yeri mevcut değil"
+            : "Sepete Ekle"}
         </Button>
         {/* <Button
           size="lg"
