@@ -171,10 +171,13 @@ const ProductActions = ({
             error ||
             showPlaceWarning ||
             isPending ||
-            (isSameDay && places.length === 0) ||
-            availableLevel4?.length > 0
+            (isSameDay && places?.length === 0) ||
+            availableLevel4?.length > 0 ||
+            (isSameDay && !selectedLocation)
           }
           onClick={() => {
+            if (isSameDay && !selectedLocation)
+              return setShowPlaceWarning(true);
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
               !selectedLocation
@@ -207,7 +210,7 @@ const ProductActions = ({
           }}
           loading={loading}
         >
-          {isSameDay && places.length === 0
+          {isSameDay && places?.length === 0
             ? "Bu ürün için gönderim yeri mevcut değil"
             : "Sepete Ekle"}
         </Button>
