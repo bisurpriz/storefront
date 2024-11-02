@@ -171,7 +171,8 @@ const ProductActions = ({
             error ||
             showPlaceWarning ||
             isPending ||
-            (isSameDay && places.length === 0)
+            (isSameDay && places.length === 0) ||
+            availableLevel4?.length > 0
           }
           onClick={() => {
             if (
@@ -206,7 +207,9 @@ const ProductActions = ({
           }}
           loading={loading}
         >
-          Sepete Ekle
+          {isSameDay && places.length === 0
+            ? "Bu ürün için gönderim yeri mevcut değil"
+            : "Sepete Ekle"}
         </Button>
         {/* <Button
           size="lg"
