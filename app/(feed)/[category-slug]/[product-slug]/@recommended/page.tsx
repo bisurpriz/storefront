@@ -3,14 +3,10 @@ import { PER_REQUEST } from "@/app/constants";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import React, { FC } from "react";
 import RecommendedProductsLoadingPage from "./loading";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  params: {
-    [key: string]: string;
-  };
-};
-
-const ProductRecommendedPage: FC<Props> = async ({ params }) => {
+const ProductRecommendedPage: FC<PageProps> = async (props) => {
+  const params = await props.params;
   const { products: categoryProducts } = await getPaginatedProducts({
     offset: 0,
     category_slug: params["category-slug"],

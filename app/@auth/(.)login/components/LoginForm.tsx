@@ -115,6 +115,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
             />
           </div>
           <div className="space-y-2">
@@ -122,6 +123,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             <div className="relative">
               <Input
                 id="password"
+                autoComplete="current-password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}

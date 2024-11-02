@@ -83,7 +83,8 @@ const InfinityScroll = <T,>({
           "max-sm:grid-cols-1 gap-2",
           "max-md:grid-cols-2 gap-2",
           "max-lg:grid-cols-3 gap-4",
-          "max-xl:grid-cols-4 gap-6"
+          "max-xl:grid-cols-3 gap-6",
+          "max-2xl:grid-cols-4 gap-8"
         )}
       >
         {data?.map((item: any) => {

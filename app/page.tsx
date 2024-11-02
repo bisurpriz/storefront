@@ -6,7 +6,6 @@ import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/C
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
-import ServerQuerySelector from "@/components/QuarterSelector/ServerQuerySelector";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { query } from "@/graphql/lib/client";
@@ -15,20 +14,14 @@ import {
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
-import CategorySection from "@/components/Sections/CategorySection/CategorySection";
-import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
-import FeaturedProductSectionSkeleton from "@/components/Sections/FeaturedProductSection/FeaturedProductSectionSkeleton";
-import CategorySectionSkeleton from "@/components/Sections/CategorySection/CategorySectionSkeleton";
-
-export const dynamic = "force-dynamic";
+import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
 
 export const experimental_ppr = true;
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
+export default async function Page(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const searchParams = await props.searchParams;
   const searchText = searchParams.hasOwnProperty("search");
 
   const viewport = await getServerSideViewPort();
@@ -58,7 +51,7 @@ export default async function Page({
             <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
           }
         >
-          <ServerQuerySelector />
+          <GoogleLocationSelect from="home" />
         </Suspense>
       )}
       <Suspense fallback={<CampaignGridSuspense />}>

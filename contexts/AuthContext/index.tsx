@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import Cookies from "js-cookie";
-import { CookieTokens } from "@/app/@auth/contants";
 import { uuidv4 } from "@/utils/uuidv4";
 import {
   GetUserAddressByIdQuery,
@@ -16,16 +15,21 @@ import {
 } from "@/graphql/queries/account/account.generated";
 import { getUserAddressById } from "@/app/account/actions";
 import { setClientCookie } from "@/utils/getCookie";
+import { checkExpire } from "@/graphql/utils/checkExpire";
+import { useRouter } from "next/navigation";
+import { CookieTokens } from "@/app/@auth/contants";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
   userAddresses: GetUserAddressByIdQuery["user_by_pk"]["user_addresses"];
 }
 
-export const AuthContext = createContext<AuthContextType>({
+const initialAuthContext: AuthContextType = {
   user: null,
   userAddresses: [],
-});
+};
+
+export const AuthContext = createContext<AuthContextType>(initialAuthContext);
 
 export const AuthProvider = ({
   children,
@@ -37,35 +41,54 @@ export const AuthProvider = ({
   const [userAddresses, setUserAddresses] = useState<
     GetUserAddressByIdQuery["user_by_pk"]["user_addresses"]
   >([]);
+  const { refresh } = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      if (!Cookies.get(CookieTokens.GUEST_ID)) {
-        const guest_id = uuidv4();
-        setClientCookie(CookieTokens.GUEST_ID, guest_id, {
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        });
-      }
-    } else {
-      Cookies.remove(CookieTokens.GUEST_ID);
-
-      getUserAddressById(user.id)
-        .then(
-          ({
-            data: {
-              user_by_pk: { user_addresses },
-            },
-          }) => {
-            setUserAddresses(user_addresses);
-          }
-        )
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    handleUserAuthentication();
   }, [user]);
+
+  const handleUserAuthentication = async () => {
+    if (isUserSessionExpired(user)) {
+      handleGuestUser();
+    } else {
+      await handleAuthenticatedUser(user);
+    }
+  };
+
+  const isUserSessionExpired = (user: GetUserByIdQuery["user_by_pk"]) => {
+    return !user || checkExpire(Cookies.get(CookieTokens.ACCESS_TOKEN));
+  };
+
+  const handleGuestUser = () => {
+    const guestId = Cookies.get(CookieTokens.GUEST_ID);
+    if (!guestId) {
+      Cookies.set(CookieTokens.GUEST_ID, uuidv4());
+    }
+    setClientCookie(CookieTokens.USER_ID, null);
+
+    resetUserSession();
+  };
+
+  const resetUserSession = () => {
+    setUserAddresses([]);
+    Cookies.remove(CookieTokens.USER_ID);
+    Cookies.remove(CookieTokens.ACCESS_TOKEN);
+    Cookies.remove(CookieTokens.REFRESH_TOKEN);
+  };
+
+  const handleAuthenticatedUser = async (
+    user: GetUserByIdQuery["user_by_pk"]
+  ) => {
+    try {
+      Cookies.remove(CookieTokens.GUEST_ID);
+      const {
+        data: { user_by_pk },
+      } = await getUserAddressById(user.id);
+      setUserAddresses(user_by_pk.user_addresses);
+    } catch (error) {
+      console.error("Error fetching user addresses:", error);
+    }
+  };
 
   return (
     <AuthContext.Provider value={{ user, userAddresses }}>

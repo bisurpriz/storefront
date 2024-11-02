@@ -2,7 +2,6 @@
 
 const nextConfig = {
   experimental: {
-    ppr: true,
     reactCompiler: true,
     forceSwcTransforms: true,
     scrollRestoration: true,
@@ -14,10 +13,10 @@ const nextConfig = {
       "yup",
       "zustand",
       "react-hook-form",
-      "swiper",
       "react-transition-progress",
       "@radix-ui",
       "sonner",
+      "embla-carousel-react",
     ],
     serverActions: {
       bodySizeLimit: "20mb",

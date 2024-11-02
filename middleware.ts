@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { CookieTokens } from "./app/@auth/contants";
-import { verify } from "jsonwebtoken";
 
 export function middleware(request) {
   const path = request.nextUrl.pathname;

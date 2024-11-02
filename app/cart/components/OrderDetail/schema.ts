@@ -1,9 +1,6 @@
 import { boolean, object, string } from "yup";
 
 export const OrderDetailSchema = object({
-  city: object().required("İl alanı zorunludur."),
-  district: object().required("İlçe alanı zorunludur."),
-  quarter: object().required("Mahalle alanı zorunludur."),
   address: string().required("Adres alanı zorunludur."),
   receiver_name: string().required("Alıcı adı zorunludur."),
   receiver_phone: string().required("Alıcı telefonu zorunludur."),

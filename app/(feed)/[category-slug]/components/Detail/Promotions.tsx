@@ -28,7 +28,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
               icon={promotion.icon}
               size="small"
               rounded="semi"
-              variant="outlined"
+              variant="soft"
             />
           ))}
       </div>

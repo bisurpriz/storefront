@@ -164,6 +164,13 @@ query getProductsForInitialCart($ids: [bigint!]) {
 
 query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    tenant {
+      tenants {
+        tenant_shipping_places {
+          places
+        }
+      }
+    }
     user_favorites_aggregate {
       aggregate {
         count
@@ -177,6 +184,13 @@ query getProductActionData($id: bigint!) @cached(ttl: 180) {
 
 query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
+    tenant {
+      tenants {
+        tenant_shipping_places {
+          places
+        }
+      }
+    }
     user_favorites_aggregate {
       aggregate {
         count
@@ -198,6 +212,12 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     last_order_time
     score
     properties
+    slug
+    product_categories {
+      category {
+        slug
+      }
+    }
     discount_price
     product_customizable_areas {
       customizable_area {

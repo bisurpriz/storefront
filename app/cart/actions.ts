@@ -47,9 +47,10 @@ export const createOrderAction = async (
       data: null,
       status: "error",
     };
+  const { get } = await cookies();
 
   const user_id = await readIdFromCookies();
-  const guestId = await cookies().get(CookieTokens.GUEST_ID)?.value;
+  const guestId = get(CookieTokens.GUEST_ID)?.value;
 
   const {
     object: { tenant_orders, order_addresses },
@@ -128,8 +129,10 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       delivery_type: item.delivery_type,
     }));
 
+    const { get } = await cookies();
+
     const userId = await checkUserId();
-    const guest_id = cookies().get(CookieTokens.GUEST_ID)?.value;
+    const guest_id = get(CookieTokens.GUEST_ID)?.value;
     const { data: cartData } = await mutate<
       UpdateDbCartMutation,
       UpdateDbCartMutationVariables
@@ -164,7 +167,8 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
 export const getCart = async (user_id: string) => {
   const userId = user_id || (await checkUserId());
-  const guestId = cookies().get(CookieTokens.GUEST_ID)?.value;
+  const { get } = await cookies();
+  const guestId = get(CookieTokens.GUEST_ID)?.value;
 
   if (!userId && !guestId) {
     return {

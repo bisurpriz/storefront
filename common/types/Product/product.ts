@@ -52,3 +52,13 @@ export interface Product {
     }[];
   };
 }
+
+export interface IPlace {
+  label: string;
+  placeId: string;
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+}

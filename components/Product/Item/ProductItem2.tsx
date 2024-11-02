@@ -117,68 +117,64 @@ export default function ProductItem2(props: ProductItemProps) {
         id,
         slug,
       })}
-      target={!isTablet ? "_blank" : "_self"}
+      as="image"
       className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
+      {...(!isTablet && { target: "_blank" })}
     >
-      <div className="relative flex-1 col-span-4">
-        <motion.div
-          key={id}
-          className="w-full h-80 max-sm:h-fit"
-          layoutId={`image-${id}`}
-          animate={{ opacity: 1 }}
-        >
-          <Image
-            src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
-            alt={name}
-            className="w-full h-full object-cover"
-            fill
-            sizes={
-              "(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+      <div className="relative flex-1 col-span-4 row-span-full">
+        <Image
+          src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
+          alt={name}
+          className="w-full h-80 max-lg:h-auto object-cover max-sm:h-full"
+          sizes={
+            "(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+          }
+          width={250}
+          height={250}
+        />
+        <div
+          className={cn(
+            "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
+            {
+              hidden:
+                !(Array.isArray(image_url) && image_url.length > 1) || isTablet,
             }
-          />
+          )}
+          onMouseLeave={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setHoveredImageIndex(null);
+          }}
+        >
+          {Array.from({ length: image_url.length }).map((_, i) => (
+            <div
+              key={i}
+              className={cn("h-full w-full flex items-end")}
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setHoveredImageIndex(i);
+              }}
+            />
+          ))}
           <div
             className={cn(
-              "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
+              "absolute bottom-2 left-0 w-full flex items-center justify-center",
               {
                 hidden: !(Array.isArray(image_url) && image_url.length > 1),
               }
             )}
-            onMouseLeave={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setHoveredImageIndex(null);
-            }}
           >
             {Array.from({ length: image_url.length }).map((_, i) => (
-              <div
+              <span
                 key={i}
-                className={cn("h-full w-full flex items-end")}
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  setHoveredImageIndex(i);
-                }}
+                className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
+                  "bg-gray-400": i !== hoveredImageIndex,
+                })}
               />
             ))}
-            <div
-              className={cn(
-                "absolute bottom-2 left-0 w-full flex items-center justify-center",
-                {
-                  hidden: !(Array.isArray(image_url) && image_url.length > 1),
-                }
-              )}
-            >
-              {Array.from({ length: image_url.length }).map((_, i) => (
-                <span
-                  key={i}
-                  className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
-                    "bg-gray-400": i !== hoveredImageIndex,
-                  })}
-                />
-              ))}
-            </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="max-sm:hidden">
           <ProductCardStamps
@@ -201,16 +197,22 @@ export default function ProductItem2(props: ProductItemProps) {
 
       <div className="p-4 pt-2 space-y-4 max-sm:space-y-1 max-sm:p-2 col-span-8">
         <div className="flex justify-between items-start">
-          <Tooltip>
-            <TooltipTrigger>
-              <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start !leading-none max-md:h-7 h-8 max-md:font-normal text-gray-800 line-clamp-2">
-                {name}
-              </h3>
-            </TooltipTrigger>
-            <TooltipContent avoidCollisions={true} sideOffset={10} side="top">
+          {isTablet ? (
+            <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
               {name}
-            </TooltipContent>
-          </Tooltip>
+            </h3>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger>
+                <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
+                  {name}
+                </h3>
+              </TooltipTrigger>
+              <TooltipContent avoidCollisions={true} sideOffset={10} side="top">
+                {name}
+              </TooltipContent>
+            </Tooltip>
+          )}
 
           <Button
             variant="ghost"

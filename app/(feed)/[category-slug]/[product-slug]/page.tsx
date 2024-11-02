@@ -6,25 +6,15 @@ import {
   GetProductImagesQuery,
   GetProductImagesQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
-import dynamic from "next/dynamic";
-import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
 import { redirect } from "next/navigation";
+import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { WithContext, Product } from "schema-dts";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const DynamicGallery = dynamic(
-  () => import("@/components/Product/DetailImageGallery"),
-  {
-    ssr: false,
-    loading: () => <ProductImageGalleryLoading />,
-  }
-);
-
-const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
+const ProductImageCarouselPage: FC<PageProps> = async (props) => {
+  const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
   if (!id) {
@@ -45,7 +35,26 @@ const ProductImageCarouselPage: FC<Props> = async ({ searchParams }) => {
     redirect("/");
   }
 
-  return <DynamicGallery images={data?.product.image_url} />;
+  const viewport = await getServerSideViewPort();
+
+  const productData: WithContext<Product> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    image: getImageUrlFromPath(data.product.image_url[0]),
+  };
+
+  return (
+    <>
+      <NewDesignGallery
+        images={data.product.image_url}
+        isMobile={viewport !== "desktop"}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
+      />
+    </>
+  );
 };
 
 export default ProductImageCarouselPage;

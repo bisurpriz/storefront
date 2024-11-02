@@ -46,12 +46,6 @@
   }
 
 
-  .swiper-button-next,
-  .swiper-button-prev {
-    @apply bg-white rounded-full shadow-md text-primary
-  }
-
-
 
 
 
@@ -101,16 +95,6 @@
 }
 
 
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  color: #8dbb6b;
-
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  text-shadow: 0 0 5px hsl(var(--primary));
-}
 
 
 @layer base {
@@ -123,8 +107,8 @@
     --popover-foreground: 0 0% 3.9%;
     --primary: 99 44% 57%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 290 12% 49%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 34 100% 47%;
+    --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -140,6 +124,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --warning: 12 76% 61%;
+    --warning-foreground: 0 0% 98%;
+    --success: 120 100% 50%;
+    --success-foreground: 0 0% 98%;
   }
 
   .dark {
@@ -167,6 +155,12 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
+    --warning: 12 76% 61%;
+    --warning-foreground: 0 0% 98%;
+    --success: 120 100% 50%;
+    --success-foreground: 0 0% 98%;
+
   }
 }
 

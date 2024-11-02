@@ -12,30 +12,33 @@ import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, startTransition } from "react";
-import { checkProductLocation } from "@/app/(feed)/actions";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
 import HeartFill from "@/components/Icons/HeartFill";
+import { IPlace } from "@/common/types/Product/product";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { BadgeCheck, Truck } from "lucide-react";
 
 interface Props {
   productId: number;
   isFavorite: boolean;
   favoriteCount?: number;
-  locationId: number;
-  locType: string;
+  places: IPlace[];
+  selectedLocation: IPlace;
 }
 
 const ProductActions = ({
   productId,
   isFavorite,
   favoriteCount,
-  locType,
-  locationId,
+  places,
+  selectedLocation,
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
   const { selectedProduct } = useProduct();
+  const [isPending, startTransition] = useTransition();
 
   const { addToCart, loading, deliveryTime } = useCart();
   const { replace } = useRouter();
@@ -64,42 +67,106 @@ const ProductActions = ({
   };
 
   const [error, setError] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   const willShowError =
     !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
-    if (!locationId || !locType) return;
+    startTransition(() => {
+      if (!selectedLocation) return;
+      const areaLevel1 = selectedLocation?.address_components?.find((x) =>
+        x.types.includes("administrative_area_level_1")
+      )?.short_name;
 
-    checkProductLocation(locationId, locType, productId).then((isAvailable) => {
-      if (!isAvailable) {
-        setShowPlaceWarning(true);
-      } else {
-        setShowPlaceWarning(false);
+      const areaLevel4 = selectedLocation?.address_components?.find((x) =>
+        x.types.includes("administrative_area_level_4")
+      )?.short_name;
+
+      if (areaLevel1 && !areaLevel4) {
+        const isOK = places.some(
+          (place) =>
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_1"] ===
+            areaLevel1
+        );
+
+        return setShowPlaceWarning(!isOK);
+      }
+
+      if (areaLevel1 && areaLevel4) {
+        const isOK = places.some(
+          (place) =>
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_1"] ===
+              areaLevel1 &&
+            //@ts-ignore
+            place.addressComponents["administrative_area_level_4"] ===
+              areaLevel4
+        );
+        setShowPlaceWarning(!isOK);
       }
     });
-  }, [locationId, locType]);
+  }, [selectedLocation]);
+
+  const getAvailableLevel4 = (
+    places: {
+      addressComponents: {
+        [key: string]: string;
+      };
+      label: string;
+      placeId: string;
+    }[]
+  ) => {
+    const availablePlaces = places.map(
+      (place) => place.addressComponents["administrative_area_level_4"]
+    );
+
+    return availablePlaces.findIndex(
+      (x) =>
+        x ===
+        selectedLocation?.address_components?.find((x) =>
+          x.types.includes("administrative_area_level_4")
+        )?.short_name
+    ) === -1
+      ? availablePlaces
+      : [];
+  };
+
+  const availableLevel4 = selectedLocation && getAvailableLevel4(places as any);
 
   return (
     <>
-      {showPlaceWarning && (
-        <div className="p-2 px-4 max-md:py-1 max-md:px-2 bg-purple-100 bg-opacity-50 rounded-md my-2">
-          <p className="text-xs text-slate-700 font-normal">
-            Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
-          </p>
-        </div>
+      {availableLevel4?.length > 0 && (
+        <Alert variant="default">
+          <BadgeCheck />
+          <AlertTitle>Uyarı !</AlertTitle>
+          <AlertDescription>
+            Bu ürün sadece <strong>"{availableLevel4.join(", ")}"</strong>{" "}
+            mahallelerine teslimat yapılmaktadır.
+          </AlertDescription>
+        </Alert>
       )}
-      <div className="flex items-center justify-start gap-4 py-2 max-md:mt-2 max-md:py-2 max-md:pt-0 font-mono">
+      {availableLevel4?.length === 0 && showPlaceWarning && (
+        <Alert variant="destructive" className="mt-2">
+          <Truck />
+          <AlertTitle>Dikkat !</AlertTitle>
+          <AlertDescription>
+            Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <div className="flex my-2 space-x-2">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}
-          className={clsx("w-full")}
-          disabled={loading || error || showPlaceWarning}
+          className={clsx("basis-4/5 flex items-center justify-center px-0")}
+          disabled={loading || error || showPlaceWarning || isPending}
           onClick={() => {
             if (
               parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
-              !locationId
+              !selectedLocation
             ) {
               if (willShowError) {
                 setError(true);
@@ -111,8 +178,8 @@ const ProductActions = ({
                   id: productId,
                   type: "add",
                   deliveryLocation: {
-                    id: locationId,
-                    type: locType,
+                    id: 0,
+                    type: "",
                   },
                 });
               }
@@ -122,8 +189,8 @@ const ProductActions = ({
               id: productId,
               type: "add",
               deliveryLocation: {
-                id: locationId,
-                type: locType,
+                id: 0,
+                type: "",
               },
             });
           }}
@@ -131,21 +198,30 @@ const ProductActions = ({
         >
           Sepete Ekle
         </Button>
+        <Button
+          size="lg"
+          variant={error ? "destructive" : "secondary"}
+          className={clsx("basis-4/5 flex items-center justify-center px-0")}
+          disabled={loading || error || showPlaceWarning || isPending}
+          loading={loading}
+          onClick={() => console.log("Hemen Al butonuna tıklandı")}
+        >
+          Hemen Al
+        </Button>
 
-        <div className="flex items-end gap-2 flex-1">
-          <Button
-            size="lg"
-            variant={isFavoriteState ? "destructive" : "outline"}
-            icon={
-              isFavoriteState ? (
-                <HeartFill className="w-8 h-8 text-white" />
-              ) : (
-                <Heart className="w-8 h-8 text-red-500" />
-              )
-            }
-            onClick={handleFavorite}
-          />
-        </div>
+        <Button
+          size="lg"
+          className="basis-1/5 flex items-center justify-center px-0"
+          variant={isFavoriteState ? "destructive" : "outline"}
+          icon={
+            isFavoriteState ? (
+              <HeartFill className="w-8 h-8 text-white" />
+            ) : (
+              <Heart className="w-8 h-8 text-red-500" />
+            )
+          }
+          onClick={handleFavorite}
+        />
       </div>
       {error && (
         <p

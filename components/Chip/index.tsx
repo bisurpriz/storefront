@@ -63,49 +63,49 @@ const Chip: React.FC<ChipProps> = ({
     primary: {
       outlined: "border border-primary text-primary",
       filled: "bg-primary text-white",
-      soft: "bg-primary text-primary",
+      soft: "bg-primary/40 text-primary",
     },
     secondary: {
       outlined: "border border-secondary text-secondary",
       filled: "bg-secondary text-white",
-      soft: "bg-slate-200 text-secondary",
+      soft: "bg-slate-200/40 text-secondary",
     },
     error: {
       outlined: "border border-red-500 text-red-700",
       filled: "bg-red-500 text-white",
-      soft: "bg-red-100 text-red-700",
+      soft: "bg-red-100/40 text-red-700",
     },
     info: {
       outlined: "border border-cyan-500 text-cyan-700",
       filled: "bg-cyan-500 text-white",
-      soft: "bg-cyan-100 text-cyan-700",
+      soft: "bg-cyan-100/40 text-cyan-700",
     },
     warning: {
       outlined: "border border-yellow-500 text-yellow-700",
       filled: "bg-yellow-500 text-white",
-      soft: "bg-yellow-100 text-yellow-700",
+      soft: "bg-yellow-100/40 text-yellow-700",
     },
     success: {
       outlined: "border border-green-500 text-green-700",
       filled: "bg-green-500 text-white",
-      soft: "bg-green-100 text-green-700",
+      soft: "bg-green-100/40 text-green-700",
     },
     purple: {
       outlined: "border border-purple-400 text-purple-800",
       filled: "bg-purple-500 text-white",
-      soft: "bg-purple-100 text-purple-800",
+      soft: "bg-purple-100/40 text-purple-800",
     },
     gray: {
       outlined: "border border-gray-400 text-gray-700",
       filled: "bg-gray-400 text-white",
-      soft: "bg-gray-200 text-gray-700",
+      soft: "bg-gray-200/40 text-gray-700",
     },
   };
 
   const roundedClasses = {
     full: "rounded-full",
-    semi: "rounded-tl-lg rounded-br-lg",
-    low: "rounded-tl-md rounded-br-md",
+    semi: "rounded-lg rounded-lg",
+    low: "rounded-md rounded-md",
     none: "rounded-none",
   };
 

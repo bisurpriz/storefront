@@ -28,8 +28,10 @@ import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
-
-export const experimental_ppr = true;
+import Script from "next/script";
+import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
+import { cookies } from "next/headers";
+import { CookieTokens } from "./@auth/contants";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -108,6 +110,11 @@ export default async function RootLayout({
     fetchPolicy: "no-cache",
   });
 
+  const cookie = await cookies();
+
+  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
+  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
+
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
@@ -118,8 +125,14 @@ export default async function RootLayout({
         id="root"
       >
         <ProgressBarProvider>
-          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0" />
+          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0 z-[1000]" />
           <TagManagerNoscript />
+          <Script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
+            id="googleMapsScript"
+            strategy="beforeInteractive"
+            async={true}
+          />
           <AuthProvider user={data?.user}>
             <TooltipProvider>
               <ResponsiveDialogProvider>
@@ -142,6 +155,11 @@ export default async function RootLayout({
                           </Suspense>
                           <Content>{children}</Content>
                           {auth}
+                          <Suspense>
+                            {!selectedPlaces && !hasSeenLocationModal && (
+                              <QuarterSelectorModal />
+                            )}
+                          </Suspense>
                         </SearchProductProvider>
                       </CartProvider>
                     </CategoryProvider>

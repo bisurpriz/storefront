@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/LogoutButton";
-import PhoneInput from "@/components/PhoneInput";
+import { PhoneInput } from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
 import {
   UpdateUserByIdDocument,

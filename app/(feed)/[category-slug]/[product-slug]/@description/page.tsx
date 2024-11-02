@@ -10,14 +10,11 @@ import {
   GetProductDescriptionQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
 import ProductDescriptionLoadingPage from "./loading";
+import { Product, WithContext } from "schema-dts";
+import { PageProps } from "@/.next/types/app/page";
 
-type Props = {
-  searchParams: {
-    [key: string]: string | number;
-  };
-};
-
-const ProductDescriptionPage: FC<Props> = async ({ searchParams }) => {
+const ProductDescriptionPage: FC<PageProps> = async (props) => {
+  const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
   const {
@@ -38,20 +35,39 @@ const ProductDescriptionPage: FC<Props> = async ({ searchParams }) => {
 
   const { description, properties } = product;
 
+  const productData: WithContext<Product> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    description: product.description?.replace(/<[^>]*>/g, ""),
+    additionalProperty: parseJson(product?.properties)?.map(
+      (prop: { name: string; value: string }) => ({
+        "@type": "PropertyValue",
+        name: prop.name,
+        value: prop.value,
+      })
+    ),
+  };
+
   return (
-    <AccordionItem
-      content={
-        <ProductDescription
-          description={description}
-          notes={[]}
-          specifications={parseJson(properties)}
-        />
-      }
-      title="Ürün Detayları"
-      bordered
-      isOpen
-      className="rounded-lg"
-    />
+    <>
+      <AccordionItem
+        content={
+          <ProductDescription
+            description={description}
+            notes={[]}
+            specifications={parseJson(properties)}
+          />
+        }
+        title="Ürün Detayları"
+        bordered
+        isOpen
+        className="rounded-lg"
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
+      />
+    </>
   );
 };
 

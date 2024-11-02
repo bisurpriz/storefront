@@ -2,8 +2,9 @@ import { CookieTokens } from "@/app/@auth/contants";
 import { FILTER_KEYS } from "@/common/enums/Product/product";
 import { cookies } from "next/headers";
 import { parseJson } from "./format";
+import { IPlace } from "@/common/types/Product/product";
 
-export const createTypesenseQueryMapper = (searchParams: {
+export const createTypesenseQueryMapper = async (searchParams: {
   [key: string]: string | string[] | undefined;
 }) => {
   let filter_by = Object.keys(searchParams).map((key) => {
@@ -30,19 +31,29 @@ export const createTypesenseQueryMapper = (searchParams: {
 
   filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
+  const { get } = await cookies();
+  const selectedLocation = parseJson(
+    get(CookieTokens.LOCATION_ID)?.value
+  ) as IPlace;
 
-  const cookie = cookies().get(CookieTokens.LOCATION_ID)?.value;
-  const locationId = parseJson(cookie)?.id;
-  const locationType = parseJson(cookie)?.type;
+  if (selectedLocation) {
+    const areaLevel1 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_1")
+    )?.short_name;
+    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_2")
+    )?.short_name;
 
-  const locationFilterQuery = {
-    quarter: `quarters:=[${locationId}]`,
-    district: `districts:=[${locationId}]`,
-    city: `cities:=[${locationId}]`,
-  };
-
-  if (locationId && locationType) {
-    filter_by.push(locationFilterQuery[locationType]);
+    if (areaLevel1) {
+      filter_by.push(
+        `places.addressComponents.administrative_area_level_1:=[${areaLevel1}]`
+      );
+    }
+    if (areaLevel2) {
+      filter_by.push(
+        `places.addressComponents.administrative_area_level_2:=[${areaLevel2}]`
+      );
+    }
   }
 
   return {
