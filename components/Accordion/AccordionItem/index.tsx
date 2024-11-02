@@ -25,7 +25,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   const [open, setOpen] = useState<boolean>(isOpen ?? false);
 
   const isOpenClass = open ? "border-b" : "";
-  const isBordered = bordered ? "border border-b-0 last:border-b" : "";
+  const isBordered = bordered ? "border" : "";
 
   const handleToggle = () => {
     if (onToggle) {

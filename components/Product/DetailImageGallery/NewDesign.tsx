@@ -13,11 +13,19 @@ import {
 } from "@/components/ui/carousel";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { cn } from "@/lib/utils";
+import useResponsive from "@/hooks/useResponsive";
+import ProductImageGalleryLoading from "./DetailImageGallerySuspense";
 
 export default function NewDesignGallery({ images, isMobile }) {
   const [mainApi, setMainApi] = React.useState<CarouselApi>();
   const [thumbnailApi, setThumbnailApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+  const { isLargeDesktop } = useResponsive();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (!mainApi || !thumbnailApi) {
@@ -43,6 +51,10 @@ export default function NewDesignGallery({ images, isMobile }) {
     [mainApi, thumbnailApi, isMobile]
   );
 
+  if (!mounted) {
+    return <ProductImageGalleryLoading />;
+  }
+
   return (
     <div className="flex flex-col xl:flex-row gap-2 mx-auto">
       <div className="w-full xl:w-[100px] order-2 xl:order-1">
@@ -51,12 +63,14 @@ export default function NewDesignGallery({ images, isMobile }) {
           opts={{
             align: "start",
           }}
-          orientation={isMobile ? "horizontal" : "vertical"}
+          orientation={isMobile || isLargeDesktop ? "horizontal" : "vertical"}
           className={cn("w-full")}
         >
           <CarouselContent
             className={cn(
-              isMobile ? "-ml-1 w-full h-auto" : "-mt-1 w-[100px] h-[500px]"
+              isMobile || isLargeDesktop
+                ? "-ml-1 w-full h-auto"
+                : "-mt-1 w-[100px] h-[500px]"
             )}
           >
             {images.map((image, index) => (
@@ -64,7 +78,9 @@ export default function NewDesignGallery({ images, isMobile }) {
                 key={image}
                 className={cn(
                   "p-0",
-                  isMobile ? "basis-1/4 pl-1" : "basis-1/5 pt-1"
+                  isMobile || isLargeDesktop
+                    ? "basis-1/4 pl-1"
+                    : "basis-1/5 pt-1"
                 )}
                 onClick={() => onSelect(index)}
               >

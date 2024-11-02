@@ -47,7 +47,7 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
     <>
       <NewDesignGallery
         images={data.product.image_url}
-        isMobile={viewport !== "desktop"}
+        isMobile={viewport === "mobile"}
       />
       <script
         type="application/ld+json"
