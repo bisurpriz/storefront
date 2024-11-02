@@ -77,7 +77,7 @@ const ProductActions = ({
 
   useEffect(() => {
     startTransition(() => {
-      if (!selectedLocation || (!places && !isSameDay)) return;
+      if (!selectedLocation || !places || !isSameDay) return;
       const areaLevel1 = selectedLocation?.address_components?.find((x) =>
         x.types.includes("administrative_area_level_1")
       )?.short_name;
