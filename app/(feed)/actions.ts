@@ -34,6 +34,10 @@ import { gql } from "@apollo/client";
 import { SearchParams } from "typesense/lib/Typesense/Documents";
 import { PER_REQUEST } from "../constants";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
+import { cookies } from "next/headers";
+import { parseJson } from "@/utils/format";
+import { CookieTokens } from "../@auth/contants";
+import { IPlace } from "@/common/types/Product/product";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
   const { data } = await query<
@@ -153,8 +157,13 @@ export const searchProductsv1 = async (
   params: SearchParams = {},
   filters: { [key: string]: string | string[] | undefined } = {}
 ) => {
+  const { get } = await cookies();
+  const selectedLocation = parseJson(
+    get(CookieTokens.LOCATION_ID)?.value
+  ) as IPlace;
+
   if (!filters) return { hits: [], found: 0 };
-  const filterBy = await createTypesenseQueryMapper(filters);
+  const filterBy = await createTypesenseQueryMapper(filters, selectedLocation);
   try {
     const response = await searchClient
       .collections("products")

@@ -4,9 +4,12 @@ import { cookies } from "next/headers";
 import { parseJson } from "./format";
 import { IPlace } from "@/common/types/Product/product";
 
-export const createTypesenseQueryMapper = async (searchParams: {
-  [key: string]: string | string[] | undefined;
-}) => {
+export const createTypesenseQueryMapper = async (
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  },
+  selectedLocation: IPlace
+) => {
   let filter_by = Object.keys(searchParams).map((key) => {
     switch (key) {
       case FILTER_KEYS.CATEGORY:
@@ -31,17 +34,13 @@ export const createTypesenseQueryMapper = async (searchParams: {
 
   filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
-  const { get } = await cookies();
-  const selectedLocation = parseJson(
-    get(CookieTokens.LOCATION_ID)?.value
-  ) as IPlace;
 
   if (selectedLocation) {
     const areaLevel1 = selectedLocation?.address_components?.find((x) =>
       x.types.includes("administrative_area_level_1")
     )?.short_name;
-    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_2")
+    const areaLevel4 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_4")
     )?.short_name;
 
     if (areaLevel1) {
@@ -49,9 +48,9 @@ export const createTypesenseQueryMapper = async (searchParams: {
         `places.addressComponents.administrative_area_level_1:=[${areaLevel1}]`
       );
     }
-    if (areaLevel2) {
+    if (areaLevel4) {
       filter_by.push(
-        `places.addressComponents.administrative_area_level_2:=[${areaLevel2}]`
+        `places.addressComponents.administrative_area_level_4:=[${areaLevel4}]`
       );
     }
   }
