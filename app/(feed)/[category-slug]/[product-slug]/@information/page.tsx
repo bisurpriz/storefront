@@ -9,6 +9,22 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { goToProductDetail } from "@/utils/linkClickEvent";
 import { parseJson } from "@/utils/format";
 import { PageProps } from "@/.next/types/app/page";
+import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+
+export async function generateMetadata({ searchParams }) {
+  const params = await searchParams;
+
+  const productId = Number(params["pid"]);
+
+  const {
+    data: { product },
+  } = await getProductInformation(productId);
+
+  return {
+    title: getBrandWithTitle(product.name),
+    image: product.image_url[0],
+  };
+}
 
 const ProductInformationPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
