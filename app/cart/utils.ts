@@ -112,29 +112,3 @@ export const createOrderDataMapper = (
     },
   };
 };
-
-// const getTexts = (specialInstructions) => {
-//   // will return an object of texts { content: "text"}
-//   if (!specialInstructions) return [];
-//   const texts = Object.keys(specialInstructions)
-//     .filter(
-//       (key) => key.includes("text") && specialInstructions[key] !== null
-//     )
-//     .map((key) => ({
-//       content: specialInstructions[key],
-//     }));
-//   return texts;
-// };
-
-// const getImages = (specialInstructions) => {
-//   // will return an object of images { content: "image"}
-//   if (!specialInstructions) return [];
-//   const images = Object.keys(specialInstructions)
-//     .filter(
-//       (key) => key.includes("image") && specialInstructions[key] !== null
-//     )
-//     .map((key) => ({
-//       image_url: specialInstructions[key],
-//     }));
-//   return images;
-// };

@@ -20,7 +20,7 @@ export type GetProductByIdForCartQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductByIdForCartQuery = { product_by_pk?: { id: any, image_url?: Array<string> | null, name: string, price?: number | null, delivery_type?: Types.Delivery_Type_Enum | null, is_service_free?: boolean | null, score?: number | null, discount_price?: number | null, product_categories: Array<{ category: { id: number, name: string, slug?: string | null } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, commision_rate?: number | null, iyzi_sub_merchant_key?: string | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } | null };
+export type GetProductByIdForCartQuery = { product_by_pk?: { id: any, image_url?: Array<string> | null, name: string, price?: number | null, delivery_type?: Types.Delivery_Type_Enum | null, is_service_free?: boolean | null, score?: number | null, discount_price?: number | null, product_categories: Array<{ category: { id: number, name: string, slug?: string | null } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, commision_rate?: number | null, iyzi_sub_merchant_key?: string | null, tenant_shipping_places: Array<{ places: any }> }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } | null };
 
 
 export const UpdateDbCartDocument = gql`
@@ -72,6 +72,9 @@ export const GetProductByIdForCartDocument = gql`
         name
         commision_rate
         iyzi_sub_merchant_key
+        tenant_shipping_places {
+          places
+        }
       }
     }
     discount_price

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useRef, useEffect, useState, useMemo } from "react";
+import React, { FC, useRef, useEffect, useState } from "react";
 
 type CountdownTimerProps = {
   time: number;
@@ -32,11 +32,9 @@ const CountdownTimer: FC<CountdownTimerProps> = ({
     };
   }, []);
 
-  const formattedCount = useMemo(() => {
-    const minutes = Math.floor(count / 60);
-    const seconds = count % 60;
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-  }, [count]);
+  const formattedCount = `${Math.floor(count / 60)}:${
+    count % 60 < 10 ? `0${count % 60}` : count % 60
+  }`;
 
   return (
     <div className={className}>

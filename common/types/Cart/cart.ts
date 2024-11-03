@@ -1,5 +1,4 @@
-import { DeliveryLocation } from "../Order/order";
-import { Product } from "../Product/product";
+import { IPlace, Product } from "../Product/product";
 
 export interface ProductForCart
   extends Pick<
@@ -19,7 +18,7 @@ export interface ProductForCart
   deliveryDate?: Date;
   deliveryTime?: string;
   card_note?: string;
-  deliveryLocation?: DeliveryLocation;
+  deliveryLocation?: IPlace;
 }
 
 export interface CostData {

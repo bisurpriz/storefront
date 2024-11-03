@@ -5,7 +5,6 @@ import Backdrop from "./Backdrop";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import clsx from "clsx";
 import useResponsive from "@/hooks/useResponsive";
-import { useMemo } from "react";
 
 const Modal = ({
   handleClose,
@@ -18,17 +17,14 @@ const Modal = ({
 }) => {
   const { isTablet } = useResponsive();
 
-  const variant = useMemo(
-    () => ({
-      mobileHidden: { height: 0 },
-      mobileVisible: { height: "100dvh" },
-      mobileExit: { height: 0 },
-      hidden: { opacity: 0, scale: 0.8 },
-      visible: { opacity: 1, scale: 1 },
-      exit: { opacity: 0, scale: 0.8 },
-    }),
-    [isTablet]
-  );
+  const variant = {
+    mobileHidden: { height: 0 },
+    mobileVisible: { height: "100dvh" },
+    mobileExit: { height: 0 },
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.8 },
+  };
 
   return (
     <AnimationExitProvider show={open}>

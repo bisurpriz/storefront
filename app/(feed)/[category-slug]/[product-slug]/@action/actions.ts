@@ -34,6 +34,7 @@ export const getProductActions = async (
         user_favorites_aggregate: favs?.data?.product?.user_favorites_aggregate,
         tenant: favs.data.product.tenant,
         delivery_type: favs.data.product.delivery_type,
+        delivery_time_ranges: favs.data.product.delivery_time_ranges,
       },
     };
   } else {
@@ -53,6 +54,7 @@ export const getProductActions = async (
         user_favorites_aggregate: anon?.data?.product?.user_favorites_aggregate,
         tenant: anon.data.product.tenant,
         delivery_type: anon.data.product.delivery_type,
+        delivery_time_ranges: anon.data.product.delivery_time_ranges,
       },
     };
   }

@@ -78,7 +78,7 @@ export default function ProductItem2(props: ProductItemProps) {
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [isPending, startTransition] = useTransition();
   const { user } = useUser();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const { isTablet } = useResponsive();
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function ProductItem2(props: ProductItemProps) {
 
     startTransition(() => {
       if (!user) {
-        replace("/login");
+        push("/login");
         return;
       }
 

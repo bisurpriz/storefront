@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { TimeRange } from "../HourSelect/utils";
-import { DeliveryTime } from "@/contexts/CartContext";
 import { localeFormat } from "@/utils/format";
+import { DeliveryTime } from "@/contexts/CartContext/types";
 
 type DeliveryDateTimePickerProps = {
   deliveryTimes: TimeRange[] | null;
@@ -71,6 +71,15 @@ export default function DeliveryDateTimePicker({
       locale: tr,
     })} - ${format(parse(end, "HH:mm", new Date()), "HH:mm", { locale: tr })}`;
   };
+
+  useEffect(() => {
+    if (days && date)
+      setSelectedButtonIndex(
+        days.findIndex(
+          (day) => date.toDateString() === day.value.toDateString()
+        )
+      );
+  }, [date]);
 
   return (
     <div className="w-full space-y-2">

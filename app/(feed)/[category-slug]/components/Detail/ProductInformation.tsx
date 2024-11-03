@@ -6,7 +6,7 @@ import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
 import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { useCart } from "@/contexts/CartContext";
@@ -43,6 +43,7 @@ type ProductInformationProps = {
   deliveryTimeRanges: string;
   isCustomizable?: boolean;
   lastOrderTime?: string;
+  productId: number;
 };
 
 const DynamicGoogleLocationSelect = dynamic(
@@ -64,6 +65,7 @@ const defaultRating = {
 };
 
 const ProductInformation = ({
+  productId,
   name,
   price,
   rateCounts,
@@ -80,6 +82,7 @@ const ProductInformation = ({
   lastOrderTime,
 }: ProductInformationProps) => {
   const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
+  const [productInCart, setProductInCart] = useState(null);
 
   const manipulatedRateCounts = Object.keys(defaultRating).reduce(
     (acc, key) => {
@@ -97,13 +100,17 @@ const ProductInformation = ({
 
   const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
 
+  useEffect(() => {
+    setProductInCart(isProductInCart(productId));
+  }, [productId]);
+
   const isSettedDeliveryTime =
-    !isProductInCart || !deliveryTime
+    !productInCart || !deliveryTime
       ? false
       : Boolean(
-          new Date(isProductInCart.deliveryDate).getDay() !==
+          new Date(productInCart.deliveryDate).getDay() !==
             new Date(deliveryTime.day).getDay()
-        ) || Boolean(isProductInCart.deliveryTime !== deliveryTime.hour);
+        ) || Boolean(productInCart.deliveryTime !== deliveryTime.hour);
 
   useEffect(() => {
     return () => {

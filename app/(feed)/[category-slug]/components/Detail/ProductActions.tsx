@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import Heart from "@/components/Icons/Heart";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import { useProduct } from "@/contexts/ProductContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -18,14 +17,24 @@ import HeartFill from "@/components/Icons/HeartFill";
 import { IPlace } from "@/common/types/Product/product";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BadgeCheck, Truck } from "lucide-react";
+import { validateLocation } from "../utils/validateLocation";
+
+interface OwnPlace {
+  addressComponents: {
+    [key: string]: string;
+  };
+  label: string;
+  placeId: string;
+}
 
 interface Props {
   productId: number;
   isFavorite: boolean;
   favoriteCount?: number;
-  places: IPlace[];
+  places: OwnPlace[];
   selectedLocation: IPlace;
   delivery_type: "CARGO_SHIPPING" | "SAME_DAY" | "SAME_DAY_CARGO";
+  delivery_time_ranges: string;
 }
 
 const ProductActions = ({
@@ -35,23 +44,22 @@ const ProductActions = ({
   places,
   selectedLocation,
   delivery_type,
+  delivery_time_ranges,
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const { user } = useUser();
-  const { selectedProduct } = useProduct();
   const [isPending, startTransition] = useTransition();
   const isSameDay = delivery_type === "SAME_DAY";
 
   const { addToCart, loading, deliveryTime } = useCart();
-  const { replace } = useRouter();
+  const { push } = useRouter();
   const startProgress = useProgress();
-
   const handleFavorite = () => {
     startTransition(() => {
       startProgress();
       if (!user) {
-        replace("/login");
+        push("/login");
         return;
       }
 
@@ -77,38 +85,12 @@ const ProductActions = ({
 
   useEffect(() => {
     startTransition(() => {
-      if (!selectedLocation || !places || !isSameDay) return;
-      const areaLevel1 = selectedLocation?.address_components?.find((x) =>
-        x.types.includes("administrative_area_level_1")
-      )?.short_name;
-
-      const areaLevel4 = selectedLocation?.address_components?.find((x) =>
-        x.types.includes("administrative_area_level_4")
-      )?.short_name;
-
-      if (areaLevel1 && !areaLevel4) {
-        const isOK = places.some(
-          (place) =>
-            //@ts-ignore
-            place.addressComponents["administrative_area_level_1"] ===
-            areaLevel1
-        );
-
-        return setShowPlaceWarning(!isOK);
-      }
-
-      if (areaLevel1 && areaLevel4) {
-        const isOK = places.some(
-          (place) =>
-            //@ts-ignore
-            place.addressComponents["administrative_area_level_1"] ===
-              areaLevel1 &&
-            //@ts-ignore
-            place.addressComponents["administrative_area_level_4"] ===
-              areaLevel4
-        );
-        setShowPlaceWarning(!isOK);
-      }
+      validateLocation(
+        selectedLocation,
+        places,
+        isSameDay,
+        setShowPlaceWarning
+      );
     });
   }, [selectedLocation]);
 
@@ -139,6 +121,68 @@ const ProductActions = ({
   const availableLevel4 =
     selectedLocation && isSameDay && getAvailableLevel4(places as any);
 
+  const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
+
+  const handleAddToBasket = () => {
+    if (
+      isSameDay &&
+      selectedLocation &&
+      deliveryTime.day &&
+      deliveryTime.hour &&
+      hasDeliveryTimes &&
+      places?.length > 0
+    ) {
+      addToCart({
+        deliveryLocation: selectedLocation,
+        id: productId,
+        type: "add",
+        deliveryDate: deliveryTime.day.toISOString(),
+        deliveryTime: deliveryTime.hour,
+        quantity: 1,
+      });
+
+      return;
+    }
+
+    if (isSameDay && !hasDeliveryTimes) {
+      addToCart({
+        id: productId,
+        type: "add",
+        quantity: 1,
+        deliveryLocation: selectedLocation,
+      });
+      return;
+    }
+
+    if (!isSameDay) {
+      addToCart({
+        id: productId,
+        type: "add",
+        quantity: 1,
+        deliveryLocation: selectedLocation,
+      });
+      return;
+    }
+
+    if (isSameDay && hasDeliveryTimes && selectedLocation) {
+      addToCart({
+        id: productId,
+        type: "add",
+        quantity: 1,
+        deliveryDate: deliveryTime.day.toISOString(),
+        deliveryTime: deliveryTime.hour,
+        deliveryLocation: selectedLocation,
+      });
+      return;
+    }
+
+    setError(true);
+
+    timeoutRef.current = setTimeout(() => {
+      setError(false);
+    }, 3000);
+  };
+
   return (
     <>
       {availableLevel4?.length > 0 && (
@@ -167,48 +211,15 @@ const ProductActions = ({
           variant={error ? "destructive" : "default"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
           disabled={
+            isPending ||
             loading ||
             error ||
-            showPlaceWarning ||
-            isPending ||
-            (isSameDay && availableLevel4?.length > 0)
+            (isSameDay && places?.length === 0 && !hasDeliveryTimes)
           }
-          onClick={() => {
-            if (isSameDay && !selectedLocation)
-              return setShowPlaceWarning(true);
-            if (
-              parseJson(selectedProduct?.delivery_time_ranges)?.length > 0 ||
-              !selectedLocation
-            ) {
-              if (willShowError) {
-                setError(true);
-                timeoutRef.current = setTimeout(() => {
-                  setError(false);
-                }, 3000);
-              } else {
-                addToCart({
-                  id: productId,
-                  type: "add",
-                  deliveryLocation: {
-                    id: 0,
-                    type: "",
-                  },
-                });
-              }
-              return;
-            }
-            addToCart({
-              id: productId,
-              type: "add",
-              deliveryLocation: {
-                id: 0,
-                type: "",
-              },
-            });
-          }}
+          onClick={handleAddToBasket}
           loading={loading}
         >
-          {isSameDay && places?.length === 0
+          {isSameDay && places?.length === 0 && !hasDeliveryTimes
             ? "Bu ürün için gönderim yeri mevcut değil"
             : "Sepete Ekle"}
         </Button>

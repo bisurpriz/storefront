@@ -46,7 +46,12 @@ const ProductGroup = ({
         </Tooltip>
       </CardHeader>
       <CardContent className="max-sm:px-2 max-sm:pb-2">
-        <ul key={id} role="list" aria-label="Sepetimdeki Ürünler">
+        <ul
+          key={id}
+          role="list"
+          aria-label="Sepetimdeki Ürünler"
+          className="space-y-3"
+        >
           {products[id].length &&
             products[id].map((product) => (
               <CartItem {...product} key={product.id} />

@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import Rating from "./CustomRating";
 import clsx from "clsx";
 
@@ -21,11 +20,10 @@ const ReviewRating = ({
   onChange?: (value: number) => void;
   tooltips?: string[];
 }) => {
-  const reviewCountText = useMemo(() => {
-    return reviewCount > 0
+  const reviewCountText =
+    reviewCount > 0
       ? `${reviewCount} Değerlendirme`
       : "Henüz Değerlendirme Yapılmamış";
-  }, [reviewCount]);
 
   const textStyle =
     "leading-normal text-slate-400 whitespace-nowrap cursor-pointer";

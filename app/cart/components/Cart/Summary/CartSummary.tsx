@@ -33,6 +33,11 @@ const CartSummary = () => {
   const { isTablet } = useResponsive();
   const startProgress = useProgress();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const changeStep = () => {
     startTransition(() => {
@@ -73,6 +78,8 @@ const CartSummary = () => {
   const handleRemoveCoupon = async () => {
     await applyCouponCode("");
   };
+
+  if (!mounted) return null;
 
   return (
     <div

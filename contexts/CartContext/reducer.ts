@@ -1,4 +1,4 @@
-import { CartState } from ".";
+import { CartState } from "./types";
 
 export type CartAction =
   | {
