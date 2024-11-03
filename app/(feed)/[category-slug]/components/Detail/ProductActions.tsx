@@ -171,9 +171,7 @@ const ProductActions = ({
             error ||
             showPlaceWarning ||
             isPending ||
-            (isSameDay && places?.length === 0) ||
-            availableLevel4?.length > 0 ||
-            (isSameDay && !selectedLocation)
+            (isSameDay && availableLevel4?.length > 0)
           }
           onClick={() => {
             if (isSameDay && !selectedLocation)
