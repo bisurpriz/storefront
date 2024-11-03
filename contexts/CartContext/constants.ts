@@ -9,3 +9,29 @@ export const CouponMessages = {
   TOTAL_AMOUNT_LESS: "Sepet tutarı yetersiz",
   COUPON_SUCCESS: "Kupon başarıyla uygulandı",
 };
+
+export const initialCartContextData = {
+  cartState: {
+    cartItems: [],
+    cost: {
+      totalPrice: 0,
+      isCouponApplied: false,
+      couponMessage: "",
+      discountAmount: 0,
+    },
+    count: 0,
+  },
+  addToCart: () => {},
+  removeFromCart: () => {},
+  clearCart: () => {},
+  updateCartItem: () => {},
+  loading: false,
+  deliveryTime: null,
+  setDeliveryTimeHandler: () => {},
+  clearDeliveryTime: () => {},
+  isProductInCart: () => null,
+  applyCouponCode: async () => {},
+  updateCartItemNote: () => {},
+  hasCustomizableProduct: false,
+  setHasCustomizableProduct: () => {},
+};

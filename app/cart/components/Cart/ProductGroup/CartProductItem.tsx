@@ -1,11 +1,7 @@
-import { useState } from "react";
-import { Minus, Plus, X, Truck, Gift, TruckIcon, Palette } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { X, Truck, Gift, TruckIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Image from "next/image";
@@ -48,6 +44,7 @@ export default function CartItem({
   const specialTextCount = customize?.filter(
     (area) => area.customizable_area?.type === CustomizableAreaType.TEXT
   ).length;
+
   const specialImageCount = customize?.filter(
     (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
   ).length;

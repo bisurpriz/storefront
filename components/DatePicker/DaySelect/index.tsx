@@ -6,9 +6,9 @@ import HourSelect from "../HourSelect";
 import clsx from "clsx";
 import { localeFormat } from "@/utils/format";
 import { TimeRange } from "../HourSelect/utils";
-import { DeliveryTime } from "@/contexts/CartContext";
 import RemainingTime from "./RemainingTime";
 import DeliveryDateTimePicker from "../DeliveryDateTimePicker";
+import { DeliveryTime } from "@/contexts/CartContext/types";
 
 type Props = {
   deliveryTimes: TimeRange[] | null;

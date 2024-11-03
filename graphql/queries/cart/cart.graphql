@@ -20,7 +20,6 @@ query getDbCart {
   }
 }
 
-
 query getProductByIdForCart($id: bigint!) {
   product_by_pk(id: $id) {
     id
@@ -44,6 +43,9 @@ query getProductByIdForCart($id: bigint!) {
         name
         commision_rate
         iyzi_sub_merchant_key
+        tenant_shipping_places {
+          places
+        }
       }
     }
     discount_price

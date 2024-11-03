@@ -8,7 +8,7 @@ import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FC, Fragment, useEffect, useMemo, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 
 type CustomizeOrderItemProps = {
   orderItem: GetOrderByIdQuery["order_by_pk"]["tenant_orders"][0]["order_items"][0];
@@ -144,16 +144,13 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
     }
   }, [status]);
 
-  const disableButton = useMemo(() => {
-    return (
-      orderItem.product.product_customizable_areas.reduce(
-        (acc, pca) => acc + quantity * pca.count,
-        0
-      ) ===
-      (order_item_special_images?.length || 0) +
-        (order_item_special_texts?.length || 0)
-    );
-  }, [order_item_special_images, order_item_special_texts, orderItem.product]);
+  const disableButton =
+    orderItem.product.product_customizable_areas.reduce(
+      (acc, pca) => acc + quantity * pca.count,
+      0
+    ) ===
+    (order_item_special_images?.length || 0) +
+      (order_item_special_texts?.length || 0);
 
   return (
     <div className="flex flex-col gap-4">

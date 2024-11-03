@@ -87,6 +87,7 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
   return (
     <>
       <ProductInformation
+        productId={product.id}
         name={product.name}
         price={product.price}
         rateCounts={

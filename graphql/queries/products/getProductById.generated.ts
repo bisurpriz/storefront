@@ -28,21 +28,21 @@ export type GetProductsForInitialCartQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price?: number | null, discount_price?: number | null, score?: number | null, stock?: number | null, image_url?: Array<string> | null, product_categories: Array<{ category: { id: number, name: string, slug?: string | null } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
+export type GetProductsForInitialCartQuery = { product: Array<{ name: string, description?: string | null, id: any, price?: number | null, discount_price?: number | null, score?: number | null, stock?: number | null, image_url?: Array<string> | null, product_categories: Array<{ category: { id: number, name: string, slug?: string | null } }>, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null, tenant_shipping_places: Array<{ places: any }> }> }, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> }> };
 
 export type GetProductActionDataQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductActionDataQuery = { product?: { delivery_type?: Types.Delivery_Type_Enum | null, tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> } | null };
+export type GetProductActionDataQuery = { product?: { delivery_type?: Types.Delivery_Type_Enum | null, delivery_time_ranges?: any | null, tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null }, user_favorites: Array<{ product_id: any }> } | null };
 
 export type GetProductActionDataForAnonymousQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
 }>;
 
 
-export type GetProductActionDataForAnonymousQuery = { product?: { delivery_type?: Types.Delivery_Type_Enum | null, tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductActionDataForAnonymousQuery = { product?: { delivery_type?: Types.Delivery_Type_Enum | null, delivery_time_ranges?: any | null, tenant: { tenants: Array<{ tenant_shipping_places: Array<{ places: any }> }> }, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductInformationQueryVariables = Types.Exact<{
   id: Types.Scalars['bigint']['input'];
@@ -231,6 +231,9 @@ export const GetProductsForInitialCartDocument = gql`
         logo
         iyzi_sub_merchant_key
         commision_rate
+        tenant_shipping_places {
+          places
+        }
       }
     }
     product_customizable_areas {
@@ -249,6 +252,7 @@ export const GetProductActionDataDocument = gql`
     query getProductActionData($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
     delivery_type
+    delivery_time_ranges
     tenant {
       tenants {
         tenant_shipping_places {
@@ -272,6 +276,7 @@ export const GetProductActionDataForAnonymousDocument = gql`
     query getProductActionDataForAnonymous($id: bigint!) @cached(ttl: 180) {
   product: product_by_pk(id: $id) {
     delivery_type
+    delivery_time_ranges
     tenant {
       tenants {
         tenant_shipping_places {

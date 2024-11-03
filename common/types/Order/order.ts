@@ -112,8 +112,3 @@ export interface TenantOrderItem {
     id: string;
   };
 }
-
-export interface DeliveryLocation {
-  id: number;
-  type: string;
-}

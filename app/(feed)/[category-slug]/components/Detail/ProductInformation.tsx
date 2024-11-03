@@ -6,7 +6,7 @@ import RatingDetail, { RatingProps } from "./RatingDetail";
 import DaySelect from "@/components/DatePicker/DaySelect";
 import { parseJson } from "@/utils/format";
 import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
-import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { stringToSlug } from "@/utils/stringToSlug";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { useCart } from "@/contexts/CartContext";
@@ -43,6 +43,7 @@ type ProductInformationProps = {
   deliveryTimeRanges: string;
   isCustomizable?: boolean;
   lastOrderTime?: string;
+  productId: number;
 };
 
 const DynamicGoogleLocationSelect = dynamic(
@@ -64,6 +65,7 @@ const defaultRating = {
 };
 
 const ProductInformation = ({
+  productId,
   name,
   price,
   rateCounts,
@@ -79,42 +81,36 @@ const ProductInformation = ({
   isCustomizable,
   lastOrderTime,
 }: ProductInformationProps) => {
-  const hasDeliveryTime = useMemo(
-    () => Boolean(parseJson(deliveryTimeRanges)?.length),
-    [deliveryTimeRanges]
-  );
+  const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
+  const [productInCart, setProductInCart] = useState(null);
 
-  const manipulatedRateCounts = useMemo(() => {
-    return Object.keys(defaultRating).reduce((acc, key) => {
+  const manipulatedRateCounts = Object.keys(defaultRating).reduce(
+    (acc, key) => {
       return {
         ...acc,
         [key]: rateCounts[key] || 0,
       };
-    }, defaultRating);
-  }, [rateCounts]);
+    },
+    defaultRating
+  );
 
   const isSameDay = shippingType === "SAME_DAY";
-  const showDaySelect = useMemo(
-    () => isSameDay && hasDeliveryTime,
-    [isSameDay, hasDeliveryTime]
-  );
-  const showExactTime = useMemo(
-    () => isSameDay && !hasDeliveryTime,
-    [isSameDay, hasDeliveryTime]
-  );
+  const showDaySelect = isSameDay && hasDeliveryTime;
+  const showExactTime = isSameDay && !hasDeliveryTime;
 
   const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
 
-  const isSettedDeliveryTime = useMemo(() => {
-    if (!isProductInCart || !deliveryTime) return false;
+  useEffect(() => {
+    setProductInCart(isProductInCart(productId));
+  }, [productId]);
 
-    return (
-      Boolean(
-        new Date(isProductInCart.deliveryDate).getDay() !==
-          new Date(deliveryTime.day).getDay()
-      ) || Boolean(isProductInCart.deliveryTime !== deliveryTime.hour)
-    );
-  }, [deliveryTime?.day, deliveryTime?.hour]);
+  const isSettedDeliveryTime =
+    !productInCart || !deliveryTime
+      ? false
+      : Boolean(
+          new Date(productInCart.deliveryDate).getDay() !==
+            new Date(deliveryTime.day).getDay()
+        ) || Boolean(productInCart.deliveryTime !== deliveryTime.hour);
 
   useEffect(() => {
     return () => {

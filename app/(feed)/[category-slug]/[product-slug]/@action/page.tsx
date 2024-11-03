@@ -32,11 +32,10 @@ const ProductActionsPage = async (props) => {
       return null;
     }
   };
-
   const selectedLocation = (await handleCookie()) as IPlace;
   const places = parseJson(
     product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places
-  ) as IPlace[];
+  );
 
   const placesData = parseJson(
     product.tenant?.tenants[0]?.tenant_shipping_places[0]?.places
@@ -68,6 +67,7 @@ const ProductActionsPage = async (props) => {
         selectedLocation={selectedLocation}
         places={places}
         delivery_type={product.delivery_type}
+        delivery_time_ranges={product.delivery_time_ranges}
       />
       {placesData && (
         <script
