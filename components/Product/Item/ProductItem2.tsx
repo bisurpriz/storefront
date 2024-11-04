@@ -120,6 +120,7 @@ export default function ProductItem2(props: ProductItemProps) {
       as="image"
       className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
       {...(!isTablet && { target: "_blank" })}
+      rel={!isTablet ? "noopener noreferrer" : undefined}
     >
       <div className="relative flex-1 col-span-4 row-span-full">
         <Image

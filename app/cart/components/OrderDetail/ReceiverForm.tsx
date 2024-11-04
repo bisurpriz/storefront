@@ -1,535 +1,539 @@
 "use client";
 
-import { createNewUserAddress } from "@/app/account/actions";
-
-import { OrderDetailFormData } from "@/common/types/Order/order";
-import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
-import Card from "@/components/Card";
-import { PhoneInput } from "@/components/PhoneInput";
-import TextField from "@/components/TextField";
-import { useUser } from "@/contexts/AuthContext";
-import { useDiscrits } from "@/hooks/useDistricts";
-import { useQuarters } from "@/hooks/useQuarters";
+import { useEffect, useState, useTransition } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FC, useEffect, startTransition } from "react";
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-  useWatch,
-} from "react-hook-form";
-import { AnyObject, ObjectSchema } from "yup";
-import RenderAddress from "./RenderAddress";
-import Textarea from "@/components/Textarea";
-import clsx from "clsx";
-import CompanyDetail from "./CompanyDetail";
-import { useRouter } from "next/navigation";
-import { useCart } from "@/contexts/CartContext";
-import { OrderDetailSchema } from "./schema";
-import { GetProductDeliveryCitiesQuery } from "@/graphql/queries/products/getProductLocation.generated";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { parseJson } from "@/utils/format";
-import { CartStepPaths } from "../../constants";
-import { useProgress } from "react-transition-progress";
-import { toast } from "sonner";
-import { Mail, Phone, User } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import * as yup from "yup";
+import { motion, AnimatePresence } from "framer-motion";
+import { Locate, LucideCopy, Mail, Phone, Route, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import TextField from "@/components/TextField";
+import { PhoneInput } from "@/components/PhoneInput";
+import Textarea from "@/components/Textarea";
+import { useCart } from "@/contexts/CartContext";
+import {
+  getAddressString,
+  getAvailableDistricts,
+  getAvailableNeighborhoods,
+  getLocationVariables,
+} from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
+import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { parseJson } from "@/utils/format";
 
-const Title = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="text-2xl font-semibold font-mono text-zinc-600 mb-4">
-    {children}
-  </h3>
-);
+const stepperData = [
+  { label: "Gönderici Bilgileri", key: "sender" },
+  { label: "Alıcı Bilgileri", key: "receiver" },
+  { label: "Ek Notlar", key: "notes" },
+];
 
-const SubTitle = ({ children }: { children: React.ReactNode }) => (
-  <h4 className="text-lg font-semibold font-mono text-zinc-600">{children}</h4>
-);
+const schema = yup
+  .object({
+    sender_name: yup.string().required("Ad Soyad gereklidir"),
+    sender_phone: yup.string().required("Telefon numarası gereklidir"),
+    sender_email: yup
+      .string()
+      .email("Geçerli bir e-posta adresi giriniz")
+      .required("E-posta adresi gereklidir"),
+    invoice_type: yup.string().oneOf(["person", "company"]).required(),
+    invoice_company_address: yup.string().when("invoice_type", {
+      is: (value: string) => value === "company",
+      then: (schema) => schema.required("Fatura adresi gereklidir"),
+    }),
+    receiver_name: yup.string().required("Alıcı adı gereklidir"),
+    receiver_phone: yup.string().required("Alıcı telefon numarası gereklidir"),
+    receiver_address: yup.string().required("Açık adres girilmesi gereklidir"),
+    receiver_city: yup
+      .object({
+        label: yup.string(),
+        value: yup.string(),
+      })
+      .required(),
+    receiver_district: yup
+      .object({
+        label: yup.string(),
+        value: yup.string(),
+      })
+      .required(),
+    receiver_neighborhood: yup.object({
+      label: yup.string(),
+      value: yup.string(),
+    }),
+    notes: yup.string(),
+  })
+  .required();
 
-export interface OrderDetailPartialFormData
-  extends Partial<OrderDetailFormData> {
-  saved_address?: AutoCompleteOption;
-  wantToSaveAddress?: boolean;
-}
+export type OrderDetailFormData = yup.InferType<typeof schema>;
 
-interface ReceiverFormProps {}
+export default function ReceiverForm() {
+  const [step, setStep] = useState(1);
+  const [isPending, startTransition] = useTransition();
+  const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
 
-const defaultValues: OrderDetailPartialFormData = {
-  address: "",
-  address_title: "",
-  receiver_name: "",
-  receiver_phone: null,
-  saved_address: null,
-  wantToSaveAddress: false,
-  sender_email: "",
-  sender_name: "",
-  sender_phone: null,
-  invoice_type: "person",
-  invoice_address: "",
-  invoice_company_address: "",
-  invoice_company_city: "",
-  invoice_company_district: "",
-  invoice_company_name: "",
-  invoice_company_tax_number: "",
-  invoice_company_tax_office: "",
-};
+  const {
+    cartState: { cartItems },
+  } = useCart();
 
-const ReceiverForm: FC<ReceiverFormProps> = ({}) => {
-  const { user, userAddresses } = useUser();
+  const { city, district, neighborhood, street, postal_code } =
+    getLocationVariables(cartItems[0].deliveryLocation);
 
-  const { push } = useRouter();
-  const { cartState } = useCart();
   const {
     control,
-    reset,
-    watch,
     handleSubmit,
-    setValue,
+    watch,
     formState: { errors },
-  } = useForm<OrderDetailPartialFormData>({
+    setValue,
+  } = useForm<OrderDetailFormData>({
+    resolver: yupResolver(schema),
+    mode: "onSubmit",
     defaultValues: {
-      ...defaultValues,
-    },
-    mode: "all",
-    delayError: 500,
-    resolver: yupResolver<OrderDetailPartialFormData>(
-      OrderDetailSchema as ObjectSchema<
-        OrderDetailPartialFormData,
-        AnyObject,
-        any,
-        ""
-      >
-    ),
-  });
-
-  const setSessionStorage = (data: OrderDetailPartialFormData) => {
-    sessionStorage?.setItem("order-detail-form", JSON.stringify(data));
-  };
-
-  const getSessionStorage = () => {
-    if (typeof sessionStorage === "undefined") return null;
-    return parseJson(sessionStorage?.getItem("order-detail-form") ?? "{}");
-  };
-
-  const startProgress = useProgress();
-  const onSubmit: SubmitHandler<OrderDetailPartialFormData> = async (data) => {
-    startTransition(() => {
-      startProgress();
-      if (data && Object.keys(errors).length === 0) {
-        if (data.wantToSaveAddress && !data.saved_address && user?.id) {
-          try {
-            createNewUserAddress({
-              address: data.address,
-              receiver_firstname: data.receiver_name?.split(" ")[0],
-              receiver_surname: data.receiver_name
-                ?.split(" ")
-                .slice(1)
-                .join(" "),
-              receiver_phone: data.receiver_phone,
-              address_title: data.address_title,
-              user_id: user?.id,
-            });
-          } catch (e) {
-            console.error(e);
-            toast.error("Adres kaydedilirken bir hata oluştu.", {
-              duration: 4000,
-            });
+      sender_name: "",
+      sender_phone: "",
+      sender_email: "",
+      invoice_type: "person",
+      invoice_company_address: "",
+      receiver_name: "",
+      receiver_phone: "",
+      notes: "",
+      receiver_city: city
+        ? {
+            label: city,
+            value: city,
           }
-        }
-        setSessionStorage(data);
-        push(CartStepPaths.CHECKOUT);
-      }
-    });
-  };
-
-  const onError: SubmitErrorHandler<OrderDetailPartialFormData> = (
-    error: any
-  ) => {
-    console.log(error);
-  };
-
-  useEffect(() => {
-    const session = getSessionStorage();
-    if (session) {
-      reset({
-        ...session,
-        receiver_phone: formatPhoneNumber(session.receiver_phone),
-        sender_phone: formatPhoneNumber(session.sender_phone),
-      });
-    }
-  }, []);
-
-  const [city, district, invoice_type, savedAddressValue] = useWatch({
-    control,
-    name: ["city", "district", "invoice_type", "saved_address"],
+        : null,
+      receiver_district: district
+        ? {
+            label: district,
+            value: district,
+          }
+        : null,
+      receiver_neighborhood: neighborhood
+        ? {
+            label: neighborhood,
+            value: neighborhood,
+          }
+        : null,
+      receiver_address: getAddressString(street, postal_code),
+    },
   });
 
-  const { districts, loading: districtLoading } = useDiscrits(
-    city?.id,
-    cartState?.cartItems?.[0]?.id
-  );
-  const { quarters, loading: quarterLoading } = useQuarters(
-    district?.id,
-    cartState?.cartItems?.[0]?.id
+  const invoiceType = watch("invoice_type");
+
+  const placeData = parseJson(
+    cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places
   );
 
-  const savedAdressInputChange = (option: AutoCompleteOption) => {
-    if (!option) {
-      reset({
-        ...defaultValues,
-        sender_phone: formatPhoneNumber(""),
-        receiver_phone: formatPhoneNumber(""),
-      });
-      return;
-    }
-    setValue("saved_address", option);
+  const availableDistricts = getAvailableDistricts(placeData);
 
-    setValue(
-      "receiver_name",
-      option.receiver_firstname + " " + option.receiver_surname
+  const onSubmit = (data: OrderDetailFormData) => {
+    console.log(data);
+    // Handle form submission
+  };
+
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
+
+  const renderStepContent = (stepNumber: number) => {
+    const variants = {
+      hidden: { opacity: 0, x: -50 },
+      visible: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: 50 },
+    };
+
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={stepNumber}
+          variants={variants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          transition={{ duration: 0.3 }}
+        >
+          {stepNumber === 1 && (
+            <div className="space-y-4">
+              <div className="space-y-4">
+                <Controller
+                  name="sender_name"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      className="h-12 rounded-sm"
+                      {...field}
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      label="Ad Soyad"
+                      id="sender_name"
+                      placeholder="Lütfen adınızı ve soyadınızı giriniz."
+                      icon={<User />}
+                    />
+                  )}
+                />
+                <Controller
+                  name="sender_phone"
+                  control={control}
+                  render={({
+                    field: { name, value, onChange },
+                    fieldState: { error },
+                  }) => (
+                    <PhoneInput
+                      className="h-12 rounded-sm"
+                      name={name}
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      label="Telefon Numarası"
+                      id="sender_phone"
+                      placeholder="Telefon numarası giriniz."
+                      onChange={onChange}
+                      value={value}
+                      icon={<Phone />}
+                    />
+                  )}
+                />
+                <Controller
+                  name="sender_email"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      className="h-12 rounded-sm"
+                      {...field}
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      label="E-posta Adresi"
+                      id="sender_email"
+                      type="email"
+                      placeholder="E-posta Adresi"
+                      icon={<Mail />}
+                    />
+                  )}
+                />
+              </div>
+
+              <Controller
+                name="invoice_type"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <div>
+                    <Label
+                      htmlFor="invoice_type"
+                      className="mt-0 text-gray-700"
+                    >
+                      Fatura Türü
+                    </Label>
+                    <div className="space-x-2">
+                      <RadioGroup
+                        {...field}
+                        onValueChange={field.onChange}
+                        id="invoice_type"
+                        defaultValue="person"
+                        defaultChecked={true}
+                        className="flex gap-4"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="person" id="person" />
+                          <Label htmlFor="person">Bireysel</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="company" id="company" />
+                          <Label htmlFor="company">Kurumsal</Label>
+                        </div>
+                      </RadioGroup>
+                      {error && (
+                        <div className="text-red-500 text-sm mt-2">
+                          {error.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              />
+
+              {invoiceType === "company" && (
+                <Controller
+                  name="invoice_company_address"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <Textarea
+                      {...field}
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      label="Fatura Adresi"
+                      id="invoice_company_address"
+                      placeholder="Fatura Adresi"
+                      inputClass="rounded-sm"
+                    />
+                  )}
+                />
+              )}
+            </div>
+          )}
+
+          {stepNumber === 2 && (
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <Controller
+                  name="receiver_name"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      className="h-12 rounded-sm"
+                      {...field}
+                      label="Alıcı Adı"
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      id="receiver_name"
+                      placeholder="Alıcı Adı"
+                      icon={<User />}
+                    />
+                  )}
+                />
+                <Controller
+                  name="receiver_phone"
+                  control={control}
+                  render={({
+                    field: { onChange, name, value },
+                    fieldState: { error },
+                  }) => (
+                    <PhoneInput
+                      className="h-12 rounded-sm"
+                      label="Telefon Numarası"
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      name={name}
+                      placeholder="Telefon Numarası giriniz."
+                      id="receiver_phone"
+                      onChange={onChange}
+                      value={value}
+                      icon={<Phone />}
+                    />
+                  )}
+                />
+
+                <Controller
+                  name="receiver_city"
+                  control={control}
+                  render={({ field }) => (
+                    <AutoComplete
+                      {...field}
+                      buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
+                      id="receiver_city"
+                      label="Şehir"
+                      placeholder="Şehir seçiniz"
+                      disabled
+                      onChange={field.onChange}
+                      value={
+                        field?.value && {
+                          label: field?.value?.label,
+                          value: field?.value?.value,
+                        }
+                      }
+                      options={
+                        city
+                          ? [
+                              {
+                                label: city,
+                                value: city,
+                              },
+                            ]
+                          : []
+                      }
+                    />
+                  )}
+                />
+                <Controller
+                  name="receiver_district"
+                  control={control}
+                  render={({ field }) => (
+                    <AutoComplete
+                      {...field}
+                      buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
+                      id="receiver_district"
+                      label="İlçe"
+                      placeholder="İlçe seçiniz"
+                      disabled={!!district}
+                      onChange={(value: AutoCompleteOption) => {
+                        if (value) {
+                          setValue("receiver_neighborhood", null);
+                        }
+
+                        const availableNeighborhoods =
+                          getAvailableNeighborhoods(
+                            placeData,
+                            value?.value as string
+                          );
+                        setNeighborhoods(
+                          availableNeighborhoods?.map((neighborhood) => ({
+                            label: neighborhood,
+                            value: neighborhood,
+                          })) || []
+                        );
+
+                        field.onChange(value);
+                      }}
+                      value={
+                        field?.value && {
+                          label: field?.value?.label,
+                          value: field?.value?.value,
+                        }
+                      }
+                      options={
+                        district
+                          ? [
+                              {
+                                label: district,
+                                value: district,
+                              },
+                            ]
+                          : availableDistricts?.map((district) => ({
+                              label: district,
+                              value: district,
+                            })) || []
+                      }
+                    />
+                  )}
+                />
+                <Controller
+                  name="receiver_neighborhood"
+                  control={control}
+                  render={({ field }) => (
+                    <AutoComplete
+                      {...field}
+                      buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
+                      id="receiver_neighborhood"
+                      label="Mahalle"
+                      placeholder="Mahalle seçiniz"
+                      onChange={field.onChange}
+                      disabled={!!neighborhood}
+                      value={
+                        field?.value && {
+                          label: field?.value?.label,
+                          value: field?.value?.value,
+                        }
+                      }
+                      options={
+                        neighborhood
+                          ? [
+                              {
+                                label: neighborhood,
+                                value: neighborhood,
+                              },
+                            ]
+                          : neighborhoods || []
+                      }
+                    />
+                  )}
+                />
+                <Alert variant="informative" className="mt-2">
+                  <LucideCopy />
+                  <AlertTitle>Dikkat !</AlertTitle>
+                  <AlertDescription>
+                    Bilgiler seçtiğiniz gönderim yerine göre otomatik olarak
+                    doldurulmuştur. Lütfen kontrol ediniz.
+                  </AlertDescription>
+                </Alert>
+                <Controller
+                  name="receiver_address"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <Textarea
+                      {...field}
+                      error={!!error?.message}
+                      errorMessage={error?.message}
+                      label="Açık adres"
+                      id="receiver_address"
+                      placeholder="Açık adres giriniz."
+                      inputClass="rounded-sm"
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          )}
+
+          {stepNumber === 3 && (
+            <div className="space-y-6">
+              <Controller
+                name="notes"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <Textarea
+                    {...field}
+                    error={!!error?.message}
+                    errorMessage={error?.message}
+                    id="notes"
+                    placeholder="Teslimat için ek notunuz varsa buraya yazabilirsiniz."
+                    rows={4}
+                  />
+                )}
+              />
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     );
-    setValue("receiver_phone", formatPhoneNumber(option.receiver_phone));
-    setValue("sender_email", user.email);
-    setValue("sender_name", user.firstname + " " + user.lastname);
-    setValue("sender_phone", formatPhoneNumber(user.phone));
-    setValue("address", option.address);
   };
 
   return (
-    <Card>
-      <Title>Teslimat Detay</Title>
+    <div className="container mx-auto sm:p-4">
+      <div className="mb-8">
+        <div className="flex justify-between">
+          {stepperData.map((data, i) => (
+            <div
+              key={data.key}
+              className={`w-1/3 text-center select-none lg:text-base text-sm flex gap-1 justify-center whitespace-nowrap ${
+                i < step ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {data.label.split(" ").map((word, j) => (
+                <div
+                  key={j}
+                  className={
+                    word === "Bilgileri"
+                      ? "hidden lg:inline-block"
+                      : "inline-block"
+                  }
+                >
+                  {word}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="w-full bg-muted h-2 mt-2 rounded-full overflow-hidden">
+          <div
+            className="bg-primary h-full transition-all duration-300 ease-in-out"
+            style={{ width: `${(step / 3) * 100}%` }}
+          />
+        </div>
+      </div>
+
       <form
-        onSubmit={handleSubmit(onSubmit, onError)}
-        id="order-detail-form"
-        name="order-detail-form"
-        autoComplete="off"
-        className={clsx(
-          "grid grid-cols-2 w-full gap-6 max-md:grid-cols-1 max-md:gap-3",
-          "text-sm font-manrope"
-        )}
+        onSubmit={handleSubmit(onSubmit)}
+        className="lg:grid lg:grid-cols-3 lg:gap-8"
       >
-        <div
-          className={clsx(
-            "col-span-1 max-md:col-span-full",
-            "flex flex-col gap-3 flex-1"
-          )}
-        >
-          <SubTitle>Gönderici Bilgileri</SubTitle>
-          <Controller
-            control={control}
-            name="sender_name"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="Gönderici Adı Soyadı"
-                placeholder="Lütfen adınızı ve soyadınızı giriniz."
-                fullWidth
-                id="sender_name"
-                value={value}
-                onChange={onChange}
-                icon={<User className="w-5 h-5" />}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
+        <div className="lg:col-span-3 space-y-8">
+          {renderStepContent(step)}
 
-          <Controller
-            control={control}
-            name="sender_phone"
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <PhoneInput
-                label="Telefon Numarası"
-                placeholder="Telefon numarası giriniz."
-                errorMessage={error?.message}
-                error={!!error}
-                onChange={(value) => onChange(value)}
-                value={value}
-                id="sender_phone"
-                icon={<Phone className="w-5 h-5" />}
-              />
+          <div className="flex justify-between mt-8">
+            {step > 1 && (
+              <Button type="button" onClick={prevStep} variant="outline">
+                Geri
+              </Button>
             )}
-          />
-
-          <Controller
-            control={control}
-            name="sender_email"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="E-posta Adresi"
-                placeholder="E-posta Adresi"
-                fullWidth
-                type="email"
-                id="sender_email"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-                icon={<Mail className="w-5 h-5" />}
-              />
+            {step < 3 ? (
+              <Button type="button" onClick={nextStep} className="ml-auto">
+                İleri
+              </Button>
+            ) : (
+              <Button type="submit" className="ml-auto">
+                Ödemeye Geç
+              </Button>
             )}
-          />
-
-          <Controller
-            control={control}
-            name="invoice_type"
-            render={({ field: { onChange, value } }) => (
-              <RadioGroup
-                name="invoice_type"
-                onChange={onChange}
-                defaultValue={value}
-                className="flex items-center gap-4"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="person" id="r1" />
-                  <Label htmlFor="r1">Bireysel</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="company" id="r2" />
-                  <Label htmlFor="r2">Kurumsal</Label>
-                </div>
-              </RadioGroup>
-            )}
-          />
-        </div>
-
-        <div
-          className={clsx(
-            "col-span-1 max-md:col-span-full",
-            "flex flex-col gap-3 flex-1"
-          )}
-        >
-          <SubTitle>Alıcı Bilgileri</SubTitle>
-          <Controller
-            control={control}
-            name="receiver_name"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => (
-              <TextField
-                ref={ref}
-                label="Alıcı Adı"
-                placeholder="Alıcı Adı"
-                fullWidth
-                id="receiver_name"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-                icon={<User className="w-5 h-5" />}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="receiver_phone"
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <PhoneInput
-                label="Telefon Numarası"
-                placeholder="Telefon numarası giriniz."
-                errorMessage={error?.message}
-                error={!!error}
-                onChange={(val) => onChange(val)}
-                value={value}
-                id="receiver_phone"
-                icon={<Phone className="w-5 h-5" />}
-              />
-            )}
-          />
-        </div>
-        {invoice_type !== "company" && (
-          <Controller
-            name="invoice_address"
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Textarea
-                label="Fatura Adresi"
-                placeholder="Fatura Adresi"
-                fullWidth
-                id="invoice_address"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
-        )}
-        <CompanyDetail control={control} invoice_type={invoice_type} />
-        <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
-          <SubTitle>Alıcı Adres Bilgileri</SubTitle>
-          <RenderAddress
-            isSelectedSavedAddress={
-              Boolean(savedAddressValue) ||
-              Boolean(getSessionStorage()?.saved_address)
-            }
-            control={control}
-            user={user}
-            setValue={setValue}
-          />
-
-          {/* <Controller
-            control={control}
-            name="city"
-            render={({ field: { onChange, value }, fieldState: { error } }) => {
-              return (
-                <AutoComplete
-                  value={
-                    value
-                      ? {
-                          label: value?.name,
-                          value: value?.id,
-                        }
-                      : null
-                  }
-                  label="İl"
-                  options={availableCities.map((city) => ({
-                    label: city.city_name,
-                    value: city.id,
-                  }))}
-                  onChange={(option: AutoCompleteOption) => {
-                    onChange(option);
-                    reset({
-                      ...watch(),
-                      city: option
-                        ? {
-                            code: null,
-                            name: option.label as string,
-                            id: option.value as number,
-                          }
-                        : null,
-                      district: null,
-                      quarter: null,
-                    });
-                  }}
-                  placeholder="İl Seçiniz"
-                  id="city"
-                  error={!!error}
-                  errorMessage={error?.message}
-                  autoComplete="off"
-                />
-              );
-            }}
-          /> */}
-          {/* 
-          <Controller
-            control={control}
-            name="district"
-            render={({
-              field: { onChange, value, ref },
-              fieldState: { error },
-            }) => {
-              return (
-                <AutoComplete
-                  value={
-                    value
-                      ? {
-                          label: value?.name,
-                          value: value?.id,
-                        }
-                      : null
-                  }
-                  label="İlçe"
-                  options={
-                    districts?.map((district) => ({
-                      label: district.name,
-                      value: district.id,
-                    })) ?? []
-                  }
-                  onChange={(option: AutoCompleteOption) => {
-                    onChange(option);
-                    reset({
-                      ...watch(),
-                      district: option
-                        ? {
-                            id: option.value as number,
-                            name: option.label as string,
-                          }
-                        : null,
-                      quarter: null,
-                    });
-                  }}
-                  placeholder="İlçe Seçiniz"
-                  id="district"
-                  disabled={!city || districtLoading}
-                  error={!!error}
-                  errorMessage={error?.message}
-                />
-              );
-            }}
-          /> */}
-
-          {/* <Controller
-            control={control}
-            name="quarter"
-            render={({ field: { onChange, value }, fieldState: { error } }) => {
-              return (
-                <AutoComplete
-                  value={
-                    value
-                      ? {
-                          label: value?.name,
-                          value: value?.id,
-                        }
-                      : null
-                  }
-                  label="Mahalle"
-                  options={
-                    quarters?.map((option) => ({
-                      label: option.name,
-                      value: option.id,
-                    })) ?? []
-                  }
-                  onChange={(option: AutoCompleteOption) => {
-                    onChange(
-                      option
-                        ? {
-                            id: option.value as number,
-                            name: option.label as string,
-                          }
-                        : null
-                    );
-                  }}
-                  placeholder="Mahalle Seçiniz"
-                  id="quarter"
-                  error={!!error}
-                  disabled={!district || quarterLoading}
-                  errorMessage={error?.message}
-                />
-              );
-            }}
-          /> */}
-
-          <Controller
-            control={control}
-            name="address"
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Textarea
-                label="Adres"
-                placeholder="Adresinizi giriniz."
-                fullWidth
-                id="address"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                errorMessage={error?.message}
-              />
-            )}
-          />
+          </div>
         </div>
       </form>
-    </Card>
+    </div>
   );
-};
-
-export default ReceiverForm;
+}

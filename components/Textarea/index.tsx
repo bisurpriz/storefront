@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { FC } from "react";
 import { Textarea as ShaCdnTextArea } from "../ui/textarea";
+import { Label } from "../ui/label";
 
 type TextareaProps = {
   label?: string;
@@ -15,6 +16,7 @@ type TextareaProps = {
   className?: string;
   rows?: number;
   defaultValue?: string;
+  inputClass?: string;
 };
 
 const Textarea: FC<TextareaProps> = ({
@@ -29,6 +31,7 @@ const Textarea: FC<TextareaProps> = ({
   value,
   className,
   rows = 3,
+  inputClass,
   ...rest
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -36,10 +39,13 @@ const Textarea: FC<TextareaProps> = ({
   };
 
   return (
-    <div
-      className={clsx("inline-block text-xs", fullWidth && "w-full", className)}
-    >
-      {label ?? null}
+    <div className={clsx("inline-block text-xs w-full", className)}>
+      <Label
+        htmlFor={id}
+        className={clsx(error ? "text-red-500" : "text-gray-700")}
+      >
+        {label}
+      </Label>
       <ShaCdnTextArea
         id={id}
         aria-label={label}
@@ -48,6 +54,8 @@ const Textarea: FC<TextareaProps> = ({
         onChange={handleChange}
         disabled={disabled}
         rows={rows}
+        className={inputClass}
+        variant={error ? "error" : "default"}
         {...rest}
       />
       {error && errorMessage && (

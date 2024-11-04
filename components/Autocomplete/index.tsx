@@ -59,15 +59,14 @@ export default function AutoComplete({
   buttonClass,
 }: AutoCompleteProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<AutoCompleteOption | null>(
-    value
-  );
-
-  useEffect(() => {
-    setSelectedValue(value);
-  }, [value]);
+  const [updatedOptions, setUpdatedOptions] =
+    useState<AutoCompleteOption[]>(options);
 
   const { isTablet } = useResponsive();
+
+  useEffect(() => {
+    setUpdatedOptions(options);
+  }, [options]);
 
   if (!isTablet) {
     return (
@@ -92,14 +91,17 @@ export default function AutoComplete({
             >
               <div className="flex items-center gap-2 truncate max-w-full">
                 {startIcon && startIcon}
-                {selectedValue ? selectedValue.label : placeholder}
+                {value ? value.label : placeholder}
               </div>
-              {selectedValue ? (
+              {value ? (
                 <SquareX
-                  className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
+                  className={cn(
+                    "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
+                    { "hover:opacity-50": disabled }
+                  )}
                   onClick={(e) => {
+                    if (disabled) return;
                     e.stopPropagation();
-                    setSelectedValue(null);
                     onChange(null);
                   }}
                 />
@@ -117,11 +119,10 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
-              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}
-            options={options}
+            options={updatedOptions}
             inputValue={inputValue}
           />
         </PopoverContent>
@@ -135,30 +136,36 @@ export default function AutoComplete({
       onOpenChange={readOnly || disabled ? undefined : setOpen}
     >
       <DrawerTrigger asChild disabled={readOnly || disabled}>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className={cn("justify-between", buttonClass)}
-          type="button"
-        >
-          <div className="flex items-center gap-2 truncate max-w-full">
-            {startIcon && startIcon}
-            {selectedValue ? selectedValue.label : placeholder}
-          </div>
-          {selectedValue ? (
-            <SquareX
-              className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedValue(null);
-                onChange(null);
-              }}
-            />
-          ) : (
-            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-          )}
-        </Button>
+        <Label className="flex flex-col gap-1">
+          {label}
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn("justify-between w-full", buttonClass)}
+            type="button"
+          >
+            <div className="flex items-center gap-2 truncate max-w-full">
+              {startIcon && startIcon}
+              {value ? value.label : placeholder}
+            </div>
+            {value ? (
+              <SquareX
+                className={cn(
+                  "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
+                  { "hover:opacity-50": disabled }
+                )}
+                onClick={(e) => {
+                  if (disabled) return;
+                  e.stopPropagation();
+                  onChange(null);
+                }}
+              />
+            ) : (
+              <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            )}
+          </Button>
+        </Label>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
@@ -166,11 +173,10 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
-              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}
-            options={options}
+            options={updatedOptions}
             inputValue={inputValue}
           />
         </div>

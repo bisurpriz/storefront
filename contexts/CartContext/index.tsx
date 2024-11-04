@@ -163,7 +163,6 @@ export const CartProvider = ({
   }) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === id);
-    console.log(deliveryLocation);
     if (hasItem === -1) {
       const item = await getProductByIdForCart(id);
 

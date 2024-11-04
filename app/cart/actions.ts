@@ -10,7 +10,6 @@ import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
 import { createOrderDataMapper } from "./utils";
-import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
 import { CustomizableArea } from "@/common/types/Order/order";
 import {
   GetDbCartDocument,
@@ -29,6 +28,7 @@ import {
   GetProductsForInitialCartQuery,
   GetProductsForInitialCartQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
+import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();
@@ -38,7 +38,7 @@ export const checkUserId = async () => {
 
 export const createOrderAction = async (
   cartItems: ProductForCart[],
-  orderDetail: OrderDetailPartialFormData,
+  orderDetail: OrderDetailFormData,
   paymentConversationId: string,
   couponInfo?: { code: string; guest_id?: string }
 ) => {
@@ -243,12 +243,7 @@ export const getCart = async (user_id: string) => {
             return null;
           }
         }
-        console.log({
-          ...hasProduct,
-          ...item,
-          quantity: hasProduct.quantity,
-          product_customizable_areas: item.product_customizable_areas,
-        });
+
         return {
           ...hasProduct,
           ...item,

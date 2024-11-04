@@ -22,11 +22,11 @@ const CartWrapper = () => {
     return acc;
   }, {});
 
-  const greaterThanOne = Object.keys(tenantGroupedProducts).length > 1;
+  const greaterThanOneTenant = Object.keys(tenantGroupedProducts).length > 1;
 
   return (
     <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
-      <GreaterThanOneTenant show={greaterThanOne}>
+      <GreaterThanOneTenant show={greaterThanOneTenant}>
         <Alert variant="destructive">
           <TriangleAlert className="w-5 h-5" />
           <AlertTitle>

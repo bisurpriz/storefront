@@ -50,6 +50,7 @@ const HeaderTop = () => {
             <Link
               href={process.env.NEXT_PUBLIC_SELLER_PANEL_URL}
               target="_blank"
+              rel="noopener noreferrer"
               className="text-primary hover:text-primary"
             >
               Satıcı Paneli

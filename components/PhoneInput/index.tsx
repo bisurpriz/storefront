@@ -23,8 +23,9 @@ const PhoneInput: FC<PhoneInputProps & TextFieldProps> = ({
   return (
     <RPNInput.default
       ref={ref as any}
-      className={cn(className)}
-      inputComponent={InputComponent}
+      inputComponent={(props) => (
+        <InputComponent {...props} className={cn(className)} />
+      )}
       defaultCountry="TR"
       countries={["TR"]}
       countrySelectComponent={({ flags }) => flags}
@@ -36,9 +37,9 @@ const PhoneInput: FC<PhoneInputProps & TextFieldProps> = ({
 };
 PhoneInput.displayName = "PhoneInput";
 
-const InputComponent: FC<TextFieldProps> = ({ className, ref, ...props }) => (
-  <TextField className={cn(className)} {...props} ref={ref} />
-);
+const InputComponent: FC<TextFieldProps> = ({ className, ref, ...props }) => {
+  return <TextField className={cn(className)} {...props} ref={ref} />;
+};
 InputComponent.displayName = "InputComponent";
 
 export { PhoneInput };

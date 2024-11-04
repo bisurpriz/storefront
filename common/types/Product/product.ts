@@ -49,6 +49,9 @@ export interface Product {
       logo?: string;
       iyzi_sub_merchant_key?: string;
       commision_rate?: number;
+      tenant_shipping_places: {
+        places: IPlace;
+      }[];
     }[];
   };
 }

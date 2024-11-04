@@ -14,7 +14,7 @@ import {
   initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
 import { useUser } from "@/contexts/AuthContext";
-import { OrderDetailPartialFormData } from "../OrderDetail/ReceiverForm";
+import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
 import { getIpAddress } from "@/app/actions";
 import useResponsive from "@/hooks/useResponsive";
 import { CookieTokens } from "@/app/@auth/contants";
@@ -147,7 +147,7 @@ const CreditCardForm = () => {
       if (data) {
         setLoading(true);
         const serialize = sessionStorage.getItem("order-detail-form");
-        const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
+        const detailData: OrderDetailFormData = JSON.parse(serialize);
         const senderNames = detailData.sender_name.split(" ");
         const timeStamps = new Date().getTime();
 
@@ -166,19 +166,19 @@ const CreditCardForm = () => {
           basketId,
           basketItems: createBasketItems(cartItems),
           billingAddress: {
-            address: detailData.address,
-            city: detailData.invoice_address,
+            address: detailData.invoice_company_address,
+            city: detailData.invoice_company_address,
             contactName: detailData.sender_name,
             country: "Türkiye",
           },
           shippingAddress: {
-            address: detailData.address,
-            city: detailData.city.id.toString(),
+            address: detailData.receiver_address,
+            city: detailData.receiver_city.label,
             country: "Türkiye",
             contactName: detailData.receiver_name,
           },
           buyer: {
-            city: detailData.city.name,
+            city: detailData.receiver_city.label,
             country: "Türkiye",
             email: detailData.sender_email,
             gsmNumber: detailData.sender_phone,
@@ -186,7 +186,7 @@ const CreditCardForm = () => {
             ip: await getIpAddress(),
             name: senderNames[0],
             surname: senderNames[senderNames.length - 1],
-            registrationAddress: detailData.address,
+            registrationAddress: detailData.receiver_address,
             id: userData?.user?.id ?? Cookies.get(CookieTokens.GUEST_ID),
           },
           paymentChannel: isDesktop ? "WEB" : "MOBILE_WEB",
