@@ -134,6 +134,7 @@ query getProductsForInitialCart($ids: [bigint!]) {
     score
     stock
     image_url
+    delivery_time_ranges
     product_categories {
       category {
         id

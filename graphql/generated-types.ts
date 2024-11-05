@@ -1839,15 +1839,7 @@ export type City = {
   minlatitude?: Maybe<Scalars['String']['output']>;
   minlongitude?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
-  /** An array relationship */
-  order_addresses: Array<Order_Address>;
-  /** An aggregate relationship */
-  order_addresses_aggregate: Order_Address_Aggregate;
   parent_id?: Maybe<Scalars['Int']['output']>;
-  /** An array relationship */
-  user_addresses: Array<User_Address>;
-  /** An aggregate relationship */
-  user_addresses_aggregate: User_Address_Aggregate;
 };
 
 
@@ -1868,46 +1860,6 @@ export type CityDistricts_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<District_Order_By>>;
   where?: InputMaybe<District_Bool_Exp>;
-};
-
-
-/** columns and relationships of "city" */
-export type CityOrder_AddressesArgs = {
-  distinct_on?: InputMaybe<Array<Order_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Order_Address_Order_By>>;
-  where?: InputMaybe<Order_Address_Bool_Exp>;
-};
-
-
-/** columns and relationships of "city" */
-export type CityOrder_Addresses_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Order_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Order_Address_Order_By>>;
-  where?: InputMaybe<Order_Address_Bool_Exp>;
-};
-
-
-/** columns and relationships of "city" */
-export type CityUser_AddressesArgs = {
-  distinct_on?: InputMaybe<Array<User_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<User_Address_Order_By>>;
-  where?: InputMaybe<User_Address_Bool_Exp>;
-};
-
-
-/** columns and relationships of "city" */
-export type CityUser_Addresses_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<User_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<User_Address_Order_By>>;
-  where?: InputMaybe<User_Address_Bool_Exp>;
 };
 
 /** aggregated selection of "city" */
@@ -1960,11 +1912,7 @@ export type City_Bool_Exp = {
   minlatitude?: InputMaybe<String_Comparison_Exp>;
   minlongitude?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
-  order_addresses?: InputMaybe<Order_Address_Bool_Exp>;
-  order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Bool_Exp>;
   parent_id?: InputMaybe<Int_Comparison_Exp>;
-  user_addresses?: InputMaybe<User_Address_Bool_Exp>;
-  user_addresses_aggregate?: InputMaybe<User_Address_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "city" */
@@ -1994,9 +1942,7 @@ export type City_Insert_Input = {
   minlatitude?: InputMaybe<Scalars['String']['input']>;
   minlongitude?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  order_addresses?: InputMaybe<Order_Address_Arr_Rel_Insert_Input>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
-  user_addresses?: InputMaybe<User_Address_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -2056,9 +2002,7 @@ export type City_Order_By = {
   minlatitude?: InputMaybe<Order_By>;
   minlongitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
-  order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Order_By>;
   parent_id?: InputMaybe<Order_By>;
-  user_addresses_aggregate?: InputMaybe<User_Address_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: city */
@@ -3966,39 +3910,11 @@ export type District = {
   minlatitude?: Maybe<Scalars['String']['output']>;
   minlongitude?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
-  /** An array relationship */
-  order_addresses: Array<Order_Address>;
-  /** An aggregate relationship */
-  order_addresses_aggregate: Order_Address_Aggregate;
   parent_id: Scalars['Int']['output'];
   /** An array relationship */
   quarters: Array<Quarter>;
   /** An aggregate relationship */
   quarters_aggregate: Quarter_Aggregate;
-  /** An array relationship */
-  user_addresses: Array<User_Address>;
-  /** An aggregate relationship */
-  user_addresses_aggregate: User_Address_Aggregate;
-};
-
-
-/** columns and relationships of "district" */
-export type DistrictOrder_AddressesArgs = {
-  distinct_on?: InputMaybe<Array<Order_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Order_Address_Order_By>>;
-  where?: InputMaybe<Order_Address_Bool_Exp>;
-};
-
-
-/** columns and relationships of "district" */
-export type DistrictOrder_Addresses_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Order_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Order_Address_Order_By>>;
-  where?: InputMaybe<Order_Address_Bool_Exp>;
 };
 
 
@@ -4019,26 +3935,6 @@ export type DistrictQuarters_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Quarter_Order_By>>;
   where?: InputMaybe<Quarter_Bool_Exp>;
-};
-
-
-/** columns and relationships of "district" */
-export type DistrictUser_AddressesArgs = {
-  distinct_on?: InputMaybe<Array<User_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<User_Address_Order_By>>;
-  where?: InputMaybe<User_Address_Bool_Exp>;
-};
-
-
-/** columns and relationships of "district" */
-export type DistrictUser_Addresses_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<User_Address_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<User_Address_Order_By>>;
-  where?: InputMaybe<User_Address_Bool_Exp>;
 };
 
 /** aggregated selection of "district" */
@@ -4129,13 +4025,9 @@ export type District_Bool_Exp = {
   minlatitude?: InputMaybe<String_Comparison_Exp>;
   minlongitude?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
-  order_addresses?: InputMaybe<Order_Address_Bool_Exp>;
-  order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Bool_Exp>;
   parent_id?: InputMaybe<Int_Comparison_Exp>;
   quarters?: InputMaybe<Quarter_Bool_Exp>;
   quarters_aggregate?: InputMaybe<Quarter_Aggregate_Bool_Exp>;
-  user_addresses?: InputMaybe<User_Address_Bool_Exp>;
-  user_addresses_aggregate?: InputMaybe<User_Address_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "district" */
@@ -4162,10 +4054,8 @@ export type District_Insert_Input = {
   minlatitude?: InputMaybe<Scalars['String']['input']>;
   minlongitude?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  order_addresses?: InputMaybe<Order_Address_Arr_Rel_Insert_Input>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   quarters?: InputMaybe<Quarter_Arr_Rel_Insert_Input>;
-  user_addresses?: InputMaybe<User_Address_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -4248,10 +4138,8 @@ export type District_Order_By = {
   minlatitude?: InputMaybe<Order_By>;
   minlongitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
-  order_addresses_aggregate?: InputMaybe<Order_Address_Aggregate_Order_By>;
   parent_id?: InputMaybe<Order_By>;
   quarters_aggregate?: InputMaybe<Quarter_Aggregate_Order_By>;
-  user_addresses_aggregate?: InputMaybe<User_Address_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: district */
@@ -7904,19 +7792,14 @@ export type OrderUser_Coupons_AggregateArgs = {
 export type Order_Address = {
   address: Scalars['String']['output'];
   address_title?: Maybe<Scalars['String']['output']>;
-  /** An object relationship */
-  city: City;
-  city_id: Scalars['Int']['output'];
-  /** An object relationship */
-  district: District;
-  district_id: Scalars['Int']['output'];
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   /** An object relationship */
   order: Order;
   order_id: Scalars['uuid']['output'];
-  /** An object relationship */
-  quarter: Quarter;
-  quarter_id: Scalars['Int']['output'];
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname: Scalars['String']['output'];
   receiver_phone: Scalars['String']['output'];
   receiver_surname: Scalars['String']['output'];
@@ -7985,18 +7868,12 @@ export type Order_Address_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Order_Address_Avg_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "order_address" */
 export type Order_Address_Avg_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "order_address". All fields are combined with a logical 'AND'. */
@@ -8006,15 +7883,13 @@ export type Order_Address_Bool_Exp = {
   _or?: InputMaybe<Array<Order_Address_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   address_title?: InputMaybe<String_Comparison_Exp>;
-  city?: InputMaybe<City_Bool_Exp>;
-  city_id?: InputMaybe<Int_Comparison_Exp>;
-  district?: InputMaybe<District_Bool_Exp>;
-  district_id?: InputMaybe<Int_Comparison_Exp>;
+  city?: InputMaybe<String_Comparison_Exp>;
+  district?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   order?: InputMaybe<Order_Bool_Exp>;
   order_id?: InputMaybe<Uuid_Comparison_Exp>;
-  quarter?: InputMaybe<Quarter_Bool_Exp>;
-  quarter_id?: InputMaybe<Int_Comparison_Exp>;
+  place_id?: InputMaybe<String_Comparison_Exp>;
+  quarter?: InputMaybe<String_Comparison_Exp>;
   receiver_firstname?: InputMaybe<String_Comparison_Exp>;
   receiver_phone?: InputMaybe<String_Comparison_Exp>;
   receiver_surname?: InputMaybe<String_Comparison_Exp>;
@@ -8027,25 +7902,20 @@ export type Order_Address_Constraint =
 
 /** input type for incrementing numeric columns in table "order_address" */
 export type Order_Address_Inc_Input = {
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "order_address" */
 export type Order_Address_Insert_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<City_Obj_Rel_Insert_Input>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district?: InputMaybe<District_Obj_Rel_Insert_Input>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Order_Obj_Rel_Insert_Input>;
   order_id?: InputMaybe<Scalars['uuid']['input']>;
-  quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -8055,11 +7925,12 @@ export type Order_Address_Insert_Input = {
 export type Order_Address_Max_Fields = {
   address?: Maybe<Scalars['String']['output']>;
   address_title?: Maybe<Scalars['String']['output']>;
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   order_id?: Maybe<Scalars['uuid']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname?: Maybe<Scalars['String']['output']>;
   receiver_phone?: Maybe<Scalars['String']['output']>;
   receiver_surname?: Maybe<Scalars['String']['output']>;
@@ -8069,11 +7940,12 @@ export type Order_Address_Max_Fields = {
 export type Order_Address_Max_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -8083,11 +7955,12 @@ export type Order_Address_Max_Order_By = {
 export type Order_Address_Min_Fields = {
   address?: Maybe<Scalars['String']['output']>;
   address_title?: Maybe<Scalars['String']['output']>;
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   order_id?: Maybe<Scalars['uuid']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname?: Maybe<Scalars['String']['output']>;
   receiver_phone?: Maybe<Scalars['String']['output']>;
   receiver_surname?: Maybe<Scalars['String']['output']>;
@@ -8097,11 +7970,12 @@ export type Order_Address_Min_Fields = {
 export type Order_Address_Min_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -8126,15 +8000,13 @@ export type Order_Address_On_Conflict = {
 export type Order_Address_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city?: InputMaybe<City_Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district?: InputMaybe<District_Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   order?: InputMaybe<Order_Order_By>;
   order_id?: InputMaybe<Order_By>;
-  quarter?: InputMaybe<Quarter_Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -8152,15 +8024,17 @@ export type Order_Address_Select_Column =
   /** column name */
   | 'address_title'
   /** column name */
-  | 'city_id'
+  | 'city'
   /** column name */
-  | 'district_id'
+  | 'district'
   /** column name */
   | 'id'
   /** column name */
   | 'order_id'
   /** column name */
-  | 'quarter_id'
+  | 'place_id'
+  /** column name */
+  | 'quarter'
   /** column name */
   | 'receiver_firstname'
   /** column name */
@@ -8172,11 +8046,12 @@ export type Order_Address_Select_Column =
 export type Order_Address_Set_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   order_id?: InputMaybe<Scalars['uuid']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -8184,50 +8059,32 @@ export type Order_Address_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Order_Address_Stddev_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "order_address" */
 export type Order_Address_Stddev_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Order_Address_Stddev_Pop_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "order_address" */
 export type Order_Address_Stddev_Pop_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Order_Address_Stddev_Samp_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "order_address" */
 export type Order_Address_Stddev_Samp_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "order_address" */
@@ -8242,11 +8099,12 @@ export type Order_Address_Stream_Cursor_Input = {
 export type Order_Address_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   order_id?: InputMaybe<Scalars['uuid']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -8254,18 +8112,12 @@ export type Order_Address_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type Order_Address_Sum_Fields = {
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "order_address" */
 export type Order_Address_Sum_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "order_address" */
@@ -8275,15 +8127,17 @@ export type Order_Address_Update_Column =
   /** column name */
   | 'address_title'
   /** column name */
-  | 'city_id'
+  | 'city'
   /** column name */
-  | 'district_id'
+  | 'district'
   /** column name */
   | 'id'
   /** column name */
   | 'order_id'
   /** column name */
-  | 'quarter_id'
+  | 'place_id'
+  /** column name */
+  | 'quarter'
   /** column name */
   | 'receiver_firstname'
   /** column name */
@@ -8302,50 +8156,32 @@ export type Order_Address_Updates = {
 
 /** aggregate var_pop on columns */
 export type Order_Address_Var_Pop_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "order_address" */
 export type Order_Address_Var_Pop_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Order_Address_Var_Samp_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "order_address" */
 export type Order_Address_Var_Samp_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Order_Address_Variance_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "order_address" */
 export type Order_Address_Variance_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregated selection of "order" */
@@ -21767,16 +21603,11 @@ export type UserUser_Coupons_AggregateArgs = {
 export type User_Address = {
   address: Scalars['String']['output'];
   address_title: Scalars['String']['output'];
-  /** An object relationship */
-  city: City;
-  city_id: Scalars['Int']['output'];
-  /** An object relationship */
-  district: District;
-  district_id: Scalars['Int']['output'];
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
-  /** An object relationship */
-  quarter: Quarter;
-  quarter_id: Scalars['Int']['output'];
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname: Scalars['String']['output'];
   receiver_phone: Scalars['String']['output'];
   receiver_surname: Scalars['String']['output'];
@@ -21848,18 +21679,12 @@ export type User_Address_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type User_Address_Avg_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "user_address" */
 export type User_Address_Avg_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "user_address". All fields are combined with a logical 'AND'. */
@@ -21869,13 +21694,11 @@ export type User_Address_Bool_Exp = {
   _or?: InputMaybe<Array<User_Address_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   address_title?: InputMaybe<String_Comparison_Exp>;
-  city?: InputMaybe<City_Bool_Exp>;
-  city_id?: InputMaybe<Int_Comparison_Exp>;
-  district?: InputMaybe<District_Bool_Exp>;
-  district_id?: InputMaybe<Int_Comparison_Exp>;
+  city?: InputMaybe<String_Comparison_Exp>;
+  district?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
-  quarter?: InputMaybe<Quarter_Bool_Exp>;
-  quarter_id?: InputMaybe<Int_Comparison_Exp>;
+  place_id?: InputMaybe<String_Comparison_Exp>;
+  quarter?: InputMaybe<String_Comparison_Exp>;
   receiver_firstname?: InputMaybe<String_Comparison_Exp>;
   receiver_phone?: InputMaybe<String_Comparison_Exp>;
   receiver_surname?: InputMaybe<String_Comparison_Exp>;
@@ -21890,23 +21713,18 @@ export type User_Address_Constraint =
 
 /** input type for incrementing numeric columns in table "user_address" */
 export type User_Address_Inc_Input = {
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "user_address" */
 export type User_Address_Insert_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<City_Obj_Rel_Insert_Input>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district?: InputMaybe<District_Obj_Rel_Insert_Input>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -21918,10 +21736,11 @@ export type User_Address_Insert_Input = {
 export type User_Address_Max_Fields = {
   address?: Maybe<Scalars['String']['output']>;
   address_title?: Maybe<Scalars['String']['output']>;
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname?: Maybe<Scalars['String']['output']>;
   receiver_phone?: Maybe<Scalars['String']['output']>;
   receiver_surname?: Maybe<Scalars['String']['output']>;
@@ -21932,10 +21751,11 @@ export type User_Address_Max_Fields = {
 export type User_Address_Max_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -21946,10 +21766,11 @@ export type User_Address_Max_Order_By = {
 export type User_Address_Min_Fields = {
   address?: Maybe<Scalars['String']['output']>;
   address_title?: Maybe<Scalars['String']['output']>;
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  district?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
+  place_id?: Maybe<Scalars['String']['output']>;
+  quarter?: Maybe<Scalars['String']['output']>;
   receiver_firstname?: Maybe<Scalars['String']['output']>;
   receiver_phone?: Maybe<Scalars['String']['output']>;
   receiver_surname?: Maybe<Scalars['String']['output']>;
@@ -21960,10 +21781,11 @@ export type User_Address_Min_Fields = {
 export type User_Address_Min_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -21989,13 +21811,11 @@ export type User_Address_On_Conflict = {
 export type User_Address_Order_By = {
   address?: InputMaybe<Order_By>;
   address_title?: InputMaybe<Order_By>;
-  city?: InputMaybe<City_Order_By>;
-  city_id?: InputMaybe<Order_By>;
-  district?: InputMaybe<District_Order_By>;
-  district_id?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  district?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter?: InputMaybe<Quarter_Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
+  place_id?: InputMaybe<Order_By>;
+  quarter?: InputMaybe<Order_By>;
   receiver_firstname?: InputMaybe<Order_By>;
   receiver_phone?: InputMaybe<Order_By>;
   receiver_surname?: InputMaybe<Order_By>;
@@ -22015,13 +21835,15 @@ export type User_Address_Select_Column =
   /** column name */
   | 'address_title'
   /** column name */
-  | 'city_id'
+  | 'city'
   /** column name */
-  | 'district_id'
+  | 'district'
   /** column name */
   | 'id'
   /** column name */
-  | 'quarter_id'
+  | 'place_id'
+  /** column name */
+  | 'quarter'
   /** column name */
   | 'receiver_firstname'
   /** column name */
@@ -22035,10 +21857,11 @@ export type User_Address_Select_Column =
 export type User_Address_Set_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -22047,50 +21870,32 @@ export type User_Address_Set_Input = {
 
 /** aggregate stddev on columns */
 export type User_Address_Stddev_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "user_address" */
 export type User_Address_Stddev_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Address_Stddev_Pop_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "user_address" */
 export type User_Address_Stddev_Pop_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Address_Stddev_Samp_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "user_address" */
 export type User_Address_Stddev_Samp_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "user_address" */
@@ -22105,10 +21910,11 @@ export type User_Address_Stream_Cursor_Input = {
 export type User_Address_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   address_title?: InputMaybe<Scalars['String']['input']>;
-  city_id?: InputMaybe<Scalars['Int']['input']>;
-  district_id?: InputMaybe<Scalars['Int']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  place_id?: InputMaybe<Scalars['String']['input']>;
+  quarter?: InputMaybe<Scalars['String']['input']>;
   receiver_firstname?: InputMaybe<Scalars['String']['input']>;
   receiver_phone?: InputMaybe<Scalars['String']['input']>;
   receiver_surname?: InputMaybe<Scalars['String']['input']>;
@@ -22117,18 +21923,12 @@ export type User_Address_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type User_Address_Sum_Fields = {
-  city_id?: Maybe<Scalars['Int']['output']>;
-  district_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  quarter_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "user_address" */
 export type User_Address_Sum_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "user_address" */
@@ -22138,13 +21938,15 @@ export type User_Address_Update_Column =
   /** column name */
   | 'address_title'
   /** column name */
-  | 'city_id'
+  | 'city'
   /** column name */
-  | 'district_id'
+  | 'district'
   /** column name */
   | 'id'
   /** column name */
-  | 'quarter_id'
+  | 'place_id'
+  /** column name */
+  | 'quarter'
   /** column name */
   | 'receiver_firstname'
   /** column name */
@@ -22165,50 +21967,32 @@ export type User_Address_Updates = {
 
 /** aggregate var_pop on columns */
 export type User_Address_Var_Pop_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "user_address" */
 export type User_Address_Var_Pop_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Address_Var_Samp_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "user_address" */
 export type User_Address_Var_Samp_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type User_Address_Variance_Fields = {
-  city_id?: Maybe<Scalars['Float']['output']>;
-  district_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  quarter_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "user_address" */
 export type User_Address_Variance_Order_By = {
-  city_id?: InputMaybe<Order_By>;
-  district_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  quarter_id?: InputMaybe<Order_By>;
 };
 
 /** aggregated selection of "user" */

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, FC, Ref } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap outline-none rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -56,6 +56,7 @@ const Button: FC<ButtonProps> = ({
   disabled,
   children,
   icon,
+  type,
   ...props
 }) => {
   const Comp = asChild ? Slot : "button";
@@ -64,6 +65,7 @@ const Button: FC<ButtonProps> = ({
       className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       disabled={loading || disabled}
+      type={type}
       {...props}
     >
       {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}

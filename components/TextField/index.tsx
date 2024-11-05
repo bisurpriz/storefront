@@ -30,19 +30,22 @@ const TextField: FC<TextFieldProps> = (props) => {
     spellCheck,
     ref,
     readOnly,
+    dirtyAnimation,
     ...rest
   } = props;
 
   const fullWidthClasses = fullWidth ? "w-full" : "";
 
   return (
-    <label
-      className={clsx(
-        "relative text-xs font-medium text-gray-700 flex flex-col gap-1",
-        fullWidthClasses
-      )}
-    >
-      {label ? <Label htmlFor={id}>{label}</Label> : null}
+    <label className={clsx("relative flex flex-col gap-1", fullWidthClasses)}>
+      {label ? (
+        <Label
+          htmlFor={id}
+          className={clsx(error ? "text-red-500" : "text-gray-700")}
+        >
+          {label}
+        </Label>
+      ) : null}
       <Input
         {...rest}
         readOnly={readOnly}
@@ -64,6 +67,7 @@ const TextField: FC<TextFieldProps> = (props) => {
         icon={icon}
         error={error}
         errorMessage={errorMessage}
+        dirtyAnimation={dirtyAnimation}
       />
     </label>
   );

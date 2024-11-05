@@ -17,6 +17,7 @@ export function Link({
   return (
     <NextLink
       href={href}
+      rel={rest.target === "_blank" ? "noopener noreferrer" : undefined}
       onClick={(e) => {
         e.preventDefault();
         if (rest.target === "_blank") {

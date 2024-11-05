@@ -14,10 +14,30 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown, SquareX } from "lucide-react";
+import { cva } from "class-variance-authority";
 
 export type AutoCompleteOption = Pick<DropdownOption, "label" | "value"> & {
   [key: string]: any;
 };
+
+const inputVariants = cva(
+  "flex h-9 border-2 w-full rounded-md  border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-input text-foreground placeholder-text-muted-foreground focus-visible:ring-ring focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-2",
+        error:
+          "border-red-300 text-red-900 placeholder-text-red-300 focus:ring-red-500 focus:border-red-500 focus-visible:outline-none focus-visible:ring-red-500 focus-visible:ring-2 focus-visible:ring-red-500",
+        success:
+          "border-green-300 text-green-900 placeholder-text-green-300 focus:ring-green-500 focus:border-green-500 focus-visible:outline-none focus-visible:ring-green-500 focus-visible:ring-2 focus-visible:ring-green-500",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
 
 export interface AutoCompleteProps {
   options: AutoCompleteOption[];
@@ -39,6 +59,7 @@ export interface AutoCompleteProps {
   errorMessage?: string;
   startIcon?: React.ReactNode;
   buttonClass?: string;
+  variant?: "default" | "error" | "success";
 }
 
 export default function AutoComplete({
@@ -54,20 +75,20 @@ export default function AutoComplete({
   disabled,
   readOnly,
   error,
+  variant,
   errorMessage,
   startIcon,
   buttonClass,
 }: AutoCompleteProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<AutoCompleteOption | null>(
-    value
-  );
-
-  useEffect(() => {
-    setSelectedValue(value);
-  }, [value]);
+  const [updatedOptions, setUpdatedOptions] =
+    useState<AutoCompleteOption[]>(options);
 
   const { isTablet } = useResponsive();
+
+  useEffect(() => {
+    setUpdatedOptions(options);
+  }, [options]);
 
   if (!isTablet) {
     return (
@@ -86,20 +107,27 @@ export default function AutoComplete({
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className={cn("justify-between", buttonClass)}
+              className={cn(
+                "justify-between",
+                inputVariants({ variant }),
+                buttonClass
+              )}
               type="button"
               aria-readonly={readOnly}
             >
               <div className="flex items-center gap-2 truncate max-w-full">
                 {startIcon && startIcon}
-                {selectedValue ? selectedValue.label : placeholder}
+                {value ? value.label : placeholder}
               </div>
-              {selectedValue ? (
+              {value ? (
                 <SquareX
-                  className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
+                  className={cn(
+                    "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
+                    { "hover:opacity-50": disabled }
+                  )}
                   onClick={(e) => {
+                    if (disabled) return;
                     e.stopPropagation();
-                    setSelectedValue(null);
                     onChange(null);
                   }}
                 />
@@ -117,11 +145,10 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
-              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}
-            options={options}
+            options={updatedOptions}
             inputValue={inputValue}
           />
         </PopoverContent>
@@ -135,30 +162,36 @@ export default function AutoComplete({
       onOpenChange={readOnly || disabled ? undefined : setOpen}
     >
       <DrawerTrigger asChild disabled={readOnly || disabled}>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className={cn("justify-between", buttonClass)}
-          type="button"
-        >
-          <div className="flex items-center gap-2 truncate max-w-full">
-            {startIcon && startIcon}
-            {selectedValue ? selectedValue.label : placeholder}
-          </div>
-          {selectedValue ? (
-            <SquareX
-              className="ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedValue(null);
-                onChange(null);
-              }}
-            />
-          ) : (
-            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-          )}
-        </Button>
+        <Label className="flex flex-col gap-1">
+          {label}
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn("justify-between w-full", buttonClass)}
+            type="button"
+          >
+            <div className="flex items-center gap-2 truncate max-w-full">
+              {startIcon && startIcon}
+              {value ? value.label : placeholder}
+            </div>
+            {value ? (
+              <SquareX
+                className={cn(
+                  "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
+                  { "hover:opacity-50": disabled }
+                )}
+                onClick={(e) => {
+                  if (disabled) return;
+                  e.stopPropagation();
+                  onChange(null);
+                }}
+              />
+            ) : (
+              <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            )}
+          </Button>
+        </Label>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
@@ -166,11 +199,10 @@ export default function AutoComplete({
             onInputChange={onInputChange}
             getOptionLabel={getOptionLabel}
             onChange={(value) => {
-              setSelectedValue(value);
               onChange(value);
               setOpen(false);
             }}
-            options={options}
+            options={updatedOptions}
             inputValue={inputValue}
           />
         </div>

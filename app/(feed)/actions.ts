@@ -3,10 +3,7 @@
 import { IProductFilter } from "@/common/types/Filter/productFilter";
 
 import { query } from "@/graphql/lib/client";
-import {
-  GetLocationQueryDocument,
-  GetLocationQueryQuery,
-} from "@/graphql/queries/account/account.generated";
+
 import {
   GetProductByIdDocument,
   GetProductByIdQuery,
@@ -97,29 +94,6 @@ export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
     },
   });
   return data.get_comment_by_score;
-};
-
-export const searchLocation = async (location: string) => {
-  try {
-    const {
-      data: { search_locationv1: locations },
-    } = await query<GetLocationQueryQuery>({
-      query: GetLocationQueryDocument,
-      variables: {
-        location,
-      },
-    });
-
-    return {
-      locations,
-      message: "Success",
-    };
-  } catch (error) {
-    return {
-      locations: [],
-      message: error.message,
-    };
-  }
 };
 
 export const searchProducts = async (

@@ -29,6 +29,7 @@ export interface Product {
   order_items: OrderItem[];
   product_customizable_areas: ProductCustomizableArea[];
   questions: Question[];
+  delivery_time_ranges: string;
   reviews: Review[];
   is_service_free: boolean;
   score: number;
@@ -49,6 +50,9 @@ export interface Product {
       logo?: string;
       iyzi_sub_merchant_key?: string;
       commision_rate?: number;
+      tenant_shipping_places: {
+        places: IPlace;
+      }[];
     }[];
   };
 }

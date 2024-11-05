@@ -14,7 +14,7 @@ import {
   initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
 import { useUser } from "@/contexts/AuthContext";
-import { OrderDetailPartialFormData } from "../OrderDetail/ReceiverForm";
+import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
 import { getIpAddress } from "@/app/actions";
 import useResponsive from "@/hooks/useResponsive";
 import { CookieTokens } from "@/app/@auth/contants";
@@ -107,7 +107,7 @@ const CreditCardForm = () => {
   const [isPending, startTransition] = useTransition();
   const { replace } = useRouter();
   const userData = useUser();
-  const { isDesktop } = useResponsive();
+  const { isTablet } = useResponsive();
   const {
     cartState: { cartItems, cost },
     hasCustomizableProduct,
@@ -147,7 +147,7 @@ const CreditCardForm = () => {
       if (data) {
         setLoading(true);
         const serialize = sessionStorage.getItem("order-detail-form");
-        const detailData: OrderDetailPartialFormData = JSON.parse(serialize);
+        const detailData: OrderDetailFormData = JSON.parse(serialize);
         const senderNames = detailData.sender_name.split(" ");
         const timeStamps = new Date().getTime();
 
@@ -161,24 +161,23 @@ const CreditCardForm = () => {
         if (!ip) {
           toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
         }
-
         const variables = {
           basketId,
           basketItems: createBasketItems(cartItems),
           billingAddress: {
-            address: detailData.address,
-            city: detailData.invoice_address,
+            address: detailData.invoice_company_address,
+            city: detailData.invoice_company_address,
             contactName: detailData.sender_name,
             country: "Türkiye",
           },
           shippingAddress: {
-            address: detailData.address,
-            city: detailData.city.id.toString(),
+            address: detailData.receiver_address,
+            city: detailData.receiver_city.label,
             country: "Türkiye",
             contactName: detailData.receiver_name,
           },
           buyer: {
-            city: detailData.city.name,
+            city: detailData.receiver_city.label,
             country: "Türkiye",
             email: detailData.sender_email,
             gsmNumber: detailData.sender_phone,
@@ -186,10 +185,10 @@ const CreditCardForm = () => {
             ip: await getIpAddress(),
             name: senderNames[0],
             surname: senderNames[senderNames.length - 1],
-            registrationAddress: detailData.address,
+            registrationAddress: detailData.receiver_address,
             id: userData?.user?.id ?? Cookies.get(CookieTokens.GUEST_ID),
           },
-          paymentChannel: isDesktop ? "WEB" : "MOBILE_WEB",
+          paymentChannel: isTablet ? "WEB" : "MOBILE_WEB",
           callbackUrl: process.env.NEXT_PUBLIC_IYZICO_CALLBACK_URL,
           conversationId,
           currency: "TRY",
@@ -206,8 +205,6 @@ const CreditCardForm = () => {
           installment: 1,
         } as Initialize3dsPaymentRequest;
 
-        const response = await initialize3dsPayment(variables);
-
         const isCouponApplied = cost.isCouponApplied;
 
         const couponInfo = isCouponApplied
@@ -216,6 +213,7 @@ const CreditCardForm = () => {
               guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
             }
           : undefined;
+
         const res = await createOrderAction(
           cartItems,
           detailData,
@@ -226,16 +224,24 @@ const CreditCardForm = () => {
         if (res?.data?.insert_order_one?.id) {
           setCreatedOrder(res.data.insert_order_one.id);
         }
-
-        if (response.errorMessage || res.status === "error") {
+        if (res.status === "error") {
           setLoading(false);
           openPopup();
           setErrorMessage(
-            response.errorMessage ??
-              "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
+            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
           );
           return;
-        } else setBase64PasswordHtml(response.threeDSHtmlContent);
+        } else {
+          const response = await initialize3dsPayment(variables);
+          if (response.errorMessage) {
+            setLoading(false);
+            openPopup();
+            setErrorMessage(response.errorMessage);
+            return;
+          }
+
+          setBase64PasswordHtml(response.threeDSHtmlContent);
+        }
       }
     });
   };

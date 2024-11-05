@@ -1,19 +1,19 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
-import { OrderDetailPartialFormData } from "./components/OrderDetail/ReceiverForm";
 import { calculateCommissionedAmount } from "../iyzico-payment/utils";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 const getOrderAddresses = (
-  orderDetail: OrderDetailPartialFormData
+  orderDetail: OrderDetailFormData,
+  cartItems: ProductForCart[]
 ): CreateOrderMutationVariables["object"]["order_addresses"] => {
   const {
-    address,
-    address_title,
-    city,
-    district,
-    quarter,
+    receiver_address,
+    receiver_city,
+    receiver_district,
     receiver_name,
     receiver_phone,
+    receiver_neighborhood,
   } = orderDetail;
 
   const getReceiverFirstLastName = (receiver_name: string) => {
@@ -34,14 +34,16 @@ const getOrderAddresses = (
 
   const order_addresses = [
     {
-      address,
-      address_title,
-      city_id: city.id,
-      district_id: district.id,
-      quarter_id: quarter.id,
+      address: receiver_address,
+      city: receiver_city.value,
+      district: receiver_district.value,
+      quarter: receiver_neighborhood.value,
       receiver_firstname,
       receiver_surname,
       receiver_phone,
+      place_id:
+        cartItems.find((i) => i.deliveryLocation.placeId)?.deliveryLocation
+          ?.placeId ?? null,
     },
   ];
 
@@ -99,10 +101,9 @@ const getTenantOrders = (
 
 export const createOrderDataMapper = (
   cartItems: ProductForCart[],
-  orderDetail: OrderDetailPartialFormData
+  orderDetail: OrderDetailFormData
 ): CreateOrderMutationVariables => {
-  // TODO: delivery_date, delivery_time should be added to orderDetail
-  const order_addresses = getOrderAddresses(orderDetail);
+  const order_addresses = getOrderAddresses(orderDetail, cartItems);
   const tenant_orders = getTenantOrders(cartItems);
 
   return {

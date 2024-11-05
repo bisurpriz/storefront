@@ -4,8 +4,13 @@ import { Link } from "@/components/Link";
 
 const CartHomePageButton = () => {
   return (
-    <Link href="/">
-      <Button icon={<ArrowLeft />} type="button" size="sm" variant="link">
+    <Link href="/" className="w-fit">
+      <Button
+        icon={<ArrowLeft className="w-4 h-4 mr-2" />}
+        type="button"
+        size="sm"
+        variant="link"
+      >
         Alışverişe Devam Et
       </Button>
     </Link>

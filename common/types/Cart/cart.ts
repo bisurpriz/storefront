@@ -13,6 +13,7 @@ export interface ProductForCart
     | "product_customizable_areas"
     | "delivery_type"
     | "is_service_free"
+    | "delivery_time_ranges"
   > {
   quantity: number;
   deliveryDate?: Date;

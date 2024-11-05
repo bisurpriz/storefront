@@ -10,17 +10,7 @@ import {
   GetBannersQuery,
   GetBannersQueryVariables,
 } from "@/graphql/queries/banners/banners.generated";
-import {
-  GetCityByIdDocument,
-  GetCityByIdQuery,
-  GetCityByIdQueryVariables,
-  GetDistrictByIdDocument,
-  GetDistrictByIdQuery,
-  GetDistrictByIdQueryVariables,
-  GetQuarterByIdDocument,
-  GetQuarterByIdQuery,
-  GetQuarterByIdQueryVariables,
-} from "@/graphql/queries/account/account.generated";
+
 import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
@@ -118,46 +108,4 @@ export const getGeoLocation = async () => {
   const geo = (await headers()).get("X-Forwarded-For");
 
   return geo;
-};
-
-export const getQuarterById = async ({ id }) => {
-  if (!id) return;
-
-  const { data } = await query<
-    GetQuarterByIdQuery,
-    GetQuarterByIdQueryVariables
-  >({
-    query: GetQuarterByIdDocument,
-    variables: {
-      id: id && Number(id),
-    },
-  });
-  return data;
-};
-
-export const getDistrictById = async ({ id }) => {
-  if (!id) return;
-
-  const { data } = await query<
-    GetDistrictByIdQuery,
-    GetDistrictByIdQueryVariables
-  >({
-    query: GetDistrictByIdDocument,
-    variables: {
-      id: id && Number(id),
-    },
-  });
-  return data;
-};
-
-export const getCityById = async ({ id }) => {
-  if (!id) return;
-
-  const { data } = await query<GetCityByIdQuery, GetCityByIdQueryVariables>({
-    query: GetCityByIdDocument,
-    variables: {
-      id: id && Number(id),
-    },
-  });
-  return data;
 };
