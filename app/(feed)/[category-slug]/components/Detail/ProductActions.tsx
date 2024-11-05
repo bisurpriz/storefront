@@ -48,8 +48,10 @@ const ProductActions = ({
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
+  const [availableLevel4, setAvailableLevel4] = useState<string[]>([]);
   const { user } = useUser();
   const [isPending, startTransition] = useTransition();
+
   const isSameDay = delivery_type === "SAME_DAY";
 
   const { addToCart, loading, deliveryTime } = useCart();
@@ -79,9 +81,6 @@ const ProductActions = ({
 
   const [error, setError] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
-
-  const willShowError =
-    !deliveryTime?.day || !deliveryTime?.hour || showPlaceWarning;
 
   useEffect(() => {
     startTransition(() => {
@@ -118,8 +117,11 @@ const ProductActions = ({
       : [];
   };
 
-  const availableLevel4 =
-    selectedLocation && isSameDay && getAvailableLevel4(places as any);
+  useEffect(() => {
+    if (isSameDay) {
+      setAvailableLevel4(getAvailableLevel4(places));
+    }
+  }, [places, selectedLocation]);
 
   const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
 
@@ -183,6 +185,51 @@ const ProductActions = ({
     }, 3000);
   };
 
+  // Eğer selectedLocation içinde availableLevel4 içindeki mahallelerden biri yoksa butonu aktif etme
+  const selectedLocationHasAvailableLevel4 =
+    selectedLocation?.address_components?.findIndex(
+      (x) =>
+        x.types.includes("administrative_area_level_4") &&
+        availableLevel4?.includes(x.short_name)
+    );
+
+  const isButtonDisableForLocation = () => {
+    if (!isSameDay) return false;
+    if (isSameDay && !selectedLocation) return true;
+
+    const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_4")
+    )?.short_name;
+
+    const selectedLevel1 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_1")
+    )?.short_name;
+
+    if (selectedLevel4) {
+      const isLevel4Available = places?.some(
+        (place) =>
+          place.addressComponents["administrative_area_level_4"] ===
+          selectedLevel4
+      );
+
+      if (!isLevel4Available) return true;
+    } else {
+      const isLevel1Available = places?.some(
+        (place) =>
+          place.addressComponents["administrative_area_level_1"] ===
+          selectedLevel1
+      );
+
+      if (!isLevel1Available) return true;
+    }
+  };
+
+  const isButtonDisableForTime = () => {
+    if (!isSameDay) return false;
+    if (isSameDay && !deliveryTime.day) return true;
+    if (isSameDay && !deliveryTime.hour) return true;
+  };
+
   return (
     <>
       {availableLevel4?.length > 0 && (
@@ -210,12 +257,7 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={
-            isPending ||
-            loading ||
-            error ||
-            (isSameDay && places?.length === 0 && !hasDeliveryTimes)
-          }
+          disabled={isButtonDisableForLocation() || isButtonDisableForTime()}
           onClick={handleAddToBasket}
           loading={loading}
         >

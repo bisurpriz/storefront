@@ -37,11 +37,7 @@ const ProductActionsPage = async (props) => {
     product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places
   );
 
-  const placesData = parseJson(
-    product.tenant?.tenants[0]?.tenant_shipping_places[0]?.places
-  );
-
-  const shippingPlaces: WithContext<Place>[] = placesData?.map((place) => ({
+  const shippingPlaces: WithContext<Place>[] = places?.map((place) => ({
     "@context": "https://schema.org",
     "@type": "Place",
     name: place.label,
@@ -69,7 +65,7 @@ const ProductActionsPage = async (props) => {
         delivery_type={product.delivery_type}
         delivery_time_ranges={product.delivery_time_ranges}
       />
-      {placesData && (
+      {places && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(shippingPlaces) }}
