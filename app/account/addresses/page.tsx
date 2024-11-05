@@ -1,8 +1,15 @@
-import { getUserAddresses } from './actions';
-import Address from './components/Address';
+import { getUserAddresses } from "./actions";
+import Address from "./components/Address";
 
 const AddressesPage = async () => {
-  const { user_addresses } = await getUserAddresses();
+  const data = await getUserAddresses();
+
+  if (!data) {
+    return null;
+  }
+
+  const { user_addresses } = data;
+
   return (
     <div>
       <h1 className="text-2xl font-bold">

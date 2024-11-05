@@ -38,7 +38,14 @@ export function validateLocation(
 }
 
 export const getLocationVariables = (selectedLocation: Location) => {
-  if (!selectedLocation) return null;
+  if (!selectedLocation)
+    return {
+      city: null,
+      district: null,
+      neighborhood: null,
+      street: null,
+      postal_code: null,
+    };
 
   const city = selectedLocation.address_components.find((x) =>
     x.types.includes("administrative_area_level_1")

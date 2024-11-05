@@ -1,77 +1,68 @@
 "use client";
 
-import { useEffect } from "react";
-import ClientOnlyPortal from "./ClientOnlyPortal";
-import { useClickAway } from "@uidotdev/usehooks";
-import { motion } from "framer-motion";
-import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
-import Close from "../Icons/Close";
+import { useState, useEffect, ReactNode } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import useResponsive from "@/hooks/useResponsive";
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
-  const ref = useClickAway<HTMLDivElement>(() => {
-    onClose?.();
-  });
+interface ModalProps {
+  open: boolean;
+  handleClose?: () => void;
+  title?: string;
+  children: ReactNode;
+  closeOnBackdropClick?: boolean;
+}
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
+export default function Modal({
+  open,
+  handleClose,
+  title,
+  children,
+  closeOnBackdropClick = true,
+}: ModalProps) {
+  const { isDesktop } = useResponsive();
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+  const handleBackdropClick = () => {
+    if (closeOnBackdropClick) {
+      handleClose?.();
     }
+  };
 
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 flex items-center justify-center z-50"
-      ref={ref}
-    >
-      <div
-        className="fixed inset-0 bg-black opacity-50"
-        onClick={() => onClose?.()}
-      ></div>
-      <div
-        className={`bg-white z-10 transform transition-all duration-300 
-          rounded-md shadow-md max-sm:w-full max-sm:mx-auto max-sm:mt-4 max-w-screen-2xl w-fit
-        ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-      >
-        <Close
-          className="absolute top-2 right-2 cursor-pointer"
-          onClick={() => onClose?.()}
-        />
-        {title && (
-          <h1 className="text-2xl font-normal text-slate-700 px-8 pt-4">
-            {title}
-          </h1>
-        )}
-        <div>{children}</div>
-      </div>
-    </div>
-  );
+  if (isDesktop) {
+    return (
+      <Drawer open={open} onOpenChange={handleBackdropClick}>
+        <DrawerContent>
+          {title && (
+            <DrawerHeader>
+              <DrawerTitle>{title}</DrawerTitle>
+            </DrawerHeader>
+          )}
+          <div className="p-4">{children}</div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
-    <ClientOnlyPortal selector="body">
-      <AnimationExitProvider show={isOpen}>
-        <motion.div
-          initial={false}
-          animate={isOpen ? "open" : "closed"}
-          variants={{
-            open: { opacity: 1, scale: 1 },
-            closed: { opacity: 0, scale: 0.95 },
-          }}
-        >
-          {modalContent}
-        </motion.div>
-      </AnimationExitProvider>
-    </ClientOnlyPortal>
+    <Dialog open={open} onOpenChange={handleBackdropClick}>
+      <DialogContent>
+        {title && (
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+        )}
+        <div className="p-4">{children}</div>
+      </DialogContent>
+    </Dialog>
   );
-};
-
-export default Modal;
+}

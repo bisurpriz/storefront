@@ -4,6 +4,8 @@ import { ReactNode, Suspense } from "react";
 
 export const experimental_ppr = true;
 
+export const revalidate = 3600;
+
 export default async function ProductExample({
   children,
   information,

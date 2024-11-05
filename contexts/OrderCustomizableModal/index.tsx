@@ -1,11 +1,11 @@
 "use client";
 
-import Modal from "@/components/Modal/FramerModal/Modal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import clsx from "clsx";
 import { ReactNode, createContext, useContext, useState } from "react";
 import OrderCustomize from "./OrderCustomize";
 import { toast } from "sonner";
+import Modal from "@/components/Modal";
 
 interface OrderCustomizableModalType {
   onOpen: (orderItem: GetUserOrdersQuery["order"][0]) => void;
