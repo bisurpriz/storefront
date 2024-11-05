@@ -4,7 +4,16 @@ import { useEffect, useState, useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, LucideCopy, Mail, Phone, User } from "lucide-react";
+import {
+  Building2,
+  CheckCircle,
+  FileDigit,
+  LucideCopy,
+  Mail,
+  Phone,
+  Text,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -23,6 +32,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { parseJson } from "@/utils/format";
 import { orderDetailSchema } from "./schema";
 import { InferType } from "yup";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { CartStepPaths } from "../../constants";
 
 const stepperData = [
   { label: "Gönderici Bilgileri", key: "sender" },
@@ -36,7 +48,9 @@ export default function ReceiverForm() {
   const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
   const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
-  const [selectedInvoiceType, setSelectedInvoiceType] = useState("person");
+  const [selectedInvoiceType, setSelectedInvoiceType] = useState<
+    "person" | "company"
+  >("person");
 
   const {
     cartState: { cartItems },
@@ -45,15 +59,18 @@ export default function ReceiverForm() {
   const { city, district, neighborhood, street, postal_code } =
     getLocationVariables(cartItems[0].deliveryLocation);
 
-  const hasAddressedCartItem = cartItems.some((item) => {
-    console.log(item.delivery_time_ranges);
+  const hasSameDayProduct = cartItems.some((item) => {
     return item.delivery_type === "SAME_DAY" && item.delivery_time_ranges;
   });
-  console.log(hasAddressedCartItem);
 
-  const { control, handleSubmit, setValue } = useForm<OrderDetailFormData>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<OrderDetailFormData>({
     resolver: yupResolver(orderDetailSchema),
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
       sender_name: "",
       sender_phone: "",
@@ -90,13 +107,30 @@ export default function ReceiverForm() {
   );
 
   const availableDistricts = getAvailableDistricts(placeData);
-
-  const onSubmit = (data: OrderDetailFormData, errors) => {
+  const { push } = useRouter();
+  const onSubmit = (data: OrderDetailFormData) => {
     startTransition(() => {
-      console.log(data, errors);
-      // Handle form submission
+      if (Object.keys(errors).length) {
+        toast.error("Lütfen formu eksiksiz doldurunuz.");
+        return;
+      }
+
+      sessionStorage.setItem("order-detail-form", JSON.stringify(data));
+      push(CartStepPaths.CHECKOUT);
     });
   };
+
+  useEffect(() => {
+    startTransition(() => {
+      const localData = sessionStorage.getItem("order-detail-form");
+      if (localData) {
+        const parsedData = JSON.parse(localData);
+        Object.keys(parsedData).forEach((key) => {
+          setValue(key as keyof OrderDetailFormData, parsedData[key]);
+        });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     startTransition(() => {
@@ -115,8 +149,11 @@ export default function ReceiverForm() {
     });
   }, [district, neighborhood]);
 
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const nextStep = (e) => {
+    e.preventDefault();
+    setStep((prev) => prev + 1);
+  };
+  const prevStep = () => setStep((prev) => prev - 1);
 
   const renderStepContent = (stepNumber: number) => {
     const variants = {
@@ -215,8 +252,8 @@ export default function ReceiverForm() {
                     <div className="space-x-2">
                       <RadioGroup
                         {...field}
-                        onValueChange={(value) => {
-                          setSelectedInvoiceType(value as string);
+                        onValueChange={(value: "person" | "company") => {
+                          setSelectedInvoiceType(value);
                           field.onChange(value);
                         }}
                         id="invoice_type"
@@ -253,7 +290,7 @@ export default function ReceiverForm() {
                 )}
               />
 
-              {selectedInvoiceType === "company" && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <Controller
                   name="invoice_company_address"
                   control={control}
@@ -267,10 +304,67 @@ export default function ReceiverForm() {
                       placeholder="Fatura Adresi"
                       inputClass="rounded-sm"
                       dirtyAnimation={isDirty}
+                      className="col-span-full"
+                      rows={3}
                     />
                   )}
                 />
-              )}
+                {selectedInvoiceType === "company" && (
+                  <>
+                    <Controller
+                      name="invoice_company_name"
+                      control={control}
+                      render={({ field, fieldState: { error, isDirty } }) => (
+                        <TextField
+                          className="h-12 rounded-sm"
+                          {...field}
+                          error={!!error?.message}
+                          errorMessage={error?.message}
+                          label="Firma Adı"
+                          id="invoice_company_name"
+                          placeholder="Firma Adı"
+                          icon={<Text />}
+                          dirtyAnimation={isDirty}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="invoice_tax_number"
+                      control={control}
+                      render={({ field, fieldState: { error, isDirty } }) => (
+                        <TextField
+                          className="h-12 rounded-sm"
+                          {...field}
+                          error={!!error?.message}
+                          errorMessage={error?.message}
+                          label="Vergi Numarası"
+                          id="invoice_tax_number"
+                          placeholder="Vergi Numarası"
+                          icon={<FileDigit />}
+                          dirtyAnimation={isDirty}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="invoice_tax_office"
+                      control={control}
+                      render={({ field, fieldState: { error, isDirty } }) => (
+                        <TextField
+                          className="h-12 rounded-sm"
+                          {...field}
+                          error={!!error?.message}
+                          errorMessage={error?.message}
+                          label="Vergi Dairesi"
+                          id="invoice_tax_office"
+                          placeholder="Vergi Dairesi"
+                          icon={<Building2 />}
+                          dirtyAnimation={isDirty}
+                        />
+                      )}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           )}
 
@@ -480,7 +574,7 @@ export default function ReceiverForm() {
                     errorMessage={error?.message}
                     id="notes"
                     placeholder="Teslimat için ek notunuz varsa buraya yazabilirsiniz."
-                    rows={4}
+                    rows={3}
                     dirtyAnimation={isDirty}
                   />
                 )}
@@ -494,7 +588,6 @@ export default function ReceiverForm() {
 
   return (
     <div className="container mx-auto sm:p-4 relative">
-      {/* Spinner foreground for isPending status */}
       {isPending && (
         <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
           <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-primary" />
@@ -533,12 +626,9 @@ export default function ReceiverForm() {
       </div>
 
       <form
-        onSubmit={
-          handleSubmit((data, errors) => onSubmit(data, errors)) as unknown as (
-            e: React.FormEvent
-          ) => void
-        }
+        onSubmit={handleSubmit(onSubmit)}
         className="lg:grid lg:grid-cols-3 lg:gap-8"
+        id="order-detail-form"
       >
         <div className="lg:col-span-3 space-y-8">
           {renderStepContent(step)}

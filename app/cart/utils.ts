@@ -4,20 +4,15 @@ import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.gene
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 const getOrderAddresses = (
-  orderDetail: OrderDetailFormData
+  orderDetail: OrderDetailFormData,
+  cartItems: ProductForCart[]
 ): CreateOrderMutationVariables["object"]["order_addresses"] => {
   const {
-    invoice_company_address,
-    invoice_type,
-    notes,
     receiver_address,
     receiver_city,
     receiver_district,
     receiver_name,
     receiver_phone,
-    sender_email,
-    sender_name,
-    sender_phone,
     receiver_neighborhood,
   } = orderDetail;
 
@@ -39,19 +34,16 @@ const getOrderAddresses = (
 
   const order_addresses = [
     {
-      invoice_company_address,
-      invoice_type,
-      notes,
-      receiver_address,
-      receiver_city,
-      receiver_district,
+      address: receiver_address,
+      city: receiver_city.value,
+      district: receiver_district.value,
+      quarter: receiver_neighborhood.value,
       receiver_firstname,
       receiver_surname,
       receiver_phone,
-      sender_email,
-      sender_name,
-      sender_phone,
-      receiver_neighborhood,
+      place_id:
+        cartItems.find((i) => i.deliveryLocation.placeId)?.deliveryLocation
+          ?.placeId ?? null,
     },
   ];
 
@@ -96,7 +88,6 @@ const getTenantOrders = (
             delivery_date: item.deliveryDate,
             delivery_time: item.deliveryTime,
             card_note: item.card_note,
-            deliveryLocation: item.deliveryLocation,
           };
         }),
       },
@@ -112,8 +103,7 @@ export const createOrderDataMapper = (
   cartItems: ProductForCart[],
   orderDetail: OrderDetailFormData
 ): CreateOrderMutationVariables => {
-  // TODO: delivery_date, delivery_time should be added to orderDetail
-  const order_addresses = getOrderAddresses(orderDetail);
+  const order_addresses = getOrderAddresses(orderDetail, cartItems);
   const tenant_orders = getTenantOrders(cartItems);
 
   return {

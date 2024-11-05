@@ -67,7 +67,7 @@ const Input: FC<InputProps> = ({
           placeholder={placeholder}
           {...props}
         />
-        {dirtyAnimation && (
+        {!error && dirtyAnimation && (
           <motion.div
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}

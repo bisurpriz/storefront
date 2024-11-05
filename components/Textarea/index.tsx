@@ -58,7 +58,7 @@ const Textarea: FC<TextareaProps> = ({
         rows={rows}
         className={inputClass}
         variant={error ? "error" : "default"}
-        dirtyAnimation={dirtyAnimation}
+        dirtyAnimation={!error && dirtyAnimation}
         {...rest}
       />
       {error && errorMessage && (

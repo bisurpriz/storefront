@@ -56,6 +56,7 @@ const Button: FC<ButtonProps> = ({
   disabled,
   children,
   icon,
+  type,
   ...props
 }) => {
   const Comp = asChild ? Slot : "button";
@@ -64,6 +65,7 @@ const Button: FC<ButtonProps> = ({
       className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       disabled={loading || disabled}
+      type={type}
       {...props}
     >
       {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
