@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import DistanceSalesContract from "@/components/ContractPreview/DistanceSalesContract";
-import Modal from "@/components/Modal/FramerModal/Modal";
 import React from "react";
+import Modal from "@/components/Modal";
 
 export interface ContractContextProps {
   children: React.ReactNode;
@@ -36,7 +36,11 @@ export const ContractProvider = ({ children }: ContractContextProps) => {
       }}
     >
       {children}
-      <Modal open={openModal} handleClose={() => setOpenModal(false)}>
+      <Modal
+        closeOnBackdropClick={false}
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+      >
         <div className="bg-white p-4 rounded-md flex flex-col">
           <DistanceSalesContract
             aliciAdi="Ali"

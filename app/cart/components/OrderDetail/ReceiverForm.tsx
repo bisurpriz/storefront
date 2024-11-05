@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2,
-  CheckCircle,
   FileDigit,
   LucideCopy,
   Mail,

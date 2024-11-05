@@ -5,10 +5,10 @@ import { Link } from "@/components/Link";
 import { useState, startTransition } from "react";
 import { startMessageForOrder } from "../actions";
 import { useRouter } from "next/navigation";
-import Modal from "@/components/Modal/FramerModal/Modal";
 import Chat from "@/components/Icons/Chat";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { useProgress } from "react-transition-progress";
+import Modal from "@/components/Modal";
 
 const OrderMessage = ({
   tenant,
@@ -57,43 +57,30 @@ const OrderMessage = ({
           setOpen(false);
         }}
       >
-        <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto flex flex-col gap-4">
-          <span>
-            <Link
-              href={`/vendor/${tenant.tenants?.[0]?.id}`}
-              aria-label="Satıcıya git"
-              className="text-sm text-secondary"
-            >
-              {tenant.tenants?.[0]?.name}
-            </Link>
-            <span className="text-sm text-gray-500">
-              {" "}
-              satıcısı ile iletişime geçin
-            </span>{" "}
-          </span>
-          <div className="font-mono">
-            <div className="flex items-start gap-4 border-b pb-4">
-              <textarea
-                name="review-comment"
-                id="review-comment"
-                rows={3}
-                className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2"
-                placeholder="Mesajınızı yazın..."
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                }}
-              />
-            </div>
-            <Button
-              variant="default"
-              size="sm"
-              className="w-full justify-center"
-              onClick={sendMessage}
-            >
-              Mesajı Gönder
-            </Button>
-          </div>
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500">
+            <strong> {tenant.tenants?.[0]?.name}</strong> satıcısına mesaj
+            gönder
+          </p>
+          <textarea
+            name="review-comment"
+            id="review-comment"
+            rows={3}
+            className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2"
+            placeholder="Mesajınızı yazın..."
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          />
+          <Button
+            variant="default"
+            size="sm"
+            className="w-full justify-center"
+            onClick={sendMessage}
+          >
+            Mesajı Gönder
+          </Button>
         </div>
       </Modal>
     </>

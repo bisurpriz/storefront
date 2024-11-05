@@ -26,7 +26,6 @@ import {
 import clsx from "clsx";
 import usePopup from "@/hooks/usePopup";
 import { Button } from "@/components/ui/button";
-import Modal from "@/components/Modal/FramerModal/Modal";
 import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
 import User from "@/components/Icons/User";
@@ -36,6 +35,7 @@ import { CartStepPaths } from "../../constants";
 import { useProgress } from "react-transition-progress";
 import { useContract } from "@/contexts/ContractContext";
 import { toast } from "sonner";
+import Modal from "@/components/Modal";
 
 export type CreditCardForm = {
   creditCardNumber: string;

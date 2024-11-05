@@ -3,7 +3,7 @@ import { post } from "@/app/iyzico-payment/actions";
 export async function POST(request: Request) {
   const url = await request.text();
 
-  const params = new URLSearchParams(url);
+  const params = await new URLSearchParams(url);
 
   const paramsObject = {};
   params.forEach((value, key) => {
@@ -14,6 +14,8 @@ export async function POST(request: Request) {
     paymentId: paramsObject["paymentId"],
     conversationData: paramsObject["conversationData"],
   });
+
+  console.log(response);
 
   const host = request.headers.get("x-forwarded-host");
   const port = request.headers.get("x-forwarded-port");
