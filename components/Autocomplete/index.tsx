@@ -14,10 +14,30 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown, SquareX } from "lucide-react";
+import { cva } from "class-variance-authority";
 
 export type AutoCompleteOption = Pick<DropdownOption, "label" | "value"> & {
   [key: string]: any;
 };
+
+const inputVariants = cva(
+  "flex h-9 border-2 w-full rounded-md  border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-input text-foreground placeholder-text-muted-foreground focus-visible:ring-ring focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-2",
+        error:
+          "border-red-300 text-red-900 placeholder-text-red-300 focus:ring-red-500 focus:border-red-500 focus-visible:outline-none focus-visible:ring-red-500 focus-visible:ring-2 focus-visible:ring-red-500",
+        success:
+          "border-green-300 text-green-900 placeholder-text-green-300 focus:ring-green-500 focus:border-green-500 focus-visible:outline-none focus-visible:ring-green-500 focus-visible:ring-2 focus-visible:ring-green-500",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
 
 export interface AutoCompleteProps {
   options: AutoCompleteOption[];
@@ -39,6 +59,7 @@ export interface AutoCompleteProps {
   errorMessage?: string;
   startIcon?: React.ReactNode;
   buttonClass?: string;
+  variant?: "default" | "error" | "success";
 }
 
 export default function AutoComplete({
@@ -54,6 +75,7 @@ export default function AutoComplete({
   disabled,
   readOnly,
   error,
+  variant,
   errorMessage,
   startIcon,
   buttonClass,
@@ -85,7 +107,11 @@ export default function AutoComplete({
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className={cn("justify-between", buttonClass)}
+              className={cn(
+                "justify-between",
+                inputVariants({ variant }),
+                buttonClass
+              )}
               type="button"
               aria-readonly={readOnly}
             >

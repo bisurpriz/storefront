@@ -29,6 +29,7 @@ export interface Product {
   order_items: OrderItem[];
   product_customizable_areas: ProductCustomizableArea[];
   questions: Question[];
+  delivery_time_ranges: string;
   reviews: Review[];
   is_service_free: boolean;
   score: number;

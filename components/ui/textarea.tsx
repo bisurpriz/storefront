@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { FC, TextareaHTMLAttributes } from "react";
+import { motion } from "framer-motion";
+import { CheckCheck } from "lucide-react";
 
 export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   ref?: React.Ref<HTMLTextAreaElement>;
   variant?: "default" | "error" | "success";
+  dirtyAnimation?: boolean;
 }
 
 const inputVariants = cva(
@@ -27,13 +30,32 @@ const inputVariants = cva(
   }
 );
 
-const Textarea: FC<TextareaProps> = ({ className, variant, ref, ...props }) => {
+const Textarea: FC<TextareaProps> = ({
+  className,
+  variant,
+  ref,
+  dirtyAnimation,
+  ...props
+}) => {
   return (
-    <textarea
-      className={cn(inputVariants({ variant }), className)}
-      ref={ref}
-      {...props}
-    />
+    <div className="relative">
+      <textarea
+        className={cn(inputVariants({ variant }), className)}
+        ref={ref}
+        {...props}
+      />
+      {dirtyAnimation && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.7 }}
+          transition={{ duration: 0.3 }}
+          className="absolute right-2 top-3 -translate-y-1/2"
+        >
+          <CheckCheck className="w-6 h-6 absolute right-2 top-3 -translate-y-1/2 text-green-500" />
+        </motion.div>
+      )}
+    </div>
   );
 };
 Textarea.displayName = "Textarea";

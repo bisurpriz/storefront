@@ -17,6 +17,7 @@ type TextareaProps = {
   rows?: number;
   defaultValue?: string;
   inputClass?: string;
+  dirtyAnimation?: boolean;
 };
 
 const Textarea: FC<TextareaProps> = ({
@@ -32,6 +33,7 @@ const Textarea: FC<TextareaProps> = ({
   className,
   rows = 3,
   inputClass,
+  dirtyAnimation,
   ...rest
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,6 +58,7 @@ const Textarea: FC<TextareaProps> = ({
         rows={rows}
         className={inputClass}
         variant={error ? "error" : "default"}
+        dirtyAnimation={dirtyAnimation}
         {...rest}
       />
       {error && errorMessage && (

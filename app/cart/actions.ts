@@ -299,6 +299,7 @@ export const getProductByIdForCart = async (id: number) => {
     name: response.data.product_by_pk.name,
     price: response.data.product_by_pk.price,
     quantity: 1,
+    delivery_time_ranges: response.data.product_by_pk.delivery_time_ranges,
     product_customizable_areas:
       response.data.product_by_pk.product_customizable_areas.map((area) => ({
         count: area.count,

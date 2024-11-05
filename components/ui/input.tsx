@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
+import { motion } from "framer-motion";
+import { CheckCheck, CheckCircleIcon } from "lucide-react";
 import { FC, InputHTMLAttributes, LegacyRef } from "react";
 
 const inputVariants = cva(
@@ -28,6 +30,7 @@ export interface InputProps
   icon?: React.ReactNode;
   error?: boolean;
   errorMessage?: string;
+  dirtyAnimation?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -40,6 +43,7 @@ const Input: FC<InputProps> = ({
   error,
   errorMessage,
   placeholder,
+  dirtyAnimation,
   ...props
 }) => {
   const hasIconClasses = icon ? "pl-10" : "";
@@ -63,6 +67,17 @@ const Input: FC<InputProps> = ({
           placeholder={placeholder}
           {...props}
         />
+        {dirtyAnimation && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{ duration: 0.3 }}
+            className="absolute right-2 top-1/2 -translate-y-1/2"
+          >
+            <CheckCheck className="w-6 h-6 absolute right-2 top-1/2 -translate-y-1/2 text-green-500" />
+          </motion.div>
+        )}
       </div>
       {error && errorMessage && (
         <span className="text-xs text-red-500">{errorMessage}</span>

@@ -29,6 +29,7 @@ query getProductByIdForCart($id: bigint!) {
     delivery_type
     is_service_free
     score
+    delivery_time_ranges
     product_categories {
       category {
         id

@@ -30,6 +30,7 @@ const TextField: FC<TextFieldProps> = (props) => {
     spellCheck,
     ref,
     readOnly,
+    dirtyAnimation,
     ...rest
   } = props;
 
@@ -66,6 +67,7 @@ const TextField: FC<TextFieldProps> = (props) => {
         icon={icon}
         error={error}
         errorMessage={errorMessage}
+        dirtyAnimation={dirtyAnimation}
       />
     </label>
   );

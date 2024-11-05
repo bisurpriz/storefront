@@ -9,11 +9,7 @@ import {
 } from "react";
 import Cookies from "js-cookie";
 import { uuidv4 } from "@/utils/uuidv4";
-import {
-  GetUserAddressByIdQuery,
-  GetUserByIdQuery,
-} from "@/graphql/queries/account/account.generated";
-import { getUserAddressById } from "@/app/account/actions";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { setClientCookie } from "@/utils/getCookie";
 import { checkExpire } from "@/graphql/utils/checkExpire";
 import { useRouter } from "next/navigation";
@@ -21,7 +17,7 @@ import { CookieTokens } from "@/app/@auth/contants";
 
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
-  userAddresses: GetUserAddressByIdQuery["user_by_pk"]["user_addresses"];
+  userAddresses: any;
 }
 
 const initialAuthContext: AuthContextType = {
@@ -38,9 +34,7 @@ export const AuthProvider = ({
   children: ReactNode;
   user: GetUserByIdQuery["user_by_pk"];
 }) => {
-  const [userAddresses, setUserAddresses] = useState<
-    GetUserAddressByIdQuery["user_by_pk"]["user_addresses"]
-  >([]);
+  const [userAddresses, setUserAddresses] = useState<any>([]);
   const { refresh } = useRouter();
 
   useEffect(() => {
@@ -81,10 +75,6 @@ export const AuthProvider = ({
   ) => {
     try {
       Cookies.remove(CookieTokens.GUEST_ID);
-      const {
-        data: { user_by_pk },
-      } = await getUserAddressById(user.id);
-      setUserAddresses(user_by_pk.user_addresses);
     } catch (error) {
       console.error("Error fetching user addresses:", error);
     }

@@ -3,9 +3,8 @@
 import { useEffect, useState, useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate, LucideCopy, Mail, Phone, Route, User } from "lucide-react";
+import { CheckCircle, LucideCopy, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -22,6 +21,8 @@ import {
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { parseJson } from "@/utils/format";
+import { orderDetailSchema } from "./schema";
+import { InferType } from "yup";
 
 const stepperData = [
   { label: "Gönderici Bilgileri", key: "sender" },
@@ -29,48 +30,13 @@ const stepperData = [
   { label: "Ek Notlar", key: "notes" },
 ];
 
-const schema = yup
-  .object({
-    sender_name: yup.string().required("Ad Soyad gereklidir"),
-    sender_phone: yup.string().required("Telefon numarası gereklidir"),
-    sender_email: yup
-      .string()
-      .email("Geçerli bir e-posta adresi giriniz")
-      .required("E-posta adresi gereklidir"),
-    invoice_type: yup.string().oneOf(["person", "company"]).required(),
-    invoice_company_address: yup.string().when("invoice_type", {
-      is: (value: string) => value === "company",
-      then: (schema) => schema.required("Fatura adresi gereklidir"),
-    }),
-    receiver_name: yup.string().required("Alıcı adı gereklidir"),
-    receiver_phone: yup.string().required("Alıcı telefon numarası gereklidir"),
-    receiver_address: yup.string().required("Açık adres girilmesi gereklidir"),
-    receiver_city: yup
-      .object({
-        label: yup.string(),
-        value: yup.string(),
-      })
-      .required(),
-    receiver_district: yup
-      .object({
-        label: yup.string(),
-        value: yup.string(),
-      })
-      .required(),
-    receiver_neighborhood: yup.object({
-      label: yup.string(),
-      value: yup.string(),
-    }),
-    notes: yup.string(),
-  })
-  .required();
-
-export type OrderDetailFormData = yup.InferType<typeof schema>;
+export type OrderDetailFormData = InferType<typeof orderDetailSchema>;
 
 export default function ReceiverForm() {
   const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
   const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
+  const [selectedInvoiceType, setSelectedInvoiceType] = useState("person");
 
   const {
     cartState: { cartItems },
@@ -79,14 +45,14 @@ export default function ReceiverForm() {
   const { city, district, neighborhood, street, postal_code } =
     getLocationVariables(cartItems[0].deliveryLocation);
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setValue,
-  } = useForm<OrderDetailFormData>({
-    resolver: yupResolver(schema),
+  const hasAddressedCartItem = cartItems.some((item) => {
+    console.log(item.delivery_time_ranges);
+    return item.delivery_type === "SAME_DAY" && item.delivery_time_ranges;
+  });
+  console.log(hasAddressedCartItem);
+
+  const { control, handleSubmit, setValue } = useForm<OrderDetailFormData>({
+    resolver: yupResolver(orderDetailSchema),
     mode: "onSubmit",
     defaultValues: {
       sender_name: "",
@@ -119,18 +85,35 @@ export default function ReceiverForm() {
     },
   });
 
-  const invoiceType = watch("invoice_type");
-
   const placeData = parseJson(
     cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places
   );
 
   const availableDistricts = getAvailableDistricts(placeData);
 
-  const onSubmit = (data: OrderDetailFormData) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = (data: OrderDetailFormData, errors) => {
+    startTransition(() => {
+      console.log(data, errors);
+      // Handle form submission
+    });
   };
+
+  useEffect(() => {
+    startTransition(() => {
+      if (district && !neighborhood) {
+        const availableNeighborhoods = getAvailableNeighborhoods(
+          placeData,
+          district
+        );
+        setNeighborhoods(
+          availableNeighborhoods?.map((neighborhood) => ({
+            label: neighborhood,
+            value: neighborhood,
+          })) || []
+        );
+      }
+    });
+  }, [district, neighborhood]);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -158,25 +141,30 @@ export default function ReceiverForm() {
                 <Controller
                   name="sender_name"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      className="h-12 rounded-sm"
-                      {...field}
-                      error={!!error?.message}
-                      errorMessage={error?.message}
-                      label="Ad Soyad"
-                      id="sender_name"
-                      placeholder="Lütfen adınızı ve soyadınızı giriniz."
-                      icon={<User />}
-                    />
-                  )}
+                  render={({ field, fieldState: { error, isDirty } }) => {
+                    return (
+                      <div className="relative">
+                        <TextField
+                          className="h-12 rounded-sm"
+                          {...field}
+                          error={!!error?.message}
+                          errorMessage={error?.message}
+                          label="Ad Soyad"
+                          id="sender_name"
+                          placeholder="Lütfen adınızı ve soyadınızı giriniz."
+                          icon={<User />}
+                          dirtyAnimation={isDirty}
+                        />
+                      </div>
+                    );
+                  }}
                 />
                 <Controller
                   name="sender_phone"
                   control={control}
                   render={({
                     field: { name, value, onChange },
-                    fieldState: { error },
+                    fieldState: { error, isDirty },
                   }) => (
                     <PhoneInput
                       className="h-12 rounded-sm"
@@ -189,13 +177,14 @@ export default function ReceiverForm() {
                       onChange={onChange}
                       value={value}
                       icon={<Phone />}
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
                 <Controller
                   name="sender_email"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field, fieldState: { error, isDirty } }) => (
                     <TextField
                       className="h-12 rounded-sm"
                       {...field}
@@ -206,6 +195,7 @@ export default function ReceiverForm() {
                       type="email"
                       placeholder="E-posta Adresi"
                       icon={<Mail />}
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
@@ -225,7 +215,10 @@ export default function ReceiverForm() {
                     <div className="space-x-2">
                       <RadioGroup
                         {...field}
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          setSelectedInvoiceType(value as string);
+                          field.onChange(value);
+                        }}
                         id="invoice_type"
                         defaultValue="person"
                         defaultChecked={true}
@@ -233,11 +226,21 @@ export default function ReceiverForm() {
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="person" id="person" />
-                          <Label htmlFor="person">Bireysel</Label>
+                          <Label
+                            className="text-gray-700 text-xs lg:text-sm"
+                            htmlFor="person"
+                          >
+                            Kişi adına
+                          </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="company" id="company" />
-                          <Label htmlFor="company">Kurumsal</Label>
+                          <Label
+                            className="text-gray-700 text-xs lg:text-sm"
+                            htmlFor="company"
+                          >
+                            Şirket adına
+                          </Label>
                         </div>
                       </RadioGroup>
                       {error && (
@@ -250,11 +253,11 @@ export default function ReceiverForm() {
                 )}
               />
 
-              {invoiceType === "company" && (
+              {selectedInvoiceType === "company" && (
                 <Controller
                   name="invoice_company_address"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field, fieldState: { error, isDirty } }) => (
                     <Textarea
                       {...field}
                       error={!!error?.message}
@@ -263,6 +266,7 @@ export default function ReceiverForm() {
                       id="invoice_company_address"
                       placeholder="Fatura Adresi"
                       inputClass="rounded-sm"
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
@@ -276,7 +280,7 @@ export default function ReceiverForm() {
                 <Controller
                   name="receiver_name"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field, fieldState: { error, isDirty } }) => (
                     <TextField
                       className="h-12 rounded-sm"
                       {...field}
@@ -286,6 +290,7 @@ export default function ReceiverForm() {
                       id="receiver_name"
                       placeholder="Alıcı Adı"
                       icon={<User />}
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
@@ -294,7 +299,7 @@ export default function ReceiverForm() {
                   control={control}
                   render={({
                     field: { onChange, name, value },
-                    fieldState: { error },
+                    fieldState: { error, isDirty },
                   }) => (
                     <PhoneInput
                       className="h-12 rounded-sm"
@@ -307,6 +312,7 @@ export default function ReceiverForm() {
                       onChange={onChange}
                       value={value}
                       icon={<Phone />}
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
@@ -314,14 +320,17 @@ export default function ReceiverForm() {
                 <Controller
                   name="receiver_city"
                   control={control}
-                  render={({ field }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <AutoComplete
                       {...field}
                       buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
                       id="receiver_city"
                       label="Şehir"
                       placeholder="Şehir seçiniz"
+                      error={!!error}
+                      errorMessage={error?.message}
                       disabled
+                      variant={!!error ? "error" : "default"}
                       onChange={field.onChange}
                       value={
                         field?.value && {
@@ -345,14 +354,17 @@ export default function ReceiverForm() {
                 <Controller
                   name="receiver_district"
                   control={control}
-                  render={({ field }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <AutoComplete
                       {...field}
                       buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
                       id="receiver_district"
                       label="İlçe"
                       placeholder="İlçe seçiniz"
+                      error={!!error}
+                      errorMessage={error?.message}
                       disabled={!!district}
+                      variant={!!error ? "error" : "default"}
                       onChange={(value: AutoCompleteOption) => {
                         if (value) {
                           setValue("receiver_neighborhood", null);
@@ -397,7 +409,7 @@ export default function ReceiverForm() {
                 <Controller
                   name="receiver_neighborhood"
                   control={control}
-                  render={({ field }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <AutoComplete
                       {...field}
                       buttonClass="h-12 rounded-sm border-2 py-1 px-3 focus-visible:ring-2"
@@ -405,6 +417,9 @@ export default function ReceiverForm() {
                       label="Mahalle"
                       placeholder="Mahalle seçiniz"
                       onChange={field.onChange}
+                      error={!!error}
+                      errorMessage={error?.message}
+                      variant={!!error ? "error" : "default"}
                       disabled={!!neighborhood}
                       value={
                         field?.value && {
@@ -436,15 +451,16 @@ export default function ReceiverForm() {
                 <Controller
                   name="receiver_address"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field, fieldState: { error, isDirty } }) => (
                     <Textarea
                       {...field}
                       error={!!error?.message}
                       errorMessage={error?.message}
                       label="Açık adres"
                       id="receiver_address"
-                      placeholder="Açık adres giriniz."
+                      placeholder="Mahalle, Sokak, Kapı No"
                       inputClass="rounded-sm"
+                      dirtyAnimation={isDirty}
                     />
                   )}
                 />
@@ -457,7 +473,7 @@ export default function ReceiverForm() {
               <Controller
                 name="notes"
                 control={control}
-                render={({ field, fieldState: { error } }) => (
+                render={({ field, fieldState: { error, isDirty } }) => (
                   <Textarea
                     {...field}
                     error={!!error?.message}
@@ -465,6 +481,7 @@ export default function ReceiverForm() {
                     id="notes"
                     placeholder="Teslimat için ek notunuz varsa buraya yazabilirsiniz."
                     rows={4}
+                    dirtyAnimation={isDirty}
                   />
                 )}
               />
@@ -476,7 +493,13 @@ export default function ReceiverForm() {
   };
 
   return (
-    <div className="container mx-auto sm:p-4">
+    <div className="container mx-auto sm:p-4 relative">
+      {/* Spinner foreground for isPending status */}
+      {isPending && (
+        <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-primary" />
+        </div>
+      )}
       <div className="mb-8">
         <div className="flex justify-between">
           {stepperData.map((data, i) => (
@@ -510,7 +533,11 @@ export default function ReceiverForm() {
       </div>
 
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={
+          handleSubmit((data, errors) => onSubmit(data, errors)) as unknown as (
+            e: React.FormEvent
+          ) => void
+        }
         className="lg:grid lg:grid-cols-3 lg:gap-8"
       >
         <div className="lg:col-span-3 space-y-8">

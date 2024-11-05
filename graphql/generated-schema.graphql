@@ -2266,79 +2266,7 @@ type city {
   minlatitude: String
   minlongitude: String
   name: String!
-
-  """An array relationship"""
-  order_addresses(
-    """distinct select on columns"""
-    distinct_on: [order_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_address_order_by!]
-
-    """filter the rows returned"""
-    where: order_address_bool_exp
-  ): [order_address!]!
-
-  """An aggregate relationship"""
-  order_addresses_aggregate(
-    """distinct select on columns"""
-    distinct_on: [order_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_address_order_by!]
-
-    """filter the rows returned"""
-    where: order_address_bool_exp
-  ): order_address_aggregate!
   parent_id: Int
-
-  """An array relationship"""
-  user_addresses(
-    """distinct select on columns"""
-    distinct_on: [user_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [user_address_order_by!]
-
-    """filter the rows returned"""
-    where: user_address_bool_exp
-  ): [user_address!]!
-
-  """An aggregate relationship"""
-  user_addresses_aggregate(
-    """distinct select on columns"""
-    distinct_on: [user_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [user_address_order_by!]
-
-    """filter the rows returned"""
-    where: user_address_bool_exp
-  ): user_address_aggregate!
 }
 
 """
@@ -2390,11 +2318,7 @@ input city_bool_exp {
   minlatitude: String_comparison_exp
   minlongitude: String_comparison_exp
   name: String_comparison_exp
-  order_addresses: order_address_bool_exp
-  order_addresses_aggregate: order_address_aggregate_bool_exp
   parent_id: Int_comparison_exp
-  user_addresses: user_address_bool_exp
-  user_addresses_aggregate: user_address_aggregate_bool_exp
 }
 
 """
@@ -2439,9 +2363,7 @@ input city_insert_input {
   minlatitude: String
   minlongitude: String
   name: String
-  order_addresses: order_address_arr_rel_insert_input
   parent_id: Int
-  user_addresses: user_address_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -2509,9 +2431,7 @@ input city_order_by {
   minlatitude: order_by
   minlongitude: order_by
   name: order_by
-  order_addresses_aggregate: order_address_aggregate_order_by
   parent_id: order_by
-  user_addresses_aggregate: user_address_aggregate_order_by
 }
 
 """primary key columns input for table: city"""
@@ -4799,42 +4719,6 @@ type district {
   minlatitude: String
   minlongitude: String
   name: String!
-
-  """An array relationship"""
-  order_addresses(
-    """distinct select on columns"""
-    distinct_on: [order_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_address_order_by!]
-
-    """filter the rows returned"""
-    where: order_address_bool_exp
-  ): [order_address!]!
-
-  """An aggregate relationship"""
-  order_addresses_aggregate(
-    """distinct select on columns"""
-    distinct_on: [order_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_address_order_by!]
-
-    """filter the rows returned"""
-    where: order_address_bool_exp
-  ): order_address_aggregate!
   parent_id: Int!
 
   """An array relationship"""
@@ -4872,42 +4756,6 @@ type district {
     """filter the rows returned"""
     where: quarter_bool_exp
   ): quarter_aggregate!
-
-  """An array relationship"""
-  user_addresses(
-    """distinct select on columns"""
-    distinct_on: [user_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [user_address_order_by!]
-
-    """filter the rows returned"""
-    where: user_address_bool_exp
-  ): [user_address!]!
-
-  """An aggregate relationship"""
-  user_addresses_aggregate(
-    """distinct select on columns"""
-    distinct_on: [user_address_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [user_address_order_by!]
-
-    """filter the rows returned"""
-    where: user_address_bool_exp
-  ): user_address_aggregate!
 }
 
 """
@@ -5004,13 +4852,9 @@ input district_bool_exp {
   minlatitude: String_comparison_exp
   minlongitude: String_comparison_exp
   name: String_comparison_exp
-  order_addresses: order_address_bool_exp
-  order_addresses_aggregate: order_address_aggregate_bool_exp
   parent_id: Int_comparison_exp
   quarters: quarter_bool_exp
   quarters_aggregate: quarter_aggregate_bool_exp
-  user_addresses: user_address_bool_exp
-  user_addresses_aggregate: user_address_aggregate_bool_exp
 }
 
 """
@@ -5049,10 +4893,8 @@ input district_insert_input {
   minlatitude: String
   minlongitude: String
   name: String
-  order_addresses: order_address_arr_rel_insert_input
   parent_id: Int
   quarters: quarter_arr_rel_insert_input
-  user_addresses: user_address_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -5147,10 +4989,8 @@ input district_order_by {
   minlatitude: order_by
   minlongitude: order_by
   name: order_by
-  order_addresses_aggregate: order_address_aggregate_order_by
   parent_id: order_by
   quarters_aggregate: quarter_aggregate_order_by
-  user_addresses_aggregate: user_address_aggregate_order_by
 }
 
 """primary key columns input for table: district"""
@@ -9292,23 +9132,15 @@ columns and relationships of "order_address"
 type order_address {
   address: String!
   address_title: String
-
-  """An object relationship"""
-  city: city!
-  city_id: Int!
-
-  """An object relationship"""
-  district: district!
-  district_id: Int!
+  city: String
+  district: String
   id: Int!
 
   """An object relationship"""
   order: order!
   order_id: uuid!
-
-  """An object relationship"""
-  quarter: quarter!
-  quarter_id: Int!
+  place_id: String
+  quarter: String
   receiver_firstname: String!
   receiver_phone: String!
   receiver_surname: String!
@@ -9379,20 +9211,14 @@ input order_address_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type order_address_avg_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by avg() on columns of table "order_address"
 """
 input order_address_avg_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -9404,15 +9230,13 @@ input order_address_bool_exp {
   _or: [order_address_bool_exp!]
   address: String_comparison_exp
   address_title: String_comparison_exp
-  city: city_bool_exp
-  city_id: Int_comparison_exp
-  district: district_bool_exp
-  district_id: Int_comparison_exp
+  city: String_comparison_exp
+  district: String_comparison_exp
   id: Int_comparison_exp
   order: order_bool_exp
   order_id: uuid_comparison_exp
-  quarter: quarter_bool_exp
-  quarter_id: Int_comparison_exp
+  place_id: String_comparison_exp
+  quarter: String_comparison_exp
   receiver_firstname: String_comparison_exp
   receiver_phone: String_comparison_exp
   receiver_surname: String_comparison_exp
@@ -9432,10 +9256,7 @@ enum order_address_constraint {
 input type for incrementing numeric columns in table "order_address"
 """
 input order_address_inc_input {
-  city_id: Int
-  district_id: Int
   id: Int
-  quarter_id: Int
 }
 
 """
@@ -9444,15 +9265,13 @@ input type for inserting data into table "order_address"
 input order_address_insert_input {
   address: String
   address_title: String
-  city: city_obj_rel_insert_input
-  city_id: Int
-  district: district_obj_rel_insert_input
-  district_id: Int
+  city: String
+  district: String
   id: Int
   order: order_obj_rel_insert_input
   order_id: uuid
-  quarter: quarter_obj_rel_insert_input
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -9462,11 +9281,12 @@ input order_address_insert_input {
 type order_address_max_fields {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
   order_id: uuid
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -9478,11 +9298,12 @@ order by max() on columns of table "order_address"
 input order_address_max_order_by {
   address: order_by
   address_title: order_by
-  city_id: order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
   order_id: order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -9492,11 +9313,12 @@ input order_address_max_order_by {
 type order_address_min_fields {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
   order_id: uuid
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -9508,11 +9330,12 @@ order by min() on columns of table "order_address"
 input order_address_min_order_by {
   address: order_by
   address_title: order_by
-  city_id: order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
   order_id: order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -9542,15 +9365,13 @@ input order_address_on_conflict {
 input order_address_order_by {
   address: order_by
   address_title: order_by
-  city: city_order_by
-  city_id: order_by
-  district: district_order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
   order: order_order_by
   order_id: order_by
-  quarter: quarter_order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -9572,10 +9393,10 @@ enum order_address_select_column {
   address_title
 
   """column name"""
-  city_id
+  city
 
   """column name"""
-  district_id
+  district
 
   """column name"""
   id
@@ -9584,7 +9405,10 @@ enum order_address_select_column {
   order_id
 
   """column name"""
-  quarter_id
+  place_id
+
+  """column name"""
+  quarter
 
   """column name"""
   receiver_firstname
@@ -9602,11 +9426,12 @@ input type for updating data in table "order_address"
 input order_address_set_input {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
   order_id: uuid
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -9614,56 +9439,38 @@ input order_address_set_input {
 
 """aggregate stddev on columns"""
 type order_address_stddev_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev() on columns of table "order_address"
 """
 input order_address_stddev_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type order_address_stddev_pop_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev_pop() on columns of table "order_address"
 """
 input order_address_stddev_pop_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type order_address_stddev_samp_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev_samp() on columns of table "order_address"
 """
 input order_address_stddev_samp_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -9681,11 +9488,12 @@ input order_address_stream_cursor_input {
 input order_address_stream_cursor_value_input {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
   order_id: uuid
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -9693,20 +9501,14 @@ input order_address_stream_cursor_value_input {
 
 """aggregate sum on columns"""
 type order_address_sum_fields {
-  city_id: Int
-  district_id: Int
   id: Int
-  quarter_id: Int
 }
 
 """
 order by sum() on columns of table "order_address"
 """
 input order_address_sum_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -9720,10 +9522,10 @@ enum order_address_update_column {
   address_title
 
   """column name"""
-  city_id
+  city
 
   """column name"""
-  district_id
+  district
 
   """column name"""
   id
@@ -9732,7 +9534,10 @@ enum order_address_update_column {
   order_id
 
   """column name"""
-  quarter_id
+  place_id
+
+  """column name"""
+  quarter
 
   """column name"""
   receiver_firstname
@@ -9757,56 +9562,38 @@ input order_address_updates {
 
 """aggregate var_pop on columns"""
 type order_address_var_pop_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by var_pop() on columns of table "order_address"
 """
 input order_address_var_pop_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate var_samp on columns"""
 type order_address_var_samp_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by var_samp() on columns of table "order_address"
 """
 input order_address_var_samp_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate variance on columns"""
 type order_address_variance_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by variance() on columns of table "order_address"
 """
 input order_address_variance_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -27247,19 +27034,11 @@ columns and relationships of "user_address"
 type user_address {
   address: String!
   address_title: String!
-
-  """An object relationship"""
-  city: city!
-  city_id: Int!
-
-  """An object relationship"""
-  district: district!
-  district_id: Int!
+  city: String
+  district: String
   id: Int!
-
-  """An object relationship"""
-  quarter: quarter!
-  quarter_id: Int!
+  place_id: String
+  quarter: String
   receiver_firstname: String!
   receiver_phone: String!
   receiver_surname: String!
@@ -27334,20 +27113,14 @@ input user_address_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type user_address_avg_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by avg() on columns of table "user_address"
 """
 input user_address_avg_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -27359,13 +27132,11 @@ input user_address_bool_exp {
   _or: [user_address_bool_exp!]
   address: String_comparison_exp
   address_title: String_comparison_exp
-  city: city_bool_exp
-  city_id: Int_comparison_exp
-  district: district_bool_exp
-  district_id: Int_comparison_exp
+  city: String_comparison_exp
+  district: String_comparison_exp
   id: Int_comparison_exp
-  quarter: quarter_bool_exp
-  quarter_id: Int_comparison_exp
+  place_id: String_comparison_exp
+  quarter: String_comparison_exp
   receiver_firstname: String_comparison_exp
   receiver_phone: String_comparison_exp
   receiver_surname: String_comparison_exp
@@ -27387,10 +27158,7 @@ enum user_address_constraint {
 input type for incrementing numeric columns in table "user_address"
 """
 input user_address_inc_input {
-  city_id: Int
-  district_id: Int
   id: Int
-  quarter_id: Int
 }
 
 """
@@ -27399,13 +27167,11 @@ input type for inserting data into table "user_address"
 input user_address_insert_input {
   address: String
   address_title: String
-  city: city_obj_rel_insert_input
-  city_id: Int
-  district: district_obj_rel_insert_input
-  district_id: Int
+  city: String
+  district: String
   id: Int
-  quarter: quarter_obj_rel_insert_input
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -27417,10 +27183,11 @@ input user_address_insert_input {
 type user_address_max_fields {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -27433,10 +27200,11 @@ order by max() on columns of table "user_address"
 input user_address_max_order_by {
   address: order_by
   address_title: order_by
-  city_id: order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -27447,10 +27215,11 @@ input user_address_max_order_by {
 type user_address_min_fields {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -27463,10 +27232,11 @@ order by min() on columns of table "user_address"
 input user_address_min_order_by {
   address: order_by
   address_title: order_by
-  city_id: order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -27497,13 +27267,11 @@ input user_address_on_conflict {
 input user_address_order_by {
   address: order_by
   address_title: order_by
-  city: city_order_by
-  city_id: order_by
-  district: district_order_by
-  district_id: order_by
+  city: order_by
+  district: order_by
   id: order_by
-  quarter: quarter_order_by
-  quarter_id: order_by
+  place_id: order_by
+  quarter: order_by
   receiver_firstname: order_by
   receiver_phone: order_by
   receiver_surname: order_by
@@ -27527,16 +27295,19 @@ enum user_address_select_column {
   address_title
 
   """column name"""
-  city_id
+  city
 
   """column name"""
-  district_id
+  district
 
   """column name"""
   id
 
   """column name"""
-  quarter_id
+  place_id
+
+  """column name"""
+  quarter
 
   """column name"""
   receiver_firstname
@@ -27557,10 +27328,11 @@ input type for updating data in table "user_address"
 input user_address_set_input {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -27569,56 +27341,38 @@ input user_address_set_input {
 
 """aggregate stddev on columns"""
 type user_address_stddev_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev() on columns of table "user_address"
 """
 input user_address_stddev_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type user_address_stddev_pop_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev_pop() on columns of table "user_address"
 """
 input user_address_stddev_pop_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type user_address_stddev_samp_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by stddev_samp() on columns of table "user_address"
 """
 input user_address_stddev_samp_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -27636,10 +27390,11 @@ input user_address_stream_cursor_input {
 input user_address_stream_cursor_value_input {
   address: String
   address_title: String
-  city_id: Int
-  district_id: Int
+  city: String
+  district: String
   id: Int
-  quarter_id: Int
+  place_id: String
+  quarter: String
   receiver_firstname: String
   receiver_phone: String
   receiver_surname: String
@@ -27648,20 +27403,14 @@ input user_address_stream_cursor_value_input {
 
 """aggregate sum on columns"""
 type user_address_sum_fields {
-  city_id: Int
-  district_id: Int
   id: Int
-  quarter_id: Int
 }
 
 """
 order by sum() on columns of table "user_address"
 """
 input user_address_sum_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """
@@ -27675,16 +27424,19 @@ enum user_address_update_column {
   address_title
 
   """column name"""
-  city_id
+  city
 
   """column name"""
-  district_id
+  district
 
   """column name"""
   id
 
   """column name"""
-  quarter_id
+  place_id
+
+  """column name"""
+  quarter
 
   """column name"""
   receiver_firstname
@@ -27712,56 +27464,38 @@ input user_address_updates {
 
 """aggregate var_pop on columns"""
 type user_address_var_pop_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by var_pop() on columns of table "user_address"
 """
 input user_address_var_pop_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate var_samp on columns"""
 type user_address_var_samp_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by var_samp() on columns of table "user_address"
 """
 input user_address_var_samp_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """aggregate variance on columns"""
 type user_address_variance_fields {
-  city_id: Float
-  district_id: Float
   id: Float
-  quarter_id: Float
 }
 
 """
 order by variance() on columns of table "user_address"
 """
 input user_address_variance_order_by {
-  city_id: order_by
-  district_id: order_by
   id: order_by
-  quarter_id: order_by
 }
 
 """

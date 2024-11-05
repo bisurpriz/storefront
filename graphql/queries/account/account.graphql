@@ -1,28 +1,3 @@
-query getUserAddressById($id: uuid = "") {
-  user_by_pk(id: $id) {
-    user_addresses {
-      address
-      address_title
-      receiver_firstname
-      receiver_phone
-      receiver_surname
-      id
-      city {
-        id
-        name
-      }
-      district {
-        id
-        name
-      }
-      quarter {
-        id
-        name
-      }
-    }
-  }
-}
-
 query getUserById($id: uuid = "") {
   user_by_pk(id: $id) {
     id
@@ -65,106 +40,6 @@ mutation updateUserById(
     lastname
     phone
     picture
-  }
-}
-
-query getCities {
-  cities: city {
-    code
-    id
-    name
-  }
-}
-
-query getDistricts($cityId: Int = 10) {
-  districts: district(where: { city: { id: { _eq: $cityId } } }) {
-    name
-    id
-  }
-}
-
-query getQuarters($districtId: Int = 1) {
-  quarters: quarter(where: { district: { id: { _eq: $districtId } } }) {
-    name
-    id
-  }
-}
-
-query GetQuarterById($id: Int) @cached {
-  quarter(where: { id: { _eq: $id } }) {
-    code
-    id
-    name
-    district {
-      id
-      code
-      name
-      city {
-        code
-        id
-        name
-      }
-    }
-  }
-}
-
-query getDistrictById($id: Int) @cached {
-  district(where: { id: { _eq: $id } }) {
-    code
-    id
-    name
-    city {
-      name
-      id
-    }
-  }
-}
-
-query getCityById($id: Int) {
-  city(where: { id: { _eq: $id } }) {
-    code
-    id
-    name
-  }
-}
-
-query getDistrictForProduct($cityId: Int!, $pid: bigint!) {
-  district(
-    where: {
-      _and: [
-        { city: { id: { _eq: $cityId } } }
-        {
-          quarters: {
-            tenant_shipping_places: {
-              tenant: { owner: { products: { id: { _eq: $pid } } } }
-            }
-          }
-        }
-      ]
-    }
-  ) {
-    name
-    id
-    code
-  }
-}
-
-query getQuartersForProduct($pid: bigint!, $districtId: Int!) {
-  quarter(
-    where: {
-      _and: [
-        { district: { id: { _eq: $districtId } } }
-        {
-          tenant_shipping_places: {
-            tenant: { owner: { products: { id: { _eq: $pid } } } }
-          }
-        }
-      ]
-    }
-  ) {
-    id
-    name
-    code
   }
 }
 
@@ -230,51 +105,10 @@ query getUserOrders {
   }
 }
 
-mutation createNewAddress(
-  $address: String
-  $address_title: String
-  $city_id: Int
-  $district_id: Int
-  $quarter_id: Int
-  $receiver_firstname: String
-  $receiver_phone: String
-  $receiver_surname: String
-  $user_id: uuid
-) {
-  insert_user_address_one(
-    object: {
-      address: $address
-      address_title: $address_title
-      city_id: $city_id
-      district_id: $district_id
-      quarter_id: $quarter_id
-      receiver_firstname: $receiver_firstname
-      receiver_phone: $receiver_phone
-      receiver_surname: $receiver_surname
-      user_id: $user_id
-    }
-  ) {
-    address_title
-    id
-  }
-}
-
 query getUserByEmail($email: String!) {
   user(where: { email: { _eq: $email } }) {
     id
     provider_id
-  }
-}
-
-query GetLocationQuery($search: String = "") @cached {
-  search_locationv1(args: { search: $search }, limit: 100) {
-    id
-    name
-    type
-    district_id
-    district_name
-    city_id
-    city_name
   }
 }
 
