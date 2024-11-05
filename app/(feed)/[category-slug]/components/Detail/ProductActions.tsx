@@ -205,18 +205,31 @@ const ProductActions = ({
       x.types.includes("administrative_area_level_1")
     )?.short_name;
 
+    const selectedLevel2 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_2")
+    )?.short_name;
+
     if (selectedLevel4) {
       const isLevel4Available = places?.some(
         (place) =>
-          place.addressComponents["administrative_area_level_4"] ===
+          place?.addressComponents["administrative_area_level_4"] ===
           selectedLevel4
       );
 
       if (!isLevel4Available) return true;
-    } else {
+    } else if (selectedLevel2) {
+      const isLevel2Available = places?.some(
+        (place) =>
+          place?.addressComponents["administrative_area_level_2"] ===
+          selectedLevel2
+      );
+
+      if (!isLevel2Available) return true;
+    }
+    {
       const isLevel1Available = places?.some(
         (place) =>
-          place.addressComponents["administrative_area_level_1"] ===
+          place?.addressComponents["administrative_area_level_1"] ===
           selectedLevel1
       );
 
