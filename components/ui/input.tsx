@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { motion } from "framer-motion";
-import { CheckCheck, CheckCircleIcon } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 import { FC, InputHTMLAttributes, LegacyRef } from "react";
 
 const inputVariants = cva(
-  "flex h-9 border-2 w-full placeholder:text-xs lg:placeholder:text-sm rounded-md  border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  "flex h-9 border-2 w-full placeholder:text-xs lg:placeholder:text-sm rounded-md border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {

@@ -23,7 +23,7 @@ export type UpdateUserByIdMutation = { update_user_by_pk?: { email?: string | nu
 export type GetUserOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, order_item_special_images: Array<{ image_url: string, quantity_index?: number | null, id: any }>, order_item_special_texts: Array<{ content: string, quantity_index?: number | null, id: any }>, product: { slug?: string | null, image_url?: Array<string> | null, name: string, quantity?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null, order_items_aggregate: { aggregate?: { count: number } | null } }> }> };
+export type GetUserOrdersQuery = { order: Array<{ created_at: any, id: any, order_no?: any | null, total_amount: number, tenant_orders: Array<{ id: any, tenant: { id: any, tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ id: any, order_item_no?: string | null, product_id: any, quantity: number, order_item_special_images: Array<{ image_url: string, quantity_index?: number | null, id: any }>, order_item_special_texts: Array<{ content: string, quantity_index?: number | null, id: any }>, product: { slug?: string | null, image_url?: Array<string> | null, name: string, quantity?: number | null, product_categories: Array<{ category: { name: string, slug?: string | null } }>, product_customizable_areas: Array<{ count: number, max_character?: number | null, customizable_area: { id: number, type: string } }> } }>, order_status?: { value: string } | null, order_items_aggregate: { aggregate?: { count: number } | null } }> }> };
 
 export type GetUserByEmailQueryVariables = Types.Exact<{
   email: Types.Scalars['String']['input'];
@@ -85,6 +85,7 @@ export const GetUserOrdersDocument = gql`
   order(where: {payment_status: {_eq: PAID}}) {
     created_at
     id
+    order_no
     total_amount
     tenant_orders {
       id

@@ -1,3 +1,5 @@
+"use client";
+
 import { orderTextsUpload } from "@/app/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
@@ -133,83 +135,103 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
   };
 
   return (
-    <div
-      className={clsx(
-        "flex items-start justify-center flex-col gap-2 p-4 pt-2",
-        "text-lg font-semibold text-primary w-full"
-      )}
-    >
-      <div className="w-full font-manrope">
+    <div>
+      <div className="w-full">
         {order.tenant_orders.map((to) => (
           <>
             {to.order_items.map((oi, i) => (
-              <div className="w-full" key={i}>
-                {Array.from({ length: oi.quantity }).map((_, index) => (
-                  <>
-                    <p className="text-sm text-slate-400">{index + 1}. Ürün</p>
-                    <span className={clsx("text-base max-w-sm text-primary")}>
-                      {oi.product.name}
-                    </span>
-                    <Image
-                      src={getImageUrlFromPath(oi?.product?.image_url[0])}
-                      width={100}
-                      height={100}
-                      alt={oi.product.name}
-                      className="object-contain w-20 h-20 rounded-lg my-2"
-                      priority
-                    />
-                    {oi?.product?.product_customizable_areas.map(
-                      (area, _id) => {
-                        return (
-                          <div className="w-full my-2" key={_id}>
-                            <CustomizeCartItem
-                              count={area.count}
-                              keyIndex={index}
-                              values={[
-                                ...oi.order_item_special_texts,
-                                ...oi.order_item_special_images,
-                              ]}
-                              maxCharacter={area.max_character}
-                              isDisabled={loading}
-                              onChange={(inputIndex, type, value) =>
-                                handleChange({
-                                  inputIndex,
-                                  type,
-                                  value,
-                                  order_item_id: oi.id,
-                                  specialTextId:
-                                    oi.order_item_special_texts[i]?.id,
-                                })
-                              }
-                              id={area?.customizable_area.id}
-                              key={area?.customizable_area.type}
-                              type={
-                                area?.customizable_area
-                                  .type as CustomizableAreaType
-                              }
-                            />
-                          </div>
-                        );
-                      }
-                    )}
-                  </>
-                ))}
+              <div className="w-full" key={`customize-${oi.id}`}>
+                {Array.from({ length: oi.quantity }).map((_, index) => {
+                  return (
+                    <>
+                      <div className="flex items-start gap-2 mb-4">
+                        <Image
+                          src={getImageUrlFromPath(oi?.product?.image_url[0])}
+                          width={100}
+                          height={100}
+                          alt={oi.product.name}
+                          className="object-contain w-20 h-20 rounded-lg"
+                          priority
+                        />
+                        <span className={clsx("text-sm text-gray-700")}>
+                          {oi.product.name}
+                        </span>
+                      </div>
+                      {oi?.product?.product_customizable_areas.map(
+                        (area, _id) => {
+                          return (
+                            <div className="w-full my-2" key={_id}>
+                              <CustomizeCartItem
+                                count={area.count}
+                                keyIndex={index}
+                                values={[
+                                  ...oi.order_item_special_texts,
+                                  ...oi.order_item_special_images,
+                                ]}
+                                maxCharacter={area.max_character}
+                                isDisabled={loading}
+                                onChange={(inputIndex, type, value) =>
+                                  handleChange({
+                                    inputIndex,
+                                    type,
+                                    value,
+                                    order_item_id: oi.id,
+                                    specialTextId:
+                                      oi.order_item_special_texts[i]?.id,
+                                  })
+                                }
+                                id={area?.customizable_area.id}
+                                key={area?.customizable_area.type}
+                                type={
+                                  area?.customizable_area
+                                    .type as CustomizableAreaType
+                                }
+                              />
+                            </div>
+                          );
+                        }
+                      )}
+                    </>
+                  );
+                })}
               </div>
             ))}
           </>
         ))}
       </div>
-      <Button
-        type="button"
-        size="sm"
-        variant="default"
-        className="mt-2 self-end"
-        onClick={handleUpload}
-        disabled={loading}
-        loading={loading}
-      >
-        Onayla ve Yükle
-      </Button>
+      {order.tenant_orders.find(
+        (to) =>
+          to.order_items.reduce((acc, oi) => {
+            return (
+              acc +
+              oi.product.product_customizable_areas.reduce(
+                (acc2, area) => acc2 + area.count,
+                0
+              )
+            );
+          }, 0) !==
+          to.order_items.reduce((acc, oi) => {
+            return (
+              acc +
+              oi.order_item_special_images.length +
+              oi.order_item_special_texts.length
+            );
+          }, 0)
+      )?.id && (
+        <div className="w-full flex justify-end">
+          <Button
+            type="button"
+            size="sm"
+            variant="default"
+            className="self-end"
+            onClick={handleUpload}
+            disabled={loading}
+            loading={loading}
+          >
+            Onayla ve Yükle
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

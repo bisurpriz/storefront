@@ -57,6 +57,7 @@ export const authLink = setContext(async (_, { headers }) => {
 
 export const httpLink = new HttpLink({
   uri: process.env.HASURA_URL,
+  credentials: "include",
 });
 
 const _httpLink =

@@ -34,7 +34,7 @@ const translations = {
 const StatusBadge = ({ status }: StatusBadgeProps) => {
   return (
     <span
-      className={`${colors[status]} text-xs leading-none font-light me-2 px-2 py-1.5 rounded-md flex gap-1 items-center
+      className={`${colors[status]} w-fit text-xs leading-none font-light me-2 px-2 py-1.5 rounded-md flex gap-1 items-center
       `}
     >
       <StatusIcon status={status} />

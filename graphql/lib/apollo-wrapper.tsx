@@ -78,7 +78,9 @@ function makeClient() {
       : httpLink;
 
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+    cache: new NextSSRInMemoryCache({
+      resultCaching: true,
+    }),
     link:
       typeof window === "undefined"
         ? ApolloLink.from([
