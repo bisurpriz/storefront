@@ -42,12 +42,22 @@ export const createTypesenseQueryMapper = async (
     const areaLevel4 = selectedLocation?.address_components?.find((x) =>
       x.types.includes("administrative_area_level_4")
     )?.short_name;
+    const areaLevel2 = selectedLocation?.address_components?.find((x) =>
+      x.types.includes("administrative_area_level_2")
+    )?.short_name;
 
     if (areaLevel1) {
       filter_by.push(
         `places.addressComponents.administrative_area_level_1:=[${areaLevel1}]`
       );
     }
+
+    if (areaLevel2) {
+      filter_by.push(
+        `places.addressComponents.administrative_area_level_2:=[${areaLevel2}]`
+      );
+    }
+
     if (areaLevel4) {
       filter_by.push(
         `places.addressComponents.administrative_area_level_4:=[${areaLevel4}]`
