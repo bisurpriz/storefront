@@ -10,11 +10,22 @@ import { CookieTokens } from "@/app/@auth/contants";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { parseJson } from "@/utils/format";
+import { IPlace } from "@/common/types/Product/product";
 
-export type PlacesAutocompleteProps = {};
+export type PlacesAutocompleteProps = {
+  placeholder?: string;
+  dontChangeCookie?: boolean;
+  onSelect?: (prediction: IPlace) => void;
+  defaultValue?: IPlace;
+};
 
-export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
-  const [input, setInput] = useState("");
+export default function PlacesAutocomplete({
+  placeholder,
+  dontChangeCookie,
+  onSelect,
+  defaultValue,
+}: PlacesAutocompleteProps) {
+  const [input, setInput] = useState(defaultValue?.label ?? "");
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
   const [mounted, setMounted] = useState(false);
@@ -33,6 +44,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
       sessionToken.current =
         new window.google.maps.places.AutocompleteSessionToken();
 
+      if (dontChangeCookie) return;
       const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID));
       if (hasLocation) {
         setInput(hasLocation.label);
@@ -94,10 +106,19 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   const handleSelect = (prediction) => {
     setInput(prediction.description);
     setPredictions([]);
+
     if (prediction.place_id) {
       geocodeByPlaceId(prediction.place_id).then((results) => {
         const geoData = results[0];
         const { address_components } = geoData;
+        onSelect?.({
+          address_components,
+          placeId: prediction.place_id,
+          label: prediction.description,
+        } as IPlace);
+
+        if (dontChangeCookie) return;
+
         Cookies.set(
           CookieTokens.LOCATION_ID,
           JSON.stringify({
@@ -109,6 +130,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
         refresh();
       });
     } else {
+      if (dontChangeCookie) return;
       Cookies.remove(CookieTokens.LOCATION_ID);
       refresh();
     }
@@ -117,6 +139,8 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
   const handleClear = () => {
     setInput("");
     setPredictions([]);
+    onSelect?.(null);
+    if (dontChangeCookie) return;
     Cookies.remove(CookieTokens.LOCATION_ID);
     refresh();
   };
@@ -135,7 +159,7 @@ export default function PlacesAutocomplete({}: PlacesAutocompleteProps) {
           type="text"
           value={input}
           onChange={handleInputChange}
-          placeholder="Gönderim adresi girin"
+          placeholder={placeholder ?? "Gönderim adresi girin"}
           aria-label="Yer ara"
           aria-autocomplete="list"
           aria-controls="predictions-list"

@@ -34,6 +34,8 @@ import { InferType } from "yup";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CartStepPaths } from "../../constants";
+import PlacesAutocomplete from "@/components/QuarterSelector/PlacesAutocomplete";
+import { IPlace } from "@/common/types/Product/product";
 
 const stepperData = [
   { label: "Gönderici Bilgileri", key: "sender" },
@@ -47,6 +49,7 @@ export default function ReceiverForm() {
   const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
   const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
+  const [selectedCargoLocation, setSelectedCargoLocation] = useState<IPlace>();
   const [selectedInvoiceType, setSelectedInvoiceType] = useState<
     "person" | "company"
   >("person");
@@ -100,6 +103,33 @@ export default function ReceiverForm() {
       receiver_address: getAddressString(street, postal_code),
     },
   });
+
+  useEffect(() => {
+    if (selectedCargoLocation?.placeId && !hasSameDayProduct) {
+      const city = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_1")
+      )?.short_name;
+      setValue("receiver_city", {
+        label: city,
+        value: city,
+      });
+      const district = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_2")
+      )?.short_name;
+      setValue("receiver_district", {
+        label: district,
+        value: district,
+      });
+      const neighborhood = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_4")
+      )?.short_name;
+      setValue("receiver_neighborhood", {
+        label: neighborhood,
+        value: neighborhood,
+      });
+      setValue("receiver_address", selectedCargoLocation.label);
+    }
+  }, [selectedCargoLocation]);
 
   const placeData = parseJson(
     cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places
@@ -409,7 +439,32 @@ export default function ReceiverForm() {
                     />
                   )}
                 />
-
+                <Alert variant="informative" className="mt-2">
+                  <LucideCopy />
+                  <AlertTitle>Dikkat !</AlertTitle>
+                  <AlertDescription>
+                    Bilgiler seçtiğiniz gönderim yerine göre otomatik olarak
+                    doldurulmuştur. Lütfen kontrol ediniz.
+                  </AlertDescription>
+                </Alert>
+                {!hasSameDayProduct && (
+                  <div>
+                    <PlacesAutocomplete
+                      placeholder="Lütfen mahalle, sokak, kapı numarası giriniz."
+                      onSelect={(prediction) => {
+                        if (prediction === null) {
+                          setValue("receiver_city", null);
+                          setValue("receiver_district", null);
+                          setValue("receiver_neighborhood", null);
+                          setValue("receiver_address", "");
+                        }
+                        setSelectedCargoLocation(prediction);
+                      }}
+                      dontChangeCookie
+                      defaultValue={selectedCargoLocation}
+                    />
+                  </div>
+                )}
                 <Controller
                   name="receiver_city"
                   control={control}
@@ -513,7 +568,11 @@ export default function ReceiverForm() {
                       error={!!error}
                       errorMessage={error?.message}
                       variant={!!error ? "error" : "default"}
-                      disabled={!!neighborhood}
+                      disabled={
+                        !!neighborhood ||
+                        (!hasSameDayProduct &&
+                          Boolean(selectedCargoLocation?.placeId))
+                      }
                       value={
                         field?.value && {
                           label: field?.value?.label,
@@ -533,14 +592,7 @@ export default function ReceiverForm() {
                     />
                   )}
                 />
-                <Alert variant="informative" className="mt-2">
-                  <LucideCopy />
-                  <AlertTitle>Dikkat !</AlertTitle>
-                  <AlertDescription>
-                    Bilgiler seçtiğiniz gönderim yerine göre otomatik olarak
-                    doldurulmuştur. Lütfen kontrol ediniz.
-                  </AlertDescription>
-                </Alert>
+
                 <Controller
                   name="receiver_address"
                   control={control}
