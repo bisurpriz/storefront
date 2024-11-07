@@ -15,23 +15,23 @@ import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { query } from "@/graphql/lib/client";
 
-import { ReactNode, Suspense } from "react";
-import { getUserById } from "./account/actions";
-import { getCart } from "./cart/actions";
+import StickyHeader from "@/components/Layout/Header/StickyHeader";
+import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import { ProductProvider } from "@/contexts/ProductContext";
+import { SearchProductProvider } from "@/contexts/SearchContext";
 import {
   GetMainCategoriesDocument,
   GetMainCategoriesQuery,
   GetMainCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
-import StickyHeader from "@/components/Layout/Header/StickyHeader";
-import { ProductProvider } from "@/contexts/ProductContext";
-import { SearchProductProvider } from "@/contexts/SearchContext";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
-import Script from "next/script";
-import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { cookies } from "next/headers";
+import Script from "next/script";
+import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
+import { getUserById } from "./account/actions";
+import { getCart } from "./cart/actions";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -78,6 +78,11 @@ export const metadata: Metadata = {
     "Hediye",
     "Çiçek",
     "Çikolata",
+    "Hediye gönder",
+    "Hediye al",
+    "Hediye fikirleri",
+    "Hediye önerileri",
+    "Hediye kutusu",
   ],
   robots: "index, follow",
   manifest: "/manifest.json",

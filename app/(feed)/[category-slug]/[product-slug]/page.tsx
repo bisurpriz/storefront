@@ -1,17 +1,17 @@
 import { query } from "@/graphql/lib/client";
 
-import { FC } from "react";
+import { PageProps } from "@/.next/types/app/page";
+import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
 import {
   GetProductImagesDocument,
   GetProductImagesQuery,
   GetProductImagesQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
-import { redirect } from "next/navigation";
-import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
-import { WithContext, Product } from "schema-dts";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { PageProps } from "@/.next/types/app/page";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { redirect } from "next/navigation";
+import { FC } from "react";
+import { Product, WithContext } from "schema-dts";
 
 const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
