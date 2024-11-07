@@ -23,7 +23,7 @@ const SelectedFilters: FC<SelectedFiltersProps> = ({
   onClear,
 }) => {
   return (
-    <div className={clsx("flex gap-2 items-center justify-start my-2")}>
+    <div className={clsx("my-2 flex items-center justify-start gap-2")}>
       <AnimatePresence presenceAffectsLayout>
         {selectedCategories.length > 0 &&
           selectedCategories.map((category) => (

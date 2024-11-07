@@ -32,7 +32,7 @@ export default function ProductReviewsTab(props: ProductReviewsTabProps) {
   return (
     <div className="container mx-auto p-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
+        <TabsList className="mb-4 grid w-full grid-cols-2">
           <TabsTrigger value="to-review" className="text-sm md:text-base">
             Değerlendirilmeyenler
           </TabsTrigger>

@@ -9,7 +9,7 @@ export const getUserCoupons = async () => {
   const { data } = await query<GetAllCouponsQuery, GetAllCouponsQueryVariables>(
     {
       query: GetAllCouponsDocument,
-    }
+    },
   );
 
   return {

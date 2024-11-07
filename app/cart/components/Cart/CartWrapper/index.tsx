@@ -25,10 +25,10 @@ const CartWrapper = () => {
   const greaterThanOneTenant = Object.keys(tenantGroupedProducts).length > 1;
 
   return (
-    <div className="col-span-1 md:col-span-2 flex flex-col gap-3">
+    <div className="col-span-1 flex flex-col gap-3 md:col-span-2">
       <GreaterThanOneTenant show={greaterThanOneTenant}>
         <Alert variant="destructive">
-          <TriangleAlert className="w-5 h-5" />
+          <TriangleAlert className="h-5 w-5" />
           <AlertTitle>
             Sepetinizde farklı mağazalardan ürünler bulunmaktadır.
           </AlertTitle>

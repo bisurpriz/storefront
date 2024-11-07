@@ -38,7 +38,7 @@ import {
 } from "./types";
 
 export const CartContext = createContext<CartContextType>(
-  initialCartContextData
+  initialCartContextData,
 );
 
 export const CartProvider = ({
@@ -68,8 +68,8 @@ export const CartProvider = ({
   useEffect(() => {
     setHasCustomizableProduct(
       cartState.cartItems.some((item) =>
-        item.product_customizable_areas.some((area) => area.count > 0)
-      )
+        item.product_customizable_areas.some((area) => area.count > 0),
+      ),
     );
   }, [cartState.cartItems]);
 

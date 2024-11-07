@@ -51,7 +51,7 @@ const ImagePreview = ({
   return (
     <div>
       <div
-        className="relative gap-3 flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-md transition-opacity hover:opacity-90"
+        className="relative flex h-full w-full cursor-pointer flex-col gap-3 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-md transition-opacity hover:opacity-90"
         data-dialog-target="image-dialog"
       >
         {initialImages.map((image, index) => (
@@ -70,16 +70,16 @@ const ImagePreview = ({
           data-dialog-backdrop-close="true"
           className={`fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 opacity-[${
             clickedImage ? 1 : 0
-          }] backdrop-blur-sm transition-opacity duration-300"`}
+          }] duration-300" backdrop-blur-sm transition-opacity`}
           onClick={closeModal}
         >
           <div
-            className="relative flex m-4 w-[90%] min-w-[75%] rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl"
+            className="text-blue-gray-500 relative m-4 flex w-[90%] min-w-[75%] rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl"
             role="dialog"
             data-dialog="image-dialog"
             ref={ref}
           >
-            <div className="relative border-t border-b border-t-blue-gray-100 border-b-blue-gray-100 p-0 font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased">
+            <div className="border-t-blue-gray-100 border-b-blue-gray-100 text-blue-gray-500 relative border-b border-t p-0 font-sans text-base font-light leading-relaxed antialiased">
               <img
                 alt="nature"
                 className="h-full w-full object-cover object-center"
@@ -91,11 +91,11 @@ const ImagePreview = ({
       )}
 
       {/* onayla yada itiraz et butonlari ve not input */}
-      <div className="flex flex-col gap-3 mt-4 justify-end">
+      <div className="mt-4 flex flex-col justify-end gap-3">
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full h-24 p-2 border border-gray-300 rounded-md"
+          className="h-24 w-full rounded-md border border-gray-300 p-2"
           placeholder="Notunuzu buraya yazdıktan sonra onayla yada itiraz et butonlarına basınız."
         ></textarea>
         <div className="flex gap-3">

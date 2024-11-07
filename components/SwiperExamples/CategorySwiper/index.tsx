@@ -29,11 +29,11 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
     "lg:basis-1/7",
     "xl:basis-1/8",
     "2xl:basis-1/9",
-    "3xl:basis-1/9"
+    "3xl:basis-1/9",
   );
   return (
     <div
-      className={clsx("flex flex-nowrap overflow-x-auto gap-4 no-scrollbar")}
+      className={clsx("no-scrollbar flex flex-nowrap gap-4 overflow-x-auto")}
     >
       <Carousel
         opts={{
@@ -42,7 +42,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
         }}
         className="w-full"
       >
-        <CarouselContent className=" -ml-2">
+        <CarouselContent className="-ml-2">
           {categories
             .sort((a, b) => a?.id - b?.id)
             .map((category) => ({
@@ -55,12 +55,12 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
               <CarouselItem key={index} className={basis}>
                 <Link
                   href={`/${_.slug}`}
-                  className={"flex items-center justify-center flex-col p-1"}
+                  className={"flex flex-col items-center justify-center p-1"}
                 >
                   <Image
                     src={getImageUrlFromPath(_.imageUrl)}
                     alt={_.label}
-                    className="object-contain w-full rounded-full"
+                    className="w-full rounded-full object-contain"
                     width={120}
                     height={120}
                   />

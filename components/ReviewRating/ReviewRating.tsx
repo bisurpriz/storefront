@@ -29,11 +29,11 @@ const ReviewRating = ({
     "leading-normal text-slate-400 whitespace-nowrap cursor-pointer";
 
   return (
-    <div className="flex items-center font-semibold gap-1 max-sm:flex-wrap">
+    <div className="flex items-center gap-1 font-semibold max-sm:flex-wrap">
       {showReviewCount && (
         <>
           <p className={clsx(textStyle, "text-sm")}>{value.toFixed(1)}</p>
-          <span className="w-1 h-1 bg-slate-400 rounded-full flex-shrink-0 mx-1" />
+          <span className="mx-1 h-1 w-1 flex-shrink-0 rounded-full bg-slate-400" />
         </>
       )}
 
@@ -47,8 +47,8 @@ const ReviewRating = ({
       />
       {showReviewCount && (
         <>
-          <span className="w-1 h-1 bg-slate-400 rounded-full flex-shrink-0 mx-1" />
-          <p className={clsx(textStyle, "text-xs text-warning")}>
+          <span className="mx-1 h-1 w-1 flex-shrink-0 rounded-full bg-slate-400" />
+          <p className={clsx(textStyle, "text-warning text-xs")}>
             {reviewCountText}
           </p>
         </>

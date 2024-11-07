@@ -9,7 +9,7 @@ export function getClientCookie(cookieName: string) {
 export function setClientCookie(
   cookieName: string,
   value: string,
-  opt?: Cookies.CookieAttributes
+  opt?: Cookies.CookieAttributes,
 ) {
   return Cookies.set(cookieName, value, opt);
 }

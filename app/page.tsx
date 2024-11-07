@@ -48,7 +48,7 @@ export default async function Page(props: {
       {!searchText && (
         <Suspense
           fallback={
-            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+            <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
           }
         >
           <GoogleLocationSelect from="home" />
@@ -82,7 +82,7 @@ export default async function Page(props: {
 
       <Suspense
         fallback={
-          <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
+          <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">
             {Array.from({
               length: 5,
             }).map((_, i) => (

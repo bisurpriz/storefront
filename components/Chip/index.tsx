@@ -142,7 +142,7 @@ const Chip: React.FC<ChipProps> = ({
           baseClasses,
           sizeClasses[size],
           colorClasses[color][variant],
-          roundedClasses[rounded]
+          roundedClasses[rounded],
         )}
       >
         {chipContent}
@@ -156,7 +156,7 @@ const Chip: React.FC<ChipProps> = ({
         baseClasses,
         sizeClasses[size],
         colorClasses[color][variant],
-        roundedClasses[rounded]
+        roundedClasses[rounded],
       )}
     >
       {chipContent}

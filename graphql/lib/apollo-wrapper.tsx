@@ -73,7 +73,7 @@ function makeClient() {
             );
           },
           wsLink as any,
-          httpLink
+          httpLink,
         )
       : httpLink;
 

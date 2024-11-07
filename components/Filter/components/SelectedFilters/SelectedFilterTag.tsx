@@ -25,9 +25,9 @@ const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
     >
       <div
         className={clsx(
-          "inline-flex items-center pl-2.5 pr-1.5 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mr-1",
+          "mr-1 inline-flex items-center rounded-full bg-purple-100 py-1 pl-2.5 pr-1.5 text-sm font-medium text-purple-800",
           "cursor-pointer",
-          "whitespace-nowrap"
+          "whitespace-nowrap",
         )}
       >
         {label}
@@ -35,9 +35,9 @@ const SelectedFilterTag: FC<SelectedFilterTagProps> = ({
           type="button"
           aria-label="Remove small"
           className={clsx(
-            "flex-shrink-0 ml-1.5 h-4 w-4 rounded-full inline-flex items-center justify-center",
+            "ml-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full",
             "text-purple-400 hover:bg-purple-200 hover:text-purple-500",
-            "transition-colors duration-200 ease-in-out"
+            "transition-colors duration-200 ease-in-out",
           )}
           onClick={onClear}
         >

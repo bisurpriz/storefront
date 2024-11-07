@@ -21,7 +21,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
 }) => {
   return (
     <label
-      className={clsx("flex items-center text-sm cursor-pointer", className)}
+      className={clsx("flex cursor-pointer items-center text-sm", className)}
     >
       <motion.input
         type="radio"
@@ -34,15 +34,15 @@ const RadioButton: React.FC<RadioButtonProps> = ({
       />
       <motion.div
         className={clsx(
-          "w-4 h-4 border-2 border-gray-400 rounded-full flex items-center justify-center",
+          "flex h-4 w-4 items-center justify-center rounded-full border-2 border-gray-400",
           {
             "border-blue-500": checked,
-          }
+          },
         )}
         whileTap={{ scale: 0.8 }}
       >
         {checked && (
-          <motion.div className="w-2 h-2 bg-blue-500 rounded-full" layout />
+          <motion.div className="h-2 w-2 rounded-full bg-blue-500" layout />
         )}
       </motion.div>
       <span className="ml-2 text-gray-700">{label}</span>

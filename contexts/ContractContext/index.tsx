@@ -41,7 +41,7 @@ export const ContractProvider = ({ children }: ContractContextProps) => {
         open={openModal}
         handleClose={() => setOpenModal(false)}
       >
-        <div className="bg-white p-4 rounded-md flex flex-col">
+        <div className="flex flex-col rounded-md bg-white p-4">
           <DistanceSalesContract
             aliciAdi="Ali"
             email="alisahindev@gmail.com"
@@ -63,13 +63,13 @@ export const ContractProvider = ({ children }: ContractContextProps) => {
             key={1}
           />
           <div className="w-full px-4">
-            <p className="text-center text-xs text-gray-500 mb-1">
+            <p className="mb-1 text-center text-xs text-gray-500">
               Ön Bilgilendirme Koşullarını ve Mesafeli Satış Sözleşmesi'ni
               okudum.
             </p>
             <Button
               variant="default"
-              className="justify-center text-xl w-full"
+              className="w-full justify-center text-xl"
               onClick={() => {
                 setApproveContract(true);
                 setOpenModal(false);

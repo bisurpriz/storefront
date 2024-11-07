@@ -77,11 +77,11 @@ const Drawer: React.FC<DrawerProps> = ({
         className={clsx(
           "fixed inset-0 bg-gray-500 bg-opacity-75 transition-all",
           {
-            "opacity-100 duration-500 ease-in-out visible": isOpen,
+            "visible opacity-100 duration-500 ease-in-out": isOpen,
           },
           {
-            "opacity-0 duration-500 ease-in-out invisible": !isOpen,
-          }
+            "invisible opacity-0 duration-500 ease-in-out": !isOpen,
+          },
         )}
       />
       <div
@@ -92,15 +92,15 @@ const Drawer: React.FC<DrawerProps> = ({
         <div className="absolute inset-0 overflow-hidden">
           <div
             className={clsx(
-              "pointer-events-none fixed max-w-full max-sm:min-w-full max-md:min-w-[300px]",
-              classNames[placement]
+              "pointer-events-none fixed max-w-full max-md:min-w-[300px] max-sm:min-w-full",
+              classNames[placement],
             )}
           >
             <div
               className={clsx(
-                "pointer-events-auto relative w-full h-full transform transition ease-in-out duration-500",
+                "pointer-events-auto relative h-full w-full transform transition duration-500 ease-in-out",
                 { [closeClassNames[placement]]: !isOpen },
-                { [isOpenClassNames[placement]]: isOpen }
+                { [isOpenClassNames[placement]]: isOpen },
               )}
               onClick={(event) => {
                 event.preventDefault();
@@ -109,7 +109,7 @@ const Drawer: React.FC<DrawerProps> = ({
             >
               <div
                 className={clsx(
-                  "flex flex-col h-full overflow-y-auto p-4 shadow-xl bg-white md:min-w-[300px] max-sm:min-w-full rounded-none",
+                  "flex h-full flex-col overflow-y-auto rounded-none bg-white p-4 shadow-xl max-sm:min-w-full md:min-w-[300px]",
                   {
                     "rounded-l-lg": placement === "right",
                   },
@@ -117,20 +117,20 @@ const Drawer: React.FC<DrawerProps> = ({
                   { "rounded-b-lg": placement === "top" },
                   {
                     "rounded-t-lg": placement === "bottom",
-                  }
+                  },
                 )}
               >
                 <div
                   className={clsx(
-                    "relative flex items-center justify-between ",
+                    "relative flex items-center justify-between",
                     {
                       "mb-4": title,
-                    }
+                    },
                   )}
                 >
                   {title && <h3 className="text-lg font-semibold">{title}</h3>}
                   <button
-                    className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="rounded-full p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                     onClick={onClose}
                   >
                     <Close className="text-2xl" />

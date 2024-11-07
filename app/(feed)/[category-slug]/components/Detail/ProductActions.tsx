@@ -88,7 +88,7 @@ const ProductActions = ({
         selectedLocation,
         places,
         isSameDay,
-        setShowPlaceWarning
+        setShowPlaceWarning,
       );
     });
   }, [selectedLocation]);
@@ -100,18 +100,18 @@ const ProductActions = ({
       };
       label: string;
       placeId: string;
-    }[]
+    }[],
   ) => {
     const availablePlaces = places?.map(
-      (place) => place.addressComponents["administrative_area_level_4"]
+      (place) => place.addressComponents["administrative_area_level_4"],
     );
 
     return availablePlaces?.findIndex(
       (x) =>
         x ===
         selectedLocation?.address_components?.find((x) =>
-          x.types.includes("administrative_area_level_4")
-        )?.short_name
+          x.types.includes("administrative_area_level_4"),
+        )?.short_name,
     ) === -1
       ? availablePlaces
       : [];
@@ -190,7 +190,7 @@ const ProductActions = ({
     selectedLocation?.address_components?.findIndex(
       (x) =>
         x.types.includes("administrative_area_level_4") &&
-        availableLevel4?.includes(x.short_name)
+        availableLevel4?.includes(x.short_name),
     );
 
   const isButtonDisableForLocation = () => {
@@ -198,22 +198,22 @@ const ProductActions = ({
     if (isSameDay && !selectedLocation) return true;
 
     const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_4")
+      x.types.includes("administrative_area_level_4"),
     )?.short_name;
 
     const selectedLevel1 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_1")
+      x.types.includes("administrative_area_level_1"),
     )?.short_name;
 
     const selectedLevel2 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_2")
+      x.types.includes("administrative_area_level_2"),
     )?.short_name;
 
     if (selectedLevel4) {
       const isLevel4Available = places?.some(
         (place) =>
           place?.addressComponents["administrative_area_level_4"] ===
-          selectedLevel4
+          selectedLevel4,
       );
 
       if (!isLevel4Available) return true;
@@ -221,7 +221,7 @@ const ProductActions = ({
       const isLevel2Available = places?.some(
         (place) =>
           place?.addressComponents["administrative_area_level_2"] ===
-          selectedLevel2
+          selectedLevel2,
       );
 
       if (!isLevel2Available) return true;
@@ -230,7 +230,7 @@ const ProductActions = ({
       const isLevel1Available = places?.some(
         (place) =>
           place?.addressComponents["administrative_area_level_1"] ===
-          selectedLevel1
+          selectedLevel1,
       );
 
       if (!isLevel1Available) return true;
@@ -265,11 +265,11 @@ const ProductActions = ({
         </Alert>
       )}
 
-      <div className="flex my-2 space-x-2">
+      <div className="my-2 flex space-x-2">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}
-          className={clsx("basis-4/5 flex items-center justify-center px-0")}
+          className={clsx("flex basis-4/5 items-center justify-center px-0")}
           disabled={isButtonDisableForLocation() || isButtonDisableForTime()}
           onClick={handleAddToBasket}
           loading={loading}
@@ -291,13 +291,13 @@ const ProductActions = ({
 
         <Button
           size="lg"
-          className="basis-1/5 flex items-center justify-center px-0"
+          className="flex basis-1/5 items-center justify-center px-0"
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <HeartFill className="w-8 h-8 text-white" />
+              <HeartFill className="h-8 w-8 text-white" />
             ) : (
-              <Heart className="w-8 h-8 text-red-500" />
+              <Heart className="h-8 w-8 text-red-500" />
             )
           }
           onClick={handleFavorite}
@@ -306,8 +306,8 @@ const ProductActions = ({
       {error && (
         <p
           className={clsx(
-            "text-sm font-semibold text-red-600 mt-2",
-            error ? "animate-bounce" : ""
+            "mt-2 text-sm font-semibold text-red-600",
+            error ? "animate-bounce" : "",
           )}
         >
           Lütfen teslimat tarihi ve zamanını seçiniz.

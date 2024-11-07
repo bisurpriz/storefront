@@ -31,7 +31,7 @@ const Badge: FC<BadgeProps> = ({ children, show, text }) => {
         "items-center",
         "justify-center",
         "gap-2",
-        "p-0"
+        "p-0",
       )}
     >
       {children}
@@ -40,8 +40,8 @@ const Badge: FC<BadgeProps> = ({ children, show, text }) => {
           className={clsx(
             "absolute right-0 top-0",
             "flex items-center justify-center",
-            "w-4 h-4 rounded-full bg-primary",
-            "text-xs text-white font-mono"
+            "h-4 w-4 rounded-full bg-primary",
+            "font-mono text-xs text-white",
           )}
           variants={badgeVariants}
           initial="hidden"

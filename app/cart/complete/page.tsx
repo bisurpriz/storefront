@@ -14,12 +14,12 @@ const OrderCompletePage: React.FC = async () => {
   return (
     <div
       className={clsx(
-        "flex flex-col items-center justify-center h-full space-y-8",
-        "text-center font-mono"
+        "flex h-full flex-col items-center justify-center space-y-8",
+        "text-center font-mono",
       )}
     >
       <h1 className="text-3xl font-semibold">Sipariş Tamamlandı</h1>
-      <p className="text-lg text-center">
+      <p className="text-center text-lg">
         Siparişiniz başarıyla alındı. <br />
         Sipariş detaylarınızı mail adresinize gönderdik.
       </p>

@@ -40,7 +40,7 @@ export const createOrderAction = async (
   cartItems: ProductForCart[],
   orderDetail: OrderDetailFormData,
   paymentConversationId: string,
-  couponInfo?: { code: string; guest_id?: string }
+  couponInfo?: { code: string; guest_id?: string },
 ) => {
   if (!orderDetail || !cartItems)
     return {
@@ -104,7 +104,7 @@ export const createOrderAction = async (
 
 export const getCartCost = async (
   cartItems: Pick<ProductForCart, "id" | "quantity">[],
-  couponCode?: string
+  couponCode?: string,
 ) => {
   const { data: costData } = await axios.post(process.env.CART_COST_URL, {
     products: cartItems.map((item) => ({
@@ -255,7 +255,7 @@ export const getCart = async (user_id: string) => {
       .filter((_) => _ !== null);
 
     const costData = await getCartCost(
-      cartItems.map((_) => ({ id: _.id, quantity: _.quantity }))
+      cartItems.map((_) => ({ id: _.id, quantity: _.quantity })),
     );
 
     return {

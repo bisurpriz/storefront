@@ -40,7 +40,7 @@ const authOptions: AuthOptions = {
         const { id_token } = account;
         const loginResponse = await login(
           { email: null, password: null },
-          { [ID_TOKEN]: `${id_token}` }
+          { [ID_TOKEN]: `${id_token}` },
         );
 
         if (loginResponse.data.login.error) {

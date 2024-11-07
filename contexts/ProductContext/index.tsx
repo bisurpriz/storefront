@@ -29,7 +29,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       variables: {
         id: pid,
       },
-    }
+    },
   );
 
   return (

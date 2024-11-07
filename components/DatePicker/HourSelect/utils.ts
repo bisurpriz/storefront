@@ -6,7 +6,7 @@ export interface TimeRange {
 }
 
 export const getMinMaxTimes = (
-  timeRanges: TimeRange[]
+  timeRanges: TimeRange[],
 ): { minTimes: Date[]; maxTimes: Date[] } => {
   const minTimes: Date[] = [];
   const maxTimes: Date[] = [];
@@ -16,10 +16,10 @@ export const getMinMaxTimes = (
     const [endHour, endMinute] = end_time.split(":").map(Number);
 
     minTimes.push(
-      setHours(setMinutes(startOfDay(new Date()), startMinute), startHour)
+      setHours(setMinutes(startOfDay(new Date()), startMinute), startHour),
     );
     maxTimes.push(
-      setHours(setMinutes(startOfDay(new Date()), endMinute), endHour)
+      setHours(setMinutes(startOfDay(new Date()), endMinute), endHour),
     );
   });
 
@@ -30,7 +30,7 @@ export const filterPassedTime = (
   time: Date,
   minTimes: Date[],
   maxTimes: Date[],
-  currentDate: Date
+  currentDate: Date,
 ): boolean => {
   const selectedDate = new Date(time);
 

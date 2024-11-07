@@ -16,20 +16,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const Vendor = async (
-  props: {
-    params: Promise<{ slug: string }>;
-    searchParams: Promise<{
-      [key: string]: string | undefined;
-    }>;
-  }
-) => {
+const Vendor = async (props: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{
+    [key: string]: string | undefined;
+  }>;
+}) => {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
-  const {
-    slug
-  } = params;
+  const { slug } = params;
 
   const vendorId = searchParams["mid"];
 
@@ -44,7 +40,7 @@ const Vendor = async (
       {
         ...searchParams,
         tenant: vendorId,
-      }
+      },
     ),
     getVendorDetails({
       id: vendorId,

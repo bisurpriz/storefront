@@ -2,15 +2,15 @@ const ProductItemSkeleton = ({ ref = null }) => {
   return (
     <div
       ref={ref}
-      className="bg-gray-200 rounded-lg animate-pulse min-h-[340px] w-full overflow-hidden"
+      className="min-h-[340px] w-full animate-pulse overflow-hidden rounded-lg bg-gray-200"
     >
-      <div className="w-full xl:h-80 lg:h-56 md:h-52 sm:h-60 h-44 bg-gray-300 rounded object-cover"></div>
-      <div className="py-2 px-4 pb-4 flex flex-col gap-2">
-        <p className="text-gray-700 text-lg font-bold mt-2 bg-gray-300 h-2 rounded w-2/3"></p>
-        <h2 className="text-lg font-semibold mt-2 bg-gray-300 h-6 rounded w-full"></h2>
-        <p className="text-gray-600 text-sm mt-1 bg-gray-300 h-4 rounded w-1/2"></p>
-        <div className="mt-4 flex justify-between items-center">
-          <span className="text-xl font-bold text-gray-700 h-8 w-32 bg-gray-300 rounded"></span>
+      <div className="h-44 w-full rounded bg-gray-300 object-cover sm:h-60 md:h-52 lg:h-56 xl:h-80"></div>
+      <div className="flex flex-col gap-2 px-4 py-2 pb-4">
+        <p className="mt-2 h-2 w-2/3 rounded bg-gray-300 text-lg font-bold text-gray-700"></p>
+        <h2 className="mt-2 h-6 w-full rounded bg-gray-300 text-lg font-semibold"></h2>
+        <p className="mt-1 h-4 w-1/2 rounded bg-gray-300 text-sm text-gray-600"></p>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="h-8 w-32 rounded bg-gray-300 text-xl font-bold text-gray-700"></span>
         </div>
       </div>
     </div>

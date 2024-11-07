@@ -45,7 +45,7 @@ export const approveOrderImages = async ({
       headers: {
         "x-bonnmarse-approve-salt": salt,
       },
-    }
+    },
   );
 
   return response.data;

@@ -32,33 +32,33 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   const image = getImageUrlFromPath(image_url?.[0]);
 
   const specialTextCount = customize?.filter(
-    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT
+    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT,
   ).length;
   const specialImageCount = customize?.filter(
-    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
+    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE,
   ).length;
 
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(product.deliveryDate),
-      "dd MMMM yyyy"
+      "dd MMMM yyyy",
     )}${product.deliveryTime ? ` - ${product.deliveryTime}` : ""}`;
   };
 
   return (
     <li className="p-0 pt-4" key={id}>
-      <div className="rounded-lg px-8 py-4 relative max-sm:px-4">
-        <div className="flex items-start justify-start gap-8 mt-2 max-xl:gap-2 mb-4">
+      <div className="relative rounded-lg px-8 py-4 max-sm:px-4">
+        <div className="mb-4 mt-2 flex items-start justify-start gap-8 max-xl:gap-2">
           <Image
             src={image}
             alt="image"
-            className={`object-contain aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-start`}
+            className={`aspect-square h-32 w-32 object-contain max-sm:h-24 max-sm:w-24 max-sm:self-start`}
             width={500}
             height={500}
           />
           <div className="flex flex-col gap-2">
             <Link
-              className="text-base font-semibold text-gray-700 uppercase max-md:text-xs"
+              className="text-base font-semibold uppercase text-gray-700 max-md:text-xs"
               href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
             >
               <h3 title={name}>{name}</h3>
@@ -71,7 +71,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
 
           <ProductGroupListItemInfo customize={customize} id={id} />
         </div>
-        <div className="flex gap-2 items-start flex-wrap mb-4">
+        <div className="mb-4 flex flex-wrap items-start gap-2">
           {delivery_type === "SAME_DAY" && product.deliveryDate && (
             <Chip
               rounded="low"
@@ -91,7 +91,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
               size="small"
               color="purple"
               variant="soft"
-              className="font-sans whitespace-break-spaces"
+              className="whitespace-break-spaces font-sans"
             />
           )}
         </div>

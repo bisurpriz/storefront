@@ -119,13 +119,11 @@ export default async function RootLayout({
     <html lang="tr">
       <GoogleTagManagerInjector />
       <body
-        className={`${lato.variable} ${quickSand.variable} 
-        ${manrope.variable}
-        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
+        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} relative overflow-auto overflow-x-hidden scroll-smooth font-manrope`}
         id="root"
       >
         <ProgressBarProvider>
-          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0 z-[1000]" />
+          <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
           <TagManagerNoscript />
           <Script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"

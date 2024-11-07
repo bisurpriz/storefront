@@ -29,7 +29,7 @@ app
         key: fs.readFileSync("./certs/devcert.key"),
         cert: fs.readFileSync("./certs/devcert.cert"),
       },
-      (req, res) => handle(req, res)
+      (req, res) => handle(req, res),
     );
 
     return server.listen(PORT, (err) => {

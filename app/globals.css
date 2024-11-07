@@ -6,13 +6,10 @@
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 
-
   /* Scroll */
   scrollbar-width: thin;
   scrollbar-color: #a8bbbf transparent;
-
 }
-
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
@@ -45,10 +42,6 @@
     scrollbar-width: none;
   }
 
-
-
-
-
   /* Removing the default appearance */
   .thumb,
   .thumb::-webkit-slider-thumb {
@@ -56,30 +49,27 @@
   }
 
   .thumb {
-    @apply absolute pointer-events-none h-0 outline-none top-1/2 bottom-0 w-full;
+    @apply pointer-events-none absolute bottom-0 top-1/2 h-0 w-full outline-none;
   }
 
   .thumb--left {
-    @apply z-[3] left-0;
+    @apply left-0 z-[3];
   }
 
   .thumb--right {
-    @apply z-[4] right-0;
+    @apply right-0 z-[4];
   }
 
   /* For Chrome browsers */
   .thumb::-webkit-slider-thumb {
-    @apply bg-primary border-none rounded-full shadow-md cursor-pointer h-6 w-6 mt-1 relative pointer-events-auto;
+    @apply pointer-events-auto relative mt-1 h-6 w-6 cursor-pointer rounded-full border-none bg-primary shadow-md;
   }
 
   /* For Firefox browsers */
   .thumb::-moz-range-thumb {
-    @apply bg-primary border-none rounded-full shadow-md cursor-pointer h-6 w-6 mt-1 relative pointer-events-auto;
+    @apply pointer-events-auto relative mt-1 h-6 w-6 cursor-pointer rounded-full border-none bg-primary shadow-md;
   }
 }
-
-
-
 
 .backdrop {
   background-color: rgba(0, 0, 0, 0.5);
@@ -93,9 +83,6 @@
   justify-content: center;
   z-index: 49;
 }
-
-
-
 
 @layer base {
   :root {
@@ -160,7 +147,6 @@
     --warning-foreground: 0 0% 98%;
     --success: 120 100% 50%;
     --success-foreground: 0 0% 98%;
-
   }
 }
 

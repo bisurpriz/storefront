@@ -23,7 +23,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
     event.preventDefault();
     setLoading(true);
     const [firstname, lastname, email, password] = Array.from(
-      event.currentTarget.elements
+      event.currentTarget.elements,
     ).map((field: HTMLInputElement) => field.value);
 
     const response = await registerUser({
@@ -89,7 +89,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
             alt="Login"
             className="m-auto"
           />
-          <h1 className="text-3xl font-bold text-center">Giriş Yap</h1>
+          <h1 className="text-center text-3xl font-bold">Giriş Yap</h1>
           <p className="text-center text-gray-500">
             Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası
             için giriş yapın.

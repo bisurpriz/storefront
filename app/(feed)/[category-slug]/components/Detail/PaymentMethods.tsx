@@ -9,13 +9,13 @@ const PaymentMethods = () => {
       title="Ödeme Yöntemleri"
       bordered
       content={
-        <div className="flex items-center justify-center w-full">
+        <div className="flex w-full items-center justify-center">
           <Image
             src={iyzico}
             alt="iyzico"
             width={500}
             height={500}
-            className="w-full h-full"
+            className="h-full w-full"
           />
         </div>
       }

@@ -12,13 +12,13 @@ const OfflineStatus = () => {
   if (isOnline) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-red-500 text-white text-center py-2 z-50">
+    <div className="fixed bottom-0 left-0 z-50 w-full bg-red-500 py-2 text-center text-white">
       <p className="text-sm">
         Şuan internet bağlantınız yok. Lütfen internet bağlantınızı kontrol
         edin.
       </p>
       <button
-        className="bg-white text-red-500 px-2 py-1 rounded-sm"
+        className="rounded-sm bg-white px-2 py-1 text-red-500"
         onClick={handleReload}
       >
         Yeniden dene

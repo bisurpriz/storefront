@@ -4,10 +4,10 @@ import { ShoppingCart } from "lucide-react";
 
 const EmptyCart = () => {
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <div className="text-center space-y-4">
-          <div className="mx-auto flex items-center justify-center p-4 w-fit rounded-full bg-primary-foreground ring-[3px] ring-primary">
+        <div className="space-y-4 text-center">
+          <div className="mx-auto flex w-fit items-center justify-center rounded-full bg-primary-foreground p-4 ring-[3px] ring-primary">
             <ShoppingCart className="mx-auto h-12 w-12 text-primary" />
           </div>
           <h3 className="text-base font-medium text-gray-800">

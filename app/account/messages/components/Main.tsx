@@ -46,9 +46,9 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
 
   return (
     <>
-      <div className="flex-1 flex relative overflow-hidden h-auto min-h-[50vh]">
+      <div className="relative flex h-auto min-h-[50vh] flex-1 overflow-hidden">
         <div
-          className={`sidebar w-full g:flex flex-2 flex-col pr-6 transition-all duration-500  ${
+          className={`sidebar g:flex flex-2 w-full flex-col pr-6 transition-all duration-500 ${
             !isMessageOpen ? "translate-x-0" : "-translate-x-[210%]"
           }`}
         >
@@ -63,7 +63,7 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
 
         {shouldRenderChild && thread && (
           <div
-            className={`chat-area flex-1 flex flex-col absolute w-full top-0 transition-all duration-500 h-full  ${
+            className={`chat-area absolute top-0 flex h-full w-full flex-1 flex-col transition-all duration-500 ${
               isMessageOpen ? "translate-x-0" : "-translate-x-[210%]"
             }`}
           >
@@ -73,11 +73,11 @@ const Main = ({ tenantId }: { tenantId?: string }) => {
                 type="button"
                 size="sm"
                 variant="link"
-                className="gap-2 py-0 px-0 pl-0"
+                className="gap-2 px-0 py-0 pl-0"
                 onClick={() => setIsMessageOpen(false)}
               />
 
-              <h2 className="text-xl py-1 border-b-2 border-gray-200 inline-block mb-0 flex-auto">
+              <h2 className="mb-0 inline-block flex-auto border-b-2 border-gray-200 py-1 text-xl">
                 <b>{thread?.tenant?.tenants?.[0]?.name}</b> ile Görüşme
               </h2>
             </div>

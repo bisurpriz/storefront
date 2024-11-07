@@ -43,9 +43,9 @@ const CreateReview: FC<CreateReviewProps> = ({
           {[1, 2, 3, 4, 5].map((star) => (
             <Star
               key={star}
-              className={`w-8 h-8 sm:w-10 sm:h-10 cursor-pointer ${
+              className={`h-8 w-8 cursor-pointer sm:h-10 sm:w-10 ${
                 star <= rating
-                  ? "text-yellow-400 fill-current"
+                  ? "fill-current text-yellow-400"
                   : "text-gray-300"
               }`}
               onClick={() => setRating(star)}

@@ -14,12 +14,12 @@ const CouponsPage = async () => {
           "text-slate-900",
           "mb-4",
           "max-sm:text-xl",
-          "max-sm:mb-2"
+          "max-sm:mb-2",
         )}
       >
         Kuponlarım ({coupons.length})
       </h1>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2">
         {coupons.map((coupon, i) => (
           <CouponCard
             key={coupon?.id}
@@ -31,7 +31,7 @@ const CouponsPage = async () => {
           />
         ))}
         {!coupons.length && (
-          <p className="text-start text-gray-500 text-lg">
+          <p className="text-start text-lg text-gray-500">
             Şu anda kuponunuz bulunmamaktadır.
           </p>
         )}

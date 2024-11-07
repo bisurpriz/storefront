@@ -16,7 +16,7 @@ export const OrderCustomizableModal = createContext<OrderCustomizableModalType>(
   {
     onOpen: () => {},
     onOrderCustomizeModalClose: () => {},
-  }
+  },
 );
 
 export const OrderCustomizableModalProvider = ({
@@ -74,7 +74,7 @@ export const OrderCustomizableModalProvider = ({
 export const useOrderCustomizableModal = () => {
   if (!OrderCustomizableModal) {
     throw new Error(
-      "useOrderCustomizableModal must be used within a OrderCustomizableModalProvider"
+      "useOrderCustomizableModal must be used within a OrderCustomizableModalProvider",
     );
   }
 

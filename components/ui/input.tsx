@@ -20,7 +20,7 @@ const inputVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -54,7 +54,7 @@ const Input: FC<InputProps> = ({
         {!!icon && (
           <span
             className={cn(
-              "absolute left-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none"
+              "pointer-events-none absolute left-2 top-1/2 flex -translate-y-1/2 items-center",
             )}
           >
             {icon}
@@ -75,7 +75,7 @@ const Input: FC<InputProps> = ({
             transition={{ duration: 0.3 }}
             className="absolute right-2 top-1/2 -translate-y-1/2"
           >
-            <CheckCheck className="w-6 h-6 absolute right-2 top-1/2 -translate-y-1/2 text-green-500" />
+            <CheckCheck className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 text-green-500" />
           </motion.div>
         )}
       </div>

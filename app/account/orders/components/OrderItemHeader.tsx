@@ -20,11 +20,11 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
   const wasCustomized = tenant_orders.order_items.some(
     (oi) =>
       oi.order_item_special_images.length > 0 ||
-      oi.order_item_special_texts.length > 0
+      oi.order_item_special_texts.length > 0,
   );
 
   const hasCustomizableProducts = tenant_orders.order_items.some(
-    (oi) => oi?.product?.product_customizable_areas.length > 0
+    (oi) => oi?.product?.product_customizable_areas.length > 0,
   );
 
   const showUploadButton = hasCustomizableProducts && !wasCustomized;
@@ -35,9 +35,9 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
       acc +
       oi?.product?.product_customizable_areas.reduce(
         (acc, cca) => acc + cca.count,
-        0
+        0,
       ),
-    0
+    0,
   );
   // doldurulan custom alan sayısı
   const customAreaFilledCount = tenant_orders.order_items.reduce(
@@ -45,13 +45,13 @@ const OrderItemHeader: FC<OrderItemHeaderProps> = ({
       acc +
       oi.order_item_special_images.length +
       oi.order_item_special_texts.length,
-    0
+    0,
   );
 
   const haveAnyCustomizeEmpty = customAreaTotalCount > customAreaFilledCount;
 
   return (
-    <div className="flex items-center justify-end gap-4 flex-wrap">
+    <div className="flex flex-wrap items-center justify-end gap-4">
       {showUploadButton && (
         <Button
           type="button"

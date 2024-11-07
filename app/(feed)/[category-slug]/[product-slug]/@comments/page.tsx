@@ -44,7 +44,7 @@ const ProductCommentsPage: FC<PageProps> = async (props) => {
     author: {
       "@type": "Person",
       name: `${maskName(review.user.firstname)} ${maskName(
-        review.user.lastname
+        review.user.lastname,
       )}`,
     },
   }));

@@ -36,7 +36,7 @@ const inputVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface AutoCompleteProps {
@@ -110,12 +110,12 @@ export default function AutoComplete({
               className={cn(
                 "justify-between",
                 inputVariants({ variant }),
-                buttonClass
+                buttonClass,
               )}
               type="button"
               aria-readonly={readOnly}
             >
-              <div className="flex items-center gap-2 truncate max-w-full">
+              <div className="flex max-w-full items-center gap-2 truncate">
                 {startIcon && startIcon}
                 {value ? value.label : placeholder}
               </div>
@@ -123,7 +123,7 @@ export default function AutoComplete({
                 <SquareX
                   className={cn(
                     "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
-                    { "hover:opacity-50": disabled }
+                    { "hover:opacity-50": disabled },
                   )}
                   onClick={(e) => {
                     if (disabled) return;
@@ -168,10 +168,10 @@ export default function AutoComplete({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn("justify-between w-full", buttonClass)}
+            className={cn("w-full justify-between", buttonClass)}
             type="button"
           >
-            <div className="flex items-center gap-2 truncate max-w-full">
+            <div className="flex max-w-full items-center gap-2 truncate">
               {startIcon && startIcon}
               {value ? value.label : placeholder}
             </div>
@@ -179,7 +179,7 @@ export default function AutoComplete({
               <SquareX
                 className={cn(
                   "ml-auto h-4 w-4 shrink-0 opacity-50 hover:opacity-100",
-                  { "hover:opacity-50": disabled }
+                  { "hover:opacity-50": disabled },
                 )}
                 onClick={(e) => {
                   if (disabled) return;

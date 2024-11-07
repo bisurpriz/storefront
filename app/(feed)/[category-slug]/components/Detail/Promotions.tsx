@@ -13,7 +13,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
   return (
     promotions?.length > 0 && (
       <div
-        className="gap-2 flex items-start mb-2 overflow-hidden overflow-x-auto w-full snap-x no-scrollbar"
+        className="no-scrollbar mb-2 flex w-full snap-x items-start gap-2 overflow-hidden overflow-x-auto"
         tabIndex={-1}
       >
         {promotions

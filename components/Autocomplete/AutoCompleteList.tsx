@@ -55,15 +55,15 @@ function OptionList({
             options.filter(
               (option) =>
                 typeof option.label === "string" &&
-                option.label.toLowerCase().includes(val.toLowerCase())
-            )
+                option.label.toLowerCase().includes(val.toLowerCase()),
+            ),
           );
         }}
       />
       <CommandList>
-        <CommandEmpty className="w-full flex p-4 pb-3 gap-1 items-center">
+        <CommandEmpty className="flex w-full items-center gap-1 p-4 pb-3">
           <SearchX size={24} />
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm text-gray-500">
             Arama yaparak sonuçları filtreleyebilirsiniz.
           </p>
         </CommandEmpty>
@@ -74,7 +74,7 @@ function OptionList({
               value={option?.value?.toString()}
               onSelect={(value) => {
                 const selectedOption = options.find(
-                  (option) => option.value?.toString() === value
+                  (option) => option.value?.toString() === value,
                 );
                 onChange(selectedOption);
               }}

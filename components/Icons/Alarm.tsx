@@ -2,7 +2,13 @@ import React from "react";
 
 const Alarm = (props) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60.35 64" width="1em" height="1em" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60.35 64"
+      width="1em"
+      height="1em"
+      {...props}
+    >
       <g id="Layer_2" data-name="Layer 2">
         <g id="Layer_1-2" data-name="Layer 1">
           <path

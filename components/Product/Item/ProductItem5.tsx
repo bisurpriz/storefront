@@ -49,14 +49,14 @@ const ProductItem5 = ({
   return (
     <div
       className={clsx(
-        "rounded-md bg-white shadow-sm min-h-[320px]",
+        "min-h-[320px] rounded-md bg-white shadow-sm",
         "flex flex-col justify-between",
         "overflow-hidden",
         "cursor-pointer",
         "hover:shadow-md",
         "transition-shadow duration-300 ease-in-out",
         "group",
-        "relative"
+        "relative",
       )}
       id={id.toString()}
     >
@@ -84,7 +84,7 @@ const ProductItem5 = ({
             alt={name}
             width={250}
             height={250}
-            className="aspect-square object-cover rounded-md cursor-pointer rounded-b-none w-full h-auto"
+            className="aspect-square h-auto w-full cursor-pointer rounded-md rounded-b-none object-cover"
             quality={70}
             loading="lazy"
             placeholder="blur"
@@ -97,8 +97,8 @@ const ProductItem5 = ({
           />
         </motion.div>
 
-        <div className="px-2 pb-6 pt-2 max:sm:px-0">
-          <div className="flex flex-col gap-2 justify-between flex-grow max-sm:gap-1">
+        <div className="max:sm:px-0 px-2 pb-6 pt-2">
+          <div className="flex flex-grow flex-col justify-between gap-2 max-sm:gap-1">
             {is_service_free && isSameDayDelivery && (
               <Chip
                 size="small"
@@ -112,7 +112,7 @@ const ProductItem5 = ({
                 variant="filled"
               />
             )}
-            <span className="text-xs flex text-slate-400 gap-2 items-center">
+            <span className="flex items-center gap-2 text-xs text-slate-400">
               <ReviewRating
                 value={score ?? 0}
                 readOnly
@@ -122,7 +122,7 @@ const ProductItem5 = ({
               {score > 0 && `(${score})`}
             </span>
             <h1
-              className="text-sm font-semibold text-gray-500 h-10 line-clamp-2 capitalize group-hover:text-gray-600"
+              className="line-clamp-2 h-10 text-sm font-semibold capitalize text-gray-500 group-hover:text-gray-600"
               title={name}
             >
               {name}

@@ -52,7 +52,7 @@ const MessageList = ({
   }, [messages]);
 
   return (
-    <div className="messages flex-1 mt-4 h-full overflow-auto mb-16" ref={ref}>
+    <div className="messages mb-16 mt-4 h-full flex-1 overflow-auto" ref={ref}>
       {!messages
         ? [1, 2, 3, 4, 5, 6, 7]?.map((item) => (
             <MessageItemSkeleton

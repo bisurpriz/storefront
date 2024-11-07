@@ -12,19 +12,19 @@ const CategoriesPage = () => {
   if (!category) {
     return (
       <div className="grid gap-6 md:gap-4">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 xl:gap-8">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-8">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
               className={clsx(
-                "relative overflow-hidden rounded-lg group",
-                "bg-background border border-border"
+                "group relative overflow-hidden rounded-lg",
+                "border border-border bg-background",
               )}
             >
-              <div className="w-full h-60 bg-gray-200" />
-              <div className="p-4 bg-background">
-                <div className="w-24 h-4 bg-gray-200 rounded-lg mb-4" />
-                <div className="w-24 h-2 bg-gray-200 rounded-lg" />
+              <div className="h-60 w-full bg-gray-200" />
+              <div className="bg-background p-4">
+                <div className="mb-4 h-4 w-24 rounded-lg bg-gray-200" />
+                <div className="h-2 w-24 rounded-lg bg-gray-200" />
               </div>
             </div>
           ))}
@@ -36,12 +36,12 @@ const CategoriesPage = () => {
   return (
     <section className="w-full">
       <div className="grid gap-6 md:gap-4">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 xl:gap-8">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-8">
           {category.map((category) => (
             <div
               className={clsx(
-                "relative overflow-hidden rounded-lg group",
-                "bg-background border border-border"
+                "group relative overflow-hidden rounded-lg",
+                "border border-border bg-background",
               )}
               key={category.slug}
             >
@@ -59,10 +59,10 @@ const CategoriesPage = () => {
                 alt={category.name}
                 width={400}
                 height={300}
-                className="object-cover w-full h-60"
+                className="h-60 w-full object-cover"
                 style={{ aspectRatio: "400/300", objectFit: "cover" }}
               />
-              <div className="p-4 bg-background">
+              <div className="bg-background p-4">
                 <h3 className="text-lg font-semibold md:text-xl">
                   {category.name}
                 </h3>

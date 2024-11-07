@@ -57,7 +57,7 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
         {isTablet && (
           <motion.div
             key="backdrop"
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
             onClick={handleClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -67,9 +67,9 @@ const AnimatedFilterBox: FC<AnimatedFilterBoxProps> = ({
         <motion.div
           key="submenu"
           className={clsx(
-            "absolute bg-white border border-gray-200 rounded-md mt-2 max-h-96 z-50 min-w-fit w-[300px]",
-            "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:h-auto max-h-[65vh] max-sm:bottom-14 max-md:bottom-[72px] max-md:rounded-bl-none max-md:rounded-br-none",
-            className
+            "absolute z-50 mt-2 max-h-96 w-[300px] min-w-fit rounded-md border border-gray-200 bg-white",
+            "max-h-[65vh] max-md:fixed max-md:bottom-[72px] max-md:left-0 max-md:right-0 max-md:h-auto max-md:w-full max-md:rounded-bl-none max-md:rounded-br-none max-sm:bottom-14",
+            className,
           )}
           variants={subMenuVariants}
           initial="initial"

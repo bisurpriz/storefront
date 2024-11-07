@@ -1,18 +1,18 @@
 const ProductCommentsLoadingPage = () => {
   return (
     <div className="px-4 py-8">
-      <div className="h-4 w-44 mb-4 bg-slate-300 animate-pulse rounded-lg" />
+      <div className="mb-4 h-4 w-44 animate-pulse rounded-lg bg-slate-300" />
       {Array.from({ length: 2 }).map((_, i) => (
-        <div className="flex gap-2 items-center last:mb-0 mb-4" key={i}>
-          <div className="flex gap-2 items-center w-52">
-            <div className="rounded-full w-8 h-8 bg-slate-300 animate-pulse" />
-            <div className="p-2 flex flex-col gap-2">
-              <div className="h-4 w-32 bg-slate-300 animate-pulse rounded-lg" />
-              <div className="h-4 w-20 bg-slate-300 animate-pulse rounded-lg" />
-              <div className="h-2 w-32 bg-slate-300 animate-pulse rounded-lg" />
+        <div className="mb-4 flex items-center gap-2 last:mb-0" key={i}>
+          <div className="flex w-52 items-center gap-2">
+            <div className="h-8 w-8 animate-pulse rounded-full bg-slate-300" />
+            <div className="flex flex-col gap-2 p-2">
+              <div className="h-4 w-32 animate-pulse rounded-lg bg-slate-300" />
+              <div className="h-4 w-20 animate-pulse rounded-lg bg-slate-300" />
+              <div className="h-2 w-32 animate-pulse rounded-lg bg-slate-300" />
             </div>
           </div>
-          <div className="w-1/2 bg-slate-300 animate-pulse h-14 rounded-lg" />
+          <div className="h-14 w-1/2 animate-pulse rounded-lg bg-slate-300" />
         </div>
       ))}
     </div>

@@ -21,16 +21,16 @@ const ProductGroup = ({
 
   return tenantIds?.map((id) => (
     <Card key={id}>
-      <CardHeader className="pb-0 mb-4 max-sm:px-2 max-sm:pt-3 max-sm:mb-3">
+      <CardHeader className="mb-4 pb-0 max-sm:mb-3 max-sm:px-2 max-sm:pt-3">
         <Tooltip delayDuration={100}>
           <TooltipTrigger className="w-fit">
             <Link
               href={`/magaza/${stringToSlug(
-                products[id][0].tenant.tenants[0].name
+                products[id][0].tenant.tenants[0].name,
               )}?mid=${products[id][0].tenant.tenants[0].id}`}
               className={cn(
-                "bg-lime-50 px-2 py-1 rounded-sm border border-lime-500 inline-block",
-                "text-xs text-lime-500 font-semibold"
+                "inline-block rounded-sm border border-lime-500 bg-lime-50 px-2 py-1",
+                "text-xs font-semibold text-lime-500",
               )}
             >
               <h3

@@ -36,15 +36,15 @@ const Search: FC<Props> = ({ className }) => {
 
   return (
     <div
-      className={clsx("relative max-w-xl w-full mx-auto", {
+      className={clsx("relative mx-auto w-full max-w-xl", {
         [className]: className,
       })}
     >
       <div
         className={clsx(
-          "h-10 bg-white flex items-center rounded-md px-4 select-none",
-          "transition-all duration-300 text-sm text-slate-400",
-          "border border-primary"
+          "flex h-10 select-none items-center rounded-md bg-white px-4",
+          "text-sm text-slate-400 transition-all duration-300",
+          "border border-primary",
         )}
         id="header-search"
         onFocus={() => {
@@ -58,16 +58,16 @@ const Search: FC<Props> = ({ className }) => {
       <div
         className={clsx(
           "absolute right-0 top-0",
-          "h-full flex items-center justify-center gap-3",
-          "transition-all duration-300 group"
+          "flex h-full items-center justify-center gap-3",
+          "group transition-all duration-300",
         )}
       >
         {inputVal && (
           <button
             className={clsx(
-              "text-primary ",
+              "text-primary",
               "flex items-center justify-center outline-none",
-              "transition-all duration-300 group"
+              "group transition-all duration-300",
             )}
             onClick={handleClear}
           >
@@ -76,15 +76,15 @@ const Search: FC<Props> = ({ className }) => {
         )}
         <button
           className={clsx(
-            "h-full bg-primary text-white rounded-r-md px-6",
+            "h-full rounded-r-md bg-primary px-6 text-white",
             "flex items-center justify-center outline-none",
             "hover:bg-primary focus:ring-2 focus:ring-primary focus:ring-opacity-50",
-            "transition-all duration-300 group"
+            "group transition-all duration-300",
           )}
           onClick={pushToSearch}
           name="search"
         >
-          <SearchIcon className="group-hover:animate-bounce text-2xl" />
+          <SearchIcon className="text-2xl group-hover:animate-bounce" />
         </button>
       </div>
       <SearchList

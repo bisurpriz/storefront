@@ -83,26 +83,26 @@ const Footer = async () => {
     <footer
       aria-label="Alt Bilgi"
       aria-describedby="Alt bilgi"
-      className="flex items-center justify-center w-full max-md:hidden  mt-10 max-md:mt-20 max-sm:mt-16 bg-gray-50"
+      className="mt-10 flex w-full items-center justify-center bg-gray-50 max-md:mt-20 max-md:hidden max-sm:mt-16"
     >
-      <div className="w-full px-4 pt-4 pb-8 text-gray-700 max-w-screen-2xl mx-auto">
-        <div className="flex items-start justify-between w-full ">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 pb-8 pt-4 text-gray-700">
+        <div className="flex w-full items-start justify-between">
           {footerData.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-start justify-center w-full space-y-4"
+              className="flex w-full flex-col items-start justify-center space-y-4"
             >
               <h3
                 className={clsx(
-                  "text-lg font-semibold font-sans",
-                  "underline underline-offset-2  select-none"
+                  "font-sans text-lg font-semibold",
+                  "select-none underline underline-offset-2",
                 )}
               >
                 {item.title}
               </h3>
-              <ul className="flex flex-col items-start justify-center w-full space-y-2 font-mono">
+              <ul className="flex w-full flex-col items-start justify-center space-y-2 font-mono">
                 {item.links.map((link, index) => (
-                  <li key={index} className="group ">
+                  <li key={index} className="group">
                     <Link
                       href={link.path}
                       target={viewport === "mobile" ? "_blank" : "_self"}
@@ -111,7 +111,7 @@ const Footer = async () => {
                           ? "noopener noreferrer"
                           : ""
                       }
-                      className="text-sm flex items-center gap-1 group-hover:text-secondary transition-all ease-in-out duration-300"
+                      className="flex items-center gap-1 text-sm transition-all duration-300 ease-in-out group-hover:text-secondary"
                     >
                       <span className="text-2xl group-hover:scale-105">
                         {link.icon && link.icon}
@@ -126,15 +126,15 @@ const Footer = async () => {
         </div>
         <div
           className={clsx(
-            "flex items-end justify-start gap-8 w-full mt-8",
-            "border-t border-gray-300 text-slate-600 font-manrope text-xs"
+            "mt-8 flex w-full items-end justify-start gap-8",
+            "border-t border-gray-300 font-manrope text-xs text-slate-600",
           )}
         >
           <Link
             href="https://www.eticaret.gov.tr/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2 whitespace-nowrap mt-2"
+            className="mt-2 flex flex-col items-center gap-2 whitespace-nowrap"
           >
             <Image
               src="https://www.eticaret.gov.tr/images/logo1.png"
@@ -142,7 +142,7 @@ const Footer = async () => {
               width={200}
               height={200}
               quality={100}
-              className="w-full h-20"
+              className="h-20 w-full"
             />
             Bonnmarşe ETBİS&apos;e üye bir firmadır.
           </Link>
@@ -150,12 +150,12 @@ const Footer = async () => {
             href="https://www.iyzico.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2 whitespace-nowrap mt-2"
+            className="mt-2 flex flex-col items-center gap-2 whitespace-nowrap"
           >
             <Image
               src="/payment/iyzico-ode.png"
               alt="iyzico"
-              className="w-full h-20"
+              className="h-20 w-full"
               width={400}
               height={200}
               quality={100}

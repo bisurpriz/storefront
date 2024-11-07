@@ -12,7 +12,7 @@ export const generateMetadata = async () => {
 
 const OrderDetail = async () => {
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <section
         aria-labelledby="order-detail"
         aria-describedby="order-detail-description"

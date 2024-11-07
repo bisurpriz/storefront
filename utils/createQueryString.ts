@@ -1,7 +1,7 @@
 export const createQueryString = (
   name: string,
   value: string,
-  searchParams: any
+  searchParams: any,
 ) => {
   const params = new URLSearchParams(searchParams.toString());
   if (!value) {

@@ -107,21 +107,21 @@ export default function ReceiverForm() {
   useEffect(() => {
     if (selectedCargoLocation?.placeId && !hasSameDayProduct) {
       const city = selectedCargoLocation.address_components.find((ac) =>
-        ac.types.includes("administrative_area_level_1")
+        ac.types.includes("administrative_area_level_1"),
       )?.short_name;
       setValue("receiver_city", {
         label: city,
         value: city,
       });
       const district = selectedCargoLocation.address_components.find((ac) =>
-        ac.types.includes("administrative_area_level_2")
+        ac.types.includes("administrative_area_level_2"),
       )?.short_name;
       setValue("receiver_district", {
         label: district,
         value: district,
       });
       const neighborhood = selectedCargoLocation.address_components.find((ac) =>
-        ac.types.includes("administrative_area_level_4")
+        ac.types.includes("administrative_area_level_4"),
       )?.short_name;
       setValue("receiver_neighborhood", {
         label: neighborhood,
@@ -132,7 +132,7 @@ export default function ReceiverForm() {
   }, [selectedCargoLocation]);
 
   const placeData = parseJson(
-    cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places
+    cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places,
   );
 
   const availableDistricts = getAvailableDistricts(placeData);
@@ -166,13 +166,13 @@ export default function ReceiverForm() {
       if (district && !neighborhood) {
         const availableNeighborhoods = getAvailableNeighborhoods(
           placeData,
-          district
+          district,
         );
         setNeighborhoods(
           availableNeighborhoods?.map((neighborhood) => ({
             label: neighborhood,
             value: neighborhood,
-          })) || []
+          })) || [],
         );
       }
     });
@@ -293,7 +293,7 @@ export default function ReceiverForm() {
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="person" id="person" />
                           <Label
-                            className="text-gray-700 text-xs lg:text-sm"
+                            className="text-xs text-gray-700 lg:text-sm"
                             htmlFor="person"
                           >
                             Kişi adına
@@ -302,7 +302,7 @@ export default function ReceiverForm() {
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="company" id="company" />
                           <Label
-                            className="text-gray-700 text-xs lg:text-sm"
+                            className="text-xs text-gray-700 lg:text-sm"
                             htmlFor="company"
                           >
                             Şirket adına
@@ -310,7 +310,7 @@ export default function ReceiverForm() {
                         </div>
                       </RadioGroup>
                       {error && (
-                        <div className="text-red-500 text-sm mt-2">
+                        <div className="mt-2 text-sm text-red-500">
                           {error.message}
                         </div>
                       )}
@@ -319,7 +319,7 @@ export default function ReceiverForm() {
                 )}
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <Controller
                   name="invoice_company_address"
                   control={control}
@@ -521,13 +521,13 @@ export default function ReceiverForm() {
                         const availableNeighborhoods =
                           getAvailableNeighborhoods(
                             placeData,
-                            value?.value as string
+                            value?.value as string,
                           );
                         setNeighborhoods(
                           availableNeighborhoods?.map((neighborhood) => ({
                             label: neighborhood,
                             value: neighborhood,
-                          })) || []
+                          })) || [],
                         );
 
                         field.onChange(value);
@@ -638,10 +638,10 @@ export default function ReceiverForm() {
   };
 
   return (
-    <div className="container mx-auto sm:p-4 relative">
+    <div className="container relative mx-auto sm:p-4">
       {isPending && (
-        <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-primary" />
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50">
+          <div className="h-20 w-20 animate-spin rounded-full border-b-2 border-t-2 border-primary" />
         </div>
       )}
       <div className="mb-8">
@@ -649,7 +649,7 @@ export default function ReceiverForm() {
           {stepperData.map((data, i) => (
             <div
               key={data.key}
-              className={`w-1/3 text-center select-none lg:text-base text-sm flex gap-1 justify-center whitespace-nowrap ${
+              className={`flex w-1/3 select-none justify-center gap-1 whitespace-nowrap text-center text-sm lg:text-base ${
                 i < step ? "text-primary" : "text-muted-foreground"
               }`}
             >
@@ -668,9 +668,9 @@ export default function ReceiverForm() {
             </div>
           ))}
         </div>
-        <div className="w-full bg-muted h-2 mt-2 rounded-full overflow-hidden">
+        <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
           <div
-            className="bg-primary h-full transition-all duration-300 ease-in-out"
+            className="h-full bg-primary transition-all duration-300 ease-in-out"
             style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
@@ -681,10 +681,10 @@ export default function ReceiverForm() {
         className="lg:grid lg:grid-cols-3 lg:gap-8"
         id="order-detail-form"
       >
-        <div className="lg:col-span-3 space-y-8">
+        <div className="space-y-8 lg:col-span-3">
           {renderStepContent(step)}
 
-          <div className="flex justify-between mt-8">
+          <div className="mt-8 flex justify-between">
             {step > 1 && (
               <Button type="button" onClick={prevStep} variant="outline">
                 Geri

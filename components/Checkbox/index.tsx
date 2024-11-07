@@ -62,18 +62,18 @@ const Checkbox = ({
     <label
       htmlFor={id}
       className={clsx(
-        "inline-flex items-center cursor-pointer select-none relative pl-6 pr-3 py-2 text-gray-700 text-sm",
+        "relative inline-flex cursor-pointer select-none items-center py-2 pl-6 pr-3 text-sm text-gray-700",
         className,
-        disabled && "opacity-50 cursor-not-allowed",
-        readOnly && "opacity-50 cursor-not-allowed"
+        disabled && "cursor-not-allowed opacity-50",
+        readOnly && "cursor-not-allowed opacity-50",
       )}
     >
       <p className="m-0 p-0 leading-5 text-gray-900">{label}</p>
       <input
         className={clsx(
-          "absolute opacity-0 cursor-pointer h-0 w-0",
+          "absolute h-0 w-0 cursor-pointer opacity-0",
           disabled && "opacity-0",
-          readOnly && "opacity-0"
+          readOnly && "opacity-0",
         )}
         type="checkbox"
         checked={checked}
@@ -98,16 +98,16 @@ const Checkbox = ({
       />
       <div
         className={clsx(
-          "absolute top-1/2 left-0 -translate-y-1/2 w-4 h-4 rounded border-2 transition-all duration-200 ease-in-out cursor-pointer flex items-center justify-center",
-          checked ? "bg-primary border-primary" : "bg-white border-gray-400",
-          disabled && "bg-gray-200 border-gray-200",
-          readOnly && "bg-gray-200 border-gray-200"
+          "absolute left-0 top-1/2 flex h-4 w-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded border-2 transition-all duration-200 ease-in-out",
+          checked ? "border-primary bg-primary" : "border-gray-400 bg-white",
+          disabled && "border-gray-200 bg-gray-200",
+          readOnly && "border-gray-200 bg-gray-200",
         )}
       >
         <svg
           className={clsx(
-            "text-white fill-current stroke-2",
-            checked ? "block" : "hidden"
+            "fill-current stroke-2 text-white",
+            checked ? "block" : "hidden",
           )}
           viewBox="0 0 24 24"
         >

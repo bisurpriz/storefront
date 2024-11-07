@@ -16,7 +16,7 @@ import {
 } from "@/graphql/queries/order/order.generated";
 
 export const getTenantOrderItem = async (
-  id: GetSingleTenantOrderItemQueryVariables["id"]
+  id: GetSingleTenantOrderItemQueryVariables["id"],
 ) => {
   const response = await query<
     GetSingleTenantOrderItemQuery,

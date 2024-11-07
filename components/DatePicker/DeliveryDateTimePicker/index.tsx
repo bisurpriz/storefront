@@ -31,10 +31,10 @@ export default function DeliveryDateTimePicker({
   onSelect,
 }: DeliveryDateTimePickerProps) {
   const [date, setDate] = useState<Date>(
-    new Date(deliveryTime.day) || new Date()
+    new Date(deliveryTime.day) || new Date(),
   );
   const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(
-    deliveryTime.hour || null
+    deliveryTime.hour || null,
   );
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
@@ -61,7 +61,7 @@ export default function DeliveryDateTimePicker({
   const availableDeliveryTimes = deliveryTimes
     ?.toSorted(
       (a, b) =>
-        Number(a.start_time.split(":")[0]) - Number(b.start_time.split(":")[0])
+        Number(a.start_time.split(":")[0]) - Number(b.start_time.split(":")[0]),
     )
     .map((timeRange) => `${timeRange.start_time} - ${timeRange.end_time}`);
 
@@ -76,8 +76,8 @@ export default function DeliveryDateTimePicker({
     if (days && date)
       setSelectedButtonIndex(
         days.findIndex(
-          (day) => date.toDateString() === day.value.toDateString()
-        )
+          (day) => date.toDateString() === day.value.toDateString(),
+        ),
       );
   }, [date]);
 
@@ -93,7 +93,7 @@ export default function DeliveryDateTimePicker({
                   ? "default"
                   : "soft"
               }
-              className="col-span-1 lg:py-4 lg:h-auto lg:text-lg"
+              className="col-span-1 lg:h-auto lg:py-4 lg:text-lg"
               onClick={() => {
                 setDate(day.value);
                 setSelectedTimeRange(null);
@@ -115,7 +115,7 @@ export default function DeliveryDateTimePicker({
               },
               {
                 "col-start-3 col-end-4": selectedButtonIndex === 2,
-              }
+              },
             )}
             initial={{ y: -16, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -131,7 +131,7 @@ export default function DeliveryDateTimePicker({
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-between text-left font-normal border-2 border-primary"
+                  "w-full justify-between border-2 border-primary text-left font-normal",
                 )}
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
@@ -160,7 +160,7 @@ export default function DeliveryDateTimePicker({
                 className={cn(
                   "justify-start text-left",
                   selectedTimeRange === timeRange &&
-                    "bg-primary text-primary-foreground"
+                    "bg-primary text-primary-foreground",
                 )}
                 onClick={() => {
                   setSelectedTimeRange(timeRange);
@@ -181,8 +181,8 @@ export default function DeliveryDateTimePicker({
       {date && selectedTimeRange && (
         <div
           className={cn(
-            "rounded-lg border p-2 text-start text-sm flex flex-wrap justify-start gap-1 shadow-sm",
-            "bg-gradient-to-bl from-primary/20 to-accent text-slate-600"
+            "flex flex-wrap justify-start gap-1 rounded-lg border p-2 text-start text-sm shadow-sm",
+            "bg-gradient-to-bl from-primary/20 to-accent text-slate-600",
           )}
         >
           Seçilen Tarih ve Saat Aralığı:{" "}

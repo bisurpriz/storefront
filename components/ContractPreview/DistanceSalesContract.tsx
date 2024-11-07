@@ -41,18 +41,18 @@ const DistanceSalesContract: FC<DistanceSalesContractProps> = ({
   urunFiyati,
 }) => {
   return (
-    <div className="max-w-xl mx-auto flex flex-col items-start p-4 justify-start w-full gap-6">
+    <div className="mx-auto flex w-full max-w-xl flex-col items-start justify-start gap-6 p-4">
       <div
         className={clsx(
-          "w-full py-4 px-12 shadow-inner rounded-md bg-stone-50 max-h-60 overflow-y-auto",
+          "max-h-60 w-full overflow-y-auto rounded-md bg-stone-50 px-12 py-4 shadow-inner",
           "[&>p]:text-xs",
-          "[&>h2]:text-base ",
+          "[&>h2]:text-base",
           "[&>h1]:text-lg",
           "[&>*]:my-2",
           "[&>table]:w-full",
-          "[&>table>tbody>tr>td]:px-2 [&>table>tbody>tr>td]:py-2 [&>table>tbody>tr>td]:border [&>table>tbody>tr>td]:text-xs [&>table>tbody>tr>td]:font-semibold [&>table>tbody>tr>td]:text-left",
-          "[&>table>thead>tr>th]:px-2 [&>table>thead>tr>th]:py-2 [&>table>thead>tr>th]:border [&>table>thead>tr>th]:text-xs [&>table>thead>tr>th]:font-semibold [&>table>thead>tr>th]:text-left",
-          "[&>li]:py-2 [&>ul]:text-xs"
+          "[&>table>tbody>tr>td]:border [&>table>tbody>tr>td]:px-2 [&>table>tbody>tr>td]:py-2 [&>table>tbody>tr>td]:text-left [&>table>tbody>tr>td]:text-xs [&>table>tbody>tr>td]:font-semibold",
+          "[&>table>thead>tr>th]:border [&>table>thead>tr>th]:px-2 [&>table>thead>tr>th]:py-2 [&>table>thead>tr>th]:text-left [&>table>thead>tr>th]:text-xs [&>table>thead>tr>th]:font-semibold",
+          "[&>li]:py-2 [&>ul]:text-xs",
         )}
       >
         <h1>Ön Bilgilendirme Formu</h1>
@@ -749,15 +749,15 @@ const DistanceSalesContract: FC<DistanceSalesContractProps> = ({
       </div>
       <div
         className={clsx(
-          "w-full py-4 px-12 shadow-inner rounded-md bg-stone-50 max-h-60 overflow-y-auto",
+          "max-h-60 w-full overflow-y-auto rounded-md bg-stone-50 px-12 py-4 shadow-inner",
           "[&>p]:text-xs",
-          "[&>h2]:text-base ",
+          "[&>h2]:text-base",
           "[&>h1]:text-lg",
           "[&>*]:my-2",
           "[&>table]:w-full",
-          "[&>table>tbody>tr>td]:px-2 [&>table>tbody>tr>td]:py-2 [&>table>tbody>tr>td]:border [&>table>tbody>tr>td]:text-xs [&>table>tbody>tr>td]:font-semibold [&>table>tbody>tr>td]:text-left",
-          "[&>table>thead>tr>th]:px-2 [&>table>thead>tr>th]:py-2 [&>table>thead>tr>th]:border [&>table>thead>tr>th]:text-xs [&>table>thead>tr>th]:font-semibold [&>table>thead>tr>th]:text-left",
-          "[&>li]:py-2 [&>ul]:text-xs"
+          "[&>table>tbody>tr>td]:border [&>table>tbody>tr>td]:px-2 [&>table>tbody>tr>td]:py-2 [&>table>tbody>tr>td]:text-left [&>table>tbody>tr>td]:text-xs [&>table>tbody>tr>td]:font-semibold",
+          "[&>table>thead>tr>th]:border [&>table>thead>tr>th]:px-2 [&>table>thead>tr>th]:py-2 [&>table>thead>tr>th]:text-left [&>table>thead>tr>th]:text-xs [&>table>thead>tr>th]:font-semibold",
+          "[&>li]:py-2 [&>ul]:text-xs",
         )}
       >
         <h1>Mesafeli Satış Sözleşmesi</h1>

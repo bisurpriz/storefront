@@ -23,7 +23,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
     <AnimatePresence key={"recommended-products"}>
       <motion.div
         key={"scaler"}
-        className="sticky top-0 left-0 bg-secondary origin-left"
+        className="sticky left-0 top-0 origin-left bg-secondary"
         style={{
           scaleX: scrollXProgress,
           height: 2,
@@ -31,7 +31,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
       />
       <motion.div
         key={"products"}
-        className="flex items-start justify-start gap-4 overflow-x-auto flex-nowrap relative snap-x snap-mandatory mt-2 z-0"
+        className="relative z-0 mt-2 flex snap-x snap-mandatory flex-nowrap items-start justify-start gap-4 overflow-x-auto"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -48,39 +48,39 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
           return (
             <Link
               key={prod.id}
-              className="border border-gray-100 rounded-lg p-4 flex min-w-[300px] relative flex-1 h-28"
+              className="relative flex h-28 min-w-[300px] flex-1 rounded-lg border border-gray-100 p-4"
               href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
               prefetch={false}
             >
               {discount > 0 && (
-                <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-br-lg text-xs">
+                <div className="absolute left-0 top-0 rounded-br-lg bg-red-500 px-2 py-1 text-xs text-white">
                   {discount}%
                 </div>
               )}
-              <div className="aspect-square rounded-lg overflow-hidden">
+              <div className="aspect-square overflow-hidden rounded-lg">
                 <Image
                   src={`${getImageUrlFromPath(
-                    prod.image_url?.[0]
+                    prod.image_url?.[0],
                   )}?width=80&height=80&format=webp&quality=70`}
-                  className="w-full h-full"
+                  className="h-full w-full"
                   alt={prod.name}
                   width={80}
                   height={80}
                 />
               </div>
-              <div className="flex flex-col flex-1 items-end justify-start gap-2">
-                <span className="font-semibold text-right flex gap-2 items-end">
+              <div className="flex flex-1 flex-col items-end justify-start gap-2">
+                <span className="flex items-end gap-2 text-right font-semibold">
                   {prod.discount_price < prod.price && (
-                    <span className="line-through text-gray-400 text-sm leading-none">
+                    <span className="text-sm leading-none text-gray-400 line-through">
                       {getPriceTR(prod.discount_price)}
                     </span>
                   )}
-                  <span className="text-primary text-lg leading-none">
+                  <span className="text-lg leading-none text-primary">
                     {getPriceTR(prod.price)}
                   </span>
                 </span>
                 <h3
-                  className="text-sm font-normal text-right max-w-[200px] line-clamp-2"
+                  className="line-clamp-2 max-w-[200px] text-right text-sm font-normal"
                   title={prod.name}
                 >
                   {prod.name}

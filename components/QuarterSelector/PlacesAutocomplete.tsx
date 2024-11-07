@@ -79,7 +79,7 @@ export default function PlacesAutocomplete({
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
               }
-            }
+            },
           );
         }
       });
@@ -125,7 +125,7 @@ export default function PlacesAutocomplete({
             address_components,
             placeId: prediction.place_id,
             label: prediction.description,
-          })
+          }),
         );
         refresh();
       });
@@ -146,7 +146,7 @@ export default function PlacesAutocomplete({
   };
 
   return (
-    <div className="w-full relative" ref={ref}>
+    <div className="relative w-full" ref={ref}>
       <div className="relative">
         <Input
           icon={
@@ -164,26 +164,26 @@ export default function PlacesAutocomplete({
           aria-autocomplete="list"
           aria-controls="predictions-list"
           className={cn(
-            "w-full p-4 h-auto font-semibold border-2 border-primary focus:ring-2 focus:ring-primary pr-8",
+            "h-auto w-full border-2 border-primary p-4 pr-8 font-semibold focus:ring-2 focus:ring-primary",
             {
-              "bg-primary text-white pr-10": input,
-            }
+              "bg-primary pr-10 text-white": input,
+            },
           )}
           title={input}
         />
         {isPending && (
           <Loader2
             className={cn(
-              "animate-spin h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400",
-              { "text-white": input }
+              "absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-gray-400",
+              { "text-white": input },
             )}
           />
         )}
         {input && (
           <SquareX
             className={cn(
-              "h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer",
-              { "text-white": input }
+              "absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-400",
+              { "text-white": input },
             )}
             onClick={handleClear}
           />
@@ -193,8 +193,8 @@ export default function PlacesAutocomplete({
         <ul
           id="predictions-list"
           className={cn(
-            "mt-2 bg-white border rounded-md shadow-lg max-h-60 overflow-auto",
-            "absolute w-full z-10 border-gray-200 divide-y divide-gray-200"
+            "mt-2 max-h-60 overflow-auto rounded-md border bg-white shadow-lg",
+            "absolute z-10 w-full divide-y divide-gray-200 border-gray-200",
           )}
         >
           {predictions.map((prediction) => (
@@ -205,7 +205,7 @@ export default function PlacesAutocomplete({
             >
               <Button
                 variant="ghost"
-                className="w-full text-left justify-start px-4 py-2 hover:bg-gray-100 bg-white"
+                className="w-full justify-start bg-white px-4 py-2 text-left hover:bg-gray-100"
                 onClick={() => handleSelect(prediction)}
               >
                 {prediction.description}

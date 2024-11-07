@@ -25,7 +25,7 @@ export const generateHashV2 = (
   uri,
   randomString,
   secretKey,
-  body
+  body,
 ) => {
   const signature = createHmac("sha256", secretKey)
     .update(randomString + uri + JSON.stringify(body))
@@ -41,7 +41,7 @@ export const generateHashV2 = (
 
 export const calculateCommissionedAmount = (
   amount: string,
-  commissionRate: number
+  commissionRate: number,
 ) => {
   const commission = (parseFloat(amount) * commissionRate).toFixed(2);
   const commissionedAmount = (
@@ -69,7 +69,7 @@ export const createBasketItems = (items: ProductForCart[]) => {
     subMerchantKey: product.tenant.tenants[0]?.iyzi_sub_merchant_key || "",
     subMerchantPrice: calculateCommissionedAmount(
       getPrice(product),
-      product.tenant.tenants[0].commision_rate ?? COMMISSION
+      product.tenant.tenants[0].commision_rate ?? COMMISSION,
     ).commissionedAmount,
   }));
 

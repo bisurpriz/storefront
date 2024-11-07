@@ -13,7 +13,7 @@ const CompanyDetail: FC<Props> = ({ control, invoice_type }) => {
   if (invoice_type === "person") return null;
 
   return (
-    <div className={clsx("col-span-full", "flex flex-col gap-3 flex-1")}>
+    <div className={clsx("col-span-full", "flex flex-1 flex-col gap-3")}>
       <AccordionItem
         title="Firma Bilgileri"
         bordered

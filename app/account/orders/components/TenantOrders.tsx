@@ -13,8 +13,8 @@ const TenantOrders = ({
   order: GetUserOrdersQuery["order"][0];
 }) => {
   return tenants?.map((to) => (
-    <div key={to.id} className="flex items-start flex-col justify-start">
-      <div className="flex justify-between w-full  max-sm:items-baseline">
+    <div key={to.id} className="flex flex-col items-start justify-start">
+      <div className="flex w-full justify-between max-sm:items-baseline">
         <div className="flex items-start justify-start gap-4 max-sm:flex-col max-sm:gap-2">
           <span className="my-1">
             <Link

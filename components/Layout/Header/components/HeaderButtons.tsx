@@ -62,14 +62,14 @@ const HeaderButtons = () => {
           href={item.href}
           key={index}
           className={clsx(
-            "h-full flex items-center gap-2 text-gray-600 group transition-all duration-300 ease-in-out hover:text-primary"
+            "group flex h-full items-center gap-2 text-gray-600 transition-all duration-300 ease-in-out hover:text-primary",
           )}
         >
           <span className={clsx("text-3xl")}>{item.icon}</span>
           <div
             className={clsx(
               "flex flex-col items-start justify-start",
-              "max-lg:hidden"
+              "max-lg:hidden",
             )}
           >
             <span className="mb-auto">{item.title}</span>

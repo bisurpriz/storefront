@@ -23,10 +23,10 @@ const ProductDescription = ({
       {description && <div dangerouslySetInnerHTML={{ __html: description }} />}
       {notes && notes.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-md font-medium font-sans mb-2 text-slate-700">
+          <h3 className="text-md mb-2 font-sans font-medium text-slate-700">
             Notlar
           </h3>
-          <ul className="list-disc list-inside text-sm font-light font-mono tracking-wide text-slate-700">
+          <ul className="list-inside list-disc font-mono text-sm font-light tracking-wide text-slate-700">
             {notes?.map((note, index) => (
               <li key={`${note}-${index}`}>{note}</li>
             ))}
@@ -36,7 +36,7 @@ const ProductDescription = ({
 
       {specifications?.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-md font-medium font-mono mb-2 text-slate-700">
+          <h3 className="text-md mb-2 font-mono font-medium text-slate-700">
             Özellikler
           </h3>
 
@@ -45,18 +45,18 @@ const ProductDescription = ({
               <li
                 key={`${specification.name}-${index}`}
                 className={clsx(
-                  "odd:bg-amber-50 list-none w-full p-2 rounded-md even:border border-amber-100 grid grid-cols-2 font-manrope text-sm font-normal text-slate-500 "
+                  "grid w-full list-none grid-cols-2 rounded-md border-amber-100 p-2 font-manrope text-sm font-normal text-slate-500 odd:bg-amber-50 even:border",
                 )}
               >
                 <span
                   className={clsx(
-                    "block w-full text-slate-800 relative font-semibold",
-                    "w-1/2 col-span-1"
+                    "relative block w-full font-semibold text-slate-800",
+                    "col-span-1 w-1/2",
                   )}
                 >
                   {specification.name}
                 </span>
-                <span className={clsx("block w-full", "w-1/2 col-span-1")}>
+                <span className={clsx("block w-full", "col-span-1 w-1/2")}>
                   {specification.value}
                 </span>
               </li>

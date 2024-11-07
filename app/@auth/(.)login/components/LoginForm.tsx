@@ -58,7 +58,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
     event.preventDefault();
     startTransition(async () => {
       const [email, password] = Array.from(event.currentTarget.elements).map(
-        (field: HTMLInputElement) => field.value
+        (field: HTMLInputElement) => field.value,
       );
 
       const response = await login({ email, password });
@@ -91,7 +91,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
   return (
     <Card className="border-none shadow-none">
       <CardHeader className="space-y-1">
-        <div className="flex justify-center mb-4">
+        <div className="mb-4 flex justify-center">
           <Image
             src={"/logo.svg"}
             width={120}
@@ -100,13 +100,13 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             className="w-full max-w-xs"
           />
         </div>
-        <CardTitle className="text-2xl font-bold font-mono p-2 rounded-md bg-primary-foreground text-center">
+        <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">
           Giriş Yap
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleClientLogin} className="space-y-4">
-          <div className="space-y-2 ">
+          <div className="space-y-2">
             <Label htmlFor="email">E-posta</Label>
             <Input
               id="email"

@@ -16,7 +16,7 @@ const ProductActionsPage = async (props) => {
   }
 
   const isFavorite = product?.user_favorites?.some(
-    (fav) => fav.product_id === productId
+    (fav) => fav.product_id === productId,
   );
   const favoriteCount = product.user_favorites_aggregate.aggregate.count;
 
@@ -34,7 +34,7 @@ const ProductActionsPage = async (props) => {
   };
   const selectedLocation = (await handleCookie()) as IPlace;
   const places = parseJson(
-    product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places
+    product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places,
   );
 
   const shippingPlaces: WithContext<Place>[] = places?.map((place) => ({

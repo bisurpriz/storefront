@@ -21,14 +21,14 @@ const headerTopLeftMenu = [
 
 const HeaderTop = () => {
   return (
-    <div className="w-full max-sm:hidden px-4 mt-1 text-xs">
+    <div className="mt-1 w-full px-4 text-xs max-sm:hidden">
       <div className="flex items-center justify-between">
-        <div className={`flex items-center gap-2 `}>
+        <div className={`flex items-center gap-2`}>
           {headerTopLeftMenu.map((item, index) => (
             <div key={item.link}>
               <Link
                 href={`/${item.link}`}
-                className="hover:text-primary whitespace-nowrap w-fit font-normal"
+                className="w-fit whitespace-nowrap font-normal hover:text-primary"
               >
                 {item.label}
               </Link>
@@ -44,7 +44,7 @@ const HeaderTop = () => {
             ürünler!
           </Link>
         </p> */}
-        <ul className="text-right whitespace-nowrap">
+        <ul className="whitespace-nowrap text-right">
           <li>
             Bonnmarşe&apos;de satış yapmak ister misiniz?&nbsp;
             <Link

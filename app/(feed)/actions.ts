@@ -100,7 +100,7 @@ export const searchProducts = async (
   paginationParams,
   payload: {
     [key: string]: string | string[] | undefined;
-  }
+  },
 ) => {
   if (!payload) return { products: [] };
   const queryMapper = await createDynamicQueryMapper(payload);
@@ -129,11 +129,11 @@ export const searchProducts = async (
 
 export const searchProductsv1 = async (
   params: SearchParams = {},
-  filters: { [key: string]: string | string[] | undefined } = {}
+  filters: { [key: string]: string | string[] | undefined } = {},
 ) => {
   const { get } = await cookies();
   const selectedLocation = parseJson(
-    get(CookieTokens.LOCATION_ID)?.value
+    get(CookieTokens.LOCATION_ID)?.value,
   ) as IPlace;
 
   if (!filters) return { hits: [], found: 0 };
@@ -152,7 +152,7 @@ export const searchProductsv1 = async (
           limit: PER_REQUEST,
           ...params,
         },
-        {}
+        {},
       );
     return response;
   } catch (error) {
@@ -163,7 +163,7 @@ export const searchProductsv1 = async (
 export const checkProductLocation = async (
   locationId: number,
   type: string,
-  productId: number
+  productId: number,
 ) => {
   if (!locationId || !type) return;
   let whereExp = {};

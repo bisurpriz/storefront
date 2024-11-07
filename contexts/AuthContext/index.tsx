@@ -71,7 +71,7 @@ export const AuthProvider = ({
   };
 
   const handleAuthenticatedUser = async (
-    user: GetUserByIdQuery["user_by_pk"]
+    user: GetUserByIdQuery["user_by_pk"],
   ) => {
     try {
       Cookies.remove(CookieTokens.GUEST_ID);

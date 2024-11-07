@@ -36,7 +36,7 @@ export async function POST(request: Request) {
         headers: {
           "Content-Type": "text/html",
         },
-      }
+      },
     );
   } else {
     const scriptData = `

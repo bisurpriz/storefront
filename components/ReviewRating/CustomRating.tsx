@@ -22,7 +22,7 @@ const Rating: React.FC<RatingProps> = ({
   defaultValue = 0,
   emptyIcon = (
     <CustomStar
-      className="text-slate-400  w-4 h-4"
+      className="h-4 w-4 text-slate-400"
       width={20}
       height={20}
       fill="none"
@@ -30,7 +30,7 @@ const Rating: React.FC<RatingProps> = ({
   ),
   fullIcon = (
     <CustomStar
-      className="text-yellow-400 w-4 h-4"
+      className="h-4 w-4 text-yellow-400"
       width={20}
       height={20}
       fill="currentColor"
@@ -88,7 +88,7 @@ const Rating: React.FC<RatingProps> = ({
   return (
     <div
       className={clsx("flex", {
-        "cursor-default select-none pointer-events-none": readOnly || disabled,
+        "pointer-events-none cursor-default select-none": readOnly || disabled,
       })}
       role="radiogroup"
       aria-disabled={disabled}
@@ -105,10 +105,10 @@ const Rating: React.FC<RatingProps> = ({
           <span
             key={index}
             className={clsx(
-              "relative group cursor-pointer select-none transition-colors duration-300",
+              "group relative cursor-pointer select-none transition-colors duration-300",
               { "text-gray-400": !isFull && !isHovered },
               { "text-yellow-500": isFull || isHovered },
-              { "cursor-not-allowed": readOnly || disabled }
+              { "cursor-not-allowed": readOnly || disabled },
             )}
             onMouseEnter={() => handleMouseEnter(preciseIndex)}
             onMouseLeave={handleMouseLeave}
@@ -118,7 +118,7 @@ const Rating: React.FC<RatingProps> = ({
           >
             {isFull || isHovered ? fullIcon : emptyIcon}
             {tooltips[index] && (
-              <span className="absolute bottom-full mb-1 hidden group-hover:block px-2 py-1 text-xs text-white bg-gray-800 rounded whitespace-nowrap">
+              <span className="absolute bottom-full mb-1 hidden whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
                 {tooltips[index]}
               </span>
             )}

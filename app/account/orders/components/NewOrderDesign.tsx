@@ -31,11 +31,11 @@ export default function GuncellenmisSiparislerimSayfasi({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Siparişlerim</h1>
+      <h1 className="mb-6 text-2xl font-bold">Siparişlerim</h1>
       {orderData.order.map((order) => (
         <Card key={order.id} className="mb-6">
           <CardHeader>
-            <CardTitle className="w-full flex justify-between items-start">
+            <CardTitle className="flex w-full items-start justify-between">
               <p>
                 {localeFormat(new Date(order.created_at), "dd MMMM yyyy HH:mm")}{" "}
                 tarihli sipariş
@@ -50,7 +50,7 @@ export default function GuncellenmisSiparislerimSayfasi({
           <CardContent>
             {order.tenant_orders.map((tenantOrder) => (
               <div key={tenantOrder.id} className="mb-4">
-                <h3 className="font-semibold mb-2">
+                <h3 className="mb-2 font-semibold">
                   Satıcı: {tenantOrder.tenant.tenants[0]?.name}
                 </h3>
                 <StatusBadge
@@ -59,7 +59,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                 {tenantOrder.order_items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-start space-x-4 my-4 border-t pt-4"
+                    className="my-4 flex items-start space-x-4 border-t pt-4"
                   >
                     {item.product.image_url &&
                       item.product.image_url.length > 0 && (
@@ -71,7 +71,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                           className="rounded-md"
                         />
                       )}
-                    <div className="flex-1 w-full">
+                    <div className="w-full flex-1">
                       <h4 className="font-semibold">{item.product.name}</h4>
                       <p className="text-sm text-muted-foreground">
                         Adet: {item.quantity}
@@ -81,7 +81,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                         {item.product.product_categories[0]?.category.name ||
                           "Belirtilmemiş"}
                       </p>
-                      <div className="flex items-start justify-start w-full">
+                      <div className="flex w-full items-start justify-start">
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button
@@ -108,7 +108,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                               </TabsList>
                               <TabsContent value="details">
                                 <div className="mt-4">
-                                  <h4 className="font-semibold mb-2">
+                                  <h4 className="mb-2 font-semibold">
                                     {selectedOrder?.product.name}
                                   </h4>
                                   <p>
@@ -122,7 +122,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                                     {selectedOrder?.product.quantity ||
                                       "Belirtilmemiş"}
                                   </p>
-                                  <h5 className="font-semibold mt-4 mb-2">
+                                  <h5 className="mb-2 mt-4 font-semibold">
                                     Ürün Kategorileri:
                                   </h5>
                                   <ul>
@@ -131,22 +131,22 @@ export default function GuncellenmisSiparislerimSayfasi({
                                         <li key={index}>
                                           {category.category.name}
                                         </li>
-                                      )
+                                      ),
                                     )}
                                   </ul>
                                 </div>
                               </TabsContent>
                               <TabsContent value="customization">
                                 <div className="mt-4">
-                                  <h5 className="font-semibold mb-2">
+                                  <h5 className="mb-2 font-semibold">
                                     Özel Metinler:
                                   </h5>
                                   {selectedOrder?.order_item_special_texts.map(
                                     (text) => (
                                       <p key={text.id}>{text.content}</p>
-                                    )
+                                    ),
                                   )}
-                                  <h5 className="font-semibold mt-4 mb-2">
+                                  <h5 className="mb-2 mt-4 font-semibold">
                                     Özel Görseller:
                                   </h5>
                                   <div className="grid grid-cols-2 gap-4">
@@ -155,14 +155,14 @@ export default function GuncellenmisSiparislerimSayfasi({
                                         <Image
                                           key={image.id}
                                           src={getImageUrlFromPath(
-                                            image.image_url
+                                            image.image_url,
                                           )}
                                           alt="Özel görsel"
                                           width={150}
                                           height={150}
                                           className="rounded-md"
                                         />
-                                      )
+                                      ),
                                     )}
                                   </div>
                                 </div>
@@ -177,7 +177,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                                 acc +
                                 oi.product.product_customizable_areas.reduce(
                                   (acc2, area) => acc2 + area.count,
-                                  0
+                                  0,
                                 )
                               );
                             }, 0) !==
@@ -187,7 +187,7 @@ export default function GuncellenmisSiparislerimSayfasi({
                                 oi.order_item_special_images.length +
                                 oi.order_item_special_texts.length
                               );
-                            }, 0)
+                            }, 0),
                         )?.id ? (
                           <Button
                             variant="link"

@@ -41,7 +41,7 @@ const Textarea: FC<TextareaProps> = ({
   };
 
   return (
-    <div className={clsx("inline-block text-xs w-full", className)}>
+    <div className={clsx("inline-block w-full text-xs", className)}>
       <Label
         htmlFor={id}
         className={clsx(error ? "text-red-500" : "text-gray-700")}

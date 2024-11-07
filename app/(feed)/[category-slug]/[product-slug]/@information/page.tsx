@@ -80,7 +80,7 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
         "@type": "PropertyValue",
         name: prop.name,
         value: prop.value,
-      })
+      }),
     ),
   };
 

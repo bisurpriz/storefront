@@ -16,7 +16,7 @@ interface CustomizeCartItemProps extends Area {
   onChange: (
     inputIndex: number,
     type: "special_text" | "special_image",
-    value: string | File[]
+    value: string | File[],
   ) => void;
   isDisabled: boolean;
 }

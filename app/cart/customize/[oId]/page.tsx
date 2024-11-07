@@ -10,9 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function CartCustomizePage(props) {
   const params = await props.params;
 
-  const {
-    oId
-  } = params;
+  const { oId } = params;
 
   if (!oId) return null;
 
@@ -24,8 +22,9 @@ export default async function CartCustomizePage(props) {
 
   const hasNoCustomizableItems = tenant_orders.every((tenant_order) =>
     tenant_order.order_items.every(
-      (order_item) => order_item.product.product_customizable_areas.length === 0
-    )
+      (order_item) =>
+        order_item.product.product_customizable_areas.length === 0,
+    ),
   );
 
   if (hasNoCustomizableItems) {
@@ -37,13 +36,12 @@ export default async function CartCustomizePage(props) {
       (order_item) =>
         order_item.product.product_customizable_areas.reduce(
           (acc, pca) => acc + pca.count * order_item.quantity,
-          0
+          0,
         ) ===
         (order_item.order_item_special_images?.length || 0) +
-          (order_item.order_item_special_texts?.length || 0)
-    )
+          (order_item.order_item_special_texts?.length || 0),
+    ),
   );
-
 
   if (wasCustomized) {
     redirect(CartStepPaths.COMPLETE);
@@ -58,7 +56,7 @@ export default async function CartCustomizePage(props) {
         (new Date(created_at).getTime() +
           3 * 60 * 60 * 1000 -
           new Date().getTime()) /
-          1000
+          1000,
       );
 
   return (
@@ -66,7 +64,7 @@ export default async function CartCustomizePage(props) {
       {isExpired ? (
         <div className="w-full text-center">
           <h1 className="text-2xl font-bold">Özelleştirme Süresi Doldu</h1>
-          <p className="text-slate-500 text-sm">
+          <p className="text-sm text-slate-500">
             Özelleştirme süresi dolduğu için siparişinizi tamamlayamıyoruz.
           </p>
         </div>

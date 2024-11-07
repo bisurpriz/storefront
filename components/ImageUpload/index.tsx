@@ -85,11 +85,11 @@ const ImageUpload: FC<ImageUploadProps> = ({
         </Button>
       </label>
       {selectedImages && (
-        <div className="w-full flex gap-2 max-w-lg overflow-hidden overflow-y-auto">
+        <div className="flex w-full max-w-lg gap-2 overflow-hidden overflow-y-auto">
           {selectedImages?.map((image, index) => {
             return (
               <div
-                className="relative w-24 h-24 rounded-lg overflow-hidden"
+                className="relative h-24 w-24 overflow-hidden rounded-lg"
                 key={image.name}
               >
                 <Image
@@ -102,20 +102,20 @@ const ImageUpload: FC<ImageUploadProps> = ({
                   height={70}
                   quality={70}
                   alt="Resim"
-                  className="object-contain w-full h-full flex-1"
+                  className="h-full w-full flex-1 object-contain"
                 />
                 {!(defaultValues.length === maxCharacter) && (
                   <Button
                     type="button"
                     onClick={() => {
                       const data = selectedImages?.filter(
-                        (_, i) => i !== index
+                        (_, i) => i !== index,
                       );
                       setSelectedImages(data);
                       onChange(data);
                     }}
                     variant="outline"
-                    className="!absolute !top-1 !right-1 !p-[2px] rounded-full h-auto"
+                    className="!absolute !right-1 !top-1 h-auto rounded-full !p-[2px]"
                   >
                     <Close />
                   </Button>

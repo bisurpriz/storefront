@@ -27,7 +27,7 @@ const inputVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 const Textarea: FC<TextareaProps> = ({
@@ -52,7 +52,7 @@ const Textarea: FC<TextareaProps> = ({
           transition={{ duration: 0.3 }}
           className="absolute right-2 top-3 -translate-y-1/2"
         >
-          <CheckCheck className="w-6 h-6 absolute right-2 top-3 -translate-y-1/2 text-green-500" />
+          <CheckCheck className="absolute right-2 top-3 h-6 w-6 -translate-y-1/2 text-green-500" />
         </motion.div>
       )}
     </div>

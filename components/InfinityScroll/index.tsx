@@ -22,7 +22,7 @@ const DynamicProductItem = dynamic(
   () => import("../Product/Item/ProductItem2"),
   {
     loading: () => <ProductItemSkeleton />,
-  }
+  },
 );
 
 const InfinityScroll = <T,>({
@@ -49,7 +49,7 @@ const InfinityScroll = <T,>({
           offset: next,
           limit: PER_REQUEST,
         },
-        params
+        params,
       );
       setOffset(next);
       setData((prev) => [
@@ -80,11 +80,11 @@ const InfinityScroll = <T,>({
       <div
         className={cn(
           "grid grid-cols-4",
-          "max-sm:grid-cols-1 gap-2",
-          "max-md:grid-cols-2 gap-2",
-          "max-lg:grid-cols-3 gap-4",
-          "max-xl:grid-cols-3 gap-6",
-          "max-2xl:grid-cols-4 gap-8"
+          "gap-2 max-sm:grid-cols-1",
+          "gap-2 max-md:grid-cols-2",
+          "gap-4 max-lg:grid-cols-3",
+          "gap-6 max-xl:grid-cols-3",
+          "gap-8 max-2xl:grid-cols-4",
         )}
       >
         {data?.map((item: any) => {
@@ -102,7 +102,7 @@ const InfinityScroll = <T,>({
       {totalCount > data?.length && (
         <div
           ref={ref}
-          className="flex justify-center items-center w-full h-20 bg-transparent"
+          className="flex h-20 w-full items-center justify-center bg-transparent"
         >
           <Spinner />
         </div>

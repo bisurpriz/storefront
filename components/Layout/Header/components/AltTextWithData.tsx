@@ -38,7 +38,7 @@ const AltTextWithData = ({
   }
 
   return (
-    <span className="text-xs h-4 text-gray-400 max-md:hidden group-hover:text-gray-600 transition-colors duration-300 ease-in-out line-clamp-2 overflow-hidden text-ellipsis">
+    <span className="line-clamp-2 h-4 overflow-hidden text-ellipsis text-xs text-gray-400 transition-colors duration-300 ease-in-out group-hover:text-gray-600 max-md:hidden">
       {altText}
     </span>
   );

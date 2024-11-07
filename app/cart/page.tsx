@@ -13,7 +13,7 @@ const Cart = async () => {
     <section
       aria-label="Sepetim"
       aria-describedby="Sepetim"
-      className="w-full relative col-span-1 md:col-span-2 flex flex-col gap-3"
+      className="relative col-span-1 flex w-full flex-col gap-3 md:col-span-2"
     >
       <CartWrapper />
     </section>

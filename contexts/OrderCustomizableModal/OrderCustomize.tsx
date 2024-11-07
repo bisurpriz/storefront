@@ -32,7 +32,7 @@ export type OrderTextData = {
 
 const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
   const [selectedImageData, setSelectedImageData] = useState<OrderImageData[]>(
-    []
+    [],
   );
   const [selectedTextData, setSelectedTextData] = useState<OrderTextData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -119,7 +119,8 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
       if (
         !newData.some(
           (d) =>
-            d.order_item_id === order_item_id && d.quantity_index === inputIndex
+            d.order_item_id === order_item_id &&
+            d.quantity_index === inputIndex,
         )
       ) {
         newData.push({
@@ -144,13 +145,13 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                 {Array.from({ length: oi.quantity }).map((_, index) => {
                   return (
                     <>
-                      <div className="flex items-start gap-2 mb-4">
+                      <div className="mb-4 flex items-start gap-2">
                         <Image
                           src={getImageUrlFromPath(oi?.product?.image_url[0])}
                           width={100}
                           height={100}
                           alt={oi.product.name}
-                          className="object-contain w-20 h-20 rounded-lg"
+                          className="h-20 w-20 rounded-lg object-contain"
                           priority
                         />
                         <span className={clsx("text-sm text-gray-700")}>
@@ -160,7 +161,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                       {oi?.product?.product_customizable_areas.map(
                         (area, _id) => {
                           return (
-                            <div className="w-full my-2" key={_id}>
+                            <div className="my-2 w-full" key={_id}>
                               <CustomizeCartItem
                                 count={area.count}
                                 keyIndex={index}
@@ -189,7 +190,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
                               />
                             </div>
                           );
-                        }
+                        },
                       )}
                     </>
                   );
@@ -206,7 +207,7 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
               acc +
               oi.product.product_customizable_areas.reduce(
                 (acc2, area) => acc2 + area.count,
-                0
+                0,
               )
             );
           }, 0) !==
@@ -216,9 +217,9 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
               oi.order_item_special_images.length +
               oi.order_item_special_texts.length
             );
-          }, 0)
+          }, 0),
       )?.id && (
-        <div className="w-full flex justify-end">
+        <div className="flex w-full justify-end">
           <Button
             type="button"
             size="sm"

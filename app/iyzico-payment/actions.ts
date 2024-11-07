@@ -45,11 +45,11 @@ export const checkInstallment = async (data: BinCheckRequest) => {
 };
 
 export const initialize3dsPayment = async (
-  data: Initialize3dsPaymentRequest
+  data: Initialize3dsPaymentRequest,
 ) => {
   return await post<Initialize3dsPaymentRequest, Initialize3dsPaymentResponse>(
     INITIALIZE_3DS_URL,
-    data
+    data,
   );
 };
 

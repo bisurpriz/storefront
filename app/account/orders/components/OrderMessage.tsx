@@ -33,7 +33,7 @@ const OrderMessage = ({
       });
       if (response.insert_message_one.chat_thread.order_tenant_id) {
         nextRouter.push(
-          `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`
+          `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`,
         );
       }
       setOpen(false);
@@ -66,7 +66,7 @@ const OrderMessage = ({
             name="review-comment"
             id="review-comment"
             rows={3}
-            className="w-full p-4 border rounded-md shadow-md text-slate-500 outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2"
+            className="mb-2 w-full rounded-md border p-4 text-slate-500 shadow-md outline-none focus:border-transparent focus:ring-2 focus:ring-primary"
             placeholder="Mesajınızı yazın..."
             value={message}
             onChange={(e) => {

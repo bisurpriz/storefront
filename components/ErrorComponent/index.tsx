@@ -22,9 +22,9 @@ const ErrorComponent = ({
   }, [error]);
 
   return (
-    <div className="h-full w-full p-8 m-auto text-center flex flex-col items-center justify-center gap-12">
-      <span className="w-24 h-24 m-auto p-4 bg-white rounded-full shadow-2xl border border-red-500">
-        <Error className="text-6xl text-red-500 items-center m-auto" />
+    <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-12 p-8 text-center">
+      <span className="m-auto h-24 w-24 rounded-full border border-red-500 bg-white p-4 shadow-2xl">
+        <Error className="m-auto items-center text-6xl text-red-500" />
       </span>
       <h1 className="text-xl font-bold text-red-500">Bir hata oluştu</h1>
       <p className="text-sm text-gray-500">

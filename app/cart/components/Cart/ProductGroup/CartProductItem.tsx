@@ -42,17 +42,17 @@ export default function CartItem({
   } = useCart();
 
   const specialTextCount = customize?.filter(
-    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT
+    (area) => area.customizable_area?.type === CustomizableAreaType.TEXT,
   ).length;
 
   const specialImageCount = customize?.filter(
-    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE
+    (area) => area.customizable_area?.type === CustomizableAreaType.IMAGE,
   ).length;
 
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(deliveryDate),
-      "dd MMMM yyyy"
+      "dd MMMM yyyy",
     )}${deliveryTime ? ` - ${deliveryTime}` : ""}`;
   };
 
@@ -65,16 +65,16 @@ export default function CartItem({
             alt={name}
             width={120}
             height={120}
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20 object-cover rounded-md"
+            className="h-32 w-32 rounded-md object-cover max-sm:h-20 max-sm:w-20"
           />
         </div>
 
-        <div className="flex flex-col items-start w-full">
-          <div className="flex justify-between items-start w-full">
+        <div className="flex w-full flex-col items-start">
+          <div className="flex w-full items-start justify-between">
             <Link
               href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
             >
-              <h2 className="w-full max-sm:text-base text-lg line-clamp-2 font-semibold text-gray-800">
+              <h2 className="line-clamp-2 w-full text-lg font-semibold text-gray-800 max-sm:text-base">
                 {name}
               </h2>
             </Link>
@@ -90,7 +90,7 @@ export default function CartItem({
             </button>
           </div>
 
-          <div className="mt-2 flex items-center justify-between pb-2 border-b w-full">
+          <div className="mt-2 flex w-full items-center justify-between border-b pb-2">
             <NumberInput
               defaultValue={quantity}
               onChange={(quantity) => {
@@ -106,17 +106,17 @@ export default function CartItem({
               }}
             />
 
-            <div className="w-fit self-end flex items-center gap-1 text-primary flex-nowrap text-sm font-bold leading-none text-gray-500">
+            <div className="flex w-fit flex-nowrap items-center gap-1 self-end text-sm font-bold leading-none text-gray-500 text-primary">
               <span className="text-slate-500">{quantity} x</span>
               <span className="text-base">₺{discount_price.toFixed(2)}</span>
             </div>
           </div>
 
-          <div className="mt-2 flex items-center space-x-2 text-sm overflow-hidden overflow-x-auto w-full">
+          <div className="mt-2 flex w-full items-center space-x-2 overflow-hidden overflow-x-auto text-sm">
             {(specialImageCount > 0 || specialTextCount > 0) && (
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild className="whitespace-nowrap">
-                  <span className="cursor-pointer select-none h-7 px-2 text-xs flex items-center bg-primary-foreground text-primary rounded-md">
+                  <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
                     <Gift size={14} className="mr-1" />
                     Tasarlanabilir
                   </span>
@@ -132,7 +132,7 @@ export default function CartItem({
             {is_service_free && (
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild className="whitespace-nowrap">
-                  <span className="cursor-pointer select-none h-7 px-2 text-xs flex items-center bg-primary-foreground text-primary rounded-md">
+                  <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
                     <TruckIcon size={14} className="mr-1" />
                     Ücretsiz Gönderim
                   </span>

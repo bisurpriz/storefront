@@ -31,11 +31,11 @@ const ButtonCheckbox: FC<ButtonCheckboxProps> = ({
   return (
     <motion.label
       className={clsx(
-        "font-manrope font-semibold whitespace-nowrap cursor-pointer relative",
-        "flex items-center justify-between gap-2 text-sm bg-white border text-gray-500 border-gray-200 rounded-md p-2",
+        "relative cursor-pointer whitespace-nowrap font-manrope font-semibold",
+        "flex items-center justify-between gap-2 rounded-md border border-gray-200 bg-white p-2 text-sm text-gray-500",
         {
           "border-primary text-primary": checked,
-        }
+        },
       )}
       variants={labelVariants}
       initial="inactive"
@@ -56,7 +56,7 @@ const ButtonCheckbox: FC<ButtonCheckboxProps> = ({
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          className="w-4 h-4 absolute right-2"
+          className="absolute right-2 h-4 w-4"
           animate={{
             rotate: checked ? 0 : 180,
           }}

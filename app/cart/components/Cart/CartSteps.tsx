@@ -18,7 +18,7 @@ const CartSteps = () => {
   const [steps, setSteps] = useState(cartStepperPaths);
 
   const [activeStep, setActiveStep] = useState(
-    steps.findIndex((step) => step.path === pathname)
+    steps.findIndex((step) => step.path === pathname),
   );
   const { hasCustomizableProduct } = useCart();
 
@@ -33,7 +33,7 @@ const CartSteps = () => {
       });
     } else {
       setSteps((prev) =>
-        prev.filter((step) => step.path !== CartStepPaths.CUSTOMIZE)
+        prev.filter((step) => step.path !== CartStepPaths.CUSTOMIZE),
       );
     }
   }, [hasCustomizableProduct]);

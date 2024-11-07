@@ -13,7 +13,7 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 
 export const getProductActions = async (
-  productId: number
+  productId: number,
 ): Promise<GetProductActionDataQuery> => {
   const userId = await readIdFromCookies();
 

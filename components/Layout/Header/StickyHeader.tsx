@@ -27,10 +27,10 @@ const StickyHeader = () => {
       <motion.div
         ref={ref}
         className={clsx(
-          "fixed -z-10 opacity-0 w-full top-0 shadow-md border-b bg-white transition-transform duration-300",
+          "fixed top-0 -z-10 w-full border-b bg-white opacity-0 shadow-md transition-transform duration-300",
           {
-            "z-[500] opacity-100 top-0 left-0": scrolled,
-          }
+            "left-0 top-0 z-[500] opacity-100": scrolled,
+          },
         )}
         initial={{ y: "-100%" }}
         animate={{ y: scrolled ? "0%" : "-100%" }}

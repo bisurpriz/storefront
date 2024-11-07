@@ -58,7 +58,7 @@ const schema = object().shape({
       } else {
         return false;
       }
-    }
+    },
   ),
   creditCardName: string().required("Kart üzerindeki isim zorunludur"),
   creditCardDate: string()
@@ -218,7 +218,7 @@ const CreditCardForm = () => {
           cartItems,
           detailData,
           conversationId,
-          couponInfo
+          couponInfo,
         );
 
         if (res?.data?.insert_order_one?.id) {
@@ -228,7 +228,7 @@ const CreditCardForm = () => {
           setLoading(false);
           openPopup();
           setErrorMessage(
-            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
+            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz.",
           );
           return;
         } else {
@@ -292,16 +292,16 @@ const CreditCardForm = () => {
       {renderPopup(
         <div
           className={clsx(
-            "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
-            "flex flex-col justify-center items-center gap-2",
-            "text-center"
+            "w-full max-w-screen-sm rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
+            "flex flex-col items-center justify-center gap-2",
+            "text-center",
           )}
         >
-          <Report className="text-red-500 text-5xl" />
-          <h2 className="text-lg font-semibold text-gray-700 m-0">
+          <Report className="text-5xl text-red-500" />
+          <h2 className="m-0 text-lg font-semibold text-gray-700">
             Ödeme İşlemi Başarısız
           </h2>
-          <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
+          <p className="m-0 text-sm text-gray-600">{errorMessage}</p>
           <Button
             onClick={handleClosePopupWithClearStates}
             variant="destructive"
@@ -309,14 +309,14 @@ const CreditCardForm = () => {
           >
             Kapat
           </Button>
-        </div>
+        </div>,
       )}
 
       <form
         id="credit-card-form"
         name="credit-card-form"
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full relative flex flex-col justify-center items-center px-4 py-8 bg-white shadow-lg rounded-lg border border-gray-200 gap-4"
+        className="relative flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-8 shadow-lg"
       >
         <Controller
           name="creditCardNumber"
@@ -330,7 +330,7 @@ const CreditCardForm = () => {
             />
           )}
         />
-        <div className="flex flex-col md:flex-row md:justify-start md:items-start w-full gap-4">
+        <div className="flex w-full flex-col gap-4 md:flex-row md:items-start md:justify-start">
           <Controller
             name="creditCardName"
             control={control}
@@ -386,7 +386,7 @@ const CreditCardForm = () => {
         <iframe
           src={`data:text/html;base64,${base64PasswordHtml}`}
           className={clsx(
-            "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
+            "flex h-full min-h-[400px] w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
           )}
           onLoad={() => {
             const iframeWindow =

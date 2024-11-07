@@ -89,7 +89,7 @@ export const registerUser = async (newUser: RegisterMutationVariables) => {
 export const updateUserById = async (
   data: Partial<
     Pick<User, "firstname" | "lastname" | "email" | "id" | "phone" | "picture">
-  >
+  >,
 ) => {
   const { data: updatedData } = await mutate<
     UpdateUserByIdMutation,

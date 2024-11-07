@@ -38,7 +38,7 @@ export const getVendorDetails = async ({ id }: { id: string }) => {
       variables: {
         id,
       },
-    }
+    },
   );
 
   return data.tenant_by_pk;

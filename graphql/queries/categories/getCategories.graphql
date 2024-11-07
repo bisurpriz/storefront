@@ -1,7 +1,5 @@
 query getMainCategories {
-  category(where: {
-    parent_category_id : {_is_null:true}
-  }) {
+  category(where: { parent_category_id: { _is_null: true } }) {
     id
     image_url
     name
@@ -10,9 +8,7 @@ query getMainCategories {
 }
 
 query getAllCategories($parent_category_id: Int) {
-  category(where: {
-    parent_category_id : {_eq: $parent_category_id}
-  }) {
+  category(where: { parent_category_id: { _eq: $parent_category_id } }) {
     id
     image_url
     name

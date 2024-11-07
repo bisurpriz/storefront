@@ -16,14 +16,14 @@ const AboutUs = () => {
       aria-labelledby="hakkimizda"
       aria-describedby="hakkimizda"
     >
-      <h2 id="hakkimizda" className="text-2xl font-semibold py-8">
+      <h2 id="hakkimizda" className="py-8 text-2xl font-semibold">
         Hakkımızda
       </h2>
       <div
         id="hakkimizda"
         className={clsx(
           "w-full max-w-screen-2xl",
-          "flex flex-col items-center justify-center space-y-6"
+          "flex flex-col items-center justify-center space-y-6",
         )}
       >
         <Paragraph>

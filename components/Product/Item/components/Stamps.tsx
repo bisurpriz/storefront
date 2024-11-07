@@ -65,7 +65,7 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
   return (
     <div
       className={clsx(
-        "flex flex-col gap-1 mt-2 flex-wrap absolute right-2 top-0 items-end"
+        "absolute right-2 top-0 mt-2 flex flex-col flex-wrap items-end gap-1",
       )}
     >
       {itemObject.firstThree.map((stamp, index) => {
@@ -79,7 +79,7 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
         return (
           <div
             key={index}
-            className={`w-fit flex  items-center gap-1 px-1 py-1 rounded-sm text-xs ${colors.gradient} ${colors.text} shadow-md`}
+            className={`flex w-fit items-center gap-1 rounded-sm px-1 py-1 text-xs ${colors.gradient} ${colors.text} shadow-md`}
           >
             <span>{stamp.icon}</span>
             <span>{stamp.name}</span>
@@ -89,7 +89,7 @@ const ProductCardStamps: FC<ProductCardStampsProps> = ({ stamps }) => {
 
       {itemObject.rest.length > 0 && (
         <div
-          className={`w-fit flex items-center gap-1 px-1 py-1 rounded-sm text-xs bg-gray-100 text-gray-700 shadow-md`}
+          className={`flex w-fit items-center gap-1 rounded-sm bg-gray-100 px-1 py-1 text-xs text-gray-700 shadow-md`}
         >
           <span>+{itemObject.rest.length}</span>
         </div>

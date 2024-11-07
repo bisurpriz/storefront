@@ -21,25 +21,25 @@ const ChatItem = ({
 }: IChatItem) => {
   return (
     <div
-      className="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
+      className="entry mb-4 flex transform cursor-pointer rounded bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105"
       onClick={() => onMessageSelect(tenantId)}
     >
       <div className="flex-2">
-        <div className="w-12 h-12 relative">
+        <div className="relative h-12 w-12">
           {imgPath ? (
             <Image
-              className="w-12 h-12 rounded-full mx-auto"
+              className="mx-auto h-12 w-12 rounded-full"
               src={imgPath}
               alt="chat-user"
               width="48"
               height="48"
             />
           ) : null}
-          <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+          <span className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-400"></span>
         </div>
       </div>
       <div className="flex-1 px-2">
-        <div className="truncate w-32">
+        <div className="w-32 truncate">
           <span className="text-gray-700">{name}</span>
         </div>
         <div>
@@ -52,7 +52,7 @@ const ChatItem = ({
         </div>
         <div>
           {unRead > 0 && (
-            <small className="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
+            <small className="inline-block h-6 w-6 rounded-full bg-red-500 text-center text-xs leading-6 text-white">
               {unRead}
             </small>
           )}
