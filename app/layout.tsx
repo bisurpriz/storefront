@@ -26,8 +26,9 @@ import {
   GetMainCategoriesQuery,
   GetMainCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import Script from "next/script";
+import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
 import { getUserById } from "./account/actions";
@@ -106,6 +107,9 @@ export default async function RootLayout({
 }) {
   const data = await getUserById();
   const { cartItems, costData } = await getCart(data?.user?.id);
+  const isBot = userAgent({
+    headers: await headers(),
+  }).isBot;
 
   const { data: categoryData } = await query<
     GetMainCategoriesQuery,
@@ -159,9 +163,9 @@ export default async function RootLayout({
                           <Content>{children}</Content>
                           {auth}
                           <Suspense>
-                            {!selectedPlaces && !hasSeenLocationModal && (
-                              <QuarterSelectorModal />
-                            )}
+                            {!selectedPlaces &&
+                              !hasSeenLocationModal &&
+                              !isBot && <QuarterSelectorModal />}
                           </Suspense>
                         </SearchProductProvider>
                       </CartProvider>
