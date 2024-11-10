@@ -1,11 +1,8 @@
 import { getOrderById } from "@/app/account/orders/actions";
-import CustomizePageCoutdown from "../components/CustomizePageCoutdown";
-import Customizer from "../components/Customizer";
-import Chip from "@/components/Chip";
 import { redirect } from "next/navigation";
 import { CartStepPaths } from "../../constants";
-
-export const dynamic = "force-dynamic";
+import CustomizePageCoutdown from "../components/CustomizePageCoutdown";
+import Customizer from "../components/Customizer";
 
 export default async function CartCustomizePage(props) {
   const params = await props.params;

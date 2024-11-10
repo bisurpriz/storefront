@@ -1,15 +1,9 @@
-import { getUserFavorites, removeFromFavorites } from "./actions";
-import clsx from "clsx";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { Link } from "@/components/Link";
-import { goToProductDetail } from "@/utils/linkClickEvent";
-import { Heart, ShoppingCart, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import RatingDetail from "@/app/(feed)/[category-slug]/components/Detail/RatingDetail";
 import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
-
-export const dynamic = "force-dynamic";
+import { Button } from "@/components/ui/button";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { Heart, ShoppingCart, X } from "lucide-react";
+import Image from "next/image";
+import { getUserFavorites } from "./actions";
 
 const FavoritesPage = async () => {
   const {

@@ -12,6 +12,16 @@ export const { getClient } = registerApolloClient(() => {
 
         return ctx.storeObject?.__typename + ":" + ctx?.storeObject.id;
       },
+      typePolicies: {
+        Query: {
+          fields: {},
+        },
+        Mutation: {
+          fields: {
+            // Add your custom mutation fields here
+          },
+        },
+      },
     }),
     link: links,
     connectToDevTools: true,

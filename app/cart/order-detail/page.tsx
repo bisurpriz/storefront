@@ -1,8 +1,6 @@
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
 
-export const dynamic = "force-dynamic";
-
 export const generateMetadata = async () => {
   return {
     title: getBrandWithTitle("Sipariş Detayı"),

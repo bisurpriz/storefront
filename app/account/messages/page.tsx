@@ -1,8 +1,6 @@
-import Main from "./components/Main";
 import { getTenantOrderItem } from "./action";
 import Listener from "./components/Listener";
-
-export const dynamic = "force-dynamic";
+import Main from "./components/Main";
 
 const MessagesPage = async (props: {
   searchParams: Promise<{

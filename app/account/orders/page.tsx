@@ -1,10 +1,6 @@
-import { getUserOrders } from "./actions";
-import TenantOrders from "./components/TenantOrders";
-import { localeFormat } from "@/utils/format";
 import { OrderCustomizableModalProvider } from "@/contexts/OrderCustomizableModal";
+import { getUserOrders } from "./actions";
 import GuncellenmisSiparislerimSayfasi from "./components/NewOrderDesign";
-
-export const dynamic = "force-dynamic";
 
 const OrdersPage = async () => {
   const { data } = await getUserOrders();

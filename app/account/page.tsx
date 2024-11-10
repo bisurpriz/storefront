@@ -4,8 +4,6 @@ import { getUserById } from "./actions";
 import ProfileForm from "./components/ProfileForm";
 import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 
-export const dynamic = "force-dynamic";
-
 const Account = async () => {
   let error = null;
 
