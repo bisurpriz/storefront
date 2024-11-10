@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { useState, ChangeEvent, useEffect, useRef, FC } from "react";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import clsx from "clsx";
+import Image from "next/image";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import Close from "../Icons/Close";
 import { Button } from "../ui/button";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 interface ImageUploadProps {
   onChange: (files: File[] | null) => void;
@@ -27,8 +27,8 @@ const ImageUpload: FC<ImageUploadProps> = ({
   const [selectedImages, setSelectedImages] = useState<File[] | null>(null);
 
   useEffect(() => {
-    if (defaultValues && defaultValues.length > 0 && !selectedImages) {
-      const files = defaultValues.map((item) => {
+    if (defaultValues && defaultValues?.length > 0 && !selectedImages) {
+      const files = defaultValues?.map((item) => {
         return item as unknown as File;
       });
       setSelectedImages(files);
@@ -104,7 +104,7 @@ const ImageUpload: FC<ImageUploadProps> = ({
                   alt="Resim"
                   className="h-full w-full flex-1 object-contain"
                 />
-                {!(defaultValues.length === maxCharacter) && (
+                {!(defaultValues?.length === maxCharacter) && (
                   <Button
                     type="button"
                     onClick={() => {
