@@ -1,20 +1,22 @@
-import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import Filter from "@/components/Filter";
 import FilterSuspense from "@/components/Filter/FilterSuspense";
-import { Suspense } from "react";
-import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
+import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
-import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
-import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
+import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
+import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
+import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import { query } from "@/graphql/lib/client";
 import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
 } from "@/graphql/queries/categories/getCategories.generated";
-import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { Suspense } from "react";
+import BlogPostSection from "./blog/components/BlogPostSection";
+import BlogPostSectionSuspense from "./blog/components/BlogPostSectionSuspense";
 
 export const experimental_ppr = true;
 
@@ -79,6 +81,10 @@ export default async function Page(props: {
           }))}
         />
       </Suspense> */}
+
+      <Suspense fallback={<BlogPostSectionSuspense />}>
+        <BlogPostSection />
+      </Suspense>
 
       <Suspense
         fallback={

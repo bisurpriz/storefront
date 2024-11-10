@@ -116,7 +116,6 @@ export default async function RootLayout({
     GetMainCategoriesQueryVariables
   >({
     query: GetMainCategoriesDocument,
-    fetchPolicy: "no-cache",
   });
 
   const cookie = await cookies();

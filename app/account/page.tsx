@@ -1,8 +1,8 @@
-import ProfileForm from "./components/ProfileForm";
-import { getUserById } from "./actions";
-import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
-import clsx from "clsx";
 import Exclamation from "@/components/Icons/Exclamation";
+import clsx from "clsx";
+import { getUserById } from "./actions";
+import ProfileForm from "./components/ProfileForm";
+import ProfileFormSkeleton from "./components/ProfileForm/ProfileFormSkeleton";
 
 export const dynamic = "force-dynamic";
 

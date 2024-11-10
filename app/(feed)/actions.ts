@@ -4,6 +4,7 @@ import { IProductFilter } from "@/common/types/Filter/productFilter";
 
 import { query } from "@/graphql/lib/client";
 
+import { IPlace } from "@/common/types/Product/product";
 import {
   GetProductByIdDocument,
   GetProductByIdQuery,
@@ -27,14 +28,13 @@ import {
 } from "@/graphql/queries/review/review.generated";
 import searchClient from "@/typesense/client";
 import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
-import { gql } from "@apollo/client";
-import { SearchParams } from "typesense/lib/Typesense/Documents";
-import { PER_REQUEST } from "../constants";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
-import { cookies } from "next/headers";
 import { parseJson } from "@/utils/format";
+import { gql } from "@apollo/client";
+import { cookies } from "next/headers";
+import { SearchParams } from "typesense/lib/Typesense/Documents";
 import { CookieTokens } from "../@auth/contants";
-import { IPlace } from "@/common/types/Product/product";
+import { PER_REQUEST } from "../constants";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
   const { data } = await query<
@@ -115,7 +115,6 @@ export const searchProducts = async (
         },
         ...paginationParams,
       },
-      fetchPolicy: "no-cache",
     });
     return {
       products,

@@ -19,7 +19,6 @@ export const getUserFavorites = async ({ offset }: { offset: number }) => {
     variables: {
       offset,
     },
-    fetchPolicy: "no-cache",
   });
 };
 
@@ -36,7 +35,6 @@ export const removeFromFavorites = async ({
     variables: {
       productId,
     },
-    fetchPolicy: "no-cache",
   });
   return data;
 };
@@ -50,7 +48,6 @@ export const addToFavorites = async ({ productId }: { productId: number }) => {
     variables: {
       productId,
     },
-    fetchPolicy: "no-cache",
   });
   return data;
 };

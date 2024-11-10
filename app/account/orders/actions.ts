@@ -1,9 +1,6 @@
 "use server";
 
-import {
-  OrderImageData,
-  OrderTextData,
-} from "@/contexts/OrderCustomizableModal/OrderCustomize";
+import { OrderTextData } from "@/contexts/OrderCustomizableModal/OrderCustomize";
 import { mutate, query } from "@/graphql/lib/client";
 import {
   GetUserOrdersDocument,
@@ -21,7 +18,6 @@ import {
 import {
   GetOrderByIdDocument,
   GetOrderByIdQuery,
-  GetOrderByIdQueryResult,
   GetOrderByIdQueryVariables,
 } from "@/graphql/queries/order/order.generated";
 

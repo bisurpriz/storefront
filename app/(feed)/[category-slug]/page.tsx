@@ -4,7 +4,11 @@ import InfinityScroll from "@/components/InfinityScroll";
 import { searchProductsv1 } from "../actions";
 
 export async function generateMetadata({ params }) {
-  const category = params["category-slug"];
+  const param = await params;
+  const category = param["category-slug"];
+
+  if (!category) return;
+
   return {
     title: `Bonnmarşe - ${category} Kategorisinin En İyi Ürünleri`,
     description: `Bonnmarşe'de ${category} kategorisindeki en iyi ürünleri keşfedin. Ücretsiz kargo, gün için teslimat ve iade fırsatıyla hemen satın alın.`,
@@ -20,6 +24,8 @@ export default async function CategoryPage(props: {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const slug = params["category-slug"];
+
+  if (!slug) return;
 
   const response = await searchProductsv1(
     {
