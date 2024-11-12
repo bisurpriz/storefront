@@ -1,6 +1,6 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
-import { calculateCommissionedAmount } from "../iyzico-payment/utils";
+import { calculateCommissionedAmount, getPrice } from "../iyzico-payment/utils";
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 const getOrderAddresses = (
@@ -79,7 +79,7 @@ const getTenantOrders = (
         data: tenantItems.map((item, index) => {
           const { commission, commissionedAmount } =
             calculateCommissionedAmount(
-              item.discount_price.toString(),
+              getPrice(item),
               item.tenant.tenants[0].commision_rate,
             );
           return {

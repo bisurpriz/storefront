@@ -6,10 +6,6 @@ import { createJwt, readIdFromCookies } from "../actions";
 
 import { mutate, query } from "@/graphql/lib/client";
 
-import { parseJson } from "@/utils/format";
-import axios from "axios";
-import { CookieTokens } from "../@auth/contants";
-import { createOrderDataMapper } from "./utils";
 import { CustomizableArea } from "@/common/types/Order/order";
 import {
   GetDbCartDocument,
@@ -28,7 +24,11 @@ import {
   GetProductsForInitialCartQuery,
   GetProductsForInitialCartQueryVariables,
 } from "@/graphql/queries/products/getProductById.generated";
+import { parseJson } from "@/utils/format";
+import axios from "axios";
+import { CookieTokens } from "../@auth/contants";
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
+import { createOrderDataMapper } from "./utils";
 
 export const checkUserId = async () => {
   const userId = await readIdFromCookies();

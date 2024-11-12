@@ -107,6 +107,7 @@ export default async function RootLayout({
 }) {
   const data = await getUserById();
   const { cartItems, costData } = await getCart(data?.user?.id);
+
   const isBot = userAgent({
     headers: await headers(),
   }).isBot;

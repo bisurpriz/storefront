@@ -1,41 +1,41 @@
 "use client";
 
-import CreditCardInput from "@/components/CreditCardInput";
-import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
-import TextField from "@/components/TextField";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
-import { useRouter } from "next/navigation";
-import { useCart } from "@/contexts/CartContext";
-import { useEffect, useState, useTransition } from "react";
+import { CookieTokens } from "@/app/@auth/contants";
+import { getIpAddress } from "@/app/actions";
 import {
   getConversationId,
   initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
-import { useUser } from "@/contexts/AuthContext";
-import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
-import { getIpAddress } from "@/app/actions";
-import useResponsive from "@/hooks/useResponsive";
-import { CookieTokens } from "@/app/@auth/contants";
-import Cookies from "js-cookie";
 import {
   Initialize3dsPaymentRequest,
   Locale,
 } from "@/app/iyzico-payment/types";
-import clsx from "clsx";
-import usePopup from "@/hooks/usePopup";
-import { Button } from "@/components/ui/button";
-import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
-import User from "@/components/Icons/User";
+import CreditCardInput from "@/components/CreditCardInput";
+import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
-import { CartStepPaths } from "../../constants";
-import { useProgress } from "react-transition-progress";
-import { useContract } from "@/contexts/ContractContext";
-import { toast } from "sonner";
+import User from "@/components/Icons/User";
 import Modal from "@/components/Modal";
+import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
+import { useContract } from "@/contexts/ContractContext";
+import usePopup from "@/hooks/usePopup";
+import useResponsive from "@/hooks/useResponsive";
+import { yupResolver } from "@hookform/resolvers/yup";
+import clsx from "clsx";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useProgress } from "react-transition-progress";
+import { toast } from "sonner";
+import { object, string } from "yup";
+import { createOrderAction } from "../../actions";
+import { CartStepPaths } from "../../constants";
+import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -161,6 +161,16 @@ const CreditCardForm = () => {
         if (!ip) {
           toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
         }
+
+        const isCouponApplied = cost.isCouponApplied;
+
+        const couponInfo = isCouponApplied
+          ? {
+              code: cost.couponCode,
+              guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
+            }
+          : undefined;
+
         const variables = {
           basketId,
           basketItems: createBasketItems(cartItems),
@@ -204,15 +214,6 @@ const CreditCardForm = () => {
           },
           installment: 1,
         } as Initialize3dsPaymentRequest;
-
-        const isCouponApplied = cost.isCouponApplied;
-
-        const couponInfo = isCouponApplied
-          ? {
-              code: cost.couponCode,
-              guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
-            }
-          : undefined;
 
         const res = await createOrderAction(
           cartItems,
