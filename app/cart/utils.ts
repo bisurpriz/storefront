@@ -1,6 +1,6 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
-import { calculateCommissionedAmount } from "../iyzico-payment/utils";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import { calculateCommissionedAmount } from "../iyzico-payment/utils";
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 const getOrderAddresses = (
@@ -42,8 +42,8 @@ const getOrderAddresses = (
       receiver_surname,
       receiver_phone,
       place_id:
-        cartItems.find((i) => i.deliveryLocation.placeId)?.deliveryLocation
-          ?.placeId ?? null,
+        cartItems.find((i) => i?.deliveryLocation?.placeId)?.deliveryLocation
+          ?.placeId ?? orderDetail?.place_id,
     },
   ];
 

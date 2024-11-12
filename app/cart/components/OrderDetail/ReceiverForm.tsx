@@ -1,9 +1,25 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import {
+  getAddressString,
+  getAvailableDistricts,
+  getAvailableNeighborhoods,
+  getLocationVariables,
+} from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
+import { IPlace } from "@/common/types/Product/product";
+import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
+import { PhoneInput } from "@/components/PhoneInput";
+import PlacesAutocomplete from "@/components/QuarterSelector/PlacesAutocomplete";
+import Textarea from "@/components/Textarea";
+import TextField from "@/components/TextField";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useCart } from "@/contexts/CartContext";
+import { parseJson } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Building2,
   FileDigit,
@@ -13,29 +29,13 @@ import {
   Text,
   User,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import TextField from "@/components/TextField";
-import { PhoneInput } from "@/components/PhoneInput";
-import Textarea from "@/components/Textarea";
-import { useCart } from "@/contexts/CartContext";
-import {
-  getAddressString,
-  getAvailableDistricts,
-  getAvailableNeighborhoods,
-  getLocationVariables,
-} from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
-import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { parseJson } from "@/utils/format";
-import { orderDetailSchema } from "./schema";
-import { InferType } from "yup";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { InferType } from "yup";
 import { CartStepPaths } from "../../constants";
-import PlacesAutocomplete from "@/components/QuarterSelector/PlacesAutocomplete";
-import { IPlace } from "@/common/types/Product/product";
+import { orderDetailSchema } from "./schema";
 
 const stepperData = [
   { label: "Gönderici Bilgileri", key: "sender" },
@@ -101,6 +101,7 @@ export default function ReceiverForm() {
           }
         : null,
       receiver_address: getAddressString(street, postal_code),
+      place_id: selectedCargoLocation?.placeId,
     },
   });
 
@@ -457,6 +458,7 @@ export default function ReceiverForm() {
                           setValue("receiver_district", null);
                           setValue("receiver_neighborhood", null);
                           setValue("receiver_address", "");
+                          setValue("place_id", prediction.placeId);
                         }
                         setSelectedCargoLocation(prediction);
                       }}

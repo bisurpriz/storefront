@@ -44,6 +44,6 @@ export const orderDetailSchema = object({
     label: string(),
     value: string(),
   }).required("Lütfen mahalle seçiniz"),
-
   notes: string(),
+  place_id: string().nullable(),
 }).required();
