@@ -33,6 +33,7 @@ import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
 import { getUserById } from "./account/actions";
 import { getCart } from "./cart/actions";
+import NotificationListener from "@/components/Notification/NotificationListener";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -127,6 +128,7 @@ export default async function RootLayout({
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
+      <NotificationListener />
       <body
         className={`${lato.variable} ${quickSand.variable} ${manrope.variable} relative overflow-auto overflow-x-hidden scroll-smooth font-manrope`}
         id="root"
