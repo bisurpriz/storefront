@@ -1,7 +1,7 @@
 "use server";
 
 import { Location } from "@/common/types/Addresses/addresses";
-import { query } from "@/graphql/lib/client";
+import { mutate, query } from "@/graphql/lib/client";
 import {
   GetBannersDocument,
   GetBannersQuery,
@@ -11,6 +11,7 @@ import { parseJson } from "@/utils/format";
 import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
 
+import { CreateOrUpdateFcmTokenDocument } from "@/graphql/queries/notification/mutation.generated";
 import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
@@ -108,4 +109,21 @@ export const getGeoLocation = async () => {
   const geo = (await headers()).get("X-Forwarded-For");
 
   return geo;
+};
+
+export const createFCMToken = async (token: string) => {
+  const { get } = await cookies();
+  const userId = get(CookieTokens.USER_ID)?.value;
+  if (!userId) return;
+
+  const { data, errors } = await mutate({
+    mutation: CreateOrUpdateFcmTokenDocument,
+    variables: {
+      token,
+    },
+  });
+  console.log(data, "FCM token created");
+  if (errors) {
+    console.error(errors);
+  }
 };
