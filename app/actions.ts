@@ -1,15 +1,15 @@
 "use server";
 
-import { query } from "@/graphql/lib/client";
-import { cookies, headers } from "next/headers";
-import { CookieTokens } from "./@auth/contants";
-import { parseJson } from "@/utils/format";
 import { Location } from "@/common/types/Addresses/addresses";
+import { query } from "@/graphql/lib/client";
 import {
   GetBannersDocument,
   GetBannersQuery,
   GetBannersQueryVariables,
 } from "@/graphql/queries/banners/banners.generated";
+import { parseJson } from "@/utils/format";
+import { cookies, headers } from "next/headers";
+import { CookieTokens } from "./@auth/contants";
 
 import jwt from "jsonwebtoken";
 

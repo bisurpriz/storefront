@@ -1,88 +1,117 @@
-import { PageProps } from "@/.next/types/app/page";
-import Badge from "@/components/Badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { localeFormat } from "@/utils/format";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { CalendarIcon } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
+import { cache } from "react";
+import { getBlogPostIdsAndSlug } from "./actions";
 
-export default async function BlogPostPage({
-  params,
-  searchParams,
-}: PageProps) {
+export const revalidate = 3600;
+export const dynamicParams = false;
+
+const cachedGetBlogPostIdsAndSlug = cache(getBlogPostIdsAndSlug);
+
+export async function generateStaticParams() {
+  const response = await fetch(
+    "https://devapi.bonnmarse.com/api/rest/getblogpostidsandslug",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  const { blog } = await response.json();
+
+  return blog.map(({ slug, id }) => {
+    return {
+      params: {
+        postSlug: slug,
+      },
+    };
+  });
+}
+
+export async function generateMetadata(props: {
+  params: Promise<{ postSlug: string }>;
+}): Promise<Metadata> {
+  const { postSlug } = await props.params;
+
+  const {
+    data: { blog },
+  } = await getBlogPostIdsAndSlug(postSlug);
+
+  const post = blog[0];
+
+  return {
+    title: `${post?.title} | Bonnmarşe`,
+    description: post?.summary,
+    creator: post?.author,
+    icons: [
+      {
+        rel: "icon",
+        url: getImageUrlFromPath(post?.featured_image),
+      },
+    ],
+    keywords: post?.keywords,
+    robots: "index, follow",
+  };
+}
+
+export default async function BlogPostPage({ params }) {
+  const { postSlug } = await params;
+  const {
+    data: { blog },
+  } = await cachedGetBlogPostIdsAndSlug(postSlug);
+
+  const post = blog[0];
+
+  if (!post) {
+    return null;
+  }
+
   return (
     <article className="container prose prose-lg mx-auto max-w-5xl px-4 py-8 dark:prose-invert max-md:prose-sm">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold">
-          Yapay Zeka ve Geleceğimiz: Fırsatlar ve Zorluklar
-        </h1>
+        <h1 className="text-4xl font-bold">{post.title}</h1>
         <div className="flex items-center space-x-4">
           <Avatar>
             <AvatarImage
               src="/placeholder.svg?height=40&width=40"
               alt="Yazar"
             />
-            <AvatarFallback>YA</AvatarFallback>
+            <AvatarFallback>{post.author[0]}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="!m-0 text-base font-semibold">Yazar Adı</p>
+            <p className="!m-0 text-base font-semibold">{post.author}</p>
             <div className="flex items-center text-xs text-muted-foreground">
               <CalendarIcon className="mr-1 h-4 w-4" />
-              <time dateTime="2023-11-10">10 Kasım 2023</time>
+              <time dateTime="2023-11-10">
+                {localeFormat(new Date(post.created_at), "dd MMMM yyyy")}
+              </time>
             </div>
           </div>
-        </div>
-        <div className="flex space-x-2">
-          <Badge text={"Yapay Zeka"}></Badge>
-          <Badge text={"Teknoloji"}></Badge>
-          <Badge text={"Gelecek"}></Badge>
         </div>
       </header>
 
       <figure className="mb-8">
         <Image
-          src="https://via.placeholder.com/800x400"
-          alt="Yapay zeka görseli"
+          src={getImageUrlFromPath(post.featured_image)}
+          alt={post.title}
           width={800}
           height={400}
           className="mx-auto rounded-lg object-cover"
         />
         <figcaption className="mt-2 text-center text-sm text-muted-foreground">
-          Yapay zeka teknolojisini temsil eden görsel
+          {post.title}
         </figcaption>
       </figure>
 
-      <div>
-        <p>
-          Yapay zeka (YZ), günümüzde teknolojinin en hızlı gelişen ve en çok
-          tartışılan alanlarından biri. İnsanların yaptığı işleri daha hızlı,
-          daha verimli ve bazen daha doğru bir şekilde yapabilen YZ sistemleri,
-          hayatımızın neredeyse her alanına girmiş durumda.
-        </p>
-
-        <h2>Yapay Zekanın Sunduğu Fırsatlar</h2>
-        <p>
-          YZ teknolojisi, sağlıktan eğitime, ulaşımdan finansa kadar birçok
-          alanda devrim niteliğinde değişiklikler vaat ediyor. Örneğin, tıp
-          alanında YZ destekli tanı sistemleri, hastalıkların erken teşhisinde
-          doktorlara yardımcı oluyor.
-        </p>
-
-        <h2>Karşılaşılan Zorluklar ve Etik Sorunlar</h2>
-        <p>
-          Ancak, YZ'nin yaygınlaşması beraberinde bazı zorlukları ve etik
-          sorunları da getiriyor. Veri gizliliği, iş gücü piyasasındaki
-          değişimler ve YZ sistemlerinin kararlarının sorumluluğu gibi konular,
-          üzerinde dikkatle durulması gereken meseleler.
-        </p>
-
-        <h2>Sonuç</h2>
-        <p>
-          Yapay zeka, insanlığa büyük fırsatlar sunmakla birlikte, dikkatli bir
-          şekilde yönetilmesi ve düzenlenmesi gereken bir teknolojidir.
-          Gelecekte YZ ile uyum içinde yaşayabilmek için, bu teknolojinin etik
-          ve sorumlu bir şekilde geliştirilmesi ve kullanılması büyük önem
-          taşıyor.
-        </p>
-      </div>
+      <div
+        className="prose prose-sm"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </article>
   );
 }

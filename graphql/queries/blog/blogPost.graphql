@@ -1,0 +1,34 @@
+query getBlogPostIdsAndSlug {
+  blog {
+    id
+    slug
+  }
+}
+
+query getStaticBlogPosts {
+  blog {
+    slug
+    id
+    title
+    summary
+    created_at
+  }
+}
+
+query getBlogPost($slug: String!) {
+  blog(where: { slug: { _eq: $slug } }) {
+    id
+    created_at
+    updated_at
+    title
+    summary
+    author
+    content
+    slug
+    meta_title
+    meta_description
+    keywords
+    featured_image
+    categories
+  }
+}

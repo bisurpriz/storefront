@@ -1,10 +1,10 @@
+import { getAccessToken, readGuestIdFromCookies } from "@/app/actions";
 import { HttpLink, from, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { checkExpire } from "../utils/checkExpire";
-import { getAccessToken, readGuestIdFromCookies } from "@/app/actions";
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)

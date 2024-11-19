@@ -80,9 +80,12 @@ export default function BlogPostSection() {
         >
           <CarouselContent>
             {blogPosts.map((post, index) => (
-              <CarouselItem className="basis-1/2 max-xs:basis-full md:basis-1/3 2xl:basis-1/4">
-                <div key={index} className={cn("w-full px-2")}>
-                  <Card key={index} className="overflow-hidden">
+              <CarouselItem
+                key={index}
+                className="basis-1/2 max-xs:basis-full md:basis-1/3 2xl:basis-1/4"
+              >
+                <div className={cn("w-full px-2")}>
+                  <Card className="overflow-hidden">
                     <Image
                       src={post.image}
                       alt={post.title}

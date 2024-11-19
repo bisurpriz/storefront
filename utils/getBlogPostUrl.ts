@@ -1,3 +1,3 @@
-export const getBlogPostUrl = (slug, id) => {
-  return `/blog/${slug}?blpid=${id}`;
+export const getBlogPostUrl = (slug) => {
+  return `/blog/${slug}`;
 };
