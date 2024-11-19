@@ -15,8 +15,6 @@ import {
 } from "@/graphql/queries/categories/getCategories.generated";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { Suspense } from "react";
-import BlogPostSection from "./blog/components/BlogPostSection";
-import BlogPostSectionSuspense from "./blog/components/BlogPostSectionSuspense";
 
 export const experimental_ppr = true;
 
@@ -82,9 +80,9 @@ export default async function Page(props: {
         />
       </Suspense> */}
 
-      <Suspense fallback={<BlogPostSectionSuspense />}>
+      {/* <Suspense fallback={<BlogPostSectionSuspense />}>
         <BlogPostSection />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense
         fallback={
