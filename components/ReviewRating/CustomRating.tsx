@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
 import clsx from "clsx";
+import React, { useState } from "react";
 import { CustomStar } from "./CustomStar";
 
 interface RatingProps {
@@ -104,6 +104,7 @@ const Rating: React.FC<RatingProps> = ({
         return (
           <span
             key={index}
+            aria-label={`${preciseIndex} star`}
             className={clsx(
               "group relative cursor-pointer select-none transition-colors duration-300",
               { "text-gray-400": !isFull && !isHovered },

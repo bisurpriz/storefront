@@ -13,27 +13,24 @@ import { CategoryProvider } from "@/contexts/CategoryContext";
 import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import { query } from "@/graphql/lib/client";
 
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
+import NotificationListener from "@/components/Notification/NotificationListener";
 import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
-import {
-  GetMainCategoriesDocument,
-  GetMainCategoriesQuery,
-  GetMainCategoriesQueryVariables,
-} from "@/graphql/queries/categories/getCategories.generated";
+import { GetMainCategoriesQueryResult } from "@/graphql/queries/categories/getCategories.generated";
+import { GetCategoriesDocument } from "@/service/category";
+import { fetch } from "@/service/fetch";
+import { getUserById } from "@/service/user";
 import { cookies, headers } from "next/headers";
 import Script from "next/script";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
-import { getUserById } from "./account/actions";
 import { getCart } from "./cart/actions";
-import NotificationListener from "@/components/Notification/NotificationListener";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -106,24 +103,29 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const data = await getUserById();
-  const { cartItems, costData } = await getCart(data?.user?.id);
+  const cookie = await cookies();
+
+  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
+  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
+  const userId = cookie.get(CookieTokens.USER_ID);
 
   const isBot = userAgent({
     headers: await headers(),
   }).isBot;
 
-  const { data: categoryData } = await query<
-    GetMainCategoriesQuery,
-    GetMainCategoriesQueryVariables
-  >({
-    query: GetMainCategoriesDocument,
+  const userData = await getUserById(userId);
+
+  const { cartItems, costData } = await getCart(
+    userData?.body.data.user_by_pk.id,
+  );
+  const {
+    body: {
+      data: { category },
+    },
+  } = await fetch<GetMainCategoriesQueryResult>({
+    query: GetCategoriesDocument,
+    tags: ["getMainCategories"],
   });
-
-  const cookie = await cookies();
-
-  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
-  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
 
   return (
     <html lang="tr">
@@ -137,17 +139,17 @@ export default async function RootLayout({
           <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
           <TagManagerNoscript />
           <Script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places&loading=async"
             id="googleMapsScript"
             strategy="beforeInteractive"
             async={true}
           />
-          <AuthProvider user={data?.user}>
+          <AuthProvider user={userData?.body.data.user_by_pk}>
             <TooltipProvider>
               <ResponsiveDialogProvider>
                 <ApolloWrapper>
                   <ProductProvider>
-                    <CategoryProvider category={categoryData?.category}>
+                    <CategoryProvider category={category}>
                       <CartProvider
                         cartDbItems={cartItems}
                         dbCost={{
@@ -159,7 +161,7 @@ export default async function RootLayout({
                       >
                         <SearchProductProvider>
                           <Suspense fallback={<HeaderSuspense />}>
-                            <Header category={categoryData?.category} />
+                            <Header category={category} />
                             <StickyHeader />
                           </Suspense>
                           <Content>{children}</Content>
