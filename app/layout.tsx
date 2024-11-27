@@ -142,7 +142,6 @@ export default async function RootLayout({
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places&loading=async"
             id="googleMapsScript"
             strategy="beforeInteractive"
-            async={true}
           />
           <AuthProvider user={userData?.body.data.user_by_pk}>
             <TooltipProvider>
