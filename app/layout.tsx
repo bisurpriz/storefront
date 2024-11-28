@@ -26,7 +26,6 @@ import { GetCategoriesDocument } from "@/service/category";
 import { fetch } from "@/service/fetch";
 import { getUserById } from "@/service/user";
 import { cookies, headers } from "next/headers";
-import Script from "next/script";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
@@ -138,11 +137,6 @@ export default async function RootLayout({
         <ProgressBarProvider>
           <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
           <TagManagerNoscript />
-          <Script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places&loading=async"
-            id="googleMapsScript"
-            strategy="beforeInteractive"
-          />
           <AuthProvider user={userData?.body.data.user_by_pk}>
             <TooltipProvider>
               <ResponsiveDialogProvider>

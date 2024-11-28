@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef, useTransition } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Loader2, MapPinnedIcon, SquareX } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useClickAway } from "@uidotdev/usehooks";
 import { CookieTokens } from "@/app/@auth/contants";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { parseJson } from "@/utils/format";
 import { IPlace } from "@/common/types/Product/product";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useUser } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import { parseJson } from "@/utils/format";
+import { useClickAway } from "@uidotdev/usehooks";
+import Cookies from "js-cookie";
+import { Loader2, MapPinnedIcon, SquareX } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 export type PlacesAutocompleteProps = {
   placeholder?: string;
@@ -29,14 +30,14 @@ export default function PlacesAutocomplete({
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
   const [mounted, setMounted] = useState(false);
-
+  const { isLoaded } = useUser();
   const autocompleteService = useRef(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef(null);
   const { refresh } = useRouter();
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isLoaded) return;
 
     startTransition(() => {
       autocompleteService.current =
@@ -50,7 +51,7 @@ export default function PlacesAutocomplete({
         setInput(hasLocation.label);
       }
     });
-  }, [mounted]);
+  }, [mounted, isLoaded]);
 
   useEffect(() => {
     setMounted(true);

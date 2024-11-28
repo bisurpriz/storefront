@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import Image from "next/image";
+import * as React from "react";
 
 import {
   Carousel,
@@ -11,9 +11,9 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { cn } from "@/lib/utils";
 import useResponsive from "@/hooks/useResponsive";
+import { cn } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import ProductImageGalleryLoading from "./DetailImageGallerySuspense";
 
 export default function NewDesignGallery({ images, isMobile }) {
@@ -91,6 +91,7 @@ export default function NewDesignGallery({ images, isMobile }) {
                     width={90}
                     sizes="90px"
                     height={90}
+                    priority
                     className={cn(
                       "h-full w-full rounded-md object-contain",
                       index === current

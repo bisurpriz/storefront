@@ -1,5 +1,12 @@
 "use client";
 
+import { CookieTokens } from "@/app/@auth/contants";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
+import { checkExpire } from "@/graphql/utils/checkExpire";
+import { setClientCookie } from "@/utils/getCookie";
+import { uuidv4 } from "@/utils/uuidv4";
+import { useJsApiLoader } from "@react-google-maps/api";
+import Cookies from "js-cookie";
 import {
   ReactNode,
   createContext,
@@ -7,22 +14,16 @@ import {
   useEffect,
   useState,
 } from "react";
-import Cookies from "js-cookie";
-import { uuidv4 } from "@/utils/uuidv4";
-import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
-import { setClientCookie } from "@/utils/getCookie";
-import { checkExpire } from "@/graphql/utils/checkExpire";
-import { useRouter } from "next/navigation";
-import { CookieTokens } from "@/app/@auth/contants";
-
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
   userAddresses: any;
+  isLoaded?: boolean;
 }
 
 const initialAuthContext: AuthContextType = {
   user: null,
   userAddresses: [],
+  isLoaded: false,
 };
 
 export const AuthContext = createContext<AuthContextType>(initialAuthContext);
@@ -35,7 +36,14 @@ export const AuthProvider = ({
   user: GetUserByIdQuery["user_by_pk"];
 }) => {
   const [userAddresses, setUserAddresses] = useState<any>([]);
-  const { refresh } = useRouter();
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+    channel: "weekly",
+    language: "tr",
+  });
 
   useEffect(() => {
     handleUserAuthentication();
@@ -81,7 +89,7 @@ export const AuthProvider = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, userAddresses }}>
+    <AuthContext.Provider value={{ user, userAddresses, isLoaded }}>
       {children}
     </AuthContext.Provider>
   );
