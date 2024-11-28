@@ -31,7 +31,6 @@ async function customFetch<T>({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
         ...headers,
       },
       body: JSON.stringify({
