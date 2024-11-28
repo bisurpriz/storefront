@@ -21,9 +21,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
-import { GetMainCategoriesQueryResult } from "@/graphql/queries/categories/getCategories.generated";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
-import { fetch } from "@/service/fetch";
+import { BonnmarseApi } from "@/service/fetch";
 import { getUserById } from "@/service/user";
 import { cookies, headers } from "next/headers";
 import { userAgent } from "next/server";
@@ -102,25 +102,22 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const cookie = await cookies();
+  const { get } = await cookies();
 
-  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
-  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
-  const userId = cookie.get(CookieTokens.USER_ID).value;
+  const [selectedPlaces, hasSeenLocationModal, userId] = [
+    get(CookieTokens.LOCATION_ID),
+    get(CookieTokens.HAS_SEEN_LOCATION_MODAL),
+    get(CookieTokens.USER_ID).value,
+  ];
 
   const isBot = userAgent({
     headers: await headers(),
   }).isBot;
 
   const userData = await getUserById(userId);
-  const { cartItems, costData } = await getCart(
-    userData?.body.data.user_by_pk.id,
-  );
-  const {
-    body: {
-      data: { category },
-    },
-  } = await fetch<GetMainCategoriesQueryResult>({
+
+  const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
+  const { category } = await BonnmarseApi.request<GetMainCategoriesQuery>({
     query: GetCategoriesDocument,
     tags: ["getMainCategories"],
   });
@@ -136,7 +133,7 @@ export default async function RootLayout({
         <ProgressBarProvider>
           <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
           <TagManagerNoscript />
-          <AuthProvider user={userData?.body.data.user_by_pk}>
+          <AuthProvider user={userData?.user_by_pk}>
             <TooltipProvider>
               <ResponsiveDialogProvider>
                 <ApolloWrapper>

@@ -1,5 +1,5 @@
-import { GetUserByIdQueryResult } from "@/graphql/queries/account/account.generated";
-import { fetch } from "../fetch";
+import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
+import { BonnmarseApi } from "../fetch";
 
 export const GetUserByIdDocument = `query getUserById($id: uuid = "") {
   user_by_pk(id: $id) {
@@ -24,15 +24,11 @@ export const GetUserByIdDocument = `query getUserById($id: uuid = "") {
 
 export const getUserById = async (userId) => {
   if (!userId) return null;
-  try {
-    return await fetch<GetUserByIdQueryResult>({
-      query: GetUserByIdDocument,
-      variables: {
-        id: userId,
-      },
-      tags: ["getUserById"],
-    });
-  } catch (e) {
-    return e;
-  }
+  return await BonnmarseApi.request<GetUserByIdQuery>({
+    query: GetUserByIdDocument,
+    variables: {
+      id: userId,
+    },
+    tags: ["getUserById"],
+  });
 };
