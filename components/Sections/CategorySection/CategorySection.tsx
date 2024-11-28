@@ -5,7 +5,7 @@ import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategorie
 import useScrollHorizontal from "@/hooks/useScrollHorizontal";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import React, { FC, useRef } from "react";
+import { FC, useRef } from "react";
 
 type CategorySectionProps = {
   category: GetAllCategoriesQuery["category"];
@@ -44,6 +44,7 @@ const CategorySection: FC<CategorySectionProps> = ({ category }) => {
                 className="w-full min-w-[250px] object-contain max-md:min-w-[150px]"
                 width={400}
                 height={400}
+                priority
                 sizes="
                   (min-width: 1024px) 20vw,
                   (min-width: 768px) 40vw,

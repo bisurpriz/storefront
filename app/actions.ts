@@ -122,7 +122,6 @@ export const createFCMToken = async (token: string) => {
       token,
     },
   });
-  console.log(data, "FCM token created");
   if (errors) {
     console.error(errors);
   }

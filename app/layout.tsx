@@ -106,14 +106,13 @@ export default async function RootLayout({
 
   const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
   const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
-  const userId = cookie.get(CookieTokens.USER_ID);
+  const userId = cookie.get(CookieTokens.USER_ID).value;
 
   const isBot = userAgent({
     headers: await headers(),
   }).isBot;
 
   const userData = await getUserById(userId);
-
   const { cartItems, costData } = await getCart(
     userData?.body.data.user_by_pk.id,
   );

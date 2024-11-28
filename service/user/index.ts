@@ -24,12 +24,15 @@ export const GetUserByIdDocument = `query getUserById($id: uuid = "") {
 
 export const getUserById = async (userId) => {
   if (!userId) return null;
-
-  return await fetch<GetUserByIdQueryResult>({
-    query: GetUserByIdDocument,
-    variables: {
-      id: userId,
-    },
-    tags: ["getUserById"],
-  });
+  try {
+    return await fetch<GetUserByIdQueryResult>({
+      query: GetUserByIdDocument,
+      variables: {
+        id: userId,
+      },
+      tags: ["getUserById"],
+    });
+  } catch (e) {
+    return e;
+  }
 };

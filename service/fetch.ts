@@ -1,3 +1,6 @@
+import { CookieTokens } from "@/app/@auth/contants";
+import { cookies } from "next/headers";
+
 type ExtractVariables<T> = T extends { variables: infer V } ? V : never;
 
 type BonnmarseError = {
@@ -27,10 +30,14 @@ async function customFetch<T>({
   variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T } | never> {
   try {
+    const cooks = await cookies();
+    const token = cooks.get(CookieTokens.ACCESS_TOKEN).value;
+
     const result = await fetch(process.env.HASURA_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
         ...headers,
       },
       body: JSON.stringify({
