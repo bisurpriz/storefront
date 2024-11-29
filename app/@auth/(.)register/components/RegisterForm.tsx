@@ -4,6 +4,7 @@ import { registerUser } from "@/app/account/actions";
 import { Link } from "@/components/Link";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { FC, useState } from "react";
 import { toast } from "sonner";
@@ -80,8 +81,8 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
 
   return (
     <form onSubmit={handleRegister}>
-      <div className="w-full">
-        <div className="space-y-2 text-center">
+      <Card className="border-none shadow-none">
+        <CardTitle className="my-2 space-y-2 text-center">
           <Image
             src={"/logo.svg"}
             width={300}
@@ -89,13 +90,15 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
             alt="Login"
             className="m-auto"
           />
-          <h1 className="text-center text-3xl font-bold">Giriş Yap</h1>
-          <p className="text-center text-gray-500">
-            Sipariş verebilmek, kampanyalardan faydalanabilmek ve daha fazlası
-            için giriş yapın.
+          <h1 className="text-center text-lg font-bold">
+            Hesabınızı Oluşturun
+          </h1>
+          <p className="text-center text-sm text-gray-500">
+            Hesabınızı oluşturarak daha hızlı ve kolay bir şekilde giriş
+            yapabilir ve işlemlerinizi gerçekleştirebilirsiniz.
           </p>
-        </div>
-        <div className="space-y-4">
+        </CardTitle>
+        <CardContent className="space-y-4">
           <TextField
             autoComplete="off"
             id="firstname"
@@ -131,7 +134,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
           <Button type="submit" loading={loading} className="m-auto">
             Kayıt Ol
           </Button>
-        </div>
+        </CardContent>
         <div className="mt-4">
           <p className="text-center text-gray-500">
             Hesabınız var mı?{" "}
@@ -167,7 +170,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
           Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
           yapabilirsiniz.
         </span> */}
-      </div>
+      </Card>
     </form>
   );
 };

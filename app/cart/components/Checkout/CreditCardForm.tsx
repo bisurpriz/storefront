@@ -326,6 +326,7 @@ const CreditCardForm = () => {
             <CreditCardInput
               disabled={loading}
               onChange={onChange}
+              className="h-12 rounded-sm"
               error={!!error}
               errorMessage={error?.message}
             />
@@ -340,6 +341,7 @@ const CreditCardForm = () => {
                 disabled={loading}
                 id="creditCardName"
                 fullWidth
+                className="h-12 rounded-sm"
                 label="İsim Soyisim"
                 placeholder="Lütfen kart üzerindeki ismi soyismi giriniz"
                 onChange={onChange}
@@ -358,6 +360,7 @@ const CreditCardForm = () => {
                 errorMessage={error?.message}
                 onChange={(e, val) => onChange(val)}
                 disabled={loading}
+                className="h-12 rounded-sm"
               />
             )}
           />
@@ -370,6 +373,7 @@ const CreditCardForm = () => {
                 label="CVV"
                 placeholder="123"
                 id="creditCardCvv"
+                className="h-12 rounded-sm"
                 maxLength={3}
                 onChange={(e) => {
                   const inputValue = e.target.value.replace(/\D/g, "");

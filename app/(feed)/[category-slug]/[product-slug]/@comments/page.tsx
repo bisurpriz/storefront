@@ -54,7 +54,7 @@ const ProductCommentsPage: FC<PageProps> = async (props) => {
           lastName: rw.user.lastname.slice(0, 1) + "***",
           user_id: 0,
           rate: rw.score,
-          user_image_url: rw.user.picture || "www.picsum.photos/200",
+          user_image_url: rw.user.picture || "https://via.placeholder.com/150",
           comment_id: rw.id,
         }))}
       />
