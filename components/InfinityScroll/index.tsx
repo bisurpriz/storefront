@@ -88,12 +88,7 @@ const InfinityScroll = <T,>({
         )}
       >
         {data?.map((item: any) => {
-          return (
-            <div key={item.id}>
-              <DynamicProductItem key={item.id} {...item} />
-              <ProductItemSkeleton key={`deneme-${item.id}`} />
-            </div>
-          );
+          return <DynamicProductItem key={item.id} {...item} />;
         })}
         {isPending && (
           <>
