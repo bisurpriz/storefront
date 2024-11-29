@@ -105,6 +105,8 @@ export default function ReceiverForm() {
     },
   });
 
+  console.log(errors);
+
   useEffect(() => {
     if (selectedCargoLocation?.placeId && !hasSameDayProduct) {
       const city = selectedCargoLocation.address_components.find((ac) =>
