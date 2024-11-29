@@ -1,15 +1,12 @@
 "use server";
 
-import { mutate } from "@/graphql/lib/client";
+import { LoginMutationMutation } from "@/graphql/queries/auth/login/login.generated";
+import { LoginMutationDocument } from "@/service/account";
+import { BonnmarseApi } from "@/service/fetch";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { CookieTokens } from "./contants";
-import {
-  LoginMutationDocument,
-  LoginMutationMutation,
-  LoginMutationMutationVariables,
-} from "@/graphql/queries/auth/login/login.generated";
 import { redirect } from "next/navigation";
+import { CookieTokens } from "./contants";
 
 export const decodeToken = async (token: string) => {
   return jwt.decode(token);
@@ -19,25 +16,16 @@ export const login = async ({ email, password }, headers = {}) => {
   const cook = await cookies();
   const guest_id = cook.get(CookieTokens.GUEST_ID)?.value;
 
-  const response = await mutate<
-    LoginMutationMutation,
-    LoginMutationMutationVariables
-  >({
-    mutation: LoginMutationDocument,
+  const { login } = await BonnmarseApi.request<LoginMutationMutation>({
+    query: LoginMutationDocument,
     variables: {
       email,
       password,
     },
-    context: {
-      headers: {
-        ...headers,
-        "x-hasura-guest-id": guest_id,
-      },
-    },
   });
 
-  if (response.data.login.access_token && response.data.login.refresh_token) {
-    const decodedToken = await decodeToken(response.data.login.access_token);
+  if (login.access_token && login.refresh_token) {
+    const decodedToken = await decodeToken(login.access_token);
     const user = {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
@@ -46,13 +34,13 @@ export const login = async ({ email, password }, headers = {}) => {
       cook.delete(CookieTokens.GUEST_ID);
     }
 
-    cook.set(CookieTokens.ACCESS_TOKEN, response.data.login.access_token, {
+    cook.set(CookieTokens.ACCESS_TOKEN, login.access_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
-    cook.set(CookieTokens.REFRESH_TOKEN, response.data.login.refresh_token, {
+    cook.set(CookieTokens.REFRESH_TOKEN, login.refresh_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -65,7 +53,7 @@ export const login = async ({ email, password }, headers = {}) => {
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
   }
-  return response;
+  return login;
 };
 
 export const logout = async () => {

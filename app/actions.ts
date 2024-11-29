@@ -1,17 +1,15 @@
 "use server";
 
 import { Location } from "@/common/types/Addresses/addresses";
-import { mutate, query } from "@/graphql/lib/client";
-import {
-  GetBannersDocument,
-  GetBannersQuery,
-  GetBannersQueryVariables,
-} from "@/graphql/queries/banners/banners.generated";
+import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
 import { parseJson } from "@/utils/format";
 import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
 
-import { CreateOrUpdateFcmTokenDocument } from "@/graphql/queries/notification/mutation.generated";
+import { CreateOrUpdateFcmTokenMutation } from "@/graphql/queries/notification/mutation.generated";
+import { GetBannersDocument } from "@/service/banner";
+import { BonnmarseApi } from "@/service/fetch";
+import { FireBaseCloudMessagingDocument } from "@/service/firebase/cloudMessaging";
 import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
@@ -58,16 +56,12 @@ export async function createJwt() {
 }
 
 export async function getBanners() {
-  const { data, loading } = await query<
-    GetBannersQuery,
-    GetBannersQueryVariables
-  >({
+  const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
     query: GetBannersDocument,
   });
 
   return {
-    banners: data.system_banner,
-    loading,
+    banners: system_banner,
   };
 }
 
@@ -116,13 +110,10 @@ export const createFCMToken = async (token: string) => {
   const userId = get(CookieTokens.USER_ID)?.value;
   if (!userId) return;
 
-  const { data, errors } = await mutate({
-    mutation: CreateOrUpdateFcmTokenDocument,
+  await BonnmarseApi.request<CreateOrUpdateFcmTokenMutation>({
+    query: FireBaseCloudMessagingDocument,
     variables: {
       token,
     },
   });
-  if (errors) {
-    console.error(errors);
-  }
 };

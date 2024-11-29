@@ -1,28 +1,20 @@
 import AccordionItem from "@/components/Accordion/AccordionItem";
-import React, { FC } from "react";
-import ProductDescription from "../../components/Detail/ProductDescription";
 import { parseJson } from "@/utils/format";
+import { FC } from "react";
+import ProductDescription from "../../components/Detail/ProductDescription";
 
-import { query } from "@/graphql/lib/client";
-import {
-  GetProductDescriptionDocument,
-  GetProductDescriptionQuery,
-  GetProductDescriptionQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
-import ProductDescriptionLoadingPage from "./loading";
-import { Product, WithContext } from "schema-dts";
 import { PageProps } from "@/.next/types/app/page";
+import { GetProductDescriptionQuery } from "@/graphql/queries/products/getProductById.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetProductDescriptionDocument } from "@/service/product";
+import { Product, WithContext } from "schema-dts";
+import ProductDescriptionLoadingPage from "./loading";
 
 const ProductDescriptionPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
-  const {
-    data: { product },
-  } = await query<
-    GetProductDescriptionQuery,
-    GetProductDescriptionQueryVariables
-  >({
+  const { product } = await BonnmarseApi.request<GetProductDescriptionQuery>({
     query: GetProductDescriptionDocument,
     variables: {
       id,

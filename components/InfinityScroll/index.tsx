@@ -1,14 +1,14 @@
 "use client";
 
+import { PER_REQUEST } from "@/app/constants";
+import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
-import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
-import EmptyPage from "./EmptyPage";
-import dynamic from "next/dynamic";
-import { PER_REQUEST } from "@/app/constants";
 import { useProgress } from "react-transition-progress";
+import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import Spinner from "../Spinner";
-import { cn } from "@/lib/utils";
+import EmptyPage from "./EmptyPage";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
@@ -88,7 +88,12 @@ const InfinityScroll = <T,>({
         )}
       >
         {data?.map((item: any) => {
-          return <DynamicProductItem {...item} key={item.id} />;
+          return (
+            <div key={item.id}>
+              <DynamicProductItem key={item.id} {...item} />
+              <ProductItemSkeleton key={`deneme-${item.id}`} />
+            </div>
+          );
         })}
         {isPending && (
           <>

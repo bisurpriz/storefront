@@ -1,20 +1,19 @@
 "use server";
 
-import { mutate, query } from "@/graphql/lib/client";
+import {
+  AddToFavoritesMutation,
+  GetUserFavoritesQuery,
+  RemoveFromFavoritesMutation,
+} from "@/graphql/queries/account/favorites.generated";
+import { BonnmarseApi } from "@/service/fetch";
 import {
   AddToFavoritesDocument,
-  AddToFavoritesMutation,
-  AddToFavoritesMutationVariables,
   GetUserFavoritesDocument,
-  GetUserFavoritesQuery,
-  GetUserFavoritesQueryVariables,
   RemoveFromFavoritesDocument,
-  RemoveFromFavoritesMutation,
-  RemoveFromFavoritesMutationVariables,
-} from "@/graphql/queries/account/favorites.generated";
+} from "@/service/product/favorites";
 
 export const getUserFavorites = async ({ offset }: { offset: number }) => {
-  return await query<GetUserFavoritesQuery, GetUserFavoritesQueryVariables>({
+  return await BonnmarseApi.request<GetUserFavoritesQuery>({
     query: GetUserFavoritesDocument,
     variables: {
       offset,
@@ -27,27 +26,19 @@ export const removeFromFavorites = async ({
 }: {
   productId: number;
 }) => {
-  const { data } = await mutate<
-    RemoveFromFavoritesMutation,
-    RemoveFromFavoritesMutationVariables
-  >({
-    mutation: RemoveFromFavoritesDocument,
+  return await BonnmarseApi.request<RemoveFromFavoritesMutation>({
+    query: RemoveFromFavoritesDocument,
     variables: {
       productId,
     },
   });
-  return data;
 };
 
 export const addToFavorites = async ({ productId }: { productId: number }) => {
-  const { data } = await mutate<
-    AddToFavoritesMutation,
-    AddToFavoritesMutationVariables
-  >({
-    mutation: AddToFavoritesDocument,
+  return await BonnmarseApi.request<AddToFavoritesMutation>({
+    query: AddToFavoritesDocument,
     variables: {
       productId,
     },
   });
-  return data;
 };

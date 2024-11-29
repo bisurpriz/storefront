@@ -3,14 +3,14 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import { Button } from "@/components/ui/button";
 import CustomizeCartItem from "@/components/Customize/CustomizeCartItem";
+import { Button } from "@/components/ui/button";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import clsx from "clsx";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 type OrderCustomizeProps = {
   order: GetUserOrdersQuery["order"][0];
@@ -72,12 +72,13 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
     }
 
     if (selectedTextData.length > 0) {
-      const res = await orderTextsUpload(selectedTextData);
-      if (res.errors) {
+      const { insert_order_item_special_text, errors } =
+        await orderTextsUpload(selectedTextData);
+      if (errors) {
         onStatusChange("fail");
       }
 
-      if (res.data.insert_order_item_special_text.affected_rows) {
+      if (insert_order_item_special_text.affected_rows) {
         onStatusChange("succes");
         refresh();
       }
@@ -141,11 +142,11 @@ const OrderCustomize: FC<OrderCustomizeProps> = ({ order, onStatusChange }) => {
         {order.tenant_orders.map((to) => (
           <>
             {to.order_items.map((oi, i) => (
-              <div className="w-full" key={`customize-${oi.id}`}>
+              <div className="w-full" key={`customize-${oi.id}-${i}`}>
                 {Array.from({ length: oi.quantity }).map((_, index) => {
                   return (
                     <>
-                      <div className="mb-4 flex items-start gap-2">
+                      <div className="mb-4 flex items-start gap-2" key={index}>
                         <Image
                           src={getImageUrlFromPath(oi?.product?.image_url[0])}
                           width={100}

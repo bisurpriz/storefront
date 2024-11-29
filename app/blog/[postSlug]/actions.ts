@@ -1,29 +1,31 @@
 "use server";
 
-import { query } from "@/graphql/lib/client";
+import {
+  GetBlogPostIdsAndSlugQuery,
+  GetBlogPostQuery,
+  GetStaticBlogPostsQuery,
+} from "@/graphql/queries/blog/blogPost.generated";
 import {
   GetBlogPostDocument,
   GetBlogPostIdsAndSlugDocument,
-  GetBlogPostIdsAndSlugQuery,
-  GetBlogPostQuery,
   GetStaticBlogPostsDocument,
-  GetStaticBlogPostsQuery,
-} from "@/graphql/queries/blog/blogPost.generated";
+} from "@/service/blog";
+import { BonnmarseApi } from "@/service/fetch";
 
 export const getStaticBlogPostPaths = async () => {
-  return await query<GetBlogPostIdsAndSlugQuery>({
+  return await BonnmarseApi.request<GetBlogPostIdsAndSlugQuery>({
     query: GetBlogPostIdsAndSlugDocument,
   });
 };
 
 export const getStaticBlogPosts = async () => {
-  return await query<GetStaticBlogPostsQuery>({
+  return await BonnmarseApi.request<GetStaticBlogPostsQuery>({
     query: GetStaticBlogPostsDocument,
   });
 };
 
 export const getBlogPostIdsAndSlug = async (slug) => {
-  return await query<GetBlogPostQuery>({
+  return await BonnmarseApi.request<GetBlogPostQuery>({
     query: GetBlogPostDocument,
     variables: {
       slug,

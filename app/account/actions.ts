@@ -1,24 +1,24 @@
 "use server";
 import { User } from "@/common/types/User/user";
-import { mutate, query } from "@/graphql/lib/client";
 
-import { readIdFromCookies } from "../actions";
 import {
-  GetUserByEmailDocument,
   GetUserByEmailQuery,
-  GetUserByEmailQueryVariables,
-  GetUserByIdDocument,
   GetUserByIdQuery,
-  GetUserByIdQueryVariables,
-  UpdateUserByIdDocument,
   UpdateUserByIdMutation,
-  UpdateUserByIdMutationVariables,
 } from "@/graphql/queries/account/account.generated";
 import {
-  RegisterDocument,
   RegisterMutation,
   RegisterMutationVariables,
 } from "@/graphql/queries/auth/register/register.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import {
+  GetUserByEmailDocument,
+  GetUserByIdDocument,
+  RegisterDocument,
+  UpdateUserByIdDocument,
+} from "@/service/user";
+import { revalidateTag } from "next/cache";
+import { readIdFromCookies } from "../actions";
 
 export const getUserById = async (id?: string) => {
   const userId = id || (await readIdFromCookies());
@@ -26,19 +26,15 @@ export const getUserById = async (id?: string) => {
   if (!userId) return { user: null, loading: false, id: null };
 
   try {
-    const { data, loading } = await query<
-      GetUserByIdQuery,
-      GetUserByIdQueryVariables
-    >({
+    const { user_by_pk: user } = await BonnmarseApi.request<GetUserByIdQuery>({
       query: GetUserByIdDocument,
       variables: {
         id: userId,
       },
+      tags: ["getUserById"],
     });
-    const { user_by_pk: user } = data;
     return {
       user: user ?? null,
-      loading,
       id: userId,
     };
   } catch (error) {
@@ -50,19 +46,14 @@ export const getUserByEmail = async (email: string) => {
   if (!email) return { user: null, loading: false, id: null };
 
   try {
-    const { data, loading } = await query<
-      GetUserByEmailQuery,
-      GetUserByEmailQueryVariables
-    >({
+    const { user } = await BonnmarseApi.request<GetUserByEmailQuery>({
       query: GetUserByEmailDocument,
       variables: {
         email,
       },
     });
-    const { user } = data;
     return {
       user: user ?? null,
-      loading,
       email: email,
     };
   } catch (error) {
@@ -75,10 +66,8 @@ export const getUserByEmail = async (email: string) => {
 };
 
 export const registerUser = async (newUser: RegisterMutationVariables) => {
-  const {
-    data: { register },
-  } = await mutate<RegisterMutation, RegisterMutationVariables>({
-    mutation: RegisterDocument,
+  const { register } = await BonnmarseApi.request<RegisterMutation>({
+    query: RegisterDocument,
     variables: {
       ...newUser,
     },
@@ -91,27 +80,18 @@ export const updateUserById = async (
     Pick<User, "firstname" | "lastname" | "email" | "id" | "phone" | "picture">
   >,
 ) => {
-  const { data: updatedData } = await mutate<
-    UpdateUserByIdMutation,
-    UpdateUserByIdMutationVariables
-  >({
-    mutation: UpdateUserByIdDocument,
-    awaitRefetchQueries: true,
-    refetchQueries: [
-      {
-        query: GetUserByIdDocument,
-        variables: {
-          id: data.id,
-        },
+  const { update_user_by_pk: user } =
+    await BonnmarseApi.request<UpdateUserByIdMutation>({
+      query: UpdateUserByIdDocument,
+      variables: {
+        ...data,
+        id: data.id,
       },
-    ],
-    variables: {
-      ...data,
-      id: data.id,
-    },
-  });
+    });
 
-  const { update_user_by_pk: user } = updatedData;
+  if (user) {
+    revalidateTag("getUserById");
+  }
 
   return {
     user,

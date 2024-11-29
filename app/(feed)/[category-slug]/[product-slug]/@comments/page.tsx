@@ -1,22 +1,17 @@
-import { FC } from "react";
-import ProductComments from "../../components/Detail/ProductComments";
-import { query } from "@/graphql/lib/client";
-import {
-  GetProductCommentsDocument,
-  GetProductCommentsQuery,
-  GetProductCommentsQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
-import ProductCommentsLoadingPage from "./loading";
-import { Review, WithContext } from "schema-dts";
 import { PageProps } from "@/.next/types/app/page";
+import { GetProductCommentsQuery } from "@/graphql/queries/products/getProductById.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetProductCommentsDocument } from "@/service/product/comments";
+import { FC } from "react";
+import { Review, WithContext } from "schema-dts";
+import ProductComments from "../../components/Detail/ProductComments";
+import ProductCommentsLoadingPage from "./loading";
 
 const ProductCommentsPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
-  const {
-    data: { product },
-  } = await query<GetProductCommentsQuery, GetProductCommentsQueryVariables>({
+  const { product } = await BonnmarseApi.request<GetProductCommentsQuery>({
     query: GetProductCommentsDocument,
     variables: {
       id,
@@ -59,7 +54,7 @@ const ProductCommentsPage: FC<PageProps> = async (props) => {
           lastName: rw.user.lastname.slice(0, 1) + "***",
           user_id: 0,
           rate: rw.score,
-          user_image_url: "https://picsum.photos/200/300",
+          user_image_url: rw.user.picture || "www.picsum.photos/200",
           comment_id: rw.id,
         }))}
       />

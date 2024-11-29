@@ -2,30 +2,30 @@
 
 import { IProductFilter } from "@/common/types/Filter/productFilter";
 
-import { query } from "@/graphql/lib/client";
-
 import { IPlace } from "@/common/types/Product/product";
+import { GetProductByIdQuery } from "@/graphql/queries/products/getProductById.generated";
 import {
-  GetProductByIdDocument,
-  GetProductByIdQuery,
-} from "@/graphql/queries/products/getProductById.generated";
-import {
-  GetRatingsDocument,
   GetRatingsQuery,
   GetRatingsQueryVariables,
 } from "@/graphql/queries/products/getProductRatings.generated";
 import {
-  GetProductsWithFilteredPaginationDocument,
   GetProductsWithFilteredPaginationQuery,
-  GetProductsWithPaginationDocument,
   GetProductsWithPaginationQuery,
-  GetProductsWithPaginationQueryVariables,
 } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import {
-  GetProductReviewsDocument,
   GetProductReviewsQuery,
   GetProductReviewsQueryVariables,
 } from "@/graphql/queries/review/review.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import {
+  GetProductByIdDocument,
+  GetProductsWithFilteredPaginationDocument,
+  GetProductsWithPaginationDocument,
+} from "@/service/product";
+import {
+  GetProductReviewsDocument,
+  GetRatingsDocument,
+} from "@/service/product/reviews";
 import searchClient from "@/typesense/client";
 import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
@@ -37,31 +37,29 @@ import { CookieTokens } from "../@auth/contants";
 import { PER_REQUEST } from "../constants";
 
 export const getPaginatedProducts = async (params: IProductFilter) => {
-  const { data } = await query<
-    GetProductsWithPaginationQuery,
-    GetProductsWithPaginationQueryVariables
-  >({
-    query: GetProductsWithPaginationDocument,
-    variables: {
-      ...params,
-    },
-  });
+  const { product, product_aggregate } =
+    await BonnmarseApi.request<GetProductsWithPaginationQuery>({
+      query: GetProductsWithPaginationDocument,
+      variables: {
+        ...params,
+      },
+    });
 
   return {
-    products: data.product,
-    totalCount: data.product_aggregate.aggregate.count,
+    products: product,
+    totalCount: product_aggregate.aggregate.count,
   };
 };
 
 export const getProductById = async ({ id }: { id: number }) => {
-  const { data } = await query<GetProductByIdQuery>({
+  const { product } = await BonnmarseApi.request<GetProductByIdQuery>({
     query: GetProductByIdDocument,
     variables: {
       id,
     },
   });
   return {
-    product: data.product,
+    product,
   };
 };
 
@@ -70,30 +68,24 @@ export const getProductReviews = async ({
   limit = 10,
   offset = 0,
 }: GetProductReviewsQueryVariables) => {
-  const { data } = await query<GetProductReviewsQuery>({
+  return await BonnmarseApi.request<GetProductReviewsQuery>({
     query: GetProductReviewsDocument,
     variables: {
       productId,
       limit,
       offset,
     },
-    context: {
-      fetchOptions: {
-        next: { revalidate: 5 },
-      },
-    },
   });
-  return data;
 };
 
 export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
-  const { data } = await query<GetRatingsQuery>({
+  const { get_comment_by_score } = await BonnmarseApi.request<GetRatingsQuery>({
     query: GetRatingsDocument,
     variables: {
       pid,
     },
   });
-  return data.get_comment_by_score;
+  return get_comment_by_score;
 };
 
 export const searchProducts = async (
@@ -105,17 +97,16 @@ export const searchProducts = async (
   if (!payload) return { products: [] };
   const queryMapper = await createDynamicQueryMapper(payload);
   try {
-    const {
-      data: { product: products, product_aggregate },
-    } = await query<GetProductsWithFilteredPaginationQuery>({
-      query: GetProductsWithFilteredPaginationDocument,
-      variables: {
-        filter_payload: {
-          ...queryMapper.filter_payload,
+    const { product: products, product_aggregate } =
+      await BonnmarseApi.request<GetProductsWithFilteredPaginationQuery>({
+        query: GetProductsWithFilteredPaginationDocument,
+        variables: {
+          filter_payload: {
+            ...queryMapper.filter_payload,
+          },
+          ...paginationParams,
         },
-        ...paginationParams,
-      },
-    });
+      });
     return {
       products,
       message: "Success",
@@ -203,7 +194,7 @@ export const checkProductLocation = async (
     }
   `;
 
-  const { data } = await query({
+  const data = await BonnmarseApi.request<any>({
     query: queryExpression as any,
     variables: {
       where: whereExp,

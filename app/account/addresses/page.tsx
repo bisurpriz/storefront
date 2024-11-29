@@ -2,13 +2,11 @@ import { getUserAddresses } from "./actions";
 import Address from "./components/Address";
 
 const AddressesPage = async () => {
-  const data = await getUserAddresses();
+  const { user_addresses } = await getUserAddresses();
 
-  if (!data) {
+  if (!user_addresses) {
     return null;
   }
-
-  const { user_addresses } = data;
 
   return (
     <div>

@@ -4,22 +4,26 @@ class BaseFetch {
   protected getHeaders(
     token?: string,
     additionalHeaders?: HeadersInit,
+    guestId?: string,
   ): HeadersInit {
     return {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
+      ...(!token && guestId && { "x-hasura-guest-id": guestId }),
       ...additionalHeaders,
     };
   }
 
   protected buildFetchOptions({
     token,
+    guestId,
     query,
     variables,
     tags,
     additionalHeaders,
   }: {
     token?: string;
+    guestId?: string;
     query: string;
     variables?: any;
     tags?: string[];
@@ -27,11 +31,10 @@ class BaseFetch {
   }): RequestInit {
     const options: RequestInit = {
       method: "POST",
-      headers: this.getHeaders(token, additionalHeaders),
+      headers: this.getHeaders(token, additionalHeaders, guestId),
       body: JSON.stringify({ query, variables }),
     };
 
-    // Server-side özel tag desteği
     if (tags && typeof window === "undefined") {
       (options as any).next = { tags };
     }

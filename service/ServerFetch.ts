@@ -14,11 +14,12 @@ class ServerFetch extends BaseFetch {
   }): Promise<T> {
     const cooks = await cookies();
     const token = cooks.get(CookieTokens.ACCESS_TOKEN)?.value;
+    const guestId = cooks.get(CookieTokens.GUEST_ID)?.value;
 
     try {
       const response = await fetch(
         this.hasuraUrl,
-        this.buildFetchOptions({ token, query, variables, tags }),
+        this.buildFetchOptions({ token, query, variables, tags, guestId }),
       );
 
       const body = await response.json();

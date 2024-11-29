@@ -1,17 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import TextField from "@/components/TextField";
-import { Link } from "@/components/Link";
-import { FC, useEffect, useState, useTransition } from "react";
-import { login } from "../../actions";
-import { AuthErrorMessages } from "../../contants";
-import { signIn } from "next-auth/react";
-import clsx from "clsx";
 import GoogleIcon from "@/components/CustomIcons/Google";
-import Image from "next/image";
-import Login from "@/components/Icons/Login";
-import { toast } from "sonner";
+import { Link } from "@/components/Link";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,11 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff, LogIn } from "lucide-react";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FC, useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
+import { login } from "../../actions";
+import { AuthErrorMessages } from "../../contants";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -61,13 +58,14 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
         (field: HTMLInputElement) => field.value,
       );
 
-      const response = await login({ email, password });
+      const { error } = await login({
+        email,
+        password,
+      });
 
-      if (response.data.login.error) {
+      if (error) {
         const errorMessage =
-          AuthErrorMessages[
-            response.data.login.error as keyof typeof AuthErrorMessages
-          ];
+          AuthErrorMessages[error as keyof typeof AuthErrorMessages];
 
         setError(errorMessage);
         toast.error(errorMessage, {

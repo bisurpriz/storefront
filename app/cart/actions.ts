@@ -4,26 +4,21 @@ import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
 import { createJwt, readIdFromCookies } from "../actions";
 
-import { mutate, query } from "@/graphql/lib/client";
-
 import { CustomizableArea } from "@/common/types/Order/order";
 import {
-  GetDbCartDocument,
   GetDbCartQuery,
-  GetDbCartQueryVariables,
-  GetProductByIdForCartDocument,
   GetProductByIdForCartQuery,
-  GetProductByIdForCartQueryVariables,
-  UpdateDbCartDocument,
   UpdateDbCartMutation,
-  UpdateDbCartMutationVariables,
 } from "@/graphql/queries/cart/cart.generated";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import { GetProductsForInitialCartQuery } from "@/graphql/queries/products/getProductById.generated";
 import {
+  GetDbCartDocument,
+  GetProductByIdForCartDocument,
   GetProductsForInitialCartDocument,
-  GetProductsForInitialCartQuery,
-  GetProductsForInitialCartQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
+  UpdateDbCartDocument,
+} from "@/service/cart";
+import { BonnmarseApi } from "@/service/fetch";
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
@@ -134,11 +129,8 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
 
     const userId = await checkUserId();
     const guest_id = get(CookieTokens.GUEST_ID)?.value;
-    const { data: cartData } = await mutate<
-      UpdateDbCartMutation,
-      UpdateDbCartMutationVariables
-    >({
-      mutation: UpdateDbCartDocument,
+    const { insert_cart } = await BonnmarseApi.request<UpdateDbCartMutation>({
+      query: UpdateDbCartDocument,
       variables: {
         payload: [
           {
@@ -153,7 +145,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
     const costData = await getCartCost(cartItems);
 
     return {
-      cartData,
+      insert_cart,
       costData: costData,
     };
   } catch (error) {
@@ -185,21 +177,9 @@ export const getCart = async (user_id: string) => {
     };
   }
 
-  const headers =
-    !userId && guestId
-      ? {
-          headers: {
-            "x-hasura-guest-id": guestId,
-          },
-        }
-      : {};
   try {
-    const {
-      data: { cart },
-    } = await query<GetDbCartQuery, GetDbCartQueryVariables>({
+    const { cart } = await BonnmarseApi.request<GetDbCartQuery>({
       query: GetDbCartDocument,
-      fetchPolicy: "no-cache",
-      context: headers,
     });
 
     const parsedContent = parseJson(cart[0].content);
@@ -217,18 +197,13 @@ export const getCart = async (user_id: string) => {
       };
 
     const ids = parsedContent.map((item) => item.product_id);
-    const {
-      data: { product },
-    } = await query<
-      GetProductsForInitialCartQuery,
-      GetProductsForInitialCartQueryVariables
-    >({
-      query: GetProductsForInitialCartDocument,
-      variables: {
-        ids,
-      },
-      fetchPolicy: "no-cache",
-    });
+    const { product } =
+      await BonnmarseApi.request<GetProductsForInitialCartQuery>({
+        query: GetProductsForInitialCartDocument,
+        variables: {
+          ids,
+        },
+      });
 
     const cartItems = product
       ?.map((item) => {
@@ -281,37 +256,36 @@ export const getCart = async (user_id: string) => {
 };
 
 export const getProductByIdForCart = async (id: number) => {
-  const response = await query<
-    GetProductByIdForCartQuery,
-    GetProductByIdForCartQueryVariables
-  >({
-    query: GetProductByIdForCartDocument,
-    variables: {
-      id,
-    },
-  });
+  const { product_by_pk } =
+    await BonnmarseApi.request<GetProductByIdForCartQuery>({
+      query: GetProductByIdForCartDocument,
+      variables: {
+        id,
+      },
+    });
 
   const product: ProductForCart = {
-    product_categories: response.data.product_by_pk.product_categories,
-    discount_price: response.data.product_by_pk.discount_price,
-    id: response.data.product_by_pk.id,
-    image_url: response.data.product_by_pk.image_url,
-    name: response.data.product_by_pk.name,
-    price: response.data.product_by_pk.price,
+    product_categories: product_by_pk.product_categories,
+    discount_price: product_by_pk.discount_price,
+    id: product_by_pk.id,
+    image_url: product_by_pk.image_url,
+    name: product_by_pk.name,
+    price: product_by_pk.price,
     quantity: 1,
-    delivery_time_ranges: response.data.product_by_pk.delivery_time_ranges,
-    product_customizable_areas:
-      response.data.product_by_pk.product_customizable_areas.map((area) => ({
+    delivery_time_ranges: product_by_pk.delivery_time_ranges,
+    product_customizable_areas: product_by_pk.product_customizable_areas.map(
+      (area) => ({
         count: area.count,
         customizable_area: {
           id: area.customizable_area.id,
           type: area.customizable_area.type as CustomizableArea["type"],
         },
         max_character: area.max_character,
-      })),
-    tenant: response.data.product_by_pk.tenant,
-    is_service_free: response.data.product_by_pk.is_service_free,
-    delivery_type: response.data.product_by_pk.delivery_type,
+      }),
+    ),
+    tenant: product_by_pk.tenant,
+    is_service_free: product_by_pk.is_service_free,
+    delivery_type: product_by_pk.delivery_type,
   };
 
   return product;

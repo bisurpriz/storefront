@@ -1,15 +1,14 @@
 "use client";
 
 import { registerUser } from "@/app/account/actions";
-import { Button } from "@/components/ui/button";
-import TextField from "@/components/TextField";
-import Image from "next/image";
 import { Link } from "@/components/Link";
+import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { FC, useState } from "react";
-import { AuthErrorMessages } from "../../contants";
-import { login } from "../../actions";
-import clsx from "clsx";
 import { toast } from "sonner";
+import { login } from "../../actions";
+import { AuthErrorMessages } from "../../contants";
 
 type RegisterFormProps = {
   onSuccessfulRegister?: (status: boolean) => void;
@@ -47,13 +46,14 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       setLoading(false);
       return;
     } else if (response.body.insert_user.affected_rows) {
-      const response = await login({ email, password });
+      const { error } = await login({
+        email,
+        password,
+      });
 
-      if (response.data.login.error) {
+      if (error) {
         const errorMessage =
-          AuthErrorMessages[
-            response.data.login.error as keyof typeof AuthErrorMessages
-          ];
+          AuthErrorMessages[error as keyof typeof AuthErrorMessages];
 
         setError(errorMessage);
         toast.error(errorMessage, {

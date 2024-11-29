@@ -29,4 +29,4 @@ export const { getClient } = registerApolloClient(() => {
   });
 });
 
-export const { query, mutate, subscribe, refetchQueries } = getClient();
+// export const { query, mutate, subscribe, refetchQueries } = getClient();

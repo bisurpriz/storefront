@@ -6,9 +6,7 @@ import Image from "next/image";
 import { getUserFavorites } from "./actions";
 
 const FavoritesPage = async () => {
-  const {
-    data: { user_favorite, user_favorite_aggregate },
-  } = await getUserFavorites({
+  const { user_favorite, user_favorite_aggregate } = await getUserFavorites({
     offset: 0,
   });
 

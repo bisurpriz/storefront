@@ -11,11 +11,12 @@ class ClientFetch extends BaseFetch {
     variables?: any;
   }): Promise<T> {
     const token = Cookies.get(CookieTokens.ACCESS_TOKEN);
+    const guestId = Cookies.get(CookieTokens.GUEST_ID);
 
     try {
       const response = await fetch(
         this.hasuraUrl,
-        this.buildFetchOptions({ token, query, variables }),
+        this.buildFetchOptions({ token, query, variables, guestId }),
       );
 
       const body = await response.json();

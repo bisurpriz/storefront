@@ -5,6 +5,7 @@ class Fetch {
   private fetch: ClientFetch | ServerFetch;
 
   constructor() {
+    console.log("Fetch Service is created.");
     this.fetch =
       typeof window === "undefined" ? new ServerFetch() : new ClientFetch();
   }
@@ -19,11 +20,10 @@ class Fetch {
     tags?: string[];
   }): Promise<T> {
     try {
-      console.log("Requesting:", tags.join(", "));
+      console.log("Requesting:", tags?.join(", "));
       return await this.fetch.request({ query, variables, tags });
     } catch (error) {
       this.handleError(error, query);
-      throw error;
     }
   }
 

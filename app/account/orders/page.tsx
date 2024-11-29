@@ -3,11 +3,11 @@ import { getUserOrders } from "./actions";
 import GuncellenmisSiparislerimSayfasi from "./components/NewOrderDesign";
 
 const OrdersPage = async () => {
-  const { data } = await getUserOrders();
+  const { order } = await getUserOrders();
 
   return (
     <OrderCustomizableModalProvider>
-      <GuncellenmisSiparislerimSayfasi orderData={data} />
+      <GuncellenmisSiparislerimSayfasi order={order} />
     </OrderCustomizableModalProvider>
   );
 };

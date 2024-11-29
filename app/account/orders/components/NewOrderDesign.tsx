@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { OrderItemStatus } from "@/common/enums/Order/product";
+import StatusBadge from "@/components/StatusBadge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -8,21 +11,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
-import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { localeFormat } from "@/utils/format";
-import { OrderItemStatus } from "@/common/enums/Order/product";
-import StatusBadge from "@/components/StatusBadge";
 import { useOrderCustomizableModal } from "@/contexts/OrderCustomizableModal";
+import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { localeFormat } from "@/utils/format";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function GuncellenmisSiparislerimSayfasi({
-  orderData,
+  order,
 }: {
-  orderData: GetUserOrdersQuery;
+  order: GetUserOrdersQuery["order"];
 }) {
   const [selectedOrder, setSelectedOrder] = useState<
     GetUserOrdersQuery["order"][0]["tenant_orders"][0]["order_items"][0] | null
@@ -32,7 +32,7 @@ export default function GuncellenmisSiparislerimSayfasi({
   return (
     <div className="container mx-auto p-4">
       <h1 className="mb-6 text-2xl font-bold">Siparişlerim</h1>
-      {orderData.order.map((order) => (
+      {order.map((order) => (
         <Card key={order.id} className="mb-6">
           <CardHeader>
             <CardTitle className="flex w-full items-start justify-between">

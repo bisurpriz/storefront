@@ -12,9 +12,7 @@ export default async function CartCustomizePage(props) {
   if (!oId) return null;
 
   const {
-    data: {
-      order_by_pk: { created_at, tenant_orders },
-    },
+    order_by_pk: { created_at, tenant_orders },
   } = await getOrderById(oId);
 
   const hasNoCustomizableItems = tenant_orders.every((tenant_order) =>

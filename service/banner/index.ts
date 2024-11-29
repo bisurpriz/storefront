@@ -1,0 +1,9 @@
+export const GetBannersDocument = `query getBanners @cached {
+  system_banner {
+    expire_date
+    id
+    name
+    path
+    redirect_link
+  }
+}`;

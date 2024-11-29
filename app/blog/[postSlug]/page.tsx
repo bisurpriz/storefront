@@ -38,9 +38,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { postSlug } = await props.params;
 
-  const {
-    data: { blog },
-  } = await getBlogPostIdsAndSlug(postSlug);
+  const { blog } = await getBlogPostIdsAndSlug(postSlug);
 
   const post = blog[0];
 
@@ -61,9 +59,7 @@ export async function generateMetadata(props: {
 
 export default async function BlogPostPage({ params }) {
   const { postSlug } = await params;
-  const {
-    data: { blog },
-  } = await cachedGetBlogPostIdsAndSlug(postSlug);
+  const { blog } = await cachedGetBlogPostIdsAndSlug(postSlug);
 
   const post = blog[0];
 

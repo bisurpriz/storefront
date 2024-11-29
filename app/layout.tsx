@@ -106,8 +106,8 @@ export default async function RootLayout({
 
   const [selectedPlaces, hasSeenLocationModal, userId] = [
     get(CookieTokens.LOCATION_ID),
-    get(CookieTokens.HAS_SEEN_LOCATION_MODAL),
-    get(CookieTokens.USER_ID).value,
+    get(CookieTokens.HAS_SEEN_LOCATION_MODAL)?.value,
+    get(CookieTokens.USER_ID)?.value,
   ];
 
   const isBot = userAgent({

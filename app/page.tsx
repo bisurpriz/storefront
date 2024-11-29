@@ -7,12 +7,9 @@ import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
 import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
-import { query } from "@/graphql/lib/client";
-import {
-  GetAllCategoriesDocument,
-  GetAllCategoriesQuery,
-  GetAllCategoriesQueryVariables,
-} from "@/graphql/queries/categories/getCategories.generated";
+import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { GetCategoriesDocument } from "@/service/category";
+import { BonnmarseApi } from "@/service/fetch";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { Suspense } from "react";
 
@@ -26,11 +23,8 @@ export default async function Page(props: {
 
   const viewport = await getServerSideViewPort();
 
-  const {
-    data: { category },
-  } = await query<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({
-    query: GetAllCategoriesDocument,
-    fetchPolicy: "cache-first",
+  const { category } = await BonnmarseApi.request<GetAllCategoriesQuery>({
+    query: GetCategoriesDocument,
   });
 
   return (
