@@ -3,22 +3,22 @@ import React from "react";
 
 const ProductImageGalleryLoading = () => {
   return (
-    <div className="w-full flex items-start justify-center gap-2 lg:max-h-[500px]  max-lg:flex-col-reverse">
-      <div className="flex flex-col gap-2  max-lg:flex-row items-center justify-start max-h-[500px] h-full overflow-hidden bg-gray-100 rounded-lg p-2">
+    <div className="flex w-full items-start justify-center gap-2 max-lg:flex-col-reverse lg:max-h-[500px]">
+      <div className="flex h-full max-h-[500px] flex-col items-center justify-start gap-2 overflow-hidden rounded-lg bg-gray-100 p-2 max-lg:flex-row">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="w-20 h-20 bg-gray-200 rounded-lg animate-pulse"
+            className="h-20 w-20 animate-pulse rounded-lg bg-gray-200"
           />
         ))}
       </div>
       <div
         className={clsx(
-          "flex flex-1 items-start justify-center overflow-hidden relative",
-          "h-[500px] w-full object-contain border border-gray-200 rounded-lg aspect-square bg-slate-500"
+          "relative flex flex-1 items-start justify-center overflow-hidden",
+          "aspect-square h-[500px] w-full rounded-lg border border-gray-200 bg-slate-500 object-contain",
         )}
       >
-        <div className="w-full h-full bg-gray-200 animate-pulse" />
+        <div className="h-full w-full animate-pulse bg-gray-200" />
       </div>
     </div>
   );

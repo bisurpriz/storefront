@@ -2,36 +2,36 @@ import React from "react";
 
 const CartLoading = () => {
   return (
-    <div className="w-full p-4 bg-slate-600 animate-pulse rounded-lg">
-      <div className="flex items-center justify-between mb-4">
+    <div className="w-full animate-pulse rounded-lg bg-slate-600 p-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-14 h-14 bg-slate-700 rounded-lg"></div>
+          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
           <div className="flex flex-col gap-1">
-            <div className="w-24 h-4 bg-slate-700 rounded-lg"></div>
-            <div className="w-16 h-4 bg-slate-700 rounded-lg"></div>
+            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
+            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
           </div>
         </div>
-        <div className="w-8 h-8 bg-slate-700 rounded-lg"></div>
+        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
       </div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-14 h-14 bg-slate-700 rounded-lg"></div>
+          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
           <div className="flex flex-col gap-1">
-            <div className="w-24 h-4 bg-slate-700 rounded-lg"></div>
-            <div className="w-16 h-4 bg-slate-700 rounded-lg"></div>
+            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
+            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
           </div>
         </div>
-        <div className="w-8 h-8 bg-slate-700 rounded-lg"></div>
+        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-14 h-14 bg-slate-700 rounded-lg"></div>
+          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
           <div className="flex flex-col gap-1">
-            <div className="w-24 h-4 bg-slate-700 rounded-lg"></div>
-            <div className="w-16 h-4 bg-slate-700 rounded-lg"></div>
+            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
+            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
           </div>
         </div>
-        <div className="w-8 h-8 bg-slate-700 rounded-lg"></div>
+        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
       </div>
     </div>
   );

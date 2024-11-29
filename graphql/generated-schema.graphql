@@ -776,6 +776,368 @@ input bigint_comparison_exp {
   _nin: [bigint!]
 }
 
+"""blog posts"""
+type blog {
+  author: String
+  categories: [Int!]!
+  content: String!
+  created_at: timestamptz!
+  featured_image: String!
+  id: Int!
+  keywords: [String!]!
+  meta_description: String!
+  meta_title: String!
+  slug: String!
+  summary: String
+  title: String!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "blog"
+"""
+type blog_aggregate {
+  aggregate: blog_aggregate_fields
+  nodes: [blog!]!
+}
+
+"""
+aggregate fields of "blog"
+"""
+type blog_aggregate_fields {
+  avg: blog_avg_fields
+  count(columns: [blog_select_column!], distinct: Boolean): Int!
+  max: blog_max_fields
+  min: blog_min_fields
+  stddev: blog_stddev_fields
+  stddev_pop: blog_stddev_pop_fields
+  stddev_samp: blog_stddev_samp_fields
+  sum: blog_sum_fields
+  var_pop: blog_var_pop_fields
+  var_samp: blog_var_samp_fields
+  variance: blog_variance_fields
+}
+
+"""aggregate avg on columns"""
+type blog_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "blog". All fields are combined with a logical 'AND'.
+"""
+input blog_bool_exp {
+  _and: [blog_bool_exp!]
+  _not: blog_bool_exp
+  _or: [blog_bool_exp!]
+  author: String_comparison_exp
+  categories: Int_array_comparison_exp
+  content: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  featured_image: String_comparison_exp
+  id: Int_comparison_exp
+  keywords: String_array_comparison_exp
+  meta_description: String_comparison_exp
+  meta_title: String_comparison_exp
+  slug: String_comparison_exp
+  summary: String_comparison_exp
+  title: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "blog"
+"""
+enum blog_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  blog_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "blog"
+"""
+input blog_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "blog"
+"""
+input blog_insert_input {
+  author: String
+  categories: [Int!]
+  content: String
+  created_at: timestamptz
+  featured_image: String
+  id: Int
+  keywords: [String!]
+  meta_description: String
+  meta_title: String
+  slug: String
+  summary: String
+  title: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type blog_max_fields {
+  author: String
+  categories: [Int!]
+  content: String
+  created_at: timestamptz
+  featured_image: String
+  id: Int
+  keywords: [String!]
+  meta_description: String
+  meta_title: String
+  slug: String
+  summary: String
+  title: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type blog_min_fields {
+  author: String
+  categories: [Int!]
+  content: String
+  created_at: timestamptz
+  featured_image: String
+  id: Int
+  keywords: [String!]
+  meta_description: String
+  meta_title: String
+  slug: String
+  summary: String
+  title: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "blog"
+"""
+type blog_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [blog!]!
+}
+
+"""
+on_conflict condition type for table "blog"
+"""
+input blog_on_conflict {
+  constraint: blog_constraint!
+  update_columns: [blog_update_column!]! = []
+  where: blog_bool_exp
+}
+
+"""Ordering options when selecting data from "blog"."""
+input blog_order_by {
+  author: order_by
+  categories: order_by
+  content: order_by
+  created_at: order_by
+  featured_image: order_by
+  id: order_by
+  keywords: order_by
+  meta_description: order_by
+  meta_title: order_by
+  slug: order_by
+  summary: order_by
+  title: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: blog"""
+input blog_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "blog"
+"""
+enum blog_select_column {
+  """column name"""
+  author
+
+  """column name"""
+  categories
+
+  """column name"""
+  content
+
+  """column name"""
+  created_at
+
+  """column name"""
+  featured_image
+
+  """column name"""
+  id
+
+  """column name"""
+  keywords
+
+  """column name"""
+  meta_description
+
+  """column name"""
+  meta_title
+
+  """column name"""
+  slug
+
+  """column name"""
+  summary
+
+  """column name"""
+  title
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "blog"
+"""
+input blog_set_input {
+  author: String
+  categories: [Int!]
+  content: String
+  created_at: timestamptz
+  featured_image: String
+  id: Int
+  keywords: [String!]
+  meta_description: String
+  meta_title: String
+  slug: String
+  summary: String
+  title: String
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type blog_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type blog_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type blog_stddev_samp_fields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "blog"
+"""
+input blog_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: blog_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input blog_stream_cursor_value_input {
+  author: String
+  categories: [Int!]
+  content: String
+  created_at: timestamptz
+  featured_image: String
+  id: Int
+  keywords: [String!]
+  meta_description: String
+  meta_title: String
+  slug: String
+  summary: String
+  title: String
+  updated_at: timestamptz
+}
+
+"""aggregate sum on columns"""
+type blog_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "blog"
+"""
+enum blog_update_column {
+  """column name"""
+  author
+
+  """column name"""
+  categories
+
+  """column name"""
+  content
+
+  """column name"""
+  created_at
+
+  """column name"""
+  featured_image
+
+  """column name"""
+  id
+
+  """column name"""
+  keywords
+
+  """column name"""
+  meta_description
+
+  """column name"""
+  meta_title
+
+  """column name"""
+  slug
+
+  """column name"""
+  summary
+
+  """column name"""
+  title
+
+  """column name"""
+  updated_at
+}
+
+input blog_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: blog_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: blog_set_input
+
+  """filter the rows which have to be updated"""
+  where: blog_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type blog_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type blog_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type blog_variance_fields {
+  id: Float
+}
+
 """sepet"""
 type cart {
   content(
@@ -5786,6 +6148,19 @@ type mutation_root {
   delete_answer_by_pk(id: bigint!): answer
 
   """
+  delete data from the table: "blog"
+  """
+  delete_blog(
+    """filter the rows which have to be deleted"""
+    where: blog_bool_exp!
+  ): blog_mutation_response
+
+  """
+  delete single row from the table: "blog"
+  """
+  delete_blog_by_pk(id: Int!): blog
+
+  """
   delete data from the table: "cart"
   """
   delete_cart(
@@ -6402,6 +6777,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: answer_on_conflict
   ): answer
+
+  """
+  insert data into the table: "blog"
+  """
+  insert_blog(
+    """the rows to be inserted"""
+    objects: [blog_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: blog_on_conflict
+  ): blog_mutation_response
+
+  """
+  insert a single row into the table: "blog"
+  """
+  insert_blog_one(
+    """the row to be inserted"""
+    object: blog_insert_input!
+
+    """upsert condition"""
+    on_conflict: blog_on_conflict
+  ): blog
 
   """
   insert data into the table: "cart"
@@ -7440,6 +7837,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [answer_updates!]!
   ): [answer_mutation_response]
+
+  """
+  update data of the table: "blog"
+  """
+  update_blog(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: blog_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: blog_set_input
+
+    """filter the rows which have to be updated"""
+    where: blog_bool_exp!
+  ): blog_mutation_response
+
+  """
+  update single row of the table: "blog"
+  """
+  update_blog_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: blog_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: blog_set_input
+    pk_columns: blog_pk_columns_input!
+  ): blog
+
+  """
+  update multiples rows of table: "blog"
+  """
+  update_blog_many(
+    """updates to execute, in order"""
+    updates: [blog_updates!]!
+  ): [blog_mutation_response]
 
   """
   update data of the table: "cart"
@@ -15951,6 +16382,49 @@ type query_root {
   answer_by_pk(id: bigint!): answer
 
   """
+  fetch data from the table: "blog"
+  """
+  blog(
+    """distinct select on columns"""
+    distinct_on: [blog_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [blog_order_by!]
+
+    """filter the rows returned"""
+    where: blog_bool_exp
+  ): [blog!]!
+
+  """
+  fetch aggregated fields from the table: "blog"
+  """
+  blog_aggregate(
+    """distinct select on columns"""
+    distinct_on: [blog_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [blog_order_by!]
+
+    """filter the rows returned"""
+    where: blog_bool_exp
+  ): blog_aggregate!
+
+  """fetch data from the table: "blog" using primary key columns"""
+  blog_by_pk(id: Int!): blog
+
+  """
   fetch data from the table: "cart"
   """
   cart(
@@ -19936,6 +20410,63 @@ type subscription_root {
     """filter the rows returned"""
     where: answer_bool_exp
   ): [answer!]!
+
+  """
+  fetch data from the table: "blog"
+  """
+  blog(
+    """distinct select on columns"""
+    distinct_on: [blog_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [blog_order_by!]
+
+    """filter the rows returned"""
+    where: blog_bool_exp
+  ): [blog!]!
+
+  """
+  fetch aggregated fields from the table: "blog"
+  """
+  blog_aggregate(
+    """distinct select on columns"""
+    distinct_on: [blog_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [blog_order_by!]
+
+    """filter the rows returned"""
+    where: blog_bool_exp
+  ): blog_aggregate!
+
+  """fetch data from the table: "blog" using primary key columns"""
+  blog_by_pk(id: Int!): blog
+
+  """
+  fetch data from the table in a streaming manner: "blog"
+  """
+  blog_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [blog_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: blog_bool_exp
+  ): [blog!]!
 
   """
   fetch data from the table: "cart"

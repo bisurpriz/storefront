@@ -16,7 +16,7 @@ const FilterDropdownList: FC<FilterDropdownListProps> = ({
 }) => {
   return (
     <div
-      className="overflow-y-auto flex flex-col items-start justify-start max-md:gap-2 gap-1 px-4"
+      className="flex flex-col items-start justify-start gap-1 overflow-y-auto px-4 max-md:gap-2"
       style={{
         maxHeight: "40vh",
       }}
@@ -27,13 +27,13 @@ const FilterDropdownList: FC<FilterDropdownListProps> = ({
           <label
             key={index}
             className={clsx(
-              "w-full cursor-pointer flex items-center justify-start gap-2 text-sm bg-white border border-gray-200 rounded-md px-2 last:mb-4",
+              "flex w-full cursor-pointer items-center justify-start gap-2 rounded-md border border-gray-200 bg-white px-2 text-sm last:mb-4",
               {
                 "border-gray-300": isSelected,
               },
               {
                 "border-primary": isSelected,
-              }
+              },
             )}
           >
             <Checkbox

@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { motion } from "framer-motion";
-import { CheckCheck, CheckCircleIcon } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 import { FC, InputHTMLAttributes, LegacyRef } from "react";
 
 const inputVariants = cva(
-  "flex h-9 border-2 w-full placeholder:text-xs lg:placeholder:text-sm rounded-md  border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  "flex h-9 border-2 w-full placeholder:text-xs lg:placeholder:text-sm rounded-md border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -20,7 +20,7 @@ const inputVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -54,7 +54,7 @@ const Input: FC<InputProps> = ({
         {!!icon && (
           <span
             className={cn(
-              "absolute left-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none"
+              "pointer-events-none absolute left-2 top-1/2 flex -translate-y-1/2 items-center",
             )}
           >
             {icon}
@@ -75,7 +75,7 @@ const Input: FC<InputProps> = ({
             transition={{ duration: 0.3 }}
             className="absolute right-2 top-1/2 -translate-y-1/2"
           >
-            <CheckCheck className="w-6 h-6 absolute right-2 top-1/2 -translate-y-1/2 text-green-500" />
+            <CheckCheck className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 text-green-500" />
           </motion.div>
         )}
       </div>

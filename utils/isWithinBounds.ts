@@ -1,7 +1,7 @@
 export function isWithinBounds(
   lat: number,
   lng: number,
-  bounds: { north: any; south: any; east: any; west: any }
+  bounds: { north: any; south: any; east: any; west: any },
 ) {
   return (
     lat >= bounds.south &&

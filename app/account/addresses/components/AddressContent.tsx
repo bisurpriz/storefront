@@ -37,7 +37,7 @@ const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
         disabled
         className="mb-4"
       />
-      <div className="w-full justify-end flex gap-4">
+      <div className="flex w-full justify-end gap-4">
         <Button
           className="text-sm"
           variant="destructive"

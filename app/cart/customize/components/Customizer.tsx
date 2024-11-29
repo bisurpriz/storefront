@@ -25,7 +25,7 @@ const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
     return (
       <div
         key={oi.product.name + oindex}
-        className="flex flex-col gap-4 relative rounded-lg ring ring-2 p-4"
+        className="relative flex flex-col gap-4 rounded-lg p-4 ring ring-2"
       >
         <div className="absolute left-0 top-0 -translate-y-1/2 translate-x-1/3">
           <Chip
@@ -35,13 +35,13 @@ const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
           />
         </div>
         <div className="grid grid-cols-12 gap-4">
-          <div className="flex items-start justify-center col-span-4 max-lg:col-span-6 max-md:col-span-full">
+          <div className="col-span-4 flex items-start justify-center max-lg:col-span-6 max-md:col-span-full">
             <Image
               src={getImageUrlFromPath(oi?.product?.image_url[0])}
               alt="Product Image"
               width={320}
               height={320}
-              className="rounded-lg max-w-xs object-cover shadow-sm"
+              className="max-w-xs rounded-lg object-cover shadow-sm"
               style={{
                 aspectRatio: "320/320",
                 objectFit: "contain",
@@ -49,9 +49,9 @@ const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
               }}
             />
           </div>
-          <div className="flex flex-col gap-1 col-span-8 max-lg:col-span-6 max-md:col-span-full">
+          <div className="col-span-8 flex flex-col gap-1 max-lg:col-span-6 max-md:col-span-full">
             <div>
-              <h1 className="text-2xl font-bold font-mono">
+              <h1 className="font-mono text-2xl font-bold">
                 {oi.product.name}
               </h1>
               <span className="text-xs text-slate-400">

@@ -1,41 +1,41 @@
 "use client";
 
-import CreditCardInput from "@/components/CreditCardInput";
-import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
-import TextField from "@/components/TextField";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
-import { useRouter } from "next/navigation";
-import { useCart } from "@/contexts/CartContext";
-import { useEffect, useState, useTransition } from "react";
+import { CookieTokens } from "@/app/@auth/contants";
+import { getIpAddress } from "@/app/actions";
 import {
   getConversationId,
   initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
-import { useUser } from "@/contexts/AuthContext";
-import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
-import { getIpAddress } from "@/app/actions";
-import useResponsive from "@/hooks/useResponsive";
-import { CookieTokens } from "@/app/@auth/contants";
-import Cookies from "js-cookie";
 import {
   Initialize3dsPaymentRequest,
   Locale,
 } from "@/app/iyzico-payment/types";
-import clsx from "clsx";
-import usePopup from "@/hooks/usePopup";
-import { Button } from "@/components/ui/button";
-import { createOrderAction } from "../../actions";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
-import User from "@/components/Icons/User";
+import CreditCardInput from "@/components/CreditCardInput";
+import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
 import Code from "@/components/Icons/Code";
 import Report from "@/components/Icons/Report";
-import { CartStepPaths } from "../../constants";
-import { useProgress } from "react-transition-progress";
-import { useContract } from "@/contexts/ContractContext";
-import { toast } from "sonner";
+import User from "@/components/Icons/User";
 import Modal from "@/components/Modal";
+import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
+import { useContract } from "@/contexts/ContractContext";
+import usePopup from "@/hooks/usePopup";
+import useResponsive from "@/hooks/useResponsive";
+import { yupResolver } from "@hookform/resolvers/yup";
+import clsx from "clsx";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useProgress } from "react-transition-progress";
+import { toast } from "sonner";
+import { object, string } from "yup";
+import { createOrderAction } from "../../actions";
+import { CartStepPaths } from "../../constants";
+import { OrderDetailFormData } from "../OrderDetail/ReceiverForm";
 
 export type CreditCardForm = {
   creditCardNumber: string;
@@ -58,7 +58,7 @@ const schema = object().shape({
       } else {
         return false;
       }
-    }
+    },
   ),
   creditCardName: string().required("Kart üzerindeki isim zorunludur"),
   creditCardDate: string()
@@ -161,6 +161,16 @@ const CreditCardForm = () => {
         if (!ip) {
           toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
         }
+
+        const isCouponApplied = cost.isCouponApplied;
+
+        const couponInfo = isCouponApplied
+          ? {
+              code: cost.couponCode,
+              guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
+            }
+          : undefined;
+
         const variables = {
           basketId,
           basketItems: createBasketItems(cartItems),
@@ -205,20 +215,11 @@ const CreditCardForm = () => {
           installment: 1,
         } as Initialize3dsPaymentRequest;
 
-        const isCouponApplied = cost.isCouponApplied;
-
-        const couponInfo = isCouponApplied
-          ? {
-              code: cost.couponCode,
-              guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
-            }
-          : undefined;
-
         const res = await createOrderAction(
           cartItems,
           detailData,
           conversationId,
-          couponInfo
+          couponInfo,
         );
 
         if (res?.data?.insert_order_one?.id) {
@@ -228,7 +229,7 @@ const CreditCardForm = () => {
           setLoading(false);
           openPopup();
           setErrorMessage(
-            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz."
+            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz.",
           );
           return;
         } else {
@@ -292,16 +293,16 @@ const CreditCardForm = () => {
       {renderPopup(
         <div
           className={clsx(
-            "max-w-screen-sm w-full p-4 bg-white shadow-lg rounded-lg border border-gray-200",
-            "flex flex-col justify-center items-center gap-2",
-            "text-center"
+            "w-full max-w-screen-sm rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
+            "flex flex-col items-center justify-center gap-2",
+            "text-center",
           )}
         >
-          <Report className="text-red-500 text-5xl" />
-          <h2 className="text-lg font-semibold text-gray-700 m-0">
+          <Report className="text-5xl text-red-500" />
+          <h2 className="m-0 text-lg font-semibold text-gray-700">
             Ödeme İşlemi Başarısız
           </h2>
-          <p className="text-sm text-gray-600 m-0">{errorMessage}</p>
+          <p className="m-0 text-sm text-gray-600">{errorMessage}</p>
           <Button
             onClick={handleClosePopupWithClearStates}
             variant="destructive"
@@ -309,14 +310,14 @@ const CreditCardForm = () => {
           >
             Kapat
           </Button>
-        </div>
+        </div>,
       )}
 
       <form
         id="credit-card-form"
         name="credit-card-form"
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full relative flex flex-col justify-center items-center px-4 py-8 bg-white shadow-lg rounded-lg border border-gray-200 gap-4"
+        className="relative flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-8 shadow-lg"
       >
         <Controller
           name="creditCardNumber"
@@ -325,12 +326,13 @@ const CreditCardForm = () => {
             <CreditCardInput
               disabled={loading}
               onChange={onChange}
+              className="h-12 rounded-sm"
               error={!!error}
               errorMessage={error?.message}
             />
           )}
         />
-        <div className="flex flex-col md:flex-row md:justify-start md:items-start w-full gap-4">
+        <div className="flex w-full flex-col gap-4 md:flex-row md:items-start md:justify-start">
           <Controller
             name="creditCardName"
             control={control}
@@ -339,6 +341,7 @@ const CreditCardForm = () => {
                 disabled={loading}
                 id="creditCardName"
                 fullWidth
+                className="h-12 rounded-sm"
                 label="İsim Soyisim"
                 placeholder="Lütfen kart üzerindeki ismi soyismi giriniz"
                 onChange={onChange}
@@ -357,6 +360,7 @@ const CreditCardForm = () => {
                 errorMessage={error?.message}
                 onChange={(e, val) => onChange(val)}
                 disabled={loading}
+                className="h-12 rounded-sm"
               />
             )}
           />
@@ -369,6 +373,7 @@ const CreditCardForm = () => {
                 label="CVV"
                 placeholder="123"
                 id="creditCardCvv"
+                className="h-12 rounded-sm"
                 maxLength={3}
                 onChange={(e) => {
                   const inputValue = e.target.value.replace(/\D/g, "");
@@ -386,7 +391,7 @@ const CreditCardForm = () => {
         <iframe
           src={`data:text/html;base64,${base64PasswordHtml}`}
           className={clsx(
-            "w-full h-full flex justify-center items-center p-4 bg-white shadow-lg rounded-lg border border-gray-200 min-h-[400px]"
+            "flex h-full min-h-[400px] w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
           )}
           onLoad={() => {
             const iframeWindow =

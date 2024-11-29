@@ -11,25 +11,25 @@ const OrderItem = ({
   const wasCustomized = order_items.some(
     (oi) =>
       oi?.order_item_special_images.length > 0 ||
-      oi?.order_item_special_texts.length > 0
+      oi?.order_item_special_texts.length > 0,
   );
 
   return (
-    <div className="flex items-center justify-start gap-4 max-xs:flex-wrap max-xs:items-center max-xs:w-full">
+    <div className="flex items-center justify-start gap-4 max-xs:w-full max-xs:flex-wrap max-xs:items-center">
       {order_items.map((oi, order_index) => (
         <div key={oi?.id}>
-          <div className="py-2 capitalize ">
+          <div className="py-2 capitalize">
             <div className="flex items-start justify-start gap-4">
               <Image
                 src={getImageUrlFromPath(oi?.product?.image_url?.[0])}
                 alt="image"
-                className={`object-contain rounded-md aspect-square w-32 h-32 max-sm:h-24 max-sm:w-24 max-sm:self-center border px-0.5`}
+                className={`aspect-square h-32 w-32 rounded-md border object-contain px-0.5 max-sm:h-24 max-sm:w-24 max-sm:self-center`}
                 width={200}
                 height={200}
               />
               {wasCustomized ? (
                 <div>
-                  <h3 className="text-base text-slate-600 underline mb-4">
+                  <h3 className="mb-4 text-base text-slate-600 underline">
                     Özelleştirme{" "}
                     {oi?.order_item_special_texts.length > 0 ||
                     oi?.order_item_special_images.length > 0
@@ -38,30 +38,30 @@ const OrderItem = ({
                   </h3>
                   {(oi?.order_item_special_texts.length ||
                     oi?.order_item_special_images.length) && (
-                    <ul className="flex-1 max-2xl:w-full min-w-[300px] mb-4">
+                    <ul className="mb-4 min-w-[300px] flex-1 max-2xl:w-full">
                       {oi?.order_item_special_texts?.map((text, i) => (
                         <li
                           key={i}
-                          className="text-xs text-slate-400 flex items-center justify-start gap-2 my-1"
+                          className="my-1 flex items-center justify-start gap-2 text-xs text-slate-400"
                         >
-                          <span className="p-1 bg-slate-100 rounded-md border border-slate-200">
+                          <span className="rounded-md border border-slate-200 bg-slate-100 p-1">
                             {order_index + 1}. ürünün {i + 1}. özel metni:
                           </span>
                           {text.content}
                         </li>
                       ))}
                       {oi?.order_item_special_images.length > 0 && (
-                        <li className="text-xs text-slate-400 flex items-center justify-start gap-2 my-1 max-md:flex-col max-md:items-start max-md:justify-center">
-                          <span className="p-1 bg-slate-100 rounded-md border border-slate-200 my-1">
+                        <li className="my-1 flex items-center justify-start gap-2 text-xs text-slate-400 max-md:flex-col max-md:items-start max-md:justify-center">
+                          <span className="my-1 rounded-md border border-slate-200 bg-slate-100 p-1">
                             {order_index + 1}. ürünün özel görselleri:
                           </span>
-                          <div className="flex items-center justify-start gap-4 my-2 overflow-hidden overflow-x-auto">
+                          <div className="my-2 flex items-center justify-start gap-4 overflow-hidden overflow-x-auto">
                             {oi?.order_item_special_images.map((image, i) => (
                               <Image
                                 key={i}
                                 src={getImageUrlFromPath(image.image_url)}
                                 alt="image"
-                                className="object-contain w-10 h-10 rounded-lg my-2"
+                                className="my-2 h-10 w-10 rounded-lg object-contain"
                                 width={100}
                                 height={100}
                               />
@@ -76,7 +76,7 @@ const OrderItem = ({
             </div>
             <Link
               href={`/${oi?.product?.product_categories[0].category?.slug}/${oi?.product?.slug}?pid=${oi?.product_id}`}
-              className="text-sm mt-1 block"
+              className="mt-1 block text-sm"
             >
               {oi?.product?.name}{" "}
               {oi?.product?.quantity > 1

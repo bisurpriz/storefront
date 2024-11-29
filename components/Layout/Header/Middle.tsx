@@ -8,21 +8,21 @@ const HeaderMiddle = () => {
   return (
     <div
       className={clsx(
-        "w-full flex items-end justify-between gap-4 lg:gap-8 mt-4 mb-2 px-4",
-        "max-md:justify-center max-md:items-center max-md:mt-2 max-md:mb-0"
+        "mb-2 mt-4 flex w-full items-end justify-between gap-4 px-4 lg:gap-8",
+        "max-md:mb-0 max-md:mt-2 max-md:items-center max-md:justify-center",
       )}
     >
       <Link href="/" className="min-w-[180px]">
         <Image
           src={"/logo.svg"}
-          className="w-44 h-14"
+          className="h-14 w-44"
           width={180}
           height={55}
           alt="BiSürpriz Logo"
         />
       </Link>
 
-      <div className="max-md:hidden w-full">
+      <div className="w-full max-md:hidden">
         <Search />
       </div>
       <div className="max-md:hidden">

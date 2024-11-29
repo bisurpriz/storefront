@@ -44,7 +44,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
       const newSelectedText = [...prev];
       const index = newSelectedText.findIndex(
         (text) =>
-          text.quantity_index === quantity_index && text.keyIndex === keyIndex
+          text.quantity_index === quantity_index && text.keyIndex === keyIndex,
       );
 
       if (index === -1) {
@@ -69,7 +69,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
       if (!prev) return [{ imageFile: files, quantity_index }];
       const newSelectedImages = [...prev];
       const index = newSelectedImages.findIndex(
-        (image) => image.quantity_index === quantity_index
+        (image) => image.quantity_index === quantity_index,
       );
       if (index === -1) {
         newSelectedImages.push({
@@ -121,7 +121,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
             content: text.content,
             order_item_id: id,
             quantity_index: text.quantity_index,
-          }))
+          })),
         );
 
         if (res.errors) {
@@ -147,7 +147,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
   const disableButton =
     orderItem.product.product_customizable_areas.reduce(
       (acc, pca) => acc + quantity * pca.count,
-      0
+      0,
     ) ===
     (order_item_special_images?.length || 0) +
       (order_item_special_texts?.length || 0);
@@ -157,20 +157,20 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
       {Array.from({ length: quantity }).map((_, quantity_index) => (
         <div
           key={quantity_index}
-          className="flex flex-col gap-4 relative rounded-lg"
+          className="relative flex flex-col gap-4 rounded-lg"
         >
           <div className="flex flex-col gap-2">
-            <p className="text-xs text-slate-600 font-semibold font-mono whitespace-nowrap">
+            <p className="whitespace-nowrap font-mono text-xs font-semibold text-slate-600">
               {quantity_index + 1}. ürün özelleştirmesi
             </p>
             {product.product_customizable_areas?.map((area, tindex) => {
               const hasSpecialImage = order_item_special_images?.filter(
                 (specialImage) =>
-                  specialImage?.quantity_index === quantity_index
+                  specialImage?.quantity_index === quantity_index,
               );
 
               const hasSpecialText = order_item_special_texts?.filter(
-                (specialText) => specialText?.quantity_index === quantity_index
+                (specialText) => specialText?.quantity_index === quantity_index,
               );
               return area.customizable_area.type ===
                 CustomizableAreaType.TEXT ? (
@@ -198,7 +198,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
                         <div className="flex items-center gap-2">
                           <Image
                             src={getImageUrlFromPath(
-                              hasSpecialImage[keyIndex]?.image_url
+                              hasSpecialImage[keyIndex]?.image_url,
                             )}
                             alt="Special Image"
                             width={64}

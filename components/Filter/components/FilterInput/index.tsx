@@ -42,7 +42,7 @@ const FilterInput: FC<FilterInputProps> = ({
   const debouncedFilter = useDebounce(filter, 500);
 
   const filteredOptions = options.filter(({ key }) =>
-    key.toLowerCase().includes(debouncedFilter.toLowerCase())
+    key.toLowerCase().includes(debouncedFilter.toLowerCase()),
   );
 
   const handleItemSelect = (item: FilterInputOption) => {

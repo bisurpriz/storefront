@@ -1,11 +1,11 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
-import { calculateCommissionedAmount } from "../iyzico-payment/utils";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
+import { calculateCommissionedAmount, getPrice } from "../iyzico-payment/utils";
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
 
 const getOrderAddresses = (
   orderDetail: OrderDetailFormData,
-  cartItems: ProductForCart[]
+  cartItems: ProductForCart[],
 ): CreateOrderMutationVariables["object"]["order_addresses"] => {
   const {
     receiver_address,
@@ -42,8 +42,8 @@ const getOrderAddresses = (
       receiver_surname,
       receiver_phone,
       place_id:
-        cartItems.find((i) => i.deliveryLocation.placeId)?.deliveryLocation
-          ?.placeId ?? null,
+        cartItems.find((i) => i?.deliveryLocation?.placeId)?.deliveryLocation
+          ?.placeId ?? orderDetail?.place_id,
     },
   ];
 
@@ -53,20 +53,23 @@ const getOrderAddresses = (
 };
 
 const getTenantOrders = (
-  cartItems: ProductForCart[]
+  cartItems: ProductForCart[],
 ): CreateOrderMutationVariables["object"]["tenant_orders"] => {
   const tenantGrouped = cartItems.reduce<
     {
       [key: string]: ProductForCart[];
     }[]
-  >((acc, item) => {
-    const tenantId = item.tenant.id;
-    if (!acc[tenantId]) {
-      acc[tenantId] = [];
-    }
-    acc[tenantId].push(item);
-    return acc;
-  }, {} as { [key: string]: ProductForCart[] }[]);
+  >(
+    (acc, item) => {
+      const tenantId = item.tenant.id;
+      if (!acc[tenantId]) {
+        acc[tenantId] = [];
+      }
+      acc[tenantId].push(item);
+      return acc;
+    },
+    {} as { [key: string]: ProductForCart[] }[],
+  );
 
   const tenant_orders = Object.keys(tenantGrouped).map((key) => {
     const tenantItems: ProductForCart[] = tenantGrouped[key];
@@ -76,8 +79,8 @@ const getTenantOrders = (
         data: tenantItems.map((item, index) => {
           const { commission, commissionedAmount } =
             calculateCommissionedAmount(
-              item.discount_price.toString(),
-              item.tenant.tenants[0].commision_rate
+              getPrice(item),
+              item.tenant.tenants[0].commision_rate,
             );
           return {
             product_id: item.id,
@@ -101,7 +104,7 @@ const getTenantOrders = (
 
 export const createOrderDataMapper = (
   cartItems: ProductForCart[],
-  orderDetail: OrderDetailFormData
+  orderDetail: OrderDetailFormData,
 ): CreateOrderMutationVariables => {
   const order_addresses = getOrderAddresses(orderDetail, cartItems);
   const tenant_orders = getTenantOrders(cartItems);

@@ -1,0 +1,9 @@
+export const FireBaseCloudMessagingDocument = `
+    mutation createOrUpdateFcmToken($token: String!) {
+  insert_fcm_token(
+    objects: {token: $token, last_used: "now()"}
+    on_conflict: {constraint: fcm_token_token_user_id_key, update_columns: [last_used]}
+  ) {
+    affected_rows
+  }
+}`;

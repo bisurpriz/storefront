@@ -38,17 +38,18 @@ const authOptions: AuthOptions = {
         }
 
         const { id_token } = account;
-        const loginResponse = await login(
+        const {
+          access_token,
+          error: errors,
+          refresh_token,
+        } = await login(
           { email: null, password: null },
-          { [ID_TOKEN]: `${id_token}` }
+          { [ID_TOKEN]: `${id_token}` },
         );
 
-        if (loginResponse.data.login.error) {
+        if (errors) {
           return false;
-        } else if (
-          loginResponse.data.login.access_token &&
-          loginResponse.data.login.refresh_token
-        ) {
+        } else if (access_token && refresh_token) {
           return true;
         }
       }

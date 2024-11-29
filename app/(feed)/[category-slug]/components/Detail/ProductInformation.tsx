@@ -51,9 +51,9 @@ const DynamicGoogleLocationSelect = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+      <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
     ),
-  }
+  },
 );
 
 const defaultRating = {
@@ -91,7 +91,7 @@ const ProductInformation = ({
         [key]: rateCounts[key] || 0,
       };
     },
-    defaultRating
+    defaultRating,
   );
 
   const isSameDay = shippingType === "SAME_DAY";
@@ -109,7 +109,7 @@ const ProductInformation = ({
       ? false
       : Boolean(
           new Date(productInCart.deliveryDate).getDay() !==
-            new Date(deliveryTime.day).getDay()
+            new Date(deliveryTime.day).getDay(),
         ) || Boolean(productInCart.deliveryTime !== deliveryTime.hour);
 
   useEffect(() => {
@@ -119,40 +119,40 @@ const ProductInformation = ({
   }, []);
 
   return (
-    <div className="flex flex-col items-start justify-start gap-4 w-full h-full rounded-md max-md:w-full  max-md:rounded-none max-md:shadow-none">
-      <div className="rounded-lg w-full flex items-start justify-start flex-col">
-        <h1 className="text-2xl text-gray-700 w-full mb-2">{name}</h1>
+    <div className="flex h-full w-full flex-col items-start justify-start gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
+      <div className="flex w-full flex-col items-start justify-start rounded-lg">
+        <h1 className="mb-2 w-full text-2xl text-gray-700">{name}</h1>
         {vendor && (
-          <div className="text-xs flex items-center max-md:mb-2">
-            <label className="text-gray-700 me-1 font-semibold">Satıcı:</label>
+          <div className="flex items-center text-xs max-md:mb-2">
+            <label className="me-1 font-semibold text-gray-700">Satıcı:</label>
             <Link
               href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
-              className="text-sky-600 font-bold cursor-pointer me-1"
+              className="me-1 cursor-pointer font-bold text-sky-600"
             >
               {vendor.name}
             </Link>
           </div>
         )}
 
-        <div className="flex items-end justify-start gap-2 max-xl:flex-col max-xl:items-start w-full mb-4 md:mt-4">
-          <div className="flex items-center justify-start gap-2 max-lg:items-start max-xl:flex-row max-xl:items-center">
+        <div className="mb-4 flex w-full items-end justify-start gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
+          <div className="flex items-center justify-start gap-2 max-xl:flex-row max-xl:items-center max-lg:items-start">
             {discountRate ? (
-              <span className="text-2xl font-medium text-white max-w-lg bg-red-500 p-2 rounded-xl w-max">
+              <span className="w-max max-w-lg rounded-xl bg-red-500 p-2 text-2xl font-medium text-white">
                 {discountRate}%
               </span>
             ) : null}
             <span className="flex flex-col gap-1">
               {discountPrice && discountPrice < price ? (
-                <h5 className="text-base leading-none font-light text-slate-500 max-w-lg mb-0 whitespace-nowrap">
+                <h5 className="mb-0 max-w-lg whitespace-nowrap text-base font-light leading-none text-slate-500">
                   <del>₺{price?.toFixed(2)}</del>
                 </h5>
               ) : null}
-              <span className="flex items-end gap-2 max-xl:text-start max-xl:flex-row max-xl:items-center">
-                <h1 className="text-3xl leading-none text-primary font-semibold max-w-lg mt-0 whitespace-nowrap">
+              <span className="flex items-end gap-2 max-xl:flex-row max-xl:items-center max-xl:text-start">
+                <h1 className="mt-0 max-w-lg whitespace-nowrap text-3xl font-semibold leading-none text-primary">
                   {getPriceTR(discountPrice)}
                 </h1>
                 {promotion && (
-                  <p className="text-sm leading-none text-primary max-w-lg mt-0 whitespace-nowrap">
+                  <p className="mt-0 max-w-lg whitespace-nowrap text-sm leading-none text-primary">
                     & {promotion}
                   </p>
                 )}
@@ -168,7 +168,7 @@ const ProductInformation = ({
                 readOnly
               />
             </HoverCardTrigger>
-            <HoverCardContent className="max-w-md w-full">
+            <HoverCardContent className="w-full max-w-md">
               <RatingDetail
                 rateCounts={manipulatedRateCounts}
                 rating={rating}
@@ -204,14 +204,14 @@ const ProductInformation = ({
         />
         {isSameDay && <DynamicGoogleLocationSelect />}
         {showExactTime && (
-          <div className="p-1 px-4 bg-purple-100 bg-opacity-50 rounded-xl my-2">
+          <div className="my-2 rounded-xl bg-purple-100 bg-opacity-50 p-1 px-4">
             <p className="text-xs text-gray-500">
               Ürün gün içinde herhangi bir saatte teslim edilecektir.
             </p>
           </div>
         )}
         {showDaySelect && (
-          <div className="w-full my-2">
+          <div className="my-2 w-full">
             <DaySelect
               deliveryTimes={parseJson(deliveryTimeRanges)}
               onSelect={(date) => setDeliveryTimeHandler(date)}

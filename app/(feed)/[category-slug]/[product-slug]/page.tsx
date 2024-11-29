@@ -1,17 +1,13 @@
-import { query } from "@/graphql/lib/client";
-
-import { FC } from "react";
-import {
-  GetProductImagesDocument,
-  GetProductImagesQuery,
-  GetProductImagesQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
-import { redirect } from "next/navigation";
-import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
-import { WithContext, Product } from "schema-dts";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { PageProps } from "@/.next/types/app/page";
+import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
+import { GetProductImagesQuery } from "@/graphql/queries/products/getProductById.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetProductImagesDocument } from "@/service/product/images";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { redirect } from "next/navigation";
+import { FC } from "react";
+import { Product, WithContext } from "schema-dts";
 
 const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
@@ -21,17 +17,14 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
     return redirect("/");
   }
 
-  const { data } = await query<
-    GetProductImagesQuery,
-    GetProductImagesQueryVariables
-  >({
+  const { product } = await BonnmarseApi.request<GetProductImagesQuery>({
     query: GetProductImagesDocument,
     variables: {
       id,
     },
   });
 
-  if (!data?.product) {
+  if (!product) {
     redirect("/");
   }
 
@@ -40,13 +33,13 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   const productData: WithContext<Product> = {
     "@context": "https://schema.org",
     "@type": "Product",
-    image: getImageUrlFromPath(data.product.image_url[0]),
+    image: getImageUrlFromPath(product.image_url[0]),
   };
 
   return (
     <>
       <NewDesignGallery
-        images={data.product.image_url}
+        images={product.image_url}
         isMobile={viewport === "mobile"}
       />
       <script

@@ -83,7 +83,7 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
       <div
         className={clsx(
           "flex items-center justify-start gap-2 scroll-smooth max-md:overflow-x-auto",
-          "scroll-smooth snap-x snap-mandatory no-scrollbar"
+          "no-scrollbar snap-x snap-mandatory scroll-smooth",
         )}
       >
         <VisibleChecker filterType="category" filterTypes={filterTypes}>
@@ -142,7 +142,7 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
                 selectedCategories
                   .filter((c) => c.value !== value)
                   .map((c) => c.value)
-                  .join(",") || ""
+                  .join(",") || "",
               );
               break;
             default:

@@ -34,22 +34,22 @@ const MenuItem = ({
     <Component
       href={item.href}
       className={clsx(
-        "flex flex-col items-center justify-center text-gray-600 rounded-md p-2 touch-auto",
+        "flex touch-auto flex-col items-center justify-center rounded-md p-2 text-gray-600",
         {
-          "outline-none text-white bg-secondary": selected,
-        }
+          "bg-secondary text-white outline-none": selected,
+        },
       )}
       onClick={onSelect}
     >
       {hasBadge?.badgeShow ? (
         <Badge show={hasBadge.badgeShow} text={hasBadge.badgeText}>
-          <span className="text-2xl flex-1">{item.icon}</span>
+          <span className="flex-1 text-2xl">{item.icon}</span>
         </Badge>
       ) : (
-        <span className="text-2xl flex-1">{item.icon}</span>
+        <span className="flex-1 text-2xl">{item.icon}</span>
       )}
 
-      <span className="text-xs font-medium inline-block max-xs:hidden">
+      <span className="inline-block text-xs font-medium max-xs:hidden">
         {item.name}
       </span>
     </Component>
@@ -67,7 +67,7 @@ const MobileBottomNav = () => {
     const splittedPathname = pathname.split("/");
 
     const index = mobileBottomMenu.findIndex(
-      (item) => item.href === `/${splittedPathname[1]}`
+      (item) => item.href === `/${splittedPathname[1]}`,
     );
     return index === -1 ? 0 : index;
   };
@@ -86,7 +86,7 @@ const MobileBottomNav = () => {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 bg-white z-10 border-t border-gray-200 hidden max-md:block"
+      className="fixed bottom-0 left-0 right-0 z-10 hidden border-t border-gray-200 bg-white max-md:block"
       id="mobile-bottom-nav"
     >
       <div className="grid grid-cols-5 gap-4 p-2">

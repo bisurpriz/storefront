@@ -104,7 +104,7 @@ const ProfileForm = ({
   return user ? (
     <Form
       className={clsx(
-        "flex items-start justify-start flex-wrap gap-12 max-lg:gap-6 max-lg:w-full"
+        "flex flex-wrap items-start justify-start gap-12 max-lg:w-full max-lg:gap-6",
       )}
       control={control}
       onSubmit={handleSubmit}
@@ -112,8 +112,8 @@ const ProfileForm = ({
       <div
         className={clsx(
           "flex flex-col items-start justify-start gap-2",
-          "max-lg:gap-1 max-lg:w-full max-lg:my-2 max-lg:items-center",
-          "max-lg:flex-col-reverse"
+          "max-lg:my-2 max-lg:w-full max-lg:items-center max-lg:gap-1",
+          "max-lg:flex-col-reverse",
         )}
       >
         <p className="text-xs text-slate-400">
@@ -122,12 +122,12 @@ const ProfileForm = ({
         <Image
           src={user.picture || "/avatar.png"}
           alt="Profil resmi"
-          className="rounded-lg w-36 h-36 max-lg:w-48 max-lg:h-48 shadow-sm shadow-7"
+          className="shadow-7 h-36 w-36 rounded-lg shadow-sm max-lg:h-48 max-lg:w-48"
           width={200}
           height={200}
         />
       </div>
-      <div className={"flex flex-col gap-4 flex-1"}>
+      <div className={"flex flex-1 flex-col gap-4"}>
         <Controller
           name="firstname"
           control={control}
@@ -222,11 +222,11 @@ const ProfileForm = ({
       </div>
     </Form>
   ) : (
-    <div className="flex flex-col items-center justify-center gap-2 text-center my-auto">
+    <div className="my-auto flex flex-col items-center justify-center gap-2 text-center">
       <h1 className="text-2xl font-semibold tracking-wide">
         Kullanıcı verileri alınıken bir hata oluştu.
       </h1>
-      <p className="text-sm text-slate-400 capitalize">
+      <p className="text-sm capitalize text-slate-400">
         {error?.message || "Lütfen daha sonra tekrar deneyin."}
       </p>
 

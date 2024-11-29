@@ -11,10 +11,7 @@ export const orderDetailSchema = object({
     .email("Geçerli bir e-posta adresi giriniz")
     .required("E-posta adresi gereklidir"),
   invoice_type: string().oneOf(["person", "company"]).required(),
-  invoice_company_address: string().when("invoice_type", {
-    is: (value: string) => value === "company",
-    then: (schema) => schema.required("Fatura adresi gereklidir"),
-  }),
+  invoice_company_address: string().required("Firma adresi gereklidir"),
   invoice_company_name: string().when("invoice_type", {
     is: (value: string) => value === "company",
     then: (schema) => schema.required("Firma adı gereklidir"),
@@ -44,6 +41,6 @@ export const orderDetailSchema = object({
     label: string(),
     value: string(),
   }).required("Lütfen mahalle seçiniz"),
-
   notes: string(),
+  place_id: string().nullable(),
 }).required();

@@ -35,7 +35,7 @@ svgs.forEach(async (svg) => {
     },
     {
       componentName: iconName,
-    }
+    },
   );
 
   fs.writeFileSync(iconPath, code);

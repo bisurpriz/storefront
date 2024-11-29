@@ -22,8 +22,8 @@ const PriceInput: FC<PriceInputProps> = ({
 }) => {
   return (
     <>
-      <span className="flex items-center gap-1 justify-between mb-2">
-        <span className="text-gray-500 text-sm font-semibold ">En az</span>
+      <span className="mb-2 flex items-center justify-between gap-1">
+        <span className="text-sm font-semibold text-gray-500">En az</span>
         <NumberInput
           defaultValue={values.min}
           onChange={(min) => {
@@ -34,8 +34,8 @@ const PriceInput: FC<PriceInputProps> = ({
           step={step}
         />
       </span>
-      <span className="flex items-center gap-1 justify-between">
-        <span className="text-gray-500 text-sm font-semibold ">En fazla</span>
+      <span className="flex items-center justify-between gap-1">
+        <span className="text-sm font-semibold text-gray-500">En fazla</span>
         <NumberInput
           defaultValue={values.max}
           onChange={(max) => {

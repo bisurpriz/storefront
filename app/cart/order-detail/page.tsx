@@ -1,8 +1,6 @@
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
 
-export const dynamic = "force-dynamic";
-
 export const generateMetadata = async () => {
   return {
     title: getBrandWithTitle("Sipariş Detayı"),
@@ -12,7 +10,7 @@ export const generateMetadata = async () => {
 
 const OrderDetail = async () => {
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <section
         aria-labelledby="order-detail"
         aria-describedby="order-detail-description"

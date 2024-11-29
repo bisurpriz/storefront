@@ -1,16 +1,14 @@
 "use client";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import useChatStore from "@/store";
-import { useSubscription } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { getUserById } from "../../actions";
 import {
   SubscribeToChatsDocument,
   SubscribeToChatsSubscription,
   SubscribeToChatsSubscriptionVariables,
 } from "@/graphql/queries/chat/subscription.generated";
-
-export const dynamic = "force-dynamic";
+import useChatStore from "@/store";
+import { useSubscription } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { getUserById } from "../../actions";
 
 const SocketListener = () => {
   const { setChats } = useChatStore((state) => state);

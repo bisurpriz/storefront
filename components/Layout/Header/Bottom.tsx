@@ -14,9 +14,9 @@ const HeaderBottom = ({ categories }: Props) => {
   }));
 
   return (
-    <div className="w-full mt-2 px-4 border-b border-gray-200 pb-2 mb-0 flex items-end justify-between gap-4 lg:gap-8">
+    <div className="mb-0 mt-2 flex w-full items-end justify-between gap-4 border-b border-gray-200 px-4 pb-2 lg:gap-8">
       <Menu items={menuData} className="max-sm:hidden" />
-      <div className="sm:hidden w-full">
+      <div className="w-full sm:hidden">
         <Search />
       </div>
       <OfflineStatus />

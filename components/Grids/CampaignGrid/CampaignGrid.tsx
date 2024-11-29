@@ -14,15 +14,15 @@ const CampaignGrid: FC = async () => {
   const { banners } = await getBanners();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 md:gap-4">
+    <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-2">
       {banners.map((item, i) => (
         <Link
           href={item.redirect_link}
-          className="w-full relative"
+          className="relative w-full"
           key={item.id}
         >
           <Image
-            className="rounded-lg w-full h-auto"
+            className="h-auto w-full rounded-lg"
             alt={item.name}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="

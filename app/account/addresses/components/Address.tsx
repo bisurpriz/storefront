@@ -1,6 +1,6 @@
-import type { UserAddressesResponse } from '@/common/types/User/user';
-import AccordionItem from '@/components/Accordion/AccordionItem';
-import AddressContent from './AddressContent';
+import type { UserAddressesResponse } from "@/common/types/User/user";
+import AccordionItem from "@/components/Accordion/AccordionItem";
+import AddressContent from "./AddressContent";
 
 const Address = ({ address }: { address: UserAddressesResponse }) => {
   return (

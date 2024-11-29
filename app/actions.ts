@@ -1,16 +1,15 @@
 "use server";
 
-import { query } from "@/graphql/lib/client";
+import { Location } from "@/common/types/Addresses/addresses";
+import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
+import { parseJson } from "@/utils/format";
 import { cookies, headers } from "next/headers";
 import { CookieTokens } from "./@auth/contants";
-import { parseJson } from "@/utils/format";
-import { Location } from "@/common/types/Addresses/addresses";
-import {
-  GetBannersDocument,
-  GetBannersQuery,
-  GetBannersQueryVariables,
-} from "@/graphql/queries/banners/banners.generated";
 
+import { CreateOrUpdateFcmTokenMutation } from "@/graphql/queries/notification/mutation.generated";
+import { GetBannersDocument } from "@/service/banner";
+import { BonnmarseApi } from "@/service/fetch";
+import { FireBaseCloudMessagingDocument } from "@/service/firebase/cloudMessaging";
 import jwt from "jsonwebtoken";
 
 export async function readIdFromCookies() {
@@ -57,16 +56,12 @@ export async function createJwt() {
 }
 
 export async function getBanners() {
-  const { data, loading } = await query<
-    GetBannersQuery,
-    GetBannersQueryVariables
-  >({
+  const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
     query: GetBannersDocument,
   });
 
   return {
-    banners: data.system_banner,
-    loading,
+    banners: system_banner,
   };
 }
 
@@ -108,4 +103,17 @@ export const getGeoLocation = async () => {
   const geo = (await headers()).get("X-Forwarded-For");
 
   return geo;
+};
+
+export const createFCMToken = async (token: string) => {
+  const { get } = await cookies();
+  const userId = get(CookieTokens.USER_ID)?.value;
+  if (!userId) return;
+
+  await BonnmarseApi.request<CreateOrUpdateFcmTokenMutation>({
+    query: FireBaseCloudMessagingDocument,
+    variables: {
+      token,
+    },
+  });
 };

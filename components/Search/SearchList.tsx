@@ -46,7 +46,7 @@ const SearchList: FC<Props> = ({
           "pt-0",
           "z-[51]",
           "max-h-[70vh]",
-          "overflow-y-auto"
+          "overflow-y-auto",
         )
       : clsx(
           "absolute",
@@ -60,7 +60,7 @@ const SearchList: FC<Props> = ({
           "overflow-y-auto",
           "max-h-80",
           "mt-1",
-          "text-lg"
+          "text-lg",
         );
   };
 
@@ -105,7 +105,7 @@ const SearchList: FC<Props> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setIsOpen(false)}
-          className={clsx("fixed top-0 left-0 right-0 bottom-0 z-[1]", {
+          className={clsx("fixed bottom-0 left-0 right-0 top-0 z-[1]", {
             "bg-black bg-opacity-50": isTablet,
           })}
         />
@@ -122,7 +122,7 @@ const SearchList: FC<Props> = ({
               "top-0",
               "bg-white",
               "z-[52]",
-              "p-4"
+              "p-4",
             )}
           >
             <TextField
@@ -166,24 +166,24 @@ const SearchList: FC<Props> = ({
                 >
                   <div
                     key={product.id}
-                    className="py-2 px-4 border-b hover:bg-gray-100 transition-colors no-scrollbar"
+                    className="no-scrollbar border-b px-4 py-2 transition-colors hover:bg-gray-100"
                   >
                     <div className="flex items-start">
                       {product?.image_url?.[0] ? (
-                        <div className="w-20 h-20 min-w-[5rem] min-h-[5rem]">
+                        <div className="h-20 min-h-[5rem] w-20 min-w-[5rem]">
                           <Image
                             src={getImageUrlFromPath(product.image_url[0])}
                             width={100}
                             height={100}
-                            className="w-full h-full rounded-lg"
+                            className="h-full w-full rounded-lg"
                             alt={product.name}
                           />
                         </div>
                       ) : null}
-                      <div className="text-sm font-semibold text-gray-500 ml-3 truncate">
+                      <div className="ml-3 truncate text-sm font-semibold text-gray-500">
                         {product.name}
                       </div>
-                      <div className="text-xs ml-auto text-primary font-semibold mt-auto">
+                      <div className="ml-auto mt-auto text-xs font-semibold text-primary">
                         {product.product_categories[0].category.name}
                       </div>
                     </div>
@@ -210,12 +210,12 @@ const Skeleton = () => (
   <div role="status" className="animate-pulse">
     {[...Array(5)].map((_, i) => (
       <div key={i} className="flex items-center justify-between gap-4 p-2">
-        <div className="w-20 h-20 bg-gray-300 rounded-lg" />
-        <div className="flex-1 self-start w-full">
-          <div className="h-2.5 bg-gray-300 rounded-full w-2/3 mb-2.5"></div>
-          <div className="w-1/3 h-2 bg-gray-200 rounded-full "></div>
+        <div className="h-20 w-20 rounded-lg bg-gray-300" />
+        <div className="w-full flex-1 self-start">
+          <div className="mb-2.5 h-2.5 w-2/3 rounded-full bg-gray-300"></div>
+          <div className="h-2 w-1/3 rounded-full bg-gray-200"></div>
         </div>
-        <div className="h-2.5 bg-gray-300 rounded-full w-20 self-end" />
+        <div className="h-2.5 w-20 self-end rounded-full bg-gray-300" />
       </div>
     ))}
   </div>

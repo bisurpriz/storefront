@@ -139,7 +139,7 @@ export const createDynamicQueryMapper = async (searchParams: {
         _eq: true,
       },
       ...quarter_query,
-    }
+    },
   );
 
   return {

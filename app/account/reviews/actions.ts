@@ -2,33 +2,25 @@
 
 import { readIdFromCookies } from "@/app/actions";
 
-import { mutate, query } from "@/graphql/lib/client";
 import {
-  CreateReviewDocument,
   CreateReviewMutation,
-  CreateReviewMutationVariables,
-  GetOrdersWithReviewsDocument,
   GetOrdersWithReviewsQuery,
-  GetOrdersWithReviewsQueryVariables,
 } from "@/graphql/queries/review/review.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { CreateReviewDocument } from "@/service/product/reviews";
+import { GetOrdersWithReviewsDocument } from "@/service/user/order";
 
 export const getOrderWithReview = async () => {
   const userId = await readIdFromCookies();
-  const { data, loading } = await query<
-    GetOrdersWithReviewsQuery,
-    GetOrdersWithReviewsQueryVariables
-  >({
-    query: GetOrdersWithReviewsDocument,
-    variables: { user_id: userId },
-    fetchPolicy: "no-cache",
-  });
-
-  const { order_item, review } = data;
+  const { order_item, review } =
+    await BonnmarseApi.request<GetOrdersWithReviewsQuery>({
+      query: GetOrdersWithReviewsDocument,
+      variables: { user_id: userId },
+    });
 
   return {
     order_item: order_item,
     reviews: review,
-    loading,
   };
 };
 
@@ -41,23 +33,17 @@ export const createReview = async ({
   score: number;
   product_id: number;
 }) => {
-  const { data } = await mutate<
-    CreateReviewMutation,
-    CreateReviewMutationVariables
-  >({
-    mutation: CreateReviewDocument,
-    variables: {
-      comment,
-      score,
-      product_id,
-    },
-  });
-
-  const {
-    insert_review_one: { created_at },
-  } = data;
+  const { insert_review_one } =
+    await BonnmarseApi.request<CreateReviewMutation>({
+      query: CreateReviewDocument,
+      variables: {
+        comment,
+        score,
+        product_id,
+      },
+    });
 
   return {
-    created_at,
+    created_at: insert_review_one?.created_at,
   };
 };

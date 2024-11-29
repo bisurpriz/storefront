@@ -23,11 +23,11 @@ const FilterDropdownButton: FC<FilterDropdownButtonProps> = ({
       key="filter-button"
       onClick={toggle}
       className={clsx(
-        "flex items-center justify-between gap-2 text-sm bg-white border text-gray-500 border-gray-200 rounded-md p-2 w-full",
-        "font-manrope font-semibold whitespace-nowrap transition-colors duration-300 ease-in-out",
+        "flex w-full items-center justify-between gap-2 rounded-md border border-gray-200 bg-white p-2 text-sm text-gray-500",
+        "whitespace-nowrap font-manrope font-semibold transition-colors duration-300 ease-in-out",
         {
           "border-primary text-primary": selectedItems.length > 0 || isOpen,
-        }
+        },
       )}
     >
       {selectedItems.length > 0 ? (

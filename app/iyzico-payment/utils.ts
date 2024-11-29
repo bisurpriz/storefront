@@ -1,7 +1,5 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { createHmac, randomBytes } from "crypto";
-import Cookies from "js-cookie";
-import { CookieTokens } from "../@auth/contants";
 
 const COMMISSION = 0.1;
 
@@ -25,7 +23,7 @@ export const generateHashV2 = (
   uri,
   randomString,
   secretKey,
-  body
+  body,
 ) => {
   const signature = createHmac("sha256", secretKey)
     .update(randomString + uri + JSON.stringify(body))
@@ -41,7 +39,7 @@ export const generateHashV2 = (
 
 export const calculateCommissionedAmount = (
   amount: string,
-  commissionRate: number
+  commissionRate: number,
 ) => {
   const commission = (parseFloat(amount) * commissionRate).toFixed(2);
   const commissionedAmount = (
@@ -54,11 +52,11 @@ export const calculateCommissionedAmount = (
   };
 };
 
-export const createBasketItems = (items: ProductForCart[]) => {
-  const getPrice = (product) =>
-    (product.discount_price * product.quantity)?.toFixed(2).toString() ||
-    (product.price * product.quantity)?.toFixed(2).toString();
+export const getPrice = (product) =>
+  (product.discount_price * product.quantity)?.toFixed(2).toString() ??
+  (product.price * product.quantity)?.toFixed(2).toString();
 
+export const createBasketItems = (items: ProductForCart[]) => {
   const basketItems = items.map((product) => ({
     category1: product.product_categories[0].category.name,
     category2: product.product_categories[1]?.category.name,
@@ -69,9 +67,8 @@ export const createBasketItems = (items: ProductForCart[]) => {
     subMerchantKey: product.tenant.tenants[0]?.iyzi_sub_merchant_key || "",
     subMerchantPrice: calculateCommissionedAmount(
       getPrice(product),
-      product.tenant.tenants[0].commision_rate ?? COMMISSION
+      product.tenant.tenants[0].commision_rate ?? COMMISSION,
     ).commissionedAmount,
   }));
-
   return basketItems;
 };

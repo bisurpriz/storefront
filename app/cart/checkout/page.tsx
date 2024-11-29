@@ -2,7 +2,7 @@ import CreditCardForm from "../components/Checkout/CreditCardForm";
 
 const CartCheckout = async () => {
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <section
         aria-labelledby="cart-checkout"
         aria-describedby="cart-checkout-description"

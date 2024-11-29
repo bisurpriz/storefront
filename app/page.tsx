@@ -1,20 +1,17 @@
-import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import Filter from "@/components/Filter";
 import FilterSuspense from "@/components/Filter/FilterSuspense";
-import { Suspense } from "react";
-import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
+import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
-import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
-import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
-import { query } from "@/graphql/lib/client";
-import {
-  GetAllCategoriesDocument,
-  GetAllCategoriesQuery,
-  GetAllCategoriesQueryVariables,
-} from "@/graphql/queries/categories/getCategories.generated";
+import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
+import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
+import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
+import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { GetCategoriesDocument } from "@/service/category";
+import { BonnmarseApi } from "@/service/fetch";
+import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { Suspense } from "react";
 
 export const experimental_ppr = true;
 
@@ -26,11 +23,8 @@ export default async function Page(props: {
 
   const viewport = await getServerSideViewPort();
 
-  const {
-    data: { category },
-  } = await query<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>({
-    query: GetAllCategoriesDocument,
-    fetchPolicy: "cache-first",
+  const { category } = await BonnmarseApi.request<GetAllCategoriesQuery>({
+    query: GetCategoriesDocument,
   });
 
   return (
@@ -48,7 +42,7 @@ export default async function Page(props: {
       {!searchText && (
         <Suspense
           fallback={
-            <div className="w-full h-16 bg-gray-100 animate-pulse rounded-lg mb-2" />
+            <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
           }
         >
           <GoogleLocationSelect from="home" />
@@ -80,9 +74,13 @@ export default async function Page(props: {
         />
       </Suspense> */}
 
+      {/* <Suspense fallback={<BlogPostSectionSuspense />}>
+        <BlogPostSection />
+      </Suspense> */}
+
       <Suspense
         fallback={
-          <div className="grid max-xs:grid-cols-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 max-sm:gap-2 pb-2">
+          <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">
             {Array.from({
               length: 5,
             }).map((_, i) => (

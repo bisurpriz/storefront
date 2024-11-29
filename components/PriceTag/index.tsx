@@ -12,10 +12,10 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
 
   if (discountRate <= 0 || !discount)
     return (
-      <div className="max-sm:min-h-[44px] max-sm:flex max-sm:items-end">
+      <div className="max-sm:flex max-sm:min-h-[44px] max-sm:items-end">
         <span
           className={clsx([
-            "font-semibold block text-xl text-slate-500 max-md:text-base whitespace-nowrap",
+            "block whitespace-nowrap text-xl font-semibold text-slate-500 max-md:text-base",
             discount > 0 ? "" : "font-normal",
           ])}
         >
@@ -25,17 +25,17 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
     );
 
   return (
-    <div className="flex items-end gap-2 max-md:gap-1 min-h-[28px] max-sm:w-full max-sm:justify-between max-sm:px-2">
+    <div className="flex min-h-[28px] items-end gap-2 max-md:gap-1 max-sm:w-full max-sm:justify-between max-sm:px-2">
       {price && discountRate > 0 && (
-        <span className="text-sm text-white font-normal p-1.5 py-1 bg-red-500 rounded-md max-md:text-xs max-sm:w-full max-sm:text-center">
+        <span className="rounded-md bg-red-500 p-1.5 py-1 text-sm font-normal text-white max-md:text-xs max-sm:w-full max-sm:text-center">
           %{discountRate}
         </span>
       )}
-      <div className="flex gap-1 items-end max-sm:mb-0 max-sm:flex-col-reverse max-sm:space-y-0">
+      <div className="flex items-end gap-1 max-sm:mb-0 max-sm:flex-col-reverse max-sm:space-y-0">
         {discount > 0 && (
           <span
             className={clsx([
-              "font-semibold leading-none text-xl text-green-500 max-md:text-base whitespace-nowrap",
+              "whitespace-nowrap text-xl font-semibold leading-none text-green-500 max-md:text-base",
               discount > 0 ? "" : "font-normal",
             ])}
           >
@@ -45,7 +45,7 @@ const PriceTag = ({ price, discount }: PriceTagProps) => {
         {price && (
           <span
             className={clsx([
-              "decoration-slate-500 self-end leading-none max-md:text-xs whitespace-nowrap mb-0.5",
+              "mb-0.5 self-end whitespace-nowrap leading-none decoration-slate-500 max-md:text-xs",
               discount > 0
                 ? "text-xs line-through"
                 : "text-xl font-normal text-green-500",

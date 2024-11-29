@@ -46,10 +46,10 @@ const HourSelect: FC<HourSelectProps> = ({
   }, [containerRef]);
 
   return (
-    <div ref={containerRef} className="w-full relative">
+    <div ref={containerRef} className="relative w-full">
       <Button
         variant="outline"
-        className="max-md:text-xs justify-center w-full"
+        className="w-full justify-center max-md:text-xs"
         onClick={() => {
           if (disabled) return;
           setShowHourDropdown(true);
@@ -67,7 +67,7 @@ const HourSelect: FC<HourSelectProps> = ({
       >
         <div
           className={clsx(
-            "flex items-center justify-between px-4 py-2 border-b border-gray-200"
+            "flex items-center justify-between border-b border-gray-200 px-4 py-2",
           )}
         >
           <h4 id="hour-select">Saat Seç</h4>
@@ -82,12 +82,12 @@ const HourSelect: FC<HourSelectProps> = ({
           {deliveryTimeRanges?.map((time, index) => (
             <li
               className={clsx(
-                "px-4 py-2 cursor-pointer hover:bg-gray-100",
+                "cursor-pointer px-4 py-2 hover:bg-gray-100",
                 {
                   "bg-gray-100 text-primary":
                     selectedHour === `${time.start_time} - ${time.end_time}`,
                 },
-                "focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
+                "focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary",
               )}
               aria-selected={
                 selectedHour === `${time.start_time} - ${time.end_time}`

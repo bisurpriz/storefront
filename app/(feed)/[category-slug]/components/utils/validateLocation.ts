@@ -16,7 +16,7 @@ export function validateLocation(
   selectedLocation: Location | null,
   places: Place[] | null,
   isSameDay: boolean,
-  setShowPlaceWarning: (show: boolean) => void
+  setShowPlaceWarning: (show: boolean) => void,
 ) {
   if (!selectedLocation || !places || !isSameDay) return;
 
@@ -48,23 +48,23 @@ export const getLocationVariables = (selectedLocation: Location) => {
     };
 
   const city = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_1")
+    x.types.includes("administrative_area_level_1"),
   )?.short_name;
 
   const district = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_2")
+    x.types.includes("administrative_area_level_2"),
   )?.short_name;
 
   const neighborhood = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_4")
+    x.types.includes("administrative_area_level_4"),
   )?.short_name;
 
   const street = selectedLocation.address_components.find((x) =>
-    x.types.includes("route")
+    x.types.includes("route"),
   )?.short_name;
 
   const postal_code = selectedLocation.address_components.find((x) =>
-    x.types.includes("postal_code")
+    x.types.includes("postal_code"),
   )?.short_name;
 
   return {
@@ -88,7 +88,7 @@ export const getAvailableDistricts = (places: Place[] | null) => {
 
 export const getAvailableNeighborhoods = (
   places: Place[] | null,
-  district: string
+  district: string,
 ) => {
   if (!places) return [];
 
@@ -103,17 +103,20 @@ export const getAvailableNeighborhoods = (
 };
 
 export const getAvailableDistrictsAndNeighborhoods = (
-  places: Place[] | null
+  places: Place[] | null,
 ) => {
   if (!places) return [];
 
   const districts = getAvailableDistricts(places);
 
-  return districts.reduce((acc, district) => {
-    const neighborhoods = getAvailableNeighborhoods(places, district);
-    acc[district] = neighborhoods;
-    return acc;
-  }, {} as { [key: string]: string[] });
+  return districts.reduce(
+    (acc, district) => {
+      const neighborhoods = getAvailableNeighborhoods(places, district);
+      acc[district] = neighborhoods;
+      return acc;
+    },
+    {} as { [key: string]: string[] },
+  );
 };
 
 export const getAddressString = (street, postal_code) => {

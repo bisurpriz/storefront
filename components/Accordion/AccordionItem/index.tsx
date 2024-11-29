@@ -36,15 +36,15 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 
   return (
     <div
-      className={`transition-colors select-none ${isBordered} ${className} whitespace-nowrap`}
+      className={`select-none transition-colors ${isBordered} ${className} whitespace-nowrap`}
     >
       <div
-        className={`p-3 cursor-pointer flex justify-between items-center ${isOpenClass} `}
+        className={`flex cursor-pointer items-center justify-between p-3 ${isOpenClass} `}
         onClick={handleToggle}
       >
         <h4 className="flex items-center font-medium">{title}</h4>
         <ChevronDown
-          className={`transition-transform transform -z-[1] ${
+          className={`-z-[1] transform transition-transform ${
             open ? "-rotate-180" : ""
           }`}
         />
@@ -60,7 +60,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         }}
         className="overflow-hidden"
       >
-        <div ref={nodeRef} className="p-4 whitespace-normal">
+        <div ref={nodeRef} className="whitespace-normal p-4">
           {content}
         </div>
       </motion.div>

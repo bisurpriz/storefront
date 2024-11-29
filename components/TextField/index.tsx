@@ -67,6 +67,7 @@ const TextField: FC<TextFieldProps> = (props) => {
         icon={icon}
         error={error}
         errorMessage={errorMessage}
+        defaultValue={defaultValue}
         dirtyAnimation={dirtyAnimation}
       />
     </label>

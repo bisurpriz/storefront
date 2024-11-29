@@ -15,13 +15,13 @@ const ProductGroupListItemInfo = ({
   const { removeFromCart, loading } = useCart();
 
   return (
-    <span className="absolute right-2 top-0 flex gap-2 items-center">
+    <span className="absolute right-2 top-0 flex items-center gap-2">
       <Close
         onClick={() => {
           if (loading) return;
           removeFromCart(id);
         }}
-        className="cursor-pointer hover:text-7 transition-all duration-200 ease-in-out text-xl"
+        className="hover:text-7 cursor-pointer text-xl transition-all duration-200 ease-in-out"
       />
     </span>
   );

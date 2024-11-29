@@ -3,22 +3,22 @@ import React from "react";
 
 const CategorySwiperSuspense = () => {
   return (
-    <div className={clsx("w-full overflow-hidden h-[150px] whitespace-nowrap")}>
+    <div className={clsx("h-[150px] w-full overflow-hidden whitespace-nowrap")}>
       {Array.from({ length: 10 }).map((_, index) => (
-        <div key={index} className="inline-block last:mr-0 mr-[10px]">
+        <div key={index} className="mr-[10px] inline-block last:mr-0">
           <div
             className={clsx(
-              "w-[130px] h-[130px] bg-gray-100 rounded-full",
+              "h-[130px] w-[130px] rounded-full bg-gray-100",
               "animate-pulse",
-              ""
+              "",
             )}
           />
           <span
             className={clsx(
-              "block h-4 bg-gray-100 rounded-lg",
+              "block h-4 rounded-lg bg-gray-100",
               "mt-1",
               "w-full",
-              "animate-pulse"
+              "animate-pulse",
             )}
           />
         </div>

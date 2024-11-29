@@ -17,13 +17,13 @@ export default function RemainingTime({
   isTodayDisabled?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2 py-1 px-2 rounded-lg shadow-sm bg-slate-100 text-slate-900">
+    <div className="flex items-center gap-2 rounded-lg bg-slate-100 px-2 py-1 text-slate-900 shadow-sm">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-2"
       >
-        <Clock className="w-4 h-4 text-slate-600" />
+        <Clock className="h-4 w-4 text-slate-600" />
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-sm font-medium text-slate-600">
             {!isTodayDisabled && "Bugün teslimat için son:"}

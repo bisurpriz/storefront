@@ -62,7 +62,7 @@ export const useResponsiveDialog = () => {
   const context = useContext(ResponsiveDialogContext);
   if (context === undefined) {
     throw new Error(
-      "useResponsiveDialog must be used within a ResponsiveDialogProvider"
+      "useResponsiveDialog must be used within a ResponsiveDialogProvider",
     );
   }
   return context;

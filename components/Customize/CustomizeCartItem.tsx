@@ -16,7 +16,7 @@ interface CustomizeCartItemProps extends Area {
   onChange: (
     inputIndex: number,
     type: "special_text" | "special_image",
-    value: string | File[]
+    value: string | File[],
   ) => void;
   isDisabled: boolean;
 }
@@ -39,13 +39,14 @@ const CustomizeCartItem = ({
           return (
             <div
               className="flex items-center gap-3 whitespace-nowrap font-sans"
-              key={i}
+              key={`${_}_${i}`}
             >
               <TextField
                 fullWidth
                 placeholder="Lütfen istediğiniz yazıyı giriniz."
                 id={`${type}_${i}`}
                 defaultValue={value}
+                className="h-12"
                 label={`Özel Yazı ${i + 1}:`}
                 onChange={(e) => {
                   onChange(i, CustomizableAreaType.TEXT, e.target.value);
@@ -60,8 +61,9 @@ const CustomizeCartItem = ({
       return Array(1)
         .fill(0)
         .map((_, i) => {
-          const value = values[keyIndex]?.image_url;
-          const hasPermForUpload = values.length < count;
+          const defaultValues = values
+            .map((v) => v?.image_url as string)
+            .filter(Boolean);
           return (
             <div
               className="flex items-center gap-3 whitespace-nowrap font-sans"
@@ -69,13 +71,13 @@ const CustomizeCartItem = ({
             >
               <ImageUpload
                 id={`${type}_${i}`}
-                defaultValue={getImageUrlFromPath(value as string)}
+                defaultValues={defaultValues}
                 label={`Özel Resim ${i + 1}:`}
                 onChange={(files) => {
                   onChange(keyIndex, CustomizableAreaType.IMAGE, files);
                 }}
                 maxCharacter={count}
-                disabled={isDisabled || !hasPermForUpload}
+                disabled={isDisabled}
               />
             </div>
           );

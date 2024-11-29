@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 const calculateUnread = (messages: any[], userId: string) => {
   const unread = messages.filter(
-    (item) => item.sender.id !== userId && !item.is_read
+    (item) => item.sender.id !== userId && !item.is_read,
   );
   return unread.length;
 };
@@ -29,7 +29,7 @@ const ChatList = ({
     );
 
   return (
-    <div className="flex-1 h-full overflow-auto px-2">
+    <div className="h-full flex-1 overflow-auto px-2">
       {!chats ? (
         <ChatItemSkeleton />
       ) : (
@@ -39,7 +39,7 @@ const ChatList = ({
                 item?.messages.length > 0
                   ? new Date(item.messages[0].created_at)
                   : undefined,
-                "PPP"
+                "PPP",
               )
             : "";
           const unread = calculateUnread(item.messages, id);

@@ -1,17 +1,11 @@
 "use server";
 
-import { query } from "@/graphql/lib/client";
-import {
-  GetProductInformationDocument,
-  GetProductInformationQuery,
-  GetProductInformationQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
+import { GetProductInformationQuery } from "@/graphql/queries/products/getProductById.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetProductInformationDocument } from "@/service/product/information";
 
 export const getProductInformation = async (productId) => {
-  return await query<
-    GetProductInformationQuery,
-    GetProductInformationQueryVariables
-  >({
+  return await BonnmarseApi.request<GetProductInformationQuery>({
     query: GetProductInformationDocument,
     variables: {
       id: productId,

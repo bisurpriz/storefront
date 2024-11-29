@@ -44,7 +44,7 @@ const AddToFavorite = ({ isFavorite, productId }: AddToFavoriteProps) => {
       }
       className={clsx([
         isFavoriteState ? "animate-pulse" : "",
-        "!absolute top-2 right-2 !p-0 shadow-lg shadow-cyan-500/50 rounded-full",
+        "!absolute right-2 top-2 rounded-full !p-0 shadow-lg shadow-cyan-500/50",
       ])}
       style={{
         animationIterationCount: 2,

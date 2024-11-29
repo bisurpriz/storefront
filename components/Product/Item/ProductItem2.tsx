@@ -118,27 +118,27 @@ export default function ProductItem2(props: ProductItemProps) {
         slug,
       })}
       as="image"
-      className="w-full relative mx-auto shadow-md rounded-xl overflow-hidden max-sm:grid max-sm:gap-2 max-sm:grid-cols-12"
+      className="relative mx-auto w-full overflow-hidden rounded-xl shadow-md max-sm:grid max-sm:grid-cols-12 max-sm:gap-2"
       {...(!isTablet && { target: "_blank" })}
       rel={!isTablet ? "noopener noreferrer" : undefined}
     >
-      <div className="relative flex-1 col-span-4 row-span-full">
+      <div className="relative col-span-4 row-span-full flex-1">
         <Image
           src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
           alt={name}
           quality={70}
-          className="w-full h-80 object-cover max-sm:h-full"
+          className="h-80 w-full object-cover max-sm:h-full"
           sizes={"15vw"}
           width={250}
           height={250}
         />
         <div
           className={cn(
-            "absolute top-0 left-0 w-full h-full bg-opacity-0 flex items-center justify-center",
+            "absolute left-0 top-0 flex h-full w-full items-center justify-center bg-opacity-0",
             {
               hidden:
                 !(Array.isArray(image_url) && image_url.length > 1) || isTablet,
-            }
+            },
           )}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -149,7 +149,7 @@ export default function ProductItem2(props: ProductItemProps) {
           {Array.from({ length: image_url.length }).map((_, i) => (
             <div
               key={i}
-              className={cn("h-full w-full flex items-end")}
+              className={cn("flex h-full w-full items-end")}
               onMouseEnter={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -159,16 +159,16 @@ export default function ProductItem2(props: ProductItemProps) {
           ))}
           <div
             className={cn(
-              "absolute bottom-2 left-0 w-full flex items-center justify-center",
+              "absolute bottom-2 left-0 flex w-full items-center justify-center",
               {
                 hidden: !(Array.isArray(image_url) && image_url.length > 1),
-              }
+              },
             )}
           >
             {Array.from({ length: image_url.length }).map((_, i) => (
               <span
                 key={i}
-                className={cn("w-2 h-2 rounded-full mx-1 bg-white", {
+                className={cn("mx-1 h-2 w-2 rounded-full bg-white", {
                   "bg-gray-400": i !== hoveredImageIndex,
                 })}
               />
@@ -195,16 +195,16 @@ export default function ProductItem2(props: ProductItemProps) {
         </div>
       </div>
 
-      <div className="p-4 pt-2 space-y-4 max-sm:space-y-1 max-sm:p-2 col-span-8">
-        <div className="flex justify-between items-start">
+      <div className="col-span-8 space-y-4 p-4 pt-2 max-sm:space-y-1 max-sm:p-2">
+        <div className="flex items-start justify-between">
           {isTablet ? (
-            <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
+            <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start font-mono text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
               {name}
             </h3>
           ) : (
             <Tooltip>
               <TooltipTrigger>
-                <h3 className="font-mono overflow-hidden max-md:text-sm text-base text-start leading-tight w-full h-10 max-md:font-normal text-gray-800 line-clamp-2">
+                <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start font-mono text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
                   {name}
                 </h3>
               </TooltipTrigger>
@@ -222,10 +222,10 @@ export default function ProductItem2(props: ProductItemProps) {
               e.preventDefault();
               handleFavorite();
             }}
-            className="max-sm:p-2 h-fit"
+            className="h-fit max-sm:p-2"
           >
             <Heart
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
               }`}
             />
@@ -234,7 +234,7 @@ export default function ProductItem2(props: ProductItemProps) {
 
         <div className="flex flex-col items-start justify-end max-sm:mb-2">
           <PriceTagv2 originalPrice={price} discountedPrice={discount_price} />
-          <span className="text-xs h-4 flex text-slate-400 gap-2 items-center mt-2">
+          <span className="mt-2 flex h-4 items-center gap-2 text-xs text-slate-400">
             {score > 0 ? (
               <>
                 <ReviewRating
@@ -284,17 +284,17 @@ export default function ProductItem2(props: ProductItemProps) {
             {is_service_free && (
               <span
                 className={cn(
-                  "inline-flex items-center text-xs gap-1 text-green-500",
-                  "max-sm:text-xs"
+                  "inline-flex items-center gap-1 text-xs text-green-500",
+                  "max-sm:text-xs",
                 )}
               >
-                <LucideTruck className="w-4 h-4 block" />
+                <LucideTruck className="block h-4 w-4" />
                 Ücretsiz Kargo
               </span>
             )}
           </div>
         ) : (
-          <div className="flex space-x-2 mt-auto">
+          <div className="mt-auto flex space-x-2">
             <Button className="flex-1" variant="outline">
               Stokta Yok
             </Button>

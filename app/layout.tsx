@@ -13,25 +13,23 @@ import { CategoryProvider } from "@/contexts/CategoryContext";
 import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
-import { query } from "@/graphql/lib/client";
 
-import { ReactNode, Suspense } from "react";
-import { getUserById } from "./account/actions";
-import { getCart } from "./cart/actions";
-import {
-  GetMainCategoriesDocument,
-  GetMainCategoriesQuery,
-  GetMainCategoriesQueryVariables,
-} from "@/graphql/queries/categories/getCategories.generated";
 import StickyHeader from "@/components/Layout/Header/StickyHeader";
-import { ProductProvider } from "@/contexts/ProductContext";
-import { SearchProductProvider } from "@/contexts/SearchContext";
+import NotificationListener from "@/components/Notification/NotificationListener";
+import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
-import Script from "next/script";
-import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
-import { cookies } from "next/headers";
+import { ProductProvider } from "@/contexts/ProductContext";
+import { SearchProductProvider } from "@/contexts/SearchContext";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { GetCategoriesDocument } from "@/service/category";
+import { BonnmarseApi } from "@/service/fetch";
+import { getUserById } from "@/service/user";
+import { cookies, headers } from "next/headers";
+import { userAgent } from "next/server";
+import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
+import { getCart } from "./cart/actions";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -78,6 +76,11 @@ export const metadata: Metadata = {
     "Hediye",
     "Çiçek",
     "Çikolata",
+    "Hediye gönder",
+    "Hediye al",
+    "Hediye fikirleri",
+    "Hediye önerileri",
+    "Hediye kutusu",
   ],
   robots: "index, follow",
   manifest: "/manifest.json",
@@ -99,46 +102,43 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const data = await getUserById();
-  const { cartItems, costData } = await getCart(data?.user?.id);
+  const { get } = await cookies();
 
-  const { data: categoryData } = await query<
-    GetMainCategoriesQuery,
-    GetMainCategoriesQueryVariables
-  >({
-    query: GetMainCategoriesDocument,
-    fetchPolicy: "no-cache",
+  const [selectedPlaces, hasSeenLocationModal, userId] = [
+    get(CookieTokens.LOCATION_ID),
+    get(CookieTokens.HAS_SEEN_LOCATION_MODAL)?.value,
+    get(CookieTokens.USER_ID)?.value,
+  ];
+
+  const isBot = userAgent({
+    headers: await headers(),
+  }).isBot;
+
+  const userData = await getUserById(userId);
+
+  const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
+  const { category } = await BonnmarseApi.request<GetMainCategoriesQuery>({
+    query: GetCategoriesDocument,
+    tags: ["getMainCategories"],
   });
-
-  const cookie = await cookies();
-
-  const selectedPlaces = cookie.get(CookieTokens.LOCATION_ID);
-  const hasSeenLocationModal = cookie.get(CookieTokens.HAS_SEEN_LOCATION_MODAL);
 
   return (
     <html lang="tr">
       <GoogleTagManagerInjector />
+      <NotificationListener />
       <body
-        className={`${lato.variable} ${quickSand.variable} 
-        ${manrope.variable}
-        font-manrope relative scroll-smooth overflow-auto overflow-x-hidden`}
+        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} relative overflow-auto overflow-x-hidden scroll-smooth font-manrope`}
         id="root"
       >
         <ProgressBarProvider>
-          <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-primary top-0 z-[1000]" />
+          <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
           <TagManagerNoscript />
-          <Script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaoFsD1n1A9l9QrAxJsQkid54Jd_s8Glk&libraries=places"
-            id="googleMapsScript"
-            strategy="beforeInteractive"
-            async={true}
-          />
-          <AuthProvider user={data?.user}>
+          <AuthProvider user={userData?.user_by_pk}>
             <TooltipProvider>
               <ResponsiveDialogProvider>
                 <ApolloWrapper>
                   <ProductProvider>
-                    <CategoryProvider category={categoryData?.category}>
+                    <CategoryProvider category={category}>
                       <CartProvider
                         cartDbItems={cartItems}
                         dbCost={{
@@ -150,15 +150,15 @@ export default async function RootLayout({
                       >
                         <SearchProductProvider>
                           <Suspense fallback={<HeaderSuspense />}>
-                            <Header category={categoryData?.category} />
+                            <Header category={category} />
                             <StickyHeader />
                           </Suspense>
                           <Content>{children}</Content>
                           {auth}
                           <Suspense>
-                            {!selectedPlaces && !hasSeenLocationModal && (
-                              <QuarterSelectorModal />
-                            )}
+                            {!selectedPlaces &&
+                              !hasSeenLocationModal &&
+                              !isBot && <QuarterSelectorModal />}
                           </Suspense>
                         </SearchProductProvider>
                       </CartProvider>

@@ -1,14 +1,11 @@
 "use server";
-import { query } from "@/graphql/lib/client";
+import { GetVendorByIdQuery } from "@/graphql/queries/vendors/getVendorById.generated";
+import { GetVendorProductsWithPaginationQuery } from "@/graphql/queries/vendors/getVendorProducstWithPagination.generated";
+import { BonnmarseApi } from "@/service/fetch";
 import {
   GetVendorByIdDocument,
-  GetVendorByIdQuery,
-  GetVendorByIdQueryVariables,
-} from "@/graphql/queries/vendors/getVendorById.generated";
-import {
   GetVendorProductsWithPaginationDocument,
-  GetVendorProductsWithPaginationQuery,
-} from "@/graphql/queries/vendors/getVendorProducstWithPagination.generated";
+} from "@/service/vendor";
 
 export const getPaginatedVendorProducts = async <T>({
   offset,
@@ -17,29 +14,28 @@ export const getPaginatedVendorProducts = async <T>({
   offset: number;
   tenant_id: string;
 }) => {
-  const { data } = await query<GetVendorProductsWithPaginationQuery>({
-    query: GetVendorProductsWithPaginationDocument,
-    variables: {
-      offset,
-      tenant_id,
-    },
-  });
+  const { product, product_aggregate } =
+    await BonnmarseApi.request<GetVendorProductsWithPaginationQuery>({
+      query: GetVendorProductsWithPaginationDocument,
+      variables: {
+        offset,
+        tenant_id,
+      },
+    });
 
   return {
-    products: data.product,
-    totalCount: data.product_aggregate.aggregate.count,
+    products: product,
+    totalCount: product_aggregate.aggregate.count,
   } as T;
 };
 
 export const getVendorDetails = async ({ id }: { id: string }) => {
-  const { data } = await query<GetVendorByIdQuery, GetVendorByIdQueryVariables>(
-    {
-      query: GetVendorByIdDocument,
-      variables: {
-        id,
-      },
-    }
-  );
+  const { tenant_by_pk } = await BonnmarseApi.request<GetVendorByIdQuery>({
+    query: GetVendorByIdDocument,
+    variables: {
+      id,
+    },
+  });
 
-  return data.tenant_by_pk;
+  return tenant_by_pk;
 };

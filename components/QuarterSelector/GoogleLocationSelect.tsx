@@ -24,14 +24,14 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="w-full my-2"
+      className="my-2 w-full"
     >
       <PlacesAutocomplete />
 
       {from === "home" && (
         <div
           className={cn(
-            "flex items-center space-x-4 py-2 justify-center rounded-xl hover:bg-background/50 transition-colors duration-200 max-sm:hidden"
+            "flex items-center justify-center space-x-4 rounded-xl py-2 transition-colors duration-200 hover:bg-background/50 max-sm:hidden",
           )}
         >
           {[
@@ -59,14 +59,14 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: item.delay }}
-              className="flex basis-1/3 items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-primary/10"
+              className="flex basis-1/3 items-center justify-center space-x-2 rounded-xl bg-primary/10 px-4 py-2"
             >
-              <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 shrink-0">
-                <item.icon className="w-8 h-8 text-primary" />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <item.icon className="h-8 w-8 text-primary" />
               </div>
               <div className="whitespace-nowrap">
-                <div className="font-medium text-sm">{item.title}</div>
-                <div className="text-muted-foreground text-sm">
+                <div className="text-sm font-medium">{item.title}</div>
+                <div className="text-sm text-muted-foreground">
                   {item.subtitle}
                 </div>
               </div>

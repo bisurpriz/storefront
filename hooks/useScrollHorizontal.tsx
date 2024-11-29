@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 const useScrollHorizontal = (
   scrollRef: React.RefObject<HTMLDivElement>,
-  autoPlay = false
+  autoPlay = false,
 ) => {
   const [showState, setShowState] = useState({
     showLeft: false,
@@ -132,22 +132,22 @@ const useScrollHorizontal = (
         {showState.showLeft ? (
           <button
             onClick={scrollLeft}
-            className="p-1 bg-gray-200 rounded-sm hover:bg-gray-100"
+            className="rounded-sm bg-gray-200 p-1 hover:bg-gray-100"
           >
             <ArrowLeft className="h-4 w-4 text-gray-400" />
           </button>
         ) : (
-          <div className="w-5 h-5 invisible" />
+          <div className="invisible h-5 w-5" />
         )}
         {showState.showRight ? (
           <button
             onClick={scrollRight}
-            className="p-1 bg-gray-200 rounded-sm hover:bg-gray-100"
+            className="rounded-sm bg-gray-200 p-1 hover:bg-gray-100"
           >
-            <ArrowLeft className="h-4 w-4 text-gray-400 rotate-180" />
+            <ArrowLeft className="h-4 w-4 rotate-180 text-gray-400" />
           </button>
         ) : (
-          <div className="w-5 h-5 invisible" />
+          <div className="invisible h-5 w-5" />
         )}
       </div>
     );

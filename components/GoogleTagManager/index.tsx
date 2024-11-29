@@ -1,4 +1,4 @@
-import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 export const GoogleTagManagerInjector: React.FC = () => {
   if (process.env.NODE_ENV === "development") null;

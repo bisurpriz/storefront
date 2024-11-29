@@ -1,35 +1,29 @@
 "use server";
 
-import { mutate, query } from "@/graphql/lib/client";
 import {
-  MarkAsReadDocument,
   MarkAsReadMutation,
-  MarkAsReadMutationVariables,
-  SendMessageDocument,
   SendMessageMutation,
-  SendMessageMutationVariables,
 } from "@/graphql/queries/chat/mutation.generated";
 import {
-  GetSingleTenantOrderItemDocument,
   GetSingleTenantOrderItemQuery,
   GetSingleTenantOrderItemQueryVariables,
 } from "@/graphql/queries/order/order.generated";
+import { MarkAsReadDocument, SendMessageDocument } from "@/service/account";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetSingleTenantOrderItemDocument } from "@/service/orders";
 
 export const getTenantOrderItem = async (
-  id: GetSingleTenantOrderItemQueryVariables["id"]
+  id: GetSingleTenantOrderItemQueryVariables["id"],
 ) => {
-  const response = await query<
-    GetSingleTenantOrderItemQuery,
-    GetSingleTenantOrderItemQueryVariables
-  >({
-    query: GetSingleTenantOrderItemDocument,
-    variables: {
-      id,
-    },
-  });
+  const { order_tenant } =
+    await BonnmarseApi.request<GetSingleTenantOrderItemQuery>({
+      query: GetSingleTenantOrderItemDocument,
+      variables: {
+        id,
+      },
+    });
   return {
-    order_tenant: response?.data?.order_tenant ?? [],
-    loading: response?.loading,
+    order_tenant: order_tenant ?? [],
   };
 };
 
@@ -42,34 +36,28 @@ export const sendMessage = async ({
   receiver_id: string;
   chat_thread_id: number;
 }) => {
-  const { data } = await mutate<
-    SendMessageMutation,
-    SendMessageMutationVariables
-  >({
-    mutation: SendMessageDocument,
-    variables: {
-      message,
-      receiver_id,
-      chat_thread_id,
-    },
-  });
-  const { insert_message_one } = data;
+  const { insert_message_one } =
+    await BonnmarseApi.request<SendMessageMutation>({
+      query: SendMessageDocument,
+      variables: {
+        message,
+        receiver_id,
+        chat_thread_id,
+      },
+    });
   return {
     insert_message_one,
   };
 };
 
 export const markAsRead = async (chat_thread_id: string) => {
-  const { data } = await mutate<
-    MarkAsReadMutation,
-    MarkAsReadMutationVariables
-  >({
-    mutation: MarkAsReadDocument,
-    variables: {
-      chat_thread_id,
-    },
-  });
-  const { update_message_many } = data;
+  const { update_message_many } =
+    await BonnmarseApi.request<MarkAsReadMutation>({
+      query: MarkAsReadDocument,
+      variables: {
+        chat_thread_id,
+      },
+    });
   return {
     update_message_many,
   };

@@ -18,19 +18,19 @@ const Accordion: React.FC<AccordionProps> = ({
   bordered,
 }) => {
   const [accordionData, setAccordionData] = useState(
-    items.map(() => ({ isOpen: false }))
+    items.map(() => ({ isOpen: false })),
   );
 
   const handleToggle = (index: number) => {
     setAccordionData((prevData) =>
       prevData.map((item, i) =>
-        i === index ? { ...item, isOpen: !item.isOpen } : item
-      )
+        i === index ? { ...item, isOpen: !item.isOpen } : item,
+      ),
     );
   };
 
   return (
-    <div className={`mx-auto group ${className}`}>
+    <div className={`group mx-auto ${className}`}>
       {items.map((item, index) => (
         <AccordionItem
           className={item.className}

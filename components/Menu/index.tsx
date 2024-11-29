@@ -8,16 +8,16 @@ const Menu: React.FC<MenuProps> = ({ items, className = "" }) => {
   const [listRef] = useMeasure<HTMLElement>();
 
   const emptyItemSkeleton = (
-    <div className="h-10 bg-gray-200 animate-pulse"></div>
+    <div className="h-10 animate-pulse bg-gray-200"></div>
   );
 
   return (
     <nav
-      className={`font-mono bg-white font-medium ${className}`}
+      className={`bg-white font-mono font-medium ${className}`}
       ref={listRef}
     >
       {items ? (
-        <ul className={clsx("flex justify-center gap-4 w-fit")}>
+        <ul className={clsx("flex w-fit justify-center gap-4")}>
           {items.map((item, index) => (
             <li key={index}>
               <Link

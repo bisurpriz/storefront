@@ -33,15 +33,20 @@ export default function Modal({
   const { isDesktop } = useResponsive();
 
   const handleBackdropClick = () => {
-    if (closeOnBackdropClick) {
-      handleClose?.();
-    }
+    handleClose?.();
   };
 
   if (isDesktop) {
     return (
       <Drawer open={open} onOpenChange={handleBackdropClick}>
-        <DrawerContent>
+        <DrawerContent
+          onPointerDownOutside={(e) => {
+            e.preventDefault();
+            if (closeOnBackdropClick) {
+              handleBackdropClick();
+            }
+          }}
+        >
           {title && (
             <DrawerHeader>
               <DrawerTitle>{title}</DrawerTitle>
@@ -55,13 +60,20 @@ export default function Modal({
 
   return (
     <Dialog open={open} onOpenChange={handleBackdropClick}>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+          if (closeOnBackdropClick) {
+            handleBackdropClick();
+          }
+        }}
+      >
         {title && (
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
         )}
-        <div className="p-4">{children}</div>
+        {children}
       </DialogContent>
     </Dialog>
   );

@@ -6,7 +6,7 @@ subscription subscribeToChats {
       picture
       firstname
       lastname
-      tenants { 
+      tenants {
         id
         name
         logo

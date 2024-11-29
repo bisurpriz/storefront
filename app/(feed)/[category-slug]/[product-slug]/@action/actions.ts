@@ -2,26 +2,23 @@
 
 import { readIdFromCookies } from "@/app/actions";
 
-import { query } from "@/graphql/lib/client";
+import {
+  GetProductActionDataForAnonymousQuery,
+  GetProductActionDataQuery,
+} from "@/graphql/queries/products/getProductById.generated";
+import { BonnmarseApi } from "@/service/fetch";
 import {
   GetProductActionDataDocument,
   GetProductActionDataForAnonymousDocument,
-  GetProductActionDataForAnonymousQuery,
-  GetProductActionDataForAnonymousQueryVariables,
-  GetProductActionDataQuery,
-  GetProductActionDataQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
+} from "@/service/product/actions";
 
 export const getProductActions = async (
-  productId: number
+  productId: number,
 ): Promise<GetProductActionDataQuery> => {
   const userId = await readIdFromCookies();
 
   if (userId) {
-    const favs = await query<
-      GetProductActionDataQuery,
-      GetProductActionDataQueryVariables
-    >({
+    const { product } = await BonnmarseApi.request<GetProductActionDataQuery>({
       query: GetProductActionDataDocument,
       variables: {
         id: productId,
@@ -30,31 +27,29 @@ export const getProductActions = async (
 
     return {
       product: {
-        user_favorites: favs?.data?.product?.user_favorites,
-        user_favorites_aggregate: favs?.data?.product?.user_favorites_aggregate,
-        tenant: favs.data.product.tenant,
-        delivery_type: favs.data.product.delivery_type,
-        delivery_time_ranges: favs.data.product.delivery_time_ranges,
+        user_favorites: product?.user_favorites,
+        user_favorites_aggregate: product?.user_favorites_aggregate,
+        tenant: product.tenant,
+        delivery_type: product.delivery_type,
+        delivery_time_ranges: product.delivery_time_ranges,
       },
     };
   } else {
-    const anon = await query<
-      GetProductActionDataForAnonymousQuery,
-      GetProductActionDataForAnonymousQueryVariables
-    >({
-      query: GetProductActionDataForAnonymousDocument,
-      variables: {
-        id: productId,
-      },
-    });
+    const { product } =
+      await BonnmarseApi.request<GetProductActionDataForAnonymousQuery>({
+        query: GetProductActionDataForAnonymousDocument,
+        variables: {
+          id: productId,
+        },
+      });
 
     return {
       product: {
         user_favorites: [],
-        user_favorites_aggregate: anon?.data?.product?.user_favorites_aggregate,
-        tenant: anon.data.product.tenant,
-        delivery_type: anon.data.product.delivery_type,
-        delivery_time_ranges: anon.data.product.delivery_time_ranges,
+        user_favorites_aggregate: product?.user_favorites_aggregate,
+        tenant: product.tenant,
+        delivery_type: product.delivery_type,
+        delivery_time_ranges: product.delivery_time_ranges,
       },
     };
   }

@@ -14,7 +14,7 @@ const AccountNavigation = () => {
   useEffect(() => {
     if (isTablet) {
       const activeItem = document.querySelector(
-        `a[href="${pathname}"]`
+        `a[href="${pathname}"]`,
       ) as HTMLAnchorElement;
 
       if (activeItem) {
@@ -30,10 +30,10 @@ const AccountNavigation = () => {
   return (
     <nav
       className={clsx(
-        "flex flex-col gap-2 sticky top-0 left-0 inset-y-5",
-        "max-md:flex-row max-md:justify-start max-md:items-start max-md:gap-4",
-        "max-md:overflow-x-auto max-md:text-sm no-scrollbar",
-        "snap-x snap-mandatory"
+        "sticky inset-y-5 left-0 top-0 flex flex-col gap-2",
+        "max-md:flex-row max-md:items-start max-md:justify-start max-md:gap-4",
+        "no-scrollbar max-md:overflow-x-auto max-md:text-sm",
+        "snap-x snap-mandatory",
       )}
       aria-label="Account Navigation"
       role="navigation"
@@ -42,12 +42,12 @@ const AccountNavigation = () => {
         <Link
           key={index}
           className={clsx(
-            "flex items-center gap-2 p-2 rounded-md  snap-start",
+            "flex snap-start items-center gap-2 rounded-md p-2",
             "max-md:flex-col",
             {
               "bg-secondary text-white": pathname === item.link,
               "hover:bg-gray-100": pathname !== item.link,
-            }
+            },
           )}
           as={item.link}
           href={item.link}

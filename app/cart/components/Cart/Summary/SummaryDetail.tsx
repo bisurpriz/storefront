@@ -38,12 +38,12 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
   return (
     isOpen && (
       <>
-        <div className="max-md:py-1 max-md:px-4 md:p-4 max-md:border-t">
-          <span className="block text-xl w-full text-center mb-3 font-normal">
+        <div className="max-md:border-t max-md:px-4 max-md:py-1 md:p-4">
+          <span className="mb-3 block w-full text-center text-xl font-normal">
             Sipariş Özeti
           </span>
           <div className="flex flex-col">
-            <div className="flex justify-between text-sm py-1">
+            <div className="flex justify-between py-1 text-sm">
               <span>Ara Toplam</span>
               <span className="font-semibold">
                 {parseInt(cost as any)?.toFixed(2)} ₺
@@ -51,7 +51,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
             </div>
 
             {isCouponApplied && (
-              <div className="flex justify-between text-sm py-1">
+              <div className="flex justify-between py-1 text-sm">
                 <span>İndirim</span>
                 <span className="font-semibold line-through">
                   {discountAmount.toFixed(2)} ₺
@@ -59,9 +59,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
               </div>
             )}
 
-            <div className="xl:flex xl:justify-between text-sm py-3 mt-1">
+            <div className="mt-1 py-3 text-sm xl:flex xl:justify-between">
               <TextField
-                icon={<Ticket className="w-6 h-6" />}
+                icon={<Ticket className="h-6 w-6" />}
                 placeholder="İndirim Kodu Girin"
                 id="discountCode"
                 fullWidth
@@ -73,12 +73,12 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                   type="button"
                   size="sm"
                   variant="destructive"
-                  className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
+                  className="mt-2 flex w-full justify-center xl:ml-3 xl:mt-0 xl:w-auto"
                   onClick={() => {
                     handleRemoveCoupon?.();
                     inputRef.current!.value = "";
                   }}
-                  icon={<RemoveTag className="w-4 h-4 mr-2" />}
+                  icon={<RemoveTag className="mr-2 h-4 w-4" />}
                 >
                   Kaldır
                 </Button>
@@ -87,9 +87,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                   type="button"
                   size="sm"
                   color="default"
-                  className="flex justify-center w-full xl:w-auto mt-2 xl:mt-0 xl:ml-3"
+                  className="mt-2 flex w-full justify-center xl:ml-3 xl:mt-0 xl:w-auto"
                   onClick={() => onDiscountCodeSubmit(inputRef.current?.value)}
-                  icon={<ApplyTag className="w-4 h-4 mr-2" />}
+                  icon={<ApplyTag className="mr-2 h-4 w-4" />}
                 >
                   Kullan
                 </Button>
@@ -109,19 +109,19 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                 exit={{ opacity: 0 }}
                 key={couponMessage}
                 className={clsx(
-                  "text-xs text-center text-primary select-none",
+                  "select-none text-center text-xs text-primary",
                   isCouponApplied
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700",
                   "p-2",
                   "rounded-lg",
-                  "max-md:w-full"
+                  "max-md:w-full",
                 )}
               >
                 <p
                   className={clsx(
                     "text-center",
-                    isCouponApplied ? "text-green-700" : "text-red-700"
+                    isCouponApplied ? "text-green-700" : "text-red-700",
                   )}
                 >
                   {isCouponApplied
@@ -132,9 +132,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                 </p>
               </motion.span>
             </AnimationExitProvider>
-            <div className="flex justify-between items-center text-sm border-t py-1 mt-1">
+            <div className="mt-1 flex items-center justify-between border-t py-1 text-sm">
               <span className="font-medium">Toplam</span>
-              <span className="font-semibold text-xl text-primary ">
+              <span className="text-xl font-semibold text-primary">
                 {parseInt(totalWithDiscount ?? (cost as any))?.toFixed(2)} ₺
               </span>
             </div>

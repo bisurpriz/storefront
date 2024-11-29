@@ -1,17 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import TextField from "@/components/TextField";
-import { Link } from "@/components/Link";
-import { FC, useEffect, useState, useTransition } from "react";
-import { login } from "../../actions";
-import { AuthErrorMessages } from "../../contants";
-import { signIn } from "next-auth/react";
-import clsx from "clsx";
 import GoogleIcon from "@/components/CustomIcons/Google";
-import Image from "next/image";
-import Login from "@/components/Icons/Login";
-import { toast } from "sonner";
+import { Link } from "@/components/Link";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,11 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff, LogIn } from "lucide-react";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FC, useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
+import { login } from "../../actions";
+import { AuthErrorMessages } from "../../contants";
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
@@ -58,16 +55,17 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
     event.preventDefault();
     startTransition(async () => {
       const [email, password] = Array.from(event.currentTarget.elements).map(
-        (field: HTMLInputElement) => field.value
+        (field: HTMLInputElement) => field.value,
       );
 
-      const response = await login({ email, password });
+      const { error } = await login({
+        email,
+        password,
+      });
 
-      if (response.data.login.error) {
+      if (error) {
         const errorMessage =
-          AuthErrorMessages[
-            response.data.login.error as keyof typeof AuthErrorMessages
-          ];
+          AuthErrorMessages[error as keyof typeof AuthErrorMessages];
 
         setError(errorMessage);
         toast.error(errorMessage, {
@@ -91,7 +89,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
   return (
     <Card className="border-none shadow-none">
       <CardHeader className="space-y-1">
-        <div className="flex justify-center mb-4">
+        <div className="mb-4 flex justify-center">
           <Image
             src={"/logo.svg"}
             width={120}
@@ -100,13 +98,13 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             className="w-full max-w-xs"
           />
         </div>
-        <CardTitle className="text-2xl font-bold font-mono p-2 rounded-md bg-primary-foreground text-center">
+        <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">
           Giriş Yap
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleClientLogin} className="space-y-4">
-          <div className="space-y-2 ">
+          <div className="space-y-2">
             <Label htmlFor="email">E-posta</Label>
             <Input
               id="email"

@@ -61,9 +61,9 @@ const NewDropdown: FC<DropdownProps> = ({ placement = "topLeft" }) => {
           <svg
             className={clsx(
               "-mr-1 h-5 w-5 text-gray-400",
-              isOpen ? "transform rotate-180" : "",
+              isOpen ? "rotate-180 transform" : "",
               // animated turn
-              "transition-transform duration-200 ease-in-out"
+              "transition-transform duration-200 ease-in-out",
             )}
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -83,7 +83,7 @@ const NewDropdown: FC<DropdownProps> = ({ placement = "topLeft" }) => {
           ref={popupRef}
           className={clsx(
             "absolute z-10 mt-2 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none",
-            position
+            position,
           )}
           role="menu"
           aria-orientation="vertical"
@@ -100,8 +100,8 @@ const NewDropdown: FC<DropdownProps> = ({ placement = "topLeft" }) => {
               <Link
                 href="#"
                 className={clsx(
-                  "text-gray-700 block px-4 py-2 text-sm",
-                  "odd:bg-gray-50 even:bg-white hover:bg-gray-100"
+                  "block px-4 py-2 text-sm text-gray-700",
+                  "odd:bg-gray-50 even:bg-white hover:bg-gray-100",
                 )}
                 role="menuitem"
                 tabIndex={-1}

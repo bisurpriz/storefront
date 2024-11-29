@@ -1,5 +1,5 @@
 mutation verifyToken($token: String!, $resend: Boolean) {
-  email_verify(args: {token: $token, resend: $resend}) {
+  email_verify(args: { token: $token, resend: $resend }) {
     result
   }
 }

@@ -38,10 +38,10 @@ export default function QuarterSelectorModal() {
     >
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
-        className="max-w-xl w-full"
+        className="w-full max-w-xl"
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">
+          <DialogTitle className="text-center text-2xl font-bold">
             Gönderim Yeri Seçin
           </DialogTitle>
           <DialogDescription className="text-center">
@@ -50,11 +50,11 @@ export default function QuarterSelectorModal() {
         </DialogHeader>
         <PlacesAutocomplete />
 
-        <div className="flex justify-center flex-wrap gap-1 text-xs">
-          <span className="text-center text-gray-500 whitespace-nowrap">
+        <div className="flex flex-wrap justify-center gap-1 text-xs">
+          <span className="whitespace-nowrap text-center text-gray-500">
             İhtiyaçlarınıza uygun ürünleri listeleyebilmemiz için
           </span>
-          <strong className=" text-center text-gray-500 underline whitespace-nowrap">
+          <strong className="whitespace-nowrap text-center text-gray-500 underline">
             adresinizi seçin
           </strong>
         </div>

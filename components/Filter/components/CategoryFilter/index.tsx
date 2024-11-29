@@ -21,7 +21,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
       handleFilterSubmit={(selectedItems) => {
         handleFilterSubmit(
           "category",
-          selectedItems.map((c) => c.value).join(",") || ""
+          selectedItems.map((c) => c.value).join(",") || "",
         );
       }}
     />

@@ -12,7 +12,7 @@ const Input = ({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <div className="write bg-white shadow-2xl shadow-zinc-400 flex rounded-lg absolute bottom-0 right-0 left-0 ml-4 mr-4">
+    <div className="write absolute bottom-0 left-0 right-0 ml-4 mr-4 flex rounded-lg bg-white shadow-2xl shadow-zinc-400">
       <div className="flex-1">
         <TextField
           value={value}
@@ -32,7 +32,7 @@ const Input = ({
           type="button"
           size="sm"
           className="w-auto rounded-full"
-          icon={<Send className="rounded-full w-6 h-6" />}
+          icon={<Send className="h-6 w-6 rounded-full" />}
         />
       </div>
     </div>

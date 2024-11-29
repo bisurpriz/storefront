@@ -57,22 +57,22 @@ const NotReviewedCard = ({
       {orders.map(({ id, product, created_at, order_tenant }) => (
         <div
           key={id}
-          className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 max-sm:items-center sm:space-x-4 p-4 border rounded-lg"
+          className="flex flex-col space-y-3 rounded-lg border p-4 max-sm:items-center sm:flex-row sm:space-x-4 sm:space-y-0"
         >
           <Image
             src={getImageUrlFromPath(product.image_url[0])}
             alt={product.name}
-            className="w-24 h-24 object-cover rounded"
+            className="h-24 w-24 rounded object-cover"
             width={96}
             height={96}
           />
           <div className="flex-grow text-center sm:text-left">
-            <h3 className="font-semibold text-lg">{product.name}</h3>
+            <h3 className="text-lg font-semibold">{product.name}</h3>
             <p className="text-xs font-semibold text-gray-500">
               Sipariş Tarihi:{" "}
               {localeFormat(new Date(created_at), "LLLL dd, yyyy")}
             </p>
-            <div className="flex items-center justify-center sm:justify-start mt-2">
+            <div className="mt-2 flex items-center justify-center sm:justify-start">
               <StatusBadge
                 status={OrderItemStatus[order_tenant.order_status.value]}
               />
@@ -85,10 +85,10 @@ const NotReviewedCard = ({
                 <CreateReview
                   selectedProduct={product}
                   handleCreateReview={handleCreateReview}
-                />
+                />,
               )
             }
-            className="w-full sm:w-auto self-center"
+            className="w-full self-center sm:w-auto"
           >
             Değerlendir
           </Button>

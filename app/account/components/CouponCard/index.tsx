@@ -23,23 +23,23 @@ const CouponCard = ({
   return (
     <div>
       <div className="flex items-center justify-between">
-        <span className="text-sm rounded-md flex gap-1 whitespace-nowrap items-center capitalize">
+        <span className="flex items-center gap-1 whitespace-nowrap rounded-md text-sm capitalize">
           {title}
         </span>
-        <span className="text-xs text-orange-500 p-2 bg-orange-100 rounded-md leading-none whitespace-nowrap">
+        <span className="whitespace-nowrap rounded-md bg-orange-100 p-2 text-xs leading-none text-orange-500">
           ⚠️ Son {daysDifference + " "}
           gün
         </span>
       </div>
-      <div className="flex items-center mt-2">
+      <div className="mt-2 flex items-center">
         {description && (
-          <p className="text-xs text-gray-500 w-1/2 whitespace-pre-line">
+          <p className="w-1/2 whitespace-pre-line text-xs text-gray-500">
             {description}
           </p>
         )}
-        <div className="border-r border-gray-300 h-14 mx-2" />
-        <div className="w-1/2 flex">
-          <div className="w-full h-full flex items-center justify-between my-auto">
+        <div className="mx-2 h-14 border-r border-gray-300" />
+        <div className="flex w-1/2">
+          <div className="my-auto flex h-full w-full items-center justify-between">
             <h4 className="text-xl font-semibold text-orange-500">
               {discountAmount} TL
             </h4>
@@ -50,8 +50,8 @@ const CouponCard = ({
         </div>
       </div>
 
-      <div className="flex justify-between mt-2">
-        <span className="text-gray-500 text-[0.55rem]">
+      <div className="mt-2 flex justify-between">
+        <span className="text-[0.55rem] text-gray-500">
           Min. Alışveriş Tutarı: {minimumAmount} TL
         </span>
 

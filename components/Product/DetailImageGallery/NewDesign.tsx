@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import Image from "next/image";
+import * as React from "react";
 
 import {
   Carousel,
@@ -11,9 +11,9 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { cn } from "@/lib/utils";
 import useResponsive from "@/hooks/useResponsive";
+import { cn } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import ProductImageGalleryLoading from "./DetailImageGallerySuspense";
 
 export default function NewDesignGallery({ images, isMobile }) {
@@ -48,7 +48,7 @@ export default function NewDesignGallery({ images, isMobile }) {
       mainApi?.scrollTo(index);
       thumbnailApi?.scrollTo(index);
     },
-    [mainApi, thumbnailApi, isMobile]
+    [mainApi, thumbnailApi, isMobile],
   );
 
   if (!mounted) {
@@ -56,8 +56,8 @@ export default function NewDesignGallery({ images, isMobile }) {
   }
 
   return (
-    <div className="flex flex-col xl:flex-row gap-2 mx-auto">
-      <div className="w-full xl:w-[100px] order-2 xl:order-1">
+    <div className="mx-auto flex flex-col gap-2 xl:flex-row">
+      <div className="order-2 w-full xl:order-1 xl:w-[100px]">
         <Carousel
           setApi={setThumbnailApi}
           opts={{
@@ -69,8 +69,8 @@ export default function NewDesignGallery({ images, isMobile }) {
           <CarouselContent
             className={cn(
               isMobile || isLargeDesktop
-                ? "-ml-1 w-full h-auto"
-                : "-mt-1 w-[100px] h-[500px]"
+                ? "-ml-1 h-auto w-full"
+                : "-mt-1 h-[500px] w-[100px]",
             )}
           >
             {images.map((image, index) => (
@@ -80,7 +80,7 @@ export default function NewDesignGallery({ images, isMobile }) {
                   "p-0",
                   isMobile || isLargeDesktop
                     ? "basis-1/4 pl-1"
-                    : "basis-1/5 pt-1"
+                    : "basis-1/5 pt-1",
                 )}
                 onClick={() => onSelect(index)}
               >
@@ -91,11 +91,12 @@ export default function NewDesignGallery({ images, isMobile }) {
                     width={90}
                     sizes="90px"
                     height={90}
+                    priority
                     className={cn(
-                      "w-full h-full object-contain rounded-md",
+                      "h-full w-full rounded-md object-contain",
                       index === current
                         ? "border-2 border-primary"
-                        : "border-2 border-white"
+                        : "border-2 border-white",
                     )}
                   />
                 </div>
@@ -104,24 +105,24 @@ export default function NewDesignGallery({ images, isMobile }) {
           </CarouselContent>
         </Carousel>
       </div>
-      <div className="w-full xl:w-4/5 order-1 xl:order-2">
+      <div className="order-1 w-full xl:order-2 xl:w-4/5">
         <Carousel
           setApi={setMainApi}
           opts={{
             loop: true,
           }}
-          className="w-full h-full max-w-[500px] max-h-[500px] mx-auto"
+          className="mx-auto h-full max-h-[500px] w-full max-w-[500px]"
         >
-          <CarouselContent className={cn("w-full h-full m-0")}>
+          <CarouselContent className={cn("m-0 h-full w-full")}>
             {images.map((image, index) => (
               <CarouselItem
                 key={image}
-                className="flex aspect-square relative items-center justify-center w-full h-full"
+                className="relative flex aspect-square h-full w-full items-center justify-center"
               >
                 <Image
                   src={getImageUrlFromPath(image, 500)}
                   alt={image}
-                  className="h-full w-full object-contain rounded-md flex-1"
+                  className="h-full w-full flex-1 rounded-md object-contain"
                   fill
                   sizes="500px"
                   priority={index === 0}

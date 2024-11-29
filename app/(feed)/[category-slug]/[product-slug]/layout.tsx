@@ -24,17 +24,17 @@ export default async function ProductExample({
   return (
     <div className="h-full">
       <section
-        className="flex items-start justify-start max-md:flex-col gap-6 max-sm:gap-2 flex-nowrap"
+        className="flex flex-nowrap items-start justify-start gap-6 max-md:flex-col max-sm:gap-2"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="w-1/2 max-md:w-full z-0">
+        <div className="z-0 w-1/2 max-md:w-full">
           <Suspense fallback={<ProductImageGalleryLoading />}>
             {children}
           </Suspense>
         </div>
-        <div className="w-1/2 max-md:w-full z-0">
+        <div className="z-0 w-1/2 max-md:w-full">
           {information}
           {action}
         </div>

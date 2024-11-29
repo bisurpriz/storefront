@@ -47,6 +47,7 @@ query getUserOrders {
   order(where: { payment_status: { _eq: PAID } }) {
     created_at
     id
+    order_no
     total_amount
     tenant_orders {
       id

@@ -18,11 +18,11 @@ const CheckContract: FC<CheckContractProps> = ({
   };
 
   return (
-    <div className="px-4 border-t">
+    <div className="border-t px-4">
       <Checkbox
         checked={approveContract}
         label={
-          <span className="text-slate-600 text-xs">
+          <span className="text-xs text-slate-600">
             <strong
               onClick={openApproveContract}
               className="cursor-pointer underline hover:text-primary"

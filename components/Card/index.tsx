@@ -26,7 +26,7 @@ const Card = ({
     <div className={`${isBordered} ${containerCls}`} onClick={onClick}>
       {title && (
         <div
-          className={`text-center text-md font-bold text-gray-700 p-4 ${titleCls}`}
+          className={`text-md p-4 text-center font-bold text-gray-700 ${titleCls}`}
         >
           {title}
         </div>

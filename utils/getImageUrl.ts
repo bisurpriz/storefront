@@ -7,7 +7,7 @@ export function getImageUrlFromPath(path?: string, size = 150): string {
 }
 
 export function getCardAssociationImageUrl(
-  cardAssociation: CardAssociation
+  cardAssociation: CardAssociation,
 ): string {
   let prefix = ".svg";
   if (cardAssociation === "TROY") {

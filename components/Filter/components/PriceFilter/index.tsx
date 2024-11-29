@@ -81,7 +81,7 @@ const PriceFilter: FC<PriceFilterProps> = ({
           handleFilterSubmit={() => {
             handleFilterSubmit(
               "price",
-              `${selectedPrice.min}-${selectedPrice.max}`
+              `${selectedPrice.min}-${selectedPrice.max}`,
             );
             setIsOpen(false);
           }}

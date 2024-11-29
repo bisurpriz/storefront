@@ -1,11 +1,8 @@
 "use server";
 
-import { query } from "@/graphql/lib/client";
-import {
-  GetOrderApproveImagesDocument,
-  GetOrderApproveImagesQuery,
-  GetOrderApproveImagesQueryVariables,
-} from "@/graphql/queries/order/order.generated";
+import { GetOrderApproveImagesQuery } from "@/graphql/queries/order/order.generated";
+import { BonnmarseApi } from "@/service/fetch";
+import { GetOrderApproveImagesDocument } from "@/service/orders";
 import axios from "axios";
 
 export const getOrderApproveImages = async ({
@@ -13,17 +10,16 @@ export const getOrderApproveImages = async ({
 }: {
   token: string;
 }): Promise<GetOrderApproveImagesQuery["order_item"][0]> => {
-  const { data } = await query<
-    GetOrderApproveImagesQuery,
-    GetOrderApproveImagesQueryVariables
-  >({
-    query: GetOrderApproveImagesDocument,
-    variables: {
-      token,
+  const { order_item } = await BonnmarseApi.request<GetOrderApproveImagesQuery>(
+    {
+      query: GetOrderApproveImagesDocument,
+      variables: {
+        token,
+      },
     },
-  });
+  );
 
-  return data.order_item[0];
+  return order_item[0];
 };
 
 export const approveOrderImages = async ({
@@ -45,7 +41,7 @@ export const approveOrderImages = async ({
       headers: {
         "x-bonnmarse-approve-salt": salt,
       },
-    }
+    },
   );
 
   return response.data;

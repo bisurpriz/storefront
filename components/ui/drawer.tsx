@@ -47,7 +47,7 @@ const DrawerContent: FC<
       ref={ref}
       className={cn(
         "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
-        className
+        className,
       )}
       {...props}
     >
@@ -90,7 +90,7 @@ const DrawerTitle: FC<ComponentPropsWithRef<typeof DrawerPrimitive.Title>> = ({
     ref={ref}
     className={cn(
       "text-lg font-semibold leading-none tracking-tight",
-      className
+      className,
     )}
     {...props}
   />

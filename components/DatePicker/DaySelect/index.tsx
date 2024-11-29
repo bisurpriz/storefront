@@ -48,7 +48,7 @@ const DaySelect: React.FC<Props> = ({
   }, [lastOrderTime]);
 
   return (
-    <div className="w-full flex flex-col gap-4 font-sans">
+    <div className="flex w-full flex-col gap-4 font-sans">
       {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
         <RemainingTime
           remainTime={remainTime}

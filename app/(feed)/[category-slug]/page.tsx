@@ -1,17 +1,31 @@
-import InfinityScroll from "@/components/InfinityScroll";
-import Filter from "@/components/Filter";
-import { searchProductsv1 } from "../actions";
 import { PER_REQUEST } from "@/app/constants";
+import Filter from "@/components/Filter";
+import InfinityScroll from "@/components/InfinityScroll";
+import { searchProductsv1 } from "../actions";
 
-export default async function CategoryPage(
-  props: {
-    params: Promise<{ slug: string }>;
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  }
-) {
+export async function generateMetadata({ params }) {
+  const param = await params;
+  const category = param["category-slug"];
+
+  if (!category) return;
+
+  return {
+    title: `Bonnmarşe - ${category} Kategorisinin En İyi Ürünleri`,
+    description: `Bonnmarşe'de ${category} kategorisindeki en iyi ürünleri keşfedin. Ücretsiz kargo, gün için teslimat ve iade fırsatıyla hemen satın alın.`,
+    keywords: `${category}, en iyi ürünler, ücretsiz kargo, gün içi teslimat, iade fırsatı`,
+    robots: "index, follow",
+  };
+}
+
+export default async function CategoryPage(props: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const slug = params["category-slug"];
+
+  if (!slug) return;
 
   const response = await searchProductsv1(
     {
@@ -21,7 +35,7 @@ export default async function CategoryPage(
     {
       ...searchParams,
       category: slug,
-    }
+    },
   );
 
   const data = response?.hits.map((hit) => hit.document);

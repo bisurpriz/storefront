@@ -84,15 +84,15 @@ const CartSummary = () => {
   return (
     <div
       className={clsx(
-        "bg-white  col-span-1 md:h-fit border border-slate-200 rounded-md relative",
-        "max-md:border-none md:overflow-hidden"
+        "relative col-span-1 rounded-md border border-slate-200 bg-white md:h-fit",
+        "max-md:border-none md:overflow-hidden",
       )}
     >
       {isTablet ? (
         createPortal(
           <AnimationExitProvider show={isOpen}>
             <motion.div
-              className="max-md:absolute max-md:left-0 max-md:bottom-full max-md:w-full bg-white"
+              className="bg-white max-md:absolute max-md:bottom-full max-md:left-0 max-md:w-full"
               initial={{ y: 20 }}
               animate={{ y: 0, zIndex: -1 }}
               exit={{ y: 20 }}
@@ -116,7 +116,7 @@ const CartSummary = () => {
               )}
             </motion.div>
           </AnimationExitProvider>,
-          document?.getElementById("cart-summary") || document?.body
+          document?.getElementById("cart-summary") || document?.body,
         )
       ) : (
         <>
@@ -141,27 +141,27 @@ const CartSummary = () => {
       )}
       <div
         className={clsx(
-          "max-md:w-full max-md:fixed max-md:left-0 max-md:right-0 max-md:bottom-0  max-md:bg-white max-md:grid max-md:grid-cols-3 z-[12]",
-          "max-xs:mb-14 max-md:mb-[72px]"
+          "z-[12] max-md:fixed max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:grid max-md:w-full max-md:grid-cols-3 max-md:bg-white",
+          "max-md:mb-[72px] max-xs:mb-14",
         )}
         id="cart-summary"
       >
         <span
           className={clsx(
-            "col-span-1 flex items-center justify-between p-2 gap-4",
-            "md:hidden"
+            "col-span-1 flex items-center justify-between gap-4 p-2",
+            "md:hidden",
           )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <ChevronUp
             className={clsx(
-              "text-primary md:hidden transform transition-transform duration-300",
-              isOpen ? "rotate-180" : ""
+              "transform text-primary transition-transform duration-300 md:hidden",
+              isOpen ? "rotate-180" : "",
             )}
           />
-          <span className="flex flex-col items-start justify-between text-xs whitespace-nowrap flex-1">
+          <span className="flex flex-1 flex-col items-start justify-between whitespace-nowrap text-xs">
             <p className="text-slate-600">Toplam</p>
-            <p className="text-primary font-semibold text-sm">
+            <p className="text-sm font-semibold text-primary">
               {cost.totalPrice} ₺
             </p>
           </span>
@@ -179,8 +179,8 @@ const CartSummary = () => {
             pagePathForm[pathname as keyof typeof pagePathForm] || undefined
           }
           className={clsx(
-            "flex justify-center rounded-t-none w-full",
-            "max-md:rounded-none max-md:col-span-2"
+            "flex w-full justify-center rounded-t-none",
+            "max-md:col-span-2 max-md:rounded-none",
           )}
           onClick={changeStep}
         >

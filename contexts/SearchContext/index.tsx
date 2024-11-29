@@ -25,7 +25,7 @@ interface SearchProductContextType {
   handleKeyDown: (event: any) => void;
   pushToSearch: () => void;
   setProducts: (
-    products: GetProductsWithFilteredPaginationQuery["product"]
+    products: GetProductsWithFilteredPaginationQuery["product"],
   ) => void;
 }
 
@@ -75,8 +75,8 @@ export const SearchProductProvider = ({
       const response = await searchProductsv1({ q: input });
       setProducts(
         response.hits.map(
-          (hit) => hit.document
-        ) as GetProductsWithFilteredPaginationQuery["product"]
+          (hit) => hit.document,
+        ) as GetProductsWithFilteredPaginationQuery["product"],
       );
     });
   };

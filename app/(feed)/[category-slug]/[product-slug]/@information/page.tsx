@@ -1,24 +1,22 @@
-import ProductInformation from "../../components/Detail/ProductInformation";
-import { getProductInformation } from "./actions";
-import { FC } from "react";
+import { PageProps } from "@/.next/types/app/page";
 import { getProductRatings } from "@/app/(feed)/actions";
-import InformationLoadingPage from "./loading";
-import { getDiscountRate } from "@/utils/price";
-import { Product, WithContext } from "schema-dts";
+import { parseJson } from "@/utils/format";
+import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { goToProductDetail } from "@/utils/linkClickEvent";
-import { parseJson } from "@/utils/format";
-import { PageProps } from "@/.next/types/app/page";
-import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import { getDiscountRate } from "@/utils/price";
+import { FC } from "react";
+import { Product, WithContext } from "schema-dts";
+import ProductInformation from "../../components/Detail/ProductInformation";
+import { getProductInformation } from "./actions";
+import InformationLoadingPage from "./loading";
 
 export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
 
   const productId = Number(params["pid"]);
 
-  const {
-    data: { product },
-  } = await getProductInformation(productId);
+  const { product } = await getProductInformation(productId);
 
   return {
     title: getBrandWithTitle(product.name),
@@ -30,9 +28,7 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
 
-  const {
-    data: { product },
-  } = await getProductInformation(productId);
+  const { product } = await getProductInformation(productId);
 
   if (!product) {
     return <InformationLoadingPage />;
@@ -80,7 +76,7 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
         "@type": "PropertyValue",
         name: prop.name,
         value: prop.value,
-      })
+      }),
     ),
   };
 

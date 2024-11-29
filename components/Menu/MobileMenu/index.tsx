@@ -55,10 +55,10 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-start">
+    <div className="flex h-full w-full flex-col items-start justify-start">
       <div
         className={clsx([
-          "w-full grid  gap-2 mb-2",
+          "mb-2 grid w-full gap-2",
           !user ? "grid-cols-2" : "grid-cols-3",
         ])}
       >
@@ -67,45 +67,43 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
             key={item.text}
             href={item.link}
             className={clsx([
-              "flex flex-col items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary hover:text-white transition-colors duration-200 ease-in-out",
+              "border-primarlight flex w-full flex-col items-center justify-center rounded-md border px-2 py-4 text-primary transition-colors duration-200 ease-in-out hover:text-white",
               !user && item.private && "hidden",
               user && !item.private && "hidden",
             ])}
             replace={item.link === "/login"}
           >
-            <item.icon className="w-4 h-4" />
+            <item.icon className="h-4 w-4" />
             <span className="text-xs">{item.text}</span>
           </Link>
         ))}
       </div>
-      <div className="w-full h-full">
+      <div className="h-full w-full">
         <ul>
-          {items?.map((item, index) => (
-            <MenuItem key={index} {...item} />
-          ))}
+          {items?.map((item, index) => <MenuItem key={index} {...item} />)}
         </ul>
       </div>
       <div
-        className={`w-full grid ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}
+        className={`grid w-full ${!user ? "grid-cols-1" : "grid-cols-2"} gap-4`}
       >
         <>
           <Link
             href={"/iletisim"}
             className={clsx([
-              "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+              "border-primarlight flex w-full items-center justify-center gap-2 rounded-md border px-2 py-4 text-primary",
             ])}
           >
-            <Phone className="w-4 h-4" />
+            <Phone className="h-4 w-4" />
             <span className="text-xs">İletişim</span>
           </Link>
           <span
             onClick={handleLogout}
             className={clsx([
-              "flex gap-2 items-center justify-center w-full px-2 py-4 border rounded-md border-primarlight text-primary",
+              "border-primarlight flex w-full items-center justify-center gap-2 rounded-md border px-2 py-4 text-primary",
               !user && "hidden",
             ])}
           >
-            <Logout className="w-4 h-4" />
+            <Logout className="h-4 w-4" />
             <span className="text-xs">Çıkış Yap</span>
           </span>
         </>

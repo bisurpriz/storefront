@@ -16,7 +16,7 @@ export const OrderCustomizableModal = createContext<OrderCustomizableModalType>(
   {
     onOpen: () => {},
     onOrderCustomizeModalClose: () => {},
-  }
+  },
 );
 
 export const OrderCustomizableModalProvider = ({
@@ -55,21 +55,15 @@ export const OrderCustomizableModalProvider = ({
       <Modal
         open={Boolean(selectedOrder)}
         handleClose={onOrderCustomizeModalClose}
+        closeOnBackdropClick={false}
+        title={`Sipariş Özelleştirmeleri - #${selectedOrder?.order_no}`}
       >
-        <div className="container mx-8 bg-white rounded-lg">
-          <div
-            className={clsx(
-              "p-4 pb-2",
-              "text-lg font-semibold text-slate-400 border-b border-gray-200"
-            )}
-          >
-            Lütfen tasarlanabilir ürünlerinizi tamamlayınız.
-          </div>
+        {selectedOrder && (
           <OrderCustomize
             order={selectedOrder}
             onStatusChange={onStatusChange}
           />
-        </div>
+        )}
       </Modal>
 
       {children}
@@ -77,5 +71,12 @@ export const OrderCustomizableModalProvider = ({
   );
 };
 
-export const useOrderCustomizableModal = () =>
-  useContext(OrderCustomizableModal);
+export const useOrderCustomizableModal = () => {
+  if (!OrderCustomizableModal) {
+    throw new Error(
+      "useOrderCustomizableModal must be used within a OrderCustomizableModalProvider",
+    );
+  }
+
+  return useContext(OrderCustomizableModal);
+};

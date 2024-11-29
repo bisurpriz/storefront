@@ -65,14 +65,14 @@ function VerifyPage() {
   return (
     <div
       className={clsx(
-        "flex flex-col items-center justify-center content-height bg-gray-100 max-md:bg-white"
+        "content-height flex flex-col items-center justify-center bg-gray-100 max-md:bg-white",
       )}
     >
-      <div className={clsx("max-w-md w-full space-y-4")}>
+      <div className={clsx("w-full max-w-md space-y-4")}>
         {(result === ResultTypes.TOKEN_EXPIRED ||
           result === ResultTypes.NO_USER_FOUND) && (
           <>
-            <div className="text-center flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-4 text-center">
               <h1 className="text-3xl font-bold">
                 {result === ResultTypes.TOKEN_EXPIRED
                   ? "Aktivasyon Süresi Dolmuş"
@@ -94,7 +94,7 @@ function VerifyPage() {
                   });
                 }}
                 loading={false}
-                className="w-full mt-4 flex items-center justify-center"
+                className="mt-4 flex w-full items-center justify-center"
               >
                 Tekrar Gönder
               </Button>
@@ -103,14 +103,14 @@ function VerifyPage() {
         )}
         {result === ResultTypes.EMAIL_VERIFIED && (
           <>
-            <div className="text-center flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-4 text-center">
               <h1 className="text-3xl font-bold">Email Doğrulandı</h1>
               <p className="text-gray-500 dark:text-gray-400">
                 {resultMessages[result]}
               </p>
               <Button
                 variant="outline"
-                className="mt-4 w-full flex items-center justify-center"
+                className="mt-4 flex w-full items-center justify-center"
               >
                 <Link href="/login" replace>
                   Giriş Yap
@@ -121,7 +121,7 @@ function VerifyPage() {
         )}
 
         {result === ResultTypes.EMAIL_RESENT && (
-          <div className="text-center flex flex-col items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 text-center">
             <h1 className="text-3xl font-bold">Aktivasyon Maili Gönderildi</h1>
             <p className="text-gray-500 dark:text-gray-400">
               {resultMessages[result]}
@@ -130,7 +130,7 @@ function VerifyPage() {
         )}
 
         {result === ResultTypes.ERROR && (
-          <div className="text-center flex flex-col items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 text-center">
             <h1 className="text-3xl font-bold">Bir hata oluştu.</h1>
             <p className="text-gray-500 dark:text-gray-400">
               {resultMessages[result]}
@@ -146,7 +146,7 @@ function VerifyPage() {
                 });
               }}
               loading={false}
-              className="mt-4 w-full flex items-center justify-center"
+              className="mt-4 flex w-full items-center justify-center"
             >
               Tekrar Gönder
             </Button>

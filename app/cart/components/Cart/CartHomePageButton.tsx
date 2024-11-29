@@ -6,7 +6,7 @@ const CartHomePageButton = () => {
   return (
     <Link href="/" className="w-fit">
       <Button
-        icon={<ArrowLeft className="w-4 h-4 mr-2" />}
+        icon={<ArrowLeft className="mr-2 h-4 w-4" />}
         type="button"
         size="sm"
         variant="link"
