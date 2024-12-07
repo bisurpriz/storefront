@@ -14,7 +14,7 @@ export default function DesignLayout({
     <div className="flex min-h-screen flex-col max-md:mb-16">
       <Header category={categories} />
       <main className="box-border flex-1 overflow-hidden">
-        <div className="container mx-auto max-w-7xl py-6 sm:px-4">
+        <div className="container mx-auto max-w-7xl px-2 py-6 sm:px-4">
           {children}
         </div>
       </main>
