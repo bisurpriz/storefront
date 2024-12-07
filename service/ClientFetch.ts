@@ -6,9 +6,11 @@ class ClientFetch extends BaseFetch {
   async request<T>({
     query,
     variables,
+    additionalHeaders,
   }: {
     query: string;
     variables?: any;
+    additionalHeaders?: HeadersInit;
   }): Promise<T> {
     const token = Cookies.get(CookieTokens.ACCESS_TOKEN);
     const guestId = Cookies.get(CookieTokens.GUEST_ID);
@@ -16,7 +18,13 @@ class ClientFetch extends BaseFetch {
     try {
       const response = await fetch(
         this.hasuraUrl,
-        this.buildFetchOptions({ token, query, variables, guestId }),
+        this.buildFetchOptions({
+          token,
+          query,
+          variables,
+          guestId,
+          additionalHeaders,
+        }),
       );
 
       const body = await response.json();

@@ -15,7 +15,7 @@ import AddToFavorite from "./components/AddToFavorite";
 const ProductCard = (product: Product) => {
   const { user } = useUser();
   const [isFavorite, setIsFavorite] = useState(
-    user.favorites.some((fav) => fav.product_id === product.id),
+    user?.favorites?.some((fav) => fav.product_id === product.id),
   );
 
   const {
@@ -35,7 +35,7 @@ const ProductCard = (product: Product) => {
   useEffect(() => {
     if (!user) return;
     setIsFavorite(
-      user.favorites.some((fav) => Number(fav.product_id) === Number(id)),
+      user?.favorites?.some((fav) => Number(fav.product_id) === Number(id)),
     );
   }, [user]);
 

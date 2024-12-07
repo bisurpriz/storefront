@@ -15,15 +15,17 @@ class Fetch {
     variables,
     tags,
     withAuth = true,
+    additionalHeaders,
   }: {
     query: string;
     variables?: any;
     tags?: string[];
     withAuth?: boolean;
+    additionalHeaders?: HeadersInit
   }): Promise<T> {
     try {
       console.log("Requesting:", tags?.join(", "));
-      return await this.fetch.request({ query, variables, tags, withAuth });
+      return await this.fetch.request({ query, variables, tags, withAuth, additionalHeaders });
     } catch (error) {
       this.handleError(error, query);
     }
