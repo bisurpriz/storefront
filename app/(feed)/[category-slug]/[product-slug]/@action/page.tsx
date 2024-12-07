@@ -1,10 +1,11 @@
+import { CookieTokens } from "@/app/@auth/contants";
+import { IPlace } from "@/common/types/Product/product";
+import { parseJson } from "@/utils/format";
+import { cookies } from "next/headers";
+import { Place, WithContext } from "schema-dts";
 import ProductActions from "../../components/Detail/ProductActions";
 import { getProductActions } from "./actions";
 import ActionPageLoading from "./loading";
-import { parseJson } from "@/utils/format";
-import { cookies } from "next/headers";
-import { IPlace } from "@/common/types/Product/product";
-import { WithContext, Place } from "schema-dts";
 
 const ProductActionsPage = async (props) => {
   const searchParams = await props.searchParams;
@@ -23,8 +24,8 @@ const ProductActionsPage = async (props) => {
   const handleCookie = async () => {
     const { get } = await cookies();
     try {
-      const locationCookie = get("location_id")?.value
-        ? parseJson(get("location_id")?.value)
+      const locationCookie = get(CookieTokens.LOCATION_ID)?.value
+        ? parseJson(get(CookieTokens.LOCATION_ID)?.value)
         : null;
       return locationCookie;
     } catch (error) {

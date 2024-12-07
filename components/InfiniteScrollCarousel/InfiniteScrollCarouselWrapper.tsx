@@ -9,7 +9,6 @@ export default async function InfiniteScrollCarouselWrapper({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const params = await searchParams;
-
   const response = await searchProductsv1(
     {
       offset: 0,

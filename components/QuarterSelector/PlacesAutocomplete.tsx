@@ -1,5 +1,6 @@
 "use client";
 
+import { CookieTokens } from "@/app/@auth/contants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -49,7 +50,6 @@ export default function PlacesAutocomplete({
   const [input, setInput] = useState(defaultValue?.label ?? "");
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
-  const [mounted, setMounted] = useState(false);
 
   const autocompleteService = useRef<any>(null);
   const sessionToken = useRef(null);
@@ -66,8 +66,6 @@ export default function PlacesAutocomplete({
   });
 
   useEffect(() => {
-    if (!mounted) return;
-
     startTransition(() => {
       loader.load().then(() => {
         autocompleteService.current =
@@ -77,15 +75,11 @@ export default function PlacesAutocomplete({
       });
 
       if (dontChangeCookie) return;
-      const hasLocation = parseJson(Cookies.get("location")!);
+      const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID)!);
       if (hasLocation) {
         setInput(hasLocation.label);
       }
     });
-  }, [mounted]);
-
-  useEffect(() => {
-    setMounted(true);
   }, []);
 
   const handleInputChange = (e: any) => {
@@ -152,7 +146,7 @@ export default function PlacesAutocomplete({
         if (dontChangeCookie) return;
 
         Cookies.set(
-          "location",
+          CookieTokens.LOCATION_ID,
           JSON.stringify({
             address_components,
             placeId: prediction.place_id,
@@ -163,7 +157,7 @@ export default function PlacesAutocomplete({
       });
     } else {
       if (dontChangeCookie) return;
-      Cookies.remove("location");
+      Cookies.remove(CookieTokens.LOCATION_ID);
       refresh();
     }
   };
@@ -173,7 +167,7 @@ export default function PlacesAutocomplete({
     setPredictions([]);
     onSelect?.(null);
     if (dontChangeCookie) return;
-    Cookies.remove("location");
+    Cookies.remove(CookieTokens.LOCATION_ID);
     refresh();
   };
 
@@ -223,7 +217,7 @@ export default function PlacesAutocomplete({
         <div
           className={cn(
             "animated-background absolute -inset-[2px] -z-10 rounded-md",
-            "to-tertiary animated-background bg-gradient-to-bl from-primary via-secondary",
+            "animated-background bg-gradient-to-bl from-primary via-secondary to-tertiary",
           )}
         />
       </div>
