@@ -22,6 +22,7 @@ export const login = async ({ email, password }, headers = {}) => {
       email,
       password,
     },
+    additionalHeaders: headers,
   });
 
   if (login.access_token && login.refresh_token) {

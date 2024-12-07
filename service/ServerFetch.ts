@@ -7,11 +7,13 @@ class ServerFetch extends BaseFetch {
     variables,
     tags,
     withAuth = true,
+    additionalHeaders,
   }: {
     query: string;
     variables?: any;
     tags?: string[];
     withAuth?: boolean;
+    additionalHeaders?: HeadersInit;
   }): Promise<T> {
     let token;
     let guestId;
@@ -25,7 +27,14 @@ class ServerFetch extends BaseFetch {
     try {
       const response = await fetch(
         this.hasuraUrl,
-        this.buildFetchOptions({ query, variables, tags, token, guestId }),
+        this.buildFetchOptions({
+          query,
+          variables,
+          tags,
+          token,
+          guestId,
+          additionalHeaders,
+        }),
       );
 
       const body = await response.json();
