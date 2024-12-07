@@ -1,7 +1,4 @@
-import { CookieTokens } from "@/app/@auth/contants";
 import { FILTER_KEYS } from "@/common/enums/Product/product";
-import { cookies } from "next/headers";
-import { parseJson } from "./format";
 import { IPlace } from "@/common/types/Product/product";
 
 export const createTypesenseQueryMapper = async (

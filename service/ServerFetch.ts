@@ -1,5 +1,4 @@
 import { CookieTokens } from "@/app/@auth/contants";
-import { cookies } from "next/headers";
 import BaseFetch from "./BaseFetch";
 
 class ServerFetch extends BaseFetch {
@@ -7,19 +6,26 @@ class ServerFetch extends BaseFetch {
     query,
     variables,
     tags,
+    withAuth = true,
   }: {
     query: string;
     variables?: any;
     tags?: string[];
+    withAuth?: boolean;
   }): Promise<T> {
-    const cooks = await cookies();
-    const token = cooks.get(CookieTokens.ACCESS_TOKEN)?.value;
-    const guestId = cooks.get(CookieTokens.GUEST_ID)?.value;
+    let token;
+    let guestId;
+    if (withAuth) {
+      const { cookies } = await import("next/headers");
+
+      token = (await cookies()).get(CookieTokens.ACCESS_TOKEN)?.value;
+      guestId = (await cookies()).get(CookieTokens.GUEST_ID)?.value;
+    }
 
     try {
       const response = await fetch(
         this.hasuraUrl,
-        this.buildFetchOptions({ token, query, variables, tags, guestId }),
+        this.buildFetchOptions({ query, variables, tags, token, guestId }),
       );
 
       const body = await response.json();

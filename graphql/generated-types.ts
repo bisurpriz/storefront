@@ -4636,6 +4636,186 @@ export type District_Variance_Order_By = {
   parent_id?: InputMaybe<Order_By>;
 };
 
+/** firebase cloud messaging token */
+export type Fcm_Token = {
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  last_used?: Maybe<Scalars['timestamptz']['output']>;
+  token: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user: User;
+  user_id: Scalars['uuid']['output'];
+};
+
+/** aggregated selection of "fcm_token" */
+export type Fcm_Token_Aggregate = {
+  aggregate?: Maybe<Fcm_Token_Aggregate_Fields>;
+  nodes: Array<Fcm_Token>;
+};
+
+/** aggregate fields of "fcm_token" */
+export type Fcm_Token_Aggregate_Fields = {
+  count: Scalars['Int']['output'];
+  max?: Maybe<Fcm_Token_Max_Fields>;
+  min?: Maybe<Fcm_Token_Min_Fields>;
+};
+
+
+/** aggregate fields of "fcm_token" */
+export type Fcm_Token_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Fcm_Token_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "fcm_token". All fields are combined with a logical 'AND'. */
+export type Fcm_Token_Bool_Exp = {
+  _and?: InputMaybe<Array<Fcm_Token_Bool_Exp>>;
+  _not?: InputMaybe<Fcm_Token_Bool_Exp>;
+  _or?: InputMaybe<Array<Fcm_Token_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  last_used?: InputMaybe<Timestamptz_Comparison_Exp>;
+  token?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<User_Bool_Exp>;
+  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "fcm_token" */
+export type Fcm_Token_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'fcm_token_pkey'
+  /** unique or primary key constraint on columns "user_id", "token" */
+  | 'fcm_token_token_user_id_key';
+
+/** input type for inserting data into table "fcm_token" */
+export type Fcm_Token_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type Fcm_Token_Max_Fields = {
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  last_used?: Maybe<Scalars['timestamptz']['output']>;
+  token?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** aggregate min on columns */
+export type Fcm_Token_Min_Fields = {
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  last_used?: Maybe<Scalars['timestamptz']['output']>;
+  token?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** response of any mutation on the table "fcm_token" */
+export type Fcm_Token_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Fcm_Token>;
+};
+
+/** on_conflict condition type for table "fcm_token" */
+export type Fcm_Token_On_Conflict = {
+  constraint: Fcm_Token_Constraint;
+  update_columns?: Array<Fcm_Token_Update_Column>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "fcm_token". */
+export type Fcm_Token_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  last_used?: InputMaybe<Order_By>;
+  token?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<User_Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: fcm_token */
+export type Fcm_Token_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "fcm_token" */
+export type Fcm_Token_Select_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'last_used'
+  /** column name */
+  | 'token'
+  /** column name */
+  | 'updated_at'
+  /** column name */
+  | 'user_id';
+
+/** input type for updating data in table "fcm_token" */
+export type Fcm_Token_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** Streaming cursor of the table "fcm_token" */
+export type Fcm_Token_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Fcm_Token_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Fcm_Token_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** update columns of table "fcm_token" */
+export type Fcm_Token_Update_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'last_used'
+  /** column name */
+  | 'token'
+  /** column name */
+  | 'updated_at'
+  /** column name */
+  | 'user_id';
+
+export type Fcm_Token_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Fcm_Token_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Fcm_Token_Bool_Exp;
+};
+
 export type Get_Comment_By_Score_Args = {
   pid?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -5145,6 +5325,10 @@ export type Mutation_Root = {
   delete_district?: Maybe<District_Mutation_Response>;
   /** delete single row from the table: "district" */
   delete_district_by_pk?: Maybe<District>;
+  /** delete data from the table: "fcm_token" */
+  delete_fcm_token?: Maybe<Fcm_Token_Mutation_Response>;
+  /** delete single row from the table: "fcm_token" */
+  delete_fcm_token_by_pk?: Maybe<Fcm_Token>;
   /** delete data from the table: "message" */
   delete_message?: Maybe<Message_Mutation_Response>;
   /** delete single row from the table: "message" */
@@ -5199,6 +5383,10 @@ export type Mutation_Root = {
   delete_product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
   /** delete data from the table: "product_delivery_city_info" */
   delete_product_delivery_city_info?: Maybe<Product_Delivery_City_Info_Mutation_Response>;
+  /** delete data from the table: "product_related" */
+  delete_product_related?: Maybe<Product_Related_Mutation_Response>;
+  /** delete single row from the table: "product_related" */
+  delete_product_related_by_pk?: Maybe<Product_Related>;
   /** delete data from the table: "quarter" */
   delete_quarter?: Maybe<Quarter_Mutation_Response>;
   /** delete single row from the table: "quarter" */
@@ -5336,6 +5524,10 @@ export type Mutation_Root = {
   insert_district?: Maybe<District_Mutation_Response>;
   /** insert a single row into the table: "district" */
   insert_district_one?: Maybe<District>;
+  /** insert data into the table: "fcm_token" */
+  insert_fcm_token?: Maybe<Fcm_Token_Mutation_Response>;
+  /** insert a single row into the table: "fcm_token" */
+  insert_fcm_token_one?: Maybe<Fcm_Token>;
   /** insert data into the table: "message" */
   insert_message?: Maybe<Message_Mutation_Response>;
   /** insert a single row into the table: "message" */
@@ -5392,6 +5584,10 @@ export type Mutation_Root = {
   insert_product_delivery_city_info_one?: Maybe<Product_Delivery_City_Info>;
   /** insert a single row into the table: "product" */
   insert_product_one?: Maybe<Product>;
+  /** insert data into the table: "product_related" */
+  insert_product_related?: Maybe<Product_Related_Mutation_Response>;
+  /** insert a single row into the table: "product_related" */
+  insert_product_related_one?: Maybe<Product_Related>;
   /** insert data into the table: "quarter" */
   insert_quarter?: Maybe<Quarter_Mutation_Response>;
   /** insert a single row into the table: "quarter" */
@@ -5560,6 +5756,12 @@ export type Mutation_Root = {
   update_district_by_pk?: Maybe<District>;
   /** update multiples rows of table: "district" */
   update_district_many?: Maybe<Array<Maybe<District_Mutation_Response>>>;
+  /** update data of the table: "fcm_token" */
+  update_fcm_token?: Maybe<Fcm_Token_Mutation_Response>;
+  /** update single row of the table: "fcm_token" */
+  update_fcm_token_by_pk?: Maybe<Fcm_Token>;
+  /** update multiples rows of table: "fcm_token" */
+  update_fcm_token_many?: Maybe<Array<Maybe<Fcm_Token_Mutation_Response>>>;
   /** update data of the table: "message" */
   update_message?: Maybe<Message_Mutation_Response>;
   /** update single row of the table: "message" */
@@ -5642,6 +5844,12 @@ export type Mutation_Root = {
   update_product_delivery_city_info_many?: Maybe<Array<Maybe<Product_Delivery_City_Info_Mutation_Response>>>;
   /** update multiples rows of table: "product" */
   update_product_many?: Maybe<Array<Maybe<Product_Mutation_Response>>>;
+  /** update data of the table: "product_related" */
+  update_product_related?: Maybe<Product_Related_Mutation_Response>;
+  /** update single row of the table: "product_related" */
+  update_product_related_by_pk?: Maybe<Product_Related>;
+  /** update multiples rows of table: "product_related" */
+  update_product_related_many?: Maybe<Array<Maybe<Product_Related_Mutation_Response>>>;
   /** update data of the table: "quarter" */
   update_quarter?: Maybe<Quarter_Mutation_Response>;
   /** update single row of the table: "quarter" */
@@ -5932,6 +6140,18 @@ export type Mutation_RootDelete_District_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Fcm_TokenArgs = {
+  where: Fcm_Token_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Fcm_Token_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_MessageArgs = {
   where: Message_Bool_Exp;
 };
@@ -6090,6 +6310,18 @@ export type Mutation_RootDelete_Product_Customizable_Area_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Product_Delivery_City_InfoArgs = {
   where: Product_Delivery_City_Info_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Product_RelatedArgs = {
+  where: Product_Related_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Product_Related_By_PkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 
@@ -6536,6 +6768,20 @@ export type Mutation_RootInsert_District_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Fcm_TokenArgs = {
+  objects: Array<Fcm_Token_Insert_Input>;
+  on_conflict?: InputMaybe<Fcm_Token_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Fcm_Token_OneArgs = {
+  object: Fcm_Token_Insert_Input;
+  on_conflict?: InputMaybe<Fcm_Token_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_MessageArgs = {
   objects: Array<Message_Insert_Input>;
   on_conflict?: InputMaybe<Message_On_Conflict>;
@@ -6726,6 +6972,20 @@ export type Mutation_RootInsert_Product_Delivery_City_Info_OneArgs = {
 export type Mutation_RootInsert_Product_OneArgs = {
   object: Product_Insert_Input;
   on_conflict?: InputMaybe<Product_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_RelatedArgs = {
+  objects: Array<Product_Related_Insert_Input>;
+  on_conflict?: InputMaybe<Product_Related_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_Related_OneArgs = {
+  object: Product_Related_Insert_Input;
+  on_conflict?: InputMaybe<Product_Related_On_Conflict>;
 };
 
 
@@ -7334,6 +7594,26 @@ export type Mutation_RootUpdate_District_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Fcm_TokenArgs = {
+  _set?: InputMaybe<Fcm_Token_Set_Input>;
+  where: Fcm_Token_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Fcm_Token_By_PkArgs = {
+  _set?: InputMaybe<Fcm_Token_Set_Input>;
+  pk_columns: Fcm_Token_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Fcm_Token_ManyArgs = {
+  updates: Array<Fcm_Token_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_MessageArgs = {
   _inc?: InputMaybe<Message_Inc_Input>;
   _set?: InputMaybe<Message_Set_Input>;
@@ -7636,6 +7916,28 @@ export type Mutation_RootUpdate_Product_Delivery_City_Info_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Product_ManyArgs = {
   updates: Array<Product_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_RelatedArgs = {
+  _inc?: InputMaybe<Product_Related_Inc_Input>;
+  _set?: InputMaybe<Product_Related_Set_Input>;
+  where: Product_Related_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Related_By_PkArgs = {
+  _inc?: InputMaybe<Product_Related_Inc_Input>;
+  _set?: InputMaybe<Product_Related_Set_Input>;
+  pk_columns: Product_Related_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Related_ManyArgs = {
+  updates: Array<Product_Related_Updates>;
 };
 
 
@@ -11504,6 +11806,7 @@ export type Product = {
   is_service_free?: Maybe<Scalars['Boolean']['output']>;
   last_order_time?: Maybe<Scalars['timestamptz']['output']>;
   name: Scalars['String']['output'];
+  only_related?: Maybe<Scalars['Boolean']['output']>;
   /** An array relationship */
   order_items: Array<Order_Item>;
   /** An aggregate relationship */
@@ -11801,6 +12104,7 @@ export type Product_Bool_Exp = {
   is_service_free?: InputMaybe<Boolean_Comparison_Exp>;
   last_order_time?: InputMaybe<Timestamptz_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  only_related?: InputMaybe<Boolean_Comparison_Exp>;
   order_items?: InputMaybe<Order_Item_Bool_Exp>;
   order_items_aggregate?: InputMaybe<Order_Item_Aggregate_Bool_Exp>;
   price?: InputMaybe<Numeric_Comparison_Exp>;
@@ -12798,6 +13102,7 @@ export type Product_Insert_Input = {
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  only_related?: InputMaybe<Scalars['Boolean']['input']>;
   order_items?: InputMaybe<Order_Item_Arr_Rel_Insert_Input>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   product_categories?: InputMaybe<Product_Category_Arr_Rel_Insert_Input>;
@@ -12938,6 +13243,7 @@ export type Product_Order_By = {
   is_service_free?: InputMaybe<Order_By>;
   last_order_time?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  only_related?: InputMaybe<Order_By>;
   order_items_aggregate?: InputMaybe<Order_Item_Aggregate_Order_By>;
   price?: InputMaybe<Order_By>;
   product_categories_aggregate?: InputMaybe<Product_Category_Aggregate_Order_By>;
@@ -12966,6 +13272,270 @@ export type Product_Pk_Columns_Input = {
 export type Product_Prepend_Input = {
   delivery_time_ranges?: InputMaybe<Scalars['jsonb']['input']>;
   properties?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** columns and relationships of "product_related" */
+export type Product_Related = {
+  id: Scalars['bigint']['output'];
+  /** An object relationship */
+  product: Product;
+  product_id: Scalars['bigint']['output'];
+  /** An object relationship */
+  related_product: Product;
+  related_product_id: Scalars['bigint']['output'];
+  related_product_price: Scalars['numeric']['output'];
+  relevance_score?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** aggregated selection of "product_related" */
+export type Product_Related_Aggregate = {
+  aggregate?: Maybe<Product_Related_Aggregate_Fields>;
+  nodes: Array<Product_Related>;
+};
+
+/** aggregate fields of "product_related" */
+export type Product_Related_Aggregate_Fields = {
+  avg?: Maybe<Product_Related_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Product_Related_Max_Fields>;
+  min?: Maybe<Product_Related_Min_Fields>;
+  stddev?: Maybe<Product_Related_Stddev_Fields>;
+  stddev_pop?: Maybe<Product_Related_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Product_Related_Stddev_Samp_Fields>;
+  sum?: Maybe<Product_Related_Sum_Fields>;
+  var_pop?: Maybe<Product_Related_Var_Pop_Fields>;
+  var_samp?: Maybe<Product_Related_Var_Samp_Fields>;
+  variance?: Maybe<Product_Related_Variance_Fields>;
+};
+
+
+/** aggregate fields of "product_related" */
+export type Product_Related_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Product_Related_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Product_Related_Avg_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "product_related". All fields are combined with a logical 'AND'. */
+export type Product_Related_Bool_Exp = {
+  _and?: InputMaybe<Array<Product_Related_Bool_Exp>>;
+  _not?: InputMaybe<Product_Related_Bool_Exp>;
+  _or?: InputMaybe<Array<Product_Related_Bool_Exp>>;
+  id?: InputMaybe<Bigint_Comparison_Exp>;
+  product?: InputMaybe<Product_Bool_Exp>;
+  product_id?: InputMaybe<Bigint_Comparison_Exp>;
+  related_product?: InputMaybe<Product_Bool_Exp>;
+  related_product_id?: InputMaybe<Bigint_Comparison_Exp>;
+  related_product_price?: InputMaybe<Numeric_Comparison_Exp>;
+  relevance_score?: InputMaybe<Numeric_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "product_related" */
+export type Product_Related_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'product_related_pkey'
+  /** unique or primary key constraint on columns "related_product_id", "product_id" */
+  | 'product_related_product_id_related_product_id_key';
+
+/** input type for incrementing numeric columns in table "product_related" */
+export type Product_Related_Inc_Input = {
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_price?: InputMaybe<Scalars['numeric']['input']>;
+  relevance_score?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "product_related" */
+export type Product_Related_Insert_Input = {
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
+  related_product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_price?: InputMaybe<Scalars['numeric']['input']>;
+  relevance_score?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** aggregate max on columns */
+export type Product_Related_Max_Fields = {
+  id?: Maybe<Scalars['bigint']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_price?: Maybe<Scalars['numeric']['output']>;
+  relevance_score?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** aggregate min on columns */
+export type Product_Related_Min_Fields = {
+  id?: Maybe<Scalars['bigint']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_price?: Maybe<Scalars['numeric']['output']>;
+  relevance_score?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** response of any mutation on the table "product_related" */
+export type Product_Related_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Product_Related>;
+};
+
+/** on_conflict condition type for table "product_related" */
+export type Product_Related_On_Conflict = {
+  constraint: Product_Related_Constraint;
+  update_columns?: Array<Product_Related_Update_Column>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "product_related". */
+export type Product_Related_Order_By = {
+  id?: InputMaybe<Order_By>;
+  product?: InputMaybe<Product_Order_By>;
+  product_id?: InputMaybe<Order_By>;
+  related_product?: InputMaybe<Product_Order_By>;
+  related_product_id?: InputMaybe<Order_By>;
+  related_product_price?: InputMaybe<Order_By>;
+  relevance_score?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: product_related */
+export type Product_Related_Pk_Columns_Input = {
+  id: Scalars['bigint']['input'];
+};
+
+/** select columns of table "product_related" */
+export type Product_Related_Select_Column =
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'product_id'
+  /** column name */
+  | 'related_product_id'
+  /** column name */
+  | 'related_product_price'
+  /** column name */
+  | 'relevance_score';
+
+/** input type for updating data in table "product_related" */
+export type Product_Related_Set_Input = {
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_price?: InputMaybe<Scalars['numeric']['input']>;
+  relevance_score?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Product_Related_Stddev_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Product_Related_Stddev_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Product_Related_Stddev_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "product_related" */
+export type Product_Related_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Product_Related_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Product_Related_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_id?: InputMaybe<Scalars['bigint']['input']>;
+  related_product_price?: InputMaybe<Scalars['numeric']['input']>;
+  relevance_score?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Product_Related_Sum_Fields = {
+  id?: Maybe<Scalars['bigint']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_id?: Maybe<Scalars['bigint']['output']>;
+  related_product_price?: Maybe<Scalars['numeric']['output']>;
+  relevance_score?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** update columns of table "product_related" */
+export type Product_Related_Update_Column =
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'product_id'
+  /** column name */
+  | 'related_product_id'
+  /** column name */
+  | 'related_product_price'
+  /** column name */
+  | 'relevance_score';
+
+export type Product_Related_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Product_Related_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Product_Related_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Product_Related_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Product_Related_Var_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Product_Related_Var_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Product_Related_Variance_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_id?: Maybe<Scalars['Float']['output']>;
+  related_product_price?: Maybe<Scalars['Float']['output']>;
+  relevance_score?: Maybe<Scalars['Float']['output']>;
 };
 
 /** select columns of table "product" */
@@ -12999,6 +13569,8 @@ export type Product_Select_Column =
   /** column name */
   | 'name'
   /** column name */
+  | 'only_related'
+  /** column name */
   | 'price'
   /** column name */
   | 'product_no'
@@ -13024,6 +13596,8 @@ export type Product_Select_Column_Product_Aggregate_Bool_Exp_Bool_And_Arguments_
   /** column name */
   | 'is_service_free'
   /** column name */
+  | 'only_related'
+  /** column name */
   | 'stock_track';
 
 /** select "product_aggregate_bool_exp_bool_or_arguments_columns" columns of table "product" */
@@ -13034,6 +13608,8 @@ export type Product_Select_Column_Product_Aggregate_Bool_Exp_Bool_Or_Arguments_C
   | 'is_approved'
   /** column name */
   | 'is_service_free'
+  /** column name */
+  | 'only_related'
   /** column name */
   | 'stock_track';
 
@@ -13053,6 +13629,7 @@ export type Product_Set_Input = {
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  only_related?: InputMaybe<Scalars['Boolean']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   product_no?: InputMaybe<Scalars['String']['input']>;
   properties?: InputMaybe<Scalars['jsonb']['input']>;
@@ -13153,6 +13730,7 @@ export type Product_Stream_Cursor_Value_Input = {
   is_service_free?: InputMaybe<Scalars['Boolean']['input']>;
   last_order_time?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  only_related?: InputMaybe<Scalars['Boolean']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   product_no?: InputMaybe<Scalars['String']['input']>;
   properties?: InputMaybe<Scalars['jsonb']['input']>;
@@ -13215,6 +13793,8 @@ export type Product_Update_Column =
   | 'last_order_time'
   /** column name */
   | 'name'
+  /** column name */
+  | 'only_related'
   /** column name */
   | 'price'
   /** column name */
@@ -13831,6 +14411,12 @@ export type Query_Root = {
   district_aggregate: District_Aggregate;
   /** fetch data from the table: "district" using primary key columns */
   district_by_pk?: Maybe<District>;
+  /** fetch data from the table: "fcm_token" */
+  fcm_token: Array<Fcm_Token>;
+  /** fetch aggregated fields from the table: "fcm_token" */
+  fcm_token_aggregate: Fcm_Token_Aggregate;
+  /** fetch data from the table: "fcm_token" using primary key columns */
+  fcm_token_by_pk?: Maybe<Fcm_Token>;
   /** execute function "get_comment_by_score" which returns "comment_by_score" */
   get_comment_by_score: Array<Comment_By_Score>;
   /** execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score" */
@@ -13921,6 +14507,12 @@ export type Query_Root = {
   product_delivery_city_info: Array<Product_Delivery_City_Info>;
   /** fetch aggregated fields from the table: "product_delivery_city_info" */
   product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
+  /** fetch data from the table: "product_related" */
+  product_related: Array<Product_Related>;
+  /** fetch aggregated fields from the table: "product_related" */
+  product_related_aggregate: Product_Related_Aggregate;
+  /** fetch data from the table: "product_related" using primary key columns */
+  product_related_by_pk?: Maybe<Product_Related>;
   /** fetch data from the table: "quarter" */
   quarter: Array<Quarter>;
   /** fetch aggregated fields from the table: "quarter" */
@@ -14388,6 +14980,29 @@ export type Query_RootDistrict_By_PkArgs = {
 };
 
 
+export type Query_RootFcm_TokenArgs = {
+  distinct_on?: InputMaybe<Array<Fcm_Token_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Fcm_Token_Order_By>>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+
+export type Query_RootFcm_Token_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Fcm_Token_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Fcm_Token_Order_By>>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+
+export type Query_RootFcm_Token_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootGet_Comment_By_ScoreArgs = {
   args: Get_Comment_By_Score_Args;
   distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
@@ -14742,6 +15357,29 @@ export type Query_RootProduct_Delivery_City_Info_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
   where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_RelatedArgs = {
+  distinct_on?: InputMaybe<Array<Product_Related_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Related_Order_By>>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Related_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Related_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Related_Order_By>>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Related_By_PkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 
@@ -16774,6 +17412,14 @@ export type Subscription_Root = {
   district_by_pk?: Maybe<District>;
   /** fetch data from the table in a streaming manner: "district" */
   district_stream: Array<District>;
+  /** fetch data from the table: "fcm_token" */
+  fcm_token: Array<Fcm_Token>;
+  /** fetch aggregated fields from the table: "fcm_token" */
+  fcm_token_aggregate: Fcm_Token_Aggregate;
+  /** fetch data from the table: "fcm_token" using primary key columns */
+  fcm_token_by_pk?: Maybe<Fcm_Token>;
+  /** fetch data from the table in a streaming manner: "fcm_token" */
+  fcm_token_stream: Array<Fcm_Token>;
   /** execute function "get_comment_by_score" which returns "comment_by_score" */
   get_comment_by_score: Array<Comment_By_Score>;
   /** execute function "get_comment_by_score" and query aggregates on result of table type "comment_by_score" */
@@ -16890,6 +17536,14 @@ export type Subscription_Root = {
   product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
   /** fetch data from the table in a streaming manner: "product_delivery_city_info" */
   product_delivery_city_info_stream: Array<Product_Delivery_City_Info>;
+  /** fetch data from the table: "product_related" */
+  product_related: Array<Product_Related>;
+  /** fetch aggregated fields from the table: "product_related" */
+  product_related_aggregate: Product_Related_Aggregate;
+  /** fetch data from the table: "product_related" using primary key columns */
+  product_related_by_pk?: Maybe<Product_Related>;
+  /** fetch data from the table in a streaming manner: "product_related" */
+  product_related_stream: Array<Product_Related>;
   /** fetch data from the table in a streaming manner: "product" */
   product_stream: Array<Product>;
   /** fetch data from the table: "quarter" */
@@ -17502,6 +18156,36 @@ export type Subscription_RootDistrict_StreamArgs = {
 };
 
 
+export type Subscription_RootFcm_TokenArgs = {
+  distinct_on?: InputMaybe<Array<Fcm_Token_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Fcm_Token_Order_By>>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+
+export type Subscription_RootFcm_Token_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Fcm_Token_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Fcm_Token_Order_By>>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+
+export type Subscription_RootFcm_Token_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootFcm_Token_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Fcm_Token_Stream_Cursor_Input>>;
+  where?: InputMaybe<Fcm_Token_Bool_Exp>;
+};
+
+
 export type Subscription_RootGet_Comment_By_ScoreArgs = {
   args: Get_Comment_By_Score_Args;
   distinct_on?: InputMaybe<Array<Comment_By_Score_Select_Column>>;
@@ -17947,6 +18631,36 @@ export type Subscription_RootProduct_Delivery_City_Info_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Product_Delivery_City_Info_Stream_Cursor_Input>>;
   where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_RelatedArgs = {
+  distinct_on?: InputMaybe<Array<Product_Related_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Related_Order_By>>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Related_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Related_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Related_Order_By>>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Related_By_PkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+
+export type Subscription_RootProduct_Related_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Product_Related_Stream_Cursor_Input>>;
+  where?: InputMaybe<Product_Related_Bool_Exp>;
 };
 
 

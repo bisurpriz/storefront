@@ -96,6 +96,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
             height={120}
             alt="Login"
             className="w-full max-w-xs"
+            priority
           />
         </div>
         <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">

@@ -58,6 +58,7 @@ export async function createJwt() {
 export async function getBanners() {
   const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
     query: GetBannersDocument,
+    tags: ["getBanners"],
   });
 
   return {

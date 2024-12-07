@@ -14,14 +14,16 @@ class Fetch {
     query,
     variables,
     tags,
+    withAuth = true,
   }: {
     query: string;
     variables?: any;
     tags?: string[];
+    withAuth?: boolean;
   }): Promise<T> {
     try {
       console.log("Requesting:", tags?.join(", "));
-      return await this.fetch.request({ query, variables, tags });
+      return await this.fetch.request({ query, variables, tags, withAuth });
     } catch (error) {
       this.handleError(error, query);
     }

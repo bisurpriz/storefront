@@ -19,6 +19,9 @@ export const GetUserByIdDocument = `query getUserById($id: uuid = "") {
       id
       content
     }
+    favorites {
+      product_id
+    }
   }
 }`;
 

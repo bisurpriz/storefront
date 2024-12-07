@@ -1,17 +1,23 @@
 import Filter from "@/components/Filter";
 import FilterSuspense from "@/components/Filter/FilterSuspense";
-import CampaignGrid from "@/components/Grids/CampaignGrid/CampaignGrid";
+import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
+import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
+import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
+import FeaturedProductSectionSkeleton from "@/components/Sections/FeaturedProductSection/FeaturedProductSectionSkeleton";
 import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
 import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
 import { Suspense } from "react";
+import BlogPostSection from "./blog/components/BlogPostSection";
+import BlogPostSectionSuspense from "./blog/components/BlogPostSectionSuspense";
 
 export const experimental_ppr = true;
 
@@ -21,11 +27,15 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const searchText = searchParams.hasOwnProperty("search");
 
-  const viewport = await getServerSideViewPort();
-
   const { category } = await BonnmarseApi.request<GetAllCategoriesQuery>({
     query: GetCategoriesDocument,
   });
+
+  const { isBot, device } = userAgent({
+    headers: await headers(),
+  });
+
+  const isMobile = device.type === "mobile";
 
   return (
     <div className="flex flex-col gap-4">
@@ -34,7 +44,7 @@ export default async function Page(props: {
           <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
         </Suspense>
       )}
-      {!searchText && !(category.length < 8 && viewport === "desktop") && (
+      {!searchText && !(category.length < 8 && !isMobile) && (
         <Suspense fallback={<CategorySwiperSuspense />}>
           <ServerCategorySwiper category={category} />
         </Suspense>
@@ -49,7 +59,7 @@ export default async function Page(props: {
         </Suspense>
       )}
       <Suspense fallback={<CampaignGridSuspense />}>
-        {!searchText && <CampaignGrid />}
+        {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
       </Suspense>
 
       {/* {category.length < 8 && viewport === "desktop" && (
@@ -58,25 +68,13 @@ export default async function Page(props: {
         </Suspense>
       )} */}
 
-      {/* <Suspense fallback={<FeaturedProductSectionSkeleton />}>
-        <FeaturedProducts
-          products={Array.from({
-            length: 25,
-          }).map((_, i) => ({
-            id: i,
-            imageSrc: "https://via.placeholder.com/300",
-            name: "Product Name",
-            badge: "Yeni",
-            price: 100,
-            discountPrice: 80,
-            href: "/",
-          }))}
-        />
-      </Suspense> */}
+      <Suspense fallback={<FeaturedProductSectionSkeleton />}>
+        <FeaturedProducts />
+      </Suspense>
 
-      {/* <Suspense fallback={<BlogPostSectionSuspense />}>
+      <Suspense fallback={<BlogPostSectionSuspense />}>
         <BlogPostSection />
-      </Suspense> */}
+      </Suspense>
 
       <Suspense
         fallback={

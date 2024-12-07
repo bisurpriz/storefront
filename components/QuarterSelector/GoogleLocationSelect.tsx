@@ -1,16 +1,10 @@
 "use client";
 
-import React, { FC } from "react";
-import {
-  Gem,
-  MousePointerClick,
-  Package,
-  ShieldCheck,
-  SmilePlus,
-} from "lucide-react";
-import { motion } from "framer-motion";
-import PlacesAutocomplete from "./PlacesAutocomplete";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Gem, MousePointerClick, Package } from "lucide-react";
+import { FC } from "react";
+import PlacesAutocomplete from "./PlacesAutocomplete";
 
 type GoogleLocationSelectProps = {
   from?: "pdp" | "home";
@@ -31,7 +25,7 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
       {from === "home" && (
         <div
           className={cn(
-            "flex items-center justify-center space-x-4 rounded-xl py-2 transition-colors duration-200 hover:bg-background/50 max-sm:hidden",
+            "mt-1 flex items-center justify-center space-x-4 rounded-xl py-2 transition-colors duration-200 hover:bg-background/50 max-sm:hidden",
           )}
         >
           {[
@@ -59,10 +53,10 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: item.delay }}
-              className="flex basis-1/3 items-center justify-center space-x-2 rounded-xl bg-primary/10 px-4 py-2"
+              className="bg-tertiary/10 flex basis-1/3 items-center justify-center space-x-2 rounded-xl px-4 py-2"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                <item.icon className="h-8 w-8 text-primary" />
+              <div className="bg-tertiary/10 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl">
+                <item.icon className="text-tertiary h-8 w-8" />
               </div>
               <div className="whitespace-nowrap">
                 <div className="text-sm font-medium">{item.title}</div>

@@ -1,43 +1,55 @@
-import { FC } from "react";
-import Image from "next/image";
 import { Link } from "@/components/Link";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { getBanners } from "@/app/actions";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
+import { getImageUrlFromPath } from "@/lib/utils";
+import { GetBannersDocument } from "@/service/banner";
+import { BonnmarseApi } from "@/service/fetch";
+import Image from "next/image";
 
-const getImageUrl = (image: string) => {
-  if (!image) return "https://via.placeholder.com/500";
-
-  return `${getImageUrlFromPath(image)}?format=wepb&quality=75`;
-};
-
-const CampaignGrid: FC = async () => {
-  const { banners } = await getBanners();
+export async function BannerCarousel() {
+  const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
+    query: GetBannersDocument,
+    tags: ["system_banner"],
+    withAuth: false,
+  });
 
   return (
-    <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-2">
-      {banners.map((item, i) => (
-        <Link
-          href={item.redirect_link}
-          className="relative w-full"
-          key={item.id}
-        >
-          <Image
-            className="h-auto w-full rounded-lg"
-            alt={item.name}
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII="
-            sizes="30vw"
-            width={676}
-            height={272}
-            src={getImageUrl(item.path)}
-            priority={true}
-            loading="eager"
-            style={{ objectFit: "cover" }}
-          />
-        </Link>
-      ))}
-    </div>
+    <Carousel
+      opts={{
+        loop: true,
+      }}
+      className="my-4 w-full"
+    >
+      <CarouselContent>
+        {system_banner.map((banner, index) => (
+          <CarouselItem
+            key={index}
+            className="relative flex max-h-[200px] items-center justify-center"
+          >
+            <Link
+              href={banner.redirect_link!}
+              className="flex h-full w-full items-center justify-center"
+            >
+              <Image
+                src={getImageUrlFromPath(banner.path!)}
+                alt={banner.name!}
+                width={800}
+                height={400}
+                className="w-full object-contain"
+                sizes="(max-width: 768px) 50vw, 100vw"
+              />
+            </Link>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="left-4" />
+      <CarouselNext className="right-4" />
+    </Carousel>
   );
-};
-
-export default CampaignGrid;
+}
