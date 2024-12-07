@@ -9,15 +9,11 @@ const AddressesPage = async () => {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">
-        Kayıtlı Adreslerim ({user_addresses?.length})
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-6 text-2xl font-bold text-primary md:text-3xl">
+        Kayıtlı Adreslerim
       </h1>
-      <div className="mt-4">
-        {user_addresses?.map((address) => (
-          <Address key={address.id} address={address} />
-        ))}
-      </div>
+      <Address initalAddress={user_addresses} />
     </div>
   );
 };

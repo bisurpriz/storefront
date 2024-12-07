@@ -78,18 +78,10 @@ export const GetUserAddressesDocument = `
       address_title
       address
       id
-      city {
-        name
-        id
-      }
-      quarter {
-        name
-        id
-      }
-      district {
-        name
-        id
-      }
+      city 
+      quarter
+      district
+      place_id
     }
   }
 `;
