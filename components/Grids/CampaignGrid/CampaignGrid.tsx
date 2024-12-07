@@ -24,7 +24,7 @@ export async function BannerCarousel() {
       opts={{
         loop: true,
       }}
-      className="my-4 w-full"
+      className="w-full"
     >
       <CarouselContent>
         {system_banner.map((banner, index) => (

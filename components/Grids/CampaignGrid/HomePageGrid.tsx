@@ -21,7 +21,7 @@ const HomePageGrid = async () => {
         return (
           <Link
             key={index}
-            href="#"
+            href={_.redirect_link!}
             className={cn(
               "aspect-[640/258] overflow-hidden rounded-lg max-md:col-span-full md:col-span-4",
               {

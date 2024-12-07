@@ -34,31 +34,24 @@ const ProductCard = (product: Product) => {
 
   useEffect(() => {
     if (!user) return;
-    console.log(user);
     setIsFavorite(
       user.favorites.some((fav) => Number(fav.product_id) === Number(id)),
     );
   }, [user]);
 
   return (
-    <Link href={getProductDetailUrl(slug!, Number(id))}>
+    <Link
+      href={getProductDetailUrl(
+        product.product_categories[0].category.slug,
+        slug!,
+        Number(id),
+      )}
+    >
       <Card className="relative flex h-auto flex-col">
         <AddToFavorite isFav={isFavorite} productId={id} user={user} />
         <CardContent className="flex flex-grow flex-col p-0">
           <div className="relative aspect-[3/4] h-52 w-full flex-shrink-0 lg:h-56 2xl:h-60">
             <div className="absolute left-2 top-2 z-10 flex flex-col gap-1">
-              {/* stamps={[
-                product_customizable_areas.length > 0 && {
-                  color: "orange",
-                  icon: "🎨",
-                  name: "Tasarlanabilir",
-                },
-                delivery_type === "SAME_DAY" && {
-                  color: "green",
-                  icon: "🚚",
-                  name: "Aynı Gün Teslimat",
-                },
-              ]} */}
               {product.product_customizable_areas.length > 0 && (
                 <Badge variant="new" size="sm" className="w-fit justify-start">
                   🎨 Tasarlanabilir

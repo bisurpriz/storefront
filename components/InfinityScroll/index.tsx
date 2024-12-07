@@ -79,11 +79,11 @@ const InfinityScroll = <T,>({
     <>
       <div
         className={cn(
-          "grid grid-cols-4",
-          "gap-2 sm:grid-cols-2",
-          "gap-2 md:grid-cols-3",
-          "gap-4 lg:grid-cols-4",
-          "gap-6 xl:grid-cols-5",
+          "grid grid-cols-2 gap-2",
+          "sm:grid-cols-2 sm:gap-2",
+          "md:grid-cols-3 md:gap-2",
+          "lg:grid-cols-4 lg:gap-4",
+          "xl:grid-cols-5 xl:gap-6",
         )}
       >
         {data?.map((item: any) => {

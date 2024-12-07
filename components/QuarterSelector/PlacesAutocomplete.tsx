@@ -183,7 +183,7 @@ export default function PlacesAutocomplete({
         <Input
           icon={
             <MapPinnedIcon
-              className={cn("text-gray-400", {
+              className={cn("w-full text-gray-400", {
                 "text-white": defaultValue,
               })}
             />

@@ -11,8 +11,12 @@ export function getImageUrlFromPath(path?: string, size = 150): string {
   return `${IMAGE_URL}/${path}?format=webp`;
 }
 
-export function getProductDetailUrl(slug: string, id: number): string {
-  return `/${slug}?pid=${id}`;
+export function getProductDetailUrl(
+  categorySlug: string,
+  slug: string,
+  id: number,
+): string {
+  return `/${categorySlug}/${slug}?pid=${id}`;
 }
 
 export function getCategoryUrl(slug: string, id: number): string {

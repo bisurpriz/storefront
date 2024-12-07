@@ -3,21 +3,17 @@ import FilterSuspense from "@/components/Filter/FilterSuspense";
 import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
+import InfiniteScrollCarouselWrapper from "@/components/InfiniteScrollCarousel/InfiniteScrollCarouselWrapper";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
-import FeaturedProducts from "@/components/Sections/FeaturedProductSection/FeaturedProductSection";
-import FeaturedProductSectionSkeleton from "@/components/Sections/FeaturedProductSection/FeaturedProductSectionSkeleton";
-import CategorySwiperSuspense from "@/components/SwiperExamples/CategorySwiper/CategorySwiperSuspense";
-import ServerCategorySwiper from "@/components/SwiperExamples/CategorySwiper/ServerCategorySwiper";
+import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
-import BlogPostSection from "./blog/components/BlogPostSection";
-import BlogPostSectionSuspense from "./blog/components/BlogPostSectionSuspense";
 
 export const experimental_ppr = true;
 
@@ -45,8 +41,8 @@ export default async function Page(props: {
         </Suspense>
       )}
       {!searchText && !(category.length < 8 && !isMobile) && (
-        <Suspense fallback={<CategorySwiperSuspense />}>
-          <ServerCategorySwiper category={category} />
+        <Suspense fallback={<CategorySwiper categories={category} />}>
+          <CategorySwiper categories={category} />
         </Suspense>
       )}
       {!searchText && (
@@ -58,22 +54,9 @@ export default async function Page(props: {
           <GoogleLocationSelect from="home" />
         </Suspense>
       )}
+      <InfiniteScrollCarouselWrapper searchParams={searchParams} />
       <Suspense fallback={<CampaignGridSuspense />}>
         {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
-      </Suspense>
-
-      {/* {category.length < 8 && viewport === "desktop" && (
-        <Suspense fallback={<CategorySectionSkeleton />}>
-          <CategorySection category={category} />
-        </Suspense>
-      )} */}
-
-      <Suspense fallback={<FeaturedProductSectionSkeleton />}>
-        <FeaturedProducts />
-      </Suspense>
-
-      <Suspense fallback={<BlogPostSectionSuspense />}>
-        <BlogPostSection />
       </Suspense>
 
       <Suspense

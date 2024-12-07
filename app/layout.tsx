@@ -1,12 +1,9 @@
-import Content from "@/components/Layout/Content";
 import type { Metadata, Viewport } from "next";
 import { Lato, Manrope, Quicksand } from "next/font/google";
-import Header from "../components/Layout/Header";
 import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
-import HeaderSuspense from "@/components/Layout/Header/HeaderSuspense";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
@@ -14,7 +11,7 @@ import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 
-import StickyHeader from "@/components/Layout/Header/StickyHeader";
+import DesignLayout from "@/components/Layout/DesignLayout";
 import NotificationListener from "@/components/Notification/NotificationListener";
 import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -149,11 +146,9 @@ export default async function RootLayout({
                         }}
                       >
                         <SearchProductProvider>
-                          <Suspense fallback={<HeaderSuspense />}>
-                            <Header category={category} />
-                            <StickyHeader />
-                          </Suspense>
-                          <Content>{children}</Content>
+                          <DesignLayout categories={category}>
+                            {children}
+                          </DesignLayout>
                           {auth}
                           <Suspense>
                             {!selectedPlaces &&

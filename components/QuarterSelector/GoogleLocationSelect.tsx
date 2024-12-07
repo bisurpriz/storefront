@@ -14,12 +14,7 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
   from = "pdp",
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="my-2 w-full"
-    >
+    <div className="w-full">
       <PlacesAutocomplete />
 
       {from === "home" && (
@@ -33,26 +28,26 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
               icon: Package,
               title: "Hızlı Teslimat",
               subtitle: "Aynı gün içinde",
-              delay: 0.3,
+              delay: 0.1,
             },
             {
               icon: Gem,
               title: "Kişiselleştirme",
               subtitle: "Özel mesajlar",
-              delay: 0.4,
+              delay: 0.2,
             },
             {
               icon: MousePointerClick,
               title: "Kolay Alışveriş",
               subtitle: "Tek tıkla sipariş",
-              delay: 0.5,
+              delay: 0.3,
             },
           ].map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: item.delay }}
+              transition={{ delay: item.delay }}
               className="bg-tertiary/10 flex basis-1/3 items-center justify-center space-x-2 rounded-xl px-4 py-2"
             >
               <div className="bg-tertiary/10 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl">
@@ -68,7 +63,7 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
           ))}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
