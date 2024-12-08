@@ -4641,6 +4641,7 @@ export type Fcm_Token = {
   created_at: Scalars['timestamptz']['output'];
   id: Scalars['uuid']['output'];
   last_used?: Maybe<Scalars['timestamptz']['output']>;
+  platform?: Maybe<Scalars['String']['output']>;
   token: Scalars['String']['output'];
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
@@ -4676,6 +4677,7 @@ export type Fcm_Token_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   last_used?: InputMaybe<Timestamptz_Comparison_Exp>;
+  platform?: InputMaybe<String_Comparison_Exp>;
   token?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<User_Bool_Exp>;
@@ -4694,6 +4696,7 @@ export type Fcm_Token_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  platform?: InputMaybe<Scalars['String']['input']>;
   token?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<User_Obj_Rel_Insert_Input>;
@@ -4705,6 +4708,7 @@ export type Fcm_Token_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_used?: Maybe<Scalars['timestamptz']['output']>;
+  platform?: Maybe<Scalars['String']['output']>;
   token?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -4715,6 +4719,7 @@ export type Fcm_Token_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_used?: Maybe<Scalars['timestamptz']['output']>;
+  platform?: Maybe<Scalars['String']['output']>;
   token?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -4740,6 +4745,7 @@ export type Fcm_Token_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   last_used?: InputMaybe<Order_By>;
+  platform?: InputMaybe<Order_By>;
   token?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<User_Order_By>;
@@ -4760,6 +4766,8 @@ export type Fcm_Token_Select_Column =
   /** column name */
   | 'last_used'
   /** column name */
+  | 'platform'
+  /** column name */
   | 'token'
   /** column name */
   | 'updated_at'
@@ -4771,6 +4779,7 @@ export type Fcm_Token_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  platform?: InputMaybe<Scalars['String']['input']>;
   token?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -4789,6 +4798,7 @@ export type Fcm_Token_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_used?: InputMaybe<Scalars['timestamptz']['input']>;
+  platform?: InputMaybe<Scalars['String']['input']>;
   token?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -4802,6 +4812,8 @@ export type Fcm_Token_Update_Column =
   | 'id'
   /** column name */
   | 'last_used'
+  /** column name */
+  | 'platform'
   /** column name */
   | 'token'
   /** column name */
