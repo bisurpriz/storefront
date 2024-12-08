@@ -13,6 +13,8 @@ export const GetAllCouponsDocument = `
       start_date
       end_date
       minimum_cost
+      left_limit
+      limit
       amount
       tenant {
         tenants {

@@ -8,6 +8,11 @@ query getUserFavorites($offset: Int = 0) {
       price
       discount_price
       slug
+      product_customizable_areas {
+        id
+      }
+      score
+      delivery_type
       product_categories {
         category {
           name

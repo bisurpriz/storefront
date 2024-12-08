@@ -1,7 +1,9 @@
-import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
+import AnimatedPricing from "@/components/AnimatedPromotion";
+import { Link } from "@/components/Link";
 import { Button } from "@/components/ui/button";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { Heart, ShoppingCart, X } from "lucide-react";
+import { goToProductDetail } from "@/utils/linkClickEvent";
+import { Heart, Star, View, X } from "lucide-react";
 import Image from "next/image";
 import { getUserFavorites } from "./actions";
 
@@ -28,7 +30,7 @@ const FavoritesPage = async () => {
           <Button className="mt-4">Ürünleri Keşfet</Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {user_favorite.map((product) => (
             <div
               key={product.id}
@@ -50,19 +52,69 @@ const FavoritesPage = async () => {
                   className="h-48 w-full rounded-md object-cover"
                 />
               </div>
-              <div className="space-y-2">
-                <h2 className="mb-1 line-clamp-2 h-14 w-full text-lg font-semibold">
+              <div className="flex flex-col gap-2">
+                <h2 className="mb-1 line-clamp-2 h-10 w-full text-sm font-semibold">
                   {product.product.name}
                 </h2>
-                <PriceTagv2
-                  discountedPrice={product.product.discount_price}
-                  originalPrice={product.product.price}
+                <div className="flex flex-1 items-end justify-between">
+                  {product.product.price && (
+                    <div className="flex items-end space-x-1">
+                      <span className="text-lg font-bold leading-none text-primary">
+                        ₺
+                        {product.product.discount_price ||
+                          product.product.price}
+                      </span>
+                      {product.product.discount_price && (
+                        <span className="text-sm leading-none text-muted-foreground line-through">
+                          ₺{product.product.price}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {product.product.score && (
+                    <div className="flex items-center space-x-1 leading-none">
+                      <div className="flex items-end">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Star
+                            key={index}
+                            className={`h-3 w-3 ${
+                              index < product.product.score
+                                ? "fill-current text-yellow-400"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {product.product.score.toFixed(1)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <AnimatedPricing
+                  items={[
+                    ...(product.product.product_customizable_areas.length > 0
+                      ? [{ text: "Tasarlanabilir", icon: "🎨" }]
+                      : []),
+                    ...(product.product.delivery_type === "SAME_DAY"
+                      ? [{ text: "Aynı Gün Teslimat", icon: "🚚" }]
+                      : []),
+                  ]}
+                  timeout={2000}
                 />
-
-                <Button variant="outline" className="mt-auto w-full">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Sepete Ekle
-                </Button>
+                <Link
+                  href={goToProductDetail({
+                    category: product.product.product_categories[0]
+                      .category as { slug: string },
+                    id: product.product.id,
+                    slug: product.product.slug,
+                  })}
+                >
+                  <Button variant="outline" className="mt-auto w-full">
+                    <View className="mr-2 h-4 w-4" />
+                    Ürüne Git
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}

@@ -51,6 +51,8 @@ export default function PlacesAutocomplete({
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
 
+  console.log(defaultValue);
+
   const autocompleteService = useRef<any>(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -178,7 +180,7 @@ export default function PlacesAutocomplete({
           icon={
             <MapPinnedIcon
               className={cn("w-full text-gray-400", {
-                "text-white": defaultValue,
+                "text-white": input,
               })}
             />
           }
@@ -192,7 +194,7 @@ export default function PlacesAutocomplete({
           className={cn(
             "h-auto w-full border-none bg-background p-4 pr-8 font-semibold",
             {
-              "bg-primary pr-10 text-white": defaultValue,
+              "bg-primary pr-10 text-white": input,
             },
           )}
           title={input}
@@ -201,7 +203,7 @@ export default function PlacesAutocomplete({
           <Loader2
             className={cn(
               "absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-gray-400",
-              { "text-white": defaultValue },
+              { "text-white": input },
             )}
           />
         )}
@@ -209,7 +211,7 @@ export default function PlacesAutocomplete({
           <SquareX
             className={cn(
               "absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-400",
-              { "text-white": defaultValue },
+              { "text-white": input },
             )}
             onClick={handleClear}
           />

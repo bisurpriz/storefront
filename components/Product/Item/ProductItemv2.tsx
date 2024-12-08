@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useUser } from "@/contexts/AuthContext";
 import { Product } from "@/graphql/generated-types";
-import { getProductDetailUrl } from "@/lib/utils";
+import { cn, getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -38,6 +38,8 @@ const ProductCard = (product: Product) => {
       user?.favorites?.some((fav) => Number(fav.product_id) === Number(id)),
     );
   }, [user]);
+
+  const discountRate = Math.floor(((price! - discount_price!) / price!) * 100);
 
   return (
     <Link
@@ -105,12 +107,12 @@ const ProductCard = (product: Product) => {
             <div className="mt-auto">
               <div className="flex items-end justify-between">
                 <div className="flex h-9 flex-wrap-reverse items-start gap-1">
-                  <span className="text-xl font-bold leading-none">
-                    {price}₺
+                  <span className={cn("text-xl font-bold leading-none")}>
+                    {discount_price ?? price}₺
                   </span>
-                  {discount_price && (
-                    <span className="text-base leading-none text-gray-500 line-through">
-                      {discount_price}₺
+                  {discount_price !== price && (
+                    <span className="text-sm leading-none text-gray-500 line-through">
+                      {price}₺
                     </span>
                   )}
                 </div>
