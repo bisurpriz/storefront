@@ -3,8 +3,6 @@
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    reactCompiler: true,
-    forceSwcTransforms: true,
     scrollRestoration: true,
     optimizePackageImports: [
       "framer-motion",
@@ -19,9 +17,6 @@ const nextConfig = {
       "sonner",
       "embla-carousel-react",
     ],
-    serverActions: {
-      bodySizeLimit: "20mb",
-    },
   },
   images: {
     loader: "default",

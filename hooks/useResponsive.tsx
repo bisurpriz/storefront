@@ -9,20 +9,16 @@ const useResponsive = () => {
   };
 
   useEffect(() => {
-    handleResize();
-  }, []);
-
-  useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [handleResize]);
+  }, []);
 
-  const isSmallMobile = width < breakpoints.xs;
-  const isMobile = width < breakpoints.sm;
-  const isTablet = width < breakpoints.md;
-  const isDesktop = width < breakpoints.lg;
-  const isLargeDesktop = width < breakpoints.xl;
-  const isExtraLargeDesktop = width < breakpoints["2xl"];
+  const isSmallMobile = width > breakpoints.xs;
+  const isMobile = width > breakpoints.sm;
+  const isTablet = width > breakpoints.md;
+  const isDesktop = width > breakpoints.lg;
+  const isLargeDesktop = width > breakpoints.xl;
+  const isExtraLargeDesktop = width > breakpoints["2xl"];
 
   return {
     isMobile,
