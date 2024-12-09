@@ -15,8 +15,6 @@ export async function POST(request: Request) {
     conversationData: paramsObject["conversationData"],
   });
 
-  console.log(response);
-
   const host = request.headers.get("x-forwarded-host");
   const port = request.headers.get("x-forwarded-port");
   const protocol = request.headers.get("x-forwarded-proto");

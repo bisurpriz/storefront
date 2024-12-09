@@ -41,6 +41,7 @@ export async function BannerCarousel() {
                 alt={banner.name!}
                 width={800}
                 height={400}
+                priority
                 className="w-full object-contain"
                 sizes="(max-width: 768px) 50vw, 100vw"
               />

@@ -1,6 +1,6 @@
 import { DeliveryTime } from "@/contexts/CartContext/types";
 import { format } from "date-fns";
-import React, { useMemo } from "react";
+import React from "react";
 import DeliveryDateTimePicker from "../DeliveryDateTimePicker";
 import { TimeRange } from "../HourSelect/utils";
 import RemainingTime from "./RemainingTime";
@@ -18,16 +18,16 @@ const DaySelect: React.FC<Props> = ({
   deliveryTime,
   lastOrderTime,
 }) => {
-  const isTodayDisabled = useMemo(() => {
+  const isTodayDisabled = () => {
     const today = new Date();
     const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
     return (
       today.getHours() >= parseInt(hour) &&
       today.getMinutes() >= parseInt(minute)
     );
-  }, [lastOrderTime]);
+  };
 
-  const remainTime = useMemo(() => {
+  const remainTime = () => {
     const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
     const today = new Date();
     const lastOrderDate = new Date();
@@ -40,16 +40,18 @@ const DaySelect: React.FC<Props> = ({
     const minutes = Math.floor((diff / 1000 / 60) % 60);
 
     return { hours, minutes };
-  }, [lastOrderTime]);
+  };
 
   return (
     <div className="flex w-full flex-col gap-4 font-sans">
-      {lastOrderTime && remainTime.hours >= 0 && remainTime.minutes >= 0 && (
-        <RemainingTime
-          remainTime={remainTime}
-          isTodayDisabled={isTodayDisabled}
-        />
-      )}
+      {lastOrderTime &&
+        remainTime().hours >= 0 &&
+        remainTime().minutes >= 0 && (
+          <RemainingTime
+            remainTime={remainTime()}
+            isTodayDisabled={isTodayDisabled()}
+          />
+        )}
       <DeliveryDateTimePicker
         deliveryTime={deliveryTime}
         deliveryTimes={deliveryTimes}

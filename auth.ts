@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { AuthProvider } from "./common/enums/Auth";
-import { registerUser } from "./app/account/actions";
 import { login } from "./app/@auth/actions";
+import { registerUser } from "./app/account/actions";
+import { AuthProvider } from "./common/enums/Auth";
 
 const USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
 const ID_TOKEN = "id-token";
@@ -37,9 +37,6 @@ export const {
           provider_id: account.providerAccountId,
         });
 
-        console.log("--register-----");
-        console.log(body, error, "body, error");
-
         if (error && error !== USER_ALREADY_EXIST) {
           return false;
         }
@@ -53,9 +50,6 @@ export const {
           { email: null, password: null },
           { [ID_TOKEN]: `${id_token}` },
         );
-
-        console.log("--login-----");
-        console.log(errors, "errors");
 
         if (errors) {
           return false;

@@ -62,7 +62,10 @@ const Input: FC<InputProps> = ({
         )}
         <input
           type={type}
-          className={cn(inputVariants({ variant }), className, hasIconClasses)}
+          className={cn(inputVariants({ variant }), className, hasIconClasses, {
+            "placeholder-text-green-300 border-green-300 text-green-900 focus:border-green-500 focus:ring-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500":
+              !error && dirtyAnimation,
+          })}
           ref={ref}
           placeholder={placeholder}
           {...props}

@@ -141,6 +141,7 @@ const Footer = async () => {
               alt="ETBİS"
               width={200}
               height={200}
+              priority
               quality={100}
               className="h-10 w-auto"
             />
@@ -157,6 +158,7 @@ const Footer = async () => {
               alt="iyzico"
               className="h-10 w-auto"
               width={400}
+              priority
               height={200}
               quality={100}
             />

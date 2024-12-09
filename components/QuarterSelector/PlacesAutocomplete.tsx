@@ -3,8 +3,8 @@
 import { CookieTokens } from "@/app/@auth/contants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
-import { Loader } from "@googlemaps/js-api-loader";
 import { useClickAway } from "@uidotdev/usehooks";
 import Cookies from "js-cookie";
 import { Loader2, MapPinnedIcon, SquareX } from "lucide-react";
@@ -51,30 +51,20 @@ export default function PlacesAutocomplete({
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
 
-  console.log(defaultValue);
-
   const autocompleteService = useRef<any>(null);
   const sessionToken = useRef(null);
   const fetchTimeout = useRef<NodeJS.Timeout | null>(null);
   const { refresh } = useRouter();
-
-  const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
-    version: "weekly",
-    libraries: ["places"],
-    authReferrerPolicy: "origin",
-    language: "tr",
-    retries: 3,
-  });
+  const { isLoaded } = useUser();
 
   useEffect(() => {
+    if (!isLoaded) return;
+
     startTransition(() => {
-      loader.load().then(() => {
-        autocompleteService.current =
-          new window.google.maps.places.AutocompleteService();
-        sessionToken.current =
-          new window.google.maps.places.AutocompleteSessionToken();
-      });
+      autocompleteService.current =
+        new window.google.maps.places.AutocompleteService();
+      sessionToken.current =
+        new window.google.maps.places.AutocompleteSessionToken();
 
       if (dontChangeCookie) return;
       const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID)!);
@@ -82,7 +72,7 @@ export default function PlacesAutocomplete({
         setInput(hasLocation.label);
       }
     });
-  }, []);
+  }, [isLoaded]);
 
   const handleInputChange = (e: any) => {
     setInput(e.target.value);

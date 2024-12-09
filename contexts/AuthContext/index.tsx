@@ -5,7 +5,7 @@ import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { checkExpire } from "@/graphql/utils/checkExpire";
 import { setClientCookie } from "@/utils/getCookie";
 import { uuidv4 } from "@/utils/uuidv4";
-import { useJsApiLoader } from "@react-google-maps/api";
+import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import Cookies from "js-cookie";
 import {
   ReactNode,
@@ -28,6 +28,8 @@ const initialAuthContext: AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>(initialAuthContext);
 
+const PLACES: Libraries = ["places"];
+
 export const AuthProvider = ({
   children,
   user,
@@ -40,7 +42,7 @@ export const AuthProvider = ({
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries: PLACES,
     channel: "weekly",
     language: "tr",
   });

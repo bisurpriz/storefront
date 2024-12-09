@@ -24,4 +24,5 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   spellCheck?: boolean;
   readOnly?: boolean;
   dirtyAnimation?: boolean;
+  name?: string;
 }

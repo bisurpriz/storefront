@@ -3,7 +3,6 @@ import { getUserCoupons } from "./actions";
 
 const CouponsPage = async () => {
   const { coupons } = await getUserCoupons();
-  console.log(coupons);
   return (
     <div className="container mx-auto">
       <h1 className="mb-1 text-xl font-bold sm:mb-2 sm:text-3xl">Kuponlarım</h1>

@@ -8,7 +8,7 @@ import {
 } from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
 import { IPlace } from "@/common/types/Product/product";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
-import { PhoneInput } from "@/components/PhoneInput";
+import PhoneInput from "@/components/PhoneInput";
 import PlacesAutocomplete from "@/components/QuarterSelector/PlacesAutocomplete";
 import Textarea from "@/components/Textarea";
 import TextField from "@/components/TextField";
@@ -72,7 +72,7 @@ export default function ReceiverForm() {
     formState: { errors },
   } = useForm<OrderDetailFormData>({
     resolver: yupResolver(orderDetailSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     defaultValues: {
       sender_name: "",
       sender_phone: "",
@@ -105,8 +105,6 @@ export default function ReceiverForm() {
     },
   });
 
-  console.log(errors);
-
   useEffect(() => {
     if (selectedCargoLocation?.placeId && !hasSameDayProduct) {
       const city = selectedCargoLocation.address_components.find((ac) =>
@@ -137,7 +135,7 @@ export default function ReceiverForm() {
   const placeData = parseJson(
     cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places,
   );
-
+  console.log(errors);
   const availableDistricts = getAvailableDistricts(placeData);
   const { push } = useRouter();
   const onSubmit = (data: OrderDetailFormData) => {

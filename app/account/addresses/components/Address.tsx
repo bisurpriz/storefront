@@ -38,7 +38,6 @@ export default function Address({
 
   const handleAddOrEditAddress = async () => {
     if (editingId) {
-      console.log("Adres güncellendi", newAddress);
       const guncellenecekAdres = { ...newAddress, id: editingId };
       setAddresses(
         address.map((adres) =>
@@ -48,7 +47,6 @@ export default function Address({
         ),
       );
     } else {
-      console.log("Yeni adres eklendi", newAddress);
     }
     resetForm();
   };
