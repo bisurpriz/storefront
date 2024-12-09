@@ -8,6 +8,11 @@ export const GetUserFavoritesDocument = `
       image_url
       price
       discount_price
+      product_customizable_areas{
+      id
+      }
+      score
+      delivery_type
       slug
       product_categories {
         category {

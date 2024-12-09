@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 const useScrollHorizontal = (
   scrollRef: React.RefObject<HTMLDivElement>,
   autoPlay = false,
+  onLeftChange?: () => void,
+  onRightChange?: () => void,
 ) => {
   const [showState, setShowState] = useState({
     showLeft: false,
@@ -17,6 +19,8 @@ const useScrollHorizontal = (
         left: -scrollRef.current.clientWidth,
         behavior: "smooth",
       });
+
+      if (onLeftChange) onLeftChange();
     }
   }, [scrollRef]);
 
@@ -26,6 +30,8 @@ const useScrollHorizontal = (
         left: scrollRef.current.clientWidth,
         behavior: "smooth",
       });
+
+      if (onRightChange) onRightChange();
     }
   }, [scrollRef]);
 
@@ -152,7 +158,7 @@ const useScrollHorizontal = (
       </div>
     );
 
-  return { scrollLeft, scrollRight, ScrollButtons };
+  return { ScrollButtons };
 };
 
 export default useScrollHorizontal;

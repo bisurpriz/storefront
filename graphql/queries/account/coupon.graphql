@@ -12,6 +12,8 @@ query getAllCoupons {
     start_date
     end_date
     minimum_cost
+    left_limit
+    limit
     amount
     tenant {
       tenants {

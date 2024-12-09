@@ -1,10 +1,10 @@
 import FacebookIcon from "@/components/CustomIcons/Facebook";
 import InstagramIcon from "@/components/CustomIcons/Instagram";
 import TwitterIcon from "@/components/CustomIcons/Twitter";
-import clsx from "clsx";
-import Image from "next/image";
 import { Link } from "@/components/Link";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
+import clsx from "clsx";
+import Image from "next/image";
 
 const footerData = [
   {
@@ -141,8 +141,9 @@ const Footer = async () => {
               alt="ETBİS"
               width={200}
               height={200}
+              priority
               quality={100}
-              className="h-20 w-full"
+              className="h-10 w-auto"
             />
             Bonnmarşe ETBİS&apos;e üye bir firmadır.
           </Link>
@@ -155,8 +156,9 @@ const Footer = async () => {
             <Image
               src="/payment/iyzico-ode.png"
               alt="iyzico"
-              className="h-20 w-full"
+              className="h-10 w-auto"
               width={400}
+              priority
               height={200}
               quality={100}
             />

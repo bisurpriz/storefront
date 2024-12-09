@@ -89,6 +89,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
             height={300}
             alt="Login"
             className="m-auto"
+            priority
           />
           <h1 className="text-center text-lg font-bold">
             Hesabınızı Oluşturun

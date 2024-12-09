@@ -2,8 +2,7 @@
 
 import { FC } from "react";
 
-import clsx from "clsx";
-import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { Link } from "@/components/Link";
 import {
   Carousel,
   CarouselContent,
@@ -11,10 +10,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { cn } from "@/lib/utils";
-import { Link } from "@/components/Link";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import clsx from "clsx";
+import Image from "next/image";
 
 type CategorySwiperProps = {
   categories: GetMainCategoriesQuery["category"];
@@ -22,7 +22,7 @@ type CategorySwiperProps = {
 
 const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
   const basis = cn(
-    "basis-1/3 pl-2",
+    "basis-1/4 pl-2",
     "xs:basis-1/4",
     "sm:basis-1/5",
     "md:basis-1/6",
@@ -39,6 +39,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
         opts={{
           align: "start",
           loop: true,
+          slidesToScroll: 3,
         }}
         className="w-full"
       >
@@ -64,7 +65,9 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
                     width={120}
                     height={120}
                   />
-                  <span className="mt-2 text-xs">{_.label}</span>
+                  <span className="mt-2 whitespace-nowrap text-center text-xs">
+                    {_.label}
+                  </span>
                 </Link>
               </CarouselItem>
             ))}

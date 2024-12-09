@@ -7,7 +7,7 @@ export type GetUserByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email?: string | null, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }> } | null };
+export type GetUserByIdQuery = { user_by_pk?: { id: any, created_at?: any | null, email?: string | null, firstname?: string | null, lastname?: string | null, picture?: string | null, phone?: string | null, reference_code?: string | null, user_addresses: Array<{ address_title: string, address: string }>, carts: Array<{ id: any, content?: any | null }>, favorites: Array<{ product_id: any }> } | null };
 
 export type UpdateUserByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -58,6 +58,9 @@ export const GetUserByIdDocument = gql`
     carts {
       id
       content
+    }
+    favorites {
+      product_id
     }
   }
 }

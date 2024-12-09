@@ -1,14 +1,19 @@
-import HeaderMiddle from "./Middle";
-import HeaderBottom from "./Bottom";
-import { FC } from "react";
-import HeaderTop from "./Top";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { cn } from "@/lib/utils";
+import { FC } from "react";
+import HeaderBottom from "./Bottom";
+import HeaderMiddle from "./Middle";
+import HeaderTop from "./Top";
 
 const Header: FC<{
   category: GetMainCategoriesQuery["category"];
 }> = async ({ category }) => {
   return (
-    <div className="z-10 mx-auto flex max-w-screen-2xl flex-col items-center justify-start bg-white leading-none">
+    <div
+      className={cn(
+        `sticky top-0 z-50 mx-auto w-full max-w-7xl border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/90`,
+      )}
+    >
       <HeaderTop />
       <HeaderMiddle />
       <HeaderBottom categories={category} />

@@ -31,6 +31,7 @@ const TextField: FC<TextFieldProps> = (props) => {
     ref,
     readOnly,
     dirtyAnimation,
+    name,
     ...rest
   } = props;
 
@@ -53,7 +54,7 @@ const TextField: FC<TextFieldProps> = (props) => {
         tabIndex={0}
         onKeyDown={onKeyDown}
         type={type}
-        name={id}
+        name={name ?? id}
         id={id}
         autoComplete={autoComplete}
         ref={ref}

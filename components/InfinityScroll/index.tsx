@@ -19,7 +19,7 @@ interface InfinityScrollProps<T> {
 }
 
 const DynamicProductItem = dynamic(
-  () => import("../Product/Item/ProductItem2"),
+  () => import("../Product/Item/ProductItemv2"),
   {
     loading: () => <ProductItemSkeleton />,
   },
@@ -79,12 +79,11 @@ const InfinityScroll = <T,>({
     <>
       <div
         className={cn(
-          "grid grid-cols-4",
-          "gap-2 max-sm:grid-cols-1",
-          "gap-2 max-md:grid-cols-2",
-          "gap-4 max-lg:grid-cols-3",
-          "gap-6 max-xl:grid-cols-3",
-          "gap-8 max-2xl:grid-cols-4",
+          "grid grid-cols-2 gap-2",
+          "sm:grid-cols-2 sm:gap-2",
+          "md:grid-cols-3 md:gap-2",
+          "lg:grid-cols-4 lg:gap-4",
+          "xl:grid-cols-5 xl:gap-6",
         )}
       >
         {data?.map((item: any) => {

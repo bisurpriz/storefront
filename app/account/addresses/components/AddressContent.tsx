@@ -1,10 +1,14 @@
-import { UserAddressesResponse } from "@/common/types/User/user";
-import { Button } from "@/components/ui/button";
 import Edit from "@/components/Icons/Edit";
 import Trash from "@/components/Icons/Trash";
 import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
+import { GetUserAddressesQuery } from "@/graphql/queries/address/address.generated";
 
-const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
+const AddressContent = ({
+  address,
+}: {
+  address: GetUserAddressesQuery["user_address"][0];
+}) => {
   return (
     <div className="flex flex-col">
       <TextField
@@ -19,21 +23,16 @@ const AddressContent = ({ address }: { address: UserAddressesResponse }) => {
         disabled
         className="mb-4"
       />
-      <TextField
-        label="İl"
-        value={address.city.name}
-        disabled
-        className="mb-4"
-      />
+      <TextField label="İl" value={address.city} disabled className="mb-4" />
       <TextField
         label="İlçe"
-        value={address.district.name}
+        value={address.district}
         disabled
         className="mb-4"
       />
       <TextField
         label="Mahalle"
-        value={address.quarter.name}
+        value={address.quarter}
         disabled
         className="mb-4"
       />

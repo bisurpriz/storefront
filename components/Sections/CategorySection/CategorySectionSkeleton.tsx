@@ -1,5 +1,3 @@
-import React from "react";
-
 const CategorySectionSkeleton = () => {
   return (
     <div className="flex cursor-pointer flex-col gap-4 overflow-hidden rounded-sm border-y border-transparent bg-white bg-gradient-to-l from-white via-pink-100 to-white py-8">
@@ -12,7 +10,10 @@ const CategorySectionSkeleton = () => {
       </div>
       <div className="flex flex-nowrap gap-6">
         {Array.from({ length: 20 }).map((_, i) => (
-          <div className="h-[250px] min-w-[250px] animate-pulse rounded-lg bg-gray-300 p-4" />
+          <div
+            key={i}
+            className="h-[250px] min-w-[250px] animate-pulse rounded-lg bg-gray-300 p-4"
+          />
         ))}
       </div>
     </div>

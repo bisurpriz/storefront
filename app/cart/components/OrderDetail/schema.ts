@@ -1,6 +1,7 @@
 import { object, string } from "yup";
 
-const phone_regex = new RegExp("^(0[1-9][0-9]{9})$|^(\\+90[1-9][0-9]{9})$");
+// +90 or 10 digits
+const phone_regex = new RegExp(/^(90)?[5-9]\d{9}$/);
 
 export const orderDetailSchema = object({
   sender_name: string().required("Ad Soyad gereklidir"),

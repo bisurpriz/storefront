@@ -1,4 +1,3 @@
-import AddressBook from "@/components/Icons/AddressBook";
 import Coupon from "@/components/Icons/Coupon";
 import Heart from "@/components/Icons/Heart";
 import Message from "@/components/Icons/Message";
@@ -38,11 +37,11 @@ export const accountNavigationItems = [
     icon: Message,
     link: "/account/messages",
   },
-  {
-    title: "Adreslerim",
-    icon: AddressBook,
-    link: "/account/addresses",
-  },
+  // {
+  //   title: "Adreslerim",
+  //   icon: AddressBook,
+  //   link: "/account/addresses",
+  // },
   {
     title: "İzinlerim",
     icon: Unlock,

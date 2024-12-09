@@ -1,8 +1,8 @@
-import Search from "@/components/Search";
-import Image from "next/image";
 import { Link } from "@/components/Link";
-import HeaderButtons from "./components/HeaderButtons";
+import Search from "@/components/Search";
 import clsx from "clsx";
+import Image from "next/image";
+import HeaderButtons from "./components/HeaderButtons";
 
 const HeaderMiddle = () => {
   return (
@@ -19,6 +19,7 @@ const HeaderMiddle = () => {
           width={180}
           height={55}
           alt="BiSürpriz Logo"
+          priority
         />
       </Link>
 

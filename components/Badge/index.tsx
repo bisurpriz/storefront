@@ -1,9 +1,9 @@
 "use client";
 
-import clsx from "clsx";
-import React, { FC } from "react";
-import { motion } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import React, { FC } from "react";
 
 const badgeVariants = {
   hidden: { scale: 0, right: 0, top: 0, translateY: "-50%", translateX: "50%" },

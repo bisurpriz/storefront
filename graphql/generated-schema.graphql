@@ -5578,6 +5578,237 @@ input district_variance_order_by {
   parent_id: order_by
 }
 
+"""firebase cloud messaging token"""
+type fcm_token {
+  created_at: timestamptz!
+  id: uuid!
+  last_used: timestamptz
+  platform: String
+  token: String!
+  updated_at: timestamptz!
+
+  """An object relationship"""
+  user: user!
+  user_id: uuid!
+}
+
+"""
+aggregated selection of "fcm_token"
+"""
+type fcm_token_aggregate {
+  aggregate: fcm_token_aggregate_fields
+  nodes: [fcm_token!]!
+}
+
+"""
+aggregate fields of "fcm_token"
+"""
+type fcm_token_aggregate_fields {
+  count(columns: [fcm_token_select_column!], distinct: Boolean): Int!
+  max: fcm_token_max_fields
+  min: fcm_token_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "fcm_token". All fields are combined with a logical 'AND'.
+"""
+input fcm_token_bool_exp {
+  _and: [fcm_token_bool_exp!]
+  _not: fcm_token_bool_exp
+  _or: [fcm_token_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  last_used: timestamptz_comparison_exp
+  platform: String_comparison_exp
+  token: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  user: user_bool_exp
+  user_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "fcm_token"
+"""
+enum fcm_token_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  fcm_token_pkey
+
+  """
+  unique or primary key constraint on columns "user_id", "token"
+  """
+  fcm_token_token_user_id_key
+}
+
+"""
+input type for inserting data into table "fcm_token"
+"""
+input fcm_token_insert_input {
+  created_at: timestamptz
+  id: uuid
+  last_used: timestamptz
+  platform: String
+  token: String
+  updated_at: timestamptz
+  user: user_obj_rel_insert_input
+  user_id: uuid
+}
+
+"""aggregate max on columns"""
+type fcm_token_max_fields {
+  created_at: timestamptz
+  id: uuid
+  last_used: timestamptz
+  platform: String
+  token: String
+  updated_at: timestamptz
+  user_id: uuid
+}
+
+"""aggregate min on columns"""
+type fcm_token_min_fields {
+  created_at: timestamptz
+  id: uuid
+  last_used: timestamptz
+  platform: String
+  token: String
+  updated_at: timestamptz
+  user_id: uuid
+}
+
+"""
+response of any mutation on the table "fcm_token"
+"""
+type fcm_token_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [fcm_token!]!
+}
+
+"""
+on_conflict condition type for table "fcm_token"
+"""
+input fcm_token_on_conflict {
+  constraint: fcm_token_constraint!
+  update_columns: [fcm_token_update_column!]! = []
+  where: fcm_token_bool_exp
+}
+
+"""Ordering options when selecting data from "fcm_token"."""
+input fcm_token_order_by {
+  created_at: order_by
+  id: order_by
+  last_used: order_by
+  platform: order_by
+  token: order_by
+  updated_at: order_by
+  user: user_order_by
+  user_id: order_by
+}
+
+"""primary key columns input for table: fcm_token"""
+input fcm_token_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "fcm_token"
+"""
+enum fcm_token_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  last_used
+
+  """column name"""
+  platform
+
+  """column name"""
+  token
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  user_id
+}
+
+"""
+input type for updating data in table "fcm_token"
+"""
+input fcm_token_set_input {
+  created_at: timestamptz
+  id: uuid
+  last_used: timestamptz
+  platform: String
+  token: String
+  updated_at: timestamptz
+  user_id: uuid
+}
+
+"""
+Streaming cursor of the table "fcm_token"
+"""
+input fcm_token_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: fcm_token_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input fcm_token_stream_cursor_value_input {
+  created_at: timestamptz
+  id: uuid
+  last_used: timestamptz
+  platform: String
+  token: String
+  updated_at: timestamptz
+  user_id: uuid
+}
+
+"""
+update columns of table "fcm_token"
+"""
+enum fcm_token_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  last_used
+
+  """column name"""
+  platform
+
+  """column name"""
+  token
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  user_id
+}
+
+input fcm_token_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: fcm_token_set_input
+
+  """filter the rows which have to be updated"""
+  where: fcm_token_bool_exp!
+}
+
 input get_comment_by_score_args {
   pid: bigint
 }
@@ -6312,6 +6543,19 @@ type mutation_root {
   delete_district_by_pk(id: Int!): district
 
   """
+  delete data from the table: "fcm_token"
+  """
+  delete_fcm_token(
+    """filter the rows which have to be deleted"""
+    where: fcm_token_bool_exp!
+  ): fcm_token_mutation_response
+
+  """
+  delete single row from the table: "fcm_token"
+  """
+  delete_fcm_token_by_pk(id: uuid!): fcm_token
+
+  """
   delete data from the table: "message"
   """
   delete_message(
@@ -6487,6 +6731,19 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: product_delivery_city_info_bool_exp!
   ): product_delivery_city_info_mutation_response
+
+  """
+  delete data from the table: "product_related"
+  """
+  delete_product_related(
+    """filter the rows which have to be deleted"""
+    where: product_related_bool_exp!
+  ): product_related_mutation_response
+
+  """
+  delete single row from the table: "product_related"
+  """
+  delete_product_related_by_pk(id: bigint!): product_related
 
   """
   delete data from the table: "quarter"
@@ -7059,6 +7316,28 @@ type mutation_root {
   ): district
 
   """
+  insert data into the table: "fcm_token"
+  """
+  insert_fcm_token(
+    """the rows to be inserted"""
+    objects: [fcm_token_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: fcm_token_on_conflict
+  ): fcm_token_mutation_response
+
+  """
+  insert a single row into the table: "fcm_token"
+  """
+  insert_fcm_token_one(
+    """the row to be inserted"""
+    object: fcm_token_insert_input!
+
+    """upsert condition"""
+    on_conflict: fcm_token_on_conflict
+  ): fcm_token
+
+  """
   insert data into the table: "message"
   """
   insert_message(
@@ -7359,6 +7638,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: product_on_conflict
   ): product
+
+  """
+  insert data into the table: "product_related"
+  """
+  insert_product_related(
+    """the rows to be inserted"""
+    objects: [product_related_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: product_related_on_conflict
+  ): product_related_mutation_response
+
+  """
+  insert a single row into the table: "product_related"
+  """
+  insert_product_related_one(
+    """the row to be inserted"""
+    object: product_related_insert_input!
+
+    """upsert condition"""
+    on_conflict: product_related_on_conflict
+  ): product_related
 
   """
   insert data into the table: "quarter"
@@ -8287,6 +8588,34 @@ type mutation_root {
   ): [district_mutation_response]
 
   """
+  update data of the table: "fcm_token"
+  """
+  update_fcm_token(
+    """sets the columns of the filtered rows to the given values"""
+    _set: fcm_token_set_input
+
+    """filter the rows which have to be updated"""
+    where: fcm_token_bool_exp!
+  ): fcm_token_mutation_response
+
+  """
+  update single row of the table: "fcm_token"
+  """
+  update_fcm_token_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: fcm_token_set_input
+    pk_columns: fcm_token_pk_columns_input!
+  ): fcm_token
+
+  """
+  update multiples rows of table: "fcm_token"
+  """
+  update_fcm_token_many(
+    """updates to execute, in order"""
+    updates: [fcm_token_updates!]!
+  ): [fcm_token_mutation_response]
+
+  """
   update data of the table: "message"
   """
   update_message(
@@ -8779,6 +9108,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [product_updates!]!
   ): [product_mutation_response]
+
+  """
+  update data of the table: "product_related"
+  """
+  update_product_related(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_related_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_related_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_related_bool_exp!
+  ): product_related_mutation_response
+
+  """
+  update single row of the table: "product_related"
+  """
+  update_product_related_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_related_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_related_set_input
+    pk_columns: product_related_pk_columns_input!
+  ): product_related
+
+  """
+  update multiples rows of table: "product_related"
+  """
+  update_product_related_many(
+    """updates to execute, in order"""
+    updates: [product_related_updates!]!
+  ): [product_related_mutation_response]
 
   """
   update data of the table: "quarter"
@@ -13584,6 +13947,7 @@ type product {
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String!
+  only_related: Boolean
 
   """An array relationship"""
   order_items(
@@ -13960,6 +14324,7 @@ input product_bool_exp {
   is_service_free: Boolean_comparison_exp
   last_order_time: timestamptz_comparison_exp
   name: String_comparison_exp
+  only_related: Boolean_comparison_exp
   order_items: order_item_bool_exp
   order_items_aggregate: order_item_aggregate_bool_exp
   price: numeric_comparison_exp
@@ -15127,6 +15492,7 @@ input product_insert_input {
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
+  only_related: Boolean
   order_items: order_item_arr_rel_insert_input
   price: numeric
   product_categories: product_category_arr_rel_insert_input
@@ -15291,6 +15657,7 @@ input product_order_by {
   is_service_free: order_by
   last_order_time: order_by
   name: order_by
+  only_related: order_by
   order_items_aggregate: order_item_aggregate_order_by
   price: order_by
   product_categories_aggregate: product_category_aggregate_order_by
@@ -15319,6 +15686,311 @@ input product_pk_columns_input {
 input product_prepend_input {
   delivery_time_ranges: jsonb
   properties: jsonb
+}
+
+"""
+columns and relationships of "product_related"
+"""
+type product_related {
+  id: bigint!
+
+  """An object relationship"""
+  product: product!
+  product_id: bigint!
+
+  """An object relationship"""
+  related_product: product!
+  related_product_id: bigint!
+  related_product_price: numeric!
+  relevance_score: numeric
+}
+
+"""
+aggregated selection of "product_related"
+"""
+type product_related_aggregate {
+  aggregate: product_related_aggregate_fields
+  nodes: [product_related!]!
+}
+
+"""
+aggregate fields of "product_related"
+"""
+type product_related_aggregate_fields {
+  avg: product_related_avg_fields
+  count(columns: [product_related_select_column!], distinct: Boolean): Int!
+  max: product_related_max_fields
+  min: product_related_min_fields
+  stddev: product_related_stddev_fields
+  stddev_pop: product_related_stddev_pop_fields
+  stddev_samp: product_related_stddev_samp_fields
+  sum: product_related_sum_fields
+  var_pop: product_related_var_pop_fields
+  var_samp: product_related_var_samp_fields
+  variance: product_related_variance_fields
+}
+
+"""aggregate avg on columns"""
+type product_related_avg_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""
+Boolean expression to filter rows from the table "product_related". All fields are combined with a logical 'AND'.
+"""
+input product_related_bool_exp {
+  _and: [product_related_bool_exp!]
+  _not: product_related_bool_exp
+  _or: [product_related_bool_exp!]
+  id: bigint_comparison_exp
+  product: product_bool_exp
+  product_id: bigint_comparison_exp
+  related_product: product_bool_exp
+  related_product_id: bigint_comparison_exp
+  related_product_price: numeric_comparison_exp
+  relevance_score: numeric_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "product_related"
+"""
+enum product_related_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  product_related_pkey
+
+  """
+  unique or primary key constraint on columns "related_product_id", "product_id"
+  """
+  product_related_product_id_related_product_id_key
+}
+
+"""
+input type for incrementing numeric columns in table "product_related"
+"""
+input product_related_inc_input {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""
+input type for inserting data into table "product_related"
+"""
+input product_related_insert_input {
+  id: bigint
+  product: product_obj_rel_insert_input
+  product_id: bigint
+  related_product: product_obj_rel_insert_input
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""aggregate max on columns"""
+type product_related_max_fields {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""aggregate min on columns"""
+type product_related_min_fields {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""
+response of any mutation on the table "product_related"
+"""
+type product_related_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product_related!]!
+}
+
+"""
+on_conflict condition type for table "product_related"
+"""
+input product_related_on_conflict {
+  constraint: product_related_constraint!
+  update_columns: [product_related_update_column!]! = []
+  where: product_related_bool_exp
+}
+
+"""Ordering options when selecting data from "product_related"."""
+input product_related_order_by {
+  id: order_by
+  product: product_order_by
+  product_id: order_by
+  related_product: product_order_by
+  related_product_id: order_by
+  related_product_price: order_by
+  relevance_score: order_by
+}
+
+"""primary key columns input for table: product_related"""
+input product_related_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "product_related"
+"""
+enum product_related_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  product_id
+
+  """column name"""
+  related_product_id
+
+  """column name"""
+  related_product_price
+
+  """column name"""
+  relevance_score
+}
+
+"""
+input type for updating data in table "product_related"
+"""
+input product_related_set_input {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""aggregate stddev on columns"""
+type product_related_stddev_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type product_related_stddev_pop_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type product_related_stddev_samp_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""
+Streaming cursor of the table "product_related"
+"""
+input product_related_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_related_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_related_stream_cursor_value_input {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""aggregate sum on columns"""
+type product_related_sum_fields {
+  id: bigint
+  product_id: bigint
+  related_product_id: bigint
+  related_product_price: numeric
+  relevance_score: numeric
+}
+
+"""
+update columns of table "product_related"
+"""
+enum product_related_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  product_id
+
+  """column name"""
+  related_product_id
+
+  """column name"""
+  related_product_price
+
+  """column name"""
+  relevance_score
+}
+
+input product_related_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_related_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_related_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_related_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_related_var_pop_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""aggregate var_samp on columns"""
+type product_related_var_samp_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
+}
+
+"""aggregate variance on columns"""
+type product_related_variance_fields {
+  id: Float
+  product_id: Float
+  related_product_id: Float
+  related_product_price: Float
+  relevance_score: Float
 }
 
 """
@@ -15368,6 +16040,9 @@ enum product_select_column {
   name
 
   """column name"""
+  only_related
+
+  """column name"""
   price
 
   """column name"""
@@ -15406,6 +16081,9 @@ enum product_select_column_product_aggregate_bool_exp_bool_and_arguments_columns
   is_service_free
 
   """column name"""
+  only_related
+
+  """column name"""
   stock_track
 }
 
@@ -15421,6 +16099,9 @@ enum product_select_column_product_aggregate_bool_exp_bool_or_arguments_columns 
 
   """column name"""
   is_service_free
+
+  """column name"""
+  only_related
 
   """column name"""
   stock_track
@@ -15444,6 +16125,7 @@ input product_set_input {
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
+  only_related: Boolean
   price: numeric
   product_no: String
   properties: jsonb
@@ -15562,6 +16244,7 @@ input product_stream_cursor_value_input {
   is_service_free: Boolean
   last_order_time: timestamptz
   name: String
+  only_related: Boolean
   price: numeric
   product_no: String
   properties: jsonb
@@ -15644,6 +16327,9 @@ enum product_update_column {
 
   """column name"""
   name
+
+  """column name"""
+  only_related
 
   """column name"""
   price
@@ -16942,6 +17628,49 @@ type query_root {
   district_by_pk(id: Int!): district
 
   """
+  fetch data from the table: "fcm_token"
+  """
+  fcm_token(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): [fcm_token!]!
+
+  """
+  fetch aggregated fields from the table: "fcm_token"
+  """
+  fcm_token_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): fcm_token_aggregate!
+
+  """fetch data from the table: "fcm_token" using primary key columns"""
+  fcm_token_by_pk(id: uuid!): fcm_token
+
+  """
   execute function "get_comment_by_score" which returns "comment_by_score"
   """
   get_comment_by_score(
@@ -17649,6 +18378,49 @@ type query_root {
     """filter the rows returned"""
     where: product_delivery_city_info_bool_exp
   ): product_delivery_city_info_aggregate!
+
+  """
+  fetch data from the table: "product_related"
+  """
+  product_related(
+    """distinct select on columns"""
+    distinct_on: [product_related_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_related_order_by!]
+
+    """filter the rows returned"""
+    where: product_related_bool_exp
+  ): [product_related!]!
+
+  """
+  fetch aggregated fields from the table: "product_related"
+  """
+  product_related_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_related_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_related_order_by!]
+
+    """filter the rows returned"""
+    where: product_related_bool_exp
+  ): product_related_aggregate!
+
+  """fetch data from the table: "product_related" using primary key columns"""
+  product_related_by_pk(id: bigint!): product_related
 
   """
   fetch data from the table: "quarter"
@@ -21154,6 +21926,63 @@ type subscription_root {
   ): [district!]!
 
   """
+  fetch data from the table: "fcm_token"
+  """
+  fcm_token(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): [fcm_token!]!
+
+  """
+  fetch aggregated fields from the table: "fcm_token"
+  """
+  fcm_token_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): fcm_token_aggregate!
+
+  """fetch data from the table: "fcm_token" using primary key columns"""
+  fcm_token_by_pk(id: uuid!): fcm_token
+
+  """
+  fetch data from the table in a streaming manner: "fcm_token"
+  """
+  fcm_token_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [fcm_token_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): [fcm_token!]!
+
+  """
   execute function "get_comment_by_score" which returns "comment_by_score"
   """
   get_comment_by_score(
@@ -22043,6 +22872,63 @@ type subscription_root {
     """filter the rows returned"""
     where: product_delivery_city_info_bool_exp
   ): [product_delivery_city_info!]!
+
+  """
+  fetch data from the table: "product_related"
+  """
+  product_related(
+    """distinct select on columns"""
+    distinct_on: [product_related_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_related_order_by!]
+
+    """filter the rows returned"""
+    where: product_related_bool_exp
+  ): [product_related!]!
+
+  """
+  fetch aggregated fields from the table: "product_related"
+  """
+  product_related_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_related_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_related_order_by!]
+
+    """filter the rows returned"""
+    where: product_related_bool_exp
+  ): product_related_aggregate!
+
+  """fetch data from the table: "product_related" using primary key columns"""
+  product_related_by_pk(id: bigint!): product_related
+
+  """
+  fetch data from the table in a streaming manner: "product_related"
+  """
+  product_related_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_related_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_related_bool_exp
+  ): [product_related!]!
 
   """
   fetch data from the table in a streaming manner: "product"

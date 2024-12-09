@@ -1,28 +1,27 @@
-import { useEffect, useState, useTransition } from "react";
-import { motion } from "framer-motion";
-import { Heart, LucideTruck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Product } from "@/graphql/generated-types";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { cn } from "@/lib/utils";
-import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/app/account/favorites/actions";
 import { Link } from "@/components/Link";
-import { goToProductDetail } from "@/utils/linkClickEvent";
-import ProductCardStamps from "./components/Stamps";
+import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
 import { useUser } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import {
-  addToFavorites,
-  removeFromFavorites,
-} from "@/app/account/favorites/actions";
+import { Product } from "@/graphql/generated-types";
 import useResponsive from "@/hooks/useResponsive";
+import { cn } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { goToProductDetail } from "@/utils/linkClickEvent";
+import { Heart, LucideTruck } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import ProductCardStamps from "./components/Stamps";
 
 interface ProductItemProps extends Partial<Product> {
   loading?: boolean;
@@ -124,7 +123,7 @@ export default function ProductItem2(props: ProductItemProps) {
     >
       <div className="relative col-span-4 row-span-full flex-1">
         <Image
-          src={getImageUrlFromPath(image_url[hoveredImageIndex ?? 0])}
+          src={getImageUrlFromPath(image_url?.[hoveredImageIndex ?? 0])}
           alt={name}
           quality={70}
           className="h-80 w-full object-cover max-sm:h-full"

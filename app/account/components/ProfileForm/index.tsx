@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Link } from "@/components/Link";
 import LogoutButton from "@/components/LogoutButton";
-import { PhoneInput } from "@/components/PhoneInput";
+import PhoneInput from "@/components/PhoneInput";
 import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
 import {
   UpdateUserByIdDocument,
   UpdateUserByIdMutation,
@@ -15,11 +16,10 @@ import { useMutation } from "@apollo/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import Image from "next/image";
-import { Link } from "@/components/Link";
 import { useEffect } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
-import { object, string } from "yup";
 import { toast } from "sonner";
+import { object, string } from "yup";
 
 const schema = object().shape({
   firstname: string().required("Adınızı girin"),
