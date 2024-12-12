@@ -3,7 +3,6 @@
 import { CookieTokens } from "@/app/@auth/contants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useUser } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
 import Cookies from "js-cookie";
@@ -51,28 +50,28 @@ export default function PlacesAutocomplete({
   const [predictions, setPredictions] = useState([]);
   const [isPending, startTransition] = useTransition();
 
-  const autocompleteService = useRef<any>(null);
-  const sessionToken = useRef(null);
   const fetchTimeout = useRef<NodeJS.Timeout | null>(null);
   const { refresh } = useRouter();
-  const { isLoaded } = useUser();
+
+  const getLocation = async (query: string) => {
+    const response = await fetch(`/api/google/places?query=${query}`, {
+      next: {
+        tags: ["google-places"],
+      },
+    });
+
+    return await response.json();
+  };
 
   useEffect(() => {
-    if (!isLoaded) return;
-
     startTransition(() => {
-      autocompleteService.current =
-        new window.google.maps.places.AutocompleteService();
-      sessionToken.current =
-        new window.google.maps.places.AutocompleteSessionToken();
-
       if (dontChangeCookie) return;
       const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID)!);
       if (hasLocation) {
         setInput(hasLocation.label);
       }
     });
-  }, [isLoaded]);
+  }, []);
 
   const handleInputChange = (e: any) => {
     setInput(e.target.value);
@@ -85,21 +84,11 @@ export default function PlacesAutocomplete({
 
     fetchTimeout.current = setTimeout(() => {
       startTransition(() => {
-        if (autocompleteService.current) {
-          autocompleteService.current.getPlacePredictions(
-            {
-              input: e.target.value,
-              sessionToken: sessionToken.current,
-              componentRestrictions: { country: "tr" },
-              language: "tr",
-            },
-            (predictions: any, status: any) => {
-              if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                setPredictions(predictions);
-              }
-            },
-          );
-        }
+        getLocation(e.target.value).then((data: any) => {
+          if (data.status === "OK") {
+            setPredictions(data.predictions);
+          }
+        });
       });
     }, 300);
   };
@@ -109,16 +98,18 @@ export default function PlacesAutocomplete({
   });
 
   const geocodeByPlaceId = async (placeId: string) => {
-    return new Promise((resolve, reject) => {
-      const geocoder = new window.google.maps.Geocoder();
-      geocoder.geocode({ placeId }, (results: any, status: any) => {
-        if (status === "OK") {
-          resolve(results);
-        } else {
-          reject(status);
-        }
-      });
-    });
+    try {
+      const response = await fetch(`/api/google/geocode?placeId=${placeId}`);
+      if (!response.ok) {
+        throw new Error("Geocode isteği başarısız oldu.");
+      }
+      const data = await response.json();
+
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log("Hata:", error);
+    }
   };
 
   const handleSelect = (prediction: any) => {

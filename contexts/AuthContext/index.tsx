@@ -5,7 +5,6 @@ import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { checkExpire } from "@/graphql/utils/checkExpire";
 import { setClientCookie } from "@/utils/getCookie";
 import { uuidv4 } from "@/utils/uuidv4";
-import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import Cookies from "js-cookie";
 import {
   ReactNode,
@@ -17,18 +16,14 @@ import {
 interface AuthContextType {
   user: GetUserByIdQuery["user_by_pk"] | null;
   userAddresses: any;
-  isLoaded?: boolean;
 }
 
 const initialAuthContext: AuthContextType = {
   user: null,
   userAddresses: [],
-  isLoaded: false,
 };
 
 export const AuthContext = createContext<AuthContextType>(initialAuthContext);
-
-const PLACES: Libraries = ["places"];
 
 export const AuthProvider = ({
   children,
@@ -38,14 +33,6 @@ export const AuthProvider = ({
   user: GetUserByIdQuery["user_by_pk"];
 }) => {
   const [userAddresses, setUserAddresses] = useState<any>([]);
-
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: PLACES,
-    channel: "weekly",
-    language: "tr",
-  });
 
   useEffect(() => {
     handleUserAuthentication();
@@ -91,7 +78,7 @@ export const AuthProvider = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, userAddresses, isLoaded }}>
+    <AuthContext.Provider value={{ user, userAddresses }}>
       {children}
     </AuthContext.Provider>
   );
