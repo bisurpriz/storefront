@@ -106,6 +106,7 @@ const nextConfig = {
     JWT_CONFIG: process.env.JWT_CONFIG,
     TYPESENSE_HOST: process.env.TYPESENSE_HOST,
     TYPESENSE_API_KEY: process.env.TYPESENSE_API_KEY,
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
 };
 
