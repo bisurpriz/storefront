@@ -1508,6 +1508,7 @@ type category {
   id: Int!
   image_url: String
   name: String!
+  order: Int
 
   """An object relationship"""
   parent_category: category
@@ -1706,6 +1707,7 @@ input category_arr_rel_insert_input {
 """aggregate avg on columns"""
 type category_avg_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -1714,6 +1716,7 @@ order by avg() on columns of table "category"
 """
 input category_avg_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
@@ -1730,6 +1733,7 @@ input category_bool_exp {
   id: Int_comparison_exp
   image_url: String_comparison_exp
   name: String_comparison_exp
+  order: Int_comparison_exp
   parent_category: category_bool_exp
   parent_category_id: Int_comparison_exp
   products: product_category_bool_exp
@@ -1757,6 +1761,7 @@ input type for incrementing numeric columns in table "category"
 """
 input category_inc_input {
   id: Int
+  order: Int
   parent_category_id: Int
 }
 
@@ -1769,6 +1774,7 @@ input category_insert_input {
   id: Int
   image_url: String
   name: String
+  order: Int
   parent_category: category_obj_rel_insert_input
   parent_category_id: Int
   products: product_category_arr_rel_insert_input
@@ -1784,6 +1790,7 @@ type category_max_fields {
   id: Int
   image_url: String
   name: String
+  order: Int
   parent_category_id: Int
   slug: String
 }
@@ -1796,6 +1803,7 @@ input category_max_order_by {
   id: order_by
   image_url: order_by
   name: order_by
+  order: order_by
   parent_category_id: order_by
   slug: order_by
 }
@@ -1806,6 +1814,7 @@ type category_min_fields {
   id: Int
   image_url: String
   name: String
+  order: Int
   parent_category_id: Int
   slug: String
 }
@@ -1818,6 +1827,7 @@ input category_min_order_by {
   id: order_by
   image_url: order_by
   name: order_by
+  order: order_by
   parent_category_id: order_by
   slug: order_by
 }
@@ -1859,6 +1869,7 @@ input category_order_by {
   id: order_by
   image_url: order_by
   name: order_by
+  order: order_by
   parent_category: category_order_by
   parent_category_id: order_by
   products_aggregate: product_category_aggregate_order_by
@@ -1888,6 +1899,9 @@ enum category_select_column {
 
   """column name"""
   name
+
+  """column name"""
+  order
 
   """column name"""
   parent_category_id
@@ -1923,6 +1937,7 @@ input category_set_input {
   id: Int
   image_url: String
   name: String
+  order: Int
   parent_category_id: Int
   show_in_slider: Boolean
   slug: String
@@ -1931,6 +1946,7 @@ input category_set_input {
 """aggregate stddev on columns"""
 type category_stddev_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -1939,12 +1955,14 @@ order by stddev() on columns of table "category"
 """
 input category_stddev_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type category_stddev_pop_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -1953,12 +1971,14 @@ order by stddev_pop() on columns of table "category"
 """
 input category_stddev_pop_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type category_stddev_samp_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -1967,6 +1987,7 @@ order by stddev_samp() on columns of table "category"
 """
 input category_stddev_samp_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
@@ -1987,6 +2008,7 @@ input category_stream_cursor_value_input {
   id: Int
   image_url: String
   name: String
+  order: Int
   parent_category_id: Int
   show_in_slider: Boolean
   slug: String
@@ -1995,6 +2017,7 @@ input category_stream_cursor_value_input {
 """aggregate sum on columns"""
 type category_sum_fields {
   id: Int
+  order: Int
   parent_category_id: Int
 }
 
@@ -2003,6 +2026,7 @@ order by sum() on columns of table "category"
 """
 input category_sum_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
@@ -2021,6 +2045,9 @@ enum category_update_column {
 
   """column name"""
   name
+
+  """column name"""
+  order
 
   """column name"""
   parent_category_id
@@ -2046,6 +2073,7 @@ input category_updates {
 """aggregate var_pop on columns"""
 type category_var_pop_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -2054,12 +2082,14 @@ order by var_pop() on columns of table "category"
 """
 input category_var_pop_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
 """aggregate var_samp on columns"""
 type category_var_samp_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -2068,12 +2098,14 @@ order by var_samp() on columns of table "category"
 """
 input category_var_samp_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
 """aggregate variance on columns"""
 type category_variance_fields {
   id: Float
+  order: Float
   parent_category_id: Float
 }
 
@@ -2082,6 +2114,7 @@ order by variance() on columns of table "category"
 """
 input category_variance_order_by {
   id: order_by
+  order: order_by
   parent_category_id: order_by
 }
 
@@ -5600,6 +5633,17 @@ type fcm_token_aggregate {
   nodes: [fcm_token!]!
 }
 
+input fcm_token_aggregate_bool_exp {
+  count: fcm_token_aggregate_bool_exp_count
+}
+
+input fcm_token_aggregate_bool_exp_count {
+  arguments: [fcm_token_select_column!]
+  distinct: Boolean
+  filter: fcm_token_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "fcm_token"
 """
@@ -5607,6 +5651,25 @@ type fcm_token_aggregate_fields {
   count(columns: [fcm_token_select_column!], distinct: Boolean): Int!
   max: fcm_token_max_fields
   min: fcm_token_min_fields
+}
+
+"""
+order by aggregate values of table "fcm_token"
+"""
+input fcm_token_aggregate_order_by {
+  count: order_by
+  max: fcm_token_max_order_by
+  min: fcm_token_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "fcm_token"
+"""
+input fcm_token_arr_rel_insert_input {
+  data: [fcm_token_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: fcm_token_on_conflict
 }
 
 """
@@ -5666,6 +5729,19 @@ type fcm_token_max_fields {
   user_id: uuid
 }
 
+"""
+order by max() on columns of table "fcm_token"
+"""
+input fcm_token_max_order_by {
+  created_at: order_by
+  id: order_by
+  last_used: order_by
+  platform: order_by
+  token: order_by
+  updated_at: order_by
+  user_id: order_by
+}
+
 """aggregate min on columns"""
 type fcm_token_min_fields {
   created_at: timestamptz
@@ -5675,6 +5751,19 @@ type fcm_token_min_fields {
   token: String
   updated_at: timestamptz
   user_id: uuid
+}
+
+"""
+order by min() on columns of table "fcm_token"
+"""
+input fcm_token_min_order_by {
+  created_at: order_by
+  id: order_by
+  last_used: order_by
+  platform: order_by
+  token: order_by
+  updated_at: order_by
+  user_id: order_by
 }
 
 """
@@ -6746,6 +6835,19 @@ type mutation_root {
   delete_product_related_by_pk(id: bigint!): product_related
 
   """
+  delete data from the table: "product_variant"
+  """
+  delete_product_variant(
+    """filter the rows which have to be deleted"""
+    where: product_variant_bool_exp!
+  ): product_variant_mutation_response
+
+  """
+  delete single row from the table: "product_variant"
+  """
+  delete_product_variant_by_pk(id: Int!): product_variant
+
+  """
   delete data from the table: "quarter"
   """
   delete_quarter(
@@ -7660,6 +7762,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: product_related_on_conflict
   ): product_related
+
+  """
+  insert data into the table: "product_variant"
+  """
+  insert_product_variant(
+    """the rows to be inserted"""
+    objects: [product_variant_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: product_variant_on_conflict
+  ): product_variant_mutation_response
+
+  """
+  insert a single row into the table: "product_variant"
+  """
+  insert_product_variant_one(
+    """the row to be inserted"""
+    object: product_variant_insert_input!
+
+    """upsert condition"""
+    on_conflict: product_variant_on_conflict
+  ): product_variant
 
   """
   insert data into the table: "quarter"
@@ -9142,6 +9266,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [product_related_updates!]!
   ): [product_related_mutation_response]
+
+  """
+  update data of the table: "product_variant"
+  """
+  update_product_variant(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_variant_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_variant_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_variant_bool_exp!
+  ): product_variant_mutation_response
+
+  """
+  update single row of the table: "product_variant"
+  """
+  update_product_variant_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_variant_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_variant_set_input
+    pk_columns: product_variant_pk_columns_input!
+  ): product_variant
+
+  """
+  update multiples rows of table: "product_variant"
+  """
+  update_product_variant_many(
+    """updates to execute, in order"""
+    updates: [product_variant_updates!]!
+  ): [product_variant_mutation_response]
 
   """
   update data of the table: "quarter"
@@ -14188,6 +14346,42 @@ type product {
     """filter the rows returned"""
     where: user_favorite_bool_exp
   ): user_favorite_aggregate!
+
+  """An array relationship"""
+  variants(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): [product_variant!]!
+
+  """An aggregate relationship"""
+  variants_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): product_variant_aggregate!
 }
 
 """
@@ -14348,6 +14542,8 @@ input product_bool_exp {
   tenant_id: uuid_comparison_exp
   user_favorites: user_favorite_bool_exp
   user_favorites_aggregate: user_favorite_aggregate_bool_exp
+  variants: product_variant_bool_exp
+  variants_aggregate: product_variant_aggregate_bool_exp
 }
 
 """
@@ -15508,6 +15704,7 @@ input product_insert_input {
   tenant: user_obj_rel_insert_input
   tenant_id: uuid
   user_favorites: user_favorite_arr_rel_insert_input
+  variants: product_variant_arr_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -15675,6 +15872,7 @@ input product_order_by {
   tenant: user_order_by
   tenant_id: order_by
   user_favorites_aggregate: user_favorite_aggregate_order_by
+  variants_aggregate: product_variant_aggregate_order_by
 }
 
 """primary key columns input for table: product"""
@@ -16467,6 +16665,393 @@ input product_variance_order_by {
   price: order_by
   quantity: order_by
   stock: order_by
+}
+
+"""
+columns and relationships of "product_variant"
+"""
+type product_variant {
+  id: Int!
+
+  """An object relationship"""
+  product: product!
+  product_id: bigint!
+
+  """An object relationship"""
+  variant: product!
+  variant_id: bigint!
+}
+
+"""
+aggregated selection of "product_variant"
+"""
+type product_variant_aggregate {
+  aggregate: product_variant_aggregate_fields
+  nodes: [product_variant!]!
+}
+
+input product_variant_aggregate_bool_exp {
+  count: product_variant_aggregate_bool_exp_count
+}
+
+input product_variant_aggregate_bool_exp_count {
+  arguments: [product_variant_select_column!]
+  distinct: Boolean
+  filter: product_variant_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "product_variant"
+"""
+type product_variant_aggregate_fields {
+  avg: product_variant_avg_fields
+  count(columns: [product_variant_select_column!], distinct: Boolean): Int!
+  max: product_variant_max_fields
+  min: product_variant_min_fields
+  stddev: product_variant_stddev_fields
+  stddev_pop: product_variant_stddev_pop_fields
+  stddev_samp: product_variant_stddev_samp_fields
+  sum: product_variant_sum_fields
+  var_pop: product_variant_var_pop_fields
+  var_samp: product_variant_var_samp_fields
+  variance: product_variant_variance_fields
+}
+
+"""
+order by aggregate values of table "product_variant"
+"""
+input product_variant_aggregate_order_by {
+  avg: product_variant_avg_order_by
+  count: order_by
+  max: product_variant_max_order_by
+  min: product_variant_min_order_by
+  stddev: product_variant_stddev_order_by
+  stddev_pop: product_variant_stddev_pop_order_by
+  stddev_samp: product_variant_stddev_samp_order_by
+  sum: product_variant_sum_order_by
+  var_pop: product_variant_var_pop_order_by
+  var_samp: product_variant_var_samp_order_by
+  variance: product_variant_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "product_variant"
+"""
+input product_variant_arr_rel_insert_input {
+  data: [product_variant_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: product_variant_on_conflict
+}
+
+"""aggregate avg on columns"""
+type product_variant_avg_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by avg() on columns of table "product_variant"
+"""
+input product_variant_avg_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "product_variant". All fields are combined with a logical 'AND'.
+"""
+input product_variant_bool_exp {
+  _and: [product_variant_bool_exp!]
+  _not: product_variant_bool_exp
+  _or: [product_variant_bool_exp!]
+  id: Int_comparison_exp
+  product: product_bool_exp
+  product_id: bigint_comparison_exp
+  variant: product_bool_exp
+  variant_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "product_variant"
+"""
+enum product_variant_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  product_variant_pkey
+
+  """
+  unique or primary key constraint on columns "variant_id", "product_id"
+  """
+  product_variant_product_id_variant_id_key
+}
+
+"""
+input type for incrementing numeric columns in table "product_variant"
+"""
+input product_variant_inc_input {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""
+input type for inserting data into table "product_variant"
+"""
+input product_variant_insert_input {
+  id: Int
+  product: product_obj_rel_insert_input
+  product_id: bigint
+  variant: product_obj_rel_insert_input
+  variant_id: bigint
+}
+
+"""aggregate max on columns"""
+type product_variant_max_fields {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""
+order by max() on columns of table "product_variant"
+"""
+input product_variant_max_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""aggregate min on columns"""
+type product_variant_min_fields {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""
+order by min() on columns of table "product_variant"
+"""
+input product_variant_min_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""
+response of any mutation on the table "product_variant"
+"""
+type product_variant_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product_variant!]!
+}
+
+"""
+on_conflict condition type for table "product_variant"
+"""
+input product_variant_on_conflict {
+  constraint: product_variant_constraint!
+  update_columns: [product_variant_update_column!]! = []
+  where: product_variant_bool_exp
+}
+
+"""Ordering options when selecting data from "product_variant"."""
+input product_variant_order_by {
+  id: order_by
+  product: product_order_by
+  product_id: order_by
+  variant: product_order_by
+  variant_id: order_by
+}
+
+"""primary key columns input for table: product_variant"""
+input product_variant_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "product_variant"
+"""
+enum product_variant_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  product_id
+
+  """column name"""
+  variant_id
+}
+
+"""
+input type for updating data in table "product_variant"
+"""
+input product_variant_set_input {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""aggregate stddev on columns"""
+type product_variant_stddev_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by stddev() on columns of table "product_variant"
+"""
+input product_variant_stddev_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type product_variant_stddev_pop_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "product_variant"
+"""
+input product_variant_stddev_pop_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type product_variant_stddev_samp_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "product_variant"
+"""
+input product_variant_stddev_samp_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""
+Streaming cursor of the table "product_variant"
+"""
+input product_variant_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_variant_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_variant_stream_cursor_value_input {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""aggregate sum on columns"""
+type product_variant_sum_fields {
+  id: Int
+  product_id: bigint
+  variant_id: bigint
+}
+
+"""
+order by sum() on columns of table "product_variant"
+"""
+input product_variant_sum_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""
+update columns of table "product_variant"
+"""
+enum product_variant_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  product_id
+
+  """column name"""
+  variant_id
+}
+
+input product_variant_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_variant_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_variant_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_variant_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type product_variant_var_pop_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by var_pop() on columns of table "product_variant"
+"""
+input product_variant_var_pop_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type product_variant_var_samp_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by var_samp() on columns of table "product_variant"
+"""
+input product_variant_var_samp_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
+}
+
+"""aggregate variance on columns"""
+type product_variant_variance_fields {
+  id: Float
+  product_id: Float
+  variant_id: Float
+}
+
+"""
+order by variance() on columns of table "product_variant"
+"""
+input product_variant_variance_order_by {
+  id: order_by
+  product_id: order_by
+  variant_id: order_by
 }
 
 """
@@ -18421,6 +19006,49 @@ type query_root {
 
   """fetch data from the table: "product_related" using primary key columns"""
   product_related_by_pk(id: bigint!): product_related
+
+  """
+  fetch data from the table: "product_variant"
+  """
+  product_variant(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): [product_variant!]!
+
+  """
+  fetch aggregated fields from the table: "product_variant"
+  """
+  product_variant_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): product_variant_aggregate!
+
+  """fetch data from the table: "product_variant" using primary key columns"""
+  product_variant_by_pk(id: Int!): product_variant
 
   """
   fetch data from the table: "quarter"
@@ -22943,6 +23571,63 @@ type subscription_root {
     """filter the rows returned"""
     where: product_bool_exp
   ): [product!]!
+
+  """
+  fetch data from the table: "product_variant"
+  """
+  product_variant(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): [product_variant!]!
+
+  """
+  fetch aggregated fields from the table: "product_variant"
+  """
+  product_variant_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_variant_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_variant_order_by!]
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): product_variant_aggregate!
+
+  """fetch data from the table: "product_variant" using primary key columns"""
+  product_variant_by_pk(id: Int!): product_variant
+
+  """
+  fetch data from the table in a streaming manner: "product_variant"
+  """
+  product_variant_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_variant_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_variant_bool_exp
+  ): [product_variant!]!
 
   """
   fetch data from the table: "quarter"
@@ -28098,6 +28783,42 @@ type user {
     """filter the rows returned"""
     where: user_favorite_bool_exp
   ): user_favorite_aggregate!
+
+  """An array relationship"""
+  fcm_tokens(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): [fcm_token!]!
+
+  """An aggregate relationship"""
+  fcm_tokens_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fcm_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fcm_token_order_by!]
+
+    """filter the rows returned"""
+    where: fcm_token_bool_exp
+  ): fcm_token_aggregate!
   firstname: String
   id: uuid!
   identity_number: String
@@ -28999,6 +29720,8 @@ input user_bool_exp {
   email_verified: Boolean_comparison_exp
   favorites: user_favorite_bool_exp
   favorites_aggregate: user_favorite_aggregate_bool_exp
+  fcm_tokens: fcm_token_bool_exp
+  fcm_tokens_aggregate: fcm_token_aggregate_bool_exp
   firstname: String_comparison_exp
   id: uuid_comparison_exp
   identity_number: String_comparison_exp
@@ -29752,6 +30475,7 @@ input user_insert_input {
   email: String
   email_verified: Boolean
   favorites: user_favorite_arr_rel_insert_input
+  fcm_tokens: fcm_token_arr_rel_insert_input
   firstname: String
   id: uuid
   identity_number: String
@@ -29915,6 +30639,7 @@ input user_order_by {
   email: order_by
   email_verified: order_by
   favorites_aggregate: user_favorite_aggregate_order_by
+  fcm_tokens_aggregate: fcm_token_aggregate_order_by
   firstname: order_by
   id: order_by
   identity_number: order_by

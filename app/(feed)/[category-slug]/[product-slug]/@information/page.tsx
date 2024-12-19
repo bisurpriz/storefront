@@ -80,6 +80,8 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
     ),
   };
 
+  console.log(product, 'product');
+
   return (
     <>
       <ProductInformation
@@ -103,6 +105,7 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
         deliveryTimeRanges={product.delivery_time_ranges}
         isCustomizable={product.product_customizable_areas?.length > 0}
         lastOrderTime={product.last_order_time}
+        variants={product?.variants || []}
       />
       <script
         type="application/ld+json"

@@ -24,6 +24,8 @@ import dynamic from "next/dynamic";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ShoppingBasketIcon } from "lucide-react";
+import ProductVariantSelector from "./ProductVariantSelector";
+import { GetProductInformationQuery } from "@/graphql/queries/products/getProductById.generated";
 
 type ProductInformationProps = {
   name: string;
@@ -44,6 +46,7 @@ type ProductInformationProps = {
   isCustomizable?: boolean;
   lastOrderTime?: string;
   productId: number;
+  variants?: GetProductInformationQuery["product"]["variants"];
 };
 
 const DynamicGoogleLocationSelect = dynamic(
@@ -80,6 +83,7 @@ const ProductInformation = ({
   deliveryTimeRanges,
   isCustomizable,
   lastOrderTime,
+  variants,
 }: ProductInformationProps) => {
   const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
   const [productInCart, setProductInCart] = useState(null);
@@ -133,6 +137,18 @@ const ProductInformation = ({
             </Link>
           </div>
         )}
+
+        <ProductVariantSelector
+          variants={variants.map(({ variant }) => ({
+            name: variant.name,
+            imageUrl: variant.image_url[0],
+            price: variant.price,
+            variantId: variant.id,
+            variantSlug: variant.slug,
+            //@ts-ignore
+            categorySlug: variant?.product_categories?.[0]?.category?.slug,
+          }))}
+        />
 
         <div className="mb-4 flex w-full items-end justify-start gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
           <div className="flex items-center justify-start gap-2 max-xl:flex-row max-xl:items-center max-lg:items-start">

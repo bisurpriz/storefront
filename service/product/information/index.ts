@@ -13,6 +13,20 @@ export const GetProductInformationDocument = `
     score
     properties
     slug
+    variants {
+      variant {
+        id
+        name
+        image_url
+        price
+        slug
+        product_categories {
+      category {
+        slug
+      }
+    }
+      }
+    }
     product_categories {
       category {
         slug

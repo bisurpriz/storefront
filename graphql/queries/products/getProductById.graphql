@@ -221,6 +221,15 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
     score
     properties
     slug
+    variants {
+      variant {
+        id
+        name
+        image_url
+        price
+        slug
+      }
+    }
     product_categories {
       category {
         slug
