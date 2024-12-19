@@ -1,3 +1,4 @@
+import SearchDefaultView from "@/components/Search/SearchDefaultView";
 import { Product } from "@/graphql/generated-types";
 import { cn, getImageUrlFromPath } from "@/lib/utils";
 import { Star } from "lucide-react";
@@ -9,6 +10,10 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ products, onSelect }: SearchResultsProps) {
+  if (products.length === 0) {
+    return <SearchDefaultView />;
+  }
+
   return (
     <div className="h-[40dvh] w-full cursor-pointer overflow-hidden overflow-y-auto">
       {products.map((product) => (

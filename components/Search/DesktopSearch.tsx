@@ -5,7 +5,6 @@ import * as React from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 import { SearchInput } from "../Layout/Header/SearchInput";
 import { SearchResults } from "../Layout/Header/SearchResult";
-import SearchDefaultView from "./SearchDefaultView";
 
 interface DesktopSearchProps {
   products: Product[];
@@ -74,17 +73,13 @@ export function DesktopSearch({
           exit={{ y: 40 }}
           transition={{ duration: 0.2 }}
         >
-          {products.length > 0 ? (
-            <SearchResults
-              products={products}
-              onSelect={(result) => {
-                onSelect(result);
-                setOpen(false);
-              }}
-            />
-          ) : (
-            <SearchDefaultView />
-          )}
+          <SearchResults
+            products={products}
+            onSelect={(result) => {
+              onSelect(result);
+              setOpen(false);
+            }}
+          />
         </motion.div>
       </AnimationExitProvider>
     </div>

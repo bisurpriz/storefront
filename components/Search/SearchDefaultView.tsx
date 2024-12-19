@@ -87,7 +87,7 @@ const trendingSearches = [
   "cilt bakım ürünleri",
 ];
 
-export default function EnhancedSearchDefaultView() {
+export default function SearchDefaultView() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("categories");
 
