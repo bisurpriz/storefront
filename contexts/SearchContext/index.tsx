@@ -1,7 +1,7 @@
 "use client";
 
 import { searchProductsv1 } from "@/app/(feed)/actions";
-import { GetProductsWithFilteredPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
+import { Product } from "@/graphql/generated-types";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ReactNode,
@@ -14,7 +14,7 @@ import {
 import { useProgress } from "react-transition-progress";
 
 interface SearchProductContextType {
-  products: GetProductsWithFilteredPaginationQuery["product"];
+  products: Product[];
   handleSearchProducts: (input: string) => void;
   loading: boolean;
   inputVal: string;
@@ -24,9 +24,7 @@ interface SearchProductContextType {
   handleClear: () => void;
   handleKeyDown: (event: any) => void;
   pushToSearch: () => void;
-  setProducts: (
-    products: GetProductsWithFilteredPaginationQuery["product"],
-  ) => void;
+  setProducts: (products: Product[]) => void;
 }
 
 export const SearchProductContext = createContext<SearchProductContextType>({
@@ -48,9 +46,7 @@ export const SearchProductProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [products, setProducts] = useState<
-    GetProductsWithFilteredPaginationQuery["product"]
-  >([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [inputVal, setInputVal] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -73,11 +69,7 @@ export const SearchProductProvider = ({
         return;
       }
       const response = await searchProductsv1({ q: input });
-      setProducts(
-        response.hits.map(
-          (hit) => hit.document,
-        ) as GetProductsWithFilteredPaginationQuery["product"],
-      );
+      setProducts(response.hits.map((hit) => hit.document) as Product[]);
     });
   };
 
