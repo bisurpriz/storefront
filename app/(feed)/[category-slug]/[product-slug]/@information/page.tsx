@@ -80,8 +80,6 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
     ),
   };
 
-  console.log(product, 'product');
-
   return (
     <>
       <ProductInformation

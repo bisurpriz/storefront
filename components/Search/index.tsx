@@ -25,7 +25,6 @@ export function Search() {
     handleClear,
     setProducts,
   } = useSearchProduct();
-  console.log(products);
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>("");
   const [searchTimeout, setSearchTimeout] = React.useState<any>();

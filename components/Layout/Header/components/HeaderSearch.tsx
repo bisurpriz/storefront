@@ -65,7 +65,6 @@ export default function HeaderSearch() {
       saveSearch(term.trim());
       setIsOpen(false);
       // Implement actual search logic here
-      console.log("Searching for:", term);
     }
   };
 
