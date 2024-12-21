@@ -1,29 +1,37 @@
-import { Product } from "@/graphql/generated-types";
+import { Category, Product } from "@/graphql/generated-types";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import * as React from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 import { SearchInput } from "../Layout/Header/SearchInput";
 import { SearchResults } from "../Layout/Header/SearchResult";
 
 interface DesktopSearchProps {
   products: Product[];
-  searchValue: string;
-  onSearchChange: (value: string) => void;
+  categories: Category[];
   onSelect: (result: any) => void;
+  featuredProducts: Product[];
 }
 
 export function DesktopSearch({
   products,
-  searchValue,
-  onSearchChange,
+  categories,
   onSelect,
+  featuredProducts,
 }: DesktopSearchProps) {
-  const [open, setOpen] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  React.useEffect(() => {
+  const search = searchParams.get("search");
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname, search]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         containerRef.current &&
@@ -39,7 +47,7 @@ export function DesktopSearch({
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
     }
@@ -47,19 +55,7 @@ export function DesktopSearch({
 
   return (
     <div ref={containerRef} className="relative">
-      <SearchInput
-        ref={inputRef}
-        value={searchValue}
-        onChange={(value) => {
-          onSearchChange(value);
-          setOpen(true);
-        }}
-        onClear={() => {
-          onSearchChange("");
-          setOpen(false);
-        }}
-        onClick={() => setOpen(true)}
-      />
+      <SearchInput onClick={() => setOpen(true)} />
       <AnimationExitProvider show={open}>
         <motion.div
           className={cn(
@@ -74,6 +70,8 @@ export function DesktopSearch({
           transition={{ duration: 0.2 }}
         >
           <SearchResults
+            featuredProducts={[]}
+            categories={categories}
             products={products}
             onSelect={(result) => {
               onSelect(result);

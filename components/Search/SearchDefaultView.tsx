@@ -3,6 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Category, Product } from "@/graphql/generated-types";
+import { cn } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
@@ -13,100 +16,38 @@ import {
   TrendingUp,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
-interface Category {
-  id: number;
-  name: string;
-  icon: string;
-  color: string;
-}
+const trendingSearches = [];
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  rating: number;
-}
-
-const popularCategories: Category[] = [
-  { id: 1, name: "Elektronik", icon: "💻", color: "bg-blue-100" },
-  { id: 2, name: "Giyim", icon: "👕", color: "bg-green-100" },
-  { id: 3, name: "Ev & Yaşam", icon: "🏠", color: "bg-yellow-100" },
-  { id: 4, name: "Kozmetik", icon: "💄", color: "bg-pink-100" },
-  { id: 5, name: "Kitap & Hobi", icon: "📚", color: "bg-purple-100" },
-  { id: 6, name: "Spor & Outdoor", icon: "🏋️‍♂️", color: "bg-red-100" },
-  { id: 7, name: "Oyuncak", icon: "🧸", color: "bg-orange-100" },
-  { id: 8, name: "Süpermarket", icon: "🛒", color: "bg-teal-100" },
-];
-
-const featuredProducts: Product[] = [
-  {
-    id: 1,
-    name: "Akıllı Saat XYZ",
-    price: 999.99,
-    image: "/placeholder.svg",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Kablosuz Kulaklık ABC",
-    price: 299.99,
-    image: "/placeholder.svg",
-    rating: 4.2,
-  },
-  {
-    id: 3,
-    name: "Akıllı Telefon 123",
-    price: 4999.99,
-    image: "/placeholder.svg",
-    rating: 4.8,
-  },
-  {
-    id: 4,
-    name: "4K Ultra HD TV",
-    price: 5999.99,
-    image: "/placeholder.svg",
-    rating: 4.6,
-  },
-  {
-    id: 5,
-    name: "Oyun Konsolu Pro",
-    price: 7999.99,
-    image: "/placeholder.svg",
-    rating: 4.7,
-  },
-];
-
-const trendingSearches = [
-  "yaz modası",
-  "akıllı ev sistemleri",
-  "organik gıda",
-  "fitness ekipmanları",
-  "cilt bakım ürünleri",
-];
-
-export default function SearchDefaultView() {
+export default function SearchDefaultView({
+  categories,
+  featuredProducts,
+}: {
+  categories: Category[];
+  featuredProducts: Product[];
+}) {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("categories");
 
   useEffect(() => {
-    const storedSearches = [
-      "laptop",
-      "spor ayakkabı",
-      "bluetooth hoparlör",
-      "yoga matı",
-    ];
+    const storedSearches = JSON.parse(
+      localStorage.getItem("recentSearches") || "[]",
+    );
+
     setRecentSearches(storedSearches);
   }, []);
 
   const removeRecentSearch = (index: number) => {
-    setRecentSearches((prev) => prev.filter((_, i) => i !== index));
+    const updatedSearches = recentSearches.filter((_, i) => i !== index);
+
+    setRecentSearches(updatedSearches);
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
   };
 
   return (
-    <div className="mx-auto max-w-4xl rounded-lg bg-gradient-to-br from-white to-gray-100 p-6 shadow-lg">
+    <div className="mx-auto h-full w-full max-w-4xl cursor-pointer overflow-hidden overflow-y-auto rounded-lg bg-gradient-to-br from-white to-gray-100 p-6 shadow-lg">
       <motion.div
         className="mb-8 flex justify-center"
         initial={{ scale: 0 }}
@@ -119,30 +60,46 @@ export default function SearchDefaultView() {
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="mb-8 grid w-full grid-cols-4">
+        <TabsList
+          className={cn(
+            "mb-8 grid w-full grid-cols-4",
+            {
+              "grid-cols-3":
+                !featuredProducts?.length || !trendingSearches?.length,
+            },
+            {
+              "grid-cols-2":
+                !featuredProducts?.length && !trendingSearches?.length,
+            },
+          )}
+        >
           <TabsTrigger value="categories">
             <Tag className="mr-2 h-4 w-4" />
             Kategoriler
           </TabsTrigger>
-          <TabsTrigger value="featured">
-            <Star className="mr-2 h-4 w-4" />
-            Öne Çıkanlar
-          </TabsTrigger>
+          {featuredProducts?.length > 0 && (
+            <TabsTrigger value="featured">
+              <Star className="mr-2 h-4 w-4" />
+              Öne Çıkanlar
+            </TabsTrigger>
+          )}
           <TabsTrigger value="recent">
             <Clock className="mr-2 h-4 w-4" />
             Son Aramalar
           </TabsTrigger>
-          <TabsTrigger value="trending">
-            <TrendingUp className="mr-2 h-4 w-4" />
-            Trend Aramalar
-          </TabsTrigger>
+          {trendingSearches?.length > 0 && (
+            <TabsTrigger value="trending">
+              <TrendingUp className="mr-2 h-4 w-4" />
+              Trend Aramalar
+            </TabsTrigger>
+          )}
         </TabsList>
 
         <AnimatePresence mode="wait">
           <div>
             <TabsContent value="categories">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-                {popularCategories.map((category) => (
+                {categories?.map((category, index) => (
                   <motion.div
                     key={category.id}
                     whileHover={{ scale: 1.05 }}
@@ -150,15 +107,16 @@ export default function SearchDefaultView() {
                   >
                     <Button
                       variant="outline"
-                      className={`flex h-auto w-full flex-col items-center justify-center py-4 ${category.color}`}
+                      className={`flex h-auto w-full flex-col items-center justify-center py-4`}
                     >
-                      <span
-                        className="mb-2 text-3xl"
-                        role="img"
-                        aria-label={category.name}
-                      >
-                        {category.icon}
-                      </span>
+                      <Image
+                        src={getImageUrlFromPath(category.image_url)}
+                        alt={category.name}
+                        width={40}
+                        height={40}
+                        className="rounded-full"
+                      />
+
                       <span className="text-center text-sm font-medium">
                         {category.name}
                       </span>
@@ -170,7 +128,7 @@ export default function SearchDefaultView() {
 
             <TabsContent value="featured">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {featuredProducts.map((product, index) => (
+                {featuredProducts?.map((product, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -182,10 +140,12 @@ export default function SearchDefaultView() {
                     className="rounded-lg bg-white p-4 shadow-md transition-shadow hover:shadow-lg"
                   >
                     <div className="flex items-center space-x-4">
-                      <img
-                        src={product.image}
+                      <Image
+                        src={getImageUrlFromPath(product.image_url?.[0])}
                         alt={product.name}
                         className="h-20 w-20 rounded object-cover"
+                        width={80}
+                        height={80}
                       />
                       <div className="flex-grow">
                         <h3 className="mb-1 font-medium">{product.name}</h3>
@@ -196,11 +156,11 @@ export default function SearchDefaultView() {
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`h-4 w-4 ${i < Math.floor(product.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                              className={`h-4 w-4 ${i < Math.floor(product.score) ? "text-yellow-400" : "text-gray-300"}`}
                             />
                           ))}
                           <span className="ml-2 text-sm text-gray-600">
-                            {product.rating.toFixed(1)}
+                            {product.score.toFixed(1)}
                           </span>
                         </div>
                       </div>
@@ -252,7 +212,7 @@ export default function SearchDefaultView() {
 
             <TabsContent value="trending">
               <div className="flex flex-wrap gap-3">
-                {trendingSearches.map((search, index) => (
+                {trendingSearches?.map((search, index) => (
                   <motion.div
                     key={index}
                     whileHover={{ scale: 1.1 }}

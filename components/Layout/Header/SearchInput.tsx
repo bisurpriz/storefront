@@ -1,26 +1,24 @@
 import { Input } from "@/components/ui/input";
+import { useSearchProduct } from "@/contexts/SearchContext";
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
 import { useRef } from "react";
 
 interface SearchInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  onClear: () => void;
   onClick?: () => void;
   className?: string;
   ref?: React.Ref<HTMLInputElement>;
 }
 
-export const SearchInput = ({
-  value,
-  onChange,
-  onClear,
-  onClick,
-  className,
-  ref,
-}: SearchInputProps) => {
+export const SearchInput = ({ onClick, className, ref }: SearchInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const {
+    inputVal,
+    setInputVal: onChange,
+    handleClear: onClear,
+    handleKeyDown: onKeyDown,
+  } = useSearchProduct();
 
   return (
     <div className="relative" onClick={onClick}>
@@ -37,10 +35,11 @@ export const SearchInput = ({
         type="search"
         placeholder="Ürün ara"
         className={cn("h-10 w-full pl-8 pr-8", className)}
-        value={value}
+        value={inputVal}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={onKeyDown}
       />
-      {value && (
+      {inputVal && (
         <button
           className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           onClick={(e) => {

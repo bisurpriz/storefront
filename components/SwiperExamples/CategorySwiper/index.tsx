@@ -7,8 +7,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { cn } from "@/lib/utils";
@@ -72,8 +70,6 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
               </CarouselItem>
             ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </div>
   );

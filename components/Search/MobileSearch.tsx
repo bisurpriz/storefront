@@ -5,65 +5,74 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Product } from "@/graphql/generated-types";
-import * as React from "react";
+import { useSearchProduct } from "@/contexts/SearchContext";
+import { Category, Product } from "@/graphql/generated-types";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { SearchInput } from "../Layout/Header/SearchInput";
 import { SearchResults } from "../Layout/Header/SearchResult";
 
 interface MobileSearchProps {
   products: Product[];
-  searchValue: string;
-  onSearchChange: (value: string) => void;
   onSelect: (result: any) => void;
+  categories: Category[];
+  featuredProducts: Product[];
 }
 
 export function MobileSearch({
   products,
-  searchValue,
-  onSearchChange,
   onSelect,
+  categories,
+  featuredProducts,
 }: MobileSearchProps) {
-  const [open, setOpen] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { inputVal } = useSearchProduct();
+
+  const search = searchParams.get("search");
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname, search]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <div className="w-full">
-          <SearchInput
-            value={searchValue}
-            onChange={(value) => {
-              onSearchChange(value);
-              setOpen(true);
-            }}
-            onClear={() => {
-              onSearchChange("");
-              setOpen(false);
-            }}
-            onClick={() => setOpen(true)}
-          />
+          <SearchInput ref={inputRef} onClick={() => setOpen(true)} />
         </div>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          {searchValue ? (
-            <DrawerTitle>"{searchValue}" için arama sonuçları</DrawerTitle>
+          {inputVal ? (
+            <DrawerTitle>"{inputVal}" için arama sonuçları</DrawerTitle>
           ) : (
             <DrawerTitle>Sonuçlar</DrawerTitle>
           )}
         </DrawerHeader>
         <div className="px-4 py-2">
-          <SearchInput
-            ref={inputRef}
-            value={searchValue}
-            onChange={onSearchChange}
-            onClear={() => {
-              onSearchChange("");
-              setOpen(false);
-            }}
-          />
+          <SearchInput ref={inputRef} />
           <div className="mt-4">
             <SearchResults
+              featuredProducts={featuredProducts}
+              categories={categories}
               products={products}
               onSelect={(result) => {
                 onSelect(result);

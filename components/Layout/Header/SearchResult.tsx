@@ -1,21 +1,33 @@
 import SearchDefaultView from "@/components/Search/SearchDefaultView";
-import { Product } from "@/graphql/generated-types";
+import { Category, Product } from "@/graphql/generated-types";
 import { cn, getImageUrlFromPath } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
 
 interface SearchResultsProps {
   products: Product[];
+  categories: Category[];
   onSelect: (result: any) => void;
+  featuredProducts: Product[];
 }
 
-export function SearchResults({ products, onSelect }: SearchResultsProps) {
+export function SearchResults({
+  products,
+  onSelect,
+  categories,
+  featuredProducts,
+}: SearchResultsProps) {
   if (products.length === 0) {
-    return <SearchDefaultView />;
+    return (
+      <SearchDefaultView
+        categories={categories}
+        featuredProducts={featuredProducts}
+      />
+    );
   }
 
   return (
-    <div className="h-[40dvh] w-full cursor-pointer overflow-hidden overflow-y-auto">
+    <div className="h-[60dvh] max-h-[60dvh] w-full cursor-pointer overflow-hidden overflow-y-auto">
       {products.map((product) => (
         <div
           key={product.id}
