@@ -228,6 +228,11 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
         image_url
         price
         slug
+        product_categories {
+          category {
+            slug
+          }
+        }
       }
     }
     product_categories {

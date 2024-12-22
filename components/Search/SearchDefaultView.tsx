@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const trendingSearches = [];
@@ -31,6 +32,7 @@ export default function SearchDefaultView({
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("categories");
 
+  const { push } = useRouter();
   useEffect(() => {
     const storedSearches = JSON.parse(
       localStorage.getItem("recentSearches") || "[]",
@@ -195,7 +197,12 @@ export default function SearchDefaultView({
                         >
                           <X className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="ml-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-2"
+                          onClick={() => push(`/?search=${search}`)}
+                        >
                           <ArrowRight className="h-4 w-4" />
                         </Button>
                       </div>

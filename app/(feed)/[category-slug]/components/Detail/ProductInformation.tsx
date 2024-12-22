@@ -1,31 +1,29 @@
 "use client";
 
-import { Link } from "@/components/Link";
-import Promotions from "./Promotions";
-import RatingDetail, { RatingProps } from "./RatingDetail";
-import DaySelect from "@/components/DatePicker/DaySelect";
-import { parseJson } from "@/utils/format";
 import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
-import { useEffect, useState } from "react";
-import { stringToSlug } from "@/utils/stringToSlug";
-import ReviewRating from "@/components/ReviewRating/ReviewRating";
-import { useCart } from "@/contexts/CartContext";
-import Error from "@/components/Icons/Error";
-import SevenOclock from "@/components/Icons/SevenOclock";
+import DaySelect from "@/components/DatePicker/DaySelect";
 import FreeTruck from "@/components/Icons/FreeTruck";
 import Palette from "@/components/Icons/Palette";
-import { getPriceTR } from "@/utils/getPriceTR";
+import SevenOclock from "@/components/Icons/SevenOclock";
+import { Link } from "@/components/Link";
+import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import dynamic from "next/dynamic";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { ShoppingBasketIcon } from "lucide-react";
-import ProductVariantSelector from "./ProductVariantSelector";
+import { useCart } from "@/contexts/CartContext";
 import { GetProductInformationQuery } from "@/graphql/queries/products/getProductById.generated";
+import { parseJson } from "@/utils/format";
+import { getPriceTR } from "@/utils/getPriceTR";
+import { stringToSlug } from "@/utils/stringToSlug";
+import { ShoppingBasketIcon } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import ProductVariantSelector from "../ProductVariantSelector";
+import Promotions from "./Promotions";
+import RatingDetail, { RatingProps } from "./RatingDetail";
 
 type ProductInformationProps = {
   name: string;
@@ -124,33 +122,25 @@ const ProductInformation = ({
 
   return (
     <div className="flex h-full w-full flex-col items-start justify-start gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
-      <div className="flex w-full flex-col items-start justify-start rounded-lg">
-        <h1 className="mb-2 w-full text-2xl text-gray-700">{name}</h1>
-        {vendor && (
-          <div className="flex items-center text-xs max-md:mb-2">
-            <label className="me-1 font-semibold text-gray-700">Satıcı:</label>
-            <Link
-              href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
-              className="me-1 cursor-pointer font-bold text-sky-600"
-            >
-              {vendor.name}
-            </Link>
-          </div>
-        )}
+      <div className="flex w-full flex-col items-start justify-start space-y-4 rounded-lg">
+        <div>
+          <h1 className="w-full text-2xl text-gray-700">{name}</h1>
+          {vendor && (
+            <div className="flex items-center text-xs">
+              <label className="me-1 font-semibold text-gray-700">
+                Satıcı:
+              </label>
+              <Link
+                href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
+                className="me-1 cursor-pointer font-bold text-sky-600"
+              >
+                {vendor.name}
+              </Link>
+            </div>
+          )}
+        </div>
 
-        <ProductVariantSelector
-          variants={variants.map(({ variant }) => ({
-            name: variant.name,
-            imageUrl: variant.image_url[0],
-            price: variant.price,
-            variantId: variant.id,
-            variantSlug: variant.slug,
-            //@ts-ignore
-            categorySlug: variant?.product_categories?.[0]?.category?.slug,
-          }))}
-        />
-
-        <div className="mb-4 flex w-full items-end justify-start gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
+        <div className="flex w-full items-end justify-start gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
           <div className="flex items-center justify-start gap-2 max-xl:flex-row max-xl:items-center max-lg:items-start">
             {discountRate ? (
               <span className="w-max max-w-lg rounded-xl bg-red-500 p-2 text-2xl font-medium text-white">
@@ -159,16 +149,16 @@ const ProductInformation = ({
             ) : null}
             <span className="flex flex-col gap-1">
               {discountPrice && discountPrice < price ? (
-                <h5 className="mb-0 max-w-lg whitespace-nowrap text-base font-light leading-none text-slate-500">
+                <h5 className="max-w-lg whitespace-nowrap text-base font-light leading-none text-slate-500">
                   <del>₺{price?.toFixed(2)}</del>
                 </h5>
               ) : null}
               <span className="flex items-end gap-2 max-xl:flex-row max-xl:items-center max-xl:text-start">
-                <h1 className="mt-0 max-w-lg whitespace-nowrap text-3xl font-semibold leading-none text-primary">
+                <h1 className="max-w-lg whitespace-nowrap text-3xl font-semibold leading-none text-primary">
                   {getPriceTR(discountPrice)}
                 </h1>
                 {promotion && (
-                  <p className="mt-0 max-w-lg whitespace-nowrap text-sm leading-none text-primary">
+                  <p className="max-w-lg whitespace-nowrap text-sm leading-none text-primary">
                     & {promotion}
                   </p>
                 )}
@@ -218,6 +208,17 @@ const ProductInformation = ({
             },
           ]}
         />
+        <ProductVariantSelector
+          variants={variants.map(({ variant }) => ({
+            name: variant.name,
+            imageUrl: variant.image_url[0],
+            price: variant.price,
+            variantId: variant.id,
+            variantSlug: variant.slug,
+            categorySlug: variant?.product_categories?.[0]?.category.slug,
+          }))}
+        />
+
         {isSameDay && <DynamicGoogleLocationSelect />}
         {showExactTime && (
           <div className="my-2 rounded-xl bg-purple-100 bg-opacity-50 p-1 px-4">

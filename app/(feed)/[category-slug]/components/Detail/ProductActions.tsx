@@ -4,19 +4,19 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
-import { Button } from "@/components/ui/button";
+import { IPlace } from "@/common/types/Product/product";
 import Heart from "@/components/Icons/Heart";
+import HeartFill from "@/components/Icons/HeartFill";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
+import { BadgeCheck, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
-import HeartFill from "@/components/Icons/HeartFill";
-import { IPlace } from "@/common/types/Product/product";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { BadgeCheck, Truck } from "lucide-react";
 import { validateLocation } from "../utils/validateLocation";
 
 interface OwnPlace {
@@ -185,14 +185,6 @@ const ProductActions = ({
     }, 3000);
   };
 
-  // Eğer selectedLocation içinde availableLevel4 içindeki mahallelerden biri yoksa butonu aktif etme
-  const selectedLocationHasAvailableLevel4 =
-    selectedLocation?.address_components?.findIndex(
-      (x) =>
-        x.types.includes("administrative_area_level_4") &&
-        availableLevel4?.includes(x.short_name),
-    );
-
   const isButtonDisableForLocation = () => {
     if (!isSameDay) return false;
     if (isSameDay && !selectedLocation) return true;
@@ -246,7 +238,7 @@ const ProductActions = ({
   return (
     <>
       {availableLevel4?.length > 0 && (
-        <Alert variant="default">
+        <Alert variant="default" className="mt-2">
           <BadgeCheck />
           <AlertTitle>Uyarı !</AlertTitle>
           <AlertDescription>
@@ -278,16 +270,6 @@ const ProductActions = ({
             ? "Bu ürün için gönderim yeri mevcut değil"
             : "Sepete Ekle"}
         </Button>
-        {/* <Button
-          size="lg"
-          variant={error ? "destructive" : "secondary"}
-          className={clsx("basis-4/5 flex items-center justify-center px-0")}
-          disabled={loading || error || showPlaceWarning || isPending}
-          loading={loading}
-          onClick={() => console.log("Hemen Al butonuna tıklandı")}
-        >
-          Hemen Al
-        </Button> */}
 
         <Button
           size="lg"

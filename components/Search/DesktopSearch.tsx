@@ -47,15 +47,12 @@ export function DesktopSearch({
     };
   }, []);
 
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    }
-  }, [open]);
-
   return (
     <div ref={containerRef} className="relative">
-      <SearchInput onClick={() => setOpen(true)} />
+      <SearchInput
+        onClick={() => setOpen(true)}
+        className={cn({ "border-0 ring-2 ring-primary": open })}
+      />
       <AnimationExitProvider show={open}>
         <motion.div
           className={cn(
