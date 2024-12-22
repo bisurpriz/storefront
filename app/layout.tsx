@@ -18,6 +18,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
+import { Category } from "@/graphql/generated-types";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -145,7 +146,9 @@ export default async function RootLayout({
                           discountAmount: 0,
                         }}
                       >
-                        <SearchProductProvider>
+                        <SearchProductProvider
+                          categories={category as Category[]}
+                        >
                           <DesignLayout categories={category}>
                             {children}
                           </DesignLayout>

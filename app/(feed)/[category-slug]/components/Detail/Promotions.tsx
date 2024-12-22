@@ -1,5 +1,4 @@
 import Chip, { ChipColor } from "@/components/Chip";
-import { Link } from "@/components/Link";
 
 type Promotions = {
   icon: string | React.ReactElement;
@@ -13,7 +12,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
   return (
     promotions?.length > 0 && (
       <div
-        className="no-scrollbar mb-2 flex w-full snap-x items-start gap-2 overflow-hidden overflow-x-auto"
+        className="no-scrollbar flex w-full snap-x items-start gap-2 overflow-hidden overflow-x-auto"
         tabIndex={-1}
       >
         {promotions

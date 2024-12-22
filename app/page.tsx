@@ -54,11 +54,14 @@ export default async function Page(props: {
           <GoogleLocationSelect from="home" />
         </Suspense>
       )}
-      <InfiniteScrollCarouselWrapper searchParams={searchParams} />
-      <Suspense fallback={<CampaignGridSuspense />}>
-        {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
-      </Suspense>
-
+      {!searchText && (
+        <InfiniteScrollCarouselWrapper searchParams={searchParams} />
+      )}
+      {!searchText && (
+        <Suspense fallback={<CampaignGridSuspense />}>
+          {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
+        </Suspense>
+      )}
       <Suspense
         fallback={
           <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">

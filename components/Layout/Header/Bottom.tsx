@@ -1,7 +1,7 @@
+import { Category } from "@/common/types/Category/category";
 import Menu from "@/components/Menu";
 import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
-import { Category } from "@/common/types/Category/category";
-import Search from "@/components/Search";
+import { Search } from "@/components/Search";
 
 interface Props {
   categories: Category[];

@@ -1,19 +1,19 @@
 "use client";
 
-import React, { FC, startTransition } from "react";
 import { useCategory } from "@/contexts/CategoryContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import clsx from "clsx";
 import { createQueryString } from "@/utils/createQueryString";
-import CategoryFilter from "./components/CategoryFilter";
-import { FilterInputOption } from "./components/FilterInput";
-import SameDayFilter from "./components/SameDayFilter";
-import SpecialOffersFilter from "./components/SpecialOffersFilter";
-import SelectedFilters from "./components/SelectedFilters";
-import PriceFilter from "./components/PriceFilter";
-import CustomizableFilter from "./components/CustomizableFilter";
-import { VisibleChecker } from "./components/FilterVisibleChecker";
+import clsx from "clsx";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FC, startTransition } from "react";
 import { useProgress } from "react-transition-progress";
+import CategoryFilter from "./components/CategoryFilter";
+import CustomizableFilter from "./components/CustomizableFilter";
+import { FilterInputOption } from "./components/FilterInput";
+import { VisibleChecker } from "./components/FilterVisibleChecker";
+import PriceFilter from "./components/PriceFilter";
+import SameDayFilter from "./components/SameDayFilter";
+import SelectedFilters from "./components/SelectedFilters";
+import SpecialOffersFilter from "./components/SpecialOffersFilter";
 
 export type HandleFilterSubmit = (name: string, value: string) => void;
 
@@ -151,6 +151,24 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
           }
         }}
       />
+
+      {/* **** aramanızla ilgili sonuçlar */}
+      <div className="mt-4 flex items-center justify-between">
+        <p className="text-sm text-gray-700">
+          "{searchParams.get("search")}" aramanızla ilgili sonuçlar:
+        </p>
+        <button
+          className="text-sm text-gray-700"
+          onClick={() => {
+            startTransition(() => {
+              startProgress();
+              push(pathname);
+            });
+          }}
+        >
+          Filtreleri Temizle
+        </button>
+      </div>
     </div>
   );
 };
