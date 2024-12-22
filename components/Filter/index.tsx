@@ -1,6 +1,7 @@
 "use client";
 
 import { useCategory } from "@/contexts/CategoryContext";
+import { cn } from "@/lib/utils";
 import { createQueryString } from "@/utils/createQueryString";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -152,23 +153,17 @@ const Filter: FC<FilterProps> = ({ filterTypes }) => {
         }}
       />
 
-      {/* **** aramanızla ilgili sonuçlar */}
-      <div className="mt-4 flex items-center justify-between">
-        <p className="text-sm text-gray-700">
-          "{searchParams.get("search")}" aramanızla ilgili sonuçlar:
-        </p>
-        <button
-          className="text-sm text-gray-700"
-          onClick={() => {
-            startTransition(() => {
-              startProgress();
-              push(pathname);
-            });
-          }}
+      {searchParams.get("search") && (
+        <p
+          className={cn(
+            "mt-4 text-sm text-gray-500",
+            "mb-2 max-md:text-xs max-sm:text-xs",
+          )}
         >
-          Filtreleri Temizle
-        </button>
-      </div>
+          "<strong>{searchParams.get("search")}</strong>" aramanızla ilgili
+          sonuçlar:
+        </p>
+      )}
     </div>
   );
 };
