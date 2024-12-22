@@ -43,6 +43,7 @@ export default function ProductVariantSelector({
         {variants.map((variant) => (
           <CarouselItem key={variant.variantId} className="basis-1/3">
             <Link
+              prefetch
               href={goToProductDetail({
                 category: {
                   slug: variant.categorySlug,

@@ -21,10 +21,10 @@ export const GetProductInformationDocument = `
         price
         slug
         product_categories {
-      category {
-        slug
-      }
-    }
+          category {
+            slug
+          }
+        }
       }
     }
     product_categories {
