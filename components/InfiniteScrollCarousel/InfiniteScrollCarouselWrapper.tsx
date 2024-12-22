@@ -19,6 +19,8 @@ export default async function InfiniteScrollCarouselWrapper({
     },
   );
 
+  if (!response.hits.length) return null;
+
   return (
     <InfiniteProductCarousel
       initialProducts={response?.hits?.map((p) => p.document) as Product[]}
