@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getImageUrlFromPath(path?: string, size = 150): string {
   if (!path) return `https://via.placeholder.com/${size}`;
-  return `${IMAGE_URL}/${path}?format=webp`;
+  return `${IMAGE_URL}/${path}?w=${size}&format=webp`;
 }
 
 export function getProductDetailUrl(

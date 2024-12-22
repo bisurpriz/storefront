@@ -15,6 +15,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { cn } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import ProductImageGalleryLoading from "./DetailImageGallerySuspense";
+import ZoomableImage from "./ZoomableImage";
 
 export default function NewDesignGallery({ images, isMobile }) {
   const [mainApi, setMainApi] = React.useState<CarouselApi>();
@@ -119,14 +120,10 @@ export default function NewDesignGallery({ images, isMobile }) {
                 key={image}
                 className="relative flex aspect-square h-full w-full items-center justify-center"
               >
-                <Image
-                  src={getImageUrlFromPath(image, 500)}
-                  alt={image}
-                  className="h-full w-full flex-1 rounded-md object-contain"
-                  fill
-                  sizes="500px"
-                  priority={index === 0}
-                  loading={index === 0 ? "eager" : "lazy"}
+                <ZoomableImage
+                  image={image}
+                  index={index}
+                  isMobile={isMobile}
                 />
               </CarouselItem>
             ))}
