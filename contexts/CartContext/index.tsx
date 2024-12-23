@@ -1,14 +1,23 @@
 "use client";
 
-import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import {
-  ReactNode,
+  getCartCost,
+  getProductByIdForCart,
+  updateCart,
+} from "@/app/cart/actions";
+import { CostData, ProductForCart } from "@/common/types/Cart/cart";
+import { IPlace } from "@/common/types/Product/product";
+import { isDate } from "date-fns";
+import { useRouter } from "next/navigation";
+import {
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useReducer,
   useState,
 } from "react";
+import { toast } from "sonner";
 import {
   ADD_TO_CART,
   CLEAR_CART,
@@ -18,24 +27,13 @@ import {
 } from "./constants";
 import { cartReducer } from "./reducer";
 import {
-  getCartCost,
-  getProductByIdForCart,
-  updateCart,
-} from "@/app/cart/actions";
-import useResponsive from "@/hooks/useResponsive";
-import { useProduct } from "../ProductContext";
-import { isDate } from "date-fns";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { IPlace } from "@/common/types/Product/product";
-import { messages } from "./utils";
-import {
   AddToCart,
   CartContextType,
   CartState,
   DeliveryTime,
   Type,
 } from "./types";
+import { messages } from "./utils";
 
 export const CartContext = createContext<CartContextType>(
   initialCartContextData,

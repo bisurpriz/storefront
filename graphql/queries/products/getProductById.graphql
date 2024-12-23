@@ -7,6 +7,7 @@ query getProductById($id: bigint = 0) {
     }
     description
     id
+    slug
     image_url
     name
     price

@@ -7,17 +7,27 @@ import {
 } from "@/graphql/queries/products/getProductById.generated";
 import { useQuery } from "@apollo/client";
 import { useSearchParams } from "next/navigation";
-import { ReactNode, createContext, useContext } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 
 interface ProductContextType {
-  selectedProduct: GetProductByIdQuery["product"] | null;
+  product: GetProductByIdQuery["product"];
+  setProduct: Dispatch<SetStateAction<GetProductByIdQuery["product"]>>;
 }
 
 export const ProductContext = createContext<ProductContextType>({
-  selectedProduct: null,
+  product: null,
+  setProduct: () => {},
 });
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
+  const [product, setProduct] = useState<GetProductByIdQuery["product"]>(null);
   const searchParams = useSearchParams();
 
   const haspid = searchParams.has("pid");
@@ -35,7 +45,8 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ProductContext.Provider
       value={{
-        selectedProduct: data?.product,
+        product,
+        setProduct,
       }}
     >
       {children}

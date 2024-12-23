@@ -15,6 +15,7 @@ import DesignLayout from "@/components/Layout/DesignLayout";
 import NotificationListener from "@/components/Notification/NotificationListener";
 import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
 import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { ProductProvider } from "@/contexts/ProductContext";
 import { SearchProductProvider } from "@/contexts/SearchContext";
@@ -115,7 +116,7 @@ export default async function RootLayout({
   const userData = await getUserById(userId);
 
   const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
-  const { category } = await BonnmarseApi.request<GetMainCategoriesQuery>({
+  const categoryData = await BonnmarseApi.request<GetMainCategoriesQuery>({
     query: GetCategoriesDocument,
     tags: ["getMainCategories"],
   });
@@ -135,33 +136,35 @@ export default async function RootLayout({
             <TooltipProvider>
               <ResponsiveDialogProvider>
                 <ApolloWrapper>
-                  <ProductProvider>
-                    <CategoryProvider category={category}>
-                      <CartProvider
-                        cartDbItems={cartItems}
-                        dbCost={{
-                          totalPrice: costData.totalPrice,
-                          isCouponApplied: false,
-                          couponMessage: "",
-                          discountAmount: 0,
-                        }}
-                      >
-                        <SearchProductProvider
-                          categories={category as Category[]}
+                  <BreadcrumbProvider>
+                    <ProductProvider>
+                      <CategoryProvider category={categoryData?.category}>
+                        <CartProvider
+                          cartDbItems={cartItems}
+                          dbCost={{
+                            totalPrice: costData.totalPrice,
+                            isCouponApplied: false,
+                            couponMessage: "",
+                            discountAmount: 0,
+                          }}
                         >
-                          <DesignLayout categories={category}>
-                            {children}
-                          </DesignLayout>
-                          {auth}
-                          <Suspense>
-                            {!selectedPlaces &&
-                              !hasSeenLocationModal &&
-                              !isBot && <QuarterSelectorModal />}
-                          </Suspense>
-                        </SearchProductProvider>
-                      </CartProvider>
-                    </CategoryProvider>
-                  </ProductProvider>
+                          <SearchProductProvider
+                            categories={categoryData?.category as Category[]}
+                          >
+                            <DesignLayout categories={categoryData?.category}>
+                              {children}
+                            </DesignLayout>
+                            {auth}
+                            <Suspense>
+                              {!selectedPlaces &&
+                                !hasSeenLocationModal &&
+                                !isBot && <QuarterSelectorModal />}
+                            </Suspense>
+                          </SearchProductProvider>
+                        </CartProvider>
+                      </CategoryProvider>
+                    </ProductProvider>
+                  </BreadcrumbProvider>
                 </ApolloWrapper>
               </ResponsiveDialogProvider>
             </TooltipProvider>
