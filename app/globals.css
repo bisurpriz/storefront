@@ -152,9 +152,7 @@
     --success: 120 100% 50%;
     --success-foreground: 0 0% 98%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -167,7 +165,12 @@
     width: var(--radix-popover-trigger-width) !important;
     max-height: var(--radix-popover-content-available-height) !important;
   }
+
+  * {
+    font-display: swap;
+  }
 }
+
 
 .DropdownContent {
   width: var(--radix-popper-anchor-width) !important;
@@ -183,6 +186,7 @@
 }
 
 @keyframes animation {
+
   0%,
   100% {
     background-position: 0% 50%;
