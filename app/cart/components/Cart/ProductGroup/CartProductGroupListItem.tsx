@@ -1,19 +1,19 @@
 import Promotions from "@/app/(feed)/[category-slug]/components/Detail/Promotions";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { DeliveryType } from "@/common/enums/Product/product";
 import { ProductForCart } from "@/common/types/Cart/cart";
+import Chip from "@/components/Chip";
+import FreeTruck from "@/components/Icons/FreeTruck";
+import Palette from "@/components/Icons/Palette";
+import SevenOclock from "@/components/Icons/SevenOclock";
+import { Link } from "@/components/Link";
 import PriceTag from "@/components/PriceTag";
+import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import { Link } from "@/components/Link";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
-import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
-import { DeliveryType } from "@/common/enums/Product/product";
 import GiftCardNote from "./GiftCardNote";
-import SevenOclock from "@/components/Icons/SevenOclock";
-import Palette from "@/components/Icons/Palette";
-import FreeTruck from "@/components/Icons/FreeTruck";
-import { CustomizableAreaType } from "@/common/enums/Order/product";
-import { localeFormat } from "@/utils/format";
-import Chip from "@/components/Chip";
+import ProductGroupListItemInfo from "./ProductGroupListItemInfo";
 
 const CartProductGroupListItem = (product: ProductForCart) => {
   const {
@@ -41,7 +41,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(product.deliveryDate),
-      "dd MMMM yyyy",
+      "dd MMMM Yyyy",
     )}${product.deliveryTime ? ` - ${product.deliveryTime}` : ""}`;
   };
 

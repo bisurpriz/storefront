@@ -2,10 +2,8 @@
 
 import { addDays, format, parse } from "date-fns";
 import { tr } from "date-fns/locale";
-import { Clock, ChevronDown } from "lucide-react";
+import { ChevronDown, Clock } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -14,10 +12,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { DeliveryTime } from "@/contexts/CartContext/types";
+import { cn } from "@/lib/utils";
+import { localeFormat } from "@/utils/format";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { TimeRange } from "../HourSelect/utils";
-import { localeFormat } from "@/utils/format";
-import { DeliveryTime } from "@/contexts/CartContext/types";
 
 type DeliveryDateTimePickerProps = {
   deliveryTimes: TimeRange[] | null;
@@ -187,7 +187,7 @@ export default function DeliveryDateTimePicker({
         >
           Seçilen Tarih ve Saat Aralığı:{" "}
           <span className="font-semibold">
-            {format(date, "d MMMM yyyy", { locale: tr })}
+            {format(date, "d MMMM Yyyy", { locale: tr })}
             {selectedTimeRange && ` - ${formatTimeRange(selectedTimeRange)}`}
           </span>
         </div>

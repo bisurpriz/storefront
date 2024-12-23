@@ -1,6 +1,6 @@
 import { Category, Product } from "@/graphql/generated-types";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";

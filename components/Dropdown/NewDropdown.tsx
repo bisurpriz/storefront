@@ -1,9 +1,9 @@
+import { Link } from "@/components/Link";
 import { useClickAway } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import { Link } from "@/components/Link";
-import React, { FC, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { FC, useRef, useState } from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
-import { motion } from "framer-motion";
 
 const popupAnimation = {
   initial: { opacity: 0, scale: 0.9 },

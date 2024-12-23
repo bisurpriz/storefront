@@ -1,21 +1,20 @@
-import { X, Truck, Gift, TruckIcon } from "lucide-react";
+import { CustomizableAreaType } from "@/common/enums/Order/product";
+import { DeliveryType } from "@/common/enums/Product/product";
+import { ProductForCart } from "@/common/types/Cart/cart";
+import { Link } from "@/components/Link";
+import NumberInput from "@/components/QuantityInput";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Image from "next/image";
-import { ProductForCart } from "@/common/types/Cart/cart";
-import NumberInput from "@/components/QuantityInput";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { useCart } from "@/contexts/CartContext";
-import PriceTagv2 from "@/components/PriceTag/PriceTagV2";
-import { CustomizableAreaType } from "@/common/enums/Order/product";
 import { localeFormat } from "@/utils/format";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DeliveryType } from "@/common/enums/Product/product";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { Gift, Truck, TruckIcon, X } from "lucide-react";
+import Image from "next/image";
 import GiftCardNote from "./GiftCardNote";
-import { Link } from "@/components/Link";
 
 export default function CartItem({
   delivery_type,
@@ -52,7 +51,7 @@ export default function CartItem({
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(deliveryDate),
-      "dd MMMM yyyy",
+      "dd MMMM Yyyy",
     )}${deliveryTime ? ` - ${deliveryTime}` : ""}`;
   };
 

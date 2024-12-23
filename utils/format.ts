@@ -1,6 +1,5 @@
-import { formatDistance } from "date-fns";
-import format from "date-fns/format";
-import tr from "date-fns/locale/tr";
+import { format, formatDistance } from "date-fns";
+import { tr } from "date-fns/locale";
 
 export const localeFormat = (value: Date, naming: string) => {
   const formatted = format(value, naming, {

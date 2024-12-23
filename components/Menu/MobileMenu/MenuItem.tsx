@@ -1,7 +1,7 @@
-import { Link } from "@/components/Link";
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
 import ChevronDown from "@/components/Icons/ChevronDown";
+import { Link } from "@/components/Link";
+import { motion } from "motion/react";
+import { useRef, useState } from "react";
 
 const MenuItem = ({ link, text, icon, subMenuItems }: MenuItem) => {
   const [isCollapse, setIsCollapse] = useState(false);

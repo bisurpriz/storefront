@@ -1,22 +1,21 @@
 "use client";
 
-import { startTransition, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { startTransition, useEffect, useState } from "react";
 
-import { useCart } from "@/contexts/CartContext";
-import { usePathname } from "next/navigation";
-import { CartStepPaths } from "../../../constants";
-import SummaryDetail from "./SummaryDetail";
-import clsx from "clsx";
-import useResponsive from "@/hooks/useResponsive";
-import { createPortal } from "react-dom";
-import ChevronUp from "@/components/Icons/ChevronUp";
-import { useRouter } from "next/navigation";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import { motion } from "framer-motion";
+import ChevronUp from "@/components/Icons/ChevronUp";
+import { useCart } from "@/contexts/CartContext";
 import { useContract } from "@/contexts/ContractContext";
-import CheckContract from "./CheckContract";
+import useResponsive from "@/hooks/useResponsive";
+import clsx from "clsx";
+import { motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import { useProgress } from "react-transition-progress";
+import { CartStepPaths } from "../../../constants";
+import CheckContract from "./CheckContract";
+import SummaryDetail from "./SummaryDetail";
 
 const CartSummary = () => {
   const {

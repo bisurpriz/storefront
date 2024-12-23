@@ -1,13 +1,13 @@
-import React, { FC, useEffect } from "react";
-import { Link } from "../Link";
-import Image from "next/image";
+import useResponsive from "@/hooks/useResponsive";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { goToProductDetail } from "@/utils/linkClickEvent";
-import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
-import TextField from "../TextField";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import Image from "next/image";
+import React, { FC, useEffect } from "react";
 import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
+import { Link } from "../Link";
+import TextField from "../TextField";
 
 type Props = {
   products: any[];

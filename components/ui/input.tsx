@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
-import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
+import { motion } from "motion/react";
 import { FC, InputHTMLAttributes, LegacyRef } from "react";
 
 const inputVariants = cva(

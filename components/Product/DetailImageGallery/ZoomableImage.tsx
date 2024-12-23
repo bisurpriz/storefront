@@ -26,7 +26,7 @@ const ZoomableImage = ({ image, index, isMobile }) => {
       const zoomWidth = 2000;
       const zoomHeight = 2000;
 
-      zoomRef.current.style.left = imageRect.left + imageRect.width + "px";
+      zoomRef.current.style.left = imageRect.left + imageRect.width + 10 + "px";
       zoomRef.current.style.top = imageRect.top + "px";
       zoomRef.current.style.width = imageRect.width + "px";
       zoomRef.current.style.height = imageRect.height + "px";

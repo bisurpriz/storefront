@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { Gem, MousePointerClick, Package } from "lucide-react";
+import { motion } from "motion/react";
 import { FC } from "react";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 
@@ -48,10 +48,10 @@ const GoogleLocationSelect: FC<GoogleLocationSelectProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: item.delay }}
-              className="bg-tertiary/10 flex basis-1/3 items-center justify-center space-x-2 rounded-xl px-4 py-2"
+              className="flex basis-1/3 items-center justify-center space-x-2 rounded-xl bg-tertiary/10 px-4 py-2"
             >
-              <div className="bg-tertiary/10 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl">
-                <item.icon className="text-tertiary h-8 w-8" />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-tertiary/10">
+                <item.icon className="h-8 w-8 text-tertiary" />
               </div>
               <div className="whitespace-nowrap">
                 <div className="text-sm font-medium">{item.title}</div>

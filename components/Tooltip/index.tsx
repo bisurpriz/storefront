@@ -1,9 +1,9 @@
 "use client";
 
-import { FC, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 import clsx from "clsx";
+import { motion } from "motion/react";
+import { FC, useRef, useState } from "react";
+import AnimationExitProvider from "../AnimatePresence/AnimationExitProvider";
 
 const tooltipVariants = {
   hidden: {

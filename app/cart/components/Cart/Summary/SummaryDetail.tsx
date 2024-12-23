@@ -1,16 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import TextField from "@/components/TextField";
-import { FC, useRef, useState } from "react";
-import Ticket from "@/components/Icons/Ticket";
-import { CouponMessages } from "@/contexts/CartContext/constants";
-import { motion } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import clsx from "clsx";
-import RemoveTag from "@/components/Icons/RemoveTag";
 import ApplyTag from "@/components/Icons/ApplyTag";
-import Checkbox from "@/components/Checkbox";
+import RemoveTag from "@/components/Icons/RemoveTag";
+import Ticket from "@/components/Icons/Ticket";
+import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
+import { CouponMessages } from "@/contexts/CartContext/constants";
+import clsx from "clsx";
+import { motion } from "motion/react";
+import { FC, useRef } from "react";
 
 type SummaryDetailProps = {
   cost: number;

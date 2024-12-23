@@ -5,7 +5,7 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: [
-      "framer-motion",
+      "motion",
       "@hookform/resolvers",
       "date-fns",
       "graphql",

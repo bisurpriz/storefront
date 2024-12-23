@@ -19,7 +19,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useCart } from "@/contexts/CartContext";
 import { parseJson } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   Building2,
   FileDigit,
@@ -29,6 +28,7 @@ import {
   Text,
   User,
 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";

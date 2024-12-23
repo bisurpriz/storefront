@@ -1,8 +1,8 @@
 "use client";
 
-import { Clock } from "lucide-react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Clock } from "lucide-react";
+import { motion } from "motion/react";
 
 interface RemainingTimeProps {
   hours: number;

@@ -1,14 +1,13 @@
 "use client";
 
-import HeaderTop from "./Top";
-import HeaderMiddle from "./Middle";
-import HeaderBottom from "./Bottom";
-import { useCategory } from "@/contexts/CategoryContext";
-import { useEffect, useRef, useState } from "react";
-import clsx from "clsx";
-import { motion, scroll } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import ReviewRating from "@/components/ReviewRating/ReviewRating";
+import { useCategory } from "@/contexts/CategoryContext";
+import clsx from "clsx";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import HeaderBottom from "./Bottom";
+import HeaderMiddle from "./Middle";
+import HeaderTop from "./Top";
 
 const StickyHeader = () => {
   const { category } = useCategory();
