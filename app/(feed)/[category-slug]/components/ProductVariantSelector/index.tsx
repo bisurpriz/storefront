@@ -14,6 +14,7 @@ interface Variant {
   variantSlug: string;
   name: string;
   price: number;
+  discountPrice?: number;
   imageUrl: string;
   categorySlug: string;
 }
@@ -70,9 +71,17 @@ export default function ProductVariantSelector({
                   {variant.name}
                 </span>
               </div>
-              <span className="mt-auto text-xs text-gray-500">
-                {variant.price.toFixed(2)} TL
-              </span>
+              <div className="mt-2 flex items-end space-x-1">
+                <span className="text-sm font-semibold leading-none">
+                  {variant.price.toFixed(2)} TL
+                </span>
+
+                {variant.discountPrice && (
+                  <span className="text-xs leading-none text-gray-500 line-through">
+                    {variant.discountPrice.toFixed(2)} TL
+                  </span>
+                )}
+              </div>
             </Link>
           </CarouselItem>
         ))}

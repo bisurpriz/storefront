@@ -216,6 +216,7 @@ const ProductInformation = ({
             variantId: variant.id,
             variantSlug: variant.slug,
             categorySlug: variant?.product_categories?.[0]?.category.slug,
+            discountPrice: variant.discount_price!,
           }))}
         />
 

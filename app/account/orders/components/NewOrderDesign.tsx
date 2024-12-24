@@ -37,7 +37,7 @@ export default function GuncellenmisSiparislerimSayfasi({
           <CardHeader>
             <CardTitle className="flex w-full items-start justify-between">
               <p>
-                {localeFormat(new Date(order.created_at), "dd MMMM Yyyy HH:mm")}{" "}
+                {localeFormat(new Date(order.created_at), "dd MMMM yyyy HH:mm")}{" "}
                 tarihli sipariş
               </p>
               #{order.order_no}

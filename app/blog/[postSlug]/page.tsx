@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }) {
             <div className="flex items-center text-xs text-muted-foreground">
               <CalendarIcon className="mr-1 h-4 w-4" />
               <time dateTime="2023-11-10">
-                {localeFormat(new Date(post.created_at), "dd MMMM Yyyy")}
+                {localeFormat(new Date(post.created_at), "dd MMMM yyyy")}
               </time>
             </div>
           </div>

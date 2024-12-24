@@ -90,7 +90,7 @@ const CouponCard = ({
             <span>
               Son Kullanma:{" "}
               {endDate
-                ? localeFormat(new Date(endDate), "dd MMMM Yyyy")
+                ? localeFormat(new Date(endDate), "dd MMMM yyyy")
                 : "Belirtilmemiş"}
             </span>
           </div>

@@ -41,7 +41,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(product.deliveryDate),
-      "dd MMMM Yyyy",
+      "dd MMMM yyyy",
     )}${product.deliveryTime ? ` - ${product.deliveryTime}` : ""}`;
   };
 

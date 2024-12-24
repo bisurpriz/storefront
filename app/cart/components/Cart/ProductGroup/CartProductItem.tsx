@@ -51,7 +51,7 @@ export default function CartItem({
   const getEstimatedDeliveryDateText = () => {
     return `Tahmini teslimat tarihi: ${localeFormat(
       new Date(deliveryDate),
-      "dd MMMM Yyyy",
+      "dd MMMM yyyy",
     )}${deliveryTime ? ` - ${deliveryTime}` : ""}`;
   };
 

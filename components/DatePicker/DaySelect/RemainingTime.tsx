@@ -16,6 +16,8 @@ export default function RemainingTime({
   remainTime: RemainingTimeProps;
   isTodayDisabled?: boolean;
 }) {
+  if (!remainTime || remainTime.hours < 0) return null;
+
   return (
     <div className="flex items-center gap-2 rounded-lg bg-slate-100 px-2 py-1 text-slate-900 shadow-sm">
       <motion.div
@@ -34,7 +36,8 @@ export default function RemainingTime({
             className={cn("text-sm font-semibold text-orange-500")}
           >
             <span className="tabular-nums">
-              {remainTime.hours} saat {remainTime.minutes} dakika
+              {remainTime.hours > 0 && remainTime.hours + " saat "}
+              {remainTime.minutes} dakika
             </span>
           </motion.div>
         </div>

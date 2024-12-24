@@ -187,7 +187,7 @@ export default function DeliveryDateTimePicker({
         >
           Seçilen Tarih ve Saat Aralığı:{" "}
           <span className="font-semibold">
-            {format(date, "d MMMM Yyyy", { locale: tr })}
+            {format(date, "d MMMM yyyy", { locale: tr })}
             {selectedTimeRange && ` - ${formatTimeRange(selectedTimeRange)}`}
           </span>
         </div>

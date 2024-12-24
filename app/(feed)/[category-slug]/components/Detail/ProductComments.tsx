@@ -80,7 +80,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                       showReviewCount={false}
                     />
                     <span className="self-center whitespace-nowrap text-xs font-normal text-slate-500">
-                      {localeFormat(new Date(comment.createdAt), "d MMMM Y")}
+                      {localeFormat(new Date(comment.createdAt), "d MMMM y")}
                     </span>
                   </div>
                 </div>
