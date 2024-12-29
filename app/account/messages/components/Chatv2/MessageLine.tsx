@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { FC, useEffect, useRef } from "react";
-import { MessageStatus } from "./MessageStatus";
 
 type MessageLineProps = {
   messages: any[];
@@ -39,9 +38,6 @@ const MessageLine: FC<MessageLineProps> = ({ messages, user }) => {
                 minute: "2-digit",
               })}
             </p>
-            {message.receiver.id !== user.id && (
-              <MessageStatus status={message.is_read} />
-            )}
           </div>
         </div>
       </motion.div>
