@@ -1,4 +1,5 @@
 import Avatar from "@/components/Avatar";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { Suspense } from "react";
 import ReviewRating from "../../../../../components/ReviewRating/ReviewRating";
@@ -48,57 +49,63 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
         </h2>
         {comments.length > 0 ? (
           <ul className="flex flex-col gap-2">
-            {comments?.map((comment, index) => (
-              <li
-                key={comment.comment_id}
-                className="flex w-full justify-start border-b border-slate-100 pb-4 max-sm:flex-col max-sm:gap-2 sm:items-start"
-                aria-labelledby={`comment-${index}`}
-                aria-describedby={`comment-${index}`}
-                id={`comment-${index}`}
-                aria-label={`comment-${index}`}
-              >
-                <div className="flex min-w-[200px] max-w-[200px] items-center justify-start gap-2">
-                  <Avatar
-                    alt={`${comment.firstName} ${comment.lastName}`}
-                    imageUrl={comment.user_image_url}
+            {comments?.map(
+              (comment, index) =>
+                comment.comment && (
+                  <li
                     key={comment.comment_id}
-                    size="small"
-                  />
-                  <div className="p-4 max-sm:p-2">
-                    <p
-                      className="font-mono text-sm font-medium text-slate-500"
-                      aria-label={`comment-${index}-name`}
-                      id={`comment-${index}-name`}
-                      aria-describedby={`comment-${index}-name`}
-                      key={`comment-${index}-name`}
-                    >
-                      {comment.firstName} {comment.lastName}
-                    </p>
-                    <ReviewRating
-                      value={comment.rate}
-                      readOnly
-                      showReviewCount={false}
-                    />
-                    <span className="self-center whitespace-nowrap text-xs font-normal text-slate-500">
-                      {localeFormat(new Date(comment.createdAt), "d MMMM y")}
-                    </span>
-                  </div>
-                </div>
-                {comment.comment && (
-                  <div className="h-fit w-fit rounded-lg bg-purple-200 font-manrope">
-                    <p
-                      className="whitespace-pre-wrap p-4 text-sm text-slate-700"
-                      aria-label={`comment-${index}-comment`}
-                      id={`comment-${index}-comment`}
-                      aria-describedby={`comment-${index}-comment`}
-                      key={`comment-${index}-comment`}
-                    >
-                      {comment.comment}
-                    </p>
-                  </div>
-                )}
-              </li>
-            ))}
+                    className="flex w-full justify-start border-b border-slate-100 pb-4 max-sm:flex-col max-sm:gap-2 sm:items-start"
+                    aria-labelledby={`comment-${index}`}
+                    aria-describedby={`comment-${index}`}
+                    id={`comment-${index}`}
+                    aria-label={`comment-${index}`}
+                  >
+                    <div className="flex min-w-[200px] max-w-[200px] items-center justify-start gap-2">
+                      <Avatar
+                        alt={`${comment.firstName} ${comment.lastName}`}
+                        imageUrl={getImageUrlFromPath(comment.user_image_url)}
+                        key={comment.comment_id}
+                        size="small"
+                      />
+                      <div className="p-4 max-sm:p-2">
+                        <p
+                          className="font-mono text-sm font-medium text-slate-500"
+                          aria-label={`comment-${index}-name`}
+                          id={`comment-${index}-name`}
+                          aria-describedby={`comment-${index}-name`}
+                          key={`comment-${index}-name`}
+                        >
+                          {comment.firstName} {comment.lastName}
+                        </p>
+                        <ReviewRating
+                          value={comment.rate}
+                          readOnly
+                          showReviewCount={false}
+                        />
+                        <span className="self-center whitespace-nowrap text-xs font-normal text-slate-500">
+                          {localeFormat(
+                            new Date(comment.createdAt),
+                            "d MMMM y",
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                    {comment.comment && (
+                      <div className="h-fit w-fit rounded-lg bg-purple-200 font-manrope">
+                        <p
+                          className="whitespace-pre-wrap p-4 text-sm text-slate-700"
+                          aria-label={`comment-${index}-comment`}
+                          id={`comment-${index}-comment`}
+                          aria-describedby={`comment-${index}-comment`}
+                          key={`comment-${index}-comment`}
+                        >
+                          {comment.comment}
+                        </p>
+                      </div>
+                    )}
+                  </li>
+                ),
+            )}
           </ul>
         ) : (
           <div className="flex h-full items-center justify-center">
