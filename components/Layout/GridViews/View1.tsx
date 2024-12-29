@@ -12,7 +12,6 @@ const View1: React.FC = async () => {
     <InfinityScroll
       totalCount={totalCount}
       initialData={products}
-      dataKey="products"
       query={getPaginatedProducts}
     />
   );

@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import InfinityScroll from ".";
 import { searchProductsv1 } from "@/app/(feed)/actions";
 import { PER_REQUEST } from "@/app/constants";
+import { FC } from "react";
+import InfinityScroll from ".";
 
 type ServerInfinityScrollProps = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -22,7 +22,6 @@ const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
     <InfinityScroll
       totalCount={totalCount}
       initialData={data}
-      dataKey="products"
       query={searchProductsv1}
       params={searchParams}
     />

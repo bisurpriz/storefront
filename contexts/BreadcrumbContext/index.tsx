@@ -4,8 +4,10 @@ import { usePathname } from "next/navigation";
 import React, {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -16,7 +18,8 @@ type Breadcrumb = {
 
 type BreadcrumbContextType = {
   breadcrumbs: Breadcrumb[];
-  setBreadcrumbs: React.Dispatch<React.SetStateAction<Breadcrumb[]>>;
+  setBreadcrumbs: (breadcrumbs: Breadcrumb[]) => void;
+  clearBreadcrumbs: () => void;
 };
 
 type BreadcrumbProviderProps = {
@@ -30,22 +33,32 @@ const BreadcrumbContext = createContext<BreadcrumbContextType | undefined>(
 export const BreadcrumbProvider: React.FC<BreadcrumbProviderProps> = ({
   children,
 }) => {
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+  const [breadcrumbs, setBreadcrumbsState] = useState<Breadcrumb[]>([]);
   const pathname = usePathname();
 
+  const setBreadcrumbs = useCallback((newBreadcrumbs: Breadcrumb[]) => {
+    setBreadcrumbsState(newBreadcrumbs);
+  }, []);
+
+  const clearBreadcrumbs = useCallback(() => {
+    setBreadcrumbsState([]);
+  }, []);
+
   useEffect(() => {
-    return () => {
-      console.log(`BreadcrumbProvider is destroyed.
-      Breadcrumbs: ${breadcrumbs
-        .map((breadcrumb) => breadcrumb.label)
-        .join(" > ")}  
-      `);
-      setBreadcrumbs([]);
-    };
-  }, [pathname]);
+    clearBreadcrumbs();
+  }, [pathname, clearBreadcrumbs]);
+
+  const contextValue = useMemo(
+    () => ({
+      breadcrumbs,
+      setBreadcrumbs,
+      clearBreadcrumbs,
+    }),
+    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs],
+  );
 
   return (
-    <BreadcrumbContext.Provider value={{ breadcrumbs, setBreadcrumbs }}>
+    <BreadcrumbContext.Provider value={contextValue}>
       {children}
     </BreadcrumbContext.Provider>
   );
