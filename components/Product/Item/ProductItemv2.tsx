@@ -6,7 +6,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { Product } from "@/graphql/generated-types";
 import { getProductDetailUrl } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import AddToFavorite from "./components/AddToFavorite";
 import { PriceTag } from "./components/PriceTag";
 import { ProductImage } from "./components/ProductImage";
@@ -59,6 +59,10 @@ const ProductCard = memo(
       );
     }, [user, id]);
 
+    const handleFavoriteChange = useCallback((newState: boolean) => {
+      setIsFavorite(newState);
+    }, []);
+
     const productUrl = getProductDetailUrl(
       product_categories?.[0].category.slug,
       slug!,
@@ -68,7 +72,12 @@ const ProductCard = memo(
     return (
       <Link href={productUrl}>
         <Card className="relative flex h-auto flex-col">
-          <AddToFavorite isFav={isFavorite} productId={id} user={user} />
+          <AddToFavorite
+            isFav={isFavorite}
+            productId={id}
+            user={user}
+            onFavoriteChange={handleFavoriteChange}
+          />
           <CardContent className="flex flex-grow flex-col p-0">
             <ProductImage
               imageUrl={image_url?.[0]}

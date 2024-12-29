@@ -24,8 +24,10 @@ export default function AnimatedPricing({
     return () => clearInterval(interval);
   }, []);
 
+  if (items.length === 0) return <div className="h-6" />;
+
   return (
-    <div className="relative flex h-6 w-full items-center gap-2 overflow-hidden rounded-lg bg-gray-100">
+    <div className="relative flex h-6 w-full items-center overflow-hidden rounded-lg">
       <AnimatePresence>
         <motion.div
           key={currentIndex}
@@ -35,9 +37,9 @@ export default function AnimatedPricing({
           transition={{ duration: 0.8 }}
           className="absolute w-full"
         >
-          <div className="flex w-full items-center gap-2 p-1 text-xs">
-            <span>{items[currentIndex].icon}</span>
-            <span>{items[currentIndex].text}</span>
+          <div className="flex w-full items-end gap-1 p-1 text-xs font-semibold text-slate-700">
+            <span>{items[currentIndex]?.icon}</span>
+            <span>{items[currentIndex]?.text}</span>
           </div>
         </motion.div>
       </AnimatePresence>
