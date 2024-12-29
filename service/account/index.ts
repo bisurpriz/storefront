@@ -27,9 +27,9 @@ export const MarkAsReadDocument = `
 export const LoginMutationDocument = `
     mutation loginMutation($email: String, $password: String) {
   login(args: {email: $email, password: $password}) {
-    access_token
-    refresh_token
-    error
+    data
+    success
+    message
   }
 }
     `;

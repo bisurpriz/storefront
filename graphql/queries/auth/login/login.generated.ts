@@ -8,15 +8,15 @@ export type LoginMutationMutationVariables = Types.Exact<{
 }>;
 
 
-export type LoginMutationMutation = { login?: { access_token?: string | null, refresh_token?: string | null, error?: string | null } | null };
+export type LoginMutationMutation = { login?: { data?: any | null, success?: boolean | null, message?: string | null } | null };
 
 
 export const LoginMutationDocument = gql`
     mutation loginMutation($email: String, $password: String) {
   login(args: {email: $email, password: $password}) {
-    access_token
-    refresh_token
-    error
+    data
+    success
+    message
   }
 }
     `;

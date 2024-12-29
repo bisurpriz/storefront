@@ -90,10 +90,9 @@ export type LoginInput = {
 };
 
 export type LoginOutput = {
-  access_token?: Maybe<Scalars['String']['output']>;
-  body?: Maybe<Scalars['json']['output']>;
-  error?: Maybe<Scalars['String']['output']>;
-  refresh_token?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<Scalars['json']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type RefreshTokenOutput = {
@@ -115,9 +114,9 @@ export type RegisterInput = {
 };
 
 export type RegisterOutput = {
-  body?: Maybe<Scalars['json']['output']>;
   data?: Maybe<Scalars['json']['output']>;
-  error?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type ResetPasswordInput = {

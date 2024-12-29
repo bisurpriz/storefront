@@ -14,7 +14,7 @@ export type RegisterMutationVariables = Types.Exact<{
 }>;
 
 
-export type RegisterMutation = { register?: { data?: any | null, body?: any | null, error?: string | null } | null };
+export type RegisterMutation = { register?: { data?: any | null, success?: boolean | null, message?: string | null } | null };
 
 
 export const RegisterDocument = gql`
@@ -23,8 +23,8 @@ export const RegisterDocument = gql`
     args: {email: $email, password: $password, firstname: $firstname, lastname: $lastname, provider: $provider, picture: $picture, provider_id: $provider_id, phone: $phone}
   ) {
     data
-    body
-    error
+    success
+    message
   }
 }
     `;
