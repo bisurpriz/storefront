@@ -83,7 +83,7 @@ const Footer = async () => {
     <footer
       aria-label="Alt Bilgi"
       aria-describedby="Alt bilgi"
-      className="mt-10 flex w-full items-center justify-center bg-gray-50 max-md:mt-20 max-md:hidden max-sm:mt-16"
+      className="flex w-full items-center justify-center bg-gray-50 max-md:mt-20 max-md:hidden max-sm:mt-16"
     >
       <div className="mx-auto w-full max-w-screen-2xl px-4 pb-8 pt-4 text-gray-700">
         <div className="flex w-full items-start justify-between">

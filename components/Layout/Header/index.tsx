@@ -13,6 +13,7 @@ const Header: FC<{
       className={cn(
         `sticky top-0 z-50 mx-auto w-full max-w-7xl border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/90`,
       )}
+      id="header"
     >
       <HeaderTop />
       <HeaderMiddle />

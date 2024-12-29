@@ -1,11 +1,11 @@
 "use client";
 
-import clsx from "clsx";
 import { Link } from "@/components/Link";
-import { usePathname } from "next/navigation";
-import { accountNavigationItems } from "../../constants";
-import { useEffect } from "react";
 import useResponsive from "@/hooks/useResponsive";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { accountNavigationItems } from "../../constants";
 
 const AccountNavigation = () => {
   const pathname = usePathname();

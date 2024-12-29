@@ -31,6 +31,7 @@ export interface InputProps
   error?: boolean;
   errorMessage?: string;
   dirtyAnimation?: boolean;
+  fullWidth?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -44,13 +45,14 @@ const Input: FC<InputProps> = ({
   errorMessage,
   placeholder,
   dirtyAnimation,
+  fullWidth,
   ...props
 }) => {
   const hasIconClasses = icon ? "pl-10" : "";
 
   return (
     <>
-      <div className="relative">
+      <div className={cn("relative", { "w-full": fullWidth })}>
         {!!icon && (
           <span
             className={cn(

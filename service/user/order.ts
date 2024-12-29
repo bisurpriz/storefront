@@ -1,6 +1,6 @@
 export const GetUserOrdersDocument = `
     query getUserOrders {
-  order(where: {payment_status: {_eq: PAID}}) {
+  order(where: { payment_status: { _eq: PAID } }) {
     created_at
     id
     order_no
@@ -36,6 +36,7 @@ export const GetUserOrdersDocument = `
               slug
             }
           }
+          id
           slug
           image_url
           name

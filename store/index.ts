@@ -1,7 +1,8 @@
+import { Chat_Thread } from "@/graphql/generated-types";
 import { create } from "zustand";
 
 type ChatStoreState = {
-  chats: any[] | null;
+  chats: Chat_Thread[];
   setChats: (chats: any[]) => void;
   addMessage: (message: any) => void;
 };
