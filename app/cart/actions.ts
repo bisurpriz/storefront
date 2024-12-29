@@ -76,23 +76,38 @@ export const createOrderAction = async (
   const jwtToken = await createJwt();
   const response = await fetch(process.env.CREATE_ORDER_ACTION_URL, {
     method: "POST",
-    body: JSON.stringify({
-      ...variables.object,
-    }),
+    body: JSON.stringify(variables.object),
     headers: {
       "Content-Type": "application/json",
       authorization: jwtToken,
     },
-  }).then((res) => res.json());
+  });
 
-  if (response.errors) {
+  if (!response.ok) {
+    console.error("Order creation failed:", await response.text());
     return {
       status: "error",
+      message: `Sipariş oluşturulurken bir hata oluştu: ${response.status}`,
     };
-  } else {
+  }
+
+  try {
+    const data = await response.json();
+    if (data.errors) {
+      return {
+        status: "error",
+        message: data.errors[0]?.message || "Bilinmeyen bir hata oluştu",
+      };
+    }
     return {
       status: "success",
-      data: response.data,
+      data: data.data,
+    };
+  } catch (error) {
+    console.error("JSON parse error:", error);
+    return {
+      status: "error",
+      message: "Sunucu yanıtı işlenirken bir hata oluştu",
     };
   }
 };
@@ -149,6 +164,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       costData: costData,
     };
   } catch (error) {
+    console.log(error);
     return {
       data: null,
       error: {

@@ -40,13 +40,9 @@ const AddToFavorite = ({ isFav, productId, user }: AddToFavoriteProps) => {
         return;
       }
 
-      addToFavorites({ productId })
-        .catch(() => {
-          setIsFavorite(false);
-        })
-        .catch(() => {
-          setIsFavorite(true);
-        });
+      addToFavorites({ productId }).catch(() => {
+        setIsFavorite(true);
+      });
       setIsFavorite(true);
     });
   };

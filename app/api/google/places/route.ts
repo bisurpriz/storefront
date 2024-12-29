@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get("query"); // URL'den query parametresini al
-  const language = searchParams.get("language") || "tr"; // Dil parametresi, varsayılan olarak Türkçe
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY; // Çevresel değişkenden API anahtarını al
+  const query = searchParams.get("query");
+  const language = searchParams.get("language") || "tr";
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
-  // Cookie'den user_id veya guest_id değerini al
   const cookies = request.cookies;
   const session = cookies.get("user_id") || cookies.get("guest_id");
 
@@ -33,7 +32,6 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
 
     if (data.status !== "OK") {
-      // Hata mesajlarını ayrıntılı işleme
       const errorMessage =
         data.error_message || "Google Places API isteğinde hata oluştu.";
       return NextResponse.json(
@@ -42,7 +40,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(data); // Yanıt döndür
+    return NextResponse.json(data);
   } catch (error: any) {
     console.error("Hata:", error);
     return NextResponse.json(

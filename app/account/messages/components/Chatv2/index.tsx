@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/AuthContext";
 import useChatStore from "@/store";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { sendMessage } from "../../action";
 import ChatSidebar from "./ChatSidebar";

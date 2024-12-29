@@ -157,7 +157,7 @@ export const CartProvider = ({
     quantity?: number;
     deliveryDate?: string;
     deliveryTime?: string;
-    deliveryLocation: IPlace;
+    deliveryLocation?: IPlace;
   }) => {
     const cartItems = [...cartState.cartItems];
     const hasItem = cartItems.findIndex((_item) => _item.id === id);
@@ -166,8 +166,8 @@ export const CartProvider = ({
 
       const _item = {
         ...item,
-        deliveryDate: deliveryTime.day,
-        deliveryTime: deliveryTime.hour,
+        deliveryDate: deliveryTime?.day,
+        deliveryTime: deliveryTime?.hour,
         deliveryLocation,
       };
 
