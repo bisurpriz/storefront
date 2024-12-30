@@ -1,19 +1,20 @@
 "use client";
 
-import { ApolloLink, HttpLink, split } from "@apollo/client";
-import {
-  NextSSRApolloClient,
-  ApolloNextAppProvider,
-  NextSSRInMemoryCache,
-  SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support/ssr";
-import { WebSocketLink } from "apollo-link-ws";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import { setVerbosity } from "ts-invariant";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { setContext } from "@apollo/client/link/context";
 import { CookieTokens } from "@/app/@auth/contants";
 import { getClientCookie } from "@/utils/getCookie";
+import { ApolloLink, HttpLink, split } from "@apollo/client";
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
+import { setContext } from "@apollo/client/link/context";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import {
+  ApolloClient,
+  ApolloNextAppProvider,
+  InMemoryCache,
+  SSRMultipartLink,
+} from "@apollo/experimental-nextjs-app-support";
+import { createClient } from "graphql-ws";
+import { setVerbosity } from "ts-invariant";
 
 if (process.env.NODE_ENV === "development") {
   setVerbosity("debug");
@@ -47,20 +48,17 @@ function makeClient() {
     uri: process.env.HASURA_URL,
   });
 
-  const wsLink =
-    typeof window !== "undefined"
-      ? new WebSocketLink({
-          uri: process.env.HASURA_WS_URL,
-          options: {
-            lazy: true,
-            timeout: 30000,
-            reconnect: true,
-            connectionParams: () => {
-              return setTokenInHeader();
-            },
-          },
-        })
-      : null;
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: `${process.env.HASURA_WS_URL}`,
+      lazy: true,
+      lazyCloseTimeout: 30000,
+      retryAttempts: 3,
+      connectionParams: async () => {
+        return await setTokenInHeader();
+      },
+    }),
+  );
 
   const _httpLink =
     typeof window !== "undefined"
@@ -77,8 +75,8 @@ function makeClient() {
         )
       : httpLink;
 
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache({
+  return new ApolloClient({
+    cache: new InMemoryCache({
       resultCaching: true,
     }),
     link:
