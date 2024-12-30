@@ -1,95 +1,42 @@
 "use client";
 
 import { OrderItemStatus } from "@/common/enums/Order/product";
+import { Link } from "@/components/Link";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { useOrderCustomizableModal } from "@/contexts/OrderCustomizableModal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { useOrderFilters } from "@/hooks/useOrderFilters";
+import { getTenantUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 import { createReview } from "../../reviews/actions";
 import CreateReview from "../../reviews/components/CreateReview/CreateReview";
+import { OrderFiltersComponent } from "./OrderFilters";
 import OrderMessage from "./OrderMessage";
-
-const ModalContent = ({ selectedOrder }) => {
-  return (
-    <div>
-      <DialogHeader>
-        <DialogTitle>Sipariş Detayları</DialogTitle>
-      </DialogHeader>
-      <Tabs defaultValue="details">
-        <TabsList>
-          <TabsTrigger value="details">Ürün Detayları</TabsTrigger>
-          <TabsTrigger value="customization">Özelleştirmeler</TabsTrigger>
-        </TabsList>
-        <TabsContent value="details">
-          <div className="mt-4">
-            <h4 className="mb-2 font-semibold">
-              {selectedOrder?.product.name}
-            </h4>
-            <p>
-              Sipariş Numarası:{" "}
-              {selectedOrder?.order_item_no || "Belirtilmemiş"}
-            </p>
-            <p>Miktar: {selectedOrder?.quantity}</p>
-            <p>
-              Stok Durumu: {selectedOrder?.product.quantity || "Belirtilmemiş"}
-            </p>
-            <h5 className="mb-2 mt-4 font-semibold">Ürün Kategorileri:</h5>
-            <ul>
-              {selectedOrder?.product.product_categories.map(
-                (category, index) => (
-                  <li key={index}>{category.category.name}</li>
-                ),
-              )}
-            </ul>
-          </div>
-        </TabsContent>
-        <TabsContent value="customization">
-          <div className="mt-4">
-            <h5 className="mb-2 font-semibold">Özel Metinler:</h5>
-            {selectedOrder?.order_item_special_texts.map((text) => (
-              <p key={text.id}>{text.content}</p>
-            ))}
-            <h5 className="mb-2 mt-4 font-semibold">Özel Görseller:</h5>
-            <div className="grid grid-cols-2 gap-4">
-              {selectedOrder?.order_item_special_images.map((image) => (
-                <Image
-                  key={image.id}
-                  src={getImageUrlFromPath(image.image_url)}
-                  alt="Özel görsel"
-                  width={150}
-                  height={150}
-                  className="rounded-md"
-                />
-              ))}
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-};
+import { ShowDetailModal } from "./ShowDetailModal";
 
 export default function GuncellenmisSiparislerimSayfasi({
   order,
 }: {
   order: GetUserOrdersQuery["order"];
 }) {
-  const [selectedOrder, setSelectedOrder] = useState<
-    GetUserOrdersQuery["order"][0]["tenant_orders"][0]["order_items"][0] | null
-  >(null);
   const { onOpen } = useOrderCustomizableModal();
   const { openDialog, closeDialog } = useResponsiveDialog();
   const { push } = useRouter();
+
+  const {
+    filters,
+    setFilters,
+    filteredOrders,
+    hasActiveFilters,
+    clearFilters,
+  } = useOrderFilters(order);
 
   const handleCreateReview = async ({
     product_id,
@@ -113,147 +60,182 @@ export default function GuncellenmisSiparislerimSayfasi({
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-6 text-2xl font-bold">Siparişlerim</h1>
-      {order.map((order) => (
-        <Card key={order.id} className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex w-full items-start justify-between">
-              <p>
-                {localeFormat(new Date(order.created_at), "dd MMMM yyyy HH:mm")}{" "}
-                tarihli sipariş
-              </p>
-              #{order.order_no}
-            </CardTitle>
+    <div className="container mx-auto space-y-6 p-4">
+      <OrderFiltersComponent
+        filters={filters}
+        setFilters={setFilters}
+        hasActiveFilters={!!hasActiveFilters}
+        clearFilters={clearFilters}
+      />
 
-            <p className="text-sm text-muted-foreground">
-              Toplam Tutar: {order.total_amount} ₺
-            </p>
-          </CardHeader>
-          <CardContent>
-            {order.tenant_orders.map((tenantOrder) => (
-              <div key={tenantOrder.id} className="mb-4">
-                <h3 className="mb-2 font-semibold">
-                  Satıcı: {tenantOrder.tenant.tenants[0]?.name}
-                </h3>
-                <StatusBadge
-                  status={tenantOrder.order_status?.value as OrderItemStatus}
-                />
-                {tenantOrder.order_items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="my-4 flex items-start space-x-4 border-t pt-4"
-                  >
-                    {item.product.image_url &&
-                      item.product.image_url.length > 0 && (
-                        <Image
-                          src={getImageUrlFromPath(item.product.image_url[0])}
-                          alt={item.product.name}
-                          width={100}
-                          height={100}
-                          className="rounded-md"
-                        />
-                      )}
-                    <div className="w-full flex-1">
-                      <h4 className="font-semibold">{item.product.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Adet: {item.quantity}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Kategori:{" "}
-                        {item.product.product_categories[0]?.category.name ||
-                          "Belirtilmemiş"}
-                      </p>
-                      <div className="flex w-full items-start justify-start">
-                        <Button
-                          variant="soft"
-                          size="sm"
-                          className="mt-2"
-                          onClick={() =>
-                            openDialog(<ModalContent selectedOrder={item} />)
-                          }
-                        >
-                          Detayları Görüntüle
-                        </Button>
+      <div className="grid gap-6">
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
+            <Card key={order.id}>
+              <CardHeader className="bg-muted/5 pb-0 px-4">
+                <div className="flex  gap-4 flex-row items-center justify-between">
+                  <div className="space-y-1">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
+                        #{order.order_no}
+                      </span>
+                      <time className="text-sm font-normal text-muted-foreground">
+                        {localeFormat(new Date(order.created_at), "dd MMMM yyyy HH:mm")}
+                      </time>
+                    </CardTitle>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <p className="text-sm font-medium">
+                      Toplam: <span className="text-base font-bold">{order.total_amount} ₺</span>
+                    </p>
+                  </div>
+                </div>
+              </CardHeader>
 
-                        {order.tenant_orders.find(
-                          (to) =>
-                            to.order_items.reduce((acc, oi) => {
-                              return (
-                                acc +
-                                oi.product.product_customizable_areas.reduce(
-                                  (acc2, area) => acc2 + area.count,
-                                  0,
-                                )
-                              );
-                            }, 0) !==
-                            to.order_items.reduce((acc, oi) => {
-                              return (
-                                acc +
-                                oi.order_item_special_images.length +
-                                oi.order_item_special_texts.length
-                              );
-                            }, 0),
-                        )?.id ? (
-                          <Button
-                            variant="link"
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => onOpen(order)}
-                          >
-                            Özelleştirmeyi Tamamla
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="link"
-                            size="sm"
-                            className="mt-2"
-                            disabled
-                          >
-                            Özelleştirme Tamamlandı
-                          </Button>
-                        )}
-                        <div className="ml-auto flex flex-col items-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="ml-4"
-                            onClick={() =>
-                              openDialog(
-                                <OrderMessage
-                                  orderTenantId={tenantOrder.id}
-                                  tenant={tenantOrder.tenant}
-                                  tenantId={tenantOrder.tenant.tenants[0].id}
-                                />,
-                              )
-                            }
-                          >
-                            Satıcıya Mesaj Gönder
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            onClick={() =>
-                              openDialog(
-                                <CreateReview
-                                  handleCreateReview={handleCreateReview}
-                                  selectedProduct={item.product}
-                                />,
-                              )
-                            }
-                          >
-                            Ürünü Değerlendir
-                          </Button>
+              <CardContent className="grid gap-6 p-4">
+                {order.tenant_orders.map((tenantOrder) => {
+                  return (
+                    <div key={tenantOrder.id}>
+                      <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <StatusBadge
+                            status={tenantOrder.order_status?.value as OrderItemStatus}
+                          />
                         </div>
                       </div>
+
+                      <div className="grid gap-4">
+                        {tenantOrder.order_items.map((item) => (
+                          <div
+                            key={item.id}
+                            className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row"
+                          >
+                            <div className="shrink-0 overflow-hidden rounded-md">
+                              {item.product.image_url && item.product.image_url.length > 0 && (
+                                <Image
+                                  src={getImageUrlFromPath(item.product.image_url[0])}
+                                  alt={item.product.name}
+                                  width={120}
+                                  height={120}
+                                  className="aspect-square rounded-md bg-background object-cover"
+                                />
+                              )}
+                            </div>
+
+                            <div className="flex flex-1 flex-col">
+                              <div className="mb-2 flex-1">
+                                <h4 className="font-medium">{item.product.name}</h4>
+                                <div className="space-y-1 text-sm text-muted-foreground">
+                                  <Link
+                                    href={getTenantUrl(tenantOrder.tenant.tenants[0].name, tenantOrder.tenant.tenants[0].id.toString())}
+                                    className="text-tertiary">{tenantOrder.tenant.tenants[0].name}</Link>
+                                  <p>Adet: {item.quantity}</p>
+                                  <p>
+                                    Kategori:{" "}
+                                    {item.product.product_categories[0]?.category.name ||
+                                      "Belirtilmemiş"}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div className="flex flex-wrap gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => openDialog(<ShowDetailModal selectedOrder={item} />)}
+                                    className="h-8"
+                                  >
+                                    Detayları Görüntüle
+                                  </Button>
+
+                                  {item.product.product_customizable_areas.length > 0 &&
+                                    (item.order_item_special_images.length + item.order_item_special_texts.length) <
+                                    item.product.product_customizable_areas.reduce((acc, area) => acc + area.count, 0) ? (
+                                    <Button
+                                      variant="link"
+                                      size="sm"
+                                      onClick={() => onOpen(order)}
+                                      className="h-8"
+                                    >
+                                      Özelleştirmeyi Tamamla
+                                    </Button>
+                                  ) : item.product.product_customizable_areas.length > 0 ? (
+                                    <Button
+                                      variant="link"
+                                      size="sm"
+                                      disabled
+                                      className="h-8"
+                                    >
+                                      Özelleştirme Tamamlandı
+                                    </Button>
+                                  ) : null}
+                                </div>
+
+                                <div className="flex flex-wrap gap-2">
+                                  <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() =>
+                                      openDialog(
+                                        <OrderMessage
+                                          orderTenantId={tenantOrder.id}
+                                          tenant={tenantOrder.tenant}
+                                          tenantId={tenantOrder.tenant.tenants[0].id}
+                                        />,
+                                      )
+                                    }
+                                    className="h-8"
+                                  >
+                                    Satıcıya Mesaj
+                                  </Button>
+                                  {tenantOrder.order_status?.value === OrderItemStatus.Delivered && (
+                                    <Button
+                                      variant="default"
+                                      size="sm"
+                                      onClick={() =>
+                                        openDialog(
+                                          <CreateReview
+                                            handleCreateReview={handleCreateReview}
+                                            selectedProduct={item.product}
+                                          />,
+                                        )
+                                      }
+                                      className="h-8"
+                                    >
+                                      Değerlendir
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
+                  )
+                })}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed">
+            <div className="text-muted-foreground">
+              {hasActiveFilters ? "Filtrelere uygun sipariş bulunamadı" : "Henüz sipariş bulunmuyor"}
+            </div>
+            {hasActiveFilters && (
+              <Button
+                variant="link"
+                size="sm"
+                onClick={clearFilters}
+                className="mt-2"
+              >
+                Filtreleri Temizle
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

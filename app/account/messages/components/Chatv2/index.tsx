@@ -21,7 +21,8 @@ export default function AdvancedChatScreen() {
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [newMessage, setNewMessage] = useState("");
-  const [showUserList, setShowUserList] = useState(true);
+  const [showUserList, setShowUserList] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   const userList: User[] = chats?.map((chat, index) => {
     return {
@@ -32,50 +33,73 @@ export default function AdvancedChatScreen() {
     };
   });
 
-  const messages: Message[] = chats
-    ?.find((chat) => chat.tenant.id === selectedUser?.id)
-    ?.messages.map((message) => {
-      const thread = chats?.[0];
-      return {
-        created_at: message.created_at,
-        id: message.id,
-        is_read: message.is_read,
-        message: message.message,
-        receiver: {
-          id: message.receiver.id,
-          picture:
-            message.receiver.id === user.id
-              ? user.picture
-              : thread.tenant.tenants[0].logo,
-          name:
-            message.receiver_id === user.id
-              ? user.firstname + " " + user.lastname
-              : thread.tenant.tenants[0].name,
-          lastMessage: message.message,
-        },
-        sender: {
-          id: message.sender.id,
-          picture:
-            message.sender.id === user.id
-              ? user.picture
-              : thread.tenant.tenants[0].logo,
-          name:
-            message.sender_id === user.id
-              ? user.firstname + " " + user.lastname
-              : thread.tenant.tenants[0].name,
-          lastMessage: message.message,
-        },
-      };
-    });
+  const selectedChat = chats?.find((chat) => chat.tenant.id === selectedUser?.id);
+  const messages: Message[] = selectedChat?.messages.map((message) => {
+    return {
+      created_at: message.created_at,
+      id: message.id,
+      is_read: message.is_read,
+      message: message.message,
+      receiver: {
+        id: message.receiver.id,
+        picture:
+          message.receiver.id === user.id
+            ? user.picture
+            : selectedChat.tenant.tenants[0].logo,
+        name:
+          message.receiver_id === user.id
+            ? user.firstname + " " + user.lastname
+            : selectedChat.tenant.tenants[0].name,
+        lastMessage: message.message,
+      },
+      sender: {
+        id: message.sender.id,
+        picture:
+          message.sender.id === user.id
+            ? user.picture
+            : selectedChat.tenant.tenants[0].logo,
+        name:
+          message.sender_id === user.id
+            ? user.firstname + " " + user.lastname
+            : selectedChat.tenant.tenants[0].name,
+        lastMessage: message.message,
+      },
+    };
+  });
 
   const handleSendMessage = (message: Message) => {
-    addMessage(message);
+    if (!selectedChat) return;
+
+    // Create optimistic message
+    const optimisticMessage: Message = {
+      id: Date.now(), // Temporary ID
+      message: newMessage,
+      created_at: new Date().toISOString(),
+      is_read: false,
+      sender: {
+        id: user.id,
+        picture: user.picture,
+        name: user.firstname + " " + user.lastname,
+        lastMessage: newMessage
+      },
+      receiver: {
+        id: selectedUser!.id,
+        picture: selectedChat.tenant.tenants[0].logo,
+        name: selectedChat.tenant.tenants[0].name,
+        lastMessage: newMessage
+      }
+    };
+
+    // Add optimistic message immediately
+    addMessage(optimisticMessage);
+    setNewMessage("");
+
+    // Make the actual API call
     sendMessage({
       message: newMessage,
-      receiver_id: message.receiver.id,
-      chat_thread_id: chats?.[0].id,
+      receiver_id: selectedUser!.id,
+      chat_thread_id: selectedChat.id,
     });
-    setNewMessage("");
   };
 
   const toggleUserList = () => {
@@ -91,10 +115,28 @@ export default function AdvancedChatScreen() {
       document.getElementById("header")?.classList.remove("relative");
     };
   }, [selectedUser]);
+
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    // Add resize listener
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div className="flex h-full min-h-[50dvh] flex-1 flex-col bg-background max-sm:h-[70dvh] md:flex-row">
       <AnimatePresence>
-        {(showUserList || window.innerWidth >= 768) && (
+        {(showUserList || windowWidth >= 768) && (
           <div className="border-r border-border md:block md:w-1/3 lg:w-1/4">
             <ChatSidebarHeader toggleUserList={toggleUserList} />
             <ChatSidebar
@@ -108,7 +150,7 @@ export default function AdvancedChatScreen() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {(!showUserList || window.innerWidth >= 768) && (
+        {(!showUserList || windowWidth >= 768) && (
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
