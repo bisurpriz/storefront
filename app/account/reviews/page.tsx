@@ -1,9 +1,10 @@
-import { getOrderWithReview } from "./actions";
 import { Suspense } from "react";
+import { getOrderWithReview } from "./actions";
 import ProductReviewsTab from "./components/ReviewsTab";
 
 const ReviewsPage = async () => {
   const { order_item, reviews } = await getOrderWithReview();
+
   return (
     <Suspense
       fallback={

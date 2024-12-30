@@ -2,14 +2,7 @@ query getOrdersWithReviews($user_id: uuid!) {
   order_item(
     where: {
       _and: [
-        {
-          product: {
-            _or: [
-              { reviews_aggregate: { count: { predicate: { _eq: 0 } } } }
-              { reviews: { user_id: { _neq: $user_id } } }
-            ]
-          }
-        }
+        { product: { reviews: { user_id: { _is_null: true } } } }
         { order_tenant: { order_status: { value: { _eq: "Delivered" } } } }
       ]
     }
@@ -34,7 +27,6 @@ query getOrdersWithReviews($user_id: uuid!) {
       }
     }
   }
-
   review(where: { user_id: { _eq: $user_id } }) {
     id
     comment

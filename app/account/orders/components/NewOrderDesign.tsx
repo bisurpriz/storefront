@@ -60,7 +60,7 @@ export default function GuncellenmisSiparislerimSayfasi({
   };
 
   return (
-    <div className="container mx-auto space-y-6 p-4">
+    <div className="container mx-auto space-y-6">
       <OrderFiltersComponent
         filters={filters}
         setFilters={setFilters}

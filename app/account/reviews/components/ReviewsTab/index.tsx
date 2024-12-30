@@ -1,23 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import Rating from "@/components/ReviewRating/CustomRating";
-import ReviewedCard from "../Reviewed/ReviewedCard";
+import { useState } from "react";
 import NotReviewedCard from "../NotReviewed/NotReviewedCard";
+import ReviewedCard from "../Reviewed/ReviewedCard";
 
 interface ProductReviewsTabProps {
   reviews: GetOrdersWithReviewsQuery["review"];

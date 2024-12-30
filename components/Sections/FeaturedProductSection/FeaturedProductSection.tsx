@@ -13,68 +13,107 @@ import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
-const ProductCard = ({ product }) => (
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+}
+
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard = memo(({ product }: ProductCardProps) => (
   <Card className="mx-2 w-full flex-shrink-0">
     <CardHeader>
-      <CardTitle className="text-lg">{product.name}</CardTitle>
+      <CardTitle className="line-clamp-2 text-lg">{product.name}</CardTitle>
     </CardHeader>
     <CardContent>
-      <Image
-        src={getImageUrlFromPath(product.image)}
-        alt={product.name}
-        className="mb-4 h-48 w-full object-cover"
-        width={250}
-        height={250}
-      />
-      <p className="text-xl font-bold">{product.price.toFixed(2)} TL</p>
+      <div className="relative h-48 w-full">
+        <Image
+          src={getImageUrlFromPath(product.image)}
+          alt={product.name}
+          className="rounded object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={false}
+        />
+      </div>
+      <p className="mt-4 text-xl font-bold">{product.price.toFixed(2)} TL</p>
     </CardContent>
     <CardFooter>
       <Button className="w-full">Sepete Ekle</Button>
     </CardFooter>
   </Card>
-);
+));
+
+ProductCard.displayName = 'ProductCard';
+
+interface CarouselButtonProps {
+  onClick: () => void;
+  disabled: boolean;
+  direction: 'left' | 'right';
+  isLoading?: boolean;
+}
+
+const CarouselButton = memo(({ onClick, disabled, direction, isLoading }: CarouselButtonProps) => (
+  <Button
+    variant="outline"
+    size="icon"
+    className={`absolute top-1/2 -translate-y-1/2 transform ${direction === 'left' ? 'left-0 -translate-x-1/2' : 'right-0 translate-x-1/2'
+      }`}
+    onClick={onClick}
+    disabled={disabled}
+    aria-label={direction === 'left' ? 'Önceki ürünler' : 'Sonraki ürünler'}
+  >
+    {isLoading ? (
+      <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary" />
+    ) : direction === 'left' ? (
+      <ChevronLeft className="h-4 w-4" />
+    ) : (
+      <ChevronRight className="h-4 w-4" />
+    )}
+  </Button>
+));
+
+CarouselButton.displayName = 'CarouselButton';
+
+const SLIDES_PER_VIEW = {
+  mobile: 1,
+  tablet: 2,
+  desktop: 4,
+  wide: 5,
+} as const;
+
+const INITIAL_CAROUSEL_OPTIONS = {
+  align: 'start' as const,
+  skipSnaps: false,
+  dragFree: true,
+} as const;
 
 export default function FeaturedProductsCarousel() {
   const { isDesktop } = useResponsive();
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    align: "start",
-  });
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    if (isDesktop) {
-      emblaApi.reInit({
-        align: "start",
-        loop: false,
-        slidesToScroll: 4,
-      });
-    } else {
-      emblaApi.reInit({
-        align: "start",
-        loop: false,
-        slidesToScroll: 1,
-      });
-    }
-  }, [isDesktop]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(INITIAL_CAROUSEL_OPTIONS);
 
   const { products, isLoading, error, fetchProducts } = useAsyncProducts();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const isSettlingRef = useRef(false);
 
-  const scrollPrev = useCallback(
-    () => emblaApi && emblaApi.scrollPrev(),
-    [emblaApi],
-  );
-  const scrollNext = useCallback(
-    () => emblaApi && emblaApi.scrollNext(),
-    [emblaApi],
-  );
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    emblaApi.reInit({
+      ...INITIAL_CAROUSEL_OPTIONS,
+      slidesToScroll: isDesktop ? SLIDES_PER_VIEW.desktop : SLIDES_PER_VIEW.mobile,
+    });
+  }, [emblaApi, isDesktop]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -83,34 +122,40 @@ export default function FeaturedProductsCarousel() {
   }, [emblaApi]);
 
   const checkAndLoadMore = useCallback(() => {
-    if (!emblaApi || isLoading) return;
+    if (!emblaApi || isLoading || isSettlingRef.current) return;
 
     const lastSlide = emblaApi.slidesInView().slice(-1)[0];
     if (!lastSlide) return;
 
     const isAtEnd = lastSlide + 1 === products.length;
-    if (isAtEnd) {
+    if (isAtEnd && !isLoading) {
       fetchProducts();
     }
-  }, [emblaApi, isLoading, fetchProducts]);
+  }, [emblaApi, isLoading, products.length, fetchProducts]);
 
   useEffect(() => {
     if (!emblaApi) return;
 
+    const onScroll = () => {
+      isSettlingRef.current = true;
+    };
+
+    const onSettle = () => {
+      isSettlingRef.current = false;
+      checkAndLoadMore();
+    };
+
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
-    emblaApi.on("settle", () => {
-      isSettlingRef.current = false;
-      checkAndLoadMore();
-    });
-    emblaApi.on("scroll", () => {
-      isSettlingRef.current = true;
-    });
+    emblaApi.on("settle", onSettle);
+    emblaApi.on("scroll", onScroll);
 
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
+      emblaApi.off("settle", onSettle);
+      emblaApi.off("scroll", onScroll);
     };
   }, [emblaApi, onSelect, checkAndLoadMore]);
 
@@ -119,7 +164,11 @@ export default function FeaturedProductsCarousel() {
   }, [fetchProducts]);
 
   if (error) {
-    return <div className="text-red-500">Hata: {error}</div>;
+    return (
+      <div className="rounded-lg bg-red-50 p-4 text-center text-red-500">
+        Hata: {error}
+      </div>
+    );
   }
 
   return (
@@ -138,49 +187,36 @@ export default function FeaturedProductsCarousel() {
             ))}
           </div>
         </div>
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+
+        <CarouselButton
+          direction="left"
           onClick={scrollPrev}
           disabled={!canScrollPrev}
-          aria-label="Önceki ürünler"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 transform"
+        />
+
+        <CarouselButton
+          direction="right"
           onClick={scrollNext}
           disabled={!canScrollNext}
-          aria-label="Sonraki ürünler"
-        >
-          {isLoading ||
-            (!canScrollNext && (
-              <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
-            ))}
-          {canScrollNext && <ChevronRight className="h-4 w-4" />}
-        </Button>
+          isLoading={isLoading && !canScrollNext}
+        />
       </div>
     </section>
   );
 }
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-}
 export function useAsyncProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   const fetchProducts = useCallback(async () => {
+    if (isLoading) return;
+
     setIsLoading(true);
     setError(null);
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -195,14 +231,13 @@ export function useAsyncProducts() {
       });
 
       setProducts((prevProducts) => [...prevProducts, ...response]);
+      setPage((prev) => prev + 1);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Bilinmeyen bir hata oluştu",
-      );
+      setError(err instanceof Error ? err.message : "Bilinmeyen bir hata oluştu");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isLoading]);
 
   return { products, isLoading, error, fetchProducts };
 }

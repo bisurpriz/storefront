@@ -53,7 +53,7 @@ export default function PlacesAutocomplete({
 
   const getLocation = useCallback(async (query: string) => {
     if (!query.trim() || !hasInteracted) return;
-    
+
     const response = await fetch(`/api/google/places?query=${query}`, {
       next: { tags: ["google-places"] },
     });
@@ -111,7 +111,7 @@ export default function PlacesAutocomplete({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setActiveIndex(prev => 
+        setActiveIndex(prev =>
           prev < predictions.length - 1 ? prev + 1 : prev
         );
         break;
@@ -173,7 +173,7 @@ export default function PlacesAutocomplete({
     setIsOpen(false);
     setActiveIndex(-1);
     onSelect?.(null);
-    
+
     if (!dontChangeCookie) {
       Cookies.remove(CookieTokens.LOCATION_ID);
       refresh();
@@ -206,7 +206,7 @@ export default function PlacesAutocomplete({
           className={cn(
             "h-auto w-full border-none bg-background p-4 pr-8 font-medium transition-all",
             "focus:ring-2 focus:ring-primary/20",
-            { 
+            {
               "bg-primary pr-10 text-white placeholder:text-white/70": input,
               "ring-2 ring-primary/20": isFocused
             }
@@ -235,11 +235,11 @@ export default function PlacesAutocomplete({
         )}
         <div
           className={cn(
-            "absolute -inset-[2px] -z-10 rounded-md transition-opacity",
+            "absolute -inset-[2px] -z-[1] rounded-md transition-opacity",
             "bg-gradient-to-bl from-primary via-secondary to-tertiary",
-            { 
+            {
               "opacity-100": input || isFocused,
-              "opacity-70": !input && !isFocused 
+              "opacity-70": !input && !isFocused
             }
           )}
         />
@@ -266,9 +266,9 @@ export default function PlacesAutocomplete({
                 key={prediction.place_id}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ 
+                transition={{
                   delay: index * 0.03,
-                  duration: 0.15 
+                  duration: 0.15
                 }}
                 className={cn(
                   "cursor-pointer rounded-md transition-colors",
