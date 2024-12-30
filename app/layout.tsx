@@ -3,23 +3,11 @@ import { Lato, Manrope, Quicksand } from "next/font/google";
 import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
-import TagManagerNoscript from "@/components/GoogleTagManager/TagManagerNoscript";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { CartProvider } from "@/contexts/CartContext";
-import { CategoryProvider } from "@/contexts/CategoryContext";
-import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
-import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 
 import DesignLayout from "@/components/Layout/DesignLayout";
 import NotificationListener from "@/components/Notification/NotificationListener";
 import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
-import { ResponsiveDialogProvider } from "@/contexts/DialogContext/ResponsiveDialogContext";
-import { ProductProvider } from "@/contexts/ProductContext";
-import { SearchProductProvider } from "@/contexts/SearchContext";
-import { Category } from "@/graphql/generated-types";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -29,6 +17,7 @@ import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
 import { getCart } from "./cart/actions";
+import { Providers } from './providers';
 
 const lato = Lato({
   subsets: ["latin"],
@@ -114,7 +103,6 @@ export default async function RootLayout({
   }).isBot;
 
   const userData = await getUserById(userId);
-
   const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
   const categoryData = await BonnmarseApi.request<GetMainCategoriesQuery>({
     query: GetCategoriesDocument,
@@ -126,50 +114,25 @@ export default async function RootLayout({
       <GoogleTagManagerInjector />
       <NotificationListener />
       <body
-        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} relative overflow-auto overflow-x-hidden scroll-smooth font-manrope`}
+        className={`${lato.variable} ${quickSand.variable} ${manrope.variable}  font-manrope`}
         id="root"
       >
-        <ProgressBarProvider>
-          <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
-          <TagManagerNoscript />
-          <AuthProvider user={userData?.user_by_pk}>
-            <TooltipProvider>
-              <ResponsiveDialogProvider>
-                <ApolloWrapper>
-                  <BreadcrumbProvider>
-                    <ProductProvider>
-                      <CategoryProvider category={categoryData?.category}>
-                        <CartProvider
-                          cartDbItems={cartItems}
-                          dbCost={{
-                            totalPrice: costData.totalPrice,
-                            isCouponApplied: false,
-                            couponMessage: "",
-                            discountAmount: 0,
-                          }}
-                        >
-                          <SearchProductProvider
-                            categories={categoryData?.category as Category[]}
-                          >
-                            <DesignLayout categories={categoryData?.category}>
-                              {children}
-                            </DesignLayout>
-                            {auth}
-                            <Suspense>
-                              {!selectedPlaces &&
-                                !hasSeenLocationModal &&
-                                !isBot && <QuarterSelectorModal />}
-                            </Suspense>
-                          </SearchProductProvider>
-                        </CartProvider>
-                      </CategoryProvider>
-                    </ProductProvider>
-                  </BreadcrumbProvider>
-                </ApolloWrapper>
-              </ResponsiveDialogProvider>
-            </TooltipProvider>
-          </AuthProvider>
-        </ProgressBarProvider>
+        <Providers
+          userData={userData}
+          categoryData={categoryData}
+          cartItems={cartItems}
+          costData={costData}
+        >
+          <DesignLayout categories={categoryData?.category}>
+            {children}
+          </DesignLayout>
+          {auth}
+          <Suspense>
+            {!selectedPlaces && !hasSeenLocationModal && !isBot && (
+              <QuarterSelectorModal />
+            )}
+          </Suspense>
+        </Providers>
       </body>
     </html>
   );
