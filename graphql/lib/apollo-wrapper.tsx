@@ -25,7 +25,8 @@ if (process.env.NODE_ENV === "development") {
 const setTokenInHeader = async (headers = {}) => {
   try {
     const cooks = await getClientCookie(CookieTokens.ACCESS_TOKEN);
-    if (!cooks) return "";
+    console.log("cooks", cooks);
+    if (!cooks) throw new Error("No token found");
 
     return {
       headers: {
