@@ -47,7 +47,6 @@ export default async function CategoryPage(props: {
       <InfinityScroll
         totalCount={totalCount}
         initialData={data}
-        dataKey="products"
         query={searchProductsv1}
         params={searchParams}
       />

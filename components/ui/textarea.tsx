@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import { FC, TextareaHTMLAttributes } from "react";
-import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
+import { motion } from "motion/react";
+import { FC, TextareaHTMLAttributes } from "react";
 
 export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {

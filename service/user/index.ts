@@ -40,8 +40,8 @@ export const RegisterDocument = `
     args: {email: $email, password: $password, firstname: $firstname, lastname: $lastname, provider: $provider, picture: $picture, provider_id: $provider_id, phone: $phone}
   ) {
     data
-    body
-    error
+    success
+    message
   }
 }
     `;

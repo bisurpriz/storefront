@@ -4,20 +4,80 @@ import { OrderItemStatus } from "@/common/enums/Order/product";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { useOrderCustomizableModal } from "@/contexts/OrderCustomizableModal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
+import { createReview } from "../../reviews/actions";
+import CreateReview from "../../reviews/components/CreateReview/CreateReview";
+import OrderMessage from "./OrderMessage";
+
+const ModalContent = ({ selectedOrder }) => {
+  return (
+    <div>
+      <DialogHeader>
+        <DialogTitle>Sipariş Detayları</DialogTitle>
+      </DialogHeader>
+      <Tabs defaultValue="details">
+        <TabsList>
+          <TabsTrigger value="details">Ürün Detayları</TabsTrigger>
+          <TabsTrigger value="customization">Özelleştirmeler</TabsTrigger>
+        </TabsList>
+        <TabsContent value="details">
+          <div className="mt-4">
+            <h4 className="mb-2 font-semibold">
+              {selectedOrder?.product.name}
+            </h4>
+            <p>
+              Sipariş Numarası:{" "}
+              {selectedOrder?.order_item_no || "Belirtilmemiş"}
+            </p>
+            <p>Miktar: {selectedOrder?.quantity}</p>
+            <p>
+              Stok Durumu: {selectedOrder?.product.quantity || "Belirtilmemiş"}
+            </p>
+            <h5 className="mb-2 mt-4 font-semibold">Ürün Kategorileri:</h5>
+            <ul>
+              {selectedOrder?.product.product_categories.map(
+                (category, index) => (
+                  <li key={index}>{category.category.name}</li>
+                ),
+              )}
+            </ul>
+          </div>
+        </TabsContent>
+        <TabsContent value="customization">
+          <div className="mt-4">
+            <h5 className="mb-2 font-semibold">Özel Metinler:</h5>
+            {selectedOrder?.order_item_special_texts.map((text) => (
+              <p key={text.id}>{text.content}</p>
+            ))}
+            <h5 className="mb-2 mt-4 font-semibold">Özel Görseller:</h5>
+            <div className="grid grid-cols-2 gap-4">
+              {selectedOrder?.order_item_special_images.map((image) => (
+                <Image
+                  key={image.id}
+                  src={getImageUrlFromPath(image.image_url)}
+                  alt="Özel görsel"
+                  width={150}
+                  height={150}
+                  className="rounded-md"
+                />
+              ))}
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
 
 export default function GuncellenmisSiparislerimSayfasi({
   order,
@@ -28,6 +88,29 @@ export default function GuncellenmisSiparislerimSayfasi({
     GetUserOrdersQuery["order"][0]["tenant_orders"][0]["order_items"][0] | null
   >(null);
   const { onOpen } = useOrderCustomizableModal();
+  const { openDialog, closeDialog } = useResponsiveDialog();
+  const { push } = useRouter();
+
+  const handleCreateReview = async ({
+    product_id,
+    score,
+    comment,
+  }: {
+    product_id: number;
+    score: number;
+    comment: string;
+  }) => {
+    const response = await createReview({
+      product_id,
+      score,
+      comment,
+    });
+    if (response?.created_at) {
+      closeDialog();
+      toast.success("Değerlendirme başarıyla eklendi.");
+    }
+    push("/account/reviews");
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -82,94 +165,17 @@ export default function GuncellenmisSiparislerimSayfasi({
                           "Belirtilmemiş"}
                       </p>
                       <div className="flex w-full items-start justify-start">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="soft"
-                              size="sm"
-                              className="mt-2"
-                              onClick={() => setSelectedOrder(item)}
-                            >
-                              Detayları Görüntüle
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-3xl">
-                            <DialogHeader>
-                              <DialogTitle>Sipariş Detayları</DialogTitle>
-                            </DialogHeader>
-                            <Tabs defaultValue="details">
-                              <TabsList>
-                                <TabsTrigger value="details">
-                                  Ürün Detayları
-                                </TabsTrigger>
-                                <TabsTrigger value="customization">
-                                  Özelleştirmeler
-                                </TabsTrigger>
-                              </TabsList>
-                              <TabsContent value="details">
-                                <div className="mt-4">
-                                  <h4 className="mb-2 font-semibold">
-                                    {selectedOrder?.product.name}
-                                  </h4>
-                                  <p>
-                                    Sipariş Numarası:{" "}
-                                    {selectedOrder?.order_item_no ||
-                                      "Belirtilmemiş"}
-                                  </p>
-                                  <p>Miktar: {selectedOrder?.quantity}</p>
-                                  <p>
-                                    Stok Durumu:{" "}
-                                    {selectedOrder?.product.quantity ||
-                                      "Belirtilmemiş"}
-                                  </p>
-                                  <h5 className="mb-2 mt-4 font-semibold">
-                                    Ürün Kategorileri:
-                                  </h5>
-                                  <ul>
-                                    {selectedOrder?.product.product_categories.map(
-                                      (category, index) => (
-                                        <li key={index}>
-                                          {category.category.name}
-                                        </li>
-                                      ),
-                                    )}
-                                  </ul>
-                                </div>
-                              </TabsContent>
-                              <TabsContent value="customization">
-                                <div className="mt-4">
-                                  <h5 className="mb-2 font-semibold">
-                                    Özel Metinler:
-                                  </h5>
-                                  {selectedOrder?.order_item_special_texts.map(
-                                    (text) => (
-                                      <p key={text.id}>{text.content}</p>
-                                    ),
-                                  )}
-                                  <h5 className="mb-2 mt-4 font-semibold">
-                                    Özel Görseller:
-                                  </h5>
-                                  <div className="grid grid-cols-2 gap-4">
-                                    {selectedOrder?.order_item_special_images.map(
-                                      (image) => (
-                                        <Image
-                                          key={image.id}
-                                          src={getImageUrlFromPath(
-                                            image.image_url,
-                                          )}
-                                          alt="Özel görsel"
-                                          width={150}
-                                          height={150}
-                                          className="rounded-md"
-                                        />
-                                      ),
-                                    )}
-                                  </div>
-                                </div>
-                              </TabsContent>
-                            </Tabs>
-                          </DialogContent>
-                        </Dialog>
+                        <Button
+                          variant="soft"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() =>
+                            openDialog(<ModalContent selectedOrder={item} />)
+                          }
+                        >
+                          Detayları Görüntüle
+                        </Button>
+
                         {order.tenant_orders.find(
                           (to) =>
                             to.order_items.reduce((acc, oi) => {
@@ -207,13 +213,38 @@ export default function GuncellenmisSiparislerimSayfasi({
                             Özelleştirme Tamamlandı
                           </Button>
                         )}
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          className="ml-auto"
-                        >
-                          Ürünü Değerlendir
-                        </Button>
+                        <div className="ml-auto flex flex-col items-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="ml-4"
+                            onClick={() =>
+                              openDialog(
+                                <OrderMessage
+                                  orderTenantId={tenantOrder.id}
+                                  tenant={tenantOrder.tenant}
+                                  tenantId={tenantOrder.tenant.tenants[0].id}
+                                />,
+                              )
+                            }
+                          >
+                            Satıcıya Mesaj Gönder
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() =>
+                              openDialog(
+                                <CreateReview
+                                  handleCreateReview={handleCreateReview}
+                                  selectedProduct={item.product}
+                                />,
+                              )
+                            }
+                          >
+                            Ürünü Değerlendir
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>

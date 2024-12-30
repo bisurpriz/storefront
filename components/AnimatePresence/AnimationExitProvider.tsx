@@ -1,5 +1,5 @@
+import { AnimatePresence, AnimatePresenceProps } from "motion/react";
 import { FC } from "react";
-import { AnimatePresence, AnimatePresenceProps } from "framer-motion";
 
 type AnimationExitProviderProps = {
   show: boolean;

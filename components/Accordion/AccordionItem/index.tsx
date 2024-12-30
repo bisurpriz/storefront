@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
 import ChevronDown from "@/components/Icons/ChevronDown";
+import { motion } from "motion/react";
+import { useRef, useState } from "react";
 
 interface AccordionItemProps {
   title: React.ReactNode;

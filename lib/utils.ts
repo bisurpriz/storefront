@@ -19,8 +19,8 @@ export function getProductDetailUrl(
   return `/${categorySlug}/${slug}?pid=${id}`;
 }
 
-export function getCategoryUrl(slug: string, id: number): string {
-  return `/kategori/${slug}?cid=${id}`;
+export function getCategoryUrl(slug: string): string {
+  return `/${slug}`;
 }
 
 export function getTenantUrl(slug: string, id: string): string {

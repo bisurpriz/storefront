@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import React, { FC } from "react";
-import { motion } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import clsx from "clsx";
+import { motion } from "motion/react";
+import { FC } from "react";
 
 type ButtonCheckboxProps = {
   onChange: (value: boolean) => void;

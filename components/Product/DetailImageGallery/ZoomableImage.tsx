@@ -1,103 +1,207 @@
-import { cn, getImageUrlFromPath } from "@/lib/utils";
+"use client";
+
+import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-const ZoomableImage = ({ image, index, isMobile }) => {
-  const [show, setShow] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const zoomRef = useRef<HTMLDivElement>(null);
+interface ProductImageZoomProps {
+  image: string;
+  alt: string;
+  highQualityImage?: string;
+}
 
-  const handleMouseMove = (e) => {
-    if (!show) {
-      setShow(true);
-      return;
-    }
+export default function ProductImageZoom({
+  image,
+  alt,
+  highQualityImage = image,
+}: ProductImageZoomProps) {
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [isMobileZoomed, setIsMobileZoomed] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [lastTouch, setLastTouch] = useState({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLDivElement>(null);
+  const zoomPreviewRef = useRef<HTMLDivElement>(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const lastTapTime = useRef(0);
 
-    if (imageRef.current && zoomRef.current && show) {
-      const imageRect = imageRef.current.getBoundingClientRect();
+  const calculatePreviewPosition = () => {
+    if (!imageRef.current || !zoomPreviewRef.current || isMobile) return null;
 
-      const offsetX = e.clientX - imageRect.left;
-      const offsetY = e.clientY - imageRect.top;
+    const imageRect = imageRef.current.getBoundingClientRect();
+    const previewRect = zoomPreviewRef.current.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+    const scrollY = window.scrollY;
 
-      const xRatio = offsetX / imageRect.width;
-      const yRatio = offsetY / imageRect.height;
+    const spaceOnRight = windowWidth - imageRect.right;
+    const previewWidth = previewRect.width || 500;
+    const gap = 20;
 
-      const zoomWidth = 2000;
-      const zoomHeight = 2000;
+    const left =
+      spaceOnRight >= previewWidth + gap
+        ? imageRect.right + gap
+        : imageRect.left - previewWidth - gap;
 
-      zoomRef.current.style.left = imageRect.left + imageRect.width + "px";
-      zoomRef.current.style.top = imageRect.top + "px";
-      zoomRef.current.style.width = imageRect.width + "px";
-      zoomRef.current.style.height = imageRect.height + "px";
+    const top = imageRect.top + scrollY;
 
-      const bgPosX = -xRatio * (zoomWidth - imageRect.width);
-      const bgPosY = -yRatio * (zoomHeight - imageRect.height);
-      zoomRef.current.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-    }
+    return { top, left };
   };
 
-  const handleMouseLeave = () => {
-    setShow(false);
+  const updatePreviewPosition = () => {
+    if (!zoomPreviewRef.current || isMobile) return;
+
+    const position = calculatePreviewPosition();
+    if (!position) return;
+
+    zoomPreviewRef.current.style.top = `${position.top}px`;
+    zoomPreviewRef.current.style.left = `${position.left}px`;
   };
 
-  if (isMobile) {
-    return (
-      <div className="relative h-full w-full flex-1">
-        <Image
-          ref={imageRef}
-          src={getImageUrlFromPath(image, 500)}
-          alt={image}
-          className={cn(
-            "zoom-marker h-full w-full flex-1 rounded-md object-contain",
-          )}
-          sizes="500px"
-          width={500}
-          height={500}
-          priority={index === 0}
-          loading={index === 0 ? "eager" : "lazy"}
-        />
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (isZoomed && !isMobile) {
+      updatePreviewPosition();
+      window.addEventListener("scroll", updatePreviewPosition);
+      window.addEventListener("resize", updatePreviewPosition);
+
+      return () => {
+        window.removeEventListener("scroll", updatePreviewPosition);
+        window.removeEventListener("resize", updatePreviewPosition);
+      };
+    }
+  }, [isZoomed, isMobile]);
+
+  const handleDoubleTap = (e: TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime.current;
+
+    if (tapLength < 300 && tapLength > 0) {
+      setIsMobileZoomed(!isMobileZoomed);
+      setPanPosition({ x: 0, y: 0 }); // Reset pan position
+    }
+
+    lastTapTime.current = currentTime;
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isMobileZoomed || !imageRef.current) return;
+
+    e.preventDefault();
+    const touch = e.touches[0];
+
+    if (e.touches.length === 1) {
+      // Panning
+      const deltaX = touch.clientX - lastTouch.x;
+      const deltaY = touch.clientY - lastTouch.y;
+
+      setPanPosition((prev) => {
+        // Sınırları hesapla
+        const maxPan = 100; // Maksimum pan mesafesi
+        const newX = Math.min(Math.max(prev.x + deltaX, -maxPan), maxPan);
+        const newY = Math.min(Math.max(prev.y + deltaY, -maxPan), maxPan);
+
+        return { x: newX, y: newY };
+      });
+    }
+
+    setLastTouch({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    setLastTouch({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!imageRef.current || isMobile) return;
+
+    const { left, top, width, height } =
+      imageRef.current.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+
+    setPosition({ x, y });
+  };
+
+  const handleMouseEnter = () => !isMobile && setIsZoomed(true);
+  const handleMouseLeave = () => !isMobile && setIsZoomed(false);
 
   return (
-    <div className="relative h-full w-full flex-1">
-      <Image
+    <div className="group relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
+      <div
         ref={imageRef}
-        src={getImageUrlFromPath(image, 500)}
-        alt={image}
         className={cn(
-          "zoom-marker h-full w-full flex-1 rounded-md object-contain",
+          "relative h-full w-full",
+          isMobile ? "touch-none" : "cursor-zoom-in",
         )}
-        sizes="500px"
-        width={500}
-        height={500}
-        priority={index === 0}
-        loading={index === 0 ? "eager" : "lazy"}
-        onMouseEnter={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
-      />
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleDoubleTap}
+      >
+        <Image
+          src={isMobileZoomed ? highQualityImage : image}
+          alt={alt}
+          fill
+          className={cn(
+            "object-cover transition-transform duration-200",
+            isMobileZoomed && "scale-200",
+          )}
+          style={
+            isMobileZoomed
+              ? {
+                  transform: `scale(2) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                }
+              : undefined
+          }
+          sizes="(min-width: 1024px) 40vw, 80vw"
+          priority
+          quality={isMobileZoomed ? 100 : 80}
+        />
 
-      {show &&
+        {/* Desktop Lens Indicator */}
+        {isZoomed && !isMobile && (
+          <div
+            className="pointer-events-none absolute z-10 h-1/3 w-1/3 border border-primary/50 bg-white/10"
+            style={{
+              left: `${position.x - 16.5}%`,
+              top: `${position.y - 16.5}%`,
+            }}
+          />
+        )}
+      </div>
+
+      {/* Desktop Zoom Preview Portal */}
+      {isZoomed &&
+        !isMobile &&
         createPortal(
           <div
-            ref={zoomRef}
-            className={cn("rounded-md border border-primary bg-background")}
-            style={{
-              backgroundImage: `url(${getImageUrlFromPath(image, 2000)})`,
-              display: "block",
-              position: "fixed",
-              backgroundSize: "2000px 2000px",
-              backgroundRepeat: "no-repeat",
-              zIndex: 999,
-            }}
-          />,
+            ref={zoomPreviewRef}
+            className={cn(
+              "fixed z-50 aspect-square w-[500px] overflow-hidden rounded-lg border bg-white shadow-xl",
+              "duration-200 animate-in fade-in zoom-in-95",
+            )}
+          >
+            <div className="relative h-full w-full">
+              <Image
+                src={highQualityImage}
+                alt={alt}
+                fill
+                className="object-cover"
+                sizes="500px"
+                quality={100}
+                style={{
+                  transform: `scale(2.5)`,
+                  transformOrigin: `${position.x}% ${position.y}%`,
+                }}
+              />
+            </div>
+          </div>,
           document.body,
         )}
     </div>
   );
-};
-
-export default ZoomableImage;
+}

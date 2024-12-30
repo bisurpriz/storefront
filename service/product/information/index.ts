@@ -20,6 +20,7 @@ export const GetProductInformationDocument = `
         image_url
         price
         slug
+        discount_price
         product_categories {
           category {
             slug

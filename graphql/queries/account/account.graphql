@@ -83,6 +83,7 @@ query getUserOrders {
               slug
             }
           }
+          id
           slug
           image_url
           name

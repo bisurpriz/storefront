@@ -1,10 +1,10 @@
+import { searchProductsv1 } from "@/app/(feed)/actions";
+import { PER_REQUEST } from "@/app/constants";
+import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
-import Filter from "@/components/Filter";
-import { searchProductsv1 } from "@/app/(feed)/actions";
-import TenantHeader from "../components/TenantHeader";
 import { getVendorDetails } from "../actions";
-import { PER_REQUEST } from "@/app/constants";
+import TenantHeader from "../components/TenantHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = `Mağaza`;
@@ -66,7 +66,6 @@ const Vendor = async (props: {
       <InfinityScroll
         totalCount={totalCount}
         initialData={data}
-        dataKey="products"
         query={searchProductsv1}
         params={{
           ...searchParams,

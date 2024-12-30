@@ -25,8 +25,8 @@ export const login = async ({ email, password }, headers = {}) => {
     additionalHeaders: headers,
   });
 
-  if (login.access_token && login.refresh_token) {
-    const decodedToken = await decodeToken(login.access_token);
+  if (login?.data.access_token && login?.data.refresh_token) {
+    const decodedToken = await decodeToken(login.data.access_token);
     const user = {
       id: decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"],
     };
@@ -35,13 +35,13 @@ export const login = async ({ email, password }, headers = {}) => {
       cook.delete(CookieTokens.GUEST_ID);
     }
 
-    cook.set(CookieTokens.ACCESS_TOKEN, login.access_token, {
+    cook.set(CookieTokens.ACCESS_TOKEN, login.data.access_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
-    cook.set(CookieTokens.REFRESH_TOKEN, login.refresh_token, {
+    cook.set(CookieTokens.REFRESH_TOKEN, login.data.refresh_token, {
       httpOnly: process.env.NODE_ENV === "production",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

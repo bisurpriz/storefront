@@ -52,7 +52,8 @@ const CouponCard = ({
   const daysDifference = endDate
     ? differenceInDays(parseISO(endDate), today)
     : 0;
-  const isExpired = daysDifference <= 0;
+
+  const isExpired = daysDifference < 0;
   const usagePercentage = ((limit - leftLimit) / limit) * 100;
 
   return (

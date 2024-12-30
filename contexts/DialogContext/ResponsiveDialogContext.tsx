@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useContext, useState, createContext, ReactNode } from "react";
+import { createContext, FC, ReactNode, useContext, useState } from "react";
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -31,6 +31,7 @@ export const ResponsiveDialogProvider: FC<{
   const closeDialog = () => {
     setContent(null);
     setOpen(false);
+    return true;
   };
 
   const Component: FC<{

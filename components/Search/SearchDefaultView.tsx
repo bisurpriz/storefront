@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Category, Product } from "@/graphql/generated-types";
 import { cn } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Clock,
@@ -16,6 +15,7 @@ import {
   TrendingUp,
   X,
 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

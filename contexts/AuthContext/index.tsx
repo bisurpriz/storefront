@@ -33,7 +33,6 @@ export const AuthProvider = ({
   user: GetUserByIdQuery["user_by_pk"];
 }) => {
   const [userAddresses, setUserAddresses] = useState<any>([]);
-
   useEffect(() => {
     handleUserAuthentication();
   }, [user]);

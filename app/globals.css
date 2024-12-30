@@ -97,7 +97,7 @@
     --secondary: 279 44% 57%;
     --secondary-foreground: 0 0% 98%;
     --tertiary: 219 44% 57;
-    --tertiary-foreground: 0 0% 45.1%;
+    --tertiary-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -152,9 +152,7 @@
     --success: 120 100% 50%;
     --success-foreground: 0 0% 98%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -166,6 +164,10 @@
   .PopoverContent {
     width: var(--radix-popover-trigger-width) !important;
     max-height: var(--radix-popover-content-available-height) !important;
+  }
+
+  * {
+    font-display: swap;
   }
 }
 

@@ -33,9 +33,11 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       lastname,
     });
 
-    if (response.error) {
+    if (response.data.error) {
       const errorMessage =
-        AuthErrorMessages[response.error as keyof typeof AuthErrorMessages];
+        AuthErrorMessages[
+          response.data.error as keyof typeof AuthErrorMessages
+        ];
 
       setError(errorMessage);
       toast.error(errorMessage, {
@@ -46,8 +48,10 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
       });
       setLoading(false);
       return;
-    } else if (response.body.insert_user.affected_rows) {
-      const { error } = await login({
+    } else if (response.data.affected_rows) {
+      const {
+        data: { error },
+      } = await login({
         email,
         password,
       });

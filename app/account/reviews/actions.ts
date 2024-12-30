@@ -33,16 +33,15 @@ export const createReview = async ({
   score: number;
   product_id: number;
 }) => {
-  const { insert_review_one } =
-    await BonnmarseApi.request<CreateReviewMutation>({
-      query: CreateReviewDocument,
-      variables: {
-        comment,
-        score,
-        product_id,
-      },
-    });
-
+  const data = await BonnmarseApi.request<CreateReviewMutation>({
+    query: CreateReviewDocument,
+    variables: {
+      comment,
+      score,
+      product_id,
+    },
+  });
+  const { insert_review_one } = data;
   return {
     created_at: insert_review_one?.created_at,
   };

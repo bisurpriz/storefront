@@ -1,13 +1,13 @@
 "use client";
 
+import { Link } from "@/components/Link";
 import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getPriceTR } from "@/utils/getPriceTR";
 import { getDiscountRate } from "@/utils/price";
-import { AnimatePresence, useScroll, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll } from "motion/react";
 import Image from "next/image";
-import { Link } from "@/components/Link";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 type RecommendedProductsProps = {
   products: GetProductsWithPaginationQuery["product"];

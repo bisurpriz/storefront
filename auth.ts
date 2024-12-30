@@ -4,7 +4,7 @@ import { login } from "./app/@auth/actions";
 import { registerUser } from "./app/account/actions";
 import { AuthProvider } from "./common/enums/Auth";
 
-const USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+const USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
 const ID_TOKEN = "id-token";
 const CALLBACK = "/social-login/callback?result=success";
 
@@ -27,7 +27,7 @@ export const {
         const { id, name, email, image } = user;
         const nameArray = name?.split(" ");
 
-        const { body, error } = await registerUser({
+        const { data } = await registerUser({
           email,
           firstname: nameArray?.slice(0, nameArray.length - 1).join(" "),
           lastname: nameArray?.[nameArray.length - 1],
@@ -37,21 +37,19 @@ export const {
           provider_id: account.providerAccountId,
         });
 
-        if (error && error !== USER_ALREADY_EXIST) {
+        if (data?.error && data.error !== USER_ALREADY_EXISTS) {
           return false;
         }
 
         const { id_token } = account;
         const {
-          access_token,
-          error: errors,
-          refresh_token,
+          data: { access_token, refresh_token, error },
         } = await login(
           { email: null, password: null },
           { [ID_TOKEN]: `${id_token}` },
         );
 
-        if (errors) {
+        if (error) {
           return false;
         } else if (access_token && refresh_token) {
           return true;

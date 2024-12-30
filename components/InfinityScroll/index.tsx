@@ -1,19 +1,19 @@
 "use client";
 
 import { PER_REQUEST } from "@/app/constants";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { useEffect, useState, useTransition } from "react";
-import { useInView } from "react-intersection-observer";
-import { useProgress } from "react-transition-progress";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
-import Spinner from "../Spinner";
 import EmptyPage from "./EmptyPage";
 
 interface InfinityScrollProps<T> {
   initialData: T[];
-  query: any;
-  dataKey: string;
+  query: (
+    params: { offset: number; limit: number },
+    extraParams?: any,
+  ) => Promise<any>;
   totalCount: number;
   params?: any;
 }
@@ -31,47 +31,53 @@ const InfinityScroll = <T,>({
   query,
   params,
 }: InfinityScrollProps<T>) => {
-  const [data, setData] = useState<T[]>(() => initialData);
-  const [offset, setOffset] = useState(0);
-  const [isPending, startTransition] = useTransition();
-  const startProgress = useProgress();
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
+  const [data, setData] = useState<T[]>(initialData);
+  const [offset, setOffset] = useState(initialData.length);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(totalCount > initialData.length);
 
-  const loadMoreData = async () => {
-    startTransition(async () => {
-      startProgress();
+  const loadingRef = useRef<HTMLDivElement>(null);
+  const entry = useIntersectionObserver(loadingRef, {});
+  const isVisible = !!entry?.isIntersecting;
+
+  const loadMoreData = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+
+    try {
+      setIsLoading(true);
       const next = offset + PER_REQUEST;
 
       const response = await query(
         {
-          offset: next,
+          offset,
           limit: PER_REQUEST,
         },
         params,
       );
+
+      const newItems = response?.hits?.map((hit) => hit.document) || [];
+
+      setData((prev) => [...prev, ...newItems]);
       setOffset(next);
-      setData((prev) => [
-        ...prev,
-        ...response?.hits.map((hit) => hit.document),
-      ]);
-    });
-  };
-
-  useEffect(() => {
-    if (initialData) {
-      setData(initialData);
+      setHasMore(totalCount > next);
+    } catch (error) {
+      console.error("Error loading more data:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [initialData]);
+  }, [offset, isLoading, hasMore, query, params, totalCount]);
 
   useEffect(() => {
-    if (isPending) return;
-
-    if (inView && totalCount >= data?.length) {
+    if (isVisible && hasMore) {
       loadMoreData();
     }
-  }, [inView, isPending, totalCount, data]);
+  }, [isVisible, loadMoreData, hasMore]);
+
+  useEffect(() => {
+    setData(initialData);
+    setOffset(initialData.length);
+    setHasMore(totalCount > initialData.length);
+  }, [initialData, totalCount]);
 
   if (totalCount === 0) return <EmptyPage />;
 
@@ -86,25 +92,19 @@ const InfinityScroll = <T,>({
           "xl:grid-cols-5 xl:gap-6",
         )}
       >
-        {data?.map((item: any) => {
-          return <DynamicProductItem key={item.id} {...item} />;
-        })}
-        {isPending && (
+        {data?.map((item: any) => (
+          <DynamicProductItem key={item.id} {...item} />
+        ))}
+        {isLoading && (
           <>
-            <ProductItemSkeleton />
-            <ProductItemSkeleton />
-            <ProductItemSkeleton />
-            <ProductItemSkeleton />
+            {[...Array(4)].map((_, index) => (
+              <ProductItemSkeleton key={`skeleton-${index}`} />
+            ))}
           </>
         )}
       </div>
-      {totalCount > data?.length && (
-        <div
-          ref={ref}
-          className="flex h-20 w-full items-center justify-center bg-transparent"
-        >
-          <Spinner />
-        </div>
+      {hasMore && (
+        <div ref={loadingRef} className="h-20 w-full" aria-hidden="true" />
       )}
     </>
   );

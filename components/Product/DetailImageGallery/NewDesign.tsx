@@ -121,9 +121,9 @@ export default function NewDesignGallery({ images, isMobile }) {
                 className="relative flex aspect-square h-full w-full items-center justify-center"
               >
                 <ZoomableImage
-                  image={image}
-                  index={index}
-                  isMobile={isMobile}
+                  image={getImageUrlFromPath(image)}
+                  alt={image}
+                  highQualityImage={getImageUrlFromPath(image, 2000)}
                 />
               </CarouselItem>
             ))}

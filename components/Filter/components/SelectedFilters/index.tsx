@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import React, { FC } from "react";
+import { AnimatePresence } from "motion/react";
+import { FC } from "react";
+import { FilterTypes } from "../..";
 import { FilterInputOption } from "../FilterInput";
 import SelectedFilterTag from "./SelectedFilterTag";
-import { FilterTypes } from "../..";
-import { AnimatePresence } from "framer-motion";
 
 type SelectedFiltersProps = {
   selectedCategories: FilterInputOption[];

@@ -6,10 +6,7 @@ import {
   getConversationId,
   initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
-import {
-  Initialize3dsPaymentRequest,
-  Locale,
-} from "@/app/iyzico-payment/types";
+import { Locale } from "@/app/iyzico-payment/types";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
 import CreditCardInput from "@/components/CreditCardInput";
 import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
@@ -28,10 +25,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
-import { toast } from "sonner";
 import { object, string } from "yup";
 import { createOrderAction } from "../../actions";
 import { CartStepPaths } from "../../constants";
@@ -44,59 +46,40 @@ export type CreditCardForm = {
   creditCardCvv: string;
 };
 
-const schema = object().shape({
-  creditCardNumber: string().test(
-    "test-number",
-    "Geçersiz kart numarası",
-    (value) => {
-      if (value) {
-        if (value.startsWith("34") || value.startsWith("37")) {
-          return value.replace(/\s+/g, "").length === 15;
-        }
+const getValidationSchema = () =>
+  object().shape({
+    creditCardNumber: string().test(
+      "test-number",
+      "Geçersiz kart numarası",
+      (value) => {
+        if (!value) return false;
+        const cleanNumber = value.replace(/\s+/g, "");
+        return cleanNumber.startsWith("34") || cleanNumber.startsWith("37")
+          ? cleanNumber.length === 15
+          : cleanNumber.length === 16;
+      },
+    ),
+    creditCardName: string()
+      .required("Kart üzerindeki isim zorunludur")
+      .min(5, "İsim en az 5 karakter olmalıdır")
+      .matches(/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/, "Sadece harf kullanılabilir"),
+    creditCardDate: string()
+      .required("Son kullanma tarihi geçersiz")
+      .test("test-date", "Geçersiz tarih", (value) => {
+        if (!value) return false;
+        const [month, year] = value.split("/");
+        if (!month || !year) return false;
 
-        return value.replace(/\s+/g, "").length === 16;
-      } else {
-        return false;
-      }
-    },
-  ),
-  creditCardName: string().required("Kart üzerindeki isim zorunludur"),
-  creditCardDate: string()
-    .required("Son kullanma tarihi geçersiz")
-    .test("test-date", "Geçersiz tarih", (value) => {
-      const splitted = value?.split("/");
-      if (splitted) {
-        const month = splitted[0];
-        const year = splitted[1];
-        if (month && year) {
-          const currentYear = new Date().getFullYear().toString().slice(2);
-          if (Number(year) < Number(currentYear)) {
-            return false;
-          }
-          if (Number(month) > 12 || Number(month) < 1) {
-            return false;
-          }
-          return true;
-        }
-      }
-    }),
-  creditCardCvv: string()
-    .required("CVV zorunludur")
-    .test("test-cvv", "Geçersiz CVV", (value) => {
-      if (value) {
-        return value.replace(/\s+/g, "").length === 3;
-      } else {
-        return false;
-      }
-    }),
-});
+        const currentYear = new Date().getFullYear() % 100;
+        const monthNum = Number(month);
+        const yearNum = Number(year);
 
-const defaultValues: CreditCardForm = {
-  creditCardNumber: "",
-  creditCardName: "",
-  creditCardDate: "",
-  creditCardCvv: "",
-};
+        return yearNum >= currentYear && monthNum >= 1 && monthNum <= 12;
+      }),
+    creditCardCvv: string()
+      .required("CVV zorunludur")
+      .matches(/^\d{3}$/, "CVV 3 haneli olmalıdır"),
+  });
 
 const CreditCardForm = () => {
   const [base64PasswordHtml, setBase64PasswordHtml] = useState<string>("");
@@ -108,14 +91,27 @@ const CreditCardForm = () => {
   const { replace } = useRouter();
   const userData = useUser();
   const { isTablet } = useResponsive();
+  const { renderPopup, openPopup, closePopup } = usePopup();
+
   const {
     cartState: { cartItems, cost },
     hasCustomizableProduct,
     clearCart,
   } = useCart();
 
-  const { handleSubmit, control, getValues } = useForm({
-    defaultValues,
+  const schema = useMemo(() => getValidationSchema(), []);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = useForm({
+    defaultValues: {
+      creditCardNumber: "",
+      creditCardName: "",
+      creditCardDate: "",
+      creditCardCvv: "",
+    },
     resolver: yupResolver(schema),
     mode: "onChange",
   });
@@ -130,132 +126,136 @@ const CreditCardForm = () => {
       const serialize = sessionStorage.getItem("order-detail-form");
       if (!serialize) {
         replace(CartStepPaths.CART);
+        return;
+      }
+      try {
+        JSON.parse(serialize);
+      } catch {
+        sessionStorage.removeItem("order-detail-form");
+        replace(CartStepPaths.CART);
       }
     });
-  }, []);
-  const { openApproveContract, approveContract, setApproveContract } =
-    useContract();
+  }, [replace]);
 
-  const onSubmit = async (data: CreditCardForm) => {
-    startTransition(async () => {
+  const { openApproveContract, approveContract } = useContract();
+
+  const onSubmit = useCallback(
+    async (data: CreditCardForm) => {
       if (!approveContract) {
         openApproveContract();
         return;
       }
 
-      startProgress();
-      if (data) {
-        setLoading(true);
-        const serialize = sessionStorage.getItem("order-detail-form");
-        const detailData: OrderDetailFormData = JSON.parse(serialize);
-        const senderNames = detailData.sender_name.split(" ");
-        const timeStamps = new Date().getTime();
+      startTransition(async () => {
+        try {
+          startProgress();
+          setLoading(true);
 
-        const conversationId = await getConversationId(timeStamps);
+          const serialize = sessionStorage.getItem("order-detail-form");
+          if (!serialize) throw new Error("Form verisi bulunamadı");
 
-        const basketId = `${
-          userData.user?.carts[0]?.id ?? Cookies.get(CookieTokens.GUEST_ID)
-        }-${timeStamps}`;
-        const ip = await getIpAddress();
+          const detailData: OrderDetailFormData = JSON.parse(serialize);
+          const senderNames = detailData.sender_name.trim().split(" ");
+          const timeStamps = Date.now();
 
-        if (!ip) {
-          toast.error("IP Adresi alınamadı. Lütfen tekrar deneyiniz.");
-        }
+          const [conversationId, ip] = await Promise.all([
+            getConversationId(timeStamps),
+            getIpAddress(),
+          ]);
 
-        const isCouponApplied = cost.isCouponApplied;
-
-        const couponInfo = isCouponApplied
-          ? {
-              code: cost.couponCode,
-              guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
-            }
-          : undefined;
-
-        const variables = {
-          basketId,
-          basketItems: createBasketItems(cartItems),
-          billingAddress: {
-            address: detailData.invoice_company_address,
-            city: detailData.invoice_company_address,
-            contactName: detailData.sender_name,
-            country: "Türkiye",
-          },
-          shippingAddress: {
-            address: detailData.receiver_address,
-            city: detailData.receiver_city.label,
-            country: "Türkiye",
-            contactName: detailData.receiver_name,
-          },
-          buyer: {
-            city: detailData.receiver_city.label,
-            country: "Türkiye",
-            email: detailData.sender_email,
-            gsmNumber: detailData.sender_phone,
-            identityNumber: "11111111111",
-            ip: await getIpAddress(),
-            name: senderNames[0],
-            surname: senderNames[senderNames.length - 1],
-            registrationAddress: detailData.receiver_address,
-            id: userData?.user?.id ?? Cookies.get(CookieTokens.GUEST_ID),
-          },
-          paymentChannel: isTablet ? "WEB" : "MOBILE_WEB",
-          callbackUrl: process.env.NEXT_PUBLIC_IYZICO_CALLBACK_URL,
-          conversationId,
-          currency: "TRY",
-          locale: Locale.TR,
-          paidPrice: cost.totalPrice.toString(),
-          price: cost.totalPrice.toString(),
-          paymentCard: {
-            cardHolderName: data.creditCardName,
-            cardNumber: data.creditCardNumber.replaceAll(" ", ""),
-            cvc: data.creditCardCvv,
-            expireMonth: data.creditCardDate.split("/")[0],
-            expireYear: `20${data.creditCardDate.split("/")[1]}`,
-          },
-          installment: 1,
-        } as Initialize3dsPaymentRequest;
-
-        const res = await createOrderAction(
-          cartItems,
-          detailData,
-          conversationId,
-          couponInfo,
-        );
-
-        if (res?.data?.insert_order_one?.id) {
-          setCreatedOrder(res.data.insert_order_one.id);
-        }
-        if (res.status === "error") {
-          setLoading(false);
-          openPopup();
-          setErrorMessage(
-            "Şuan sipariş oluşturamıyoruz. Lütfen daha sonra tekrar deneyiniz.",
-          );
-          return;
-        } else {
-          const response = await initialize3dsPayment(variables);
-          if (response.errorMessage) {
-            setLoading(false);
-            openPopup();
-            setErrorMessage(response.errorMessage);
-            return;
+          if (!ip) {
+            throw new Error("IP Adresi alınamadı");
           }
 
-          setBase64PasswordHtml(response.threeDSHtmlContent);
+          const basketId = `${userData.user?.carts[0]?.id ?? Cookies.get(CookieTokens.GUEST_ID)}-${timeStamps}`;
+
+          const couponInfo = cost.isCouponApplied
+            ? {
+                code: cost.couponCode,
+                guest_id: Cookies.get(CookieTokens.GUEST_ID) ?? undefined,
+              }
+            : undefined;
+
+          const orderRes = await createOrderAction(
+            cartItems,
+            detailData,
+            conversationId,
+            couponInfo,
+          );
+
+          if (orderRes.status === "error") {
+            throw new Error(orderRes.message || "Sipariş oluşturulamadı");
+          }
+
+          setCreatedOrder(orderRes.data?.insert_order_one?.id);
+
+          const [month, year] = data.creditCardDate.split("/");
+          const paymentRes = await initialize3dsPayment({
+            basketId,
+            basketItems: createBasketItems(cartItems),
+            billingAddress: {
+              address: detailData.invoice_company_address,
+              city: detailData.invoice_company_address,
+              contactName: detailData.sender_name,
+              country: "Türkiye",
+            },
+            shippingAddress: {
+              address: detailData.receiver_address,
+              city: detailData.receiver_city.label,
+              country: "Türkiye",
+              contactName: detailData.receiver_name,
+            },
+            buyer: {
+              city: detailData.receiver_city.label,
+              country: "Türkiye",
+              email: detailData.sender_email,
+              gsmNumber: detailData.sender_phone,
+              identityNumber: "11111111111",
+              ip,
+              name: senderNames[0],
+              surname: senderNames[senderNames.length - 1],
+              registrationAddress: detailData.receiver_address,
+              id: userData?.user?.id ?? Cookies.get(CookieTokens.GUEST_ID),
+            },
+            paymentChannel: isTablet ? "WEB" : "MOBILE_WEB",
+            callbackUrl: process.env.NEXT_PUBLIC_IYZICO_CALLBACK_URL,
+            conversationId,
+            currency: "TRY",
+            locale: Locale.TR,
+            paidPrice: cost.totalPrice.toString(),
+            price: cost.totalPrice.toString(),
+            paymentCard: {
+              cardHolderName: data.creditCardName,
+              cardNumber: data.creditCardNumber.replace(/\s+/g, ""),
+              cvc: data.creditCardCvv,
+              expireMonth: month,
+              expireYear: `20${year}`,
+            },
+            installment: 1,
+          });
+
+          if (paymentRes.errorMessage) {
+            throw new Error(paymentRes.errorMessage);
+          }
+
+          setBase64PasswordHtml(paymentRes.threeDSHtmlContent);
+        } catch (error) {
+          setLoading(false);
+          setErrorMessage(error.message);
+          openPopup();
         }
-      }
-    });
-  };
+      });
+    },
+    [approveContract, cartItems, cost, userData, isTablet, openPopup],
+  );
 
-  const { renderPopup, openPopup, closePopup } = usePopup();
-
-  const removeStorages = () => {
+  const removeStorages = useCallback(() => {
     sessionStorage.removeItem("order-detail-form");
     localStorage.removeItem("order-detail-form");
     localStorage.removeItem("cart");
     localStorage.removeItem("count");
     localStorage.removeItem("cost");
-  };
+  }, []);
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -265,9 +265,11 @@ const CreditCardForm = () => {
         setLoading(false);
         clearCart();
         removeStorages();
-        if (hasCustomizableProduct)
-          replace(CartStepPaths.CUSTOMIZE + "/" + createdOrder);
-        else replace(CartStepPaths.COMPLETE);
+        replace(
+          hasCustomizableProduct
+            ? `${CartStepPaths.CUSTOMIZE}/${createdOrder}`
+            : CartStepPaths.COMPLETE,
+        );
       } else if (event.data.errorMessage) {
         setLoading(false);
         setErrorMessage(event.data.errorMessage);
@@ -276,17 +278,21 @@ const CreditCardForm = () => {
     };
 
     window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [
+    createdOrder,
+    clearCart,
+    removeStorages,
+    replace,
+    hasCustomizableProduct,
+    openPopup,
+  ]);
 
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, [createdOrder]);
-
-  const handleClosePopupWithClearStates = () => {
+  const handleClosePopupWithClearStates = useCallback(() => {
     setBase64PasswordHtml("");
     setErrorMessage("");
     closePopup();
-  };
+  }, [closePopup]);
 
   return (
     <>
@@ -318,6 +324,7 @@ const CreditCardForm = () => {
         name="credit-card-form"
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-8 shadow-lg"
+        autoComplete="off"
       >
         <Controller
           name="creditCardNumber"
@@ -329,6 +336,7 @@ const CreditCardForm = () => {
               className="h-12 rounded-sm"
               error={!!error}
               errorMessage={error?.message}
+              autoComplete="cc-number"
             />
           )}
         />
@@ -348,6 +356,7 @@ const CreditCardForm = () => {
                 error={!!error}
                 errorMessage={error?.message}
                 icon={<User className="text-xl" />}
+                autoComplete="cc-name"
               />
             )}
           />
@@ -361,6 +370,7 @@ const CreditCardForm = () => {
                 onChange={(e, val) => onChange(val)}
                 disabled={loading}
                 className="h-12 rounded-sm"
+                autoComplete="cc-exp"
               />
             )}
           />
@@ -382,24 +392,32 @@ const CreditCardForm = () => {
                 error={!!error}
                 errorMessage={error?.message}
                 icon={<Code className="text-xl" />}
+                autoComplete="cc-csc"
               />
             )}
           />
         </div>
       </form>
-      <Modal open={!!base64PasswordHtml}>
-        <iframe
-          src={`data:text/html;base64,${base64PasswordHtml}`}
-          className={clsx(
-            "flex h-full min-h-[400px] w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
-          )}
-          onLoad={() => {
-            const iframeWindow =
-              document?.querySelector("iframe").contentWindow;
-            iframeWindow.postMessage("check-status", "*");
-          }}
-        />
-      </Modal>
+
+      {base64PasswordHtml && (
+        <Modal open={true}>
+          <iframe
+            src={`data:text/html;base64,${base64PasswordHtml}`}
+            className={clsx(
+              "flex h-full min-h-[400px] w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
+            )}
+            onLoad={() => {
+              const iframeWindow =
+                document?.querySelector("iframe")?.contentWindow;
+              if (iframeWindow) {
+                iframeWindow.postMessage("check-status", "*");
+              }
+            }}
+            title="3D Secure Payment"
+            sandbox="allow-forms allow-scripts allow-same-origin"
+          />
+        </Modal>
+      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
-import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
+import { motion } from "motion/react";
 import { FC, InputHTMLAttributes, LegacyRef } from "react";
 
 const inputVariants = cva(
@@ -31,6 +31,7 @@ export interface InputProps
   error?: boolean;
   errorMessage?: string;
   dirtyAnimation?: boolean;
+  fullWidth?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -44,13 +45,14 @@ const Input: FC<InputProps> = ({
   errorMessage,
   placeholder,
   dirtyAnimation,
+  fullWidth,
   ...props
 }) => {
   const hasIconClasses = icon ? "pl-10" : "";
 
   return (
     <>
-      <div className="relative">
+      <div className={cn("relative", { "w-full": fullWidth })}>
         {!!icon && (
           <span
             className={cn(

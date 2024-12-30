@@ -58,14 +58,14 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
         (field: HTMLInputElement) => field.value,
       );
 
-      const { error } = await login({
+      const { message, success } = await login({
         email,
         password,
       });
 
-      if (error) {
+      if (!success) {
         const errorMessage =
-          AuthErrorMessages[error as keyof typeof AuthErrorMessages];
+          AuthErrorMessages[message as keyof typeof AuthErrorMessages];
 
         setError(errorMessage);
         toast.error(errorMessage, {

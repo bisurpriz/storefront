@@ -7,6 +7,7 @@ query getProductById($id: bigint = 0) {
     }
     description
     id
+    slug
     image_url
     name
     price
@@ -227,6 +228,7 @@ query getProductInformation($id: bigint!) @cached(ttl: 180) {
         name
         image_url
         price
+        discount_price
         slug
         product_categories {
           category {

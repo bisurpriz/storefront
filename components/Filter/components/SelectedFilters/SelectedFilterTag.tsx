@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import React, { FC } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import { FC } from "react";
 import { selectedTagMotionVariants } from "../../constants";
 
 type SelectedFilterTagProps = {

@@ -3,6 +3,7 @@ import { IMAGE_URL } from "@/contants/urls";
 
 export function getImageUrlFromPath(path?: string, size = 150): string {
   if (!path) return `https://via.placeholder.com/${size}`;
+  if (path.startsWith("http") || path.startsWith("https")) return path;
   return `${IMAGE_URL}/${path}`;
 }
 

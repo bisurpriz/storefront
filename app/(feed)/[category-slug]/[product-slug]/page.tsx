@@ -1,8 +1,12 @@
 import { PageProps } from "@/.next/types/app/page";
 import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
+import ProductSetter from "@/contexts/ProductContext/ProductSetter";
+import { Product as ProductType } from "@/graphql/generated-types";
 import { GetProductImagesQuery } from "@/graphql/queries/products/getProductById.generated";
+import JsonLd from "@/lib/JsonLd";
 import { BonnmarseApi } from "@/service/fetch";
 import { GetProductImagesDocument } from "@/service/product/images";
+import { typesenseClient } from "@/typesense/client";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { redirect } from "next/navigation";
@@ -28,6 +32,11 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
     redirect("/");
   }
 
+  const fullProductData = await typesenseClient
+    .collections("products")
+    .documents(id.toString())
+    .retrieve();
+
   const viewport = await getServerSideViewPort();
 
   const productData: WithContext<Product> = {
@@ -38,14 +47,12 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
 
   return (
     <>
+      <ProductSetter initialData={fullProductData as ProductType} />
       <NewDesignGallery
         images={product.image_url}
         isMobile={viewport === "mobile"}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
-      />
+      <JsonLd data={productData} />
     </>
   );
 };

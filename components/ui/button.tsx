@@ -1,6 +1,6 @@
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ReloadIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, FC, Ref } from "react";
@@ -21,6 +21,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         soft: "bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-200",
+        tertiary:
+          "bg-tertiary text-tertiary-foreground shadow-sm hover:bg-tertiary/90",
       },
       size: {
         default: "h-10 px-4 py-2",

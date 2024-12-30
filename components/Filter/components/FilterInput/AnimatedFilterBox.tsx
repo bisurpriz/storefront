@@ -1,7 +1,7 @@
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
-import { Variants, motion } from "framer-motion";
+import { Variants, motion } from "motion/react";
 import { FC, useEffect } from "react";
 
 type AnimatedFilterBoxProps = {

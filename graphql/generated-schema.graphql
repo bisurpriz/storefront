@@ -88,10 +88,9 @@ input LoginInput {
 }
 
 type LoginOutput {
-  access_token: String
-  body: json
-  error: String
-  refresh_token: String
+  data: json
+  message: String
+  success: Boolean
 }
 
 type RefreshTokenOutput {
@@ -113,9 +112,9 @@ input RegisterInput {
 }
 
 type RegisterOutput {
-  body: json
   data: json
-  error: String
+  message: String
+  success: Boolean
 }
 
 input ResetPasswordInput {

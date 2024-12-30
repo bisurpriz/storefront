@@ -1,6 +1,6 @@
-import { useState, ReactNode } from "react";
-import { motion } from "framer-motion";
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
+import { motion } from "motion/react";
+import { ReactNode, useState } from "react";
 
 interface PopupProps {
   isOpen: boolean;

@@ -1,6 +1,6 @@
 import { getTenantOrderItem } from "./action";
+import AdvancedChatScreen from "./components/Chatv2";
 import Listener from "./components/Listener";
-import Main from "./components/Main";
 
 const MessagesPage = async (props: {
   searchParams: Promise<{
@@ -18,7 +18,7 @@ const MessagesPage = async (props: {
 
   return (
     <>
-      <Main tenantId={tenantId} />
+      <AdvancedChatScreen />
       <Listener />
     </>
   );

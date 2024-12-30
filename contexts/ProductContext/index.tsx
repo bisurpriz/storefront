@@ -1,41 +1,33 @@
 "use client";
 
+import { GetProductByIdQuery } from "@/graphql/queries/products/getProductById.generated";
 import {
-  GetProductByIdDocument,
-  GetProductByIdQuery,
-  GetProductByIdQueryVariables,
-} from "@/graphql/queries/products/getProductById.generated";
-import { useQuery } from "@apollo/client";
-import { useSearchParams } from "next/navigation";
-import { ReactNode, createContext, useContext } from "react";
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 
 interface ProductContextType {
-  selectedProduct: GetProductByIdQuery["product"] | null;
+  product: GetProductByIdQuery["product"];
+  setProduct: Dispatch<SetStateAction<GetProductByIdQuery["product"]>>;
 }
 
 export const ProductContext = createContext<ProductContextType>({
-  selectedProduct: null,
+  product: null,
+  setProduct: () => {},
 });
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
-  const searchParams = useSearchParams();
-
-  const haspid = searchParams.has("pid");
-  const pid = haspid ? searchParams.get("pid") : null;
-  const { data } = useQuery<GetProductByIdQuery, GetProductByIdQueryVariables>(
-    GetProductByIdDocument,
-    {
-      skip: !haspid,
-      variables: {
-        id: pid,
-      },
-    },
-  );
+  const [product, setProduct] = useState<GetProductByIdQuery["product"]>(null);
 
   return (
     <ProductContext.Provider
       value={{
-        selectedProduct: data?.product,
+        product,
+        setProduct,
       }}
     >
       {children}
