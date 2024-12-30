@@ -69,13 +69,36 @@ export default function AdvancedChatScreen() {
   const handleSendMessage = (message: Message) => {
     if (!selectedChat) return;
     
-    addMessage(message);
+    // Create optimistic message
+    const optimisticMessage: Message = {
+      id: Date.now(), // Temporary ID
+      message: newMessage,
+      created_at: new Date().toISOString(),
+      is_read: false,
+      sender: {
+        id: user.id,
+        picture: user.picture,
+        name: user.firstname + " " + user.lastname,
+        lastMessage: newMessage
+      },
+      receiver: {
+        id: selectedUser!.id,
+        picture: selectedChat.tenant.tenants[0].logo,
+        name: selectedChat.tenant.tenants[0].name,
+        lastMessage: newMessage
+      }
+    };
+    
+    // Add optimistic message immediately
+    addMessage(optimisticMessage);
+    setNewMessage("");
+
+    // Make the actual API call
     sendMessage({
       message: newMessage,
       receiver_id: selectedUser!.id,
       chat_thread_id: selectedChat.id,
     });
-    setNewMessage("");
   };
 
   const toggleUserList = () => {

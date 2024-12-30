@@ -161,10 +161,10 @@
     @apply bg-background text-foreground;
   }
 
-  .PopoverContent {
+  /* .PopoverContent {
     width: var(--radix-popover-trigger-width) !important;
     max-height: var(--radix-popover-content-available-height) !important;
-  }
+  } */
 
   * {
     font-display: swap;
@@ -185,6 +185,7 @@
 }
 
 @keyframes animation {
+
   0%,
   100% {
     background-position: 0% 50%;
