@@ -32,48 +32,48 @@ export default function AdvancedChatScreen() {
     };
   });
 
-  const messages: Message[] = chats
-    ?.find((chat) => chat.tenant.id === selectedUser?.id)
-    ?.messages.map((message) => {
-      const thread = chats?.[0];
-      return {
-        created_at: message.created_at,
-        id: message.id,
-        is_read: message.is_read,
-        message: message.message,
-        receiver: {
-          id: message.receiver.id,
-          picture:
-            message.receiver.id === user.id
-              ? user.picture
-              : thread.tenant.tenants[0].logo,
-          name:
-            message.receiver_id === user.id
-              ? user.firstname + " " + user.lastname
-              : thread.tenant.tenants[0].name,
-          lastMessage: message.message,
-        },
-        sender: {
-          id: message.sender.id,
-          picture:
-            message.sender.id === user.id
-              ? user.picture
-              : thread.tenant.tenants[0].logo,
-          name:
-            message.sender_id === user.id
-              ? user.firstname + " " + user.lastname
-              : thread.tenant.tenants[0].name,
-          lastMessage: message.message,
-        },
-      };
-    });
+  const selectedChat = chats?.find((chat) => chat.tenant.id === selectedUser?.id);
+  const messages: Message[] = selectedChat?.messages.map((message) => {
+    return {
+      created_at: message.created_at,
+      id: message.id,
+      is_read: message.is_read,
+      message: message.message,
+      receiver: {
+        id: message.receiver.id,
+        picture:
+          message.receiver.id === user.id
+            ? user.picture
+            : selectedChat.tenant.tenants[0].logo,
+        name:
+          message.receiver_id === user.id
+            ? user.firstname + " " + user.lastname
+            : selectedChat.tenant.tenants[0].name,
+        lastMessage: message.message,
+      },
+      sender: {
+        id: message.sender.id,
+        picture:
+          message.sender.id === user.id
+            ? user.picture
+            : selectedChat.tenant.tenants[0].logo,
+        name:
+          message.sender_id === user.id
+            ? user.firstname + " " + user.lastname
+            : selectedChat.tenant.tenants[0].name,
+        lastMessage: message.message,
+      },
+    };
+  });
 
   const handleSendMessage = (message: Message) => {
+    if (!selectedChat) return;
+    
     addMessage(message);
     sendMessage({
       message: newMessage,
-      receiver_id: message.receiver.id,
-      chat_thread_id: chats?.[0].id,
+      receiver_id: selectedUser!.id,
+      chat_thread_id: selectedChat.id,
     });
     setNewMessage("");
   };
