@@ -21,7 +21,8 @@ export default function AdvancedChatScreen() {
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [newMessage, setNewMessage] = useState("");
-  const [showUserList, setShowUserList] = useState(true);
+  const [showUserList, setShowUserList] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   const userList: User[] = chats?.map((chat, index) => {
     return {
@@ -68,7 +69,7 @@ export default function AdvancedChatScreen() {
 
   const handleSendMessage = (message: Message) => {
     if (!selectedChat) return;
-    
+
     // Create optimistic message
     const optimisticMessage: Message = {
       id: Date.now(), // Temporary ID
@@ -88,7 +89,7 @@ export default function AdvancedChatScreen() {
         lastMessage: newMessage
       }
     };
-    
+
     // Add optimistic message immediately
     addMessage(optimisticMessage);
     setNewMessage("");
@@ -114,10 +115,28 @@ export default function AdvancedChatScreen() {
       document.getElementById("header")?.classList.remove("relative");
     };
   }, [selectedUser]);
+
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    // Add resize listener
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div className="flex h-full min-h-[50dvh] flex-1 flex-col bg-background max-sm:h-[70dvh] md:flex-row">
       <AnimatePresence>
-        {(showUserList || window.innerWidth >= 768) && (
+        {(showUserList || windowWidth >= 768) && (
           <div className="border-r border-border md:block md:w-1/3 lg:w-1/4">
             <ChatSidebarHeader toggleUserList={toggleUserList} />
             <ChatSidebar
@@ -131,7 +150,7 @@ export default function AdvancedChatScreen() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {(!showUserList || window.innerWidth >= 768) && (
+        {(!showUserList || windowWidth >= 768) && (
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}

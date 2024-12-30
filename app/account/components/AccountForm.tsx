@@ -91,7 +91,7 @@ export default function AccountForm({ user }: AccountFormProps) {
     };
 
     return (
-        <Card>
+        <Card className="border-none shadow-none">
             <CardHeader>
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex flex-col gap-2">
