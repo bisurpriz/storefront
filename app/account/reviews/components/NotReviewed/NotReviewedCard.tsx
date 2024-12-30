@@ -1,26 +1,25 @@
 "use client";
 
+import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
 import { localeFormat } from "@/utils/format";
-import Image from "next/image";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { createReview } from "../../actions";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
+import { createReview } from "../../actions";
 
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
-import CreateReview from "../CreateReview/CreateReview";
 import { OrderItemStatus } from "@/common/enums/Order/product";
 import StatusBadge from "@/components/StatusBadge";
+import { Button } from "@/components/ui/button";
+import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import { useEffect } from "react";
+import CreateReview from "../CreateReview/CreateReview";
 
 const NotReviewedCard = ({
   orders,
 }: {
   orders: GetOrdersWithReviewsQuery["order_item"];
 }) => {
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const { openDialog, closeDialog } = useResponsiveDialog();
 
   const { refresh } = useRouter();
@@ -34,16 +33,24 @@ const NotReviewedCard = ({
     score: number;
     comment: string;
   }) => {
-    const response = await createReview({
-      product_id,
-      score,
-      comment,
-    });
-    if (response?.created_at) {
-      closeDialog();
+    try {
+      const response = await createReview({
+        product_id,
+        score,
+        comment,
+      });
+
+      if (!response) {
+        throw new Error('Review creation failed');
+      }
+
       toast.success("Değerlendirme başarıyla eklendi.");
+      closeDialog();
+      refresh();
+    } catch (error) {
+      toast.error("Değerlendirme eklenirken bir hata oluştu.");
+      console.error('Review creation error:', error);
     }
-    refresh();
   };
 
   useEffect(() => {

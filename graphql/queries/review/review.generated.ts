@@ -31,7 +31,7 @@ export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: str
 export const GetOrdersWithReviewsDocument = gql`
     query getOrdersWithReviews($user_id: uuid!) {
   order_item(
-    where: {_and: [{product: {_or: [{reviews_aggregate: {count: {predicate: {_eq: 0}}}}, {reviews: {user_id: {_neq: $user_id}}}]}}, {order_tenant: {order_status: {value: {_eq: "Delivered"}}}}]}
+    where: {_and: [{product: {reviews: {user_id: {_is_null: true}}}}, {order_tenant: {order_status: {value: {_eq: "Delivered"}}}}]}
   ) {
     id
     order_tenant {

@@ -18,15 +18,14 @@ const StarRating = memo(({ score }: { score: number }) => (
       {[...Array(5)].map((_, i) => (
         <span
           key={i}
-          className={`text-sm ${
-            i < Math.floor(score) ? "text-yellow-400" : "text-gray-300"
-          }`}
+          className={`text-sm ${i < Math.floor(score) ? "text-yellow-400" : "text-gray-300"
+            }`}
         >
           ★
         </span>
       ))}
     </div>
-    <span className="text-sm text-gray-500">({score})</span>
+    <span className="text-sm text-gray-500">({Math.floor(score)})</span>
   </div>
 ));
 

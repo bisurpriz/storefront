@@ -22,7 +22,7 @@ export const PriceTag = ({
   return (
     <div
       className={cn(
-        "relative flex flex-row-reverse justify-between gap-1",
+        "relative flex flex-row-reverse justify-between gap-1 whitespace-nowrap",
         className,
       )}
     >
@@ -40,7 +40,7 @@ export const PriceTag = ({
         )}
       </div>
 
-      <div className="flex flex-wrap items-baseline gap-2">
+      <div className="flex items-baseline gap-2">
         <span className="text-lg font-bold text-primary md:text-xl">
           {(discountPrice ?? price).toLocaleString("tr-TR")}₺
         </span>

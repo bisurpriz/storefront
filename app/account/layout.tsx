@@ -1,10 +1,20 @@
 import { cn } from "@/lib/utils";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
 import AccountNavigation from "./components/Navigation";
 
-const AccountLayout = ({ children }: { children: React.ReactNode }) => {
+const AccountLayout = async ({ children }: { children: React.ReactNode }) => {
+  const { device } = userAgent({
+    headers: await headers(),
+  });
+
+  const isMobile = device.type === "mobile";
+
   return (
     <div className="relative flex max-md:flex-col max-md:gap-4">
-      <AccountNavigation />
+      <AccountNavigation
+        isMobile={isMobile}
+      />
       <div
         className={cn("flex min-h-[50dvh] flex-1 flex-col max-sm:h-[70dvh]")}
       >

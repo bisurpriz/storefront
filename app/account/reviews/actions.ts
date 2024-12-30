@@ -1,6 +1,7 @@
 "use server";
 
 import { readIdFromCookies } from "@/app/actions";
+import { revalidateTag } from "next/cache";
 
 import {
   CreateReviewMutation,
@@ -16,10 +17,11 @@ export const getOrderWithReview = async () => {
     await BonnmarseApi.request<GetOrdersWithReviewsQuery>({
       query: GetOrdersWithReviewsDocument,
       variables: { user_id: userId },
+      tags: ["getOrderWithReview"],
     });
 
   return {
-    order_item: order_item,
+    order_item,
     reviews: review,
   };
 };
@@ -41,7 +43,10 @@ export const createReview = async ({
       product_id,
     },
   });
+
   const { insert_review_one } = data;
+
+  revalidateTag("getOrderWithReview");
   return {
     created_at: insert_review_one?.created_at,
   };

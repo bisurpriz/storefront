@@ -1,15 +1,18 @@
 "use client";
 
 import { Link } from "@/components/Link";
-import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { accountNavigationItems } from "../../constants";
 
-const AccountNavigation = () => {
+interface AccountNavigationProps {
+  isMobile: boolean;
+}
+
+
+const AccountNavigation = ({ isMobile }: AccountNavigationProps) => {
   const pathname = usePathname();
-  const { isMobile } = useResponsive();
   const navRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLAnchorElement>(null);
   const [isPending, startTransition] = useTransition();
