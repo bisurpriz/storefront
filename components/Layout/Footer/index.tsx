@@ -144,7 +144,7 @@ const FooterLogo = memo(
         width={150}
         height={40}
         loading="lazy"
-        className="h-10 w-auto object-contain"
+        className="h-10 w-[150px] object-contain"
         sizes="150px"
       />
       <span className="text-xs text-slate-600">{description}</span>

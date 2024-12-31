@@ -96,7 +96,6 @@ export const createTypesenseQueryMapper = async (
       filter_by: filter_by.join("&&"),
     };
   }
-
   return {
     filter_by: filter_by.join("&&"),
   };

@@ -8,10 +8,7 @@ import {
   GetRatingsQuery,
   GetRatingsQueryVariables,
 } from "@/graphql/queries/products/getProductRatings.generated";
-import {
-  GetProductsWithFilteredPaginationQuery,
-  GetProductsWithPaginationQuery,
-} from "@/graphql/queries/products/getProductsWithPagination.generated";
+import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
 import {
   GetProductReviewsQuery,
   GetProductReviewsQueryVariables,
@@ -19,7 +16,6 @@ import {
 import { BonnmarseApi } from "@/service/fetch";
 import {
   GetProductByIdDocument,
-  GetProductsWithFilteredPaginationDocument,
   GetProductsWithPaginationDocument,
 } from "@/service/product";
 import {
@@ -27,7 +23,6 @@ import {
   GetRatingsDocument,
 } from "@/service/product/reviews";
 import searchClient from "@/typesense/client";
-import { createDynamicQueryMapper } from "@/utils/createDynamicQueryMapper";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
 import { parseJson } from "@/utils/format";
 import { cookies } from "next/headers";
@@ -85,35 +80,6 @@ export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
     },
   });
   return get_comment_by_score;
-};
-
-export const searchProducts = async (
-  paginationParams,
-  payload: {
-    [key: string]: string | string[] | undefined;
-  },
-) => {
-  if (!payload) return { products: [] };
-  const queryMapper = await createDynamicQueryMapper(payload);
-  try {
-    const { product: products, product_aggregate } =
-      await BonnmarseApi.request<GetProductsWithFilteredPaginationQuery>({
-        query: GetProductsWithFilteredPaginationDocument,
-        variables: {
-          filter_payload: {
-            ...queryMapper.filter_payload,
-          },
-          ...paginationParams,
-        },
-      });
-    return {
-      products,
-      message: "Success",
-      totalCount: product_aggregate.aggregate.count,
-    };
-  } catch (error) {
-    console.error("Error fetching suggestions:", error);
-  }
 };
 
 export const searchProductsv1 = async (

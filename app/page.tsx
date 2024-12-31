@@ -68,7 +68,7 @@ export default async function Page(props: {
           <CategorySwiper categories={category} />
         </Suspense>
       )}
-      {!searchText && (
+      {!searchText && !isBot && (
         <Suspense
           fallback={
             <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
