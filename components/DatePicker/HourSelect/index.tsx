@@ -1,8 +1,8 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { TimeRange } from "./utils";
+import { AnimatedFilterBox } from "@/components/ui/animated-filter-box";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import AnimatedFilterBox from "@/components/Filter/components/FilterInput/AnimatedFilterBox";
+import { FC, useEffect, useRef, useState } from "react";
+import { TimeRange } from "./utils";
 
 type HourSelectProps = {
   deliveryTimeRanges: TimeRange[] | null;

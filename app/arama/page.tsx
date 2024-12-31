@@ -7,9 +7,10 @@ import { Metadata } from "next";
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { search?: string };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }): Promise<Metadata> {
-  const searchQuery = await searchParams?.search;
+  const params = await searchParams;
+  const searchQuery = params?.search;
 
   return {
     title: searchQuery
@@ -28,7 +29,7 @@ export default async function SearchPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
-  const searchQuery = await searchParams?.search;
+  const searchQuery = searchParams?.search;
 
   if (!searchQuery) {
     return (
