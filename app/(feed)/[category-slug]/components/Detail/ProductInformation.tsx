@@ -2,9 +2,6 @@
 
 import { DeliveryType, FILTER_KEYS } from "@/common/enums/Product/product";
 import DaySelect from "@/components/DatePicker/DaySelect";
-import FreeTruck from "@/components/Icons/FreeTruck";
-import Palette from "@/components/Icons/Palette";
-import SevenOclock from "@/components/Icons/SevenOclock";
 import { Link } from "@/components/Link";
 import ReviewRating from "@/components/ReviewRating/ReviewRating";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -18,7 +15,7 @@ import { GetProductInformationQuery } from "@/graphql/queries/products/getProduc
 import { parseJson } from "@/utils/format";
 import { getPriceTR } from "@/utils/getPriceTR";
 import { stringToSlug } from "@/utils/stringToSlug";
-import { ShoppingBasketIcon } from "lucide-react";
+import { Clock, Palette, ShoppingBasketIcon, Truck } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import ProductVariantSelector from "../ProductVariantSelector";
@@ -187,14 +184,14 @@ const ProductInformation = ({
           promotions={[
             {
               description: DeliveryType.SAME_DAY,
-              icon: <SevenOclock />,
+              icon: <Clock />,
               filterKey: FILTER_KEYS["SAME_DAY_DELIVERY"],
               show: isSameDay,
               color: "info",
             },
             {
               description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <FreeTruck />,
+              icon: <Truck />,
               filterKey: FILTER_KEYS["FREE_SHIPPING"],
               show: freeShipping,
               color: "warning",
