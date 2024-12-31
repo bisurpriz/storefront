@@ -62,3 +62,48 @@ export const GetVendorByIdDocument = `
     }
   }
 `;
+
+export const GetVendorReviewsDocument = `
+  query getVendorReviews($tenant_id: uuid!) {
+    review_aggregate(where: {product: {tenant: {tenants: {id: {_eq: $tenant_id}}}}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
+export const GetVendorProductScoreAverageDocument = `
+  query getVendorProductScoreAverage($tenant_id: uuid!) {
+    product_aggregate(where: {tenant: {tenants: {id: {_eq: $tenant_id}}}}) {
+      aggregate {
+        avg {
+          score
+        }
+      }
+    }
+  }
+`;
+
+export const GetVendorCouponsDocument = `query getVendorCoupons($tenant_id: uuid!) {
+  coupon_aggregate(
+    where: { tenant: { tenants: { id: { _eq: $tenant_id } } } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  coupon {
+    id
+    code
+    start_date
+    end_date
+    amount
+    left_limit
+    code
+    is_public
+    minimum_cost
+    limit
+    }
+  }
+`;

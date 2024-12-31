@@ -3,7 +3,12 @@ import { PER_REQUEST } from "@/app/constants";
 import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
-import { getVendorDetails } from "../actions";
+import {
+  getVendorCoupons,
+  getVendorDetails,
+  getVendorProductScoreAverage,
+  getVendorReviews,
+} from "../actions";
 import TenantHeader from "../components/TenantHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,8 +34,6 @@ const Vendor = async (props: {
 
   const vendorId = searchParams["mid"];
 
-  // promise all
-  // getVendorDetails
   const responses = await Promise.all([
     searchProductsv1(
       {
@@ -45,21 +48,37 @@ const Vendor = async (props: {
     getVendorDetails({
       id: vendorId,
     }),
+    getVendorReviews({
+      id: vendorId,
+    }),
+    getVendorProductScoreAverage({
+      id: vendorId,
+    }),
+    getVendorCoupons({
+      id: vendorId,
+    }),
   ]);
 
   const data = responses?.[0]?.hits.map((hit) => hit.document);
   const totalCount = responses?.[0]?.found;
   const tenantDetails = responses[1];
-
+  const reviewsCount = responses[2].review_aggregate.aggregate.count;
+  const productScoreAverage =
+    responses[3].product_aggregate.aggregate.avg.score;
+  const coupons = responses[4]?.coupon;
+  const couponsCount = responses[4]?.coupon_aggregate.aggregate.count;
   return (
-    <>
+    <div className="space-y-6">
       <TenantHeader
         title={tenantDetails.legal_company_title || tenantDetails.name}
         joinedDate={tenantDetails.created_at}
         logoUrl={tenantDetails.logo}
         id={tenantDetails.id}
         productsCount={tenantDetails.owner.products_aggregate.aggregate.count}
-        reviewsCount={tenantDetails.owner.reviews_aggregate.aggregate.count}
+        reviewsCount={reviewsCount}
+        productScoreAverage={productScoreAverage}
+        couponsCount={couponsCount}
+        coupons={coupons}
       />
       <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
 
@@ -72,7 +91,7 @@ const Vendor = async (props: {
           tenant: vendorId,
         }}
       />
-    </>
+    </div>
   );
 };
 
