@@ -1,5 +1,5 @@
 import { PER_REQUEST } from "@/app/constants";
-import Filter from "@/components/Filter";
+import Filters from "@/app/magaza/components/Filters";
 import InfinityScroll from "@/components/InfinityScroll";
 import { searchProductsv1 } from "../actions";
 
@@ -42,14 +42,23 @@ export default async function CategoryPage(props: {
   const totalCount = response?.found;
 
   return (
-    <>
-      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
-      <InfinityScroll
-        totalCount={totalCount}
-        initialData={data}
-        query={searchProductsv1}
-        params={searchParams}
-      />
-    </>
+    <div>
+      <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
+        <div className="lg:col-span-1">
+          <Filters filterTypes={["price", "sameDayDelivery", "customizable"]} />
+        </div>
+        <div className="lg:col-span-4">
+          <InfinityScroll
+            totalCount={totalCount}
+            initialData={data}
+            query={searchProductsv1}
+            params={{
+              ...searchParams,
+              category: slug,
+            }}
+          />
+        </div>
+      </div>
+    </div>
   );
 }

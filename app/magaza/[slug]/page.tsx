@@ -1,6 +1,5 @@
 import { searchProductsv1 } from "@/app/(feed)/actions";
 import { PER_REQUEST } from "@/app/constants";
-import Filter from "@/components/Filter";
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
 import {
@@ -9,6 +8,7 @@ import {
   getVendorProductScoreAverage,
   getVendorReviews,
 } from "../actions";
+import Filters, { FilterTypes } from "../components/Filters";
 import TenantHeader from "../components/TenantHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,6 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// Mağaza sayfasında kullanılacak filtreler
+const STORE_FILTERS: FilterTypes[] = [
+  "price",
+  "sameDayDelivery",
+  "customizable",
+];
+
 const Vendor = async (props: {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{
@@ -28,9 +35,6 @@ const Vendor = async (props: {
   }>;
 }) => {
   const searchParams = await props.searchParams;
-  const params = await props.params;
-
-  const { slug } = params;
 
   const vendorId = searchParams["mid"];
 
@@ -67,6 +71,7 @@ const Vendor = async (props: {
     responses[3].product_aggregate.aggregate.avg.score;
   const coupons = responses[4]?.coupon;
   const couponsCount = responses[4]?.coupon_aggregate.aggregate.count;
+
   return (
     <div className="space-y-6">
       <TenantHeader
@@ -80,17 +85,25 @@ const Vendor = async (props: {
         couponsCount={couponsCount}
         coupons={coupons}
       />
-      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
 
-      <InfinityScroll
-        totalCount={totalCount}
-        initialData={data}
-        query={searchProductsv1}
-        params={{
-          ...searchParams,
-          tenant: vendorId,
-        }}
-      />
+      <div className="mx-auto max-w-7xl">
+        <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
+          <div className="lg:col-span-1">
+            <Filters filterTypes={STORE_FILTERS} className="sticky top-6" />
+          </div>
+          <div className="lg:col-span-4">
+            <InfinityScroll
+              totalCount={totalCount}
+              initialData={data}
+              query={searchProductsv1}
+              params={{
+                ...searchParams,
+                tenant: vendorId,
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,3 @@
-import Filter from "@/components/Filter";
-import FilterSuspense from "@/components/Filter/FilterSuspense";
 import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
@@ -14,6 +12,7 @@ import { BonnmarseApi } from "@/service/fetch";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
+import Filters from "./magaza/components/Filters";
 
 export const experimental_ppr = true;
 
@@ -33,13 +32,53 @@ export default async function Page(props: {
 
   const isMobile = device.type === "mobile";
 
+  // <div>
+  //     <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
+  //       <div className="lg:col-span-1">
+  //         <Filters filterTypes={["price", "sameDayDelivery", "customizable"]} />
+  //       </div>
+  //       <div className="lg:col-span-4">
+  //         <InfinityScroll
+  //           totalCount={totalCount}
+  //           initialData={data}
+  //           query={searchProductsv1}
+  //           params={searchParams}
+  //         />
+  //       </div>
+  //     </div>
+  // </div>
+
+  if (searchText) {
+    return (
+      <div>
+        <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
+          <div className="lg:col-span-1">
+            <Filters
+              filterTypes={["price", "sameDayDelivery", "customizable"]}
+            />
+          </div>
+          <div className="lg:col-span-4">
+            <Suspense
+              fallback={
+                <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">
+                  {Array.from({
+                    length: 5,
+                  }).map((_, i) => (
+                    <ProductItemSkeleton key={i} />
+                  ))}
+                </div>
+              }
+            >
+              <ServerInfinityScroll searchParams={searchParams} />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      {searchText && (
-        <Suspense fallback={<FilterSuspense />}>
-          <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
-        </Suspense>
-      )}
       {!searchText && !(category.length < 8 && !isMobile) && (
         <Suspense fallback={<CategorySwiper categories={category} />}>
           <CategorySwiper categories={category} />

@@ -31,22 +31,25 @@ const InfinityScroll = <T,>({
   query,
   params,
 }: InfinityScrollProps<T>) => {
-  const [data, setData] = useState<T[]>(initialData);
-  const [offset, setOffset] = useState(initialData.length);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(totalCount > initialData.length);
-
   const loadingRef = useRef<HTMLDivElement>(null);
-  const entry = useIntersectionObserver(loadingRef, {});
-  const isVisible = !!entry?.isIntersecting;
+  const isLoadingRef = useRef(false);
+
+  const [data, setData] = useState<T[]>(initialData);
+  const [offset, setOffset] = useState(initialData?.length || 0);
+  const [hasMore, setHasMore] = useState(
+    totalCount > (initialData?.length || 0),
+  );
+
+  const entry = useIntersectionObserver(loadingRef, {
+    threshold: 0.1,
+  });
 
   const loadMoreData = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+    if (isLoadingRef.current || !hasMore) return;
 
     try {
-      setIsLoading(true);
-      const next = offset + PER_REQUEST;
-
+      isLoadingRef.current = true;
+      const nextOffset = offset + PER_REQUEST;
       const response = await query(
         {
           offset,
@@ -56,28 +59,29 @@ const InfinityScroll = <T,>({
       );
 
       const newItems = response?.hits?.map((hit) => hit.document) || [];
-
       setData((prev) => [...prev, ...newItems]);
-      setOffset(next);
-      setHasMore(totalCount > next);
+
+      setOffset(nextOffset);
+      setHasMore(totalCount > nextOffset);
     } catch (error) {
       console.error("Error loading more data:", error);
     } finally {
-      setIsLoading(false);
+      isLoadingRef.current = false;
     }
-  }, [offset, isLoading, hasMore, query, params, totalCount]);
+  }, [offset, hasMore, query, params, totalCount]);
 
   useEffect(() => {
-    if (isVisible && hasMore) {
+    if (entry?.isIntersecting && hasMore) {
       loadMoreData();
     }
-  }, [isVisible, loadMoreData, hasMore]);
+  }, [entry?.isIntersecting, loadMoreData, hasMore]);
 
   useEffect(() => {
     setData(initialData);
     setOffset(initialData.length);
     setHasMore(totalCount > initialData.length);
-  }, [initialData, totalCount]);
+    isLoadingRef.current = false;
+  }, [initialData, totalCount, params]);
 
   if (totalCount === 0) return <EmptyPage />;
 
@@ -88,14 +92,15 @@ const InfinityScroll = <T,>({
           "grid grid-cols-2 gap-2",
           "sm:grid-cols-2 sm:gap-2",
           "md:grid-cols-3 md:gap-2",
-          "lg:grid-cols-4 lg:gap-4",
-          "xl:grid-cols-5 xl:gap-6",
+          "lg:grid-cols-3 lg:gap-4",
+          "xl:grid-cols-4 xl:gap-6",
         )}
       >
         {data?.map((item: any) => (
           <DynamicProductItem key={item.id} {...item} />
         ))}
-        {isLoading && (
+
+        {isLoadingRef.current && (
           <>
             {[...Array(4)].map((_, index) => (
               <ProductItemSkeleton key={`skeleton-${index}`} />
@@ -103,7 +108,8 @@ const InfinityScroll = <T,>({
           </>
         )}
       </div>
-      {hasMore && (
+
+      {hasMore && !isLoadingRef.current && (
         <div ref={loadingRef} className="h-20 w-full" aria-hidden="true" />
       )}
     </>
