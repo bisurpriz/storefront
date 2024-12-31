@@ -32,22 +32,6 @@ export default async function Page(props: {
 
   const isMobile = device.type === "mobile";
 
-  // <div>
-  //     <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
-  //       <div className="lg:col-span-1">
-  //         <Filters filterTypes={["price", "sameDayDelivery", "customizable"]} />
-  //       </div>
-  //       <div className="lg:col-span-4">
-  //         <InfinityScroll
-  //           totalCount={totalCount}
-  //           initialData={data}
-  //           query={searchProductsv1}
-  //           params={searchParams}
-  //         />
-  //       </div>
-  //     </div>
-  // </div>
-
   if (searchText) {
     return (
       <div>

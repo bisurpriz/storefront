@@ -88,6 +88,15 @@ export const createTypesenseQueryMapper = async (
     }
   }
 
+  const queryBySearch: string = searchParams[FILTER_KEYS.SEARCH] as string;
+
+  if (queryBySearch) {
+    return {
+      q: queryBySearch,
+      filter_by: filter_by.join("&&"),
+    };
+  }
+
   return {
     filter_by: filter_by.join("&&"),
   };

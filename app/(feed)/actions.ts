@@ -133,7 +133,7 @@ export const searchProductsv1 = async (
       .documents()
       .search(
         {
-          q: "*",
+          q: filterBy.q ?? "*",
           query_by: "name",
           sort_by: "score:desc",
           filter_by: filterBy.filter_by,

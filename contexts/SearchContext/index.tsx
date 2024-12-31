@@ -119,7 +119,7 @@ export const SearchProductProvider = ({
 
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
-      push(`/?search=${inputVal}`);
+      push(`/arama?search=${inputVal}`);
     });
   };
 

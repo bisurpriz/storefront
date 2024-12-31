@@ -20,7 +20,7 @@ const Promotions = ({ promotions }: { promotions: Promotions[] }) => {
           .map((promotion, index) => (
             <Chip
               key={promotion?.description}
-              href={`/?search=&${promotion.filterKey}=true`}
+              href={`/arama?search=&${promotion.filterKey}=true`}
               label={promotion.description}
               as="link"
               color={promotion.color}

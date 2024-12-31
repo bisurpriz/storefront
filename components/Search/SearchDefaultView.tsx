@@ -201,7 +201,7 @@ export default function SearchDefaultView({
                           variant="ghost"
                           size="sm"
                           className="ml-2"
-                          onClick={() => push(`/?search=${search}`)}
+                          onClick={() => push(`/arama?search=${search}`)}
                         >
                           <ArrowRight className="h-4 w-4" />
                         </Button>
