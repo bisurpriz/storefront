@@ -2,9 +2,9 @@
 
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import clsx from "clsx";
+import { X } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import Close from "../Icons/Close";
 import { Button } from "../ui/button";
 
 interface ImageUploadProps {
@@ -117,7 +117,7 @@ const ImageUpload: FC<ImageUploadProps> = ({
                     variant="outline"
                     className="!absolute !right-1 !top-1 h-auto rounded-full !p-[2px]"
                   >
-                    <Close />
+                    <X />
                   </Button>
                 )}
               </div>

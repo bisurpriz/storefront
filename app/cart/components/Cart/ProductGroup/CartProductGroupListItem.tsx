@@ -3,13 +3,11 @@ import { CustomizableAreaType } from "@/common/enums/Order/product";
 import { DeliveryType } from "@/common/enums/Product/product";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import Chip from "@/components/Chip";
-import FreeTruck from "@/components/Icons/FreeTruck";
-import Palette from "@/components/Icons/Palette";
-import SevenOclock from "@/components/Icons/SevenOclock";
 import { Link } from "@/components/Link";
 import PriceTag from "@/components/PriceTag";
 import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { Clock, Palette, Truck } from "lucide-react";
 import Image from "next/image";
 import CartProductGroupListQuantityInput from "./CartProductGroupListQuantityInput";
 import GiftCardNote from "./GiftCardNote";
@@ -106,7 +104,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
             {
               description: DeliveryType.SAME_DAY,
-              icon: <SevenOclock />,
+              icon: <Clock />,
               filterKey: "SAME_DAY",
               show:
                 delivery_type === (DeliveryType.SAME_DAY as string) ||
@@ -115,7 +113,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
             },
             {
               description: "Ücretsiz kargo",
-              icon: <FreeTruck />,
+              icon: <Truck />,
               filterKey: "FREE_SHIPPING",
               show: is_service_free,
               color: "warning",

@@ -1,17 +1,19 @@
 "use client";
+import { logout } from "@/app/@auth/actions";
+import { Link } from "@/components/Link";
 import { useUser } from "@/contexts/AuthContext";
 import clsx from "clsx";
-import { Link } from "@/components/Link";
-import MenuItem from "./MenuItem";
-import { logout } from "@/app/@auth/actions";
+import {
+  Heart,
+  LogIn,
+  LogOut,
+  Phone,
+  Route,
+  ShoppingBasket,
+  Truck,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import Heart from "@/components/Icons/Heart";
-import Truck from "@/components/Icons/Truck";
-import Basket from "@/components/Icons/Basket";
-import PathBold from "@/components/Icons/PathBold";
-import Login from "@/components/Icons/Login";
-import Phone from "@/components/Icons/Phone";
-import Logout from "@/components/Icons/Logout";
+import MenuItem from "./MenuItem";
 
 const mobileHeader = [
   {
@@ -29,19 +31,19 @@ const mobileHeader = [
   {
     link: "/account",
     text: "Hesabım",
-    icon: Basket,
+    icon: ShoppingBasket,
     private: true,
   },
   {
     link: "/account/cargo-tracking",
     text: "Sipariş Takip",
-    icon: PathBold,
+    icon: Route,
     private: false,
   },
   {
     link: "/login",
     text: "Giriş Yap",
-    icon: Login,
+    icon: LogIn,
     private: false,
   },
 ];
@@ -103,7 +105,7 @@ const MobileMenu = ({ items }: { items: MenuItem[] | undefined }) => {
               !user && "hidden",
             ])}
           >
-            <Logout className="h-4 w-4" />
+            <LogOut className="h-4 w-4" />
             <span className="text-xs">Çıkış Yap</span>
           </span>
         </>

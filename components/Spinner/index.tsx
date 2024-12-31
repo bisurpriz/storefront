@@ -1,4 +1,4 @@
-import SpinnerIcon from "../Icons/Spinner";
+import { Loader } from "lucide-react";
 
 const Spinner = ({
   style,
@@ -9,7 +9,7 @@ const Spinner = ({
 }) => {
   return (
     <div role="status" className={className}>
-      <SpinnerIcon
+      <Loader
         className="animate-spin"
         style={{
           ...style,

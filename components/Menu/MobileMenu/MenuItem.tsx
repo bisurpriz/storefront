@@ -1,5 +1,5 @@
-import ChevronDown from "@/components/Icons/ChevronDown";
 import { Link } from "@/components/Link";
+import { ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";
 

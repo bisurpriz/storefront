@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import TextField from "../TextField";
 import { checkBin } from "@/app/iyzico-payment/actions";
 import { getCardAssociationImageUrl } from "@/utils/getImageUrl";
+import { CreditCard } from "lucide-react";
 import Image from "next/image";
-import CreditCard from "../Icons/CreditCard";
+import { useEffect, useRef, useState } from "react";
+import TextField from "../TextField";
 
 const CreditCardInput = ({ onChange, ...props }: Partial<TextFieldProps>) => {
   const [creditCardNumber, setCreditCardNumber] = useState("");

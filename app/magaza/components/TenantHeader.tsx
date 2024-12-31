@@ -164,7 +164,7 @@ const TenantHeader = ({
             <div className="grid place-items-center rounded-xl bg-blue-50 p-4 transition-all hover:bg-blue-100">
               <Star className="h-6 w-6 fill-blue-600 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">
-                {productScoreAverage.toFixed(1)}
+                {productScoreAverage?.toFixed(1)}
               </span>
               <span className="text-center text-sm text-gray-600">
                 Genel Ürün Puanı

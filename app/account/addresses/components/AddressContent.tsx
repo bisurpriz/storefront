@@ -1,8 +1,7 @@
-import Edit from "@/components/Icons/Edit";
-import Trash from "@/components/Icons/Trash";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
 import { GetUserAddressesQuery } from "@/graphql/queries/address/address.generated";
+import { Edit, Trash } from "lucide-react";
 
 const AddressContent = ({
   address,
