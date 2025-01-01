@@ -37,6 +37,7 @@ export const getPaginatedProducts = async (params: IProductFilter) => {
       variables: {
         ...params,
       },
+      tags: ["getPaginatedProducts"],
     });
 
   return {
@@ -51,6 +52,7 @@ export const getProductById = async ({ id }: { id: number }) => {
     variables: {
       id,
     },
+    tags: ["getProductById"],
   });
   return {
     product,
@@ -69,6 +71,7 @@ export const getProductReviews = async ({
       limit,
       offset,
     },
+    tags: ["getProductReviews"],
   });
 };
 
@@ -78,6 +81,7 @@ export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
     variables: {
       pid,
     },
+    tags: ["getProductRatings"],
   });
   return get_comment_by_score;
 };

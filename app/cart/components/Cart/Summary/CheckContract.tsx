@@ -1,5 +1,5 @@
 import Checkbox from "@/components/Checkbox";
-import React, { FC } from "react";
+import { memo, useCallback } from "react";
 
 interface CheckContractProps {
   openApproveContract: () => void;
@@ -7,42 +7,66 @@ interface CheckContractProps {
   setApproveContract?: (value: boolean) => void;
 }
 
-const CheckContract: FC<CheckContractProps> = ({
-  openApproveContract,
-  approveContract,
-  setApproveContract,
-}) => {
-  const handleApproveContract = (val: boolean) => {
-    if (approveContract) setApproveContract?.(val);
-    else openApproveContract();
-  };
-
-  return (
-    <div className="border-t px-4">
-      <Checkbox
-        checked={approveContract}
-        label={
-          <span className="text-xs text-slate-600">
-            <strong
-              onClick={openApproveContract}
-              className="cursor-pointer underline hover:text-primary"
-            >
-              Ön Bilgilendirme Koşulları
-            </strong>
-            'nı ve{" "}
-            <strong
-              onClick={openApproveContract}
-              className="cursor-pointer underline hover:text-primary"
-            >
-              Mesafeli Satış Sözleşmesi
-            </strong>
-            'ni okudum, onaylıyorum.
-          </span>
+const CheckContract = memo(
+  ({
+    openApproveContract,
+    approveContract,
+    setApproveContract,
+  }: CheckContractProps) => {
+    const handleApproveContract = useCallback(
+      (val: boolean) => {
+        if (approveContract) {
+          setApproveContract?.(val);
+        } else {
+          openApproveContract();
         }
-        onChange={(val) => handleApproveContract(val)}
-      />
-    </div>
-  );
-};
+      },
+      [approveContract, setApproveContract, openApproveContract],
+    );
+
+    const handleOpenContract = useCallback(
+      (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        openApproveContract();
+      },
+      [openApproveContract],
+    );
+
+    return (
+      <div className="border-t px-4" role="region" aria-label="Sözleşme Onayı">
+        <Checkbox
+          checked={approveContract}
+          label={
+            <span className="text-xs text-slate-600">
+              <button
+                type="button"
+                onClick={handleOpenContract}
+                className="font-bold underline hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label="Ön Bilgilendirme Koşullarını görüntüle"
+              >
+                Ön Bilgilendirme Koşulları
+              </button>
+              'nı ve{" "}
+              <button
+                type="button"
+                onClick={handleOpenContract}
+                className="font-bold underline hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label="Mesafeli Satış Sözleşmesini görüntüle"
+              >
+                Mesafeli Satış Sözleşmesi
+              </button>
+              'ni okudum, onaylıyorum.
+            </span>
+          }
+          onChange={handleApproveContract}
+          aria-required="true"
+          aria-label="Sözleşmeleri okudum ve onaylıyorum"
+        />
+      </div>
+    );
+  },
+);
+
+CheckContract.displayName = "CheckContract";
 
 export default CheckContract;

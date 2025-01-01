@@ -21,6 +21,7 @@ export const getTenantOrderItem = async (
       variables: {
         id,
       },
+      tags: ["getTenantOrderItem"],
     });
   return {
     order_tenant: order_tenant ?? [],
@@ -44,6 +45,7 @@ export const sendMessage = async ({
         receiver_id,
         chat_thread_id,
       },
+      tags: ["sendMessage"],
     });
   return {
     insert_message_one,
@@ -57,6 +59,7 @@ export const markAsRead = async (chat_thread_id: string) => {
       variables: {
         chat_thread_id,
       },
+      tags: ["markAsRead"],
     });
   return {
     update_message_many,

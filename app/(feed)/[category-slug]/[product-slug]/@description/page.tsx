@@ -20,6 +20,7 @@ const ProductDescriptionPage: FC<{
     variables: {
       id,
     },
+    tags: ["getProductDescription"],
   });
 
   if (!product) {

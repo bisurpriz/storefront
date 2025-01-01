@@ -4,7 +4,7 @@ import Stepper from "@/components/Stepper";
 import { useCart } from "@/contexts/CartContext";
 import { Gem } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { CartStepPaths, cartStepperPaths } from "../../constants";
 
 const customize = {
@@ -15,33 +15,31 @@ const customize = {
 
 const CartSteps = () => {
   const pathname = usePathname();
-  const [steps, setSteps] = useState(cartStepperPaths);
-
-  const [activeStep, setActiveStep] = useState(
-    steps.findIndex((step) => step.path === pathname),
-  );
   const { hasCustomizableProduct } = useCart();
 
-  useEffect(() => {
+  const { steps, activeStep } = useMemo(() => {
+    let currentSteps = [...cartStepperPaths];
+
     if (hasCustomizableProduct) {
-      setSteps((prev) => {
-        if (prev.find((step) => step.path === CartStepPaths.CUSTOMIZE))
-          return prev;
-        const newSteps = [...prev];
-        newSteps.splice(newSteps.length - 1, 0, customize);
-        return newSteps;
-      });
+      if (!currentSteps.find((step) => step.path === CartStepPaths.CUSTOMIZE)) {
+        currentSteps.splice(currentSteps.length - 1, 0, customize);
+      }
     } else {
-      setSteps((prev) =>
-        prev.filter((step) => step.path !== CartStepPaths.CUSTOMIZE),
+      currentSteps = currentSteps.filter(
+        (step) => step.path !== CartStepPaths.CUSTOMIZE,
       );
     }
-  }, [hasCustomizableProduct]);
 
-  useEffect(() => {
     const customizePath = pathname.split("/").slice(0, 3).join("/");
-    setActiveStep(steps.findIndex((step) => step.path === customizePath));
-  }, [pathname, steps]);
+    const currentActiveStep = currentSteps.findIndex(
+      (step) => step.path === customizePath,
+    );
+
+    return {
+      steps: currentSteps,
+      activeStep: currentActiveStep,
+    };
+  }, [pathname, hasCustomizableProduct]);
 
   return (
     <Stepper

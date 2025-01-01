@@ -23,10 +23,10 @@ const SocketListener = () => {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
   }
 
-  return <div></div>;
+  return null;
 };
 
 const Listener = () => {

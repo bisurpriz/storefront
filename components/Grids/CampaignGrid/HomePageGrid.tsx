@@ -10,6 +10,10 @@ const HomePageGrid = async () => {
     query: GetBannersDocument,
     tags: ["system_banner"],
     withAuth: false,
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
   });
 
   return (

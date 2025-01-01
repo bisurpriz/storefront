@@ -16,6 +16,7 @@ const ProductCommentsPage: FC<PageProps> = async (props) => {
     variables: {
       id,
     },
+    tags: ["getProductComments"],
   });
 
   if (!product) {

@@ -59,6 +59,10 @@ export async function getBanners() {
   const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
     query: GetBannersDocument,
     tags: ["getBanners"],
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
   });
 
   return {
@@ -116,5 +120,6 @@ export const createFCMToken = async (token: string) => {
     variables: {
       token,
     },
+    tags: ["createFCMToken"],
   });
 };

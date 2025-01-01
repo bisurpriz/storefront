@@ -1,7 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { startTransition, useEffect, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
 import { useCart } from "@/contexts/CartContext";
@@ -16,6 +22,11 @@ import { useProgress } from "react-transition-progress";
 import { CartStepPaths } from "../../../constants";
 import CheckContract from "./CheckContract";
 import SummaryDetail from "./SummaryDetail";
+
+const pagePathForm = {
+  [CartStepPaths.CHECKOUT]: "credit-card-form",
+  [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
+};
 
 const CartSummary = () => {
   const {
@@ -38,13 +49,6 @@ const CartSummary = () => {
     setMounted(true);
   }, []);
 
-  const changeStep = () => {
-    startTransition(() => {
-      startProgress();
-      if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
-    });
-  };
-
   useEffect(() => {
     if (!isTablet) {
       setIsOpen(true);
@@ -53,32 +57,68 @@ const CartSummary = () => {
     }
   }, [isTablet]);
 
-  if (typeof document === "undefined") {
-    return null;
-  }
-  const customizePath = pathname.split("/").slice(0, 3).join("/");
+  const changeStep = useCallback(() => {
+    startTransition(() => {
+      startProgress();
+      if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    });
+  }, [pathname, push, startProgress]);
 
-  if (
-    customizePath === CartStepPaths.COMPLETE ||
-    customizePath.startsWith(CartStepPaths.CUSTOMIZE)
-  ) {
-    return null;
-  }
+  const handleDiscountCodeSubmit = useCallback(
+    async (couponCode: string) => {
+      await applyCouponCode(couponCode);
+    },
+    [applyCouponCode],
+  );
 
-  const pagePathForm = {
-    [CartStepPaths.CHECKOUT]: "credit-card-form",
-    [CartStepPaths.ORDER_DETAIL]: "order-detail-form",
-  };
-
-  const handleDiscountCodeSubmit = async (couponCode: string) => {
-    await applyCouponCode(couponCode);
-  };
-
-  const handleRemoveCoupon = async () => {
+  const handleRemoveCoupon = useCallback(async () => {
     await applyCouponCode("");
-  };
+  }, [applyCouponCode]);
 
-  if (!mounted) return null;
+  const customizePath = useMemo(
+    () => pathname.split("/").slice(0, 3).join("/"),
+    [pathname],
+  );
+
+  const shouldRenderContent = useMemo(() => {
+    if (typeof document === "undefined" || !mounted) return false;
+    if (
+      customizePath === CartStepPaths.COMPLETE ||
+      customizePath.startsWith(CartStepPaths.CUSTOMIZE)
+    )
+      return false;
+    return true;
+  }, [customizePath, mounted]);
+
+  const summaryContent = useMemo(
+    () => (
+      <SummaryDetail
+        cost={cost.totalPrice}
+        couponMessage={cost.couponMessage}
+        isCouponApplied={cost.isCouponApplied}
+        onDiscountCodeSubmit={handleDiscountCodeSubmit}
+        discountAmount={cost.discountAmount}
+        isOpen={isOpen}
+        totalWithDiscount={cost.totalWithDiscount}
+        handleRemoveCoupon={handleRemoveCoupon}
+      />
+    ),
+    [cost, isOpen, handleDiscountCodeSubmit, handleRemoveCoupon],
+  );
+
+  const checkContractContent = useMemo(
+    () =>
+      pathname === CartStepPaths.CHECKOUT && (
+        <CheckContract
+          openApproveContract={openApproveContract}
+          approveContract={approveContract}
+          setApproveContract={setApproveContract}
+        />
+      ),
+    [pathname, openApproveContract, approveContract, setApproveContract],
+  );
+
+  if (!shouldRenderContent) return null;
 
   return (
     <div
@@ -97,45 +137,16 @@ const CartSummary = () => {
               exit={{ y: 20 }}
               transition={{ duration: 0.1 }}
             >
-              <SummaryDetail
-                cost={cost.totalPrice}
-                couponMessage={cost.couponMessage}
-                isCouponApplied={cost.isCouponApplied}
-                onDiscountCodeSubmit={handleDiscountCodeSubmit}
-                discountAmount={cost.discountAmount}
-                isOpen={isOpen}
-                totalWithDiscount={cost.totalWithDiscount}
-                handleRemoveCoupon={handleRemoveCoupon}
-              />
-              {pathname === CartStepPaths.CHECKOUT && (
-                <CheckContract
-                  openApproveContract={openApproveContract}
-                  approveContract={approveContract}
-                />
-              )}
+              {summaryContent}
+              {checkContractContent}
             </motion.div>
           </AnimationExitProvider>,
           document?.getElementById("cart-summary") || document?.body,
         )
       ) : (
         <>
-          <SummaryDetail
-            cost={cost.totalPrice}
-            couponMessage={cost.couponMessage}
-            isCouponApplied={cost.isCouponApplied}
-            isOpen={isOpen}
-            onDiscountCodeSubmit={handleDiscountCodeSubmit}
-            discountAmount={cost.discountAmount}
-            totalWithDiscount={cost.totalWithDiscount}
-            handleRemoveCoupon={handleRemoveCoupon}
-          />
-          {pathname === CartStepPaths.CHECKOUT && (
-            <CheckContract
-              setApproveContract={setApproveContract}
-              openApproveContract={openApproveContract}
-              approveContract={approveContract}
-            />
-          )}
+          {summaryContent}
+          {checkContractContent}
         </>
       )}
       <div

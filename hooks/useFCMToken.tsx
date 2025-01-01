@@ -29,14 +29,12 @@ const useFcmToken = () => {
               setToken(currentToken);
               createFCMToken(currentToken);
             } else {
-              console.log(
-                "No registration token available. Request permission to generate one.",
-              );
+              console.error("No registration token available");
             }
           }
         }
       } catch (error) {
-        console.log("Error retrieving token:", error);
+        console.error("Error retrieving token:", error);
       }
     };
 

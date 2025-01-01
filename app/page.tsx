@@ -23,6 +23,11 @@ export default async function Page(props: {
 
   const { category } = await BonnmarseApi.request<GetAllCategoriesQuery>({
     query: GetCategoriesDocument,
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
+    tags: ["getCategories"],
   });
 
   const { isBot, device } = userAgent({

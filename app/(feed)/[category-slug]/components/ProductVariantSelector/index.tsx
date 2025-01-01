@@ -98,11 +98,14 @@ export default function ProductVariantSelector({
                     <div className="flex flex-col items-baseline">
                       {hasDiscount && (
                         <span className="text-xs text-gray-500 line-through">
-                          ₺{variant.discountPrice!.toFixed(2)}
+                          ₺{variant.price!.toFixed(2)}
                         </span>
                       )}
                       <span className="text-sm font-semibold text-primary">
-                        ₺{variant.price?.toFixed(2)}
+                        ₺
+                        {hasDiscount
+                          ? variant.discountPrice.toFixed(2)
+                          : variant.price?.toFixed(2)}
                       </span>
                     </div>
                   </div>

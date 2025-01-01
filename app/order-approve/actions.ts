@@ -16,6 +16,7 @@ export const getOrderApproveImages = async ({
       variables: {
         token,
       },
+      tags: ["getOrderApproveImages"],
     },
   );
 

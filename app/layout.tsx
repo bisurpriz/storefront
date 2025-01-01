@@ -4,7 +4,6 @@ import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 
-
 import DesignLayout from "@/components/Layout/DesignLayout";
 import NotificationListener from "@/components/Notification/NotificationListener";
 import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
@@ -17,7 +16,7 @@ import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
 import { CookieTokens } from "./@auth/contants";
 import { getCart } from "./cart/actions";
-import { Providers } from './providers';
+import { Providers } from "./providers";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -107,6 +106,10 @@ export default async function RootLayout({
   const categoryData = await BonnmarseApi.request<GetMainCategoriesQuery>({
     query: GetCategoriesDocument,
     tags: ["getMainCategories"],
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
   });
 
   return (
@@ -114,7 +117,7 @@ export default async function RootLayout({
       <GoogleTagManagerInjector />
       <NotificationListener />
       <body
-        className={`${lato.variable} ${quickSand.variable} ${manrope.variable}  font-manrope`}
+        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} font-manrope`}
         id="root"
       >
         <Providers

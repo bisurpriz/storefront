@@ -10,5 +10,6 @@ export const getProductInformation = async (productId) => {
     variables: {
       id: productId,
     },
+    tags: ["getProductInformation"],
   });
 };

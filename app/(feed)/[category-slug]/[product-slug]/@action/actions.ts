@@ -23,6 +23,7 @@ export const getProductActions = async (
       variables: {
         id: productId,
       },
+      tags: ["getProductActionData"],
     });
 
     return {
@@ -41,6 +42,7 @@ export const getProductActions = async (
         variables: {
           id: productId,
         },
+        tags: ["getProductActionDataForAnonymous"],
       });
 
     return {
