@@ -23,6 +23,7 @@ export const login = async ({ email, password }, headers = {}) => {
       password,
     },
     additionalHeaders: headers,
+    tags: ["login"],
   });
 
   if (login?.data.access_token && login?.data.refresh_token) {

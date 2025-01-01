@@ -120,5 +120,6 @@ export const createFCMToken = async (token: string) => {
     variables: {
       token,
     },
+    tags: ["createFCMToken"],
   });
 };

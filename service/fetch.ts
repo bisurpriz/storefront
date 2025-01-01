@@ -80,7 +80,6 @@ class Fetch {
       const cacheKey = this.generateCacheKey(query, variables);
       const cacheDuration = cache?.duration || this.defaultCacheDuration;
 
-      // Check cache only if caching is enabled for this request
       if (cache?.enable) {
         const cachedData = this.getCachedData<T>(cacheKey, cacheDuration, tags);
         if (cachedData) {
