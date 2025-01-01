@@ -47,6 +47,7 @@ export default async function CategoryPage(props: {
             ...searchParams,
             category: slug,
           }}
+          hasFilter={true}
         />
       </div>
     </div>

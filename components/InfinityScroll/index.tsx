@@ -22,6 +22,7 @@ interface InfinityScrollProps<T> {
   ) => Promise<any>;
   totalCount: number;
   params?: any;
+  hasFilter?: boolean;
 }
 
 const ProductCount = memo(
@@ -87,6 +88,7 @@ const useInfiniteScroll = <T,>({
   totalCount,
   query,
   params,
+  hasFilter = false,
 }: InfinityScrollProps<T>) => {
   const loadingRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -176,7 +178,7 @@ const throttle = (func: Function, limit: number) => {
 
 const InfinityScroll = <T,>(props: InfinityScrollProps<T>) => {
   const { data, isLoading, hasMore, loadingRef } = useInfiniteScroll(props);
-
+  const { hasFilter } = props;
   if (props.totalCount === 0) return <EmptyPage />;
 
   return (
@@ -188,7 +190,8 @@ const InfinityScroll = <T,>(props: InfinityScrollProps<T>) => {
           "sm:grid-cols-2 sm:gap-2",
           "md:grid-cols-3 md:gap-2",
           "lg:grid-cols-3 lg:gap-4",
-          "xl:grid-cols-4 xl:gap-6",
+          "xl:grid-cols-5 xl:gap-6",
+          hasFilter && "xl:grid-cols-4 xl:gap-6",
         )}
       >
         {data?.map((item: any) => (

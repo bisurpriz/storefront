@@ -96,6 +96,7 @@ const Vendor = async (props: {
                 ...searchParams,
                 tenant: vendorId,
               }}
+              hasFilter={true}
             />
           </div>
         </div>
