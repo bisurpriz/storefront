@@ -38,9 +38,9 @@ export function SearchResults({
             <Image
               src={getImageUrlFromPath(product.image_url?.[0])}
               alt={product.name}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md"
+              fill
+              sizes="80px"
+              className="rounded-md object-cover"
               priority
             />
           </div>

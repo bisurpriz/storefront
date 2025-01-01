@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -61,12 +62,31 @@ export const SearchProductProvider = ({
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout>(null);
 
-  const handleSearch = (input: string) => {
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+        document.body.style.height = "100vh";
+      } else {
+        document.body.style.overflow = "";
+        document.body.style.height = "";
+      }
+    };
+
+    handleScroll();
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+    };
+  }, [isOpen]);
+
+  const handleSearch = useCallback((input: string) => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       handleSearchProducts(input);
     }, 300);
-  };
+  }, []);
 
   useEffect(() => {
     const search = searchParams.get("search");
@@ -80,9 +100,9 @@ export const SearchProductProvider = ({
 
   useEffect(() => {
     handleSearch(inputVal);
-  }, [inputVal]);
+  }, [inputVal, handleSearch]);
 
-  const handleSearchProducts = (input) => {
+  const handleSearchProducts = useCallback((input: string) => {
     startTransition(async () => {
       if (!input) {
         setProducts([]);
@@ -92,15 +112,15 @@ export const SearchProductProvider = ({
       const response = await searchProductsv1({ q: input });
       setProducts(response.hits.map((hit) => hit.document) as Product[]);
     });
-  };
+  }, []);
 
-  const getUniqueSearches = (searches: string[]) => {
+  const getUniqueSearches = useCallback((searches: string[]) => {
     return searches.filter(
       (search, index, self) => self.indexOf(search) === index,
     );
-  };
+  }, []);
 
-  const pushToSearch = () => {
+  const pushToSearch = useCallback(() => {
     if (!inputVal) return;
 
     startTransition(() => {
@@ -121,15 +141,18 @@ export const SearchProductProvider = ({
 
       push(`/arama?search=${inputVal}`);
     });
-  };
+  }, [inputVal, push, getUniqueSearches, startProgress]);
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      pushToSearch();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        pushToSearch();
+      }
+    },
+    [pushToSearch],
+  );
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     startTransition(() => {
       startProgress();
       setInputVal("");
@@ -137,7 +160,7 @@ export const SearchProductProvider = ({
       setIsOpen(false);
       push("/");
     });
-  };
+  }, [push, startProgress]);
 
   return (
     <SearchProductContext.Provider
