@@ -101,7 +101,6 @@ export const GetVendorCouponsDocument = `query getVendorCoupons($tenant_id: uuid
     amount
     left_limit
     code
-    is_public
     minimum_cost
     limit
     }

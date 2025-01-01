@@ -28,7 +28,7 @@ export type GetVendorCouponsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetVendorCouponsQuery = { coupon_aggregate: { aggregate?: { count: number } | null }, coupon: Array<{ id: any, code: string, start_date?: any | null, end_date?: any | null, amount: number, left_limit?: number | null, is_public?: boolean | null, minimum_cost?: number | null, limit: number }> };
+export type GetVendorCouponsQuery = { coupon_aggregate: { aggregate?: { count: number } | null }, coupon: Array<{ id: any, code: string, start_date?: any | null, end_date?: any | null, amount: number, left_limit?: number | null, minimum_cost?: number | null, limit: number }> };
 
 
 export const GetVendorByIdDocument = gql`
@@ -92,7 +92,6 @@ export const GetVendorCouponsDocument = gql`
     amount
     left_limit
     code
-    is_public
     minimum_cost
     limit
   }

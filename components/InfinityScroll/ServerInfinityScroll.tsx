@@ -5,10 +5,12 @@ import InfinityScroll from ".";
 
 type ServerInfinityScrollProps = {
   searchParams: { [key: string]: string | string[] | undefined };
+  hasFilter?: boolean;
 };
 
 const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
   searchParams,
+  hasFilter = false,
 }) => {
   const response = await searchProductsv1(
     {
@@ -29,6 +31,7 @@ const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
       initialData={data}
       query={searchProductsv1}
       params={searchParams}
+      hasFilter={hasFilter}
     />
   );
 };

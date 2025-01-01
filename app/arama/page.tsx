@@ -59,7 +59,10 @@ export default async function SearchPage(props: {
               </div>
             }
           >
-            <ServerInfinityScroll searchParams={searchParams} />
+            <ServerInfinityScroll
+              searchParams={searchParams}
+              hasFilter={true}
+            />
           </Suspense>
         </div>
       </div>
