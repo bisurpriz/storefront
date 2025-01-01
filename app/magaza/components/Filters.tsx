@@ -12,7 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { Filter, SlidersHorizontal, Sparkles, Truck, X } from "lucide-react";
+import {
+  ChevronRight,
+  Filter,
+  SlidersHorizontal,
+  Sparkles,
+  Truck,
+  X,
+} from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { useCallback, useEffect, useState } from "react";
@@ -57,6 +64,7 @@ const PRESERVED_PARAMS = ["mid", "cid", "pid", "search"];
 interface FiltersProps {
   className?: string;
   filterTypes?: FilterTypes[];
+  isMobile?: boolean;
 }
 
 const FilterContent = ({
@@ -335,25 +343,181 @@ const FilterContent = ({
   );
 };
 
-export default function Filters({ className, filterTypes }: FiltersProps) {
+export default function Filters({
+  className,
+  filterTypes,
+  isMobile = false,
+}: FiltersProps) {
   const [open, setOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(1);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!isMobile) {
+      setShowOnboarding(false);
+      return;
+    }
+
+    const hasSeenOnboarding = localStorage.getItem("hasSeenFilterOnboarding");
+    if (hasSeenOnboarding) {
+      setShowOnboarding(false);
+    } else {
+      setShowOnboarding(true);
+    }
+  }, [isMobile]);
+
+  const [filters, setFilters] = useState<FilterState>({
+    [FilterKeys.PRICE]: {
+      min: searchParams.get("minPrice") || "",
+      max: searchParams.get("maxPrice") || "",
+    },
+    [FilterKeys.SAME_DAY_DELIVERY]:
+      searchParams.get("sameDayDelivery") === "true",
+    [FilterKeys.CUSTOMIZABLE]: searchParams.get("customizable") === "true",
+    [FilterKeys.CATEGORY]: searchParams.get("category") || "",
+  });
+
+  const completeOnboarding = useCallback(() => {
+    localStorage.setItem("hasSeenFilterOnboarding", "true");
+    setShowOnboarding(false);
+    setOnboardingStep(1);
+  }, []);
+
+  const handleBackdropClick = useCallback(() => {
+    completeOnboarding();
+  }, [completeOnboarding]);
+
+  const handleNextStep = useCallback(() => {
+    if (onboardingStep < 3) {
+      setOnboardingStep((prev) => prev + 1);
+    } else {
+      completeOnboarding();
+    }
+  }, [onboardingStep, completeOnboarding]);
+
+  const activeFilterCount = Object.values(filters).filter((value) => {
+    if (typeof value === "object") {
+      return Object.values(value).some((v) => v !== "");
+    }
+    if (typeof value === "string") return value.length > 0;
+    if (typeof value === "boolean") return value;
+    return value != null;
+  }).length;
+
+  const getOnboardingContent = useCallback(() => {
+    switch (onboardingStep) {
+      case 1:
+        return {
+          text: "Ürünleri filtrelemek için bu butonu kullanabilirsiniz 👋",
+          icon: "✨",
+        };
+      case 2:
+        return {
+          text: "Fiyat aralığı, aynı gün teslimat ve özelleştirilebilir ürünleri filtreleyebilirsiniz",
+          icon: "🎯",
+        };
+      case 3:
+        return {
+          text: "Aktif filtrelerinizi burada görebilirsiniz",
+          icon: "🔍",
+        };
+      default:
+        return {
+          text: "",
+          icon: "",
+        };
+    }
+  }, [onboardingStep]);
 
   return (
     <>
-      <div className="lg:hidden">
+      {showOnboarding && (
+        <div
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-all duration-300"
+          onClick={handleBackdropClick}
+        />
+      )}
+      <div
+        className={cn("fixed bottom-32 right-4 z-50", !isMobile && "hidden")}
+      >
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
-            <Button
-              variant="outline"
-              size="lg"
-              className="mb-4 w-full gap-2 bg-white shadow-sm"
+            <div
+              role="button"
+              tabIndex={0}
+              className="group relative inline-flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-primary shadow-lg hover:bg-primary/90 focus:outline-none"
             >
-              <Filter className="h-4 w-4" />
-              Filtreleri Göster
-            </Button>
+              <Filter className="h-6 w-6 text-white" />
+              {activeFilterCount > 0 && (
+                <div className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
+                  {activeFilterCount}
+                </div>
+              )}
+              {showOnboarding && (
+                <div
+                  className="animate-fade-in absolute left-0 top-1/2 z-50 flex w-[300px] -translate-x-[calc(100%+1rem)] -translate-y-1/2 flex-col rounded-xl bg-white p-5 text-sm shadow-xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={completeOnboarding}
+                    className="absolute right-2 top-2 rounded-full p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-600"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  <div className="mb-1 flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <span className="text-lg">
+                        {getOnboardingContent().icon}
+                      </span>
+                    </span>
+                    <span className="font-medium text-gray-900">
+                      Adım {onboardingStep}/3
+                    </span>
+                  </div>
+
+                  <p className="mt-2 leading-relaxed text-gray-600">
+                    {getOnboardingContent().text}
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3].map((step) => (
+                        <button
+                          key={step}
+                          onClick={() => setOnboardingStep(step)}
+                          className={`flex h-2 rounded-full transition-all duration-300 ${
+                            step === onboardingStep
+                              ? "w-6 bg-primary"
+                              : "w-2 bg-gray-200 hover:bg-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={handleNextStep}
+                      className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                    >
+                      {onboardingStep === 3 ? (
+                        "Tamamla"
+                      ) : (
+                        <>
+                          İleri
+                          <ChevronRight className="ml-1 h-4 w-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="absolute -right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-45 transform bg-white" />
+                </div>
+              )}
+            </div>
           </DrawerTrigger>
           <DrawerContent>
-            <DrawerHeader>
+            <DrawerHeader className="border-b">
               <DrawerTitle>Filtreler</DrawerTitle>
             </DrawerHeader>
             <div className="px-4 pb-8">
@@ -363,7 +527,7 @@ export default function Filters({ className, filterTypes }: FiltersProps) {
         </Drawer>
       </div>
 
-      <div className="hidden lg:block">
+      <div className={cn("hidden", isMobile && "hidden", !isMobile && "block")}>
         <FilterContent className={className} filterTypes={filterTypes} />
       </div>
     </>

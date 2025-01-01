@@ -10,10 +10,15 @@ type ServerInfinityScrollProps = {
 const ServerInfinityScroll: FC<ServerInfinityScrollProps> = async ({
   searchParams,
 }) => {
-  const response = await searchProductsv1({
-    offset: 0,
-    limit: PER_REQUEST,
-  });
+  const response = await searchProductsv1(
+    {
+      offset: 0,
+      limit: PER_REQUEST,
+    },
+    {
+      ...searchParams,
+    },
+  );
 
   const data = response?.hits.map((hit) => hit.document);
   const totalCount = response?.found;

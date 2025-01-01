@@ -1,8 +1,10 @@
-import { searchProductsv1 } from "@/app/(feed)/actions";
-import { PER_REQUEST } from "@/app/constants";
 import Filters from "@/app/magaza/components/Filters";
-import InfinityScroll from "@/components/InfinityScroll";
+import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
+import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import { Metadata } from "next";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
+import { Suspense } from "react";
 
 export async function generateMetadata({
   searchParams,
@@ -41,53 +43,35 @@ export default async function SearchPage(props: {
     );
   }
 
-  const response = await searchProductsv1(
-    {
-      offset: 0,
-      limit: PER_REQUEST,
-    },
-    searchParams,
-  );
+  const { device } = userAgent({
+    headers: await headers(),
+  });
 
-  const data = response?.hits.map((hit) => hit.document);
-  const totalCount = response?.found;
+  const isMobile = device.type === "mobile";
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
-      <div className="flex items-center justify-between border-b pb-4">
-        <div>
-          <h1 className="text-lg font-medium">
-            &quot;{searchQuery}&quot; için arama sonuçları
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {totalCount} ürün bulundu
-          </p>
-        </div>
-      </div>
-
-      {/* Mobil Filtre */}
-      <div className="lg:hidden">
-        <Filters filterTypes={["price", "sameDayDelivery", "customizable"]} />
-      </div>
-
-      {/* Desktop Layout */}
       <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
-        {/* Desktop Filtre */}
-        <div className="hidden lg:col-span-1 lg:block">
+        <div className="lg:col-span-1">
           <Filters
             filterTypes={["price", "sameDayDelivery", "customizable"]}
-            className="sticky top-6"
+            isMobile={isMobile}
           />
         </div>
-
-        {/* Ürün Listesi */}
-        <div className="mt-6 lg:col-span-4 lg:mt-0">
-          <InfinityScroll
-            totalCount={totalCount}
-            initialData={data}
-            query={searchProductsv1}
-            params={searchParams}
-          />
+        <div className="lg:col-span-4">
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">
+                {Array.from({
+                  length: 5,
+                }).map((_, i) => (
+                  <ProductItemSkeleton key={i} />
+                ))}
+              </div>
+            }
+          >
+            <ServerInfinityScroll searchParams={searchParams} />
+          </Suspense>
         </div>
       </div>
     </div>
