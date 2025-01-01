@@ -1,20 +1,50 @@
-const ProductItemSkeleton = ({ ref = null }) => {
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { memo } from "react";
+
+interface ProductItemSkeletonProps {
+  ref?: React.RefObject<HTMLDivElement>;
+}
+
+const ProductItemSkeleton = memo(({ ref }: ProductItemSkeletonProps) => {
   return (
-    <div
-      ref={ref}
-      className="mt-5 flex min-h-[136px] w-full animate-pulse overflow-hidden rounded-lg bg-gray-200 max-sm:h-[136px] sm:min-h-[340px] sm:flex-col"
-    >
-      <div className="h-full w-full rounded bg-gray-300 object-cover max-sm:w-[122px] max-sm:min-w-[122px] sm:h-60 md:h-52 lg:h-56 xl:h-80"></div>
-      <div className="flex w-full flex-col gap-2 px-4 py-2 pb-4">
-        <p className="w-ful mt-2 h-4 rounded bg-gray-300 text-lg font-bold text-gray-700 sm:h-2 sm:w-2/3"></p>
-        <h2 className="mt-2 h-6 w-full rounded bg-gray-300 text-lg font-semibold"></h2>
-        <p className="mt-1 h-4 w-1/2 rounded bg-gray-300 text-sm text-gray-600"></p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="h-8 w-32 rounded bg-gray-300 text-xl font-bold text-gray-700"></span>
+    <Card ref={ref} className="relative flex h-auto flex-col overflow-hidden">
+      <CardContent className="flex flex-grow flex-col p-0">
+        <Skeleton className="aspect-square w-full bg-gray-200 object-cover" />
+
+        <div className="flex flex-grow flex-col space-y-3 p-4">
+          <Skeleton className="h-4 w-1/3 bg-gray-200" />
+
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-full bg-gray-200" />
+            <Skeleton className="h-4 w-2/3 bg-gray-200" />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Skeleton key={i} className="h-4 w-4 bg-gray-200" />
+              ))}
+            </div>
+            <Skeleton className="h-4 w-8 bg-gray-200" />
+          </div>
+
+          <div className="mt-auto flex items-end gap-2">
+            <Skeleton className="h-6 w-24 bg-gray-200" />
+            <Skeleton className="h-4 w-16 bg-gray-200" />
+          </div>
         </div>
+      </CardContent>
+      <Skeleton className="absolute right-2 top-2 h-8 w-8 rounded-full bg-gray-200" />
+
+      <div className="absolute left-2 top-2 flex gap-1">
+        <Skeleton className="h-5 w-5 rounded-md bg-gray-200" />
+        <Skeleton className="h-5 w-5 rounded-md bg-gray-200" />
       </div>
-    </div>
+    </Card>
   );
-};
+});
+
+ProductItemSkeleton.displayName = "ProductItemSkeleton";
 
 export default ProductItemSkeleton;
