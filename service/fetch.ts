@@ -5,7 +5,7 @@ class Fetch {
   private fetch: ClientFetch | ServerFetch;
 
   constructor() {
-    console.log("Fetch Service is created.");
+    console.table("Fetch Service is created.");
     this.fetch =
       typeof window === "undefined" ? new ServerFetch() : new ClientFetch();
   }
@@ -24,7 +24,11 @@ class Fetch {
     additionalHeaders?: HeadersInit;
   }): Promise<T> {
     try {
-      console.log("Requesting:", tags?.join(", ") || "No tags");
+      console.table({
+        tags: tags?.join(", "),
+        withAuth,
+        ...(additionalHeaders && { additionalHeaders }),
+      });
       return await this.fetch.request({
         query,
         variables,

@@ -1,28 +1,34 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useCart } from "@/contexts/CartContext";
+import { TriangleAlert } from "lucide-react";
+import { useMemo } from "react";
 import CartHomePageButton from "../CartHomePageButton";
 import ProductGroup from "../ProductGroup";
 import GreaterThanOneTenant from "../ProductGroup/GreaterThanOneTenant";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { TriangleAlert } from "lucide-react";
 
 const CartWrapper = () => {
   const {
     cartState: { cartItems },
   } = useCart();
 
-  const tenantGroupedProducts = cartItems?.reduce((acc, item) => {
-    const tenantId = item.tenant?.tenants?.[0]?.id;
-    if (acc[tenantId]) {
-      acc[tenantId].push(item);
-    } else {
-      acc[tenantId] = [item];
-    }
-    return acc;
-  }, {});
+  const { tenantGroupedProducts, greaterThanOneTenant } = useMemo(() => {
+    const grouped = cartItems?.reduce((acc, item) => {
+      const tenantId = item.tenant?.tenants?.[0]?.id;
+      if (acc[tenantId]) {
+        acc[tenantId].push(item);
+      } else {
+        acc[tenantId] = [item];
+      }
+      return acc;
+    }, {});
 
-  const greaterThanOneTenant = Object.keys(tenantGroupedProducts).length > 1;
+    return {
+      tenantGroupedProducts: grouped,
+      greaterThanOneTenant: Object.keys(grouped || {}).length > 1,
+    };
+  }, [cartItems]);
 
   return (
     <div className="col-span-1 flex flex-col gap-3 md:col-span-2">

@@ -135,7 +135,6 @@ export default function ReceiverForm() {
   const placeData = parseJson(
     cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places,
   );
-  console.log(errors);
   const availableDistricts = getAvailableDistricts(placeData);
   const { push } = useRouter();
   const onSubmit = (data: OrderDetailFormData) => {

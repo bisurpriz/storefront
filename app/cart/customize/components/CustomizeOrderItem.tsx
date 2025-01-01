@@ -1,14 +1,14 @@
 import { orderTextsUpload } from "@/app/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import { Button } from "@/components/ui/button";
 import ImageUpload from "@/components/ImageUpload";
 import TextField from "@/components/TextField";
+import { Button } from "@/components/ui/button";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 
 type CustomizeOrderItemProps = {
   orderItem: GetOrderByIdQuery["order_by_pk"]["tenant_orders"][0]["order_items"][0];
@@ -130,7 +130,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }

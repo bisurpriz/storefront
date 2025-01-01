@@ -164,7 +164,6 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       costData: costData,
     };
   } catch (error) {
-    console.log(error);
     return {
       data: null,
       error: {

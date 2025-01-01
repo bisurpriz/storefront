@@ -254,32 +254,6 @@ export default function ProductItem2(props: ProductItemProps) {
 
         {is_active ? (
           <div>
-            {/* <div className="flex space-x-2 mt-auto max-sm:space-x-1">
-              <Button
-                className="flex-1 max-sm:p-2 h-fit"
-                variant="default"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  console.log("Sepete Eklendi");
-                }}
-              >
-                Hemen Al
-              </Button>
-
-              <Button
-                variant="outline"
-                className="flex-1 max-sm:p-2 h-fit"
-                icon={<View className="w-5 h-5 mr-2" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-              >
-                Hızlı Bakış
-              </Button>
-            </div> */}
-
             {is_service_free && (
               <span
                 className={cn(
