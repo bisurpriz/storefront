@@ -1,6 +1,4 @@
-import { searchProductsv1 } from "@/app/(feed)/actions";
-import { PER_REQUEST } from "@/app/constants";
-import InfinityScroll from "@/components/InfinityScroll";
+import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
@@ -41,16 +39,6 @@ const Vendor = async (props: {
   const vendorId = searchParams["mid"];
 
   const responses = await Promise.all([
-    searchProductsv1(
-      {
-        offset: 0,
-        limit: PER_REQUEST,
-      },
-      {
-        ...searchParams,
-        tenant: vendorId,
-      },
-    ),
     getVendorDetails({
       id: vendorId,
     }),
@@ -65,15 +53,13 @@ const Vendor = async (props: {
     }),
   ]);
 
-  const data = responses?.[0]?.hits.map((hit) => hit.document);
-  const totalCount = responses?.[0]?.found;
-  const tenantDetails = responses[1];
+  const tenantDetails = responses[0];
 
-  const reviewsCount = responses[2].review_aggregate.aggregate.count;
+  const reviewsCount = responses[1].review_aggregate.aggregate.count;
   const productScoreAverage =
-    responses[3].product_aggregate.aggregate.avg.score;
-  const coupons = responses[4]?.coupon;
-  const couponsCount = responses[4]?.coupon_aggregate.aggregate.count;
+    responses[2].product_aggregate.aggregate.avg.score;
+  const coupons = responses[3]?.coupon;
+  const couponsCount = responses[3]?.coupon_aggregate.aggregate.count;
 
   const { device } = userAgent({
     headers: await headers(),
@@ -105,11 +91,8 @@ const Vendor = async (props: {
             />
           </div>
           <div className="lg:col-span-4">
-            <InfinityScroll
-              totalCount={totalCount}
-              initialData={data}
-              query={searchProductsv1}
-              params={{
+            <ServerInfinityScroll
+              searchParams={{
                 ...searchParams,
                 tenant: vendorId,
               }}

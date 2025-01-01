@@ -1,9 +1,7 @@
-import { PER_REQUEST } from "@/app/constants";
 import Filters from "@/components/Filters/Filters";
-import InfinityScroll from "@/components/InfinityScroll";
+import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
-import { searchProductsv1 } from "../actions";
 
 export async function generateMetadata({ params }) {
   const param = await params;
@@ -29,20 +27,6 @@ export default async function CategoryPage(props: {
 
   if (!slug) return;
 
-  const response = await searchProductsv1(
-    {
-      offset: 0,
-      limit: PER_REQUEST,
-    },
-    {
-      ...searchParams,
-      category: slug,
-    },
-  );
-
-  const data = response?.hits.map((hit) => hit.document);
-  const totalCount = response?.found;
-
   const { device } = userAgent({
     headers: await headers(),
   });
@@ -58,11 +42,8 @@ export default async function CategoryPage(props: {
         />
       </div>
       <div className="lg:col-span-4">
-        <InfinityScroll
-          totalCount={totalCount}
-          initialData={data}
-          query={searchProductsv1}
-          params={{
+        <ServerInfinityScroll
+          searchParams={{
             ...searchParams,
             category: slug,
           }}
