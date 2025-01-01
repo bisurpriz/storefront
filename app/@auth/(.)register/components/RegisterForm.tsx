@@ -4,179 +4,258 @@ import { registerUser } from "@/app/account/actions";
 import { Link } from "@/components/Link";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { toast } from "sonner";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MIN_PASSWORD_LENGTH = 6;
+const MIN_NAME_LENGTH = 2;
 
 type RegisterFormProps = {
   onSuccessfulRegister?: (status: boolean) => void;
 };
 
+interface FormData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+}
+
+interface ValidationErrors {
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  password?: string;
+}
+
 const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+  });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {},
+  );
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  const validateForm = useCallback((): boolean => {
+    const errors: ValidationErrors = {};
+
+    if (formData.firstname.length < MIN_NAME_LENGTH) {
+      errors.firstname = "Ad en az 2 karakter olmalıdır";
+    }
+
+    if (formData.lastname.length < MIN_NAME_LENGTH) {
+      errors.lastname = "Soyad en az 2 karakter olmalıdır";
+    }
+
+    if (!EMAIL_REGEX.test(formData.email)) {
+      errors.email = "Geçerli bir e-posta adresi girin";
+    }
+
+    if (formData.password.length < MIN_PASSWORD_LENGTH) {
+      errors.password = "Şifre en az 6 karakter olmalıdır";
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  }, [formData]);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = e.target;
+      setFormData((prev) => ({ ...prev, [id]: value }));
+
+      if (isSubmitted) {
+        validateForm();
+      }
+    },
+    [isSubmitted, validateForm],
+  );
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
-    const [firstname, lastname, email, password] = Array.from(
-      event.currentTarget.elements,
-    ).map((field: HTMLInputElement) => field.value);
+    setIsSubmitted(true);
 
-    const response = await registerUser({
-      email,
-      password,
-      firstname,
-      lastname,
-    });
+    const isValid = validateForm();
+    if (!isValid) return;
 
-    if (response.data.error) {
-      const errorMessage =
-        AuthErrorMessages[
-          response.data.error as keyof typeof AuthErrorMessages
-        ];
+    setIsPending(true);
 
-      setError(errorMessage);
-      toast.error(errorMessage, {
-        position: "bottom-right",
+    try {
+      const response = await registerUser(formData);
 
-        id: "login-error",
-        duration: 1500,
-      });
-      setLoading(false);
-      return;
-    } else if (response.data.affected_rows) {
-      const {
-        data: { error },
-      } = await login({
-        email,
-        password,
-      });
-
-      if (error) {
+      if (response.data.error) {
         const errorMessage =
-          AuthErrorMessages[error as keyof typeof AuthErrorMessages];
+          AuthErrorMessages[
+            response.data.error as keyof typeof AuthErrorMessages
+          ];
 
-        setError(errorMessage);
         toast.error(errorMessage, {
           position: "bottom-right",
-
-          id: "login-error",
+          id: "register-error",
           duration: 1500,
         });
-        setLoading(false);
         return;
-      } else {
-        setError("");
-        toast.success("Giriş başarılı", {
-          position: "bottom-right",
+      }
 
-          id: "login-success",
+      if (response.data.affected_rows) {
+        const loginResponse = await login({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (loginResponse.message) {
+          const errorMessage =
+            AuthErrorMessages[
+              loginResponse.message as keyof typeof AuthErrorMessages
+            ];
+
+          toast.error(errorMessage, {
+            position: "bottom-right",
+            id: "login-error",
+            duration: 1500,
+          });
+          return;
+        }
+
+        toast.success("Kayıt başarılı", {
+          position: "bottom-right",
+          id: "register-success",
           duration: 1500,
         });
         onSuccessfulRegister?.(true);
-        setLoading(false);
       }
+    } catch (error) {
+      console.error("Register error:", error);
+      toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+    } finally {
+      setIsPending(false);
     }
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <Card className="border-none shadow-none">
-        <CardTitle className="my-2 space-y-2 text-center">
-          <Image
-            src={"/logo.svg"}
-            width={300}
-            height={300}
-            alt="Login"
-            className="m-auto"
-            priority
-          />
-          <h1 className="text-center text-lg font-bold">
-            Hesabınızı Oluşturun
-          </h1>
-          <p className="text-center text-sm text-gray-500">
-            Hesabınızı oluşturarak daha hızlı ve kolay bir şekilde giriş
-            yapabilir ve işlemlerinizi gerçekleştirebilirsiniz.
-          </p>
-        </CardTitle>
-        <CardContent className="space-y-4">
-          <TextField
-            autoComplete="off"
-            id="firstname"
-            label="Adınız"
-            placeholder="Adınız"
-            fullWidth
-          />
-          <TextField
-            autoComplete="off"
-            id="lastname"
-            label="Soyadınız"
-            placeholder="Soyadınız"
-            fullWidth
-          />
-          <TextField
-            autoComplete="off"
-            id="email"
-            label="Email"
-            type="email"
-            placeholder="Mail adresiniz"
-            fullWidth
-            error={!!error}
-          />
-          <TextField
-            autoComplete="off"
-            id="password"
-            label="Şifre"
-            type="password"
-            placeholder="Şifre"
-            fullWidth
-            error={!!error}
-          />
-          <Button type="submit" loading={loading} className="m-auto">
-            Kayıt Ol
-          </Button>
-        </CardContent>
-        <div className="mt-4">
-          <p className="text-center text-gray-500">
-            Hesabınız var mı?{" "}
-            <Link href="/login" className="text-blue-500" replace>
-              Giriş yapın
-            </Link>
-          </p>
-        </div>
+    <div
+      className={cn("relative", isPending && "pointer-events-none opacity-60")}
+    >
+      <form onSubmit={handleRegister}>
+        <Card className="border-none shadow-none">
+          <CardHeader className="space-y-2">
+            <Image
+              src="/logo.svg"
+              width={300}
+              height={300}
+              alt="Register"
+              className="mx-auto h-12 w-auto"
+              priority
+            />
+            <div className="space-y-1 text-center">
+              <h1 className="text-xl font-semibold tracking-tight">
+                Hesabınızı Oluşturun
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Hesabınızı oluşturarak daha hızlı ve kolay bir şekilde giriş
+                yapabilir ve işlemlerinizi gerçekleştirebilirsiniz.
+              </p>
+            </div>
+          </CardHeader>
 
-        {/* <div className="flex flex-col gap-2 w-full justify-center items-center mt-4">
-          {socialLogins.map(({ name, icon, signIn, color }) => (
-            <span
-              key={name}
-              onClick={signIn}
-              className={clsx(
-                "flex items-center justify-start w-full rounded-lg cursor-pointer text-lg",
-                "p-2 border border-gray-200",
-                color,
-                "hover:bg-opacity-80"
-              )}
+          <CardContent className="space-y-4">
+            <TextField
+              id="firstname"
+              label="Adınız"
+              placeholder="Adınız"
+              value={formData.firstname}
+              onChange={handleInputChange}
+              error={isSubmitted && !!validationErrors.firstname}
+              errorMessage={isSubmitted ? validationErrors.firstname : ""}
+              autoComplete="given-name"
+              required
+              fullWidth
+            />
+            <TextField
+              id="lastname"
+              label="Soyadınız"
+              placeholder="Soyadınız"
+              value={formData.lastname}
+              onChange={handleInputChange}
+              error={isSubmitted && !!validationErrors.lastname}
+              errorMessage={isSubmitted ? validationErrors.lastname : ""}
+              autoComplete="family-name"
+              required
+              fullWidth
+            />
+            <TextField
+              id="email"
+              label="Email"
+              type="email"
+              placeholder="Mail adresiniz"
+              value={formData.email}
+              onChange={handleInputChange}
+              error={isSubmitted && !!validationErrors.email}
+              errorMessage={isSubmitted ? validationErrors.email : ""}
+              autoComplete="email"
+              required
+              fullWidth
+            />
+            <TextField
+              id="password"
+              label="Şifre"
+              type="password"
+              placeholder="Şifre"
+              value={formData.password}
+              onChange={handleInputChange}
+              error={isSubmitted && !!validationErrors.password}
+              errorMessage={isSubmitted ? validationErrors.password : ""}
+              autoComplete="new-password"
+              required
+              fullWidth
+            />
+
+            <Button
+              type="submit"
+              loading={isPending}
+              disabled={isPending}
+              className="w-full"
             >
-              {icon}
-              <span className="flex-1 text-center text-base">
-                {name} ile giriş yap
-              </span>
-            </span>
-          ))}
-        </div>
-        <span
-          className="text-center text-gray-500 text-xs"
-          style={{ maxWidth: "300px" }}
-        >
-          Sosyal medya hesaplarınızla daha hızlı ve kolay bir şekilde giriş
-          yapabilirsiniz.
-        </span> */}
-      </Card>
-    </form>
+              Kayıt Ol
+            </Button>
+          </CardContent>
+
+          <CardFooter>
+            <p className="w-full text-center text-sm text-muted-foreground">
+              Hesabınız var mı?{" "}
+              <Link
+                href="/login"
+                className={cn("text-primary hover:text-primary/90", {
+                  "pointer-events-none": isPending,
+                })}
+                replace
+              >
+                Giriş yapın
+              </Link>
+            </p>
+          </CardFooter>
+        </Card>
+      </form>
+    </div>
   );
 };
 

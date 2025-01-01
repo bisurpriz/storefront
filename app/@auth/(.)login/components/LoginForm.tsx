@@ -17,187 +17,313 @@ import { Eye, EyeOff, LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FC, useEffect, useState, useTransition } from "react";
+import { FC, useCallback, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MIN_PASSWORD_LENGTH = 6;
 
 type LoginFormProps = {
   onSuccessfulLogin?: (status: boolean) => void;
 };
 
-export const socialLogins = [
-  {
-    name: "Google",
-    icon: <GoogleIcon />,
-    signIn: () => signIn("google"),
-    color: "bg-gray-100",
-  },
-];
-
 const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    showPassword: false,
+  });
+  const [validationErrors, setValidationErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockTimer, setLockTimer] = useState<number>(0);
   const [isPending, startTransition] = useTransition();
   const { back } = useRouter();
 
   useEffect(() => {
     return () => {
-      setEmail("");
-      setPassword("");
-      setError("");
+      setFormData({ email: "", password: "", showPassword: false });
+      setValidationErrors({ email: "", password: "" });
+      setIsSubmitted(false);
     };
   }, []);
 
-  const handleClientLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    startTransition(async () => {
-      const [email, password] = Array.from(event.currentTarget.elements).map(
-        (field: HTMLInputElement) => field.value,
-      );
+  useEffect(() => {
+    if (isLocked && lockTimer > 0) {
+      const timer = setTimeout(() => {
+        setLockTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+    if (lockTimer === 0) {
+      setIsLocked(false);
+      setLoginAttempts(0);
+    }
+  }, [isLocked, lockTimer]);
 
-      const { message, success } = await login({
-        email,
-        password,
-      });
+  const validateForm = useCallback(() => {
+    const errors = {
+      email: "",
+      password: "",
+    };
 
-      if (!success) {
-        const errorMessage =
-          AuthErrorMessages[message as keyof typeof AuthErrorMessages];
+    if (!EMAIL_REGEX.test(formData.email)) {
+      errors.email = "Geçerli bir e-posta adresi girin";
+    }
 
-        setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "bottom-right",
-          id: "login-error",
-          duration: 1500,
-        });
-        return;
+    if (formData.password.length < MIN_PASSWORD_LENGTH) {
+      errors.password = "Şifre en az 6 karakter olmalıdır";
+    }
+
+    setValidationErrors(errors);
+    return !errors.email && !errors.password;
+  }, [formData.email, formData.password]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Sadece submit edilmişse ve input değiştiğinde validate et
+    if (isSubmitted) {
+      validateForm();
+    }
+  };
+
+  const handleTogglePassword = () => {
+    setFormData((prev) => ({ ...prev, showPassword: !prev.showPassword }));
+  };
+
+  const handleLoginAttempt = () => {
+    const MAX_ATTEMPTS = 5;
+    const LOCK_TIME = 300; // 5 minutes in seconds
+
+    setLoginAttempts((prev) => {
+      const newAttempts = prev + 1;
+      if (newAttempts >= MAX_ATTEMPTS) {
+        setIsLocked(true);
+        setLockTimer(LOCK_TIME);
+        toast.error(
+          `Çok fazla başarısız deneme. ${LOCK_TIME / 60} dakika sonra tekrar deneyin.`,
+          { duration: 5000 },
+        );
       }
-
-      setError("");
-      toast.success("Giriş başarılı", {
-        position: "bottom-right",
-        id: "login-success",
-        duration: 1500,
-      });
-      onSuccessfulLogin?.(true);
+      return newAttempts;
     });
   };
 
+  const handleClientLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitted(true);
+
+    const isValid = validateForm();
+    if (!isValid || isLocked) return;
+
+    startTransition(async () => {
+      try {
+        const { message, success } = await login({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (!success) {
+          const errorMessage =
+            AuthErrorMessages[message as keyof typeof AuthErrorMessages];
+          handleLoginAttempt();
+          toast.error(errorMessage, {
+            position: "bottom-right",
+            id: "login-error",
+            duration: 1500,
+          });
+          return;
+        }
+
+        toast.success("Giriş başarılı", {
+          position: "bottom-right",
+          id: "login-success",
+          duration: 1500,
+        });
+        onSuccessfulLogin?.(true);
+      } catch (error) {
+        console.error("Login error:", error);
+        toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      }
+    });
+  };
+
+  const handleGoogleLogin = useCallback(async () => {
+    try {
+      await signIn("google");
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast.error("Google ile giriş yapılırken bir hata oluştu.", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+    }
+  }, []);
+
+  if (isLocked) {
+    return (
+      <Card className="border-none shadow-none">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-xl font-semibold text-destructive">
+            Hesap Kilitlendi
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Kalan süre: {Math.floor(lockTimer / 60)}:
+            {lockTimer % 60 < 10 ? "0" : ""}
+            {lockTimer % 60}
+          </p>
+        </CardHeader>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="border-none shadow-none">
-      <CardHeader className="space-y-1">
-        <div className="mb-4 flex justify-center">
-          <Image
-            src={"/logo.svg"}
-            width={120}
-            height={120}
-            alt="Login"
-            className="w-full max-w-xs"
-            priority
-          />
+    <div className={cn("relative", isPending && "pointer-events-none")}>
+      {isPending && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
-        <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">
-          Giriş Yap
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleClientLogin} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">E-posta</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="E-posta adresinizi girin"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
+      )}
+      <Card className="border-none shadow-none">
+        <CardHeader className="space-y-1">
+          <div className="mb-4 flex justify-center">
+            <Image
+              src="/logo.svg"
+              width={120}
+              height={120}
+              alt="Login"
+              className="w-full max-w-xs"
+              priority
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Şifre</Label>
-            <div className="relative">
+          <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">
+            Giriş Yap
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleClientLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">E-posta</Label>
               <Input
-                id="password"
-                autoComplete="current-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="email"
+                name="email"
+                type="email"
+                placeholder="E-posta adresinizi girin"
+                value={formData.email}
+                onChange={handleInputChange}
                 required
+                autoComplete="email"
+                className={cn({
+                  "border-red-500 focus-visible:ring-red-500":
+                    isSubmitted && !!validationErrors.email,
+                })}
+                aria-invalid={isSubmitted && !!validationErrors.email}
+                aria-describedby={
+                  isSubmitted && validationErrors.email
+                    ? "email-error"
+                    : undefined
+                }
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </Button>
+              {isSubmitted && validationErrors.email && (
+                <p id="email-error" className="text-sm text-red-500">
+                  {validationErrors.email}
+                </p>
+              )}
             </div>
-          </div>
-          <Button type="submit" className="w-full" loading={isPending}>
-            <LogIn className="mr-2 h-4 w-4" /> Giriş Yap
+            <div className="space-y-2">
+              <Label htmlFor="password">Şifre</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  autoComplete="current-password"
+                  type={formData.showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  required
+                  className={cn({
+                    "border-red-500 focus-visible:ring-red-500":
+                      isSubmitted && !!validationErrors.password,
+                  })}
+                  aria-invalid={isSubmitted && !!validationErrors.password}
+                  aria-describedby={
+                    isSubmitted && validationErrors.password
+                      ? "password-error"
+                      : undefined
+                  }
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  onClick={handleTogglePassword}
+                  aria-label={
+                    formData.showPassword ? "Şifreyi gizle" : "Şifreyi göster"
+                  }
+                >
+                  {formData.showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+              {isSubmitted && validationErrors.password && (
+                <p id="password-error" className="text-sm text-red-500">
+                  {validationErrors.password}
+                </p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              loading={isPending}
+              disabled={isPending}
+            >
+              <LogIn className="mr-2 h-4 w-4" /> Giriş Yap
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-4">
+          <Button
+            variant="outline"
+            className="w-full"
+            loading={isPending}
+            onClick={handleGoogleLogin}
+            disabled={isPending}
+          >
+            <GoogleIcon className="mr-2 h-4 w-4" />
+            Google ile giriş yap
           </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col space-y-4">
-        <Button
-          variant="outline"
-          className="w-full"
-          loading={isPending}
-          onClick={() => signIn("google")}
-        >
-          <svg
-            className="mr-2 h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-            width="48px"
-            height="48px"
-          >
-            <path
-              fill="#FFC107"
-              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-            />
-            <path
-              fill="#FF3D00"
-              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-            />
-            <path
-              fill="#4CAF50"
-              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-            />
-            <path
-              fill="#1976D2"
-              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-            />
-          </svg>
-          Google ile giriş yap
-        </Button>
-        <div className="text-center text-sm">
-          Hesabınız yok mu?{" "}
-          <Link
-            aria-disabled={isPending}
-            href="/register"
-            className={cn("text-center text-blue-500", {
-              "pointer-events-none": isPending,
-            })}
-            replace
-          >
-            Kayıt olun
-          </Link>
-        </div>
-      </CardFooter>
-    </Card>
+          <div className="text-center text-sm">
+            Hesabınız yok mu?{" "}
+            <Link
+              aria-disabled={isPending}
+              href="/register"
+              className={cn("text-center text-blue-500", {
+                "pointer-events-none": isPending,
+              })}
+              replace
+            >
+              Kayıt olun
+            </Link>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 
