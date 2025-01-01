@@ -1,25 +1,32 @@
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
+import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
+import { Suspense } from "react";
 import ReceiverForm from "../components/OrderDetail/ReceiverForm";
 
-export const generateMetadata = async () => {
-  return {
-    title: getBrandWithTitle("Sipariş Detayı"),
-    description: "Sipariş detayı sayfası",
-  };
+export const metadata: Metadata = {
+  title: getBrandWithTitle("Sipariş Detayı"),
+  description:
+    "Sipariş detaylarınızı güvenle doldurun ve siparişinizi tamamlayın",
 };
 
-const OrderDetail = async () => {
+export default function OrderDetailPage() {
   return (
-    <div className="relative w-full">
+    <div className="relative">
       <section
-        aria-labelledby="order-detail"
+        aria-labelledby="order-detail-title"
         aria-describedby="order-detail-description"
-        aria-label="Sipariş Detayı"
       >
-        <ReceiverForm />
+        <Suspense
+          fallback={
+            <div className="flex min-h-[400px] items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          }
+        >
+          <ReceiverForm />
+        </Suspense>
       </section>
     </div>
   );
-};
-
-export default OrderDetail;
+}

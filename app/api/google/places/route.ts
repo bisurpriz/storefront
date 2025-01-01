@@ -42,7 +42,7 @@ function checkRateLimit(sessionId: string): boolean {
 
   // Son 1 dakika içindeki istekleri kontrol et
   if (now - userRequests.timestamp < 60 * 1000) {
-    if (userRequests.count >= 10) return false; // Dakikada max 10 istek
+    if (userRequests.count >= 20) return false; // Dakikada max 20 istek
     userRequests.count++;
     return true;
   }
@@ -62,11 +62,13 @@ export async function GET(request: NextRequest) {
     const language = searchParams.get("language") || CONFIG.DEFAULT_LANGUAGE;
 
     // Session kontrolü
-    const session = request.cookies.get("user_id")?.value || request.cookies.get("guest_id")?.value;
+    const session =
+      request.cookies.get("user_id")?.value ||
+      request.cookies.get("guest_id")?.value;
     if (!session) {
       return NextResponse.json<ErrorResponse>(
         { error: "Kullanıcı kimliği (user_id veya guest_id) gerekli." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -74,7 +76,7 @@ export async function GET(request: NextRequest) {
     if (!query) {
       return NextResponse.json<ErrorResponse>(
         { error: "Query parametresi gerekli." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -82,7 +84,7 @@ export async function GET(request: NextRequest) {
     if (!checkRateLimit(session)) {
       return NextResponse.json<ErrorResponse>(
         { error: "Çok fazla istek gönderildi. Lütfen biraz bekleyin." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -124,10 +126,11 @@ export async function GET(request: NextRequest) {
 
     // API yanıt kontrolü
     if (data.status !== "OK") {
-      const errorMessage = data.error_message || "Google Places API isteğinde hata oluştu.";
+      const errorMessage =
+        data.error_message || "Google Places API isteğinde hata oluştu.";
       return NextResponse.json<ErrorResponse>(
         { error: errorMessage, details: data },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -140,7 +143,6 @@ export async function GET(request: NextRequest) {
         "Cache-Control": `public, s-maxage=${CONFIG.CACHE_DURATION}, stale-while-revalidate`,
       },
     });
-
   } catch (error) {
     console.error("Places API Error:", error);
     return NextResponse.json<ErrorResponse>(
@@ -148,7 +150,7 @@ export async function GET(request: NextRequest) {
         error: "Sunucu hatası.",
         details: error instanceof Error ? error.message : "Bilinmeyen hata",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
