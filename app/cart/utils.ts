@@ -1,7 +1,7 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { CreateOrderMutationVariables } from "@/graphql/queries/order/order.generated";
 import { calculateCommissionedAmount, getPrice } from "../iyzico-payment/utils";
-import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
+import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm/types";
 
 const getOrderAddresses = (
   orderDetail: OrderDetailFormData,

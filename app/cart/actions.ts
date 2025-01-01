@@ -22,7 +22,7 @@ import { BonnmarseApi } from "@/service/fetch";
 import { parseJson } from "@/utils/format";
 import axios from "axios";
 import { CookieTokens } from "../@auth/contants";
-import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm";
+import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm/types";
 import { createOrderDataMapper } from "./utils";
 
 export const checkUserId = async () => {
