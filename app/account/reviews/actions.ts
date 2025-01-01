@@ -42,6 +42,7 @@ export const createReview = async ({
       score,
       product_id,
     },
+    tags: ["createReview"],
   });
 
   const { insert_review_one } = data;

@@ -94,5 +94,9 @@ export const getUserById = async (userId) => {
       id: userId,
     },
     tags: ["getUserById"],
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
   });
 };

@@ -14,6 +14,7 @@ export const getOrderTrackingInformation = async ({
     variables: {
       orderNo,
     },
+    tags: ["getOrderTrackingInformation"],
   });
 
   return order[0];

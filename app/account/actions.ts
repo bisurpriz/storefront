@@ -51,6 +51,7 @@ export const getUserByEmail = async (email: string) => {
       variables: {
         email,
       },
+      tags: ["getUserByEmail"],
     });
     return {
       user: user ?? null,
@@ -71,6 +72,7 @@ export const registerUser = async (newUser: RegisterMutationVariables) => {
     variables: {
       ...newUser,
     },
+    tags: ["registerUser"],
   });
   return register;
 };
@@ -87,6 +89,7 @@ export const updateUserById = async (
         ...data,
         id: data.id,
       },
+      tags: ["updateUserById"],
     });
 
   if (user) {

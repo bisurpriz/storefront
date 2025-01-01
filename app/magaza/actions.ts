@@ -29,6 +29,7 @@ export const getPaginatedVendorProducts = async <T>({
         offset,
         tenant_id,
       },
+      tags: ["getPaginatedVendorProducts"],
     });
 
   return {
@@ -43,6 +44,7 @@ export const getVendorDetails = async ({ id }: { id: string }) => {
     variables: {
       id,
     },
+    tags: ["getVendorDetails"],
   });
 
   return tenant_by_pk;
@@ -54,6 +56,7 @@ export const getVendorReviews = async ({ id }: { id: string }) => {
     variables: {
       tenant_id: id,
     },
+    tags: ["getVendorReviews"],
   });
 };
 
@@ -63,6 +66,7 @@ export const getVendorProductScoreAverage = async ({ id }: { id: string }) => {
     variables: {
       tenant_id: id,
     },
+    tags: ["getVendorProductScoreAverage"],
   });
 };
 
@@ -72,5 +76,6 @@ export const getVendorCoupons = async ({ id }: { id: string }) => {
     variables: {
       tenant_id: id,
     },
+    tags: ["getVendorCoupons"],
   });
 };

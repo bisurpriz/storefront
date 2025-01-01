@@ -14,6 +14,7 @@ export const getUserAddresses = async () => {
       variables: {
         user_id: userId,
       },
+      tags: ["getUserAddresses"],
     });
 
   return { user_addresses };

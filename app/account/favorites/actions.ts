@@ -18,6 +18,7 @@ export const getUserFavorites = async ({ offset }: { offset: number }) => {
     variables: {
       offset,
     },
+    tags: ["getUserFavorites"],
   });
 };
 
@@ -31,6 +32,7 @@ export const removeFromFavorites = async ({
     variables: {
       productId,
     },
+    tags: ["removeFromFavorites"],
   });
 };
 
@@ -40,5 +42,6 @@ export const addToFavorites = async ({ productId }: { productId: number }) => {
     variables: {
       productId,
     },
+    tags: ["addToFavorites"],
   });
 };

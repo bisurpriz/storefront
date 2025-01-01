@@ -156,6 +156,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
         ],
         CONSTRAINT: userId ? "cart_user_id_key" : "cart_guest_id_key",
       },
+      tags: ["updateCart"],
     });
     const costData = await getCartCost(cartItems);
 
@@ -195,6 +196,7 @@ export const getCart = async (user_id: string) => {
   try {
     const { cart } = await BonnmarseApi.request<GetDbCartQuery>({
       query: GetDbCartDocument,
+      tags: ["getCart"],
     });
 
     const parsedContent = parseJson(cart[0].content);
@@ -218,6 +220,7 @@ export const getCart = async (user_id: string) => {
         variables: {
           ids,
         },
+        tags: ["getProductsForInitialCart"],
       });
 
     const cartItems = product
@@ -277,6 +280,7 @@ export const getProductByIdForCart = async (id: number) => {
       variables: {
         id,
       },
+      tags: ["getProductByIdForCart"],
     });
 
   const product: ProductForCart = {
