@@ -8,7 +8,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Code, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
 import { CartStepPaths } from "../../constants";
@@ -22,16 +22,13 @@ const CreditCardFormComponent = () => {
   const { renderPopup, openPopup, closePopup } = usePopup();
   const { replace } = useRouter();
   const startProgress = useProgress();
+  const [isPending, startTransition] = useTransition();
   const { loading, errorMessage, base64Html, handlePayment, resetError } =
     usePayment();
 
   const schema = useMemo(() => creditCardSchema, []);
 
-  const {
-    handleSubmit,
-    control,
-    formState: { isValid },
-  } = useForm<CreditCardForm>({
+  const { handleSubmit, control } = useForm<CreditCardForm>({
     defaultValues: {
       creditCardNumber: "",
       creditCardName: "",
@@ -43,18 +40,18 @@ const CreditCardFormComponent = () => {
   });
 
   useEffect(() => {
-    const serialize = sessionStorage.getItem("order-detail-form");
-    if (!serialize) {
-      replace(CartStepPaths.CART);
-      return;
-    }
-    try {
-      JSON.parse(serialize);
-    } catch {
-      sessionStorage.removeItem("order-detail-form");
-      replace(CartStepPaths.CART);
-    }
-  }, [replace, startProgress]);
+    startTransition(() => {
+      startProgress();
+      try {
+        const orderDetails = sessionStorage.getItem("order-detail-form");
+        JSON.parse(orderDetails);
+      } catch {
+        console.log("Sepete yönlendiriliyor");
+        sessionStorage.removeItem("order-detail-form");
+        replace(CartStepPaths.CART);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (errorMessage) {

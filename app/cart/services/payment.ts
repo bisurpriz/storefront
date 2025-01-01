@@ -1,8 +1,8 @@
 import { CookieTokens } from "@/app/@auth/contants";
 import { getIpAddress } from "@/app/actions";
 import {
-  getConversationId,
-  initialize3dsPayment,
+    getConversationId,
+    initialize3dsPayment,
 } from "@/app/iyzico-payment/actions";
 import { Locale } from "@/app/iyzico-payment/types";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
@@ -11,7 +11,7 @@ import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import Cookies from "js-cookie";
 import { createOrderAction } from "../actions";
 import { CreditCardForm } from "../components/Checkout/validation";
-import { OrderDetailFormData } from "../components/OrderDetail/ReceiverForm";
+import { OrderDetailFormData } from "../components/OrderDetail/ReceiverForm/types";
 
 interface InitializePaymentParams {
   cartItems: ProductForCart[];

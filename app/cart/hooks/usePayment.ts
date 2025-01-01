@@ -18,8 +18,8 @@ export const usePayment = () => {
   const { openApproveContract, approveContract } = useContract();
   const {
     cartState: { cartItems, cost },
-    hasCustomizableProduct,
     clearCart,
+    hasCustomizableProduct,
   } = useCart();
 
   const removeStorages = useCallback(() => {
