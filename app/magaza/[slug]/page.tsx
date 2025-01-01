@@ -2,6 +2,8 @@ import { searchProductsv1 } from "@/app/(feed)/actions";
 import { PER_REQUEST } from "@/app/constants";
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
 import Filters, { FilterTypes } from "../../../components/Filters/Filters";
 import {
   getVendorCoupons,
@@ -73,6 +75,12 @@ const Vendor = async (props: {
   const coupons = responses[4]?.coupon;
   const couponsCount = responses[4]?.coupon_aggregate.aggregate.count;
 
+  const { device } = userAgent({
+    headers: await headers(),
+  });
+
+  const isMobile = device.type === "mobile";
+
   return (
     <div className="space-y-6">
       <TenantHeader
@@ -90,7 +98,11 @@ const Vendor = async (props: {
       <div className="mx-auto max-w-7xl">
         <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
           <div className="lg:col-span-1">
-            <Filters filterTypes={STORE_FILTERS} className="sticky top-6" />
+            <Filters
+              filterTypes={STORE_FILTERS}
+              className="sticky top-6"
+              isMobile={isMobile}
+            />
           </div>
           <div className="lg:col-span-4">
             <InfinityScroll

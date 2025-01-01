@@ -431,17 +431,6 @@ export default function Filters({
     }
   }, [isMobile]);
 
-  const [filters, setFilters] = useState<FilterState>({
-    [FilterKeys.PRICE]: {
-      min: searchParams.get("minPrice") || "",
-      max: searchParams.get("maxPrice") || "",
-    },
-    [FilterKeys.SAME_DAY_DELIVERY]:
-      searchParams.get("sameDayDelivery") === "true",
-    [FilterKeys.CUSTOMIZABLE]: searchParams.get("customizable") === "true",
-    [FilterKeys.CATEGORY]: searchParams.get("category") || "",
-  });
-
   const completeOnboarding = useCallback(() => {
     localStorage.setItem("hasSeenFilterOnboarding", "true");
     setShowOnboarding(false);
@@ -460,7 +449,15 @@ export default function Filters({
     }
   }, [onboardingStep, completeOnboarding]);
 
-  const activeFilterCount = Object.values(filters).filter((value) => {
+  const activeFilterCount = Object.values({
+    price: {
+      min: searchParams.get("minPrice") || "",
+      max: searchParams.get("maxPrice") || "",
+    },
+    sameDayDelivery: searchParams.get("sameDayDelivery") === "true",
+    customizable: searchParams.get("customizable") === "true",
+    category: searchParams.get("category") || "",
+  }).filter((value) => {
     if (typeof value === "object") {
       return Object.values(value).some((v) => v !== "");
     }
