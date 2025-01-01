@@ -72,7 +72,7 @@ export default function ProductVariantSelector({
                     "group relative flex h-full flex-col rounded-lg border bg-white p-2 shadow-sm transition-all duration-200",
                   )}
                 >
-                  {hasDiscount && (
+                  {hasDiscount && discountPercentage > 0 && (
                     <div className="absolute left-1.5 top-1.5 z-10">
                       <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-xs font-medium text-white">
                         %{discountPercentage}
