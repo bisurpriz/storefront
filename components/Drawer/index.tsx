@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
 import { clsx } from "clsx";
+import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Close from "../Icons/Close";
+import { useEffect } from "react";
 
 const isOpenClassNames = {
   right: "translate-x-0",
@@ -133,7 +133,7 @@ const Drawer: React.FC<DrawerProps> = ({
                     className="rounded-full p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                     onClick={onClose}
                   >
-                    <Close className="text-2xl" />
+                    <X className="text-2xl" />
                   </button>
                 </div>
                 {children}

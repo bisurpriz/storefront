@@ -1,5 +1,3 @@
-import Filter from "@/components/Filter";
-import FilterSuspense from "@/components/Filter/FilterSuspense";
 import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
@@ -35,17 +33,12 @@ export default async function Page(props: {
 
   return (
     <div className="flex flex-col gap-4">
-      {searchText && (
-        <Suspense fallback={<FilterSuspense />}>
-          <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
-        </Suspense>
-      )}
       {!searchText && !(category.length < 8 && !isMobile) && (
         <Suspense fallback={<CategorySwiper categories={category} />}>
           <CategorySwiper categories={category} />
         </Suspense>
       )}
-      {!searchText && (
+      {!searchText && !isBot && (
         <Suspense
           fallback={
             <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
@@ -62,6 +55,7 @@ export default async function Page(props: {
           {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
         </Suspense>
       )}
+
       <Suspense
         fallback={
           <div className="grid grid-cols-2 gap-6 pb-2 max-sm:gap-2 max-xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4">

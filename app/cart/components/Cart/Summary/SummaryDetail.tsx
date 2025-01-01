@@ -1,13 +1,11 @@
 "use client";
 
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import ApplyTag from "@/components/Icons/ApplyTag";
-import RemoveTag from "@/components/Icons/RemoveTag";
-import Ticket from "@/components/Icons/Ticket";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
 import { CouponMessages } from "@/contexts/CartContext/constants";
 import clsx from "clsx";
+import { Ticket, TicketCheck, TicketX } from "lucide-react";
 import { motion } from "motion/react";
 import { FC, useRef } from "react";
 
@@ -77,7 +75,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                     handleRemoveCoupon?.();
                     inputRef.current!.value = "";
                   }}
-                  icon={<RemoveTag className="mr-2 h-4 w-4" />}
+                  icon={<TicketX className="mr-2 h-4 w-4" />}
                 >
                   Kaldır
                 </Button>
@@ -88,7 +86,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
                   color="default"
                   className="mt-2 flex w-full justify-center xl:ml-3 xl:mt-0 xl:w-auto"
                   onClick={() => onDiscountCodeSubmit(inputRef.current?.value)}
-                  icon={<ApplyTag className="mr-2 h-4 w-4" />}
+                  icon={<TicketCheck className="mr-2 h-4 w-4" />}
                 >
                   Kullan
                 </Button>

@@ -1,4 +1,4 @@
-import ArrowLeft from "@/components/Icons/ArrowLeft";
+import { ChevronLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 const useScrollHorizontal = (
@@ -140,7 +140,7 @@ const useScrollHorizontal = (
             onClick={scrollLeft}
             className="rounded-sm bg-gray-200 p-1 hover:bg-gray-100"
           >
-            <ArrowLeft className="h-4 w-4 text-gray-400" />
+            <ChevronLeft className="h-4 w-4 text-gray-400" />
           </button>
         ) : (
           <div className="invisible h-5 w-5" />
@@ -150,7 +150,7 @@ const useScrollHorizontal = (
             onClick={scrollRight}
             className="rounded-sm bg-gray-200 p-1 hover:bg-gray-100"
           >
-            <ArrowLeft className="h-4 w-4 rotate-180 text-gray-400" />
+            <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
           </button>
         ) : (
           <div className="invisible h-5 w-5" />

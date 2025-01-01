@@ -1,7 +1,4 @@
-import PaymentOutline from "@/components/Icons/PaymentOutline";
-import StepCart from "@/components/Icons/StepCart";
-import StepInfoOutline from "@/components/Icons/StepInfoOutline";
-import StepYesOutlined from "@/components/Icons/StepYesOutlined";
+import { Banknote, Check, Info, ShoppingBasket } from "lucide-react";
 
 export enum CartStepPaths {
   CART = "/cart",
@@ -15,23 +12,23 @@ export const cartStepperPaths = [
   {
     path: CartStepPaths.CART,
     label: "Sepet",
-    icon: <StepCart />,
+    icon: <ShoppingBasket />,
   },
   {
     path: CartStepPaths.ORDER_DETAIL,
     label: "Teslimat Bilgileri",
-    icon: <StepInfoOutline />,
+    icon: <Info />,
   },
   {
     path: CartStepPaths.CHECKOUT,
     label: "Ödeme",
-    icon: <PaymentOutline />,
+    icon: <Banknote />,
   },
 
   {
     path: CartStepPaths.COMPLETE,
     label: "Onay",
-    icon: <StepYesOutlined />,
+    icon: <Check />,
   },
 ];
 

@@ -10,9 +10,6 @@ import { Locale } from "@/app/iyzico-payment/types";
 import { createBasketItems } from "@/app/iyzico-payment/utils";
 import CreditCardInput from "@/components/CreditCardInput";
 import CreditCardDateInput from "@/components/CreditCardInput/CreditCardDateInput";
-import Code from "@/components/Icons/Code";
-import Report from "@/components/Icons/Report";
-import User from "@/components/Icons/User";
 import Modal from "@/components/Modal";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
@@ -24,6 +21,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import Cookies from "js-cookie";
+import { Code, MessageCircleWarning, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   useCallback,
@@ -304,7 +302,7 @@ const CreditCardForm = () => {
             "text-center",
           )}
         >
-          <Report className="text-5xl text-red-500" />
+          <MessageCircleWarning className="text-5xl text-red-500" />
           <h2 className="m-0 text-lg font-semibold text-gray-700">
             Ödeme İşlemi Başarısız
           </h2>

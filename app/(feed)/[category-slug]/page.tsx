@@ -1,7 +1,7 @@
-import { PER_REQUEST } from "@/app/constants";
-import Filter from "@/components/Filter";
-import InfinityScroll from "@/components/InfinityScroll";
-import { searchProductsv1 } from "../actions";
+import Filters from "@/components/Filters/Filters";
+import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
+import { headers } from "next/headers";
+import { userAgent } from "next/server";
 
 export async function generateMetadata({ params }) {
   const param = await params;
@@ -27,29 +27,28 @@ export default async function CategoryPage(props: {
 
   if (!slug) return;
 
-  const response = await searchProductsv1(
-    {
-      offset: 0,
-      limit: PER_REQUEST,
-    },
-    {
-      ...searchParams,
-      category: slug,
-    },
-  );
+  const { device } = userAgent({
+    headers: await headers(),
+  });
 
-  const data = response?.hits.map((hit) => hit.document);
-  const totalCount = response?.found;
+  const isMobile = device.type === "mobile";
 
   return (
-    <>
-      <Filter filterTypes={["price", "sameDayDelivery", "customizable"]} />
-      <InfinityScroll
-        totalCount={totalCount}
-        initialData={data}
-        query={searchProductsv1}
-        params={searchParams}
-      />
-    </>
+    <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
+      <div className="lg:col-span-1">
+        <Filters
+          filterTypes={["price", "sameDayDelivery", "customizable"]}
+          isMobile={isMobile}
+        />
+      </div>
+      <div className="lg:col-span-4">
+        <ServerInfinityScroll
+          searchParams={{
+            ...searchParams,
+            category: slug,
+          }}
+        />
+      </div>
+    </div>
   );
 }

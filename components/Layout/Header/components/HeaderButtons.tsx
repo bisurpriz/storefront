@@ -1,14 +1,13 @@
 "use client";
 
-import clsx from "clsx";
 import { Link } from "@/components/Link";
-import React, { ReactNode } from "react";
-import BasketButton from "./BasketButton";
-import AltTextWithData from "./AltTextWithData";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import Account from "@/components/Icons/Account";
-import Truck from "@/components/Icons/Truck";
+import clsx from "clsx";
+import { Truck, User } from "lucide-react";
+import { ReactNode } from "react";
+import AltTextWithData from "./AltTextWithData";
+import BasketButton from "./BasketButton";
 
 export type HeaderButtonData = {
   icon: ReactNode;
@@ -25,7 +24,7 @@ const headerButtonData: HeaderButtonData[] = [
     type: "order",
   },
   {
-    icon: <Account />,
+    icon: <User />,
     title: "Hesabım",
     href: "/account",
     type: "account",

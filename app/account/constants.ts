@@ -1,10 +1,12 @@
-import Coupon from "@/components/Icons/Coupon";
-import Heart from "@/components/Icons/Heart";
-import Message from "@/components/Icons/Message";
-import Star from "@/components/Icons/Star";
-import Truck from "@/components/Icons/Truck";
-import Unlock from "@/components/Icons/Unlock";
-import User from "@/components/Icons/User";
+import {
+  Heart,
+  MessageSquare,
+  Star,
+  TicketPercent,
+  Truck,
+  Unlock,
+  User,
+} from "lucide-react";
 
 export const accountNavigationItems = [
   {
@@ -19,7 +21,7 @@ export const accountNavigationItems = [
   },
   {
     title: "Kuponlarım",
-    icon: Coupon,
+    icon: TicketPercent,
     link: "/account/coupons",
   },
   {
@@ -34,14 +36,9 @@ export const accountNavigationItems = [
   },
   {
     title: "Mesajlarım",
-    icon: Message,
+    icon: MessageSquare,
     link: "/account/messages",
   },
-  // {
-  //   title: "Adreslerim",
-  //   icon: AddressBook,
-  //   link: "/account/addresses",
-  // },
   {
     title: "İzinlerim",
     icon: Unlock,

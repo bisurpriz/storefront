@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import ArrowLeft from "@/components/Icons/ArrowLeft";
 import { Link } from "@/components/Link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const CartHomePageButton = () => {
   return (

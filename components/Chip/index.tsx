@@ -1,7 +1,7 @@
-import React from "react";
-import clsx from "clsx";
 import { Link } from "@/components/Link";
-import Close from "../Icons/Close";
+import clsx from "clsx";
+import { X } from "lucide-react";
+import React from "react";
 
 export enum ChipColor {
   primary = "primary",
@@ -128,7 +128,7 @@ const Chip: React.FC<ChipProps> = ({
           className="ml-2 text-gray-500 hover:text-gray-700"
           onClick={onClose}
         >
-          <Close />
+          <X className="h-4 w-4" />
         </button>
       )}
     </>

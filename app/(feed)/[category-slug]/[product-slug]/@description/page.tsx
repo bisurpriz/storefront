@@ -1,16 +1,17 @@
-import AccordionItem from "@/components/Accordion/AccordionItem";
 import { parseJson } from "@/utils/format";
 import { FC } from "react";
 import ProductDescription from "../../components/Detail/ProductDescription";
 
-import { PageProps } from "@/.next/types/app/page";
 import { GetProductDescriptionQuery } from "@/graphql/queries/products/getProductById.generated";
+import JsonLd from "@/lib/JsonLd";
 import { BonnmarseApi } from "@/service/fetch";
 import { GetProductDescriptionDocument } from "@/service/product";
 import { Product, WithContext } from "schema-dts";
 import ProductDescriptionLoadingPage from "./loading";
 
-const ProductDescriptionPage: FC<PageProps> = async (props) => {
+const ProductDescriptionPage: FC<{
+  searchParams: { [key: string]: string | string[] | undefined };
+}> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
@@ -42,23 +43,13 @@ const ProductDescriptionPage: FC<PageProps> = async (props) => {
 
   return (
     <>
-      <AccordionItem
-        content={
-          <ProductDescription
-            description={description}
-            notes={[]}
-            specifications={parseJson(properties)}
-          />
-        }
-        title="Ürün Detayları"
-        bordered
-        isOpen
-        className="rounded-lg"
+      <ProductDescription
+        description={description}
+        notes={[]}
+        specifications={parseJson(properties)}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
-      />
+
+      <JsonLd data={productData} />
     </>
   );
 };

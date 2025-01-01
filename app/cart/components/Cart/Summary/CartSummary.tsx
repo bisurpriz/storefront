@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { startTransition, useEffect, useState } from "react";
 
 import AnimationExitProvider from "@/components/AnimatePresence/AnimationExitProvider";
-import ChevronUp from "@/components/Icons/ChevronUp";
 import { useCart } from "@/contexts/CartContext";
 import { useContract } from "@/contexts/ContractContext";
 import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
+import { ChevronUp } from "lucide-react";
 import { motion } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import { createPortal } from "react-dom";

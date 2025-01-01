@@ -1,16 +1,16 @@
 "use client";
 
 import Stepper from "@/components/Stepper";
+import { useCart } from "@/contexts/CartContext";
+import { Gem } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CartStepPaths, cartStepperPaths } from "../../constants";
-import { usePathname } from "next/navigation";
-import { useCart } from "@/contexts/CartContext";
-import Customize from "@/components/Icons/Customize";
 
 const customize = {
   path: CartStepPaths.CUSTOMIZE,
   label: "Özelleştirme",
-  icon: <Customize />,
+  icon: <Gem />,
 };
 
 const CartSteps = () => {

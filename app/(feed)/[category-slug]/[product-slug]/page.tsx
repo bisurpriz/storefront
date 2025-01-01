@@ -8,7 +8,6 @@ import { BonnmarseApi } from "@/service/fetch";
 import { GetProductImagesDocument } from "@/service/product/images";
 import { typesenseClient } from "@/typesense/client";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { getServerSideViewPort } from "@/utils/getServerSideViewPort";
 import { redirect } from "next/navigation";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
@@ -37,8 +36,6 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
     .documents(id.toString())
     .retrieve();
 
-  const viewport = await getServerSideViewPort();
-
   const productData: WithContext<Product> = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -48,10 +45,7 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   return (
     <>
       <ProductSetter initialData={fullProductData as ProductType} />
-      <NewDesignGallery
-        images={product.image_url}
-        isMobile={viewport === "mobile"}
-      />
+      <NewDesignGallery images={product.image_url} />
       <JsonLd data={productData} />
     </>
   );

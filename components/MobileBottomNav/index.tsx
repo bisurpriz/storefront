@@ -1,18 +1,14 @@
 "use client";
 
-import { useCart } from "@/contexts/CartContext";
 import { Link } from "@/components/Link";
+import { useCart } from "@/contexts/CartContext";
 import { useEffect, useState } from "react";
 
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
-import Badge from "../Badge";
-import HomeBottomMenu from "../Icons/HomeBottomMenu";
-import Dashboard from "../Icons/Dashboard";
-import SearchBotttomMenu from "../Icons/SearchBotttomMenu";
-import BasketBottomMenu from "../Icons/BasketBottomMenu";
-import UserBottomMenu from "../Icons/UserBottomMenu";
 import { useSearchProduct } from "@/contexts/SearchContext";
+import clsx from "clsx";
+import { Grid2X2, Home, Search, ShoppingCart, User } from "lucide-react";
+import { usePathname } from "next/navigation";
+import Badge from "../Badge";
 
 const MenuItem = ({
   item,
@@ -121,25 +117,25 @@ const mobileBottomMenu = [
   {
     name: "Anasayfa",
     href: "/",
-    icon: <HomeBottomMenu />,
+    icon: <Home />,
   },
   {
     name: "Kategoriler",
     href: "/categories",
-    icon: <Dashboard />,
+    icon: <Grid2X2 />,
   },
   {
     name: "Arama",
-    icon: <SearchBotttomMenu />,
+    icon: <Search />,
   },
   {
     name: "Sepet",
     href: "/cart",
-    icon: <BasketBottomMenu />,
+    icon: <ShoppingCart />,
   },
   {
     name: "Profil",
     href: "/account",
-    icon: <UserBottomMenu />,
+    icon: <User />,
   },
 ];

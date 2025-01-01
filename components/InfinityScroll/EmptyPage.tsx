@@ -1,6 +1,5 @@
-import React from "react";
-import Package from "../Icons/Package";
 import { Link } from "@/components/Link";
+import { Package } from "lucide-react";
 
 const EmptyPage = () => {
   return (

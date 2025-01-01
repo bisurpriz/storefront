@@ -5,15 +5,13 @@ import {
   removeFromFavorites,
 } from "@/app/account/favorites/actions";
 import { IPlace } from "@/common/types/Product/product";
-import Heart from "@/components/Icons/Heart";
-import HeartFill from "@/components/Icons/HeartFill";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
-import { BadgeCheck, Truck } from "lucide-react";
+import { BadgeCheck, Heart, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
@@ -276,7 +274,7 @@ const ProductActions = ({
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <HeartFill className="h-8 w-8 text-white" />
+              <Heart className="h-8 w-8 fill-red-500 text-white" />
             ) : (
               <Heart className="h-8 w-8 text-red-500" />
             )

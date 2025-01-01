@@ -1,141 +1,199 @@
 "use client";
 
-import Image from "next/image";
-import * as React from "react";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import useResponsive from "@/hooks/useResponsive";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import ProductImageGalleryLoading from "./DetailImageGallerySuspense";
+import { ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ZoomableImage from "./ZoomableImage";
 
-export default function NewDesignGallery({ images, isMobile }) {
-  const [mainApi, setMainApi] = React.useState<CarouselApi>();
-  const [thumbnailApi, setThumbnailApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const { isLargeDesktop } = useResponsive();
-  const [mounted, setMounted] = React.useState(false);
+interface DetailImageGalleryProps {
+  images: string[];
+  className?: string;
+}
 
-  React.useEffect(() => {
-    setMounted(true);
+const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const thumbnailsRef = useRef<HTMLDivElement>(null);
+
+  const validImages = useMemo(
+    () =>
+      images.filter((img) => {
+        try {
+          if (img.startsWith("http")) {
+            new URL(img);
+            return true;
+          }
+          return true;
+        } catch {
+          console.warn("Invalid image URL:", img);
+          return false;
+        }
+      }),
+    [images],
+  );
+
+  const handleInitialLoad = useCallback(() => {
+    setInitialLoad(false);
   }, []);
 
-  React.useEffect(() => {
-    if (!mainApi || !thumbnailApi) {
-      return;
-    }
+  const handlePrevious = useCallback(() => {
+    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : validImages.length - 1));
+  }, [validImages.length]);
 
-    mainApi.on("select", () => {
-      setCurrent(mainApi.selectedScrollSnap());
-      thumbnailApi.scrollTo(mainApi.selectedScrollSnap());
-    });
+  const handleNext = useCallback(() => {
+    setSelectedIndex((prev) => (prev < validImages.length - 1 ? prev + 1 : 0));
+  }, [validImages.length]);
 
-    thumbnailApi.on("select", () => {
-      setCurrent(thumbnailApi.selectedScrollSnap());
-      mainApi.scrollTo(thumbnailApi.selectedScrollSnap());
-    });
-  }, [mainApi, thumbnailApi, isMobile]);
-
-  const onSelect = React.useCallback(
-    (index: number) => {
-      mainApi?.scrollTo(index);
-      thumbnailApi?.scrollTo(index);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") handlePrevious();
+      if (e.key === "ArrowRight") handleNext();
     },
-    [mainApi, thumbnailApi, isMobile],
+    [handleNext, handlePrevious],
   );
 
-  if (!mounted) {
-    return <ProductImageGalleryLoading />;
-  }
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
-  return (
-    <div className="mx-auto flex flex-col gap-2 xl:flex-row">
-      <div className="order-2 w-full xl:order-1 xl:w-[100px]">
-        <Carousel
-          setApi={setThumbnailApi}
-          opts={{
-            align: "start",
-          }}
-          orientation={isMobile || isLargeDesktop ? "horizontal" : "vertical"}
-          className={cn("w-full")}
-        >
-          <CarouselContent
-            className={cn(
-              isMobile || isLargeDesktop
-                ? "-ml-1 h-auto w-full"
-                : "-mt-1 h-[500px] w-[100px]",
-            )}
-          >
-            {images.map((image, index) => (
-              <CarouselItem
-                key={image}
-                className={cn(
-                  "p-0",
-                  isMobile || isLargeDesktop
-                    ? "basis-1/4 pl-1"
-                    : "basis-1/5 pt-1",
+  const scrollThumbnailIntoView = useCallback(() => {
+    if (!thumbnailsRef.current) return;
+    const thumbnails = thumbnailsRef.current.children;
+    if (thumbnails[selectedIndex]) {
+      thumbnails[selectedIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+    }
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    scrollThumbnailIntoView();
+  }, [selectedIndex, scrollThumbnailIntoView]);
+
+  useEffect(() => {
+    validImages.forEach((src) => {
+      const img = document.createElement("img");
+      img.src = getImageUrlFromPath(src);
+    });
+  }, [validImages]);
+
+  const thumbnails = useMemo(
+    () => (
+      <div
+        ref={thumbnailsRef}
+        className="order-2 flex h-[100px] w-full gap-2 overflow-x-auto xl:order-1 xl:h-[500px] xl:w-[100px] xl:flex-col xl:overflow-y-auto"
+      >
+        {validImages.map((src, index) => {
+          const imageUrl = getImageUrlFromPath(src);
+
+          return (
+            <button
+              key={src}
+              onClick={() => setSelectedIndex(index)}
+              className={cn(
+                "group relative aspect-square h-[90px] w-[90px] shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all",
+                selectedIndex === index
+                  ? "border-primary"
+                  : "border-transparent hover:border-primary/50",
+                initialLoad && "animate-pulse bg-gray-200",
+              )}
+            >
+              <div className="relative h-full w-full">
+                {initialLoad && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                    <ImageIcon className="h-6 w-6 text-gray-400" />
+                  </div>
                 )}
-                onClick={() => onSelect(index)}
-              >
-                <div className={cn("p-1")}>
-                  <Image
-                    src={getImageUrlFromPath(image)}
-                    alt={image}
-                    width={90}
-                    sizes="90px"
-                    height={90}
-                    priority
-                    className={cn(
-                      "h-full w-full rounded-md object-contain",
-                      index === current
-                        ? "border-2 border-primary"
-                        : "border-2 border-white",
-                    )}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
-      <div className="order-1 w-full xl:order-2 xl:w-4/5">
-        <Carousel
-          setApi={setMainApi}
-          opts={{
-            loop: true,
-          }}
-          className="mx-auto h-full max-h-[500px] w-full max-w-[500px]"
-        >
-          <CarouselContent className={cn("m-0 h-full w-full")}>
-            {images.map((image, index) => (
-              <CarouselItem
-                key={image}
-                className="relative flex aspect-square h-full w-full items-center justify-center"
-              >
-                <ZoomableImage
-                  image={getImageUrlFromPath(image)}
-                  alt={image}
-                  highQualityImage={getImageUrlFromPath(image, 2000)}
+                <Image
+                  src={imageUrl}
+                  alt={`Product thumbnail ${index + 1}`}
+                  fill
+                  sizes="90px"
+                  className={cn(
+                    "object-cover transition-opacity duration-300",
+                    !initialLoad && "opacity-100",
+                    initialLoad && "opacity-0",
+                  )}
+                  loading={index < 4 ? "eager" : "lazy"}
+                  onLoad={index === 0 ? handleInitialLoad : undefined}
                 />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {images.length > 1 && (
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    ),
+    [validImages, selectedIndex, initialLoad, handleInitialLoad],
+  );
+
+  const mainImage = useMemo(() => {
+    const currentImage = validImages[selectedIndex];
+    const imageUrl = getImageUrlFromPath(currentImage);
+
+    return (
+      <div className="order-1 w-full xl:order-2 xl:w-4/5">
+        <div
+          className={cn(
+            "relative mx-auto h-full max-h-[500px] w-full max-w-[500px]",
+            initialLoad && "animate-pulse rounded-lg bg-gray-200",
+          )}
+        >
+          <ZoomableImage
+            src={imageUrl}
+            alt={`Product image ${selectedIndex + 1}`}
+            onZoomChange={setIsZoomed}
+          />
+          {!isZoomed && validImages.length > 1 && (
             <>
-              <CarouselPrevious className="left-2 sm:left-4" />
-              <CarouselNext className="right-2 sm:right-4" />
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white"
+                onClick={handlePrevious}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white"
+                onClick={handleNext}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </>
           )}
-        </Carousel>
+        </div>
       </div>
+    );
+  }, [
+    validImages,
+    selectedIndex,
+    isZoomed,
+    handlePrevious,
+    handleNext,
+    initialLoad,
+  ]);
+
+  if (!validImages.length) return null;
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn("mx-auto flex flex-col gap-2 xl:flex-row", className)}
+    >
+      {thumbnails}
+      {mainImage}
     </div>
   );
-}
+};
+
+export default DetailImageGallery;

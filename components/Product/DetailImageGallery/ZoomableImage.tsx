@@ -5,17 +5,13 @@ import Image from "next/image";
 import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-interface ProductImageZoomProps {
-  image: string;
+interface ZoomableImageProps {
+  src: string;
   alt: string;
-  highQualityImage?: string;
+  onZoomChange?: (isZoomed: boolean) => void;
 }
 
-export default function ProductImageZoom({
-  image,
-  alt,
-  highQualityImage = image,
-}: ProductImageZoomProps) {
+const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -71,35 +67,36 @@ export default function ProductImageZoom({
     }
   }, [isZoomed, isMobile]);
 
-  const handleDoubleTap = (e: TouchEvent<HTMLDivElement>) => {
+  const handleDoubleTap = (e: TouchEvent) => {
     e.preventDefault();
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTapTime.current;
 
     if (tapLength < 300 && tapLength > 0) {
       setIsMobileZoomed(!isMobileZoomed);
-      setPanPosition({ x: 0, y: 0 }); // Reset pan position
+      setPanPosition({ x: 0, y: 0 });
     }
 
     lastTapTime.current = currentTime;
   };
 
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchMove = (e: TouchEvent) => {
     if (!isMobileZoomed || !imageRef.current) return;
 
     e.preventDefault();
     const touch = e.touches[0];
 
     if (e.touches.length === 1) {
-      // Panning
       const deltaX = touch.clientX - lastTouch.x;
       const deltaY = touch.clientY - lastTouch.y;
 
       setPanPosition((prev) => {
-        // Sınırları hesapla
-        const maxPan = 100; // Maksimum pan mesafesi
-        const newX = Math.min(Math.max(prev.x + deltaX, -maxPan), maxPan);
-        const newY = Math.min(Math.max(prev.y + deltaY, -maxPan), maxPan);
+        const imageRect = imageRef.current!.getBoundingClientRect();
+        const maxPanX = imageRect.width;
+        const maxPanY = imageRect.height;
+
+        const newX = Math.min(Math.max(prev.x + deltaX, -maxPanX), maxPanX);
+        const newY = Math.min(Math.max(prev.y + deltaY, -maxPanY), maxPanY);
 
         return { x: newX, y: newY };
       });
@@ -108,12 +105,12 @@ export default function ProductImageZoom({
     setLastTouch({ x: touch.clientX, y: touch.clientY });
   };
 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (e: TouchEvent) => {
     const touch = e.touches[0];
     setLastTouch({ x: touch.clientX, y: touch.clientY });
   };
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent) => {
     if (!imageRef.current || isMobile) return;
 
     const { left, top, width, height } =
@@ -128,7 +125,7 @@ export default function ProductImageZoom({
   const handleMouseLeave = () => !isMobile && setIsZoomed(false);
 
   return (
-    <div className="group relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
+    <div className="group relative aspect-square w-full overflow-hidden rounded-lg">
       <div
         ref={imageRef}
         className={cn(
@@ -143,17 +140,17 @@ export default function ProductImageZoom({
         onTouchEnd={handleDoubleTap}
       >
         <Image
-          src={isMobileZoomed ? highQualityImage : image}
+          src={src}
           alt={alt}
           fill
           className={cn(
-            "object-cover transition-transform duration-200",
-            isMobileZoomed && "scale-200",
+            "object-contain transition-transform duration-200",
+            isMobileZoomed && "scale-[2.5]",
           )}
           style={
             isMobileZoomed
               ? {
-                  transform: `scale(2) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                  transform: `scale(2.5) translate(${panPosition.x}px, ${panPosition.y}px)`,
                 }
               : undefined
           }
@@ -162,7 +159,6 @@ export default function ProductImageZoom({
           quality={isMobileZoomed ? 100 : 80}
         />
 
-        {/* Desktop Lens Indicator */}
         {isZoomed && !isMobile && (
           <div
             className="pointer-events-none absolute z-10 h-1/3 w-1/3 border border-primary/50 bg-white/10"
@@ -174,7 +170,6 @@ export default function ProductImageZoom({
         )}
       </div>
 
-      {/* Desktop Zoom Preview Portal */}
       {isZoomed &&
         !isMobile &&
         createPortal(
@@ -187,7 +182,7 @@ export default function ProductImageZoom({
           >
             <div className="relative h-full w-full">
               <Image
-                src={highQualityImage}
+                src={src}
                 alt={alt}
                 fill
                 className="object-cover"
@@ -204,4 +199,6 @@ export default function ProductImageZoom({
         )}
     </div>
   );
-}
+};
+
+export default ZoomableImage;

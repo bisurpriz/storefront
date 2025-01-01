@@ -1,10 +1,18 @@
 "use server";
-import { GetVendorByIdQuery } from "@/graphql/queries/vendors/getVendorById.generated";
+import {
+  GetVendorByIdQuery,
+  GetVendorCouponsQuery,
+  GetVendorProductScoreAverageQuery,
+  GetVendorReviewsQuery,
+} from "@/graphql/queries/vendors/getVendorById.generated";
 import { GetVendorProductsWithPaginationQuery } from "@/graphql/queries/vendors/getVendorProducstWithPagination.generated";
 import { BonnmarseApi } from "@/service/fetch";
 import {
   GetVendorByIdDocument,
+  GetVendorCouponsDocument,
+  GetVendorProductScoreAverageDocument,
   GetVendorProductsWithPaginationDocument,
+  GetVendorReviewsDocument,
 } from "@/service/vendor";
 
 export const getPaginatedVendorProducts = async <T>({
@@ -38,4 +46,31 @@ export const getVendorDetails = async ({ id }: { id: string }) => {
   });
 
   return tenant_by_pk;
+};
+
+export const getVendorReviews = async ({ id }: { id: string }) => {
+  return await BonnmarseApi.request<GetVendorReviewsQuery>({
+    query: GetVendorReviewsDocument,
+    variables: {
+      tenant_id: id,
+    },
+  });
+};
+
+export const getVendorProductScoreAverage = async ({ id }: { id: string }) => {
+  return await BonnmarseApi.request<GetVendorProductScoreAverageQuery>({
+    query: GetVendorProductScoreAverageDocument,
+    variables: {
+      tenant_id: id,
+    },
+  });
+};
+
+export const getVendorCoupons = async ({ id }: { id: string }) => {
+  return await BonnmarseApi.request<GetVendorCouponsQuery>({
+    query: GetVendorCouponsDocument,
+    variables: {
+      tenant_id: id,
+    },
+  });
 };

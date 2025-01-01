@@ -1,9 +1,8 @@
 "use client";
 
 import { Product } from "@/common/types/Product/product";
-import Close from "@/components/Icons/Close";
 import { useCart } from "@/contexts/CartContext";
-import React from "react";
+import { X } from "lucide-react";
 
 const ProductGroupListItemInfo = ({
   id,
@@ -16,7 +15,7 @@ const ProductGroupListItemInfo = ({
 
   return (
     <span className="absolute right-2 top-0 flex items-center gap-2">
-      <Close
+      <X
         onClick={() => {
           if (loading) return;
           removeFromCart(id);
