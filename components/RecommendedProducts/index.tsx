@@ -7,91 +7,160 @@ import { getPriceTR } from "@/utils/getPriceTR";
 import { getDiscountRate } from "@/utils/price";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 import Image from "next/image";
-import { useRef } from "react";
+import { memo, useCallback, useRef } from "react";
 
+type Product = GetProductsWithPaginationQuery["product"][0];
 type RecommendedProductsProps = {
   products: GetProductsWithPaginationQuery["product"];
 };
 
-const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollXProgress } = useScroll({
-    container: ref,
-  });
+const ProductCard = memo(({ product }: { product: Product }) => {
+  const discount = getDiscountRate(product.price, product.discount_price);
+  const imageUrl = `${getImageUrlFromPath(
+    product.image_url?.[0],
+  )}?width=120&height=120&format=webp&quality=80`;
+
+  const isDiscounted = product.discount_price < product.price;
 
   return (
-    <AnimatePresence key={"recommended-products"}>
-      <motion.div
-        key={"scaler"}
-        className="sticky left-0 top-0 origin-left bg-secondary"
-        style={{
-          scaleX: scrollXProgress,
-          height: 2,
-        }}
-      />
-      <motion.div
-        key={"products"}
-        className="relative z-0 mt-2 flex snap-x snap-mandatory flex-nowrap items-start justify-start gap-4 overflow-x-auto"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          WebkitOverflowScrolling: "auto",
-        }}
-        animate={{ x: 0 }}
-        exit={{ x: 100 }}
-        initial={{ x: 100 }}
-        transition={{ duration: 0.5 }}
-        ref={ref}
-      >
-        {products.map((prod) => {
-          const discount = getDiscountRate(prod.price, prod.discount_price);
-          return (
-            <Link
-              key={prod.id}
-              className="relative flex h-28 min-w-[300px] flex-1 rounded-lg border border-gray-100 p-4"
-              href={`/${prod.product_categories[0].category.slug}/${prod.slug}?pid=${prod.id}`}
-              prefetch={false}
-            >
-              {discount > 0 && (
-                <div className="absolute left-0 top-0 rounded-br-lg bg-red-500 px-2 py-1 text-xs text-white">
-                  {discount}%
-                </div>
-              )}
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <Image
-                  src={`${getImageUrlFromPath(
-                    prod.image_url?.[0],
-                  )}?width=80&height=80&format=webp&quality=70`}
-                  className="h-full w-full"
-                  alt={prod.name}
-                  width={80}
-                  height={80}
-                />
-              </div>
-              <div className="flex flex-1 flex-col items-end justify-start gap-2">
-                <span className="flex items-end gap-2 text-right font-semibold">
-                  {prod.discount_price < prod.price && (
-                    <span className="text-sm leading-none text-gray-400 line-through">
-                      {getPriceTR(prod.discount_price)}
-                    </span>
-                  )}
-                  <span className="text-lg leading-none text-primary">
-                    {getPriceTR(prod.price)}
-                  </span>
-                </span>
-                <h3
-                  className="line-clamp-2 max-w-[200px] text-right text-sm font-normal"
-                  title={prod.name}
-                >
-                  {prod.name}
-                </h3>
-              </div>
-            </Link>
-          );
-        })}
-      </motion.div>
-    </AnimatePresence>
+    <Link
+      className="group relative flex h-32 min-w-[340px] flex-1 rounded-xl border border-gray-100 bg-white p-3 transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
+      href={`/${product.product_categories[0].category.slug}/${product.slug}?pid=${product.id}`}
+      prefetch={false}
+    >
+      {/* Discount Badge */}
+      {discount > 0 && (
+        <div className="absolute left-0 top-0 z-10 rounded-br-lg rounded-tl-xl bg-red-500 px-3 py-1.5 text-xs font-semibold text-white">
+          %{discount} İNDİRİM
+        </div>
+      )}
+
+      {/* Product Image */}
+      <div className="relative aspect-square w-[120px] overflow-hidden rounded-lg">
+        <Image
+          src={imageUrl}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          alt={product.name}
+          width={120}
+          height={120}
+          loading="lazy"
+          sizes="120px"
+        />
+      </div>
+
+      {/* Product Info */}
+      <div className="flex flex-1 flex-col items-end justify-between gap-2 pl-4">
+        {/* Price Section */}
+        <div className="flex flex-col items-end gap-1">
+          {isDiscounted && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium leading-none text-gray-400 line-through">
+                {getPriceTR(product.discount_price)}
+              </span>
+            </div>
+          )}
+          <span className="text-xl font-bold leading-none text-primary">
+            {getPriceTR(product.price)}
+          </span>
+        </div>
+
+        {/* Product Name */}
+        <h3
+          className="line-clamp-2 max-w-[200px] text-right text-sm font-medium leading-snug tracking-tight text-gray-700 transition-colors group-hover:text-primary"
+          title={product.name}
+        >
+          {product.name}
+        </h3>
+
+        {/* Category & Stock Info */}
+        <div className="flex items-center gap-2 text-xs">
+          <span className="rounded-full bg-gray-100 px-2 py-1 font-medium text-gray-600">
+            {product.product_categories[0].category.name}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+});
+
+ProductCard.displayName = "ProductCard";
+
+const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { scrollXProgress } = useScroll({
+    container: scrollContainerRef,
+  });
+
+  const handleScroll = useCallback((direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+
+    const scrollAmount = 300;
+    const newScrollPosition =
+      scrollContainerRef.current.scrollLeft +
+      (direction === "right" ? scrollAmount : -scrollAmount);
+
+    scrollContainerRef.current.scrollTo({
+      left: newScrollPosition,
+      behavior: "smooth",
+    });
+  }, []);
+
+  if (!products.length) return null;
+
+  return (
+    <section className="relative" aria-label="Önerilen Ürünler">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="progress-bar"
+          className="sticky left-0 top-0 origin-left bg-secondary"
+          style={{
+            scaleX: scrollXProgress,
+            height: 2,
+          }}
+        />
+        <motion.div
+          key="container"
+          className="relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <button
+            onClick={() => handleScroll("left")}
+            className="absolute -left-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg"
+            aria-label="Sola kaydır"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => handleScroll("right")}
+            className="absolute -right-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg"
+            aria-label="Sağa kaydır"
+          >
+            →
+          </button>
+          <motion.div
+            key="product-list"
+            className="relative z-0 mt-2 flex snap-x snap-mandatory flex-nowrap items-start justify-start gap-4 overflow-x-auto scroll-smooth"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "auto",
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            ref={scrollContainerRef}
+          >
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    </section>
   );
 };
 
-export default RecommendedProducts;
+export default memo(RecommendedProducts);
