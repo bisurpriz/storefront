@@ -31,17 +31,6 @@ export default async function SearchPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
-  const searchQuery = searchParams?.search;
-
-  if (!searchQuery) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <p className="text-center text-lg text-muted-foreground">
-          Arama yapmak için bir şeyler yazın
-        </p>
-      </div>
-    );
-  }
 
   const { device } = userAgent({
     headers: await headers(),
