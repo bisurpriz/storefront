@@ -74,7 +74,7 @@ export default function ProductVariantSelector({
                 >
                   {hasDiscount && (
                     <div className="absolute left-1.5 top-1.5 z-10">
-                      <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                      <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-xs font-medium text-white">
                         %{discountPercentage}
                       </span>
                     </div>
@@ -95,17 +95,15 @@ export default function ProductVariantSelector({
                       {variant.name}
                     </h3>
 
-                    <div className="flex flex-col">
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-sm font-semibold text-gray-900">
-                          ₺{variant.price.toFixed(2)}
+                    <div className="flex flex-col items-baseline">
+                      {hasDiscount && (
+                        <span className="text-xs text-gray-500 line-through">
+                          ₺{variant.discountPrice!.toFixed(2)}
                         </span>
-                        {hasDiscount && (
-                          <span className="text-[11px] text-gray-500 line-through">
-                            ₺{variant.discountPrice!.toFixed(2)}
-                          </span>
-                        )}
-                      </div>
+                      )}
+                      <span className="text-sm font-semibold text-primary">
+                        ₺{variant.price?.toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </Link>
