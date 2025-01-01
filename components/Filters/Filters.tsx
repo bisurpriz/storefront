@@ -10,6 +10,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import {
@@ -66,6 +67,62 @@ interface FiltersProps {
   filterTypes?: FilterTypes[];
   isMobile?: boolean;
 }
+
+const FilterSkeleton = () => {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-5 w-5" />
+          <Skeleton className="h-7 w-24" />
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-5 w-24" />
+          </div>
+          <div className="flex flex-col gap-3">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-10 w-full" />
+                <span>-</span>
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+            <Skeleton className="h-9 w-full" />
+          </div>
+        </div>
+
+        <div className="space-y-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-5 w-32" />
+            </div>
+            <Skeleton className="h-5 w-10" />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-5 w-32" />
+            </div>
+            <Skeleton className="h-5 w-10" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MobileFilterButtonSkeleton = () => {
+  return (
+    <div className="fixed bottom-32 right-4 z-50">
+      <Skeleton className="h-14 w-14 rounded-full" />
+    </div>
+  );
+};
 
 const FilterContent = ({
   className,
@@ -215,7 +272,9 @@ const FilterContent = ({
     updateUrl(newFilters);
   };
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return <FilterSkeleton />;
+  }
 
   const activeFilterCount = Object.values(filters).filter((value) => {
     if (typeof value === "object") {
@@ -351,7 +410,12 @@ export default function Filters({
   const [open, setOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(1);
+  const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isMobile) {
@@ -429,6 +493,10 @@ export default function Filters({
         };
     }
   }, [onboardingStep]);
+
+  if (!mounted) {
+    return isMobile ? <MobileFilterButtonSkeleton /> : <FilterSkeleton />;
+  }
 
   return (
     <>
