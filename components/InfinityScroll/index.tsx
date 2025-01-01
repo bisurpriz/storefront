@@ -26,7 +26,7 @@ interface InfinityScrollProps<T> {
 
 const ProductCount = memo(
   ({ current, total }: { current: number; total: number }) => (
-    <div className="mb-6 flex items-center justify-between">
+    <div className="mb-2 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-600">
           <strong className="font-medium text-gray-900">{total}</strong> üründen{" "}
