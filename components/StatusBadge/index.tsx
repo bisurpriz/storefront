@@ -20,7 +20,7 @@ const colors = {
   [OrderItemStatus.Failed]: "bg-red-100 text-red-700 border border-red-200",
 };
 
-const translations = {
+export const statusBadgeTranslations = {
   [OrderItemStatus.Created]: "Siparişiniz alındı",
   [OrderItemStatus.Processing]: "Siparişiniz hazırlanıyor",
   [OrderItemStatus.Shipped]: "Siparişiniz kargoya verildi",
@@ -37,7 +37,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
       className={`${colors[status]} me-2 flex w-fit items-center gap-1 rounded-md px-2 py-1.5 text-xs font-light leading-none`}
     >
       <StatusIcon status={status} />
-      {translations[status]}
+      {statusBadgeTranslations[status]}
     </span>
   );
 };

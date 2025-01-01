@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getImageUrlFromPath(path?: string, size = 150): string {
   if (!path) return `https://via.placeholder.com/${size}`;
+  if (path.startsWith("http") || path.startsWith("https")) return path;
   return `${IMAGE_URL}/${path}?w=${size}&format=webp`;
 }
 
