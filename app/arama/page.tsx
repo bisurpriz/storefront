@@ -1,4 +1,4 @@
-import Filters from "@/app/magaza/components/Filters";
+import Filters from "@/components/Filters/Filters";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import { Metadata } from "next";

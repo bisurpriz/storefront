@@ -2,13 +2,13 @@ import { searchProductsv1 } from "@/app/(feed)/actions";
 import { PER_REQUEST } from "@/app/constants";
 import InfinityScroll from "@/components/InfinityScroll";
 import { Metadata } from "next";
+import Filters, { FilterTypes } from "../../../components/Filters/Filters";
 import {
   getVendorCoupons,
   getVendorDetails,
   getVendorProductScoreAverage,
   getVendorReviews,
 } from "../actions";
-import Filters, { FilterTypes } from "../components/Filters";
 import TenantHeader from "../components/TenantHeader";
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,5 +1,5 @@
 import { PER_REQUEST } from "@/app/constants";
-import Filters from "@/app/magaza/components/Filters";
+import Filters from "@/components/Filters/Filters";
 import InfinityScroll from "@/components/InfinityScroll";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";

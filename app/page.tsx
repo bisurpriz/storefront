@@ -12,7 +12,7 @@ import { BonnmarseApi } from "@/service/fetch";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
-import Filters from "./magaza/components/Filters";
+import Filters from "../components/Filters/Filters";
 
 export const experimental_ppr = true;
 
