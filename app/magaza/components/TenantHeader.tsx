@@ -12,7 +12,6 @@ import {
   Check,
   Copy,
   Heart,
-  MessageCircle,
   ShoppingBag,
   Star,
   Store,
@@ -130,13 +129,13 @@ const TenantHeader = ({
                 )}
                 {isCopied ? "Kopyalandı" : "Paylaş"}
               </Button>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-pink-500 text-white hover:bg-pink-600 hover:text-white"
+              >
                 <Heart className="mr-2 h-4 w-4" />
                 Favorilere Ekle
-              </Button>
-              <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                İletişime Geç
               </Button>
             </div>
           </div>

@@ -66,6 +66,7 @@ const Vendor = async (props: {
   const data = responses?.[0]?.hits.map((hit) => hit.document);
   const totalCount = responses?.[0]?.found;
   const tenantDetails = responses[1];
+
   const reviewsCount = responses[2].review_aggregate.aggregate.count;
   const productScoreAverage =
     responses[3].product_aggregate.aggregate.avg.score;
@@ -75,7 +76,7 @@ const Vendor = async (props: {
   return (
     <div className="space-y-6">
       <TenantHeader
-        title={tenantDetails.legal_company_title || tenantDetails.name}
+        title={tenantDetails.name}
         joinedDate={tenantDetails.created_at}
         logoUrl={tenantDetails.logo}
         id={tenantDetails.id}
