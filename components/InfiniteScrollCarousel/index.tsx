@@ -12,72 +12,123 @@ import {
 import { Product } from "@/graphql/generated-types";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import ProductItemv2 from "../Product/Item/ProductItemv2";
 
-export default function InfiniteProductCarousel({
-  initialProducts,
-  fetchMoreProducts,
-  params,
-  totalCount,
-}: {
+interface InfiniteProductCarouselProps {
   initialProducts: Product[];
   fetchMoreProducts: typeof searchProductsv1;
   params: { [key: string]: string | string[] | undefined };
   totalCount: number;
-}) {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [offset, setOffset] = useState(initialProducts.length);
-  const [isPending, startTransition] = useTransition();
+}
 
-  const observerTarget = useRef(null);
+const LoadingItem = memo(() => (
+  <CarouselItem className="basis-1/2 lg:basis-1/3 xl:basis-1/5">
+    <ProductItemSkeleton />
+  </CarouselItem>
+));
+
+LoadingItem.displayName = "LoadingItem";
+
+const ProductItem = memo(({ product }: { product: Product }) => (
+  <CarouselItem
+    key={`${product.id}-${product.tenant?.tenants?.[0]?.id}`}
+    className="basis-1/2 lg:basis-1/3 xl:basis-1/5"
+  >
+    <ProductItemv2 {...product} />
+  </CarouselItem>
+));
+
+ProductItem.displayName = "ProductItem";
+
+const ShowAllButton = memo(({ onClick }: { onClick?: () => void }) => (
+  <div
+    onClick={onClick}
+    className={cn(
+      "flex h-full cursor-pointer items-center justify-center gap-2",
+      "rounded-md bg-gray-100 text-sm font-medium text-gray-600",
+      "transition-colors hover:bg-gray-200",
+    )}
+  >
+    Tümünü Göster <ArrowRight className="h-4 w-4" />
+  </div>
+));
+
+ShowAllButton.displayName = "ShowAllButton";
+
+function InfiniteProductCarousel({
+  initialProducts,
+  fetchMoreProducts,
+  params,
+  totalCount,
+}: InfiniteProductCarouselProps) {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(totalCount > initialProducts.length);
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   const loadMoreProducts = useCallback(async () => {
-    const next = offset + PER_REQUEST;
-    startTransition(async () => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+    try {
       const response = await fetchMoreProducts(
         {
-          offset: next,
+          offset: products.length,
           limit: PER_REQUEST,
         },
         params,
       );
 
       if (response?.hits?.length! > 0) {
-        setOffset(next);
-        setProducts((prev) => [
-          ...prev,
-          ...(response?.hits?.map((p) => p.document) as Product[]),
-        ]);
+        const newProducts = response.hits.map((p) => p.document) as Product[];
+        setProducts((prev) => [...prev, ...newProducts]);
+        setHasMore(totalCount > products.length + newProducts.length);
+      } else {
+        setHasMore(false);
       }
-    });
-  }, [isPending, offset, fetchMoreProducts, params]);
+    } catch (error) {
+      console.error("Error loading more products:", error);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    fetchMoreProducts,
+    hasMore,
+    isLoading,
+    params,
+    products.length,
+    totalCount,
+  ]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          if (
-            !isPending &&
-            products.length <= totalCount &&
-            totalCount > offset + PER_REQUEST
-          )
-            loadMoreProducts();
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMoreProducts();
         }
       },
-      { threshold: 0.1 },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      },
     );
 
     if (observerTarget.current) {
       observer.observe(observerTarget.current);
     }
 
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
-  }, [loadMoreProducts]);
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, loadMoreProducts]);
+
+  // Reset state when params change
+  useEffect(() => {
+    setProducts(initialProducts);
+    setHasMore(totalCount > initialProducts.length);
+    setIsLoading(false);
+  }, [initialProducts, totalCount, params]);
 
   return (
     <div className="w-full">
@@ -85,48 +136,37 @@ export default function InfiniteProductCarousel({
         className="w-full"
         opts={{
           slidesToScroll: "auto",
+          align: "start",
         }}
       >
         <CarouselContent>
           {products.map((product) => (
-            <CarouselItem
-              key={product.id}
-              className="basis-1/2 lg:basis-1/3 xl:basis-1/5"
-            >
-              <ProductItemv2 {...product} />
-            </CarouselItem>
+            <ProductItem
+              key={`${product.id}-${product.tenant?.tenants?.[0]?.id}`}
+              product={product}
+            />
           ))}
+
           <CarouselItem
             ref={observerTarget}
             className="basis-1/2 lg:basis-1/3 xl:basis-1/5"
           >
-            {isPending && (
+            {isLoading ? (
+              <LoadingItem />
+            ) : hasMore ? (
               <div className="flex h-full items-center justify-center">
-                Yükleniyor...
+                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-300" />
               </div>
-            )}
-            {totalCount <= offset + PER_REQUEST && (
-              <div
-                className={cn(
-                  "flex h-full items-center justify-center",
-                  "text-gray-500",
-                  "text-sm",
-                  "font-semibold",
-                  "cursor-pointer",
-                  "bg-gray-100",
-                  "transition-colors",
-                  "rounded-md",
-                  "animate-pulse",
-                )}
-              >
-                Tümünü Göster <ArrowRight size={16} />
-              </div>
+            ) : (
+              <ShowAllButton />
             )}
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden lg:flex" />
+        <CarouselNext className="hidden lg:flex" />
       </Carousel>
     </div>
   );
 }
+
+export default memo(InfiniteProductCarousel);

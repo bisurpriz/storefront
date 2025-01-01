@@ -63,32 +63,29 @@ const ProductCard = memo(
 
     return (
       <Link href={productUrl} className={className}>
-        <Card className="group relative flex h-auto flex-col transition-shadow hover:shadow-md">
-          <AddToFavorite
-            isFav={isFavorite}
-            productId={id}
-            user={user}
-            onFavoriteChange={handleFavoriteChange}
-          />
-          <CardContent className="flex flex-grow flex-col p-0">
+        <Card className="group relative">
+          <CardContent className="flex flex-col p-0">
             <ProductImage
               imageUrl={image_url?.[0]}
               alt={name}
               isCustomizable={isCustomizable}
               isSameDayDelivery={isSameDayDelivery}
             />
-            <div className="flex flex-grow flex-col p-2 sm:p-4">
+
+            <div className="flex flex-col p-2 sm:p-4">
               <div className="mb-2">
-                <p className="line-clamp-2 h-10 w-full text-sm text-gray-600">
+                <p className="line-clamp-2 h-10 text-sm text-gray-600">
                   {tenantName && (
-                    <span className="mr-1 inline-block text-sm font-semibold tracking-tight">
+                    <span className="mr-1 inline-block font-medium text-gray-900">
                       {tenantName}
                     </span>
                   )}
                   {name}
                 </p>
               </div>
+
               <StarRating score={score!} reviewCount={0} size="sm" />
+
               <div className="mt-auto">
                 <PriceTag
                   price={price!}
@@ -98,6 +95,13 @@ const ProductCard = memo(
               </div>
             </div>
           </CardContent>
+
+          <AddToFavorite
+            isFav={isFavorite}
+            productId={id}
+            user={user}
+            onFavoriteChange={handleFavoriteChange}
+          />
         </Card>
       </Link>
     );
