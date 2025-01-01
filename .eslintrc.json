@@ -1,31 +1,14 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "next",
     "prettier"
   ],
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "unused-imports", "react-compiler"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "unused-imports/no-unused-imports-ts": 2,
-    "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-unused-vars": 0,
-    "react-hooks/exhaustive-deps": 0,
-    "react/display-name": 0,
-    "@typescript-eslint/ban-types": 0
-  },
-  "overrides": [
-    {
-      "files": ["*.graphql"],
-      "parser": "@graphql-eslint/eslint-plugin",
-      "plugins": ["@graphql-eslint"],
-      "rules": {
-        "prettier/prettier": "error",
-        "@graphql-eslint/known-type-names": "error"
-      }
-    }
-  ]
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/display-name": "off",
+    "@next/next/no-img-element": "off"
+  }
 }
