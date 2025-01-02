@@ -38,10 +38,22 @@ const HomePageGrid = async () => {
               src={getImageUrlFromPath(_.path!)}
               alt={_.name!}
               className="h-full w-full object-cover"
-              width={600}
-              height={400}
-              priority={true}
-              sizes="(max-width: 640px) 100vw, 640px"
+              width={isCol6 ? 800 : 600}
+              height={isCol6 ? 400 : 300}
+              priority={index < 3}
+              quality={85}
+              sizes={
+                isCol6
+                  ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px"
+                  : "(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 600px"
+              }
+              loading={index < 3 ? "eager" : "lazy"}
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+                `<svg width="${isCol6 ? 800 : 600}" height="${
+                  isCol6 ? 400 : 300
+                }" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>`,
+              ).toString("base64")}`}
             />
           </Link>
         );

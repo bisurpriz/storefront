@@ -44,10 +44,17 @@ export async function BannerCarousel() {
                 src={getImageUrlFromPath(banner.path!)}
                 alt={banner.name!}
                 width={800}
-                height={400}
-                priority
-                className="w-full object-contain"
-                sizes="(max-width: 768px) 50vw, 100vw"
+                height={600}
+                priority={index < 2}
+                className="w-full object-cover"
+                sizes="(max-width: 640px) 100vw, 
+                       (max-width: 1024px) 90vw"
+                quality={85}
+                loading={index < 2 ? "eager" : "lazy"}
+                placeholder="blur"
+                blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+                  '<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>',
+                ).toString("base64")}`}
               />
             </Link>
           </CarouselItem>
