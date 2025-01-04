@@ -1,6 +1,6 @@
 import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
-import ProductImageGalleryLoading from "@/components/Product/DetailImageGallery/DetailImageGallerySuspense";
-import { ReactNode, Suspense } from "react";
+import Breadcrumb from "@/components/Layout/Breadcrumb";
+import { ReactNode } from "react";
 
 export const experimental_ppr = true;
 
@@ -23,17 +23,15 @@ export default async function ProductExample({
 }) {
   return (
     <div className="h-full">
+      <Breadcrumb />
+
       <section
         className="flex flex-nowrap items-start justify-start gap-6 max-md:flex-col max-sm:gap-2"
         id="detail"
         aria-labelledby="detail"
         aria-describedby="Ürün detayları"
       >
-        <div className="z-0 w-1/2 max-md:w-full">
-          <Suspense fallback={<ProductImageGalleryLoading />}>
-            {children}
-          </Suspense>
-        </div>
+        <div className="z-0 w-1/2 max-md:w-full">{children}</div>
         <div className="z-0 w-1/2 max-md:w-full">
           {information}
           {action}
