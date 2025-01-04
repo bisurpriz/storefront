@@ -1,5 +1,9 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 const ProductDescriptionLoadingPage = () => {
-  return <div className="h-72 w-full animate-pulse rounded-lg bg-slate-300" />;
+  return (
+    <Skeleton className="h-72 w-full animate-pulse rounded-lg bg-primary/20" />
+  );
 };
 
 export default ProductDescriptionLoadingPage;

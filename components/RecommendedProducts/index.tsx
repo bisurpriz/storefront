@@ -109,7 +109,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
 
   return (
     <section className="relative" aria-label="Önerilen Ürünler">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key="progress-bar"
           className="sticky left-0 top-0 origin-left bg-secondary"
@@ -118,13 +118,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             height: 2,
           }}
         />
-        <motion.div
-          key="container"
-          className="relative"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
+        <div key="container" className="relative">
           <button
             onClick={() => handleScroll("left")}
             className="absolute -left-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg"
@@ -157,7 +151,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
               <ProductCard key={product.id} product={product} />
             ))}
           </motion.div>
-        </motion.div>
+        </div>
       </AnimatePresence>
     </section>
   );
