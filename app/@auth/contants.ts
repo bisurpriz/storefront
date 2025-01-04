@@ -2,8 +2,9 @@ export enum AuthErrorMessages {
   REFRESH_TOKEN_REQUIRED = "Yenileme anahtarı gereklidir",
   INVALID_REFRESH_TOKEN = "Geçersiz yenileme anahtarı",
   EMAIL_AND_PASSWORD_REQUIRED = "Email ve şifre gereklidir",
-  USER_ALREADY_EXIST = "Kullanıcı zaten mevcut",
+  USER_ALREADY_EXISTS = "Kullanıcı zaten mevcut",
   EMAIL_OR_PASSWORD_WRONG = "Email veya şifrenizi yanlış girdiniz",
+  INTERNAL_SERVER_ERROR = "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz",
 }
 
 export enum CookieTokens {

@@ -119,10 +119,10 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
           password: formData.password,
         });
 
-        if (loginResponse.message) {
+        if (loginResponse.data.error) {
           const errorMessage =
             AuthErrorMessages[
-              loginResponse.message as keyof typeof AuthErrorMessages
+              loginResponse.data.error as keyof typeof AuthErrorMessages
             ];
 
           toast.error(errorMessage, {

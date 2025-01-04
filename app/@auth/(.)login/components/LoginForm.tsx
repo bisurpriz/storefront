@@ -126,14 +126,14 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
 
     startTransition(async () => {
       try {
-        const { message, success } = await login({
+        const { data } = await login({
           email: formData.email,
           password: formData.password,
         });
 
-        if (!success) {
+        if (data.error) {
           const errorMessage =
-            AuthErrorMessages[message as keyof typeof AuthErrorMessages];
+            AuthErrorMessages[data.error as keyof typeof AuthErrorMessages];
           handleLoginAttempt();
           toast.error(errorMessage, {
             position: "bottom-right",
