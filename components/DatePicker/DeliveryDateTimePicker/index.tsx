@@ -1,6 +1,6 @@
 "use client";
 
-import { addDays, format, parse } from "date-fns";
+import { addDays, format, isBefore, parse } from "date-fns";
 import { tr } from "date-fns/locale";
 import { ChevronDown, Clock } from "lucide-react";
 
@@ -81,6 +81,19 @@ export default function DeliveryDateTimePicker({
       );
   }, [date]);
 
+  const isTimeRangeDisabled = (timeRange: string) => {
+    const now = new Date();
+    const today = new Date().toDateString();
+    const selectedDay = date.toDateString();
+
+    if (today !== selectedDay) return false;
+
+    const [start] = timeRange.split(" - ");
+    const timeRangeStart = parse(start, "HH:mm", new Date());
+
+    return isBefore(timeRangeStart, now);
+  };
+
   return (
     <div className="w-full space-y-2">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -157,10 +170,13 @@ export default function DeliveryDateTimePicker({
               <Button
                 key={timeRange}
                 variant="outline"
+                disabled={isTimeRangeDisabled(timeRange)}
                 className={cn(
                   "justify-start text-left",
                   selectedTimeRange === timeRange &&
                     "bg-primary text-primary-foreground",
+                  isTimeRangeDisabled(timeRange) &&
+                    "cursor-not-allowed opacity-50",
                 )}
                 onClick={() => {
                   setSelectedTimeRange(timeRange);

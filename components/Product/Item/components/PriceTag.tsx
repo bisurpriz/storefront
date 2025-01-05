@@ -14,9 +14,10 @@ export const PriceTag = ({
   discountPrice,
   className,
 }: PriceTagProps) => {
-  const hasDiscount = discountPrice && discountPrice !== price;
+  /* discount price highest price in last 30 days */
+  const hasDiscount = discountPrice && price < discountPrice;
   const discountRate = hasDiscount
-    ? Math.max(1, Math.floor(((price - discountPrice) / price) * 100))
+    ? Math.max(1, Math.floor(((discountPrice - price) / discountPrice) * 100))
     : 0;
 
   return (
@@ -42,12 +43,12 @@ export const PriceTag = ({
 
       <div className="flex items-baseline gap-2">
         <span className="text-lg font-bold text-primary md:text-xl">
-          {(discountPrice ?? price).toLocaleString("tr-TR")}₺
+          {price.toLocaleString("tr-TR")}₺
         </span>
 
-        {hasDiscount && (
+        {hasDiscount && discountPrice &&   (
           <span className="text-sm text-gray-400 line-through">
-            {price.toLocaleString("tr-TR")}₺
+            {discountPrice.toLocaleString("tr-TR")}₺
           </span>
         )}
       </div>

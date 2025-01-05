@@ -53,7 +53,6 @@ export const calculateCommissionedAmount = (
 };
 
 export const getPrice = (product) =>
-  (product.discount_price * product.quantity)?.toFixed(2).toString() ??
   (product.price * product.quantity)?.toFixed(2).toString();
 
 export const createBasketItems = (items: ProductForCart[]) => {

@@ -85,7 +85,7 @@ const getTenantOrders = (
           return {
             product_id: item.id,
             quantity: item.quantity,
-            amount: item.discount_price * item.quantity,
+            amount: item.price * item.quantity,
             tenant_amount: Number(commissionedAmount),
             commissioned_amount: Number(commission),
             delivery_date: item.deliveryDate,

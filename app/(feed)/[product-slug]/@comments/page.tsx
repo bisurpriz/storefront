@@ -1,4 +1,3 @@
-import { PageProps } from "@/.next/types/app/page";
 import { GetProductCommentsQuery } from "@/graphql/queries/products/getProductById.generated";
 import { BonnmarseApi } from "@/service/fetch";
 import { GetProductCommentsDocument } from "@/service/product/comments";
@@ -7,7 +6,9 @@ import { Review, WithContext } from "schema-dts";
 import ProductComments from "../../components/Detail/ProductComments";
 import ProductCommentsLoadingPage from "./loading";
 
-const ProductCommentsPage: FC<PageProps> = async (props) => {
+const ProductCommentsPage: FC<{
+  searchParams: Promise<{ pid: string }>;
+}> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 

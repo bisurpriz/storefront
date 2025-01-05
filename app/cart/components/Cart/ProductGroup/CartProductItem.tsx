@@ -107,7 +107,7 @@ export default function CartItem({
 
             <div className="flex w-fit flex-nowrap items-center gap-1 self-end text-sm font-bold leading-none text-gray-500 text-primary">
               <span className="text-slate-500">{quantity} x</span>
-              <span className="text-base">₺{discount_price.toFixed(2)}</span>
+              <span className="text-base">₺{price.toFixed(2)}</span>
             </div>
           </div>
 

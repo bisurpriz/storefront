@@ -2,7 +2,7 @@
 
 import { CookieTokens } from "@/app/@auth/contants";
 import { getClientCookie } from "@/utils/getCookie";
-import { ApolloLink, HttpLink, split } from "@apollo/client";
+import { ApolloLink, HttpLink, setLogVerbosity, split } from "@apollo/client";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import { setContext } from "@apollo/client/link/context";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
@@ -15,7 +15,6 @@ import {
 } from "@apollo/experimental-nextjs-app-support";
 import { createClient } from "graphql-ws";
 import { useMemo } from "react";
-import { setVerbosity } from "ts-invariant";
 
 // Environment variables
 const HASURA_URL = process.env.HASURA_URL!;
@@ -25,7 +24,7 @@ const IS_SERVER = typeof window === "undefined";
 
 // Development only imports
 if (IS_DEV) {
-  setVerbosity("debug");
+  setLogVerbosity("debug");
   loadDevMessages();
   loadErrorMessages();
 }
@@ -72,9 +71,9 @@ function makeClient() {
   const httpLink = new HttpLink({
     uri: HASURA_URL,
     fetchOptions: {
-      mode: 'cors',
+      mode: "cors",
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   // WebSocket Link (only in browser)
@@ -88,28 +87,31 @@ function makeClient() {
           connectionParams: getAuthHeaders,
           shouldRetry: (errOrCloseEvent) => {
             // Basit retry logic
-            return errOrCloseEvent instanceof Error && 
-                   errOrCloseEvent.message !== 'forbidden' && 
-                   wsLink?.subscriptionsClient?.retries < 3;
+            return (
+              errOrCloseEvent instanceof Error &&
+              errOrCloseEvent.message !== "forbidden" &&
+              wsLink?.subscriptionsClient?.retries < 3
+            );
           },
-        })
+        }),
       )
     : null;
 
   // Split traffic between WS and HTTP
-  const splitLink = !IS_SERVER && wsLink
-    ? split(
-        ({ query }) => {
-          const definition = getMainDefinition(query);
-          return (
-            definition.kind === "OperationDefinition" &&
-            definition.operation === "subscription"
-          );
-        },
-        wsLink,
-        httpLink
-      )
-    : httpLink;
+  const splitLink =
+    !IS_SERVER && wsLink
+      ? split(
+          ({ query }) => {
+            const definition = getMainDefinition(query);
+            return (
+              definition.kind === "OperationDefinition" &&
+              definition.operation === "subscription"
+            );
+          },
+          wsLink,
+          httpLink,
+        )
+      : httpLink;
 
   // Compose links based on environment
   const link = IS_SERVER
@@ -126,20 +128,20 @@ function makeClient() {
   return new ApolloClient({
     cache,
     link,
-    name: 'web-client',
-    version: '1.0',
+    name: "web-client",
+    version: "1.0",
     queryDeduplication: true,
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: 'cache-and-network',
-        errorPolicy: 'ignore',
+        fetchPolicy: "cache-and-network",
+        errorPolicy: "ignore",
       },
       query: {
-        fetchPolicy: 'network-only',
-        errorPolicy: 'all',
+        fetchPolicy: "network-only",
+        errorPolicy: "all",
       },
       mutate: {
-        errorPolicy: 'all',
+        errorPolicy: "all",
       },
     },
     connectToDevTools: IS_DEV,

@@ -8,7 +8,6 @@ import { useSearchProduct } from "@/contexts/SearchContext";
 import clsx from "clsx";
 import { Grid2X2, Home, Search, ShoppingCart, User } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Badge from "../Badge";
 
 const MenuItem = ({
   item,
@@ -38,9 +37,13 @@ const MenuItem = ({
       onClick={onSelect}
     >
       {hasBadge?.badgeShow ? (
-        <Badge show={hasBadge.badgeShow} text={hasBadge.badgeText}>
+        // üzerinde item sayısı göster
+        <div className="relative">
           <span className="flex-1 text-2xl">{item.icon}</span>
-        </Badge>
+          <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+            {hasBadge.badgeText}
+          </span>
+        </div>
       ) : (
         <span className="flex-1 text-2xl">{item.icon}</span>
       )}

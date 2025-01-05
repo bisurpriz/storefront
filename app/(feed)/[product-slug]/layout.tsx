@@ -22,7 +22,7 @@ export default async function ProductExample({
   comments: ReactNode;
 }) {
   return (
-    <div className="h-full">
+    <div>
       <Breadcrumb />
 
       <section

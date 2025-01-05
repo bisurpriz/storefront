@@ -1,6 +1,5 @@
 "use client";
 
-import Badge from "@/components/Badge";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart } from "lucide-react";
 
@@ -10,9 +9,14 @@ const BasketButton = () => {
   } = useCart();
 
   return (
-    <Badge text={count} show={count > 0}>
+    <div className="relative">
       <ShoppingCart />
-    </Badge>
+      {count > 0 && (
+        <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+          {count}
+        </span>
+      )}
+    </div>
   );
 };
 
