@@ -118,7 +118,7 @@ export default async function RootLayout({
       <GoogleTagManagerInjector />
       <NotificationListener />
       <body
-        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} font-manrope`}
+        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} h-[100dvh] font-manrope`}
         id="root"
       >
         <Providers
