@@ -54,7 +54,7 @@ export const BreadcrumbProvider: React.FC<BreadcrumbProviderProps> = ({
       setBreadcrumbs,
       clearBreadcrumbs,
     }),
-    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs],
+    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs,pathname],
   );
 
   return (
