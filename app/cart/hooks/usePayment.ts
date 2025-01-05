@@ -55,7 +55,7 @@ export const usePayment = () => {
           detailData,
           cardData,
           user: userData.user,
-          totalPrice: cost.totalPrice,
+          totalPrice: cost.totalWithDiscount,
           isTablet,
           couponInfo,
         });
