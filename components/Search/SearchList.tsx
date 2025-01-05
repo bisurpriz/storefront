@@ -1,6 +1,6 @@
 import useResponsive from "@/hooks/useResponsive";
+import { getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { goToProductDetail } from "@/utils/linkClickEvent";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -151,13 +151,7 @@ const SearchList: FC<Props> = ({
                 <Link
                   prefetch
                   key={product.id}
-                  href={goToProductDetail({
-                    category: {
-                      slug: product.product_categories[0]?.category?.slug,
-                    },
-                    id: product.id,
-                    slug: product.slug,
-                  })}
+                  href={getProductDetailUrl(product.slug!, product.id)}
                   onClick={() => {
                     setIsOpen(false);
                     setInputVal("");

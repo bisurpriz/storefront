@@ -10,11 +10,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/contexts/CartContext";
 import { GetProductInformationQuery } from "@/graphql/queries/products/getProductById.generated";
+import { getTenantUrl } from "@/lib/utils";
 import { parseJson } from "@/utils/format";
 import { getPriceTR } from "@/utils/getPriceTR";
-import { stringToSlug } from "@/utils/stringToSlug";
 import { Clock, Palette, ShoppingBasketIcon, Truck } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -49,7 +50,7 @@ const DynamicGoogleLocationSelect = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
+      <Skeleton className="mb-2 h-14 w-full rounded-lg bg-primary/20" />
     ),
   },
 );
@@ -128,7 +129,7 @@ const ProductInformation = ({
                 Satıcı:
               </label>
               <Link
-                href={`/magaza/${stringToSlug(vendor.name)}?mid=${vendor.id}`}
+                href={getTenantUrl(vendor.name, vendor.id.toString())}
                 className="me-1 cursor-pointer font-bold text-sky-600"
               >
                 {vendor.name}

@@ -30,6 +30,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import useResponsive from "@/hooks/useResponsive";
 import JsonLd from "@/lib/JsonLd";
@@ -217,6 +218,6 @@ function BreadcrumbResponsive() {
 export default dynamic(() => Promise.resolve(BreadcrumbResponsive), {
   ssr: false,
   loading: () => (
-    <div className="mb-4 h-5 w-full animate-pulse rounded-md bg-slate-200" />
+    <Skeleton className="mb-4 h-5 w-full animate-pulse rounded-md bg-primary/20" />
   ),
 });

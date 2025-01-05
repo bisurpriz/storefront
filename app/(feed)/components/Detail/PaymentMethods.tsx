@@ -43,7 +43,7 @@ const PaymentMethods = () => {
                   fill
                   className="object-contain"
                   sizes="(max-width: 768px) 100vw, 500px"
-                  priority
+                  loading="lazy"
                 />
               </div>
             </div>

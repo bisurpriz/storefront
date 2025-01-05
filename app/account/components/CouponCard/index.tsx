@@ -15,8 +15,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { GetAllCouponsQuery } from "@/graphql/queries/account/coupon.generated";
+import { getTenantUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
-import { stringToSlug } from "@/utils/stringToSlug";
 import { differenceInDays, parseISO } from "date-fns";
 import {
   CalendarIcon,
@@ -121,7 +121,7 @@ const CouponCard = ({
             <Progress value={usagePercentage} className="h-2" />
           </div>
         )}
-        <Link href={`/magaza/${stringToSlug(tenant.name)}?mid=${tenant.id}`}>
+        <Link href={getTenantUrl(tenant.name, tenant.id.toString())}>
           <Button
             className="mt-4 w-full"
             variant={isExpired ? "outline" : "default"}

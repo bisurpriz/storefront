@@ -11,15 +11,9 @@ const AccountLayout = async ({ children }: { children: React.ReactNode }) => {
   const isMobile = device.type === "mobile";
 
   return (
-    <div className="relative flex max-md:flex-col max-md:gap-4">
-      <AccountNavigation
-        isMobile={isMobile}
-      />
-      <div
-        className={cn("flex min-h-[50dvh] flex-1 flex-col max-sm:h-[70dvh]")}
-      >
-        {children}
-      </div>
+    <div className="relative flex gap-4 max-md:flex-col">
+      <AccountNavigation isMobile={isMobile} />
+      <div className={cn("flex-1")}>{children}</div>
     </div>
   );
 };

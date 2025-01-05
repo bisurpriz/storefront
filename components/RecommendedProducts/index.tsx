@@ -2,6 +2,7 @@
 
 import { Link } from "@/components/Link";
 import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
+import { getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getPriceTR } from "@/utils/getPriceTR";
 import { getDiscountRate } from "@/utils/price";
@@ -25,7 +26,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
   return (
     <Link
       className="group relative flex h-32 min-w-[340px] flex-1 rounded-xl border border-gray-100 bg-white p-3 transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
-      href={`/${product.product_categories[0].category.slug}/${product.slug}?pid=${product.id}`}
+      href={getProductDetailUrl(product.slug!, product.id)}
       prefetch={false}
     >
       {/* Discount Badge */}
@@ -109,7 +110,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
 
   return (
     <section className="relative" aria-label="Önerilen Ürünler">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key="progress-bar"
           className="sticky left-0 top-0 origin-left bg-secondary"
@@ -118,13 +119,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
             height: 2,
           }}
         />
-        <motion.div
-          key="container"
-          className="relative"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
+        <div key="container" className="relative">
           <button
             onClick={() => handleScroll("left")}
             className="absolute -left-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg"
@@ -157,7 +152,7 @@ const RecommendedProducts = ({ products }: RecommendedProductsProps) => {
               <ProductCard key={product.id} product={product} />
             ))}
           </motion.div>
-        </motion.div>
+        </div>
       </AnimatePresence>
     </section>
   );

@@ -11,16 +11,40 @@ interface ZoomableImageProps {
   onZoomChange?: (isZoomed: boolean) => void;
 }
 
+const shimmer = `
+<svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shimmer" gradientTransform="rotate(90)">
+      <stop offset="0%" stop-color="#f3f4f6"/>
+      <stop offset="50%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#f3f4f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#shimmer)"/>
+</svg>
+`;
+
+const toBase64 = (str: string) =>
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
+
 const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
   const [lastTouch, setLastTouch] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
   const zoomPreviewRef = useRef<HTMLDivElement>(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const lastTapTime = useRef(0);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 1024);
+    setIsLoaded(true);
+  }, []);
 
   const calculatePreviewPosition = () => {
     if (!imageRef.current || !zoomPreviewRef.current || isMobile) return null;
@@ -126,49 +150,55 @@ const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
 
   return (
     <div className="group relative aspect-square w-full overflow-hidden rounded-lg">
-      <div
-        ref={imageRef}
-        className={cn(
-          "relative h-full w-full",
-          isMobile ? "touch-none" : "cursor-zoom-in",
-        )}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleDoubleTap}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
+      {isLoaded && (
+        <div
+          ref={imageRef}
           className={cn(
-            "object-contain transition-transform duration-200",
-            isMobileZoomed && "scale-[2.5]",
+            "relative h-full w-full",
+            isMobile ? "touch-none" : "cursor-zoom-in",
           )}
-          style={
-            isMobileZoomed
-              ? {
-                  transform: `scale(2.5) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                }
-              : undefined
-          }
-          sizes="(min-width: 1024px) 40vw, 80vw"
-          priority
-          quality={isMobileZoomed ? 100 : 80}
-        />
-
-        {isZoomed && !isMobile && (
-          <div
-            className="pointer-events-none absolute z-10 h-1/3 w-1/3 border border-primary/50 bg-white/10"
-            style={{
-              left: `${position.x - 16.5}%`,
-              top: `${position.y - 16.5}%`,
-            }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleDoubleTap}
+        >
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className={cn(
+              "object-contain transition-transform duration-200",
+              isMobileZoomed && "scale-[2.5]",
+            )}
+            style={
+              isMobileZoomed
+                ? {
+                    transform: `scale(2.5) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                  }
+                : undefined
+            }
+            sizes="(min-width: 1024px) 40vw, 80vw"
+            priority
+            quality={isMobileZoomed ? 100 : 80}
+            loading="eager"
+            fetchPriority="high"
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer)}`}
           />
-        )}
-      </div>
+
+          {isZoomed && !isMobile && (
+            <div
+              className="pointer-events-none absolute z-10 h-1/3 w-1/3 border border-primary/50 bg-white/10"
+              style={{
+                left: `${position.x - 16.5}%`,
+                top: `${position.y - 16.5}%`,
+              }}
+            />
+          )}
+        </div>
+      )}
 
       {isZoomed &&
         !isMobile &&

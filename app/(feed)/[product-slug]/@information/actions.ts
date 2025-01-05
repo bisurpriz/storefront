@@ -11,5 +11,6 @@ export const getProductInformation = async (productId) => {
       id: productId,
     },
     tags: ["getProductInformation"],
+    withAuth: false,
   });
 };

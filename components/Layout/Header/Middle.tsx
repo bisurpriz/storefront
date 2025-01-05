@@ -14,11 +14,12 @@ const HeaderMiddle = () => {
     >
       <Link href="/" className="min-w-[180px]">
         <Image
-          src={"/logo.svg"}
+          src="/logo.svg"
           className="h-14 w-44"
-          width={180}
-          height={55}
+          width={176}
+          height={56}
           alt="BiSürpriz Logo"
+          quality={70}
           priority
         />
       </Link>

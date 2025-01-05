@@ -48,12 +48,7 @@ const ProductCard = memo(
     }, []);
 
     const productUrl = useMemo(
-      () =>
-        getProductDetailUrl(
-          product_categories?.[0].category.slug,
-          slug!,
-          Number(id),
-        ),
+      () => getProductDetailUrl(slug!, Number(id)),
       [product_categories, slug, id],
     );
 

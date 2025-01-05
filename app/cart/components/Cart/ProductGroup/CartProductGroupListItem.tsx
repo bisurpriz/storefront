@@ -1,10 +1,11 @@
-import Promotions from "@/app/(feed)/[category-slug]/components/Detail/Promotions";
+import Promotions from "@/app/(feed)/components/Detail/Promotions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import { DeliveryType } from "@/common/enums/Product/product";
 import { ProductForCart } from "@/common/types/Cart/cart";
 import Chip from "@/components/Chip";
 import { Link } from "@/components/Link";
 import PriceTag from "@/components/PriceTag";
+import { getProductDetailUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { Clock, Palette, Truck } from "lucide-react";
@@ -57,7 +58,7 @@ const CartProductGroupListItem = (product: ProductForCart) => {
           <div className="flex flex-col gap-2">
             <Link
               className="text-base font-semibold uppercase text-gray-700 max-md:text-xs"
-              href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
+              href={getProductDetailUrl(product.slug!, id)}
             >
               <h3 title={name}>{name}</h3>
             </Link>

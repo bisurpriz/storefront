@@ -16,13 +16,7 @@ export function Search() {
   const { push } = useRouter();
 
   const handleSelect = (result: Product) => {
-    push(
-      getProductDetailUrl(
-        result.product_categories[0].category.slug,
-        result.slug,
-        result.id,
-      ),
-    );
+    push(getProductDetailUrl(result.slug, result.id));
     setIsOpen(false);
   };
 

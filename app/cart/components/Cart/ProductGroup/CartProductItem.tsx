@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useCart } from "@/contexts/CartContext";
+import { getProductDetailUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { Gift, Truck, TruckIcon, X } from "lucide-react";
@@ -22,6 +23,7 @@ export default function CartItem({
   id,
   image_url,
   is_service_free,
+  slug,
   name,
   price,
   product_categories,
@@ -70,9 +72,7 @@ export default function CartItem({
 
         <div className="flex w-full flex-col items-start">
           <div className="flex w-full items-start justify-between">
-            <Link
-              href={`/${product_categories?.[0]?.category.slug}/${name}?pid=${id}`}
-            >
+            <Link href={getProductDetailUrl(slug!, id)}>
               <h2 className="line-clamp-2 w-full text-lg font-semibold text-gray-800 max-sm:text-base">
                 {name}
               </h2>

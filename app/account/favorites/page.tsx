@@ -1,11 +1,13 @@
 import AnimatedPricing from "@/components/AnimatedPromotion";
 import { Link } from "@/components/Link";
 import { Button } from "@/components/ui/button";
+import { getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { goToProductDetail } from "@/utils/linkClickEvent";
 import { Heart, Star, View, X } from "lucide-react";
 import Image from "next/image";
 import { getUserFavorites } from "./actions";
+
+export const dynamic = "force-dynamic";
 
 const FavoritesPage = async () => {
   const { user_favorite, user_favorite_aggregate } = await getUserFavorites({
@@ -103,12 +105,10 @@ const FavoritesPage = async () => {
                   timeout={2000}
                 />
                 <Link
-                  href={goToProductDetail({
-                    category: product.product.product_categories[0]
-                      .category as { slug: string },
-                    id: product.product.id,
-                    slug: product.product.slug,
-                  })}
+                  href={getProductDetailUrl(
+                    product.product.slug!,
+                    product.product.id,
+                  )}
                 >
                   <Button variant="outline" className="mt-auto w-full">
                     <View className="mr-2 h-4 w-4" />

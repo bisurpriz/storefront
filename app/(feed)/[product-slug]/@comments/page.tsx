@@ -17,6 +17,7 @@ const ProductCommentsPage: FC<PageProps> = async (props) => {
       id,
     },
     tags: ["getProductComments"],
+    withAuth: false,
   });
 
   if (!product) {

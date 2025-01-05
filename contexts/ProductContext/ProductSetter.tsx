@@ -1,8 +1,7 @@
 "use client";
 
 import { Product } from "@/graphql/generated-types";
-import { getCategoryUrl, getTenantUrl } from "@/lib/utils";
-import { goToProductDetail } from "@/utils/linkClickEvent";
+import { getCategoryUrl, getProductDetailUrl, getTenantUrl } from "@/lib/utils";
 import { FC, useEffect } from "react";
 import { useProduct } from ".";
 import { useBreadcrumb } from "../BreadcrumbContext";
@@ -34,13 +33,7 @@ const ProductSetter: FC<ProductSetterProps> = ({ initialData }) => {
 
     breadcrumb.push({
       label: product.name,
-      href: goToProductDetail({
-        category: {
-          slug: product.product_categories[0].category.slug,
-        },
-        id: product.id,
-        slug: product.slug,
-      }),
+      href: getProductDetailUrl(product.slug!, product.id),
     });
 
     return breadcrumb;

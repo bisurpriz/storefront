@@ -24,6 +24,7 @@ export const getProductActions = async (
         id: productId,
       },
       tags: ["getProductActionData"],
+      withAuth: true,
     });
 
     return {
@@ -43,6 +44,7 @@ export const getProductActions = async (
           id: productId,
         },
         tags: ["getProductActionDataForAnonymous"],
+        withAuth: false,
       });
 
     return {

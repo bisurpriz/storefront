@@ -24,16 +24,25 @@ export default function AdvancedChatScreen() {
   const [showUserList, setShowUserList] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
 
-  const userList: User[] = chats?.map((chat, index) => {
-    return {
-      id: chat.tenant.id,
-      picture: chat.tenant.tenants[0].logo,
-      name: chat.tenant.tenants[0].name,
-      lastMessage: chat.messages[chat.messages.length - 1].message,
-    };
-  });
+  const userList: User[] =
+    chats?.reduce((uniqueUsers: User[], chat) => {
+      const existingUser = uniqueUsers.find(
+        (user) => user.id === chat.tenant.id,
+      );
+      if (!existingUser) {
+        uniqueUsers.push({
+          id: chat.tenant.id,
+          picture: chat.tenant.tenants[0].logo,
+          name: chat.tenant.tenants[0].name,
+          lastMessage: chat.messages[chat.messages.length - 1].message,
+        });
+      }
+      return uniqueUsers;
+    }, []) || [];
 
-  const selectedChat = chats?.find((chat) => chat.tenant.id === selectedUser?.id);
+  const selectedChat = chats?.find(
+    (chat) => chat.tenant.id === selectedUser?.id,
+  );
   const messages: Message[] = selectedChat?.messages.map((message) => {
     return {
       created_at: message.created_at,
@@ -80,14 +89,14 @@ export default function AdvancedChatScreen() {
         id: user.id,
         picture: user.picture,
         name: user.firstname + " " + user.lastname,
-        lastMessage: newMessage
+        lastMessage: newMessage,
       },
       receiver: {
         id: selectedUser!.id,
         picture: selectedChat.tenant.tenants[0].logo,
         name: selectedChat.tenant.tenants[0].name,
-        lastMessage: newMessage
-      }
+        lastMessage: newMessage,
+      },
     };
 
     // Add optimistic message immediately
@@ -125,11 +134,11 @@ export default function AdvancedChatScreen() {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

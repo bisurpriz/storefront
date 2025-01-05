@@ -129,24 +129,22 @@ const useInfiniteScroll = <T,>({
   }, [currentOffset, hasMore, query, params, totalCount, isLoading]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!loadingRef.current || isLoading || !hasMore) return;
+    if (!loadingRef.current || !hasMore) return;
 
-      const element = loadingRef.current;
-      const rect = element.getBoundingClientRect();
-      const isVisible = rect.top <= window.innerHeight + 100;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !isLoading) {
+          loadMoreData();
+        }
+      },
+      { rootMargin: "100px" },
+    );
 
-      if (isVisible) {
-        loadMoreData();
-      }
-    };
-
-    const throttledScroll = throttle(handleScroll, 100);
-    window.addEventListener("scroll", throttledScroll);
-    handleScroll();
+    observer.observe(loadingRef.current);
 
     return () => {
-      window.removeEventListener("scroll", throttledScroll);
+      observer.disconnect();
     };
   }, [hasMore, isLoading, loadMoreData]);
 
@@ -162,17 +160,6 @@ const useInfiniteScroll = <T,>({
     isLoading,
     hasMore,
     loadingRef,
-  };
-};
-
-const throttle = (func: Function, limit: number) => {
-  let inThrottle: boolean;
-  return function (...args: any[]) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
   };
 };
 

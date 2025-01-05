@@ -2,6 +2,7 @@ import { Category } from "@/common/types/Category/category";
 import Menu from "@/components/Menu";
 import OfflineStatus from "@/components/OfflineStatus/OfflineStatus";
 import { Search } from "@/components/Search";
+import { getCategoryUrl } from "@/lib/utils";
 
 interface Props {
   categories: Category[];
@@ -9,7 +10,7 @@ interface Props {
 
 const HeaderBottom = ({ categories }: Props) => {
   const menuData: MenuItem[] | undefined = categories?.map((category) => ({
-    link: `/${category.slug}`,
+    link: getCategoryUrl(category.slug!),
     text: category.name,
   }));
 

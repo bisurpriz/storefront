@@ -1,9 +1,9 @@
 import { PageProps } from "@/.next/types/app/page";
 import { getProductRatings } from "@/app/(feed)/actions";
+import { getProductDetailUrl } from "@/lib/utils";
 import { parseJson } from "@/utils/format";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { goToProductDetail } from "@/utils/linkClickEvent";
 import { getDiscountRate } from "@/utils/price";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
@@ -55,11 +55,10 @@ const ProductInformationPage: FC<PageProps> = async (props) => {
         product.delivery_type === "SAME_DAY"
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}${goToProductDetail({
-        category: product.product_categories[0].category as any,
-        slug: product.slug,
-        id: product.id,
-      })}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}${getProductDetailUrl(
+        product.slug!,
+        product.id,
+      )}`,
       priceValidUntil: product.last_order_time,
       seller: {
         "@type": "Organization",

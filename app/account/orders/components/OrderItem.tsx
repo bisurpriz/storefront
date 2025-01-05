@@ -1,5 +1,6 @@
 import { Link } from "@/components/Link";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 
@@ -77,7 +78,7 @@ const OrderItem = ({
               ) : null}
             </div>
             <Link
-              href={`/${oi?.product?.product_categories[0].category?.slug}/${oi?.product?.slug}?pid=${oi?.product_id}`}
+              href={getProductDetailUrl(oi?.product?.slug!, oi?.product_id)}
               className="mt-2 block text-sm font-medium hover:underline"
             >
               {oi?.product?.name}{" "}

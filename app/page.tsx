@@ -28,6 +28,7 @@ export default async function Page(props: {
       duration: 30 * 60 * 1000,
     },
     tags: ["getCategories"],
+    withAuth: false,
   });
 
   const { isBot, device } = userAgent({
@@ -46,7 +47,7 @@ export default async function Page(props: {
       {!searchText && !isBot && (
         <Suspense
           fallback={
-            <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-gray-100" />
+            <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-primary/20" />
           }
         >
           <GoogleLocationSelect from="home" />

@@ -65,6 +65,7 @@ export const GetProductByIdForCartDocument = `
     query getProductByIdForCart($id: bigint!) {
   product_by_pk(id: $id) {
     id
+    slug
     image_url
     name
     price

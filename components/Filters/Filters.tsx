@@ -592,7 +592,13 @@ export default function Filters({
         </Drawer>
       </div>
 
-      <div className={cn("hidden", isMobile && "hidden", !isMobile && "block")}>
+      <div
+        className={cn(
+          "hidden",
+          isMobile && "hidden",
+          !isMobile && "sticky top-6 block h-fit",
+        )}
+      >
         <FilterContent className={className} filterTypes={filterTypes} />
       </div>
     </>

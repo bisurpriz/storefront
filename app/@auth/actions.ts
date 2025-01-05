@@ -23,6 +23,7 @@ export const login = async ({ email, password }, headers = {}) => {
       password,
     },
     additionalHeaders: headers,
+    withAuth: false,
     tags: ["login"],
   });
 
@@ -36,23 +37,25 @@ export const login = async ({ email, password }, headers = {}) => {
       cook.delete(CookieTokens.GUEST_ID);
     }
 
-    cook.set(CookieTokens.ACCESS_TOKEN, login.data.access_token, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-    cook.set(CookieTokens.REFRESH_TOKEN, login.data.refresh_token, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-    cook.set(CookieTokens.USER_ID, user.id, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    const cookieData = {
+      access_token: login.data.access_token,
+      refresh_token: login.data.refresh_token,
+      user_id: user.id,
+    };
+
+    Object.entries(cookieData).forEach(([key, value]) => {
+      cook.set(key, value, {
+        domain:
+          process.env.NODE_ENV === "production"
+            ? ".bonnmarse.com"
+            : "localhost",
+        path: "/",
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        maxAge: 7 * 24 * 60 * 60,
+      });
     });
   }
   return login;

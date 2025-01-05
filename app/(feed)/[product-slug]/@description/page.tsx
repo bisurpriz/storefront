@@ -21,6 +21,7 @@ const ProductDescriptionPage: FC<{
       id,
     },
     tags: ["getProductDescription"],
+    withAuth: false,
   });
 
   if (!product) {

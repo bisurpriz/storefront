@@ -20,6 +20,7 @@ export const getStaticBlogPostPaths = async () => {
       enable: true,
       duration: 30 * 60 * 1000,
     },
+    withAuth: false,
   });
 };
 
@@ -31,6 +32,7 @@ export const getStaticBlogPosts = async () => {
       enable: true,
       duration: 30 * 60 * 1000,
     },
+    withAuth: false,
   });
 };
 
@@ -45,5 +47,6 @@ export const getBlogPostIdsAndSlug = async (slug) => {
       enable: true,
       duration: 30 * 60 * 1000,
     },
+    withAuth: false,
   });
 };
