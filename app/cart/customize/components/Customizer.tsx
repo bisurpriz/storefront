@@ -1,12 +1,12 @@
 "use client";
 
+import Chip from "@/components/Chip";
+import { useCart } from "@/contexts/CartContext";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import CustomizeOrderItem from "./CustomizeOrderItem";
-import Chip from "@/components/Chip";
-import { useCart } from "@/contexts/CartContext";
 
 type CustomizerProps = {
   tenant_order: GetOrderByIdQuery["order_by_pk"]["tenant_orders"][0];
@@ -51,9 +51,7 @@ const Customizer: FC<CustomizerProps> = ({ tenant_order }) => {
           </div>
           <div className="col-span-8 flex flex-col gap-1 max-lg:col-span-6 max-md:col-span-full">
             <div>
-              <h1 className="font-mono text-2xl font-bold">
-                {oi.product.name}
-              </h1>
+              <h1 className="text-2xl font-bold">{oi.product.name}</h1>
               <span className="text-xs text-slate-400">
                 Adet: {oi.quantity}
               </span>

@@ -207,7 +207,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
               priority
             />
           </div>
-          <CardTitle className="rounded-md bg-primary-foreground p-2 text-center font-mono text-2xl font-bold">
+          <CardTitle className="rounded-md bg-primary-foreground p-2 text-center text-2xl font-bold">
             Giriş Yap
           </CardTitle>
         </CardHeader>

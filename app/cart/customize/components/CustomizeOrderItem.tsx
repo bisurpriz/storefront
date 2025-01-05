@@ -160,7 +160,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
           className="relative flex flex-col gap-4 rounded-lg"
         >
           <div className="flex flex-col gap-2">
-            <p className="whitespace-nowrap font-mono text-xs font-semibold text-slate-600">
+            <p className="whitespace-nowrap text-xs font-semibold text-slate-600">
               {quantity_index + 1}. ürün özelleştirmesi
             </p>
             {product.product_customizable_areas?.map((area, tindex) => {

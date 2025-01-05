@@ -55,7 +55,7 @@ const HeaderButtons = () => {
   };
 
   return (
-    <div className={clsx("flex items-center gap-4 font-mono")}>
+    <div className={clsx("flex items-center gap-4")}>
       {headerButtonData.map((item, index) => (
         <Link
           href={item.href}

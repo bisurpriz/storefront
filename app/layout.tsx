@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Lato, Manrope, Quicksand } from "next/font/google";
+import { Lato, Manrope } from "next/font/google";
 import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
@@ -11,7 +11,6 @@ import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategori
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import { getUserById } from "@/service/user";
-import Head from "next/head";
 import { cookies, headers } from "next/headers";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
@@ -31,14 +30,6 @@ const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-manrope",
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const quickSand = Quicksand({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-quicksand",
   preload: true,
   adjustFontFallback: true,
 });
@@ -118,14 +109,8 @@ export default async function RootLayout({
     <html lang="tr">
       <GoogleTagManagerInjector />
       <NotificationListener />
-      <Head>
-        <meta
-          name="google-site-verification"
-          content="gg9nv9VRXJP_xbO8UJ-ALrSEsMbD18n3cpS6nBAGKn8"
-        />
-      </Head>
       <body
-        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} h-[100dvh] font-manrope`}
+        className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
         id="root"
       >
         <Providers

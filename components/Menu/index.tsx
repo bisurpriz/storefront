@@ -12,7 +12,7 @@ const Menu: React.FC<MenuProps> = ({ items, className = "" }) => {
   );
 
   return (
-    <nav className={`font-mono font-medium ${className}`} ref={listRef}>
+    <nav className={`font-medium ${className}`} ref={listRef}>
       {items ? (
         <ul className={clsx("flex w-fit justify-center gap-4")}>
           {items.map((item, index) => (

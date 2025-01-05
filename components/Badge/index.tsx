@@ -41,7 +41,7 @@ const Badge: FC<BadgeProps> = ({ children, show, text }) => {
             "absolute right-0 top-0",
             "flex items-center justify-center",
             "h-4 w-4 rounded-full bg-primary",
-            "font-mono text-xs text-white",
+            "text-xs text-white",
           )}
           variants={badgeVariants}
           initial="hidden"
