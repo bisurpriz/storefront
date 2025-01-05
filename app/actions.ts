@@ -121,6 +121,6 @@ export const createFCMToken = async (token: string) => {
       token,
     },
     tags: ["createFCMToken"],
-    withAuth: false,
+    withAuth: true,
   });
 };
