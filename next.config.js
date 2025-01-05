@@ -107,6 +107,8 @@ const nextConfig = {
     TYPESENSE_HOST: process.env.TYPESENSE_HOST,
     TYPESENSE_API_KEY: process.env.TYPESENSE_API_KEY,
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    REST_API_URL: process.env.REST_API_URL,
+    NEXT_PUBLIC_REST_API_URL: process.env.NEXT_PUBLIC_REST_API_URL,
   },
 };
 

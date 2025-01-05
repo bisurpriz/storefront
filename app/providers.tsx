@@ -11,7 +11,7 @@ import { Category } from "@/graphql/generated-types";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
 interface ProvidersProps {
@@ -22,12 +22,12 @@ interface ProvidersProps {
   costData: CostData;
 }
 
-export function Providers({ 
-  children, 
-  userData, 
-  categoryData, 
-  cartItems, 
-  costData 
+export function Providers({
+  children,
+  userData,
+  categoryData,
+  cartItems,
+  costData,
 }: ProvidersProps) {
   return (
     <ProgressBarProvider>
@@ -42,7 +42,7 @@ export function Providers({
                     <CartProvider
                       cartDbItems={cartItems}
                       dbCost={{
-                        totalPrice: costData.totalPrice,
+                        totalPrice: costData?.totalPrice || 0,
                         isCouponApplied: false,
                         couponMessage: "",
                         discountAmount: 0,
@@ -63,4 +63,4 @@ export function Providers({
       </AuthProvider>
     </ProgressBarProvider>
   );
-} 
+}

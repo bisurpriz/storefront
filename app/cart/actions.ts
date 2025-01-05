@@ -74,7 +74,7 @@ export const createOrderAction = async (
   };
 
   const jwtToken = await createJwt();
-  const response = await fetch(process.env.CREATE_ORDER_ACTION_URL, {
+  const response = await fetch(`${process.env.REST_API_URL}/create-order`, {
     method: "POST",
     body: JSON.stringify(variables.object),
     headers: {
@@ -116,14 +116,18 @@ export const getCartCost = async (
   cartItems: Pick<ProductForCart, "id" | "quantity">[],
   couponCode?: string,
 ) => {
-  const { data: costData } = await axios.post(process.env.CART_COST_URL, {
-    products: cartItems.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-    })),
-    couponCode,
-  });
-  return costData;
+  const { data: costData } = await axios.post(
+    `${process.env.REST_API_URL}/order/calculate-order-cost`,
+    {
+      products: cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+      couponCode,
+    },
+  );
+
+  return costData?.data;
 };
 
 export const updateCart = async (cartItems: ProductForCart[]) => {
@@ -159,7 +163,6 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       tags: ["updateCart"],
     });
     const costData = await getCartCost(cartItems);
-
     return {
       insert_cart,
       costData: costData,
@@ -250,7 +253,6 @@ export const getCart = async (user_id: string) => {
     const costData = await getCartCost(
       cartItems.map((_) => ({ id: _.id, quantity: _.quantity })),
     );
-
     return {
       cartItems,
       costData,
