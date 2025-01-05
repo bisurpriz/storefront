@@ -1,6 +1,7 @@
-import Avatar from "@/components/Avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { Suspense } from "react";
 import ReviewRating from "../../../../components/ReviewRating/ReviewRating";
 
@@ -59,12 +60,13 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                     aria-label={`comment-${index}`}
                   >
                     <div className="flex min-w-[200px] max-w-[200px] items-center justify-start gap-2">
-                      <Avatar
-                        alt={`${comment.firstName} ${comment.lastName}`}
-                        imageUrl={getImageUrlFromPath(comment.user_image_url)}
-                        key={comment.comment_id}
-                        size="small"
-                      />
+                      <Avatar>
+                        <AvatarImage
+                          alt={`${comment.firstName} ${comment.lastName}`}
+                          src={getImageUrlFromPath(comment.user_image_url)}
+                          key={comment.comment_id}
+                        />
+                      </Avatar>
                       <div className="p-4 max-sm:p-2">
                         <p
                           className="text-sm font-medium text-slate-500"

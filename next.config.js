@@ -17,6 +17,7 @@ const nextConfig = {
       "sonner",
       "embla-carousel-react",
     ],
+    optimizeCss: true,
   },
   images: {
     loader: "default",
