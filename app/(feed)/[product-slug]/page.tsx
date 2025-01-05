@@ -8,7 +8,7 @@ import { BonnmarseApi } from "@/service/fetch";
 import { GetProductImagesDocument } from "@/service/product/images";
 import { typesenseClient } from "@/typesense/client";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
 
@@ -17,7 +17,8 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   const id = Number(searchParams["pid"]);
 
   if (!id) {
-    return redirect("/");
+    console.error("Product ID not found");
+    return notFound();
   }
 
   const { product } = await BonnmarseApi.request<GetProductImagesQuery>({
@@ -30,7 +31,7 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
   });
 
   if (!product) {
-    redirect("/");
+    notFound();
   }
 
   const fullProductData = await typesenseClient
