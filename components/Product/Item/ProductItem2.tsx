@@ -190,13 +190,13 @@ export default function ProductItem2(props: ProductItemProps) {
       <div className="col-span-8 space-y-4 p-4 pt-2 max-sm:space-y-1 max-sm:p-2">
         <div className="flex items-start justify-between">
           {isTablet ? (
-            <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start font-mono text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
+            <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
               {name}
             </h3>
           ) : (
             <Tooltip>
               <TooltipTrigger>
-                <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start font-mono text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
+                <h3 className="line-clamp-2 h-10 w-full overflow-hidden text-start text-base leading-tight text-gray-800 max-md:text-sm max-md:font-normal">
                   {name}
                 </h3>
               </TooltipTrigger>

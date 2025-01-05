@@ -98,7 +98,7 @@ const FooterSection = memo(
       <h3 className="select-none font-sans text-lg font-semibold underline underline-offset-2">
         {title}
       </h3>
-      <ul className="flex w-full flex-col items-start justify-center space-y-2 font-mono">
+      <ul className="flex w-full flex-col items-start justify-center space-y-2">
         {links.map((link, index) => (
           <li key={index}>
             <Link

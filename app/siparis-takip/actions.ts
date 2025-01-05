@@ -15,8 +15,7 @@ export const getOrderTrackingInformation = async ({
       orderNo,
     },
     tags: ["getOrderTrackingInformation"],
-    withAuth: false,
+    withAuth: true,
   });
-
   return order[0];
 };

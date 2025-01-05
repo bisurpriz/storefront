@@ -1,7 +1,7 @@
+import { Link } from "@/components/Link";
 import { Button } from "@/components/ui/button";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import clsx from "clsx";
-import { Link } from "@/components/Link";
 
 export const generateMetadata = async () => {
   return {
@@ -15,7 +15,7 @@ const OrderCompletePage: React.FC = async () => {
     <div
       className={clsx(
         "flex h-full flex-col items-center justify-center space-y-8",
-        "text-center font-mono",
+        "text-center",
       )}
     >
       <h1 className="text-3xl font-semibold">Sipariş Tamamlandı</h1>

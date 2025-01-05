@@ -12,7 +12,7 @@ export default function DesignLayout({
   categories: GetAllCategoriesQuery["category"];
 }) {
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Toaster />
       <Header category={categories} />
 

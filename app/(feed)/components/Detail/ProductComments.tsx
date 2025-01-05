@@ -44,9 +44,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
   return (
     <Suspense fallback={<ProductCommentSkeleton />}>
       <div className="mt-4 w-full rounded-lg px-4 py-8 font-sans">
-        <h2 className="mb-2 font-mono text-lg font-medium text-slate-700">
-          Yorumlar
-        </h2>
+        <h2 className="mb-2 text-lg font-medium text-slate-700">Yorumlar</h2>
         {comments.length > 0 ? (
           <ul className="flex flex-col gap-2">
             {comments?.map(
@@ -69,7 +67,7 @@ const ProductComments = ({ comments }: ProductCommentsProps) => {
                       />
                       <div className="p-4 max-sm:p-2">
                         <p
-                          className="font-mono text-sm font-medium text-slate-500"
+                          className="text-sm font-medium text-slate-500"
                           aria-label={`comment-${index}-name`}
                           id={`comment-${index}-name`}
                           aria-describedby={`comment-${index}-name`}

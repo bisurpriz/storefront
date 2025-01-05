@@ -69,7 +69,6 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-lato)"],
-        mono: ["var(--font-quicksand)"],
         manrope: ["var(--font-manrope)"],
       },
       borderRadius: {

@@ -80,7 +80,7 @@ const CouponCard = ({
         <CardTitle className="mt-2 text-base sm:text-lg">{title}</CardTitle>
         {couponCode && (
           <CardDescription className="mt-1 text-xs sm:text-sm">
-            Kod: <span className="font-mono font-bold">{couponCode}</span>
+            Kod: <span className="font-bold">{couponCode}</span>
           </CardDescription>
         )}
       </CardHeader>

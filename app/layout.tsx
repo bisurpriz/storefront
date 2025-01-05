@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Lato, Manrope, Quicksand } from "next/font/google";
+import { Lato, Manrope } from "next/font/google";
 import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
@@ -31,14 +31,6 @@ const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-manrope",
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const quickSand = Quicksand({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-quicksand",
   preload: true,
   adjustFontFallback: true,
 });
@@ -125,7 +117,7 @@ export default async function RootLayout({
         />
       </Head>
       <body
-        className={`${lato.variable} ${quickSand.variable} ${manrope.variable} h-[100dvh] font-manrope`}
+        className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
         id="root"
       >
         <Providers
