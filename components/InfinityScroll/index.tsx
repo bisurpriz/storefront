@@ -92,7 +92,7 @@ const useInfiniteScroll = <T,>({
 }: InfinityScrollProps<T>) => {
   const loadingRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<T[]>(initialData);
+  const [data, setData] = useState<T[]>(initialData || []);
   const [currentOffset, setCurrentOffset] = useState(initialData?.length || 0);
   const [hasMore, setHasMore] = useState(
     totalCount > (initialData?.length || 0),
@@ -156,7 +156,7 @@ const useInfiniteScroll = <T,>({
   }, [initialData, totalCount, params]);
 
   return {
-    data,
+    data: data || [],
     isLoading,
     hasMore,
     loadingRef,

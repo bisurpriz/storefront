@@ -119,6 +119,7 @@ export const searchProductsv1 = async (
       );
     return response;
   } catch (error) {
-    console.error("Error fetching suggestions:", error);
+    console.warn("Error fetching suggestions:", error);
+    return { hits: [], found: 0 };
   }
 };

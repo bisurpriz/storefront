@@ -19,11 +19,13 @@ export default async function InfiniteScrollCarouselWrapper({
     },
   );
 
-  if (!response.hits.length) return null;
+  if (!response?.hits?.length) return null;
 
   return (
     <InfiniteProductCarousel
-      initialProducts={response?.hits?.map((p) => p.document) as Product[]}
+      initialProducts={
+        (response?.hits?.map((p) => p.document) as Product[]) ?? []
+      }
       fetchMoreProducts={searchProductsv1}
       params={params}
       totalCount={response?.found!}
