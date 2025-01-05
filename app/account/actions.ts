@@ -32,7 +32,7 @@ export const getUserById = async (id?: string) => {
         id: userId,
       },
       tags: ["getUserById"],
-      withAuth: false,
+      withAuth: true,
     });
     return {
       user: user ?? null,
