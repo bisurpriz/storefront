@@ -94,7 +94,7 @@ export default async function RootLayout({
   }).isBot;
 
   const userData = await getUserById(userId);
-  const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
+  const { cartItems, costData } = await getCart(userData?.user_by_pk?.id);
   const categoryData = await BonnmarseApi.request<GetMainCategoriesQuery>({
     query: GetCategoriesDocument,
     tags: ["getMainCategories"],
