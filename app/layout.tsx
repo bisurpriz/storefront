@@ -11,7 +11,6 @@ import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategori
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import { getUserById } from "@/service/user";
-import Head from "next/head";
 import { cookies, headers } from "next/headers";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
@@ -110,12 +109,6 @@ export default async function RootLayout({
     <html lang="tr">
       <GoogleTagManagerInjector />
       <NotificationListener />
-      <Head>
-        <meta
-          name="google-site-verification"
-          content="gg9nv9VRXJP_xbO8UJ-ALrSEsMbD18n3cpS6nBAGKn8"
-        />
-      </Head>
       <body
         className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
         id="root"

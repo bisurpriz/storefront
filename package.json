@@ -16,7 +16,7 @@
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts dotenv_config_path=./.env",
     "generate-icons": "node generate-icons.js",
     "ssl:setup": "node create-ssl-certs.js",
-    "dev-setup": "yarn install & yarn run generate-icons && yarn run dev"
+    "dev-setup": "pnpm install & pnpm run generate-icons && pnpm run dev"
   },
   "dependencies": {
     "@apollo/client": "^3.12.4",
