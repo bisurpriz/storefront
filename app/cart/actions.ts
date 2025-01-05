@@ -74,7 +74,7 @@ export const createOrderAction = async (
   };
 
   const jwtToken = await createJwt();
-  const response = await fetch(`${process.env.REST_API_URL}/create-order`, {
+  const response = await fetch(`${process.env.REST_API_URL}/order/create-order`, {
     method: "POST",
     body: JSON.stringify(variables.object),
     headers: {
