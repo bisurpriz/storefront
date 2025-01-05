@@ -4,8 +4,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { cn, getImageUrlFromPath } from "@/lib/utils";
-import { goToProductDetail } from "@/utils/linkClickEvent";
+import { cn, getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import Image from "next/image";
 
 interface Variant {
@@ -61,13 +60,10 @@ export default function ProductVariantSelector({
               >
                 <Link
                   prefetch
-                  href={goToProductDetail({
-                    category: {
-                      slug: variant.categorySlug,
-                    },
-                    slug: variant.variantSlug,
-                    id: variant.variantId,
-                  })}
+                  href={getProductDetailUrl(
+                    variant.variantSlug,
+                    variant.variantId,
+                  )}
                   className={cn(
                     "group relative flex h-full flex-col rounded-lg border bg-white p-2 shadow-sm transition-all duration-200",
                   )}

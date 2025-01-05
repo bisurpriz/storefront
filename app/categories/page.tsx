@@ -1,10 +1,11 @@
 "use client";
 
+import { Link } from "@/components/Link";
 import { useCategory } from "@/contexts/CategoryContext";
+import { getCategoryUrl } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import clsx from "clsx";
 import Image from "next/image";
-import { Link } from "@/components/Link";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 
 const CategoriesPage = () => {
   const { category } = useCategory();
@@ -46,7 +47,7 @@ const CategoriesPage = () => {
               key={category.slug}
             >
               <Link
-                href={`/${category.slug}`}
+                href={getCategoryUrl(category.slug!)}
                 className="absolute inset-0 z-10"
               >
                 <span className="sr-only">{category.name}</span>

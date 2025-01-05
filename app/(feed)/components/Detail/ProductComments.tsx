@@ -2,7 +2,7 @@ import Avatar from "@/components/Avatar";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { Suspense } from "react";
-import ReviewRating from "../../../../../components/ReviewRating/ReviewRating";
+import ReviewRating from "../../../../components/ReviewRating/ReviewRating";
 
 type Comment = {
   comment_id: number;

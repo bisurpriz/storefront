@@ -17,6 +17,7 @@ export const getOrderApproveImages = async ({
         token,
       },
       tags: ["getOrderApproveImages"],
+      withAuth: false,
     },
   );
 

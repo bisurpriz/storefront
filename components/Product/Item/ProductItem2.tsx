@@ -14,9 +14,8 @@ import {
 import { useUser } from "@/contexts/AuthContext";
 import { Product } from "@/graphql/generated-types";
 import useResponsive from "@/hooks/useResponsive";
-import { cn } from "@/lib/utils";
+import { cn, getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { goToProductDetail } from "@/utils/linkClickEvent";
 import { Heart, LucideTruck } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -109,13 +108,7 @@ export default function ProductItem2(props: ProductItemProps) {
 
   return (
     <Link
-      href={goToProductDetail({
-        category: {
-          slug: product_categories?.[0]?.category?.slug,
-        },
-        id,
-        slug,
-      })}
+      href={getProductDetailUrl(slug!, id)}
       as="image"
       className="relative mx-auto w-full overflow-hidden rounded-xl shadow-md max-sm:grid max-sm:grid-cols-12 max-sm:gap-2"
       {...(!isTablet && { target: "_blank" })}

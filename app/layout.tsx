@@ -110,6 +110,7 @@ export default async function RootLayout({
       enable: true,
       duration: 30 * 60 * 1000,
     },
+    withAuth: false,
   });
 
   return (

@@ -98,5 +98,6 @@ export const getUserById = async (userId) => {
       enable: true,
       duration: 30 * 60 * 1000,
     },
+    withAuth: true,
   });
 };

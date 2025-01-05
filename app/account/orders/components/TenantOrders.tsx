@@ -1,8 +1,9 @@
-import StatusBadge from "@/components/StatusBadge";
-import { Link } from "@/components/Link";
-import OrderItem from "./OrderItem";
 import { OrderItemStatus } from "@/common/enums/Order/product";
+import { Link } from "@/components/Link";
+import StatusBadge from "@/components/StatusBadge";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { getTenantUrl } from "@/lib/utils";
+import OrderItem from "./OrderItem";
 import OrderItemHeader from "./OrderItemHeader";
 
 const TenantOrders = ({
@@ -18,7 +19,10 @@ const TenantOrders = ({
         <div className="flex items-start justify-start gap-4 max-sm:flex-col max-sm:gap-2">
           <span className="my-1">
             <Link
-              href={`/vendor/${to.tenant.tenants?.[0]?.id}`}
+              href={getTenantUrl(
+                to.tenant.tenants?.[0]?.name,
+                to.tenant.tenants?.[0]?.id.toString(),
+              )}
               aria-label="Satıcıya git"
               className="text-sm text-secondary"
             >

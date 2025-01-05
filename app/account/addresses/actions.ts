@@ -15,6 +15,7 @@ export const getUserAddresses = async () => {
         user_id: userId,
       },
       tags: ["getUserAddresses"],
+      withAuth: true,
     });
 
   return { user_addresses };

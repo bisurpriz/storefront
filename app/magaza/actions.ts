@@ -30,6 +30,7 @@ export const getPaginatedVendorProducts = async <T>({
         tenant_id,
       },
       tags: ["getPaginatedVendorProducts"],
+      withAuth: false,
     });
 
   return {
@@ -45,6 +46,7 @@ export const getVendorDetails = async ({ id }: { id: string }) => {
       id,
     },
     tags: ["getVendorDetails"],
+    withAuth: false,
   });
 
   return tenant_by_pk;
@@ -57,6 +59,7 @@ export const getVendorReviews = async ({ id }: { id: string }) => {
       tenant_id: id,
     },
     tags: ["getVendorReviews"],
+    withAuth: false,
   });
 };
 
@@ -67,6 +70,7 @@ export const getVendorProductScoreAverage = async ({ id }: { id: string }) => {
       tenant_id: id,
     },
     tags: ["getVendorProductScoreAverage"],
+    withAuth: false,
   });
 };
 
@@ -77,5 +81,6 @@ export const getVendorCoupons = async ({ id }: { id: string }) => {
       tenant_id: id,
     },
     tags: ["getVendorCoupons"],
+    withAuth: false,
   });
 };

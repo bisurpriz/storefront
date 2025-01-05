@@ -287,6 +287,7 @@ export const getProductByIdForCart = async (id: number) => {
     product_categories: product_by_pk.product_categories,
     discount_price: product_by_pk.discount_price,
     id: product_by_pk.id,
+    slug: product_by_pk.slug,
     image_url: product_by_pk.image_url,
     name: product_by_pk.name,
     price: product_by_pk.price,

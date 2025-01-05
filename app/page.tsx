@@ -28,6 +28,7 @@ export default async function Page(props: {
       duration: 30 * 60 * 1000,
     },
     tags: ["getCategories"],
+    withAuth: false,
   });
 
   const { isBot, device } = userAgent({

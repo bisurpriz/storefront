@@ -9,7 +9,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import { cn } from "@/lib/utils";
+import { cn, getCategoryUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import clsx from "clsx";
 import Image from "next/image";
@@ -53,7 +53,7 @@ const CategorySwiper: FC<CategorySwiperProps> = ({ categories }) => {
             .map((_, index) => (
               <CarouselItem key={index} className={basis}>
                 <Link
-                  href={`/${_.slug}`}
+                  href={getCategoryUrl(_.slug!)}
                   className={"flex flex-col items-center justify-center p-1"}
                 >
                   <Image

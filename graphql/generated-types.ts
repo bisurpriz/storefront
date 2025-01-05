@@ -5472,6 +5472,10 @@ export type Mutation_Root = {
   delete_product_customizable_area_by_pk?: Maybe<Product_Customizable_Area>;
   /** delete data from the table: "product_delivery_city_info" */
   delete_product_delivery_city_info?: Maybe<Product_Delivery_City_Info_Mutation_Response>;
+  /** delete data from the table: "product_price_history" */
+  delete_product_price_history?: Maybe<Product_Price_History_Mutation_Response>;
+  /** delete single row from the table: "product_price_history" */
+  delete_product_price_history_by_pk?: Maybe<Product_Price_History>;
   /** delete data from the table: "product_related" */
   delete_product_related?: Maybe<Product_Related_Mutation_Response>;
   /** delete single row from the table: "product_related" */
@@ -5677,6 +5681,10 @@ export type Mutation_Root = {
   insert_product_delivery_city_info_one?: Maybe<Product_Delivery_City_Info>;
   /** insert a single row into the table: "product" */
   insert_product_one?: Maybe<Product>;
+  /** insert data into the table: "product_price_history" */
+  insert_product_price_history?: Maybe<Product_Price_History_Mutation_Response>;
+  /** insert a single row into the table: "product_price_history" */
+  insert_product_price_history_one?: Maybe<Product_Price_History>;
   /** insert data into the table: "product_related" */
   insert_product_related?: Maybe<Product_Related_Mutation_Response>;
   /** insert a single row into the table: "product_related" */
@@ -5941,6 +5949,12 @@ export type Mutation_Root = {
   update_product_delivery_city_info_many?: Maybe<Array<Maybe<Product_Delivery_City_Info_Mutation_Response>>>;
   /** update multiples rows of table: "product" */
   update_product_many?: Maybe<Array<Maybe<Product_Mutation_Response>>>;
+  /** update data of the table: "product_price_history" */
+  update_product_price_history?: Maybe<Product_Price_History_Mutation_Response>;
+  /** update single row of the table: "product_price_history" */
+  update_product_price_history_by_pk?: Maybe<Product_Price_History>;
+  /** update multiples rows of table: "product_price_history" */
+  update_product_price_history_many?: Maybe<Array<Maybe<Product_Price_History_Mutation_Response>>>;
   /** update data of the table: "product_related" */
   update_product_related?: Maybe<Product_Related_Mutation_Response>;
   /** update single row of the table: "product_related" */
@@ -6413,6 +6427,18 @@ export type Mutation_RootDelete_Product_Customizable_Area_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Product_Delivery_City_InfoArgs = {
   where: Product_Delivery_City_Info_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Product_Price_HistoryArgs = {
+  where: Product_Price_History_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Product_Price_History_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -7087,6 +7113,20 @@ export type Mutation_RootInsert_Product_Delivery_City_Info_OneArgs = {
 export type Mutation_RootInsert_Product_OneArgs = {
   object: Product_Insert_Input;
   on_conflict?: InputMaybe<Product_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_Price_HistoryArgs = {
+  objects: Array<Product_Price_History_Insert_Input>;
+  on_conflict?: InputMaybe<Product_Price_History_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Product_Price_History_OneArgs = {
+  object: Product_Price_History_Insert_Input;
+  on_conflict?: InputMaybe<Product_Price_History_On_Conflict>;
 };
 
 
@@ -8045,6 +8085,28 @@ export type Mutation_RootUpdate_Product_Delivery_City_Info_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Product_ManyArgs = {
   updates: Array<Product_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Price_HistoryArgs = {
+  _inc?: InputMaybe<Product_Price_History_Inc_Input>;
+  _set?: InputMaybe<Product_Price_History_Set_Input>;
+  where: Product_Price_History_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Price_History_By_PkArgs = {
+  _inc?: InputMaybe<Product_Price_History_Inc_Input>;
+  _set?: InputMaybe<Product_Price_History_Set_Input>;
+  pk_columns: Product_Price_History_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_Price_History_ManyArgs = {
+  updates: Array<Product_Price_History_Updates>;
 };
 
 
@@ -11949,6 +12011,7 @@ export type Product = {
   /** An object relationship */
   delivery_type_rel?: Maybe<Delivery_Type>;
   description?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id: Scalars['bigint']['output'];
   image_url?: Maybe<Array<Scalars['String']['output']>>;
@@ -12240,7 +12303,8 @@ export type Product_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Product_Avg_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -12252,7 +12316,6 @@ export type Product_Avg_Fields = {
 /** order by avg() on columns of table "product" */
 export type Product_Avg_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -13255,7 +13318,6 @@ export type Product_Delivery_City_Info_Variance_Fields = {
 /** input type for incrementing numeric columns in table "product" */
 export type Product_Inc_Input = {
   category_id?: InputMaybe<Scalars['Int']['input']>;
-  discount_price?: InputMaybe<Scalars['numeric']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
@@ -13271,7 +13333,6 @@ export type Product_Insert_Input = {
   delivery_type?: InputMaybe<Delivery_Type_Enum>;
   delivery_type_rel?: InputMaybe<Delivery_Type_Obj_Rel_Insert_Input>;
   description?: InputMaybe<Scalars['String']['input']>;
-  discount_price?: InputMaybe<Scalars['numeric']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -13304,6 +13365,7 @@ export type Product_Max_Fields = {
   delivery_end_time?: Maybe<Scalars['timestamptz']['output']>;
   delivery_start_time?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Array<Scalars['String']['output']>>;
@@ -13327,7 +13389,6 @@ export type Product_Max_Order_By = {
   delivery_end_time?: InputMaybe<Order_By>;
   delivery_start_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   last_order_time?: InputMaybe<Order_By>;
@@ -13346,6 +13407,7 @@ export type Product_Min_Fields = {
   delivery_end_time?: Maybe<Scalars['timestamptz']['output']>;
   delivery_start_time?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   image_url?: Maybe<Array<Scalars['String']['output']>>;
@@ -13369,7 +13431,6 @@ export type Product_Min_Order_By = {
   delivery_end_time?: InputMaybe<Order_By>;
   delivery_start_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
   last_order_time?: InputMaybe<Order_By>;
@@ -13451,6 +13512,279 @@ export type Product_Pk_Columns_Input = {
 export type Product_Prepend_Input = {
   delivery_time_ranges?: InputMaybe<Scalars['jsonb']['input']>;
   properties?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** columns and relationships of "product_price_history" */
+export type Product_Price_History = {
+  created_at: Scalars['timestamptz']['output'];
+  end_time?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['uuid']['output'];
+  price: Scalars['numeric']['output'];
+  /** An object relationship */
+  product: Product;
+  product_id: Scalars['bigint']['output'];
+  start_time: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  tenant: User;
+  tenant_id: Scalars['uuid']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "product_price_history" */
+export type Product_Price_History_Aggregate = {
+  aggregate?: Maybe<Product_Price_History_Aggregate_Fields>;
+  nodes: Array<Product_Price_History>;
+};
+
+/** aggregate fields of "product_price_history" */
+export type Product_Price_History_Aggregate_Fields = {
+  avg?: Maybe<Product_Price_History_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Product_Price_History_Max_Fields>;
+  min?: Maybe<Product_Price_History_Min_Fields>;
+  stddev?: Maybe<Product_Price_History_Stddev_Fields>;
+  stddev_pop?: Maybe<Product_Price_History_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Product_Price_History_Stddev_Samp_Fields>;
+  sum?: Maybe<Product_Price_History_Sum_Fields>;
+  var_pop?: Maybe<Product_Price_History_Var_Pop_Fields>;
+  var_samp?: Maybe<Product_Price_History_Var_Samp_Fields>;
+  variance?: Maybe<Product_Price_History_Variance_Fields>;
+};
+
+
+/** aggregate fields of "product_price_history" */
+export type Product_Price_History_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Product_Price_History_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Product_Price_History_Avg_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "product_price_history". All fields are combined with a logical 'AND'. */
+export type Product_Price_History_Bool_Exp = {
+  _and?: InputMaybe<Array<Product_Price_History_Bool_Exp>>;
+  _not?: InputMaybe<Product_Price_History_Bool_Exp>;
+  _or?: InputMaybe<Array<Product_Price_History_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  end_time?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  price?: InputMaybe<Numeric_Comparison_Exp>;
+  product?: InputMaybe<Product_Bool_Exp>;
+  product_id?: InputMaybe<Bigint_Comparison_Exp>;
+  start_time?: InputMaybe<Timestamptz_Comparison_Exp>;
+  tenant?: InputMaybe<User_Bool_Exp>;
+  tenant_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "product_price_history" */
+export type Product_Price_History_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'product_price_history_pkey'
+  /** unique or primary key constraint on columns "product_id", "start_time" */
+  | 'product_price_history_product_id_start_time_key';
+
+/** input type for incrementing numeric columns in table "product_price_history" */
+export type Product_Price_History_Inc_Input = {
+  price?: InputMaybe<Scalars['numeric']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+/** input type for inserting data into table "product_price_history" */
+export type Product_Price_History_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  end_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  price?: InputMaybe<Scalars['numeric']['input']>;
+  product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  start_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  tenant?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Product_Price_History_Max_Fields = {
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  end_time?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  price?: Maybe<Scalars['numeric']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+  start_time?: Maybe<Scalars['timestamptz']['output']>;
+  tenant_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type Product_Price_History_Min_Fields = {
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  end_time?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  price?: Maybe<Scalars['numeric']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+  start_time?: Maybe<Scalars['timestamptz']['output']>;
+  tenant_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "product_price_history" */
+export type Product_Price_History_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Product_Price_History>;
+};
+
+/** on_conflict condition type for table "product_price_history" */
+export type Product_Price_History_On_Conflict = {
+  constraint: Product_Price_History_Constraint;
+  update_columns?: Array<Product_Price_History_Update_Column>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "product_price_history". */
+export type Product_Price_History_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  end_time?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  price?: InputMaybe<Order_By>;
+  product?: InputMaybe<Product_Order_By>;
+  product_id?: InputMaybe<Order_By>;
+  start_time?: InputMaybe<Order_By>;
+  tenant?: InputMaybe<User_Order_By>;
+  tenant_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: product_price_history */
+export type Product_Price_History_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "product_price_history" */
+export type Product_Price_History_Select_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'end_time'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'price'
+  /** column name */
+  | 'product_id'
+  /** column name */
+  | 'start_time'
+  /** column name */
+  | 'tenant_id'
+  /** column name */
+  | 'updated_at';
+
+/** input type for updating data in table "product_price_history" */
+export type Product_Price_History_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  end_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  price?: InputMaybe<Scalars['numeric']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  start_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Product_Price_History_Stddev_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Product_Price_History_Stddev_Pop_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Product_Price_History_Stddev_Samp_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "product_price_history" */
+export type Product_Price_History_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Product_Price_History_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Product_Price_History_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  end_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  price?: InputMaybe<Scalars['numeric']['input']>;
+  product_id?: InputMaybe<Scalars['bigint']['input']>;
+  start_time?: InputMaybe<Scalars['timestamptz']['input']>;
+  tenant_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Product_Price_History_Sum_Fields = {
+  price?: Maybe<Scalars['numeric']['output']>;
+  product_id?: Maybe<Scalars['bigint']['output']>;
+};
+
+/** update columns of table "product_price_history" */
+export type Product_Price_History_Update_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'end_time'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'price'
+  /** column name */
+  | 'product_id'
+  /** column name */
+  | 'start_time'
+  /** column name */
+  | 'tenant_id'
+  /** column name */
+  | 'updated_at';
+
+export type Product_Price_History_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Product_Price_History_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Product_Price_History_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Product_Price_History_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Product_Price_History_Var_Pop_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Product_Price_History_Var_Samp_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Product_Price_History_Variance_Fields = {
+  price?: Maybe<Scalars['Float']['output']>;
+  product_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "product_related" */
@@ -13732,8 +14066,6 @@ export type Product_Select_Column =
   /** column name */
   | 'description'
   /** column name */
-  | 'discount_price'
-  /** column name */
   | 'id'
   /** column name */
   | 'image_url'
@@ -13800,7 +14132,6 @@ export type Product_Set_Input = {
   delivery_time_ranges?: InputMaybe<Scalars['jsonb']['input']>;
   delivery_type?: InputMaybe<Delivery_Type_Enum>;
   description?: InputMaybe<Scalars['String']['input']>;
-  discount_price?: InputMaybe<Scalars['numeric']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -13822,7 +14153,8 @@ export type Product_Set_Input = {
 /** aggregate stddev on columns */
 export type Product_Stddev_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -13834,7 +14166,6 @@ export type Product_Stddev_Fields = {
 /** order by stddev() on columns of table "product" */
 export type Product_Stddev_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -13844,7 +14175,8 @@ export type Product_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Product_Stddev_Pop_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -13856,7 +14188,6 @@ export type Product_Stddev_Pop_Fields = {
 /** order by stddev_pop() on columns of table "product" */
 export type Product_Stddev_Pop_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -13866,7 +14197,8 @@ export type Product_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Product_Stddev_Samp_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -13878,7 +14210,6 @@ export type Product_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "product" */
 export type Product_Stddev_Samp_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -13901,7 +14232,6 @@ export type Product_Stream_Cursor_Value_Input = {
   delivery_time_ranges?: InputMaybe<Scalars['jsonb']['input']>;
   delivery_type?: InputMaybe<Delivery_Type_Enum>;
   description?: InputMaybe<Scalars['String']['input']>;
-  discount_price?: InputMaybe<Scalars['numeric']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   image_url?: InputMaybe<Array<Scalars['String']['input']>>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -13923,6 +14253,7 @@ export type Product_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Product_Sum_Fields = {
   category_id?: Maybe<Scalars['Int']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
   discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
@@ -13935,7 +14266,6 @@ export type Product_Sum_Fields = {
 /** order by sum() on columns of table "product" */
 export type Product_Sum_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -13956,8 +14286,6 @@ export type Product_Update_Column =
   | 'delivery_type'
   /** column name */
   | 'description'
-  /** column name */
-  | 'discount_price'
   /** column name */
   | 'id'
   /** column name */
@@ -14013,7 +14341,8 @@ export type Product_Updates = {
 /** aggregate var_pop on columns */
 export type Product_Var_Pop_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -14025,7 +14354,6 @@ export type Product_Var_Pop_Fields = {
 /** order by var_pop() on columns of table "product" */
 export type Product_Var_Pop_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -14035,7 +14363,8 @@ export type Product_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Product_Var_Samp_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -14047,7 +14376,6 @@ export type Product_Var_Samp_Fields = {
 /** order by var_samp() on columns of table "product" */
 export type Product_Var_Samp_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -14057,7 +14385,8 @@ export type Product_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Product_Variance_Fields = {
   category_id?: Maybe<Scalars['Float']['output']>;
-  discount_price?: Maybe<Scalars['Float']['output']>;
+  /** A computed field, executes function "compute_discount_price" */
+  discount_price?: Maybe<Scalars['numeric']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   quantity?: Maybe<Scalars['Float']['output']>;
@@ -14069,7 +14398,6 @@ export type Product_Variance_Fields = {
 /** order by variance() on columns of table "product" */
 export type Product_Variance_Order_By = {
   category_id?: InputMaybe<Order_By>;
-  discount_price?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
@@ -15011,6 +15339,12 @@ export type Query_Root = {
   product_delivery_city_info: Array<Product_Delivery_City_Info>;
   /** fetch aggregated fields from the table: "product_delivery_city_info" */
   product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
+  /** fetch data from the table: "product_price_history" */
+  product_price_history: Array<Product_Price_History>;
+  /** fetch aggregated fields from the table: "product_price_history" */
+  product_price_history_aggregate: Product_Price_History_Aggregate;
+  /** fetch data from the table: "product_price_history" using primary key columns */
+  product_price_history_by_pk?: Maybe<Product_Price_History>;
   /** fetch data from the table: "product_related" */
   product_related: Array<Product_Related>;
   /** fetch aggregated fields from the table: "product_related" */
@@ -15867,6 +16201,29 @@ export type Query_RootProduct_Delivery_City_Info_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Product_Delivery_City_Info_Order_By>>;
   where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Price_HistoryArgs = {
+  distinct_on?: InputMaybe<Array<Product_Price_History_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Price_History_Order_By>>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Price_History_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Price_History_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Price_History_Order_By>>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
+};
+
+
+export type Query_RootProduct_Price_History_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -18069,6 +18426,14 @@ export type Subscription_Root = {
   product_delivery_city_info_aggregate: Product_Delivery_City_Info_Aggregate;
   /** fetch data from the table in a streaming manner: "product_delivery_city_info" */
   product_delivery_city_info_stream: Array<Product_Delivery_City_Info>;
+  /** fetch data from the table: "product_price_history" */
+  product_price_history: Array<Product_Price_History>;
+  /** fetch aggregated fields from the table: "product_price_history" */
+  product_price_history_aggregate: Product_Price_History_Aggregate;
+  /** fetch data from the table: "product_price_history" using primary key columns */
+  product_price_history_by_pk?: Maybe<Product_Price_History>;
+  /** fetch data from the table in a streaming manner: "product_price_history" */
+  product_price_history_stream: Array<Product_Price_History>;
   /** fetch data from the table: "product_related" */
   product_related: Array<Product_Related>;
   /** fetch aggregated fields from the table: "product_related" */
@@ -19172,6 +19537,36 @@ export type Subscription_RootProduct_Delivery_City_Info_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Product_Delivery_City_Info_Stream_Cursor_Input>>;
   where?: InputMaybe<Product_Delivery_City_Info_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Price_HistoryArgs = {
+  distinct_on?: InputMaybe<Array<Product_Price_History_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Price_History_Order_By>>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Price_History_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Product_Price_History_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Product_Price_History_Order_By>>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
+};
+
+
+export type Subscription_RootProduct_Price_History_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootProduct_Price_History_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Product_Price_History_Stream_Cursor_Input>>;
+  where?: InputMaybe<Product_Price_History_Bool_Exp>;
 };
 
 

@@ -18,6 +18,7 @@ export const getOrderWithReview = async () => {
       query: GetOrdersWithReviewsDocument,
       variables: { user_id: userId },
       tags: ["getOrderWithReview"],
+      withAuth: true,
     });
 
   return {
@@ -43,6 +44,7 @@ export const createReview = async ({
       product_id,
     },
     tags: ["createReview"],
+    withAuth: true,
   });
 
   const { insert_review_one } = data;

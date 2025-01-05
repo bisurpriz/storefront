@@ -1,4 +1,4 @@
-import PaymentMethods from "@/app/(feed)/[category-slug]/components/Detail/PaymentMethods";
+import PaymentMethods from "@/app/(feed)/components/Detail/PaymentMethods";
 import Breadcrumb from "@/components/Layout/Breadcrumb";
 import { ReactNode } from "react";
 

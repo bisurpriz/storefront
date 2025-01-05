@@ -32,6 +32,7 @@ export const getUserById = async (id?: string) => {
         id: userId,
       },
       tags: ["getUserById"],
+      withAuth: false,
     });
     return {
       user: user ?? null,
@@ -52,6 +53,7 @@ export const getUserByEmail = async (email: string) => {
         email,
       },
       tags: ["getUserByEmail"],
+      withAuth: false,
     });
     return {
       user: user ?? null,
@@ -73,6 +75,7 @@ export const registerUser = async (newUser: RegisterMutationVariables) => {
       ...newUser,
     },
     tags: ["registerUser"],
+    withAuth: false,
   });
   return register;
 };
@@ -90,6 +93,7 @@ export const updateUserById = async (
         id: data.id,
       },
       tags: ["updateUserById"],
+      withAuth: true,
     });
 
   if (user) {

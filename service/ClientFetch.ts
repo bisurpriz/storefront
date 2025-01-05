@@ -7,13 +7,19 @@ class ClientFetch extends BaseFetch {
     query,
     variables,
     additionalHeaders,
+    withAuth = true,
   }: {
     query: string;
     variables?: any;
     additionalHeaders?: HeadersInit;
+    withAuth?: boolean;
   }): Promise<T> {
-    const token = Cookies.get(CookieTokens.ACCESS_TOKEN);
-    const guestId = Cookies.get(CookieTokens.GUEST_ID);
+    let token;
+    let guestId;
+    if (withAuth) {
+      token = Cookies.get(CookieTokens.ACCESS_TOKEN);
+      guestId = Cookies.get(CookieTokens.GUEST_ID);
+    }
 
     try {
       const response = await fetch(

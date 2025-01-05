@@ -12,33 +12,30 @@ export function getImageUrlFromPath(path?: string, size = 150): string {
   return `${IMAGE_URL}/${path}?w=${size}&format=webp`;
 }
 
-export function getProductDetailUrl(
-  categorySlug: string,
-  slug: string,
-  id: number,
-): string {
-  return `/${categorySlug}/${slug}?pid=${id}`;
+export function getProductDetailUrl(slug: string, id: number): string {
+  return `/${slug}?pid=${id}`;
 }
 
 export function getCategoryUrl(slug: string): string {
-  return `/${slug}`;
+  return `/kategori/${slug}`;
 }
 
-export function getTenantUrl(slug: string, id: string): string {
-  const tenantSlug = slugCreator(slug);
+export function getTenantUrl(name: string, id: string): string {
+  const tenantSlug = slugCreator(name);
   return `/magaza/${tenantSlug}?mid=${id}`;
 }
 
 export function slugCreator(name: string): string {
   return name
-    .toLowerCase()
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
     .replace(/ğ/g, "g")
     .replace(/ü/g, "u")
     .replace(/ş/g, "s")
     .replace(/ı/g, "i")
     .replace(/ö/g, "o")
-    .replace(/ç/g, "c")
-    .replace(/[^a-z0-9]/g, "-")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
+    .trim();
 }

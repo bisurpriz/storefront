@@ -23,6 +23,7 @@ export const login = async ({ email, password }, headers = {}) => {
       password,
     },
     additionalHeaders: headers,
+    withAuth: false,
     tags: ["login"],
   });
 

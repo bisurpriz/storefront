@@ -19,6 +19,7 @@ export const getUserOrders = async () => {
   return await BonnmarseApi.request<GetUserOrdersQuery>({
     query: GetUserOrdersDocument,
     tags: ["getUserOrders"],
+    withAuth: true,
   });
 };
 
@@ -40,6 +41,7 @@ export const startMessageForOrder = async ({
         order_tenant_id,
       },
       tags: ["startMessageForOrder"],
+      withAuth: true,
     });
   return {
     insert_message_one,
@@ -62,6 +64,7 @@ export const orderTextsUpload = async (payload: OrderTextData[]) => {
           object: [...variables],
         },
         tags: ["orderTextsUpload"],
+        withAuth: false,
       });
     return {
       insert_order_item_special_text,
@@ -82,5 +85,6 @@ export const getOrderById = async (id: string) => {
       id,
     },
     tags: ["getOrderById"],
+    withAuth: false,
   });
 };

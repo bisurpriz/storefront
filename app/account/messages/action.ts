@@ -22,6 +22,7 @@ export const getTenantOrderItem = async (
         id,
       },
       tags: ["getTenantOrderItem"],
+      withAuth: true,
     });
   return {
     order_tenant: order_tenant ?? [],
@@ -46,6 +47,7 @@ export const sendMessage = async ({
         chat_thread_id,
       },
       tags: ["sendMessage"],
+      withAuth: true,
     });
   return {
     insert_message_one,
@@ -60,6 +62,7 @@ export const markAsRead = async (chat_thread_id: string) => {
         chat_thread_id,
       },
       tags: ["markAsRead"],
+      withAuth: true,
     });
   return {
     update_message_many,

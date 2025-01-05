@@ -10,6 +10,7 @@ export const getUserCoupons = async () => {
       duration: 10 * 60 * 1000,
     },
     tags: ["getUserCoupons"],
+    withAuth: true,
   });
 
   return {

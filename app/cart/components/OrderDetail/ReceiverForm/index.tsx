@@ -5,7 +5,7 @@ import {
   getAvailableDistricts,
   getAvailableNeighborhoods,
   getLocationVariables,
-} from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
+} from "@/app/(feed)/components/utils/validateLocation";
 import { CartStepPaths } from "@/app/cart/constants";
 import { IPlace } from "@/common/types/Product/product";
 import { AutoCompleteOption } from "@/components/Autocomplete";

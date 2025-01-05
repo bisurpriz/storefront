@@ -2,6 +2,8 @@ import { OrderCustomizableModalProvider } from "@/contexts/OrderCustomizableModa
 import { getUserOrders } from "./actions";
 import NewOrderDesign from "./components/NewOrderDesign";
 
+export const dynamic = "force-dynamic";
+
 const OrdersPage = async () => {
   const { order } = await getUserOrders();
 

@@ -1,4 +1,4 @@
-import { getAvailableNeighborhoods } from "@/app/(feed)/[category-slug]/components/utils/validateLocation";
+import { getAvailableNeighborhoods } from "@/app/(feed)/components/utils/validateLocation";
 import AutoComplete, { AutoCompleteOption } from "@/components/Autocomplete";
 import Textarea from "@/components/Textarea";
 import { Controller } from "react-hook-form";

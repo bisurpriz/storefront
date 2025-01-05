@@ -38,6 +38,7 @@ export const getPaginatedProducts = async (params: IProductFilter) => {
         ...params,
       },
       tags: ["getPaginatedProducts"],
+      withAuth: false,
     });
 
   return {
@@ -53,6 +54,7 @@ export const getProductById = async ({ id }: { id: number }) => {
       id,
     },
     tags: ["getProductById"],
+    withAuth: false,
   });
   return {
     product,
@@ -72,6 +74,7 @@ export const getProductReviews = async ({
       offset,
     },
     tags: ["getProductReviews"],
+    withAuth: false,
   });
 };
 
@@ -82,6 +85,7 @@ export const getProductRatings = async ({ pid }: GetRatingsQueryVariables) => {
       pid,
     },
     tags: ["getProductRatings"],
+    withAuth: false,
   });
   return get_comment_by_score;
 };

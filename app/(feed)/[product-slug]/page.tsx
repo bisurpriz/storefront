@@ -26,6 +26,7 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
       id,
     },
     tags: ["getProductImages"],
+    withAuth: false,
   });
 
   if (!product) {

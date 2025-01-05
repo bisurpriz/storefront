@@ -2,6 +2,7 @@
 
 import { Link } from "@/components/Link";
 import { GetProductsWithPaginationQuery } from "@/graphql/queries/products/getProductsWithPagination.generated";
+import { getProductDetailUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getPriceTR } from "@/utils/getPriceTR";
 import { getDiscountRate } from "@/utils/price";
@@ -25,7 +26,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
   return (
     <Link
       className="group relative flex h-32 min-w-[340px] flex-1 rounded-xl border border-gray-100 bg-white p-3 transition-all duration-300 hover:scale-[1.02] hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
-      href={`/${product.product_categories[0].category.slug}/${product.slug}?pid=${product.id}`}
+      href={getProductDetailUrl(product.slug!, product.id)}
       prefetch={false}
     >
       {/* Discount Badge */}
