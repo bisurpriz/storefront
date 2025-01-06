@@ -386,7 +386,7 @@ const FilterContent = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-amber-500" />
-                <span className="text-sm">Özelleştirilebilir</span>
+                <span className="text-sm">Tasarlanabilir</span>
               </div>
               <Switch
                 checked={filters[FilterKeys.CUSTOMIZABLE]}
