@@ -17,10 +17,10 @@ import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import ProductItemv2 from "../Product/Item/ProductItemv2";
 
 interface InfiniteProductCarouselProps {
-  initialProducts: Product[];
-  fetchMoreProducts: typeof searchProductsv1;
-  params: { [key: string]: string | string[] | undefined };
-  totalCount: number;
+  readonly initialProducts: Product[];
+  readonly fetchMoreProducts: typeof searchProductsv1;
+  readonly params: { readonly [key: string]: string | string[] | undefined };
+  readonly totalCount: number;
 }
 
 const LoadingItem = memo(() => (
@@ -43,16 +43,18 @@ const ProductItem = memo(({ product }: { product: Product }) => (
 ProductItem.displayName = "ProductItem";
 
 const ShowAllButton = memo(({ onClick }: { onClick?: () => void }) => (
-  <div
+  <button
     onClick={onClick}
+    type="button"
+    aria-label="Tümünü göster"
     className={cn(
       "flex h-full cursor-pointer items-center justify-center gap-2",
       "rounded-md bg-gray-100 text-sm font-medium text-gray-600",
-      "transition-colors hover:bg-gray-200",
+      "w-full transition-colors hover:bg-gray-200",
     )}
   >
     Tümünü Göster <ArrowRight className="h-4 w-4" />
-  </div>
+  </button>
 ));
 
 ShowAllButton.displayName = "ShowAllButton";
@@ -68,6 +70,18 @@ function InfiniteProductCarousel({
   const [hasMore, setHasMore] = useState(totalCount > initialProducts.length);
   const observerTarget = useRef<HTMLDivElement>(null);
 
+  const renderLastItem = () => {
+    if (isLoading) return <LoadingItem />;
+    if (hasMore) {
+      return (
+        <div className="flex h-full items-center justify-center">
+          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-300" />
+        </div>
+      );
+    }
+    return <ShowAllButton />;
+  };
+
   const loadMoreProducts = useCallback(async () => {
     if (isLoading || !hasMore) return;
 
@@ -81,7 +95,7 @@ function InfiniteProductCarousel({
         params,
       );
 
-      if (response?.hits?.length! > 0) {
+      if (response?.hits?.length > 0) {
         const newProducts = response.hits.map((p) => p.document) as Product[];
         setProducts((prev) => [...prev, ...newProducts]);
         setHasMore(totalCount > products.length + newProducts.length);
@@ -151,15 +165,7 @@ function InfiniteProductCarousel({
             ref={observerTarget}
             className="basis-1/2 lg:basis-1/3 xl:basis-1/5"
           >
-            {isLoading ? (
-              <LoadingItem />
-            ) : hasMore ? (
-              <div className="flex h-full items-center justify-center">
-                <div className="h-2 w-2 animate-bounce rounded-full bg-gray-300" />
-              </div>
-            ) : (
-              <ShowAllButton />
-            )}
+            {renderLastItem()}
           </CarouselItem>
         </CarouselContent>
         <CarouselPrevious className="hidden lg:flex" />

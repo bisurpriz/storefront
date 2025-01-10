@@ -29,9 +29,10 @@ export function SearchResults({
   return (
     <div className="h-[60dvh] max-h-[60dvh] w-full cursor-pointer overflow-hidden overflow-y-auto">
       {products.map((product) => (
-        <div
+        <button
           key={product.id}
-          className="flex max-h-32 items-center space-x-3 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-100"
+          type="button"
+          className="flex max-h-32 w-full items-center space-x-3 rounded-lg p-4 text-left transition-colors duration-200 hover:bg-gray-100"
           onClick={() => onSelect(product)}
         >
           <div className="relative h-20 w-20 flex-shrink-0">
@@ -55,15 +56,11 @@ export function SearchResults({
                 </span>
               )}
             </div>
-            <span
-              className="[&_p]:line-clamp-2 [&_p]:text-sm [&_p]:text-gray-500"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
             <div className="mt-1 flex items-center">
               <span className="text-sm font-semibold text-gray-900">
                 {product.price ? `₺${product.price}` : "Fiyat bilgisi yok"}
               </span>
-              {product.discount_price && (
+              {Boolean(product.discount_price) && (
                 <span className="ml-2 text-xs text-green-600 line-through">
                   ₺{product.discount_price}
                 </span>
@@ -82,7 +79,7 @@ export function SearchResults({
               </div>
             )}
           </div>
-        </div>
+        </button>
       ))}
     </div>
   );

@@ -10,8 +10,8 @@ export const GetSingleTenantOrderItemDocument = `
 `;
 
 export const GetOrderApproveImagesDocument = `
-  query getOrderApproveImages($token: String) {
-    order_item(where: { image_approve_token: { _eq: $token } }) {
+  query getOrderApproveImages($shortCode: String) {
+    order_item(where: { short_code: { _eq: $shortCode } }) {
       images_to_approve
       is_images_approved
       image_approve_expiry

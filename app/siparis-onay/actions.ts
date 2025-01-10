@@ -6,30 +6,30 @@ import { GetOrderApproveImagesDocument } from "@/service/orders";
 import axios from "axios";
 
 export const getOrderApproveImages = async ({
-  token,
+  shortCode,
 }: {
-  token: string;
-}): Promise<GetOrderApproveImagesQuery["order_item"][0]> => {
-  const { order_item } = await BonnmarseApi.request<GetOrderApproveImagesQuery>(
-    {
+  shortCode: string;
+}): Promise<GetOrderApproveImagesQuery | null> => {
+  try {
+    return await BonnmarseApi.request<GetOrderApproveImagesQuery>({
       query: GetOrderApproveImagesDocument,
       variables: {
-        token,
+        shortCode,
       },
       tags: ["getOrderApproveImages"],
       withAuth: false,
-    },
-  );
-
-  return order_item[0];
+    });
+  } catch (error) {
+    return null;
+  }
 };
 
 export const approveOrderImages = async ({
-  salt, // timestamp
+  shortCode,
   note,
   status,
 }: {
-  salt: string;
+  shortCode: string;
   note?: string;
   status: boolean;
 }): Promise<any> => {
@@ -41,7 +41,7 @@ export const approveOrderImages = async ({
     },
     {
       headers: {
-        "x-bonnmarse-approve-salt": salt,
+        "x-bonnmarse-approve-code": shortCode,
       },
     },
   );

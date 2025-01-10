@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -49,8 +56,13 @@ export const ResponsiveDialogProvider: FC<{
       </Drawer>
     );
 
+  const values = useMemo(
+    () => ({ openDialog, closeDialog }),
+    [openDialog, closeDialog],
+  );
+
   return (
-    <ResponsiveDialogContext.Provider value={{ openDialog, closeDialog }}>
+    <ResponsiveDialogContext.Provider value={values}>
       {children}
       <Component open={open} onClose={closeDialog}>
         {content}

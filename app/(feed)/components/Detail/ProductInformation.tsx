@@ -125,12 +125,14 @@ const ProductInformation = ({
           <h1 className="w-full text-2xl text-gray-700">{name}</h1>
           {vendor && (
             <div className="flex items-center text-xs">
-              <label className="me-1 font-semibold text-gray-700">
-                Satıcı:
-              </label>
+              <span className="me-1 font-semibold text-gray-700">Satıcı:</span>
               <Link
                 href={getTenantUrl(vendor.name, vendor.id.toString())}
                 className="me-1 cursor-pointer font-bold text-sky-600"
+                aria-label={vendor.name}
+                title={vendor.name}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {vendor.name}
               </Link>
@@ -214,7 +216,7 @@ const ProductInformation = ({
             variantId: variant.id,
             variantSlug: variant.slug,
             categorySlug: variant?.product_categories?.[0]?.category.slug,
-            discountPrice: variant.discount_price!,
+            discountPrice: variant.discount_price,
           }))}
         />
 

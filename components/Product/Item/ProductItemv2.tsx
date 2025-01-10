@@ -4,6 +4,7 @@ import { Link } from "@/components/Link";
 import { Card, CardContent } from "@/components/ui/card";
 import { useUser } from "@/contexts/AuthContext";
 import { Product } from "@/graphql/generated-types";
+import useResponsive from "@/hooks/useResponsive";
 import { getProductDetailUrl } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -12,11 +13,11 @@ import { PriceTag } from "./components/PriceTag";
 import { ProductImage } from "./components/ProductImage";
 import StarRating from "./components/StarRating";
 
-interface ProductCardProps extends Product {
+interface ProductItemv2Props extends Product {
   className?: string;
 }
 
-const ProductCard = memo(
+const ProductItemv2 = memo(
   ({
     id,
     name,
@@ -30,7 +31,7 @@ const ProductCard = memo(
     product_customizable_areas,
     delivery_type,
     className,
-  }: ProductCardProps) => {
+  }: ProductItemv2Props) => {
     const { user } = useUser();
 
     const [isFavorite, setIsFavorite] = useState(() =>
@@ -59,9 +60,11 @@ const ProductCard = memo(
     }, []);
 
     const productUrl = useMemo(
-      () => getProductDetailUrl(slug!, Number(id)),
+      () => getProductDetailUrl(slug, Number(id)),
       [slug, id],
     );
+
+    const { isMobile } = useResponsive();
 
     const cardContent = useMemo(
       () => (
@@ -110,7 +113,13 @@ const ProductCard = memo(
     );
 
     return (
-      <Link href={productUrl} className={className}>
+      <Link
+        href={productUrl}
+        className={className}
+        target={!isMobile ? "_blank" : undefined}
+        rel={!isMobile ? "noopener noreferrer" : undefined}
+        aria-label={`${tenantName} - ${name}`}
+      >
         <Card className="group relative">
           {cardContent}
           <AddToFavorite
@@ -125,8 +134,8 @@ const ProductCard = memo(
   },
 );
 
-ProductCard.displayName = "ProductCard";
+ProductItemv2.displayName = "ProductItemv2";
 
-export default dynamic(() => Promise.resolve(ProductCard), {
+export default dynamic(() => Promise.resolve(ProductItemv2), {
   ssr: true,
 });
