@@ -16,6 +16,7 @@ type ImageProps = {
   sizes?: string;
   quality?: number;
   onLoadingComplete?: () => void;
+  onClick?: () => void;
 };
 
 export const Image = ({
@@ -30,6 +31,7 @@ export const Image = ({
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   quality,
   onLoadingComplete,
+  onClick,
 }: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -94,6 +96,7 @@ export const Image = ({
           setIsLoading(false);
           onLoadingComplete?.();
         }}
+        onClick={onClick}
         quality={quality}
       />
 
