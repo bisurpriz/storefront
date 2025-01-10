@@ -20,6 +20,7 @@ export function DesktopSearch({
   onSelect,
   featuredProducts,
 }: DesktopSearchProps) {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -28,10 +29,16 @@ export function DesktopSearch({
   const search = searchParams.get("search");
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     setOpen(false);
   }, [pathname, search]);
 
   useEffect(() => {
+    if (!mounted) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         containerRef.current &&
@@ -45,7 +52,15 @@ export function DesktopSearch({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) {
+    return (
+      <div ref={containerRef} className="relative">
+        <SearchInput className="border-0" />
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative">
@@ -67,7 +82,7 @@ export function DesktopSearch({
           transition={{ duration: 0.2 }}
         >
           <SearchResults
-            featuredProducts={[]}
+            featuredProducts={featuredProducts}
             categories={categories}
             products={products}
             onSelect={(result) => {

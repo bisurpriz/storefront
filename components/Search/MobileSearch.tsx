@@ -25,6 +25,7 @@ export function MobileSearch({
   categories,
   featuredProducts,
 }: MobileSearchProps) {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
@@ -34,10 +35,16 @@ export function MobileSearch({
   const search = searchParams.get("search");
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     setOpen(false);
   }, [pathname, search]);
 
   useEffect(() => {
+    if (!mounted) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         inputRef.current &&
@@ -47,10 +54,19 @@ export function MobileSearch({
       }
     };
 
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) {
+    return (
+      <div className="w-full">
+        <SearchInput ref={inputRef} className="border-0" />
+      </div>
+    );
+  }
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
