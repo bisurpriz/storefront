@@ -21,8 +21,7 @@ const ImagePreview = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [note, setNote] = useState("");
   const [approveButtonDisabled, setApproveButtonDisabled] = useState(false);
-  const { openDialog: openModal, closeDialog: closeModal } =
-    useResponsiveDialog();
+  const { openDialog: openModal } = useResponsiveDialog();
 
   const onSubmit = async (approveStatus: boolean) => {
     if (!note && !approveStatus) {

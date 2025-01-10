@@ -229,23 +229,25 @@ export default function ReceiverForm() {
     }
   }, [selectedCargoLocation, hasSameDayProduct, setValue]);
 
+  const getFieldsToValidate = () => {
+    if (step === 1) {
+      return [
+        ...STEP_FIELDS.sender,
+        ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
+      ];
+    }
+    if (step === 2) {
+      return STEP_FIELDS.receiver;
+    }
+    return [];
+  };
+
   const nextStep = useCallback(
     async (e: React.MouseEvent) => {
       e.preventDefault();
+      const fieldsToValidate = getFieldsToValidate();
 
-      const fieldsToValidate =
-        step === 1
-          ? [
-              ...STEP_FIELDS.sender,
-              ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
-            ]
-          : step === 2
-            ? STEP_FIELDS.receiver
-            : [];
-
-      const isStepValid = await trigger(
-        fieldsToValidate as Array<keyof OrderDetailFormData>,
-      );
+      const isStepValid = await trigger(fieldsToValidate);
 
       if (!isStepValid) {
         toast.error(
