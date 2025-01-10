@@ -33,19 +33,17 @@ const BreadcrumbContext = createContext<BreadcrumbContextType | undefined>(
 export const BreadcrumbProvider: React.FC<BreadcrumbProviderProps> = ({
   children,
 }) => {
-  const [breadcrumbs, setBreadcrumbsState] = useState<Breadcrumb[]>([]);
+  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
   const pathname = usePathname();
 
-  const setBreadcrumbs = useCallback((newBreadcrumbs: Breadcrumb[]) => {
-    setBreadcrumbsState(newBreadcrumbs);
-  }, []);
-
   const clearBreadcrumbs = useCallback(() => {
-    setBreadcrumbsState([]);
+    setBreadcrumbs([]);
   }, []);
 
   useEffect(() => {
-    clearBreadcrumbs();
+    if (pathname === "/") {
+      clearBreadcrumbs();
+    }
   }, [pathname, clearBreadcrumbs]);
 
   const contextValue = useMemo(
@@ -54,7 +52,7 @@ export const BreadcrumbProvider: React.FC<BreadcrumbProviderProps> = ({
       setBreadcrumbs,
       clearBreadcrumbs,
     }),
-    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs,pathname],
+    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs],
   );
 
   return (

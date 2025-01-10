@@ -159,6 +159,7 @@ function BreadcrumbResponsive() {
     setOpen(false);
   }, [pathname]);
 
+  console.log(pathname, items);
   if (pathname === "/" || !items.length) {
     return null;
   }
