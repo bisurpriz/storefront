@@ -50,7 +50,7 @@ const ShowAllButton = memo(({ onClick }: { onClick?: () => void }) => (
     className={cn(
       "flex h-full cursor-pointer items-center justify-center gap-2",
       "rounded-md bg-gray-100 text-sm font-medium text-gray-600",
-      "transition-colors hover:bg-gray-200",
+      "w-full transition-colors hover:bg-gray-200",
     )}
   >
     Tümünü Göster <ArrowRight className="h-4 w-4" />
