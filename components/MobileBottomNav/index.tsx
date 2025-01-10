@@ -130,6 +130,7 @@ const mobileBottomMenu = [
   {
     name: "Arama",
     icon: <Search />,
+    href: "/arama",
   },
   {
     name: "Sepet",

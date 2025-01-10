@@ -9,6 +9,11 @@ interface ZoomableImageProps {
   src: string;
   alt: string;
   onZoomChange?: (isZoomed: boolean) => void;
+  priority?: boolean;
+  width?: number;
+  height?: number;
+  quality?: number;
+  onLoadingComplete?: () => void;
 }
 
 const shimmer = `
@@ -29,7 +34,16 @@ const toBase64 = (str: string) =>
     ? Buffer.from(str).toString("base64")
     : window.btoa(str);
 
-const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
+const ZoomableImage = ({
+  src,
+  alt,
+  onZoomChange,
+  priority = false,
+  width = 500,
+  height = 500,
+  quality,
+  onLoadingComplete,
+}: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -179,13 +193,14 @@ const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
                   }
                 : undefined
             }
-            sizes="(min-width: 1024px) 40vw, 80vw"
-            priority
-            quality={isMobileZoomed ? 100 : 80}
-            loading="eager"
-            fetchPriority="high"
+            sizes={`(min-width: 1024px) ${width}px, ${width}px`}
+            priority={priority}
+            quality={quality ?? (priority ? 75 : isMobileZoomed ? 100 : 80)}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer)}`}
+            onLoadingComplete={onLoadingComplete}
           />
 
           {isZoomed && !isMobile && (
@@ -216,8 +231,9 @@ const ZoomableImage = ({ src, alt, onZoomChange }: ZoomableImageProps) => {
                 alt={alt}
                 fill
                 className="object-cover"
-                sizes="500px"
+                sizes={`${width * 2}px`}
                 quality={100}
+                loading="lazy"
                 style={{
                   transform: `scale(2.5)`,
                   transformOrigin: `${position.x}% ${position.y}%`,

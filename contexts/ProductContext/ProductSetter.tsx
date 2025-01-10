@@ -20,20 +20,20 @@ const ProductSetter: FC<ProductSetterProps> = ({ initialData }) => {
 
     breadcrumb = product.product_categories.map(({ category }) => ({
       label: category.name,
-      href: getCategoryUrl(category.slug!),
+      href: getCategoryUrl(category.slug),
     }));
 
     breadcrumb.push({
-      label: product.tenant.tenants[0].name!,
+      label: product.tenant.tenants[0].name,
       href: getTenantUrl(
-        product.tenant.tenants[0].name!,
+        product.tenant.tenants[0].name,
         product.tenant.tenants[0].id,
       ),
     });
 
     breadcrumb.push({
       label: product.name,
-      href: getProductDetailUrl(product.slug!, product.id),
+      href: getProductDetailUrl(product.slug, product.id),
     });
 
     return breadcrumb;

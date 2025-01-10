@@ -1,0 +1,23 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /account/
+Disallow: /auth/
+Disallow: /_next/
+
+# Sitemap location
+Sitemap: https://bonnmarse.com/sitemap.xml
+
+# Crawl-delay for specific bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: bingbot
+Crawl-delay: 1 

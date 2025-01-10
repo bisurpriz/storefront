@@ -3,14 +3,13 @@ import { Lato, Manrope } from "next/font/google";
 import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
-
 import DesignLayout from "@/components/Layout/DesignLayout";
 import NotificationListener from "@/components/Notification/NotificationListener";
-import QuarterSelectorModal from "@/components/QuarterSelector/QuarterSelectorModal";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import { getUserById } from "@/service/user";
+import dynamic from "next/dynamic";
 import { cookies, headers } from "next/headers";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
@@ -18,12 +17,20 @@ import { CookieTokens } from "./@auth/contants";
 import { getCart } from "./cart/actions";
 import { Providers } from "./providers";
 
+// Dinamik import ile QuarterSelectorModal'ı lazy load ediyoruz
+const QuarterSelectorModal = dynamic(
+  () => import("@/components/QuarterSelector/QuarterSelectorModal"),
+  { ssr: true },
+);
+
+// Font optimizasyonu
 const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
   preload: true,
   adjustFontFallback: true,
+  display: "swap", // Font yüklenene kadar sistem fontunu kullan
 });
 
 const manrope = Manrope({
@@ -32,22 +39,31 @@ const manrope = Manrope({
   variable: "--font-manrope",
   preload: true,
   adjustFontFallback: true,
+  display: "swap", // Font yüklenene kadar sistem fontunu kullan
 });
 
+// Metadata'yı optimize et
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_HOST || "https://bonnmarse.com",
+  ),
   title: "Bonnmarşe | Sevdiklerinize sürpriz yapın",
   description: "Sevdiklerinize sürpriz yapın",
   creator: "Bonnmarşe",
-  icons: [
-    {
-      rel: "icon",
-      url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=32&height=32&quality=70",
-    },
-    {
-      rel: "apple-touch-icon",
-      url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=180&height=180&quality=70",
-    },
-  ],
+  icons: {
+    icon: [
+      {
+        url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=32&height=32&quality=70",
+        sizes: "32x32",
+      },
+    ],
+    apple: [
+      {
+        url: "https://d1sk8qn67xoao2.cloudfront.net/system-assets/logo-kare.png?width=180&height=180&quality=70",
+        sizes: "180x180",
+      },
+    ],
+  },
   keywords: [
     "Bonnmarşe",
     "Bonnmarşe.com",
@@ -61,9 +77,24 @@ export const metadata: Metadata = {
     "Hediye önerileri",
     "Hediye kutusu",
   ],
-  robots: "index, follow",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   manifest: "/manifest.json",
   generator: "Bonnmarşe",
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: process.env.NEXT_PUBLIC_HOST,
+    siteName: "Bonnmarşe",
+    title: "Bonnmarşe | Sevdiklerinize sürpriz yapın",
+    description: "Sevdiklerinize sürpriz yapın",
+  },
 };
 
 export const viewport: Viewport = {
@@ -72,7 +103,42 @@ export const viewport: Viewport = {
   initialScale: 1,
   width: "device-width",
   userScalable: false,
+  themeColor: "#ffffff",
 };
+
+// Paralel veri çekme fonksiyonu
+async function getInitialData(userId: string | undefined) {
+  const [userData, categoryData] = await Promise.all([
+    userId ? getUserById(userId) : null,
+    BonnmarseApi.request<GetMainCategoriesQuery>({
+      query: GetCategoriesDocument,
+      tags: ["getMainCategories"],
+      cache: {
+        enable: true,
+        duration: 30 * 60 * 1000, // 30 dakika cache
+      },
+      withAuth: false,
+    }),
+  ]);
+
+  const cartData = userId
+    ? await getCart(userData?.user_by_pk?.id)
+    : {
+        cartItems: [],
+        costData: {
+          totalPrice: 0,
+          couponMessage: "",
+          isCouponApplied: false,
+          discountAmount: 0,
+        },
+      };
+
+  return {
+    userData,
+    categoryData,
+    cartData,
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -93,41 +159,41 @@ export default async function RootLayout({
     headers: await headers(),
   }).isBot;
 
-  const userData = await getUserById(userId);
-  const { cartItems, costData } = await getCart(userData?.user_by_pk.id);
-  const categoryData = await BonnmarseApi.request<GetMainCategoriesQuery>({
-    query: GetCategoriesDocument,
-    tags: ["getMainCategories"],
-    cache: {
-      enable: true,
-      duration: 30 * 60 * 1000,
-    },
-    withAuth: false,
-  });
+  // Paralel veri çekme
+  const { userData, categoryData, cartData } = await getInitialData(userId);
 
   return (
     <html lang="tr">
+      <head>
+        <link
+          rel="preconnect"
+          href="https://d1sk8qn67xoao2.cloudfront.net"
+          crossOrigin="anonymous"
+        />
+      </head>
       <GoogleTagManagerInjector />
-      <NotificationListener />
       <body
         className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
         id="root"
       >
+        <Suspense fallback={null}>
+          <NotificationListener />
+        </Suspense>
         <Providers
           userData={userData}
           categoryData={categoryData}
-          cartItems={cartItems}
-          costData={costData}
+          cartItems={cartData.cartItems}
+          costData={cartData.costData}
         >
           <DesignLayout categories={categoryData?.category}>
             {children}
           </DesignLayout>
           {auth}
-          <Suspense>
-            {!selectedPlaces && !hasSeenLocationModal && !isBot && (
+          {!selectedPlaces && !hasSeenLocationModal && !isBot && (
+            <Suspense fallback={null}>
               <QuarterSelectorModal />
-            )}
-          </Suspense>
+            </Suspense>
+          )}
         </Providers>
       </body>
     </html>
