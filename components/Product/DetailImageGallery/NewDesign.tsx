@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components/ui/image";
 import { cn } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
-import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ZoomableImage from "./ZoomableImage";
 
@@ -16,7 +16,7 @@ interface DetailImageGalleryProps {
 const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [highQualityLoaded, setHighQualityLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
@@ -36,11 +36,6 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
       }),
     [images],
   );
-
-  const handleInitialLoad = useCallback(() => {
-    setInitialLoad(false);
-  }, []);
-
   const handlePrevious = useCallback(() => {
     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : validImages.length - 1));
   }, [validImages.length]);
@@ -85,6 +80,16 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
     });
   }, [validImages]);
 
+  // İlk görseli düşük kalitede yükle
+  useEffect(() => {
+    if (validImages.length > 0) {
+      const imageUrl = getImageUrlFromPath(validImages[0]);
+      const highQualityImage = new window.Image();
+      highQualityImage.src = imageUrl;
+      highQualityImage.onload = () => setHighQualityLoaded(true);
+    }
+  }, [validImages]);
+
   const thumbnails = useMemo(
     () => (
       <div
@@ -103,27 +108,17 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
                 selectedIndex === index
                   ? "border-primary"
                   : "border-transparent hover:border-primary/50",
-                initialLoad && "animate-pulse bg-gray-200",
               )}
             >
               <div className="relative h-full w-full">
-                {initialLoad && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                    <ImageIcon className="h-6 w-6 text-gray-400" />
-                  </div>
-                )}
                 <Image
                   src={imageUrl}
                   alt={`Product thumbnail ${index + 1}`}
-                  fill
+                  width={90}
+                  height={90}
                   sizes="90px"
-                  className={cn(
-                    "object-cover transition-opacity duration-300",
-                    !initialLoad && "opacity-100",
-                    initialLoad && "opacity-0",
-                  )}
-                  loading={index < 4 ? "eager" : "lazy"}
-                  onLoad={index === 0 ? handleInitialLoad : undefined}
+                  priority={false}
+                  className={cn("object-cover transition-opacity duration-300")}
                 />
               </div>
             </button>
@@ -131,26 +126,61 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
         })}
       </div>
     ),
-    [validImages, selectedIndex, initialLoad, handleInitialLoad],
+    [validImages, selectedIndex],
   );
 
   const mainImage = useMemo(() => {
     const currentImage = validImages[selectedIndex];
     const imageUrl = getImageUrlFromPath(currentImage);
+    const isFirstImage = selectedIndex === 0;
 
     return (
       <div className="order-1 w-full xl:order-2 xl:w-4/5">
         <div
-          className={cn(
-            "relative mx-auto h-full max-h-[500px] w-full max-w-[500px]",
-            initialLoad && "animate-pulse rounded-lg bg-gray-200",
-          )}
+          className={cn("relative mx-auto aspect-square w-full max-w-[500px]")}
         >
-          <ZoomableImage
-            src={imageUrl}
-            alt={`Product image ${selectedIndex + 1}`}
-            onZoomChange={setIsZoomed}
-          />
+          {isFirstImage ? (
+            <>
+              {/* Düşük kaliteli placeholder */}
+              <Image
+                src={`${imageUrl}?w=50&q=10`}
+                alt={`Product image ${selectedIndex + 1} placeholder`}
+                width={500}
+                height={500}
+                className={cn(
+                  "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
+                  highQualityLoaded ? "opacity-0" : "opacity-100 blur-sm",
+                )}
+                sizes="(min-width: 1280px) 500px, 100vw"
+                priority
+                quality={10}
+              />
+              {/* Yüksek kaliteli asıl görsel */}
+              <Image
+                src={imageUrl}
+                alt={`Product image ${selectedIndex + 1}`}
+                width={500}
+                height={500}
+                className={cn(
+                  "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
+                  highQualityLoaded ? "opacity-100" : "opacity-0",
+                )}
+                sizes="(min-width: 1280px) 500px, 100vw"
+                quality={60}
+                onLoadingComplete={() => setHighQualityLoaded(true)}
+              />
+            </>
+          ) : (
+            <ZoomableImage
+              src={imageUrl}
+              alt={`Product image ${selectedIndex + 1}`}
+              onZoomChange={setIsZoomed}
+              priority={false}
+              width={500}
+              height={500}
+              quality={80}
+            />
+          )}
           {!isZoomed && validImages.length > 1 && (
             <>
               <Button
@@ -180,7 +210,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
     isZoomed,
     handlePrevious,
     handleNext,
-    initialLoad,
+    highQualityLoaded,
   ]);
 
   if (!validImages.length) return null;

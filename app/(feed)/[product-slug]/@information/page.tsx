@@ -5,6 +5,7 @@ import { parseJson } from "@/utils/format";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getDiscountRate } from "@/utils/price";
+import { redirect } from "next/navigation";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
 import ProductInformation from "../../components/Detail/ProductInformation";
@@ -27,6 +28,10 @@ export async function generateMetadata({ searchParams }) {
 const ProductInformationPage: FC<PageProps> = async (props) => {
   const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
+
+  if (!productId) {
+    return redirect("/");
+  }
 
   const { product } = await getProductInformation(productId);
 

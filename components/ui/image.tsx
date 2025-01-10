@@ -14,6 +14,8 @@ type ImageProps = {
   fallbackSrc?: string;
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   sizes?: string;
+  quality?: number;
+  onLoadingComplete?: () => void;
 };
 
 export const Image = ({
@@ -26,6 +28,8 @@ export const Image = ({
   fallbackSrc = "/images/placeholder-product.jpg",
   objectFit = "cover",
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+  quality,
+  onLoadingComplete,
 }: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -86,7 +90,11 @@ export const Image = ({
         placeholder="blur"
         blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer)}`}
         onError={() => setHasError(true)}
-        onLoad={() => setIsLoading(false)}
+        onLoad={() => {
+          setIsLoading(false);
+          onLoadingComplete?.();
+        }}
+        quality={quality}
       />
 
       {/* Error State */}
