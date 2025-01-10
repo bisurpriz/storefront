@@ -118,7 +118,9 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
                   height={90}
                   sizes="90px"
                   priority={false}
-                  className={cn("object-cover transition-opacity duration-300")}
+                  className={cn(
+                    "h-auto w-auto object-cover transition-opacity duration-300",
+                  )}
                 />
               </div>
             </button>
@@ -139,48 +141,30 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
         <div
           className={cn("relative mx-auto aspect-square w-full max-w-[500px]")}
         >
-          {isFirstImage ? (
-            <>
-              {/* Düşük kaliteli placeholder */}
-              <Image
-                src={`${imageUrl}?w=50&q=10`}
-                alt={`Product image ${selectedIndex + 1} placeholder`}
-                width={500}
-                height={500}
-                className={cn(
-                  "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
-                  highQualityLoaded ? "opacity-0" : "opacity-100 blur-sm",
-                )}
-                sizes="(min-width: 1280px) 500px, 100vw"
-                priority
-                quality={10}
-              />
-              {/* Yüksek kaliteli asıl görsel */}
-              <Image
-                src={imageUrl}
-                alt={`Product image ${selectedIndex + 1}`}
-                width={500}
-                height={500}
-                className={cn(
-                  "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
-                  highQualityLoaded ? "opacity-100" : "opacity-0",
-                )}
-                sizes="(min-width: 1280px) 500px, 100vw"
-                quality={60}
-                onLoadingComplete={() => setHighQualityLoaded(true)}
-              />
-            </>
-          ) : (
-            <ZoomableImage
-              src={imageUrl}
-              alt={`Product image ${selectedIndex + 1}`}
-              onZoomChange={setIsZoomed}
-              priority={false}
+          {isFirstImage && !highQualityLoaded && (
+            <Image
+              src={`${imageUrl}?w=50&q=10`}
+              alt={`Product image ${selectedIndex + 1} placeholder`}
               width={500}
               height={500}
-              quality={80}
+              className="absolute inset-0 h-full w-full object-contain blur-sm"
+              sizes="(min-width: 1280px) 500px, 100vw"
+              priority
+              quality={10}
             />
           )}
+          <ZoomableImage
+            src={imageUrl}
+            alt={`Product image ${selectedIndex + 1}`}
+            onZoomChange={setIsZoomed}
+            priority={isFirstImage}
+            width={500}
+            height={500}
+            quality={isFirstImage ? 60 : 80}
+            onLoadingComplete={
+              isFirstImage ? () => setHighQualityLoaded(true) : undefined
+            }
+          />
           {!isZoomed && validImages.length > 1 && (
             <>
               <Button
