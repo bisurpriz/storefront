@@ -90,73 +90,77 @@ const OrderItem = ({
   };
 
   return (
-    <div className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row">
-      <div className="shrink-0 overflow-hidden rounded-md">
-        {item.product.image_url && item.product.image_url.length > 0 && (
-          <Image
-            src={getImageUrlFromPath(item.product.image_url[0])}
-            alt={item.product.name}
-            width={120}
-            height={120}
-            className="aspect-square rounded-md bg-background object-cover"
-          />
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col">
-        <div className="mb-2 flex-1">
-          <h4 className="font-medium">{item.product.name}</h4>
-          <div className="space-y-1 text-sm text-muted-foreground">
-            <Link
-              href={getTenantUrl(
-                tenantOrder.tenant.tenants[0].name,
-                tenantOrder.tenant.tenants[0].id.toString(),
-              )}
-              className="text-tertiary"
-            >
-              {tenantOrder.tenant.tenants[0].name}
-            </Link>
-            <p>Adet: {item.quantity}</p>
-            <p>
-              Kategori:{" "}
-              {item.product.product_categories[0]?.category.name ||
-                "Belirtilmemiş"}
-            </p>
-          </div>
+    <div className="space-y-4">
+      <StatusBadge status={OrderItemStatus[item.status || "Processing"]} />
+      <div className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row">
+        <div className="shrink-0 overflow-hidden rounded-md">
+          {item.product.image_url && item.product.image_url.length > 0 && (
+            <Image
+              src={getImageUrlFromPath(item.product.image_url[0])}
+              alt={item.product.name}
+              width={120}
+              height={120}
+              className="aspect-square rounded-md bg-background object-cover"
+            />
+          )}
         </div>
 
-        <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onShowDetail(item)}
-              className="h-8"
-            >
-              Detayları Görüntüle
-            </Button>
-            {renderCustomizationButton(item, order)}
+        <div className="flex flex-1 flex-col">
+          <div className="mb-2 flex-1">
+            <h4 className="font-medium">{item.product.name}</h4>
+            <div className="space-y-1 text-sm text-muted-foreground">
+              <Link
+                href={getTenantUrl(
+                  tenantOrder.tenant.tenants[0].name,
+                  tenantOrder.tenant.tenants[0].id.toString(),
+                )}
+                className="text-tertiary"
+              >
+                {tenantOrder.tenant.tenants[0].name}
+              </Link>
+              <p>Adet: {item.quantity}</p>
+              <p>
+                Kategori:{" "}
+                {item.product.product_categories[0]?.category.name ||
+                  "Belirtilmemiş"}
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => onOpenMessage(tenantOrder)}
-              className="h-8"
-            >
-              Satıcıya Mesaj
-            </Button>
-            {tenantOrder.order_status?.value === OrderItemStatus.Delivered && (
+          <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap gap-2">
               <Button
-                variant="default"
+                variant="outline"
                 size="sm"
-                onClick={() => onOpenReview(item)}
+                onClick={() => onShowDetail(item)}
                 className="h-8"
               >
-                Değerlendir
+                Detayları Görüntüle
               </Button>
-            )}
+              {renderCustomizationButton(item, order)}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onOpenMessage(tenantOrder)}
+                className="h-8"
+              >
+                Satıcıya Mesaj
+              </Button>
+              {tenantOrder.order_status?.value ===
+                OrderItemStatus.Delivered && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => onOpenReview(item)}
+                  className="h-8"
+                >
+                  Değerlendir
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -167,14 +171,6 @@ const OrderItem = ({
 const TenantOrder = ({ tenantOrder, order, handlers }: TenantOrderProps) => {
   return (
     <div key={tenantOrder.id}>
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <StatusBadge
-            status={tenantOrder.order_status?.value as OrderItemStatus}
-          />
-        </div>
-      </div>
-
       <div className="grid gap-4">
         {tenantOrder.order_items.map((item: any) => (
           <OrderItem
