@@ -12,8 +12,6 @@ export const checkExpire = (token) => {
 
     return decoded.exp && decoded.exp < currentTime;
   } catch (error) {
-    console.log(error, "error");
-
     return false;
   }
 };

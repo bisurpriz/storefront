@@ -143,7 +143,6 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
       setIsLoading(true);
       setError(null);
       const response = await getOrderTrackingInformation({ orderNo });
-      console.log(response);
       if (!response?.order?.length) {
         setError("Girdiğiniz sipariş numarasına ait bir sipariş bulunamadı.");
         setOrder(null);

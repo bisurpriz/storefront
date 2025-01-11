@@ -46,7 +46,6 @@ export const getLocationVariables = (selectedLocation: Location) => {
       street: null,
       postal_code: null,
     };
-  console.log(selectedLocation);
   const city = selectedLocation.address_components.find((x) =>
     x?.types?.includes("administrative_area_level_1"),
   )?.short_name;

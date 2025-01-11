@@ -7,7 +7,6 @@ export const getOrderTrackingInformation = async ({
 }: {
   orderNo: number;
 }): Promise<GetOrderForTrackingQuery> => {
-  console.log(orderNo, "orderNo");
   if (!orderNo) {
     return {
       order: [],
@@ -26,7 +25,6 @@ export const getOrderTrackingInformation = async ({
   );
 
   const res = await response.json();
-  console.log(res, "res");
   if (!res.success) {
     return {
       order: [],
