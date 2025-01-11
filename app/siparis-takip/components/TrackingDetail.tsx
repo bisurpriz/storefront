@@ -8,7 +8,7 @@ import { Image } from "@/components/ui/image";
 import { GetOrderForTrackingQuery } from "@/graphql/queries/order/order.generated";
 import { getImageUrlFromPath, getTenantUrl } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Package2, Search } from "lucide-react";
+import { AlertCircle, Loader2, Package2, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getOrderTrackingInformation } from "../actions";
 
@@ -24,6 +24,23 @@ const LoadingState = () => (
     className="flex items-center justify-center py-12"
   >
     <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+  </motion.div>
+);
+
+const ErrorMessage = ({ message }: { message: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 20 }}
+    className="rounded-xl bg-red-50 p-6 text-center"
+  >
+    <div className="mb-4 flex justify-center">
+      <AlertCircle className="h-12 w-12 text-red-500" />
+    </div>
+    <h3 className="mb-2 text-lg font-medium text-red-800">
+      Sipariş Bulunamadı
+    </h3>
+    <p className="text-red-600">{message}</p>
   </motion.div>
 );
 
@@ -100,15 +117,9 @@ const OrderDetails = ({
                       status={OrderItemStatus[oi.status || "Processing"]}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-xs sm:text-sm">
-                    <p className="text-gray-600">Miktar: {oi.quantity} Adet</p>
-                    <p className="font-medium text-gray-800">
-                      {new Intl.NumberFormat("tr-TR", {
-                        style: "currency",
-                        currency: "TRY",
-                      }).format(oi.sell_price || 0)}
-                    </p>
-                  </div>
+                  <p className="text-xs text-gray-600">
+                    Miktar: {oi.quantity} Adet
+                  </p>
                 </div>
               </div>
             ))}
@@ -125,14 +136,27 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
     GetOrderForTrackingQuery["order"][0] | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const response = await getOrderTrackingInformation({ orderNo });
-      setOrder(response?.order[0]);
+      console.log(response);
+      if (!response?.order?.length) {
+        setError("Girdiğiniz sipariş numarasına ait bir sipariş bulunamadı.");
+        setOrder(null);
+        return;
+      }
+
+      setOrder(response.order[0]);
     } catch (error) {
       console.error("Sipariş bilgisi alınamadı:", error);
+      setError(
+        "Sipariş bilgisi alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+      );
+      setOrder(null);
     } finally {
       setIsLoading(false);
     }
@@ -182,6 +206,8 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
       <AnimatePresence mode="wait">
         {isLoading ? (
           <LoadingState />
+        ) : error ? (
+          <ErrorMessage message={error} />
         ) : order ? (
           <OrderDetails order={order} orderNo={orderNo} />
         ) : null}
