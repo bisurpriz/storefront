@@ -9257,6 +9257,7 @@ export type Order_Item = {
   product_id: Scalars['bigint']['output'];
   quantity: Scalars['Int']['output'];
   sell_price?: Maybe<Scalars['numeric']['output']>;
+  short_code?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Order_Status_Enum>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -9434,6 +9435,7 @@ export type Order_Item_Bool_Exp = {
   product_id?: InputMaybe<Bigint_Comparison_Exp>;
   quantity?: InputMaybe<Int_Comparison_Exp>;
   sell_price?: InputMaybe<Numeric_Comparison_Exp>;
+  short_code?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<Order_Status_Enum_Comparison_Exp>;
   tenant_amount?: InputMaybe<Numeric_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -9480,6 +9482,7 @@ export type Order_Item_Insert_Input = {
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
   sell_price?: InputMaybe<Scalars['numeric']['input']>;
+  short_code?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -9506,6 +9509,7 @@ export type Order_Item_Max_Fields = {
   product_id?: Maybe<Scalars['bigint']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
   sell_price?: Maybe<Scalars['numeric']['output']>;
+  short_code?: Maybe<Scalars['String']['output']>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -9528,6 +9532,7 @@ export type Order_Item_Max_Order_By = {
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
   sell_price?: InputMaybe<Order_By>;
+  short_code?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -9552,6 +9557,7 @@ export type Order_Item_Min_Fields = {
   product_id?: Maybe<Scalars['bigint']['output']>;
   quantity?: Maybe<Scalars['Int']['output']>;
   sell_price?: Maybe<Scalars['numeric']['output']>;
+  short_code?: Maybe<Scalars['String']['output']>;
   tenant_amount?: Maybe<Scalars['numeric']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -9574,6 +9580,7 @@ export type Order_Item_Min_Order_By = {
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
   sell_price?: InputMaybe<Order_By>;
+  short_code?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -9617,6 +9624,7 @@ export type Order_Item_Order_By = {
   product_id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
   sell_price?: InputMaybe<Order_By>;
+  short_code?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   tenant_amount?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -9664,6 +9672,8 @@ export type Order_Item_Select_Column =
   /** column name */
   | 'sell_price'
   /** column name */
+  | 'short_code'
+  /** column name */
   | 'status'
   /** column name */
   | 'tenant_amount'
@@ -9700,6 +9710,7 @@ export type Order_Item_Set_Input = {
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
   sell_price?: InputMaybe<Scalars['numeric']['input']>;
+  short_code?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -10458,6 +10469,7 @@ export type Order_Item_Stream_Cursor_Value_Input = {
   product_id?: InputMaybe<Scalars['bigint']['input']>;
   quantity?: InputMaybe<Scalars['Int']['input']>;
   sell_price?: InputMaybe<Scalars['numeric']['input']>;
+  short_code?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Order_Status_Enum>;
   tenant_amount?: InputMaybe<Scalars['numeric']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -10522,6 +10534,8 @@ export type Order_Item_Update_Column =
   | 'quantity'
   /** column name */
   | 'sell_price'
+  /** column name */
+  | 'short_code'
   /** column name */
   | 'status'
   /** column name */

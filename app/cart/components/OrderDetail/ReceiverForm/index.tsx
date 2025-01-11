@@ -94,9 +94,9 @@ export default function ReceiverForm() {
   // Lokasyon bilgilerini memo'la
   const { city, district, neighborhood, street, postal_code } = useMemo(
     () => getLocationVariables(cartItems[0].deliveryLocation),
-    [cartItems],
+    [cartItems, step],
   );
-
+  console.log(city, district, neighborhood, street, postal_code, "location");
   // Aynı gün teslimat kontrolünü memo'la
   const hasSameDayProduct = useMemo(
     () =>

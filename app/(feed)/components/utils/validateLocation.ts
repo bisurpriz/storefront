@@ -21,7 +21,7 @@ export function validateLocation(
   if (!selectedLocation || !places || !isSameDay) return;
 
   const getAreaLevel = (level: string) =>
-    selectedLocation.address_components.find((x) => x.types.includes(level))
+    selectedLocation.address_components.find((x) => x?.types?.includes(level))
       ?.short_name;
 
   const areaLevel1 = getAreaLevel("administrative_area_level_1");
@@ -46,25 +46,25 @@ export const getLocationVariables = (selectedLocation: Location) => {
       street: null,
       postal_code: null,
     };
-
+  console.log(selectedLocation);
   const city = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_1"),
+    x?.types?.includes("administrative_area_level_1"),
   )?.short_name;
 
   const district = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_2"),
+    x?.types?.includes("administrative_area_level_2"),
   )?.short_name;
 
   const neighborhood = selectedLocation.address_components.find((x) =>
-    x.types.includes("administrative_area_level_4"),
+    x?.types?.includes("administrative_area_level_4"),
   )?.short_name;
 
   const street = selectedLocation.address_components.find((x) =>
-    x.types.includes("route"),
+    x?.types?.includes("route"),
   )?.short_name;
 
   const postal_code = selectedLocation.address_components.find((x) =>
-    x.types.includes("postal_code"),
+    x?.types?.includes("postal_code"),
   )?.short_name;
 
   return {

@@ -21,11 +21,176 @@ import { OrderFiltersComponent } from "./OrderFilters";
 import OrderMessage from "./OrderMessage";
 import { ShowDetailModal } from "./ShowDetailModal";
 
-export default function NewOrderDesign({
+interface OrderItemProps {
+  readonly item: any;
+  readonly order: any;
+  readonly tenantOrder: any;
+  readonly onShowDetail: (item: any) => void;
+  readonly onOpenCustomization: (order: any) => void;
+  readonly onOpenMessage: (tenantOrder: any) => void;
+  readonly onOpenReview: (item: any) => void;
+}
+
+interface TenantOrderProps {
+  readonly tenantOrder: any;
+  readonly order: any;
+  readonly handlers: {
+    readonly onShowDetail: (item: any) => void;
+    readonly onOpenCustomization: (order: any) => void;
+    readonly onOpenMessage: (tenantOrder: any) => void;
+    readonly onOpenReview: (item: any) => void;
+  };
+}
+
+interface NewOrderDesignProps {
+  readonly order: GetUserOrdersQuery["order"];
+}
+
+const OrderItem = ({
+  item,
   order,
-}: {
-  order: GetUserOrdersQuery["order"];
-}) {
+  tenantOrder,
+  onShowDetail,
+  onOpenCustomization,
+  onOpenMessage,
+  onOpenReview,
+}: OrderItemProps) => {
+  const renderCustomizationButton = (item: any, order: any) => {
+    const hasCustomizableAreas =
+      item.product.product_customizable_areas.length > 0;
+    const completedCustomizations =
+      item.order_item_special_images.length +
+      item.order_item_special_texts.length;
+    const requiredCustomizations =
+      item.product.product_customizable_areas.reduce(
+        (acc: number, area: any) => acc + area.count,
+        0,
+      );
+
+    if (!hasCustomizableAreas) return null;
+
+    if (completedCustomizations < requiredCustomizations) {
+      return (
+        <Button
+          variant="link"
+          size="sm"
+          onClick={() => onOpenCustomization(order)}
+          className="h-8"
+        >
+          Özelleştirmeyi Tamamla
+        </Button>
+      );
+    }
+
+    return (
+      <Button variant="link" size="sm" disabled className="h-8">
+        Özelleştirme Tamamlandı
+      </Button>
+    );
+  };
+
+  return (
+    <div className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row">
+      <div className="shrink-0 overflow-hidden rounded-md">
+        {item.product.image_url && item.product.image_url.length > 0 && (
+          <Image
+            src={getImageUrlFromPath(item.product.image_url[0])}
+            alt={item.product.name}
+            width={120}
+            height={120}
+            className="aspect-square rounded-md bg-background object-cover"
+          />
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col">
+        <div className="mb-2 flex-1">
+          <h4 className="font-medium">{item.product.name}</h4>
+          <div className="space-y-1 text-sm text-muted-foreground">
+            <Link
+              href={getTenantUrl(
+                tenantOrder.tenant.tenants[0].name,
+                tenantOrder.tenant.tenants[0].id.toString(),
+              )}
+              className="text-tertiary"
+            >
+              {tenantOrder.tenant.tenants[0].name}
+            </Link>
+            <p>Adet: {item.quantity}</p>
+            <p>
+              Kategori:{" "}
+              {item.product.product_categories[0]?.category.name ||
+                "Belirtilmemiş"}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onShowDetail(item)}
+              className="h-8"
+            >
+              Detayları Görüntüle
+            </Button>
+            {renderCustomizationButton(item, order)}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => onOpenMessage(tenantOrder)}
+              className="h-8"
+            >
+              Satıcıya Mesaj
+            </Button>
+            {tenantOrder.order_status?.value === OrderItemStatus.Delivered && (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => onOpenReview(item)}
+                className="h-8"
+              >
+                Değerlendir
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TenantOrder = ({ tenantOrder, order, handlers }: TenantOrderProps) => {
+  return (
+    <div key={tenantOrder.id}>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <StatusBadge
+            status={tenantOrder.order_status?.value as OrderItemStatus}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4">
+        {tenantOrder.order_items.map((item: any) => (
+          <OrderItem
+            key={item.id}
+            item={item}
+            order={order}
+            tenantOrder={tenantOrder}
+            {...handlers}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default function NewOrderDesign({ order }: NewOrderDesignProps) {
   const { onOpen } = useOrderCustomizableModal();
   const { openDialog, closeDialog } = useResponsiveDialog();
   const { push } = useRouter();
@@ -57,6 +222,32 @@ export default function NewOrderDesign({
       toast.success("Değerlendirme başarıyla eklendi.");
     }
     push("/account/reviews");
+  };
+
+  const handlers = {
+    onShowDetail: (item: any) => {
+      openDialog(<ShowDetailModal selectedOrder={item} />);
+    },
+    onOpenCustomization: (order: any) => {
+      onOpen(order);
+    },
+    onOpenMessage: (tenantOrder: any) => {
+      openDialog(
+        <OrderMessage
+          orderTenantId={tenantOrder.id}
+          tenant={tenantOrder.tenant}
+          tenantId={tenantOrder.tenant.tenants[0].id}
+        />,
+      );
+    },
+    onOpenReview: (item: any) => {
+      openDialog(
+        <CreateReview
+          handleCreateReview={handleCreateReview}
+          selectedProduct={item.product}
+        />,
+      );
+    },
   };
 
   return (
@@ -99,158 +290,14 @@ export default function NewOrderDesign({
               </CardHeader>
 
               <CardContent className="grid gap-6 p-4">
-                {order.tenant_orders.map((tenantOrder) => {
-                  return (
-                    <div key={tenantOrder.id}>
-                      <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <StatusBadge
-                            status={
-                              tenantOrder.order_status?.value as OrderItemStatus
-                            }
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid gap-4">
-                        {tenantOrder.order_items.map((item) => (
-                          <div
-                            key={item.id}
-                            className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row"
-                          >
-                            <div className="shrink-0 overflow-hidden rounded-md">
-                              {item.product.image_url &&
-                                item.product.image_url.length > 0 && (
-                                  <Image
-                                    src={getImageUrlFromPath(
-                                      item.product.image_url[0],
-                                    )}
-                                    alt={item.product.name}
-                                    width={120}
-                                    height={120}
-                                    className="aspect-square rounded-md bg-background object-cover"
-                                  />
-                                )}
-                            </div>
-
-                            <div className="flex flex-1 flex-col">
-                              <div className="mb-2 flex-1">
-                                <h4 className="font-medium">
-                                  {item.product.name}
-                                </h4>
-                                <div className="space-y-1 text-sm text-muted-foreground">
-                                  <Link
-                                    href={getTenantUrl(
-                                      tenantOrder.tenant.tenants[0].name,
-                                      tenantOrder.tenant.tenants[0].id.toString(),
-                                    )}
-                                    className="text-tertiary"
-                                  >
-                                    {tenantOrder.tenant.tenants[0].name}
-                                  </Link>
-                                  <p>Adet: {item.quantity}</p>
-                                  <p>
-                                    Kategori:{" "}
-                                    {item.product.product_categories[0]
-                                      ?.category.name || "Belirtilmemiş"}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                <div className="flex flex-wrap gap-2">
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() =>
-                                      openDialog(
-                                        <ShowDetailModal
-                                          selectedOrder={item}
-                                        />,
-                                      )
-                                    }
-                                    className="h-8"
-                                  >
-                                    Detayları Görüntüle
-                                  </Button>
-
-                                  {item.product.product_customizable_areas
-                                    .length > 0 &&
-                                  item.order_item_special_images.length +
-                                    item.order_item_special_texts.length <
-                                    item.product.product_customizable_areas.reduce(
-                                      (acc, area) => acc + area.count,
-                                      0,
-                                    ) ? (
-                                    <Button
-                                      variant="link"
-                                      size="sm"
-                                      onClick={() => onOpen(order)}
-                                      className="h-8"
-                                    >
-                                      Özelleştirmeyi Tamamla
-                                    </Button>
-                                  ) : item.product.product_customizable_areas
-                                      .length > 0 ? (
-                                    <Button
-                                      variant="link"
-                                      size="sm"
-                                      disabled
-                                      className="h-8"
-                                    >
-                                      Özelleştirme Tamamlandı
-                                    </Button>
-                                  ) : null}
-                                </div>
-
-                                <div className="flex flex-wrap gap-2">
-                                  <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={() =>
-                                      openDialog(
-                                        <OrderMessage
-                                          orderTenantId={tenantOrder.id}
-                                          tenant={tenantOrder.tenant}
-                                          tenantId={
-                                            tenantOrder.tenant.tenants[0].id
-                                          }
-                                        />,
-                                      )
-                                    }
-                                    className="h-8"
-                                  >
-                                    Satıcıya Mesaj
-                                  </Button>
-                                  {tenantOrder.order_status?.value ===
-                                    OrderItemStatus.Delivered && (
-                                    <Button
-                                      variant="default"
-                                      size="sm"
-                                      onClick={() =>
-                                        openDialog(
-                                          <CreateReview
-                                            handleCreateReview={
-                                              handleCreateReview
-                                            }
-                                            selectedProduct={item.product}
-                                          />,
-                                        )
-                                      }
-                                      className="h-8"
-                                    >
-                                      Değerlendir
-                                    </Button>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+                {order.tenant_orders.map((tenantOrder) => (
+                  <TenantOrder
+                    key={tenantOrder.id}
+                    tenantOrder={tenantOrder}
+                    order={order}
+                    handlers={handlers}
+                  />
+                ))}
               </CardContent>
             </Card>
           ))
@@ -259,7 +306,7 @@ export default function NewOrderDesign({
             <div className="text-muted-foreground">
               {hasActiveFilters
                 ? "Filtrelere uygun sipariş bulunamadı"
-                : "Henüz sipariş bulunmuyor"}
+                : "Henüz sipariş bulunmuyor, siparişinizin ödemesi tamamlandığında siparişiniz görüntülenecektir."}
             </div>
             {hasActiveFilters && (
               <Button

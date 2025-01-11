@@ -17,7 +17,7 @@ export type CreateOrderMutationVariables = Types.Exact<{
 export type CreateOrderMutation = { insert_order_one?: { id: any } | null };
 
 export type GetOrderApproveImagesQueryVariables = Types.Exact<{
-  token?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  shortCode?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
@@ -37,7 +37,7 @@ export type GetOrderForTrackingQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrderForTrackingQuery = { order: Array<{ created_at: any, order_no?: any | null, tenant_orders: Array<{ id: any, status?: Types.Order_Status_Enum | null, order_items: Array<{ quantity: number, id: any, delivery_date?: any | null, delivery_time?: string | null, product: { name: string, id: any, slug?: string | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }> } }> }> }> };
+export type GetOrderForTrackingQuery = { order: Array<{ created_at: any, order_no?: any | null, tenant_orders: Array<{ id: any, status?: Types.Order_Status_Enum | null, tenant: { tenants: Array<{ name?: string | null, id: any }> }, order_items: Array<{ quantity: number, id: any, status?: Types.Order_Status_Enum | null, sell_price?: number | null, delivery_date?: any | null, delivery_time?: string | null, product: { name: string, id: any, slug?: string | null, image_url?: Array<string> | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }> } }> }> }> };
 
 export type GetOrderByIdQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['uuid']['input']>;
@@ -69,8 +69,8 @@ export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation,
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
 export const GetOrderApproveImagesDocument = gql`
-    query getOrderApproveImages($token: String) {
-  order_item(where: {image_approve_token: {_eq: $token}}) {
+    query getOrderApproveImages($shortCode: String) {
+  order_item(where: {short_code: {_eq: $shortCode}}) {
     images_to_approve
     is_images_approved
     image_approve_expiry
@@ -102,15 +102,24 @@ export const GetOrderForTrackingDocument = gql`
     tenant_orders {
       id
       status
+      tenant {
+        tenants {
+          name
+          id
+        }
+      }
       order_items {
         quantity
         id
+        status
+        sell_price
         delivery_date
         delivery_time
         product {
           name
           id
           slug
+          image_url
           product_categories {
             category {
               name

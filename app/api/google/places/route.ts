@@ -99,10 +99,10 @@ export async function GET(request: NextRequest) {
     }
 
     // API URL oluşturma
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY || "";
     const url = new URL(CONFIG.BASE_URL);
     url.searchParams.append("input", query);
-    url.searchParams.append("key", apiKey!);
+    url.searchParams.append("key", apiKey);
     url.searchParams.append("language", language);
     url.searchParams.append("sessiontoken", session);
     url.searchParams.append("types", "geocode");
