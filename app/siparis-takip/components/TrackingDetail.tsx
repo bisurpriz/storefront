@@ -1,18 +1,125 @@
 "use client";
 
 import { OrderItemStatus } from "@/common/enums/Order/product";
+import { Link } from "@/components/Link";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components/ui/image";
 import { GetOrderForTrackingQuery } from "@/graphql/queries/order/order.generated";
-import { getImageUrlFromPath } from "@/lib/utils";
+import { getImageUrlFromPath, getTenantUrl } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Package2, Search } from "lucide-react";
+import { Loader2, Package2, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getOrderTrackingInformation } from "../actions";
 
 interface TrackingDetailProps {
   initialOrderNo?: number;
 }
+
+const LoadingState = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="flex items-center justify-center py-12"
+  >
+    <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+  </motion.div>
+);
+
+const OrderDetails = ({
+  order,
+  orderNo,
+}: {
+  order: GetOrderForTrackingQuery["order"][0];
+  orderNo: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 20 }}
+    transition={{ duration: 0.1, ease: "easeInOut" }}
+    className="space-y-6"
+  >
+    <div className="rounded-xl bg-white p-6 shadow-lg">
+      <div className="mb-6 flex items-center justify-between border-b pb-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Sipariş #{orderNo}
+        </h2>
+        <p className="text-sm text-gray-500">
+          Oluşturulma: {new Date(order.created_at).toLocaleDateString()}
+        </p>
+      </div>
+
+      {order.tenant_orders.map((to) => (
+        <div key={to.id} className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium text-gray-800">
+              {to.tenant?.tenants?.[0]?.name || "Satıcı"}
+            </h3>
+          </div>
+
+          <div className="relative mb-8 pt-4">
+            <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200"></div>
+            {to.order_items.map((oi) => (
+              <div
+                key={oi.product.id}
+                className="relative mb-6 flex items-start gap-4 pl-12"
+              >
+                <div className="absolute -left-2 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-blue-50">
+                  {oi.product.image_url ? (
+                    <Image
+                      src={getImageUrlFromPath(oi.product.image_url[0])}
+                      alt={oi.product.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <Package2 className="h-8 w-8 text-blue-500" />
+                  )}
+                </div>
+                <div className="flex-1 rounded-lg border bg-white p-4 shadow-sm">
+                  <div className="mb-3 flex items-start justify-between gap-4">
+                    <div>
+                      <h4 className="mb-1 font-medium text-gray-800">
+                        {oi.product.name}
+                      </h4>
+                      <div className="text-sm text-gray-500">
+                        <span>Satıcı:</span>{" "}
+                        <Link
+                          href={getTenantUrl(
+                            to.tenant?.tenants?.[0]?.name,
+                            to.tenant?.tenants?.[0]?.id,
+                          )}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {to.tenant?.tenants?.[0]?.name || ""}
+                        </Link>
+                      </div>
+                    </div>
+                    <StatusBadge
+                      status={OrderItemStatus[oi.status || "Processing"]}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600">
+                      Miktar: {oi.quantity} Adet
+                    </p>
+                    <p className="text-sm font-medium text-gray-800">
+                      {new Intl.NumberFormat("tr-TR", {
+                        style: "currency",
+                        currency: "TRY",
+                      }).format(oi.sell_price || 0)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </motion.div>
+);
 
 const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
   const [orderNo, setOrderNo] = useState<number | null>(initialOrderNo ?? null);
@@ -25,7 +132,7 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
     try {
       setIsLoading(true);
       const response = await getOrderTrackingInformation({ orderNo });
-      setOrder(response);
+      setOrder(response?.order[0]);
     } catch (error) {
       console.error("Sipariş bilgisi alınamadı:", error);
     } finally {
@@ -74,96 +181,12 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
         </div>
       )}
 
-      <AnimatePresence>
-        {order && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.1, ease: "easeInOut" }}
-            className="space-y-6"
-          >
-            <div className="rounded-xl bg-white p-6 shadow-lg">
-              <div className="mb-6 flex items-center justify-between border-b pb-4">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Sipariş #{orderNo}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    Oluşturulma:{" "}
-                    {new Date(order.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <StatusBadge
-                  status={
-                    OrderItemStatus[order.tenant_orders[0]?.status] ||
-                    OrderItemStatus.Processing
-                  }
-                />
-              </div>
-
-              {order.tenant_orders.map((to) => (
-                <div key={to.id} className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium text-gray-800">
-                      {to.tenant?.tenants?.[0]?.name || "Satıcı"}
-                    </h3>
-                  </div>
-
-                  <div className="relative mb-8 pt-4">
-                    <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200"></div>
-                    {to.order_items.map((oi) => (
-                      <div
-                        key={oi.product.id}
-                        className="relative mb-6 flex items-start gap-4 pl-12"
-                      >
-                        <div className="absolute -left-2 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-blue-50">
-                          {oi.product.image_url ? (
-                            <img
-                              src={getImageUrlFromPath(oi.product.image_url[0])}
-                              alt={oi.product.name}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <Package2 className="h-8 w-8 text-blue-500" />
-                          )}
-                        </div>
-                        <div className="flex-1 rounded-lg border bg-white p-4 shadow-sm">
-                          <div className="mb-3 flex items-start justify-between gap-4">
-                            <div>
-                              <h4 className="mb-1 font-medium text-gray-800">
-                                {oi.product.name}
-                              </h4>
-                              <p className="text-sm text-gray-500">
-                                Satıcı: {to.tenant?.tenants?.[0]?.name || ""}
-                              </p>
-                            </div>
-                            <StatusBadge
-                              status={
-                                OrderItemStatus[oi.status || "Processing"]
-                              }
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm text-gray-600">
-                              Miktar: {oi.quantity} Adet
-                            </p>
-                            <p className="text-sm font-medium text-gray-800">
-                              {new Intl.NumberFormat("tr-TR", {
-                                style: "currency",
-                                currency: "TRY",
-                              }).format(oi.sell_price || 0)}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <LoadingState />
+        ) : order ? (
+          <OrderDetails order={order} orderNo={orderNo} />
+        ) : null}
       </AnimatePresence>
     </div>
   );

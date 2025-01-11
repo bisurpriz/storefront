@@ -8,8 +8,8 @@ export const getOrderTrackingInformation = async ({
   orderNo,
 }: {
   orderNo: number;
-}): Promise<GetOrderForTrackingQuery["order"][0]> => {
-  const { order } = await BonnmarseApi.request<GetOrderForTrackingQuery>({
+}): Promise<GetOrderForTrackingQuery> => {
+  return await BonnmarseApi.request<GetOrderForTrackingQuery>({
     query: GetOrderForTrackingDocument,
     variables: {
       orderNo,
@@ -17,6 +17,4 @@ export const getOrderTrackingInformation = async ({
     tags: ["getOrderTrackingInformation"],
     withAuth: true,
   });
-  console.log(order);
-  return order[0];
 };
