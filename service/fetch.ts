@@ -82,10 +82,7 @@ class Fetch {
 
       if (cache?.enable) {
         const cachedData = this.getCachedData<T>(cacheKey, cacheDuration, tags);
-        if (cachedData) {
-          console.log("Cache hit:", tags?.join(", "));
-          return cachedData;
-        }
+        if (cachedData) return cachedData;
       }
 
       console.table({

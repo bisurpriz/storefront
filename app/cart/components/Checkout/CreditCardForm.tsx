@@ -46,7 +46,6 @@ const CreditCardFormComponent = () => {
         const orderDetails = sessionStorage.getItem("order-detail-form");
         JSON.parse(orderDetails);
       } catch {
-        console.log("Sepete yönlendiriliyor");
         sessionStorage.removeItem("order-detail-form");
         replace(CartStepPaths.CART);
       }
