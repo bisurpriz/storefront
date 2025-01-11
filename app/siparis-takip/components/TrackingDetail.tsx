@@ -42,7 +42,7 @@ const OrderDetails = ({
     className="space-y-6"
   >
     <div className="rounded-xl bg-white p-6 shadow-lg">
-      <div className="mb-6 flex items-center justify-between border-b pb-4">
+      <div className="mb-6 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
         <h2 className="text-xl font-semibold text-gray-800">
           Sipariş #{orderNo}
         </h2>
@@ -60,13 +60,13 @@ const OrderDetails = ({
           </div>
 
           <div className="relative mb-8 pt-4">
-            <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200"></div>
+            <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200 max-sm:left-4"></div>
             {to.order_items.map((oi) => (
               <div
                 key={oi.product.id}
-                className="relative mb-6 flex items-start gap-4 pl-12"
+                className="relative mb-6 flex items-start gap-4 pl-16 max-sm:pl-12"
               >
-                <div className="absolute -left-2 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-blue-50">
+                <div className="absolute -left-2 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-blue-50 sm:h-16 sm:w-16">
                   {oi.product.image_url ? (
                     <Image
                       src={getImageUrlFromPath(oi.product.image_url[0])}
@@ -74,16 +74,16 @@ const OrderDetails = ({
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <Package2 className="h-8 w-8 text-blue-500" />
+                    <Package2 className="h-6 w-6 text-blue-500 sm:h-8 sm:w-8" />
                   )}
                 </div>
-                <div className="flex-1 rounded-lg border bg-white p-4 shadow-sm">
-                  <div className="mb-3 flex items-start justify-between gap-4">
+                <div className="flex-1 rounded-lg border bg-white p-3 shadow-sm sm:p-4">
+                  <div className="mb-3 flex flex-col justify-between gap-2 sm:flex-row sm:items-start sm:gap-4">
                     <div>
-                      <h4 className="mb-1 font-medium text-gray-800">
+                      <h4 className="mb-1 text-sm font-medium text-gray-800 sm:text-base">
                         {oi.product.name}
                       </h4>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-xs text-gray-500 sm:text-sm">
                         <span>Satıcı:</span>{" "}
                         <Link
                           href={getTenantUrl(
@@ -100,11 +100,9 @@ const OrderDetails = ({
                       status={OrderItemStatus[oi.status || "Processing"]}
                     />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600">
-                      Miktar: {oi.quantity} Adet
-                    </p>
-                    <p className="text-sm font-medium text-gray-800">
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
+                    <p className="text-gray-600">Miktar: {oi.quantity} Adet</p>
+                    <p className="font-medium text-gray-800">
                       {new Intl.NumberFormat("tr-TR", {
                         style: "currency",
                         currency: "TRY",
@@ -147,7 +145,7 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
   }, [initialOrderNo]);
 
   return (
-    <div className="mx-auto max-w-4xl p-4">
+    <div className="mx-auto max-w-4xl p-4 max-sm:p-0">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-2xl font-bold text-gray-800">Sipariş Takip</h1>
         {!initialOrderNo && (
