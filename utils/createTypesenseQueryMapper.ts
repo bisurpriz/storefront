@@ -60,13 +60,13 @@ export const createTypesenseQueryMapper = async (
 
   if (selectedLocation) {
     const areaLevel1 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_1"),
+      x?.types?.includes("administrative_area_level_1"),
     )?.short_name;
     const areaLevel4 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_4"),
+      x?.types?.includes("administrative_area_level_4"),
     )?.short_name;
     const areaLevel2 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_2"),
+      x?.types?.includes("administrative_area_level_2"),
     )?.short_name;
 
     if (areaLevel1) {

@@ -94,9 +94,9 @@ export default function ReceiverForm() {
   // Lokasyon bilgilerini memo'la
   const { city, district, neighborhood, street, postal_code } = useMemo(
     () => getLocationVariables(cartItems[0].deliveryLocation),
-    [cartItems],
+    [cartItems, step],
   );
-
+  console.log(city, district, neighborhood, street, postal_code, "location");
   // Aynı gün teslimat kontrolünü memo'la
   const hasSameDayProduct = useMemo(
     () =>
@@ -229,23 +229,25 @@ export default function ReceiverForm() {
     }
   }, [selectedCargoLocation, hasSameDayProduct, setValue]);
 
+  const getFieldsToValidate = () => {
+    if (step === 1) {
+      return [
+        ...STEP_FIELDS.sender,
+        ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
+      ];
+    }
+    if (step === 2) {
+      return STEP_FIELDS.receiver;
+    }
+    return [];
+  };
+
   const nextStep = useCallback(
     async (e: React.MouseEvent) => {
       e.preventDefault();
+      const fieldsToValidate = getFieldsToValidate();
 
-      const fieldsToValidate =
-        step === 1
-          ? [
-              ...STEP_FIELDS.sender,
-              ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
-            ]
-          : step === 2
-            ? STEP_FIELDS.receiver
-            : [];
-
-      const isStepValid = await trigger(
-        fieldsToValidate as Array<keyof OrderDetailFormData>,
-      );
+      const isStepValid = await trigger(fieldsToValidate);
 
       if (!isStepValid) {
         toast.error(

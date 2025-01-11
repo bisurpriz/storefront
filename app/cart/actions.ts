@@ -74,14 +74,17 @@ export const createOrderAction = async (
   };
 
   const jwtToken = await createJwt();
-  const response = await fetch(`${process.env.REST_API_URL}/order/create-order`, {
-    method: "POST",
-    body: JSON.stringify(variables.object),
-    headers: {
-      "Content-Type": "application/json",
-      authorization: jwtToken,
+  const response = await fetch(
+    `${process.env.REST_API_URL}/order/create-order`,
+    {
+      method: "POST",
+      body: JSON.stringify(variables.object),
+      headers: {
+        "Content-Type": "application/json",
+        authorization: jwtToken,
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     console.error("Order creation failed:", await response.text());

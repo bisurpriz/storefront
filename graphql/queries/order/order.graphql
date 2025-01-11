@@ -44,15 +44,24 @@ query getOrderForTracking($orderNo: bigint!) {
     tenant_orders {
       id
       status
+      tenant {
+        tenants {
+          name
+          id
+        }
+      }
       order_items {
         quantity
         id
+        status
+        sell_price
         delivery_date
         delivery_time
         product {
           name
           id
           slug
+          image_url
           product_categories {
             category {
               name

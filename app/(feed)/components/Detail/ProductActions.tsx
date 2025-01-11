@@ -107,7 +107,7 @@ const ProductActions = ({
       (x) =>
         x ===
         selectedLocation?.address_components?.find((x) =>
-          x.types.includes("administrative_area_level_4"),
+          x?.types?.includes("administrative_area_level_4"),
         )?.short_name,
     ) === -1
       ? availablePlaces
@@ -187,15 +187,15 @@ const ProductActions = ({
     if (isSameDay && !selectedLocation) return true;
 
     const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_4"),
+      x?.types?.includes("administrative_area_level_4"),
     )?.short_name;
 
     const selectedLevel1 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_1"),
+      x?.types?.includes("administrative_area_level_1"),
     )?.short_name;
 
     const selectedLevel2 = selectedLocation?.address_components?.find((x) =>
-      x.types.includes("administrative_area_level_2"),
+      x?.types?.includes("administrative_area_level_2"),
     )?.short_name;
 
     if (selectedLevel4) {

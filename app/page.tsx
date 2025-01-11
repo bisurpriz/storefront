@@ -1,31 +1,46 @@
 import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
-import InfiniteScrollCarouselWrapper from "@/components/InfiniteScrollCarousel/InfiniteScrollCarouselWrapper";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
-import GoogleLocationSelect from "@/components/QuarterSelector/GoogleLocationSelect";
-import CategorySwiper from "@/components/SwiperExamples/CategorySwiper";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
+import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
 
-export const experimental_ppr = true;
+// Dinamik import ile lazy loading yapalım
+const CategorySwiper = dynamic(
+  () => import("@/components/SwiperExamples/CategorySwiper"),
+  {
+    loading: () => (
+      <div className="h-24 animate-pulse rounded-lg bg-primary/20" />
+    ),
+  },
+);
+
+const GoogleLocationSelect = dynamic(
+  () => import("@/components/QuarterSelector/GoogleLocationSelect"),
+);
+
+const InfiniteScrollCarouselWrapper = dynamic(
+  () =>
+    import("@/components/InfiniteScrollCarousel/InfiniteScrollCarouselWrapper"),
+  { ssr: true },
+);
 
 export default async function Page(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
-  const searchText = searchParams.hasOwnProperty("search");
 
   const { category } = await BonnmarseApi.request<GetAllCategoriesQuery>({
     query: GetCategoriesDocument,
     cache: {
       enable: true,
-      duration: 30 * 60 * 1000,
+      duration: 24 * 60 * 60 * 1000,
     },
     tags: ["getCategories"],
     withAuth: false,
@@ -39,12 +54,12 @@ export default async function Page(props: {
 
   return (
     <div className="flex flex-col gap-4">
-      {!searchText && !(category.length < 8 && !isMobile) && (
+      {!(category.length < 8 && !isMobile) && (
         <Suspense fallback={<CategorySwiper categories={category} />}>
           <CategorySwiper categories={category} />
         </Suspense>
       )}
-      {!searchText && !isBot && (
+      {!isBot && (
         <Suspense
           fallback={
             <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-primary/20" />
@@ -53,14 +68,12 @@ export default async function Page(props: {
           <GoogleLocationSelect from="home" />
         </Suspense>
       )}
-      {!searchText && (
-        <InfiniteScrollCarouselWrapper searchParams={searchParams} />
-      )}
-      {!searchText && (
+      {<InfiniteScrollCarouselWrapper searchParams={searchParams} />}
+      {
         <Suspense fallback={<CampaignGridSuspense />}>
-          {!searchText && isMobile ? <BannerCarousel /> : <HomePageGrid />}
+          {isMobile ? <BannerCarousel /> : <HomePageGrid />}
         </Suspense>
-      )}
+      }
 
       <Suspense
         fallback={

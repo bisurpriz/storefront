@@ -19,23 +19,31 @@ export const GetOrderApproveImagesDocument = `
   }
 `;
 
-export const GetOrderForTrackingDocument = `
-    query getOrderForTracking($orderNo: bigint!) {
-  order(where: {order_no: {_eq: $orderNo}, payment_status: {_eq: PAID}}) {
+export const GetOrderForTrackingDocument = `query getOrderForTracking($orderNo: bigint!) {
+  order(where: { order_no: { _eq: $orderNo }, payment_status: { _eq: PAID } }) {
     created_at
     order_no
     tenant_orders {
       id
       status
+      tenant {
+        tenants {
+          name
+          id
+        }
+      }
       order_items {
         quantity
         id
+        status
+        sell_price
         delivery_date
         delivery_time
         product {
           name
           id
           slug
+          image_url
           product_categories {
             category {
               name

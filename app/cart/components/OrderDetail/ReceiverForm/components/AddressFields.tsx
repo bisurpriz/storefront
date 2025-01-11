@@ -32,7 +32,7 @@ export function AddressFields({
             error={!!error}
             errorMessage={error?.message}
             disabled
-            variant={!!error ? "error" : "default"}
+            variant={error ? "error" : "default"}
             onChange={field.onChange}
             value={
               field?.value && {
@@ -66,7 +66,7 @@ export function AddressFields({
             error={!!error}
             errorMessage={error?.message}
             disabled={!!district}
-            variant={!!error ? "error" : "default"}
+            variant={error ? "error" : "default"}
             onChange={(value: AutoCompleteOption) => {
               if (value) {
                 setValue("receiver_neighborhood", null);
@@ -120,7 +120,7 @@ export function AddressFields({
             onChange={field.onChange}
             error={!!error}
             errorMessage={error?.message}
-            variant={!!error ? "error" : "default"}
+            variant={error ? "error" : "default"}
             disabled={
               !!neighborhood ||
               (!hasSameDayProduct && Boolean(selectedCargoLocation?.placeId))

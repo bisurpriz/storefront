@@ -72,6 +72,7 @@ export default function PlacesAutocomplete({
     startTransition(async () => {
       try {
         const data = await getLocation(debouncedInput);
+        console.log(data, "response");
         if (data?.status === "OK") {
           setPredictions(data.predictions);
           setIsOpen(true);
@@ -148,16 +149,37 @@ export default function PlacesAutocomplete({
       setInput(prediction.description);
       setIsOpen(false);
       setActiveIndex(-1);
-
+      console.log(prediction);
       if (prediction.place_id) {
         const results = await geocodeByPlaceId(prediction.place_id);
         if (results?.[0]) {
+          let hasDistrict;
+          if (
+            results[0].address_components.findIndex((component) =>
+              component.types.includes("administrative_area_level_2"),
+            ) === -1
+          ) {
+            hasDistrict = prediction.description
+              .split(",")?.[2]
+              ?.split("/")?.[0]
+              ?.trim();
+          }
+
           const { address_components } = results[0];
+
           const placeData = {
-            address_components,
+            address_components: [
+              ...address_components,
+              hasDistrict && {
+                long_name: hasDistrict,
+                short_name: hasDistrict,
+                types: ["administrative_area_level_2"],
+              },
+            ],
             placeId: prediction.place_id,
             label: prediction.description,
           } as IPlace;
+          console.log(placeData, "results");
 
           onSelect?.(placeData);
 

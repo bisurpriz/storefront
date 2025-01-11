@@ -30,11 +30,11 @@ const ChatSidebar: FC<ChatSidebarProps> = ({
       }}
     >
       <ChatUserAvatar user={user} />
-      <div className="ml-4 flex-1">
+      <div className="ml-4 min-w-0 flex-1">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold">{user.name}</h3>
+          <h3 className="truncate font-semibold">{user.name}</h3>
         </div>
-        <p className="truncate text-sm text-muted-foreground">
+        <p className="w-full truncate text-sm text-muted-foreground">
           {user.lastMessage}
         </p>
       </div>

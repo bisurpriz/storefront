@@ -15,6 +15,7 @@ export function ReceiverInfoStep({
   setSelectedCargoLocation,
   ...props
 }: ReceiverStepProps) {
+  console.log(selectedCargoLocation, "selectedCargoLocation", props);
   return (
     <div className="space-y-6">
       <div className="space-y-4">
