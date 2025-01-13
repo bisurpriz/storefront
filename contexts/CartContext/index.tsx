@@ -333,7 +333,16 @@ export const CartProvider = ({
     deliveryDate: Date,
     deliveryTime: string,
   ): boolean => {
-    if (!deliveryDate || !deliveryTime) return false;
+    if (!deliveryDate || !deliveryTime) return true;
+
+    const today = new Date();
+    const deliveryDay = new Date(deliveryDate);
+    const isSameDay =
+      today.getDate() === deliveryDay.getDate() &&
+      today.getMonth() === deliveryDay.getMonth() &&
+      today.getFullYear() === deliveryDay.getFullYear();
+
+    if (!isSameDay) return true;
 
     const [startHour] = deliveryTime.split("-")[0].trim().split(":");
     const deliveryDateTime = new Date(deliveryDate);
@@ -348,13 +357,24 @@ export const CartProvider = ({
   };
 
   useEffect(() => {
-    const invalidItems = cartState.cartItems.filter(
-      (item) => !isDeliveryTimeValid(item.deliveryDate, item.deliveryTime),
-    );
+    const invalidItems = cartState.cartItems.filter((item) => {
+      if (!item.deliveryDate || !item.deliveryTime) return false;
+
+      const today = new Date();
+      const deliveryDay = new Date(item.deliveryDate);
+      const isSameDay =
+        today.getDate() === deliveryDay.getDate() &&
+        today.getMonth() === deliveryDay.getMonth() &&
+        today.getFullYear() === deliveryDay.getFullYear();
+
+      if (!isSameDay) return false;
+
+      return !isDeliveryTimeValid(item.deliveryDate, item.deliveryTime);
+    });
 
     if (invalidItems.length > 0) {
-      const validItems = cartState.cartItems.filter((item) =>
-        isDeliveryTimeValid(item.deliveryDate, item.deliveryTime),
+      const validItems = cartState.cartItems.filter(
+        (item) => !invalidItems.some((invalid) => invalid.id === item.id),
       );
 
       handleChangeDb(validItems, "update").then(({ costData, error }) => {
