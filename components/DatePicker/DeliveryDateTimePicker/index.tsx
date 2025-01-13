@@ -201,11 +201,13 @@ export default function DeliveryDateTimePicker({
             "bg-gradient-to-bl from-primary/20 to-accent text-slate-600",
           )}
         >
-          Seçilen Tarih ve Saat Aralığı:{" "}
+          Siparişiniz{" "}
           <span className="font-semibold">
-            {format(date, "d MMMM yyyy", { locale: tr })}
-            {selectedTimeRange && ` - ${formatTimeRange(selectedTimeRange)}`}
-          </span>
+            {format(date, "d MMMM yyyy", { locale: tr })} tarihinde{" "}
+            {selectedTimeRange && formatTimeRange(selectedTimeRange)} saatleri
+            arasında
+          </span>{" "}
+          teslim edilecektir.
         </div>
       )}
     </div>

@@ -9,7 +9,51 @@ import { AnimatePresence, motion } from "framer-motion";
 import Cookies from "js-cookie";
 import { Loader2, MapPin, MapPinnedIcon, SquareX } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+
+// Global event bus için custom event
+const LOCATION_CHANGE_EVENT = "locationChange";
+
+// Cookie değişikliğini yayınlayan fonksiyon
+export const publishLocationChange = (locationData: any) => {
+  window.dispatchEvent(
+    new CustomEvent(LOCATION_CHANGE_EVENT, {
+      detail: locationData,
+    }),
+  );
+};
+
+// Location değişikliklerini dinleyen hook
+const useLocationChange = (callback: (locationData: any) => void) => {
+  useEffect(() => {
+    // İlk değeri al
+    const currentLocation = Cookies.get(CookieTokens.LOCATION_ID);
+    if (currentLocation) {
+      try {
+        callback(JSON.parse(currentLocation));
+      } catch (error) {
+        console.error("Cookie parse error:", error);
+      }
+    }
+
+    // Event listener ekle
+    const handleLocationChange = (event: CustomEvent) => {
+      callback(event.detail);
+    };
+
+    window.addEventListener(
+      LOCATION_CHANGE_EVENT,
+      handleLocationChange as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener(
+        LOCATION_CHANGE_EVENT,
+        handleLocationChange as EventListener,
+      );
+    };
+  }, [callback]);
+};
 
 export interface IPlace {
   label: string;
@@ -47,8 +91,22 @@ export default function PlacesAutocomplete({
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const ignoreNextChange = useRef(false);
 
   const { refresh } = useRouter();
+
+  // Location değişikliklerini dinle
+  useLocationChange(
+    useCallback((locationData) => {
+      if (ignoreNextChange.current) {
+        ignoreNextChange.current = false;
+        return;
+      }
+      setInput(locationData.label);
+      setHasInteracted(false);
+    }, []),
+  );
+
   const debouncedInput = useDebounce(input, 300);
 
   const getLocation = useCallback(
@@ -81,14 +139,6 @@ export default function PlacesAutocomplete({
       }
     });
   }, [debouncedInput, getLocation]);
-
-  useEffect(() => {
-    const hasLocation = parseJson(Cookies.get(CookieTokens.LOCATION_ID)!);
-    if (hasLocation) {
-      setInput(hasLocation.label);
-      setHasInteracted(false);
-    }
-  }, []);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setIsOpen(false);
@@ -135,7 +185,9 @@ export default function PlacesAutocomplete({
 
   const geocodeByPlaceId = useCallback(async (placeId: string) => {
     try {
-      const response = await fetch(`/api/google/geocode?placeId=${placeId}`);
+      const response = await fetch(`/api/google/geocode?placeId=${placeId}`, {
+        next: { tags: ["google-geocode"] },
+      });
       if (!response.ok) throw new Error("Geocode isteği başarısız oldu.");
       return await response.json();
     } catch (error) {
@@ -181,7 +233,9 @@ export default function PlacesAutocomplete({
           onSelect?.(placeData);
 
           if (!dontChangeCookie) {
+            ignoreNextChange.current = true; // Kendi yaptığımız değişikliği ignore et
             Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData));
+            publishLocationChange(placeData); // Event'i yayınla
             refresh();
           }
         }
