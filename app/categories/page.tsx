@@ -2,8 +2,7 @@
 
 import { Link } from "@/components/Link";
 import { useCategory } from "@/contexts/CategoryContext";
-import { getCategoryUrl } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getCategoryUrl, getImageUrlFromPath } from "@/lib/utils";
 import clsx from "clsx";
 import Image from "next/image";
 

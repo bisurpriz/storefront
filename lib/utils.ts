@@ -6,12 +6,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getImageUrlFromPath(path?: string, size = 150): string {
-  if (!path) return `https://via.placeholder.com/${size}`;
+export function getImageUrlFromPath(
+  path?: string,
+  width?: number,
+  quality?: number,
+): string {
+  if (!path) return `https://via.placeholder.com/300`;
   if (path.startsWith("http") || path.startsWith("https")) return path;
 
-  const imageUrl = `${IMAGE_URL}/${path}?w=${size}`;
-  return `${imageUrl}&format=auto,avif,webp`;
+  const imageUrl = `${IMAGE_URL}/${path}`;
+
+  return `${imageUrl}?format=auto`;
 }
 
 export function getProductDetailUrl(slug: string, id: number): string {

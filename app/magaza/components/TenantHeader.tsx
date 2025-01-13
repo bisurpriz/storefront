@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GetVendorCouponsQuery } from "@/graphql/queries/vendors/getVendorById.generated";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { tr } from "date-fns/locale";
 import {

@@ -1,8 +1,7 @@
 import AnimatedPricing from "@/components/AnimatedPromotion";
 import { Link } from "@/components/Link";
 import { Button } from "@/components/ui/button";
-import { getProductDetailUrl } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import { Heart, Star, View, X } from "lucide-react";
 import Image from "next/image";
 import { getUserFavorites } from "./actions";

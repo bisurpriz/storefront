@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
 import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { CalendarIcon } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";

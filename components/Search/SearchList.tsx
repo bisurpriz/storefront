@@ -1,6 +1,5 @@
 import useResponsive from "@/hooks/useResponsive";
-import { getProductDetailUrl } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import Image from "next/image";

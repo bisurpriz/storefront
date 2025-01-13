@@ -5,7 +5,7 @@ import ImageUpload from "@/components/ImageUpload";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FC, Fragment, useEffect, useState } from "react";

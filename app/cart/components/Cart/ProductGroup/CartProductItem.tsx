@@ -10,9 +10,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useCart } from "@/contexts/CartContext";
-import { getProductDetailUrl } from "@/lib/utils";
+import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { Gift, Truck, TruckIcon, X } from "lucide-react";
 import Image from "next/image";
 import GiftCardNote from "./GiftCardNote";

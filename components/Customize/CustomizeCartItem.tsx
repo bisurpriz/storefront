@@ -1,10 +1,9 @@
 "use client";
 
-import TextField from "../TextField";
-import ImageUpload from "../ImageUpload";
-import { CustomizableArea } from "@/common/types/Order/order";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { CustomizableArea } from "@/common/types/Order/order";
+import ImageUpload from "../ImageUpload";
+import TextField from "../TextField";
 
 interface Area extends Partial<CustomizableArea> {
   count: number;

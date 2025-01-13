@@ -2,9 +2,9 @@
 
 import Rating from "@/components/ReviewRating/CustomRating";
 import useScrollHorizontal from "@/hooks/useScrollHorizontal";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import Image from "next/image";
-import React, { FC, useRef } from "react";
+import { FC, useRef } from "react";
 
 type ReviewSectionProps = {
   reviews: any;

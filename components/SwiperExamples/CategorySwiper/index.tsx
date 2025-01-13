@@ -9,8 +9,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import { cn, getCategoryUrl } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { cn, getCategoryUrl, getImageUrlFromPath } from "@/lib/utils";
 import clsx from "clsx";
 import Image from "next/image";
 

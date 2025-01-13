@@ -3,7 +3,7 @@
 import Chip from "@/components/Chip";
 import { useCart } from "@/contexts/CartContext";
 import { GetOrderByIdQuery } from "@/graphql/queries/order/order.generated";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import Image from "next/image";
 import { FC, useEffect } from "react";
 import CustomizeOrderItem from "./CustomizeOrderItem";
