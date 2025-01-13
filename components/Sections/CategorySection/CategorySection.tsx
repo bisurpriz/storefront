@@ -3,7 +3,7 @@
 import { Link } from "@/components/Link";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import useScrollHorizontal from "@/hooks/useScrollHorizontal";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import Image from "next/image";
 import { FC, useRef } from "react";
 

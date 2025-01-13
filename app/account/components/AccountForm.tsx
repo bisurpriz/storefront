@@ -149,7 +149,7 @@ export default function AccountForm({ user }: AccountFormProps) {
           <div className="relative">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src={getImageUrlFromPath(user?.picture || "", 150)}
+                src={getImageUrlFromPath(user?.picture || "")}
                 alt={user?.firstname || ""}
               />
               <AvatarFallback className="text-lg">

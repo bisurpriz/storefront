@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useResponsive from "@/hooks/useResponsive";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -50,36 +50,41 @@ const ProductCard = memo(({ product }: ProductCardProps) => (
   </Card>
 ));
 
-ProductCard.displayName = 'ProductCard';
+ProductCard.displayName = "ProductCard";
 
 interface CarouselButtonProps {
   onClick: () => void;
   disabled: boolean;
-  direction: 'left' | 'right';
+  direction: "left" | "right";
   isLoading?: boolean;
 }
 
-const CarouselButton = memo(({ onClick, disabled, direction, isLoading }: CarouselButtonProps) => (
-  <Button
-    variant="outline"
-    size="icon"
-    className={`absolute top-1/2 -translate-y-1/2 transform ${direction === 'left' ? 'left-0 -translate-x-1/2' : 'right-0 translate-x-1/2'
+const CarouselButton = memo(
+  ({ onClick, disabled, direction, isLoading }: CarouselButtonProps) => (
+    <Button
+      variant="outline"
+      size="icon"
+      className={`absolute top-1/2 -translate-y-1/2 transform ${
+        direction === "left"
+          ? "left-0 -translate-x-1/2"
+          : "right-0 translate-x-1/2"
       }`}
-    onClick={onClick}
-    disabled={disabled}
-    aria-label={direction === 'left' ? 'Önceki ürünler' : 'Sonraki ürünler'}
-  >
-    {isLoading ? (
-      <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary" />
-    ) : direction === 'left' ? (
-      <ChevronLeft className="h-4 w-4" />
-    ) : (
-      <ChevronRight className="h-4 w-4" />
-    )}
-  </Button>
-));
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={direction === "left" ? "Önceki ürünler" : "Sonraki ürünler"}
+    >
+      {isLoading ? (
+        <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary" />
+      ) : direction === "left" ? (
+        <ChevronLeft className="h-4 w-4" />
+      ) : (
+        <ChevronRight className="h-4 w-4" />
+      )}
+    </Button>
+  ),
+);
 
-CarouselButton.displayName = 'CarouselButton';
+CarouselButton.displayName = "CarouselButton";
 
 const SLIDES_PER_VIEW = {
   mobile: 1,
@@ -89,7 +94,7 @@ const SLIDES_PER_VIEW = {
 } as const;
 
 const INITIAL_CAROUSEL_OPTIONS = {
-  align: 'start' as const,
+  align: "start" as const,
   skipSnaps: false,
   dragFree: true,
 } as const;
@@ -108,7 +113,9 @@ export default function FeaturedProductsCarousel() {
 
     emblaApi.reInit({
       ...INITIAL_CAROUSEL_OPTIONS,
-      slidesToScroll: isDesktop ? SLIDES_PER_VIEW.desktop : SLIDES_PER_VIEW.mobile,
+      slidesToScroll: isDesktop
+        ? SLIDES_PER_VIEW.desktop
+        : SLIDES_PER_VIEW.mobile,
     });
   }, [emblaApi, isDesktop]);
 
@@ -233,7 +240,9 @@ export function useAsyncProducts() {
       setProducts((prevProducts) => [...prevProducts, ...response]);
       setPage((prev) => prev + 1);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Bilinmeyen bir hata oluştu");
+      setError(
+        err instanceof Error ? err.message : "Bilinmeyen bir hata oluştu",
+      );
     } finally {
       setIsLoading(false);
     }

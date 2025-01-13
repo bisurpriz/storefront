@@ -6,11 +6,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Image } from "@/components/ui/image";
 import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { GetBannersDocument } from "@/service/banner";
 import { BonnmarseApi } from "@/service/fetch";
-import Image from "next/image";
 
 export async function BannerCarousel() {
   const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
@@ -33,28 +33,23 @@ export async function BannerCarousel() {
       <CarouselContent>
         {system_banner.map((banner, index) => (
           <CarouselItem
-            key={index}
+            key={banner.id}
             className="relative flex max-h-[200px] items-center justify-center"
           >
             <Link
-              href={banner.redirect_link!}
+              href={banner.redirect_link}
               className="flex h-full w-full items-center justify-center"
             >
               <Image
-                src={getImageUrlFromPath(banner.path!)}
-                alt={banner.name!}
-                width={800}
-                height={600}
+                src={getImageUrlFromPath(banner.path)}
+                alt={banner.name}
+                width={500}
+                height={300}
                 priority={index < 2}
                 className="w-full object-cover"
                 sizes="(max-width: 640px) 100vw, 
                        (max-width: 1024px) 90vw"
                 quality={85}
-                loading={index < 2 ? "eager" : "lazy"}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
-                  '<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>',
-                ).toString("base64")}`}
               />
             </Link>
           </CarouselItem>

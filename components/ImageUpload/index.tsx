@@ -1,6 +1,6 @@
 "use client";
 
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import clsx from "clsx";
 import { X } from "lucide-react";
 import Image from "next/image";

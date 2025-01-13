@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Image } from "@/components/ui/image";
-import { cn } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { cn, getImageUrlFromPath } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ZoomableImage from "./ZoomableImage";

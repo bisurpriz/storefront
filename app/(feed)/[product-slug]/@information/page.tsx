@@ -1,9 +1,8 @@
 import { PageProps } from "@/.next/types/app/page";
 import { getProductRatings } from "@/app/(feed)/actions";
-import { getProductDetailUrl } from "@/lib/utils";
+import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import { parseJson } from "@/utils/format";
 import { getBrandWithTitle } from "@/utils/getBrandWithTitle";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import { getDiscountRate } from "@/utils/price";
 import { redirect } from "next/navigation";
 import { FC } from "react";
@@ -16,6 +15,10 @@ export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
 
   const productId = Number(params["pid"]);
+
+  if (!productId) {
+    return null;
+  }
 
   const { product } = await getProductInformation(productId);
 

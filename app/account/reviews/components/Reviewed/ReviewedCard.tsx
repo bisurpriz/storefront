@@ -1,10 +1,10 @@
-import { localeFormat } from "@/utils/format";
-import Image from "next/image";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
-import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
 import Rating from "@/components/ReviewRating/CustomRating";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
+import { getImageUrlFromPath } from "@/lib/utils";
+import { localeFormat } from "@/utils/format";
 import { MessageSquare } from "lucide-react";
+import Image from "next/image";
 
 const ReviewedCard = ({
   reviews,

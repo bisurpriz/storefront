@@ -6,7 +6,7 @@ import { CustomizableAreaType } from "@/common/enums/Order/product";
 import CustomizeCartItem from "@/components/Customize/CustomizeCartItem";
 import { Button } from "@/components/ui/button";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath } from "@/lib/utils";
 import clsx from "clsx";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

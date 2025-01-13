@@ -2,8 +2,7 @@ import { OrderItemStatus } from "@/common/enums/Order/product";
 import { Link } from "@/components/Link";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
-import { getTenantUrl } from "@/lib/utils";
-import { getImageUrlFromPath } from "@/utils/getImageUrl";
+import { getImageUrlFromPath, getTenantUrl } from "@/lib/utils";
 import Image from "next/image";
 
 interface OrderItemProps {
