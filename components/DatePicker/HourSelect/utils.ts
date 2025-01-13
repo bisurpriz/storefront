@@ -5,6 +5,8 @@ export interface TimeRange {
   end_time: string;
 }
 
+export const HOURS_BEFORE_DELIVERY_END = 2;
+
 export const getMinMaxTimes = (
   timeRanges: TimeRange[],
 ): { minTimes: Date[]; maxTimes: Date[] } => {

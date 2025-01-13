@@ -13,6 +13,7 @@ import { Product } from "@/graphql/generated-types";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "../Link";
 import ProductItemSkeleton from "../Product/Item/ProductItemSkeleton";
 import ProductItemv2 from "../Product/Item/ProductItemv2";
 
@@ -43,7 +44,7 @@ const ProductItem = memo(({ product }: { product: Product }) => (
 ProductItem.displayName = "ProductItem";
 
 const ShowAllButton = memo(({ onClick }: { onClick?: () => void }) => (
-  <button
+  <Link
     onClick={onClick}
     type="button"
     aria-label="Tümünü göster"
@@ -52,9 +53,10 @@ const ShowAllButton = memo(({ onClick }: { onClick?: () => void }) => (
       "rounded-md bg-gray-100 text-sm font-medium text-gray-600",
       "w-full transition-colors hover:bg-gray-200",
     )}
+    href={"/arama"}
   >
     Tümünü Göster <ArrowRight className="h-4 w-4" />
-  </button>
+  </Link>
 ));
 
 ShowAllButton.displayName = "ShowAllButton";

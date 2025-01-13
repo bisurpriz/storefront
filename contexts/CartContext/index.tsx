@@ -7,7 +7,7 @@ import {
 } from "@/app/cart/actions";
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { IPlace } from "@/common/types/Product/product";
-import { isDate } from "date-fns";
+import { HOURS_BEFORE_DELIVERY_END } from "@/components/DatePicker/HourSelect/utils";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -295,7 +295,7 @@ export const CartProvider = ({
   const isValidDeliveryTime = (deliveryTime: DeliveryTime) => {
     try {
       const { day, hour } = deliveryTime;
-      if (isDate(day) && hour.length) {
+      if (day && hour.length) {
         return true;
       }
       return false;
@@ -319,8 +319,8 @@ export const CartProvider = ({
 
     if (Boolean(product)) {
       setDeliveryTime({
-        day: new Date(product.deliveryDate),
-        hour: product.deliveryTime,
+        day: product.deliveryDate ? new Date(product.deliveryDate) : null,
+        hour: product.deliveryTime || "",
       });
     } else {
       clearDeliveryTime();
@@ -328,6 +328,60 @@ export const CartProvider = ({
 
     return product;
   };
+
+  const isDeliveryTimeValid = (
+    deliveryDate: Date,
+    deliveryTime: string,
+  ): boolean => {
+    if (!deliveryDate || !deliveryTime) return false;
+
+    const [startHour] = deliveryTime.split("-")[0].trim().split(":");
+    const deliveryDateTime = new Date(deliveryDate);
+    deliveryDateTime.setHours(
+      parseInt(startHour) - HOURS_BEFORE_DELIVERY_END,
+      0,
+      0,
+      0,
+    );
+
+    return new Date() <= deliveryDateTime;
+  };
+
+  useEffect(() => {
+    const invalidItems = cartState.cartItems.filter(
+      (item) => !isDeliveryTimeValid(item.deliveryDate, item.deliveryTime),
+    );
+
+    if (invalidItems.length > 0) {
+      const validItems = cartState.cartItems.filter((item) =>
+        isDeliveryTimeValid(item.deliveryDate, item.deliveryTime),
+      );
+
+      handleChangeDb(validItems, "update").then(({ costData, error }) => {
+        if (error) return;
+
+        dispatch({
+          type: UPDATE_CART,
+          payload: {
+            cartItems: validItems,
+            count: validItems.reduce((acc, item) => acc + item.quantity, 0),
+            cost: costData,
+          },
+        });
+
+        toast.error(
+          `Teslimat süresi geçen ${invalidItems.length} ürün sepetinizden kaldırıldı.`,
+          {
+            duration: 5000,
+            action: {
+              label: "Tamam",
+              onClick: () => toast.dismiss(),
+            },
+          },
+        );
+      });
+    }
+  }, [cartState.cartItems]);
 
   const value = useMemo(
     () => ({

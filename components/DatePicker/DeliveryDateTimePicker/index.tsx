@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { TimeRange } from "../HourSelect/utils";
+import { HOURS_BEFORE_DELIVERY_END, TimeRange } from "../HourSelect/utils";
 
 type DeliveryDateTimePickerProps = {
   deliveryTimes: TimeRange[] | null;
@@ -88,10 +88,14 @@ export default function DeliveryDateTimePicker({
 
     if (today !== selectedDay) return false;
 
-    const [start] = timeRange.split(" - ");
-    const timeRangeStart = parse(start, "HH:mm", new Date());
+    const [_, end] = timeRange.split(" - ");
+    const timeRangeEnd = parse(end, "HH:mm", new Date());
+    const lastSelectableTime = new Date(timeRangeEnd);
+    lastSelectableTime.setHours(
+      timeRangeEnd.getHours() - HOURS_BEFORE_DELIVERY_END,
+    );
 
-    return isBefore(timeRangeStart, now);
+    return isBefore(lastSelectableTime, now);
   };
 
   return (
