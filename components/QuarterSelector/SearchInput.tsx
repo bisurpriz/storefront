@@ -19,7 +19,13 @@ export const SearchInput = ({
   isGeocoding,
 }: SearchInputProps) => {
   return (
-    <div className="relative">
+    <div
+      className={cn(
+        "relative rounded-md p-[2px]",
+        "transition-all duration-200",
+        "bg-gradient-to-bl from-primary via-secondary to-tertiary",
+      )}
+    >
       <Input
         icon={
           <MapPinnedIcon
@@ -41,11 +47,10 @@ export const SearchInput = ({
         aria-autocomplete="list"
         aria-controls="predictions-list"
         className={cn(
-          "h-auto w-full border-none bg-background p-4 pr-8 font-medium transition-all",
-          "focus:ring-2 focus:ring-primary/20",
+          "h-auto w-full rounded-[5px] bg-background p-4 pr-8 font-medium transition-all",
+          "focus:ring-0",
           {
             "bg-primary pr-10 text-white placeholder:text-white/70": value,
-            "ring-2 ring-primary/20": isFocused,
             "opacity-70": isLoading || isGeocoding,
           },
         )}
@@ -73,16 +78,6 @@ export const SearchInput = ({
           <SquareX className="h-4 w-4" />
         </Button>
       )}
-      <div
-        className={cn(
-          "absolute -inset-[2px] -z-[1] rounded-md transition-opacity",
-          "bg-gradient-to-bl from-primary via-secondary to-tertiary",
-          {
-            "opacity-100": value || isFocused,
-            "opacity-70": !value && !isFocused,
-          },
-        )}
-      />
     </div>
   );
 };
