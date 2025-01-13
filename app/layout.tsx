@@ -106,7 +106,6 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
 };
 
-// Paralel veri çekme fonksiyonu
 async function getInitialData(userId: string | undefined) {
   const [userData, categoryData] = await Promise.all([
     userId ? getUserById(userId) : null,
@@ -115,23 +114,13 @@ async function getInitialData(userId: string | undefined) {
       tags: ["getMainCategories"],
       cache: {
         enable: true,
-        duration: 30 * 60 * 1000, // 30 dakika cache
+        duration: 30 * 60 * 1000,
       },
       withAuth: false,
     }),
   ]);
 
-  const cartData = userId
-    ? await getCart(userData?.user_by_pk?.id)
-    : {
-        cartItems: [],
-        costData: {
-          totalPrice: 0,
-          couponMessage: "",
-          isCouponApplied: false,
-          discountAmount: 0,
-        },
-      };
+  const cartData = await getCart(userData?.user_by_pk?.id);
 
   return {
     userData,
