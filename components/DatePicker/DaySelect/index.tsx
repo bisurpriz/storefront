@@ -38,8 +38,9 @@ const DaySelect: React.FC<Props> = ({
     const diff = lastOrderDate.getTime() - today.getTime();
     const hours = Math.floor(diff / 1000 / 60 / 60);
     const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
 
-    return { hours, minutes };
+    return { hours, minutes, seconds };
   };
 
   return (
