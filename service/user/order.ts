@@ -19,6 +19,7 @@ export const GetUserOrdersDocument = `
         order_item_no
         product_id
         quantity
+        status
         order_item_special_images {
           image_url
           quantity_index

@@ -25,7 +25,7 @@ class Fetch {
   private readonly defaultCacheDuration: number = 5 * 60 * 1000; // 5 minutes in milliseconds
 
   constructor() {
-    console.table("Fetch Service is created.");
+    // console.table("Fetch Service is created.");
     this.fetch =
       typeof window === "undefined" ? new ServerFetch() : new ClientFetch();
     this.cache = new Map();
@@ -85,11 +85,11 @@ class Fetch {
         if (cachedData) return cachedData;
       }
 
-      console.table({
-        tags: tags?.join(", "),
-        withAuth,
-        ...(additionalHeaders && { additionalHeaders }),
-      });
+      // console.table({
+      //   tags: tags?.join(", "),
+      //   withAuth,
+      //   ...(additionalHeaders && { additionalHeaders }),
+      // });
 
       const response = (await this.fetch.request({
         query,

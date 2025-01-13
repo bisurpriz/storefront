@@ -11,14 +11,12 @@ export default async function ProductExample({
   information,
   action,
   description,
-  recommended,
   comments,
 }: {
   children: ReactNode;
   information: ReactNode;
   action: ReactNode;
   description: ReactNode;
-  recommended: ReactNode;
   comments: ReactNode;
 }) {
   return (
@@ -53,14 +51,6 @@ export default async function ProductExample({
         aria-describedby="Ödeme yöntemleri"
       >
         <PaymentMethods />
-      </section>
-      <section
-        className="mt-6"
-        id="recommended-products"
-        aria-labelledby="recommended-products"
-        aria-describedby="Önerilen Ürünler"
-      >
-        {recommended}
       </section>
       <section
         className="mt-6"

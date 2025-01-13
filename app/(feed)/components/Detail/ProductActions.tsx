@@ -11,11 +11,12 @@ import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
-import { BadgeCheck, Heart, Truck } from "lucide-react";
+import { Heart, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useProgress } from "react-transition-progress";
 import { validateLocation } from "../utils/validateLocation";
+import DeliveryLocationsAlert from "./DeliveryLocationsAlert";
 
 interface OwnPlace {
   addressComponents: {
@@ -46,7 +47,9 @@ const ProductActions = ({
 }: Props) => {
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
-  const [availableLevel4, setAvailableLevel4] = useState<string[]>([]);
+  const [availableLevel4, setAvailableLevel4] = useState<
+    Array<{ placeId: string; name: string }>
+  >([]);
   const { user } = useUser();
   const [isPending, startTransition] = useTransition();
   const isSameDay = delivery_type === "SAME_DAY";
@@ -99,19 +102,16 @@ const ProductActions = ({
       placeId: string;
     }[],
   ) => {
-    const availablePlaces = places?.map(
-      (place) => place.addressComponents["administrative_area_level_4"],
-    );
+    const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
+      x?.types?.includes("administrative_area_level_4"),
+    )?.short_name;
 
-    return availablePlaces?.findIndex(
-      (x) =>
-        x ===
-        selectedLocation?.address_components?.find((x) =>
-          x?.types?.includes("administrative_area_level_4"),
-        )?.short_name,
-    ) === -1
-      ? availablePlaces
-      : [];
+    return selectedLevel4
+      ? []
+      : places.map((place) => ({
+          placeId: place.placeId,
+          name: place.label,
+        }));
   };
 
   useEffect(() => {
@@ -235,14 +235,7 @@ const ProductActions = ({
   return (
     <>
       {availableLevel4?.length > 0 && (
-        <Alert variant="default" className="mt-2">
-          <BadgeCheck />
-          <AlertTitle>Uyarı !</AlertTitle>
-          <AlertDescription>
-            Bu ürün sadece <strong>"{availableLevel4.join(", ")}"</strong>{" "}
-            mahallelerine teslimat yapılmaktadır.
-          </AlertDescription>
-        </Alert>
+        <DeliveryLocationsAlert locations={availableLevel4} />
       )}
       {availableLevel4?.length === 0 && showPlaceWarning && (
         <Alert variant="destructive" className="mt-2">

@@ -1,96 +1,139 @@
+import { OrderItemStatus } from "@/common/enums/Order/product";
 import { Link } from "@/components/Link";
-import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
-import { getProductDetailUrl } from "@/lib/utils";
+import StatusBadge from "@/components/StatusBadge";
+import { Button } from "@/components/ui/button";
+import { getTenantUrl } from "@/lib/utils";
 import { getImageUrlFromPath } from "@/utils/getImageUrl";
 import Image from "next/image";
 
-const OrderItem = ({
-  order_items,
-}: {
-  order_items: GetUserOrdersQuery["order"][0]["tenant_orders"][0]["order_items"];
-}) => {
-  const wasCustomized = order_items.some(
-    (oi) =>
-      oi?.order_item_special_images.length > 0 ||
-      oi?.order_item_special_texts.length > 0,
-  );
+interface OrderItemProps {
+  readonly item: any;
+  readonly order: any;
+  readonly tenantOrder: any;
+  readonly onShowDetail: (item: any) => void;
+  readonly onOpenCustomization: (order: any) => void;
+  readonly onOpenMessage: (tenantOrder: any) => void;
+  readonly onOpenReview: (item: any) => void;
+}
+
+export const OrderItem = ({
+  item,
+  order,
+  tenantOrder,
+  onShowDetail,
+  onOpenCustomization,
+  onOpenMessage,
+  onOpenReview,
+}: OrderItemProps) => {
+  const renderCustomizationButton = (item: any, order: any) => {
+    const hasCustomizableAreas =
+      item.product.product_customizable_areas.length > 0;
+    const completedCustomizations =
+      item.order_item_special_images.length +
+      item.order_item_special_texts.length;
+    const requiredCustomizations =
+      item.product.product_customizable_areas.reduce(
+        (acc: number, area: any) => acc + area.count,
+        0,
+      );
+
+    if (!hasCustomizableAreas) return null;
+
+    if (completedCustomizations < requiredCustomizations) {
+      return (
+        <Button
+          variant="link"
+          size="sm"
+          onClick={() => onOpenCustomization(order)}
+          className="h-8"
+        >
+          Özelleştirmeyi Tamamla
+        </Button>
+      );
+    }
+
+    return (
+      <Button variant="link" size="sm" disabled className="h-8">
+        Özelleştirme Tamamlandı
+      </Button>
+    );
+  };
 
   return (
-    <div className="flex items-center justify-start gap-4 max-sm:flex-col max-sm:items-start">
-      {order_items.map((oi, order_index) => (
-        <div key={oi?.id} className="w-full">
-          <div className="py-2 capitalize">
-            <div className="flex items-start justify-start gap-4 max-sm:flex-col">
-              <div className="shrink-0">
-                <Image
-                  src={getImageUrlFromPath(oi?.product?.image_url?.[0])}
-                  alt="image"
-                  className="aspect-square h-32 w-32 rounded-md border object-contain px-0.5 max-sm:mx-auto"
-                  width={200}
-                  height={200}
-                />
-              </div>
-              {wasCustomized ? (
-                <div className="w-full">
-                  <h3 className="mb-4 text-base text-slate-600 underline">
-                    Özelleştirme{" "}
-                    {oi?.order_item_special_texts.length > 0 ||
-                    oi?.order_item_special_images.length > 0
-                      ? "Detayları"
-                      : ""}
-                  </h3>
-                  {(oi?.order_item_special_texts.length ||
-                    oi?.order_item_special_images.length) && (
-                    <ul className="mb-4 w-full">
-                      {oi?.order_item_special_texts?.map((text, i) => (
-                        <li
-                          key={i}
-                          className="my-1 flex items-center justify-start gap-2 text-xs text-slate-400 max-sm:flex-wrap"
-                        >
-                          <span className="rounded-md border border-slate-200 bg-slate-100 p-1">
-                            {order_index + 1}. ürünün {i + 1}. özel metni:
-                          </span>
-                          {text.content}
-                        </li>
-                      ))}
-                      {oi?.order_item_special_images.length > 0 && (
-                        <li className="my-1 flex items-center justify-start gap-2 text-xs text-slate-400 max-sm:flex-col max-sm:items-start">
-                          <span className="rounded-md border border-slate-200 bg-slate-100 p-1">
-                            {order_index + 1}. ürünün özel görselleri:
-                          </span>
-                          <div className="scrollbar-hide my-2 flex items-center justify-start gap-4 overflow-x-auto">
-                            {oi?.order_item_special_images.map((image, i) => (
-                              <Image
-                                key={i}
-                                src={getImageUrlFromPath(image.image_url)}
-                                alt="image"
-                                className="h-16 w-16 rounded-lg object-contain max-sm:h-12 max-sm:w-12"
-                                width={100}
-                                height={100}
-                              />
-                            ))}
-                          </div>
-                        </li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              ) : null}
+    <div className="space-y-4">
+      <StatusBadge status={OrderItemStatus[item.status || "Processing"]} />
+      <div className="relative flex flex-col gap-4 rounded-lg bg-muted/5 sm:flex-row">
+        <div className="shrink-0 overflow-hidden rounded-md">
+          {item.product.image_url && item.product.image_url.length > 0 && (
+            <Image
+              src={getImageUrlFromPath(item.product.image_url[0])}
+              alt={item.product.name}
+              width={120}
+              height={120}
+              className="aspect-square rounded-md bg-background object-cover"
+            />
+          )}
+        </div>
+
+        <div className="flex flex-1 flex-col">
+          <div className="mb-2 flex-1">
+            <h4 className="font-medium">{item.product.name}</h4>
+            <div className="space-y-1 text-sm text-muted-foreground">
+              <Link
+                href={getTenantUrl(
+                  tenantOrder.tenant.tenants[0].name,
+                  tenantOrder.tenant.tenants[0].id.toString(),
+                )}
+                className="text-tertiary"
+              >
+                {tenantOrder.tenant.tenants[0].name}
+              </Link>
+              <p>Adet: {item.quantity}</p>
+              <p>
+                Kategori:{" "}
+                {item.product.product_categories[0]?.category.name ||
+                  "Belirtilmemiş"}
+              </p>
             </div>
-            <Link
-              href={getProductDetailUrl(oi?.product?.slug!, oi?.product_id)}
-              className="mt-2 block text-sm font-medium hover:underline"
-            >
-              {oi?.product?.name}{" "}
-              {oi?.product?.quantity > 1
-                ? `(${oi?.product?.quantity} adet)`
-                : ""}
-            </Link>
+          </div>
+
+          <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onShowDetail(item)}
+                className="h-8"
+              >
+                Detayları Görüntüle
+              </Button>
+              {renderCustomizationButton(item, order)}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onOpenMessage(tenantOrder)}
+                className="h-8"
+              >
+                Satıcıya Mesaj
+              </Button>
+              {tenantOrder.order_status?.value ===
+                OrderItemStatus.Delivered && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => onOpenReview(item)}
+                  className="h-8"
+                >
+                  Değerlendir
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
-
-export default OrderItem;

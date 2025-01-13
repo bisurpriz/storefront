@@ -51,10 +51,9 @@ export default function CartItem({
   ).length;
 
   const getEstimatedDeliveryDateText = () => {
-    return `Tahmini teslimat tarihi: ${localeFormat(
-      new Date(deliveryDate),
-      "dd MMMM yyyy",
-    )}${deliveryTime ? ` - ${deliveryTime}` : ""}`;
+    const formattedDate = localeFormat(new Date(deliveryDate), "dd MMMM yyyy");
+    const timeText = deliveryTime ? ` - ${deliveryTime}` : "";
+    return `Planlanan teslimat: ${formattedDate}${timeText}`;
   };
 
   return (
@@ -72,13 +71,16 @@ export default function CartItem({
 
         <div className="flex w-full flex-col items-start">
           <div className="flex w-full items-start justify-between">
-            <Link href={getProductDetailUrl(slug!, id)}>
+            <Link href={getProductDetailUrl(slug, id)}>
               <h2 className="line-clamp-2 w-full text-lg font-semibold text-gray-800 max-sm:text-base">
                 {name}
               </h2>
             </Link>
 
-            <button className="text-gray-400 hover:text-gray-600">
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              aria-label="Ürünü sepetten kaldır"
+            >
               <X
                 size={20}
                 onClick={() => {
@@ -106,7 +108,7 @@ export default function CartItem({
             />
 
             <div className="flex w-fit flex-nowrap items-center gap-1 self-end text-sm font-bold leading-none text-gray-500 text-primary">
-              <span className="text-slate-500">{quantity} x</span>
+              <span className="text-slate-500">{quantity} adet</span>
               <span className="text-base">₺{price.toFixed(2)}</span>
             </div>
           </div>
@@ -117,13 +119,13 @@ export default function CartItem({
                 <TooltipTrigger asChild className="whitespace-nowrap">
                   <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
                     <Gift size={14} className="mr-1" />
-                    Tasarlanabilir
+                    Kişiselleştirilebilir Ürün
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
-                    Siparişi tamamladıktan sonra, tasarlanabilir alanları
-                    doldurabilirsiniz.
+                    Siparişinizi onayladıktan sonra ürün özelleştirme
+                    seçeneklerine erişebilirsiniz.
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -133,11 +135,11 @@ export default function CartItem({
                 <TooltipTrigger asChild className="whitespace-nowrap">
                   <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
                     <TruckIcon size={14} className="mr-1" />
-                    Ücretsiz Gönderim
+                    Ücretsiz Kargo
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Bu ürün ücretsiz olarak gönderilecektir.</p>
+                  <p>Bu ürün için kargo bedeli tarafımızca karşılanacaktır.</p>
                 </TooltipContent>
               </Tooltip>
             )}

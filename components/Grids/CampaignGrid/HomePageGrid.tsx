@@ -38,14 +38,15 @@ const HomePageGrid = async () => {
               src={getImageUrlFromPath(_.path)}
               alt={_.name}
               className="h-full w-full"
-              width={isCol6 ? 800 : 600}
-              height={isCol6 ? 400 : 300}
+              width={isCol6 ? 1200 : 800}
+              quality={100}
+              height={isCol6 ? 600 : 400}
               priority={index < 3}
               objectFit="cover"
               sizes={
                 isCol6
-                  ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px"
-                  : "(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 600px"
+                  ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1200px"
+                  : "(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 800px"
               }
             />
           </Link>

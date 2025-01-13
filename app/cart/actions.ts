@@ -184,7 +184,6 @@ export const getCart = async (user_id: string) => {
   const userId = user_id || (await checkUserId());
   const { get } = await cookies();
   const guestId = get(CookieTokens.GUEST_ID)?.value;
-
   if (!userId && !guestId) {
     return {
       cartItems: [],
