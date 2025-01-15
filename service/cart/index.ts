@@ -24,6 +24,7 @@ export const GetProductsForInitialCartDocument = `
     description
     id
     price
+    slug
     discount_price
     score
     stock
