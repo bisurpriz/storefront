@@ -160,9 +160,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
             width={500}
             height={500}
             quality={isFirstImage ? 60 : 80}
-            onLoadingComplete={
-              isFirstImage ? () => setHighQualityLoaded(true) : undefined
-            }
+            onLoad={isFirstImage ? () => setHighQualityLoaded(true) : undefined}
           />
           {!isZoomed && validImages.length > 1 && (
             <>

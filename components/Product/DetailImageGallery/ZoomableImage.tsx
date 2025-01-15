@@ -13,7 +13,7 @@ interface ZoomableImageProps {
   width?: number;
   height?: number;
   quality?: number;
-  onLoadingComplete?: () => void;
+  onLoad?: () => void;
 }
 
 const shimmer = `
@@ -42,7 +42,7 @@ const ZoomableImage = ({
   width = 500,
   height = 500,
   quality,
-  onLoadingComplete,
+  onLoad,
 }: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
@@ -200,7 +200,7 @@ const ZoomableImage = ({
             fetchPriority={priority ? "high" : "auto"}
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer)}`}
-            onLoadingComplete={onLoadingComplete}
+            onLoad={onLoad}
           />
 
           {isZoomed && !isMobile && (
