@@ -12,6 +12,10 @@ const ProductCommentsPage: FC<{
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
 
+  if (!id) {
+    return null;
+  }
+
   const { product } = await BonnmarseApi.request<GetProductCommentsQuery>({
     query: GetProductCommentsDocument,
     variables: {

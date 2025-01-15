@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/contexts/CartContext";
 import { GetProductInformationQuery } from "@/graphql/queries/products/getProductById.generated";
+import useResponsive from "@/hooks/useResponsive";
 import { getTenantUrl } from "@/lib/utils";
 import { parseJson } from "@/utils/format";
 import { getPriceTR } from "@/utils/getPriceTR";
@@ -118,6 +119,8 @@ const ProductInformation = ({
     };
   }, []);
 
+  const { isMobile } = useResponsive();
+
   return (
     <div className="flex h-full w-full flex-col items-start justify-start gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
       <div className="flex w-full flex-col items-start justify-start space-y-4 rounded-lg">
@@ -131,7 +134,7 @@ const ProductInformation = ({
                 className="me-1 cursor-pointer font-bold text-sky-600"
                 aria-label={vendor.name}
                 title={vendor.name}
-                target="_blank"
+                target={isMobile ? "_self" : "_blank"}
                 rel="noopener noreferrer"
               >
                 {vendor.name}

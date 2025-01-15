@@ -11,6 +11,10 @@ const ProductActionsPage = async (props) => {
   const searchParams = await props.searchParams;
   const productId = Number(searchParams["pid"]);
 
+  if (!productId) {
+    return null;
+  }
+
   const { product } = await getProductActions(productId);
   if (!product.user_favorites || !product.user_favorites_aggregate) {
     return <ActionPageLoading />;

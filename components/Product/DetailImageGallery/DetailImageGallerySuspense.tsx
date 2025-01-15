@@ -10,7 +10,7 @@ const ProductImageGalleryLoading = () => {
             {Array.from({ length: 4 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="aspect-square h-[90px] w-[90px] shrink-0 rounded-md"
+                className="aspect-square h-[90px] w-[90px] shrink-0"
               />
             ))}
           </div>
@@ -18,7 +18,7 @@ const ProductImageGalleryLoading = () => {
 
         <div className="order-1 w-full xl:order-2 xl:w-4/5">
           <div className="mx-auto h-full max-h-[500px] w-full max-w-[500px]">
-            <Skeleton className="aspect-square h-full w-full rounded-lg" />
+            <Skeleton className="aspect-square h-full w-full" />
           </div>
         </div>
       </div>

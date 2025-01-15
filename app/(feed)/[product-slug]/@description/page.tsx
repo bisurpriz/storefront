@@ -10,10 +10,14 @@ import { Product, WithContext } from "schema-dts";
 import ProductDescriptionLoadingPage from "./loading";
 
 const ProductDescriptionPage: FC<{
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ pid: string }>;
 }> = async (props) => {
   const searchParams = await props.searchParams;
   const id = Number(searchParams["pid"]);
+
+  if (!id) {
+    return null;
+  }
 
   const { product } = await BonnmarseApi.request<GetProductDescriptionQuery>({
     query: GetProductDescriptionDocument,
