@@ -173,18 +173,13 @@ const ProductActions = ({
 
   useEffect(() => {
     if (isSameDay) {
-      const level4Places = selectedLocation?.address_components?.find((x) =>
-        x?.types?.includes("administrative_area_level_4"),
-      )?.short_name
-        ? []
-        : places?.map((place) => ({
-            placeId: place.placeId,
-            name: place.label,
-          }));
-
-      setAvailableLevel4(level4Places);
+      const level4Places = places?.map((place) => ({
+        placeId: place.placeId,
+        name: place.label,
+      }));
+      setAvailableLevel4(level4Places || []);
     }
-  }, [isSameDay, places, selectedLocation]);
+  }, [isSameDay, places]);
 
   useEffect(() => {
     if (isSameDay) {
@@ -212,9 +207,12 @@ const ProductActions = ({
   const isAddToCartDisabled =
     isButtonDisableForLocation() || isButtonDisableForTime();
 
+  const shouldShowDeliveryLocations =
+    !selectedLocation || isButtonDisableForLocation();
+
   return (
     <>
-      {availableLevel4?.length > 0 && (
+      {shouldShowDeliveryLocations && availableLevel4?.length > 0 && (
         <DeliveryLocationsAlert locations={availableLevel4} />
       )}
       {availableLevel4?.length === 0 && showPlaceWarning && (
