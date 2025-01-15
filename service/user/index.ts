@@ -1,3 +1,4 @@
+import { checkUserId } from "@/app/cart/actions";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { BonnmarseApi } from "../fetch";
 
@@ -86,7 +87,8 @@ export const GetUserAddressesDocument = `
   }
 `;
 
-export const getUserById = async (userId) => {
+export const getUserById = async () => {
+  const userId = await checkUserId();
   if (!userId) return null;
   return await BonnmarseApi.request<GetUserByIdQuery>({
     query: GetUserByIdDocument,

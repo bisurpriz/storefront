@@ -10,10 +10,9 @@ import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import { getUserById } from "@/service/user";
 import dynamic from "next/dynamic";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
-import { CookieTokens } from "./@auth/contants";
 import { getCart } from "./cart/actions";
 import { Providers } from "./providers";
 
@@ -106,9 +105,9 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
 };
 
-async function getInitialData(userId: string | undefined) {
+async function getInitialData() {
   const [userData, categoryData] = await Promise.all([
-    userId ? getUserById(userId) : null,
+    getUserById(),
     BonnmarseApi.request<GetMainCategoriesQuery>({
       query: GetCategoriesDocument,
       tags: ["getMainCategories"],
@@ -136,20 +135,12 @@ export default async function RootLayout({
   children: ReactNode;
   auth: ReactNode;
 }) {
-  const { get } = await cookies();
-
-  const [selectedPlaces, hasSeenLocationModal, userId] = [
-    get(CookieTokens.LOCATION_ID),
-    get(CookieTokens.HAS_SEEN_LOCATION_MODAL)?.value,
-    get(CookieTokens.USER_ID)?.value,
-  ];
-
   const isBot = userAgent({
     headers: await headers(),
   }).isBot;
 
   // Paralel veri çekme
-  const { userData, categoryData, cartData } = await getInitialData(userId);
+  const { userData, categoryData, cartData } = await getInitialData();
 
   return (
     <html lang="tr">
@@ -178,7 +169,7 @@ export default async function RootLayout({
             {children}
           </DesignLayout>
           {auth}
-          {!selectedPlaces && !hasSeenLocationModal && !isBot && (
+          {!isBot && (
             <Suspense fallback={null}>
               <QuarterSelectorModal />
             </Suspense>
