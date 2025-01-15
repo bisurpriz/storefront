@@ -230,6 +230,16 @@ const ProductActions = ({
         </Alert>
       )}
 
+      {isSameDay && places?.length === 0 && (
+        <Alert variant="destructive" className="mt-2">
+          <Truck />
+          <AlertTitle>Dikkat!</AlertTitle>
+          <AlertDescription>
+            Bu ürün için aynı gün teslimat bölgesi bulunmamaktadır.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="my-2 flex space-x-2">
         <Button
           size="lg"
