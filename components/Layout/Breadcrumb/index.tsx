@@ -34,6 +34,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import useResponsive from "@/hooks/useResponsive";
 import JsonLd from "@/lib/JsonLd";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import dynamic from "next/dynamic";
 
 const ITEMS_TO_DISPLAY = 3;
@@ -55,7 +56,7 @@ function BreadcrumbDropdown({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
-        className="flex items-center gap-1"
+        className="flex items-center"
         aria-label="Toggle menu"
       >
         <BreadcrumbEllipsis className="h-4 w-4" />
@@ -91,8 +92,12 @@ function BreadcrumbDrawer({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>Navigate to</DrawerTitle>
-          <DrawerDescription>Select a page to navigate to.</DrawerDescription>
+          <VisuallyHidden>
+            <DrawerTitle>Sayfa Navigasyonu</DrawerTitle>
+          </VisuallyHidden>
+          <DrawerDescription>
+            Lütfen gitmek istediğiniz sayfayı seçiniz.
+          </DrawerDescription>
         </DrawerHeader>
         <div className="grid gap-1 px-4">
           {items.slice(1, -2).map((item, index) =>
@@ -113,7 +118,7 @@ function BreadcrumbDrawer({
         </div>
         <DrawerFooter className="pt-4">
           <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline">Kapat</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -133,15 +138,17 @@ function CustomBreadcrumbItem({
       {item.href ? (
         <>
           <BreadcrumbLink
-            className="max-w-30 truncate md:max-w-none"
+            className="max-w-30 truncate whitespace-nowrap rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary md:max-w-none"
             href={item.href}
           >
             {item.label}
           </BreadcrumbLink>
-          {!isLast && <BreadcrumbSeparator />}
+          {!isLast && (
+            <BreadcrumbSeparator className="text-muted-foreground/50" />
+          )}
         </>
       ) : (
-        <BreadcrumbPage className="max-w-30 truncate md:max-w-none">
+        <BreadcrumbPage className="max-w-30 truncate whitespace-nowrap rounded-md bg-muted px-2 py-1 text-sm font-semibold text-primary md:max-w-none">
           {item.label}
         </BreadcrumbPage>
       )}
@@ -178,13 +185,18 @@ function BreadcrumbResponsive() {
   const hasHiddenItems = items.length > ITEMS_TO_DISPLAY;
 
   return (
-    <Breadcrumb className="mb-4">
+    <Breadcrumb className="mb-4 rounded-lg bg-background ring-1 ring-border/5">
       <JsonLd data={breadcrumbListData} />
       <BreadcrumbList>
         <BaseBreadcrumbItem>
-          <BreadcrumbLink href={"/"}>Anasayfa</BreadcrumbLink>
+          <BreadcrumbLink
+            href={"/"}
+            className="whitespace-nowrap rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+          >
+            Ana Sayfa
+          </BreadcrumbLink>
         </BaseBreadcrumbItem>
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator className="text-muted-foreground/50" />
 
         {hasHiddenItems && (
           <>
