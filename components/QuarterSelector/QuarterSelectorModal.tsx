@@ -29,7 +29,6 @@ export default function QuarterSelectorModal() {
     );
     const checkTrue = hasSeenLocationModal === "true";
 
-    console.log(selectedLocation, checkTrue);
     if (!selectedLocation && !checkTrue) {
       setRenderCondition(true);
 
@@ -62,7 +61,6 @@ export default function QuarterSelectorModal() {
         </DialogHeader>
         <PlacesAutocomplete
           onSelect={(place) => {
-            console.log(place);
             setIsDialogOpen(false);
           }}
         />

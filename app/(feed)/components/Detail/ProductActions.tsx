@@ -132,7 +132,7 @@ const ProductActions = ({
   const isAddToCartLoading = isPending || loading;
 
   const isButtonDisableForLocation = useCallback(() => {
-    if (!isSameDay || !selectedLocation) return !selectedLocation;
+    if (!isSameDay) return false;
 
     const getComponent = (type: string) =>
       selectedLocation?.address_components?.find((x) =>
@@ -209,6 +209,9 @@ const ProductActions = ({
     };
   }, []);
 
+  const isAddToCartDisabled =
+    isButtonDisableForLocation() || isButtonDisableForTime();
+
   return (
     <>
       {availableLevel4?.length > 0 && (
@@ -232,7 +235,7 @@ const ProductActions = ({
           size="lg"
           variant={error ? "destructive" : "default"}
           className={clsx("flex basis-4/5 items-center justify-center px-0")}
-          disabled={isButtonDisableForLocation() || isButtonDisableForTime()}
+          disabled={isAddToCartDisabled}
           onClick={handleAddToBasket}
           loading={isAddToCartLoading}
         >
