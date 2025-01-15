@@ -1,51 +1,38 @@
 "use client";
 
-import CartSteps from "./components/Cart/CartSteps";
-import EmptyCart from "./components/Cart/EmptyCart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/contexts/CartContext";
 import clsx from "clsx";
-import { usePathname } from "next/navigation";
-import { CartStepPaths } from "./constants";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { Suspense } from "react";
+import CartSteps from "./components/Cart/CartSteps";
+import EmptyCart from "./components/Cart/EmptyCart";
+import { CartStepPaths } from "./constants";
 
 const DynamicSummary = dynamic(
   () => import("./components/Cart/Summary/CartSummary"),
 );
-const renderSuspense = () => {
+
+const CartSummarySkeleton = () => {
   return (
-    <div className="w-full animate-pulse rounded-lg bg-slate-600 p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
-            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
+    <div className="w-full rounded-lg bg-slate-600 p-4">
+      {[1, 2, 3].map((index) => (
+        <div
+          key={index}
+          className={`${index !== 3 ? "mb-4" : ""} flex items-center justify-between`}
+        >
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-14 w-14 rounded-lg" />
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-24 rounded-lg" />
+              <Skeleton className="h-4 w-16 rounded-lg" />
+            </div>
           </div>
+          <Skeleton className="h-8 w-8 rounded-lg" />
         </div>
-        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
-      </div>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
-            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
-          </div>
-        </div>
-        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-14 w-14 rounded-lg bg-slate-700"></div>
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-24 rounded-lg bg-slate-700"></div>
-            <div className="h-4 w-16 rounded-lg bg-slate-700"></div>
-          </div>
-        </div>
-        <div className="h-8 w-8 rounded-lg bg-slate-700"></div>
-      </div>
-      <div className="mt-4 h-8 w-full rounded-lg bg-slate-700" />
+      ))}
+      <Skeleton className="mt-4 h-8 w-full rounded-lg" />
     </div>
   );
 };
@@ -78,7 +65,7 @@ const CartTemplate = ({ children }: { children: React.ReactNode }) => {
         >
           {children}
         </div>
-        <Suspense fallback={renderSuspense()}>
+        <Suspense fallback={<CartSummarySkeleton />}>
           <DynamicSummary />
         </Suspense>
       </div>

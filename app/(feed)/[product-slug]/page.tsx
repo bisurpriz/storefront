@@ -18,7 +18,7 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
 
   if (!id) {
     console.error("Product ID not found");
-    return notFound();
+    return null;
   }
 
   const { product } = await BonnmarseApi.request<GetProductImagesQuery>({
