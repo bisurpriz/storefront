@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import Cookies from "js-cookie";
+import { CookieTokens } from "@/app/@auth/contants";
 import {
   Dialog,
   DialogContent,
@@ -11,23 +11,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import PlacesAutocomplete from "./PlacesAutocomplete";
-import { CookieTokens } from "@/app/@auth/contants";
+import Cookies from "js-cookie";
 import { Button } from "../ui/button";
+import PlacesAutocomplete from "./PlacesAutocomplete";
 
 export default function QuarterSelectorModal() {
   const [mounted, setMounted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [renderCondition, setRenderCondition] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
-    Cookies.set(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true", {
-      expires: new Date(new Date().getTime() + 1000 * 60 * 60),
-    });
+    const selectedLocation = Cookies.get(CookieTokens.LOCATION_ID);
+    const hasSeenLocationModal = Cookies.get(
+      CookieTokens.HAS_SEEN_LOCATION_MODAL,
+    );
+    const checkTrue = hasSeenLocationModal === "true";
+
+    if (!selectedLocation && !checkTrue) {
+      setRenderCondition(true);
+
+      Cookies.set(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true", {
+        expires: new Date(new Date().getTime() + 1000 * 60 * 60),
+      });
+    }
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted || !renderCondition) return null;
 
   return (
     <Dialog
@@ -48,7 +59,11 @@ export default function QuarterSelectorModal() {
             Siparişinizin gönderileceği adresi seçin veya arayın.
           </DialogDescription>
         </DialogHeader>
-        <PlacesAutocomplete />
+        <PlacesAutocomplete
+          onSelect={(place) => {
+            setIsDialogOpen(false);
+          }}
+        />
 
         <div className="flex flex-wrap justify-center gap-1 text-xs">
           <span className="whitespace-nowrap text-center text-gray-500">

@@ -15,7 +15,7 @@ type ImageProps = {
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   sizes?: string;
   quality?: number;
-  onLoadingComplete?: () => void;
+  onLoad?: () => void;
   onClick?: () => void;
 };
 
@@ -30,7 +30,7 @@ export const Image = ({
   objectFit = "cover",
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   quality,
-  onLoadingComplete,
+  onLoad,
   onClick,
 }: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -94,7 +94,7 @@ export const Image = ({
         onError={() => setHasError(true)}
         onLoad={() => {
           setIsLoading(false);
-          onLoadingComplete?.();
+          onLoad?.();
         }}
         onClick={onClick}
         quality={quality}

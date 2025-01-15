@@ -344,22 +344,20 @@ export const CartProvider = ({
 
     if (!isSameDay) return true;
 
-    const [startHour] = deliveryTime.split("-")[0].trim().split(":");
+    const [endHour] = deliveryTime.split("-")[1].trim().split(":");
     const deliveryDateTime = new Date(deliveryDate);
     deliveryDateTime.setHours(
-      parseInt(startHour) - HOURS_BEFORE_DELIVERY_END,
+      parseInt(endHour) - HOURS_BEFORE_DELIVERY_END,
       0,
       0,
       0,
     );
-
     return new Date() <= deliveryDateTime;
   };
 
   useEffect(() => {
     const invalidItems = cartState.cartItems.filter((item) => {
       if (!item.deliveryDate || !item.deliveryTime) return false;
-
       const today = new Date();
       const deliveryDay = new Date(item.deliveryDate);
       const isSameDay =

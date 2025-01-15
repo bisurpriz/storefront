@@ -6,8 +6,6 @@ import { Heart, Star, View, X } from "lucide-react";
 import Image from "next/image";
 import { getUserFavorites } from "./actions";
 
-export const dynamic = "force-dynamic";
-
 const FavoritesPage = async () => {
   const { user_favorite, user_favorite_aggregate } = await getUserFavorites({
     offset: 0,

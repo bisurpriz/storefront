@@ -13,7 +13,7 @@ interface ZoomableImageProps {
   width?: number;
   height?: number;
   quality?: number;
-  onLoadingComplete?: () => void;
+  onLoad?: () => void;
 }
 
 const shimmer = `
@@ -42,7 +42,7 @@ const ZoomableImage = ({
   width = 500,
   height = 500,
   quality,
-  onLoadingComplete,
+  onLoad,
 }: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
@@ -184,12 +184,12 @@ const ZoomableImage = ({
             fill
             className={cn(
               "object-contain transition-transform duration-200",
-              isMobileZoomed && "scale-[2.5]",
+              isMobileZoomed && "scale-[2.2]",
             )}
             style={
               isMobileZoomed
                 ? {
-                    transform: `scale(2.5) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                    transform: `scale(2.2) translate(${panPosition.x}px, ${panPosition.y}px)`,
                   }
                 : undefined
             }
@@ -200,15 +200,15 @@ const ZoomableImage = ({
             fetchPriority={priority ? "high" : "auto"}
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer)}`}
-            onLoadingComplete={onLoadingComplete}
+            onLoad={onLoad}
           />
 
           {isZoomed && !isMobile && (
             <div
-              className="pointer-events-none absolute z-10 h-1/3 w-1/3 border border-primary/50 bg-white/10"
+              className="pointer-events-none absolute z-10 h-[20%] w-[20%] border border-primary/50 bg-white/10"
               style={{
-                left: `${position.x - 16.5}%`,
-                top: `${position.y - 16.5}%`,
+                left: `${position.x - 10}%`,
+                top: `${position.y - 10}%`,
               }}
             />
           )}
@@ -230,7 +230,7 @@ const ZoomableImage = ({
                 src={src}
                 alt={alt}
                 fill
-                className="object-cover"
+                className="object-contain"
                 sizes={`${width * 2}px`}
                 quality={100}
                 loading="lazy"
