@@ -133,6 +133,7 @@ query getProductsForInitialCart($ids: [bigint!]) {
     price
     discount_price
     score
+    slug
     stock
     image_url
     delivery_time_ranges
