@@ -177,7 +177,7 @@ const ProductActions = ({
         x?.types?.includes("administrative_area_level_4"),
       )?.short_name
         ? []
-        : places.map((place) => ({
+        : places?.map((place) => ({
             placeId: place.placeId,
             name: place.label,
           }));
