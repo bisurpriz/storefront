@@ -20,7 +20,7 @@ export default function DesignLayout({
         {/* Scrollable content area */}
         <div className="absolute inset-0 flex flex-col overflow-hidden overflow-y-auto">
           <main className="relative flex-1">
-            <div className="container mx-auto max-w-7xl px-2 py-6 max-md:mb-20 max-sm:py-2 sm:px-4">
+            <div className="container mx-auto max-w-7xl px-2 py-6 pt-2 max-md:mb-20 max-sm:py-2 sm:px-4">
               {children}
             </div>
           </main>
