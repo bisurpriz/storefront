@@ -1,8 +1,6 @@
 import CouponCard from "../components/CouponCard";
 import { getUserCoupons } from "./actions";
 
-export const dynamic = "force-dynamic";
-
 const CouponsPage = async () => {
   const { coupons } = await getUserCoupons();
   return (

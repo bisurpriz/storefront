@@ -13,7 +13,14 @@ import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { Heart, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useProgress } from "react-transition-progress";
 import { validateLocation } from "../utils/validateLocation";
 import DeliveryLocationsAlert from "./DeliveryLocationsAlert";
@@ -38,26 +45,30 @@ interface Props {
 
 const ProductActions = ({
   productId,
-  isFavorite,
-  favoriteCount,
+  isFavorite: initialIsFavorite,
   places,
   selectedLocation,
   delivery_type,
   delivery_time_ranges,
 }: Props) => {
-  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+  const [isFavoriteState, setIsFavoriteState] = useState(initialIsFavorite);
   const [showPlaceWarning, setShowPlaceWarning] = useState(false);
   const [availableLevel4, setAvailableLevel4] = useState<
     Array<{ placeId: string; name: string }>
   >([]);
-  const { user } = useUser();
-  const [isPending, startTransition] = useTransition();
-  const isSameDay = delivery_type === "SAME_DAY";
+  const [error, setError] = useState(false);
 
+  const { user } = useUser();
   const { addToCart, loading, deliveryTime } = useCart();
   const { push } = useRouter();
+  const [isPending, startTransition] = useTransition();
   const startProgress = useProgress();
-  const handleFavorite = () => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const isSameDay = delivery_type === "SAME_DAY";
+  const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
+
+  const handleFavorite = useCallback(() => {
     startTransition(() => {
       startProgress();
       if (!user) {
@@ -65,172 +76,138 @@ const ProductActions = ({
         return;
       }
 
-      if (isFavoriteState) {
-        removeFromFavorites({ productId });
-        setIsFavoriteState(false);
-
-        return;
-      }
-
-      addToFavorites({ productId }).catch(() => {
-        setIsFavoriteState(false);
+      const action = isFavoriteState ? removeFromFavorites : addToFavorites;
+      action({ productId }).catch(() => {
+        setIsFavoriteState(!isFavoriteState);
       });
-      setIsFavoriteState(true);
+      setIsFavoriteState(!isFavoriteState);
     });
-  };
+  }, [isFavoriteState, user, productId, push, startProgress]);
 
-  const [error, setError] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>(null);
+  const getCartPayload = useCallback(() => {
+    const basePayload = {
+      id: productId,
+      type: "add" as const,
+      quantity: 1,
+      deliveryLocation: selectedLocation,
+    };
 
-  useEffect(() => {
-    startTransition(() => {
-      validateLocation(
-        selectedLocation,
-        places,
-        isSameDay,
-        setShowPlaceWarning,
-      );
-    });
-  }, [selectedLocation]);
-
-  const getAvailableLevel4 = (
-    places: {
-      addressComponents: {
-        [key: string]: string;
-      };
-      label: string;
-      placeId: string;
-    }[],
-  ) => {
-    const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
-      x?.types?.includes("administrative_area_level_4"),
-    )?.short_name;
-
-    return selectedLevel4
-      ? []
-      : places.map((place) => ({
-          placeId: place.placeId,
-          name: place.label,
-        }));
-  };
-
-  useEffect(() => {
-    if (isSameDay) {
-      setAvailableLevel4(getAvailableLevel4(places));
-    }
-  }, [places, selectedLocation]);
-
-  const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
-
-  const handleAddToBasket = () => {
-    if (
-      isSameDay &&
-      selectedLocation &&
-      deliveryTime.day &&
-      deliveryTime.hour &&
-      hasDeliveryTimes &&
-      places?.length > 0
-    ) {
-      addToCart({
-        deliveryLocation: selectedLocation,
-        id: productId,
-        type: "add",
-        deliveryDate: deliveryTime.day.toISOString(),
-        deliveryTime: deliveryTime.hour,
-        quantity: 1,
-      });
-
-      return;
+    if (!isSameDay || !hasDeliveryTimes) {
+      return basePayload;
     }
 
-    if (isSameDay && !hasDeliveryTimes) {
-      addToCart({
-        id: productId,
-        type: "add",
-        quantity: 1,
-        deliveryLocation: selectedLocation,
-      });
-      return;
-    }
+    return {
+      ...basePayload,
+      deliveryDate: deliveryTime.day?.toISOString(),
+      deliveryTime: deliveryTime.hour,
+    };
+  }, [productId, selectedLocation, isSameDay, hasDeliveryTimes, deliveryTime]);
 
-    if (!isSameDay) {
-      addToCart({
-        id: productId,
-        type: "add",
-        quantity: 1,
-        deliveryLocation: selectedLocation,
-      });
-      return;
-    }
+  const handleAddToBasket = useCallback(() => {
+    const isValidDeliveryTime =
+      !hasDeliveryTimes || (deliveryTime.day && deliveryTime.hour);
+    const isValidLocation =
+      !isSameDay || (selectedLocation && places?.length > 0);
 
-    if (isSameDay && hasDeliveryTimes && selectedLocation) {
-      addToCart({
-        id: productId,
-        type: "add",
-        quantity: 1,
-        deliveryDate: deliveryTime.day.toISOString(),
-        deliveryTime: deliveryTime.hour,
-        deliveryLocation: selectedLocation,
+    if (isValidDeliveryTime && isValidLocation) {
+      startTransition(() => {
+        startProgress();
+        addToCart(getCartPayload());
       });
       return;
     }
 
     setError(true);
+    timeoutRef.current = setTimeout(() => setError(false), 3000);
+  }, [
+    hasDeliveryTimes,
+    isSameDay,
+    selectedLocation,
+    places,
+    addToCart,
+    getCartPayload,
+    startProgress,
+  ]);
 
-    timeoutRef.current = setTimeout(() => {
-      setError(false);
-    }, 3000);
-  };
+  const isAddToCartLoading = isPending || loading;
 
-  const isButtonDisableForLocation = () => {
-    if (!isSameDay) return false;
-    if (isSameDay && !selectedLocation) return true;
+  const isButtonDisableForLocation = useCallback(() => {
+    if (!isSameDay || !selectedLocation) return !selectedLocation;
 
-    const selectedLevel4 = selectedLocation?.address_components?.find((x) =>
-      x?.types?.includes("administrative_area_level_4"),
-    )?.short_name;
+    const getComponent = (type: string) =>
+      selectedLocation?.address_components?.find((x) =>
+        x?.types?.includes(type),
+      )?.short_name;
 
-    const selectedLevel1 = selectedLocation?.address_components?.find((x) =>
-      x?.types?.includes("administrative_area_level_1"),
-    )?.short_name;
-
-    const selectedLevel2 = selectedLocation?.address_components?.find((x) =>
-      x?.types?.includes("administrative_area_level_2"),
-    )?.short_name;
+    const selectedLevel4 = getComponent("administrative_area_level_4");
+    const selectedLevel2 = getComponent("administrative_area_level_2");
+    const selectedLevel1 = getComponent("administrative_area_level_1");
 
     if (selectedLevel4) {
-      const isLevel4Available = places?.some(
+      return !places?.some(
         (place) =>
           place?.addressComponents["administrative_area_level_4"] ===
           selectedLevel4,
       );
+    }
 
-      if (!isLevel4Available) return true;
-    } else if (selectedLevel2) {
-      const isLevel2Available = places?.some(
+    if (selectedLevel2) {
+      return !places?.some(
         (place) =>
           place?.addressComponents["administrative_area_level_2"] ===
           selectedLevel2,
       );
-
-      if (!isLevel2Available) return true;
     }
-    {
-      const isLevel1Available = places?.some(
-        (place) =>
-          place?.addressComponents["administrative_area_level_1"] ===
-          selectedLevel1,
-      );
 
-      if (!isLevel1Available) return true;
-    }
-  };
+    return !places?.some(
+      (place) =>
+        place?.addressComponents["administrative_area_level_1"] ===
+        selectedLevel1,
+    );
+  }, [isSameDay, selectedLocation, places]);
 
-  const isButtonDisableForTime = () => {
+  const isButtonDisableForTime = useCallback(() => {
     if (!isSameDay) return false;
-    if (isSameDay && !deliveryTime.day) return true;
-    if (isSameDay && !deliveryTime.hour) return true;
-  };
+    return hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour);
+  }, [isSameDay, hasDeliveryTimes, deliveryTime]);
+
+  useEffect(() => {
+    if (isSameDay) {
+      const level4Places = selectedLocation?.address_components?.find((x) =>
+        x?.types?.includes("administrative_area_level_4"),
+      )?.short_name
+        ? []
+        : places.map((place) => ({
+            placeId: place.placeId,
+            name: place.label,
+          }));
+
+      setAvailableLevel4(level4Places);
+    }
+  }, [isSameDay, places, selectedLocation]);
+
+  useEffect(() => {
+    if (isSameDay) {
+      startTransition(() => {
+        validateLocation(
+          selectedLocation,
+          places,
+          isSameDay,
+          setShowPlaceWarning,
+        );
+      });
+    }
+  }, [selectedLocation, places, isSameDay]);
+
+  const locationValidationInProgress = isPending && isSameDay;
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -239,10 +216,13 @@ const ProductActions = ({
       )}
       {availableLevel4?.length === 0 && showPlaceWarning && (
         <Alert variant="destructive" className="mt-2">
-          <Truck />
+          <Truck
+            className={locationValidationInProgress ? "animate-spin" : ""}
+          />
           <AlertTitle>Dikkat !</AlertTitle>
           <AlertDescription>
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
+            {locationValidationInProgress && " (Kontrol ediliyor...)"}
           </AlertDescription>
         </Alert>
       )}
@@ -254,7 +234,7 @@ const ProductActions = ({
           className={clsx("flex basis-4/5 items-center justify-center px-0")}
           disabled={isButtonDisableForLocation() || isButtonDisableForTime()}
           onClick={handleAddToBasket}
-          loading={loading}
+          loading={isAddToCartLoading}
         >
           {isSameDay && places?.length === 0 && !hasDeliveryTimes
             ? "Bu ürün için gönderim yeri mevcut değil"
@@ -273,6 +253,7 @@ const ProductActions = ({
             )
           }
           onClick={handleFavorite}
+          loading={isPending}
         />
       </div>
       {error && (
@@ -289,4 +270,4 @@ const ProductActions = ({
   );
 };
 
-export default ProductActions;
+export default memo(ProductActions);

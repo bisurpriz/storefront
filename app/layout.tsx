@@ -120,7 +120,7 @@ async function getInitialData(userId: string | undefined) {
     }),
   ]);
 
-  const cartData = await getCart(userData?.user_by_pk?.id);
+  const cartData = await getCart();
 
   return {
     userData,
