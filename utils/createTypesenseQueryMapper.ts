@@ -57,6 +57,7 @@ export const createTypesenseQueryMapper = async (
 
   filter_by.push("is_active:true");
   filter_by.push("is_approved:true");
+  filter_by.push("tenant.tenants.is_active:=[true]");
 
   if (selectedLocation) {
     const areaLevel1 = selectedLocation?.address_components?.find((x) =>
