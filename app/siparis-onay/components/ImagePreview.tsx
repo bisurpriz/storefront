@@ -41,7 +41,8 @@ const ImagePreview = ({
       status: approveStatus,
     });
 
-    if (response.approved) {
+
+    if (response?.data?.update_order_item?.returning?.[0]?.is_images_approved) {
       setApproveButtonDisabled(true);
       toast.success(
         "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
