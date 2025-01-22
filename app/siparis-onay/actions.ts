@@ -34,7 +34,7 @@ export const approveOrderImages = async ({
   status: boolean;
 }): Promise<any> => {
   const response = await axios.post(
-    process.env.NEXT_PUBLIC_APPROVE_IMAGE_LAMBDA_URL,
+    process.env.REST_API_URL + "/order/approve-order-item-images",
     {
       note,
       status,
