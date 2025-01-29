@@ -9,8 +9,8 @@ const handle = app.getRequestHandler();
 const PORT = process.env.PORT || 3001;
 
 if (!fs.existsSync("./certs/.capath")) {
-  const macOsCommand = chalk.greenBright("sudo yarn ssl:setup");
-  const linuxCommand = chalk.greenBright("yarn ssl:setup");
+  const macOsCommand = chalk.greenBright("sudo pnpm run ssl:setup");
+  const linuxCommand = chalk.greenBright("pnpm run ssl:setup");
 
   console.error(chalk.red("\nError: Missing SSL certificates\n"));
 

@@ -143,7 +143,6 @@ const FooterLogo = memo(
         alt={alt}
         width={150}
         height={40}
-        loading="lazy"
         className="h-10 w-[150px] object-contain"
         sizes="150px"
       />
