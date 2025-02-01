@@ -3,17 +3,11 @@
 import { useEffect, useState } from "react";
 
 import { CookieTokens } from "@/app/@auth/contants";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
 import Cookies from "js-cookie";
 import { Button } from "../ui/button";
 import PlacesAutocomplete from "./PlacesAutocomplete";
+import { ResponsiveDialog } from "../ui/responsive-dialog";
 
 export default function QuarterSelectorModal() {
   const [mounted, setMounted] = useState(false);
@@ -24,65 +18,33 @@ export default function QuarterSelectorModal() {
     setMounted(true);
 
     const selectedLocation = Cookies.get(CookieTokens.LOCATION_ID);
-    const hasSeenLocationModal = Cookies.get(
-      CookieTokens.HAS_SEEN_LOCATION_MODAL,
-    );
-    const checkTrue = hasSeenLocationModal === "true";
 
-    if (!selectedLocation && !checkTrue) {
+    if (!selectedLocation) {
       setRenderCondition(true);
-
-      Cookies.set(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true", {
-        expires: new Date(new Date().getTime() + 1000 * 60 * 60),
-      });
     }
   }, []);
 
   if (!mounted || !renderCondition) return null;
 
   return (
-    <Dialog
+    <ResponsiveDialog
       open={isDialogOpen}
-      onOpenChange={setIsDialogOpen}
-      modal={true}
-      aria-label="Quarter Selector Modal"
+      onOpenChange={() => {}}
+      title="Gönderim Yeri Seçin"
+      description="Mahalle, okul, hastane gibi yakınınızdaki önemli noktaları aratarak gönderim adresinizi seçebilirsiniz."
+      className="h-[50%] w-full max-w-xl"
     >
-      <DialogContent
-        onPointerDownOutside={(e) => e.preventDefault()}
-        className="w-full max-w-xl"
-      >
-        <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold">
-            Gönderim Yeri Seçin
-          </DialogTitle>
-          <DialogDescription className="text-center">
-            Siparişinizin gönderileceği adresi seçin veya arayın.
-          </DialogDescription>
-        </DialogHeader>
-        <PlacesAutocomplete
-          onSelect={(place) => {
-            setIsDialogOpen(false);
-          }}
-        />
-
-        <div className="flex flex-wrap justify-center gap-1 text-xs">
-          <span className="whitespace-nowrap text-center text-gray-500">
-            İhtiyaçlarınıza uygun ürünleri listeleyebilmemiz için
-          </span>
-          <strong className="whitespace-nowrap text-center text-gray-500 underline">
-            adresinizi seçin
-          </strong>
-        </div>
-        <DialogFooter>
-          <Button
-            onClick={() => setIsDialogOpen(false)}
-            className="justify-self-end"
-            variant="link"
-          >
-            Şimdi Değil
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <PlacesAutocomplete
+        onSelect={(place) => {
+          setIsDialogOpen(false);
+        }}
+      />
+      <div className="mt-4 gap-1 text-sm text-gray-500 md:mt-2">
+        <span className="text-center">
+          Gönderim adresinize göre en uygun ürünleri listeleyebilmemiz için
+          lütfen adresinizi seçin
+        </span>
+      </div>
+    </ResponsiveDialog>
   );
 }
