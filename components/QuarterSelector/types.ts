@@ -8,24 +8,19 @@ export interface IPlace {
   }[];
 }
 
-export type PlacesAutocompleteProps = {
+export interface PlacesAutocompleteProps {
   placeholder?: string;
   dontChangeCookie?: boolean;
-  onSelect?: (prediction?: IPlace | null) => void;
+  onSelect?: (place: IPlace | null) => void;
   defaultValue?: IPlace;
-};
+}
 
-export interface SearchInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-  onFocus: () => void;
-  onBlur: () => void;
+export interface SearchInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  isLoading?: boolean;
+  isGeocoding?: boolean;
+  isFocused?: boolean;
   onClear: () => void;
-  placeholder?: string;
-  isLoading: boolean;
-  isFocused: boolean;
-  isGeocoding: boolean;
 }
 
 export interface PredictionsListProps {
@@ -33,4 +28,5 @@ export interface PredictionsListProps {
   isOpen: boolean;
   activeIndex: number;
   onSelect: (prediction: any) => void;
+  variant?: "dropdown" | "sheet";
 }

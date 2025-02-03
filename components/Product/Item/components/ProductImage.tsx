@@ -40,7 +40,7 @@ export const ProductImage = ({
   return (
     <div
       className={cn(
-        "group relative aspect-[3/4] h-52 w-full flex-shrink-0 lg:h-56 2xl:h-60",
+        "group relative aspect-[3/4] h-52 w-full flex-shrink-0 items-center justify-center lg:h-56 2xl:h-60",
         "overflow-hidden",
         className,
       )}
@@ -66,7 +66,7 @@ export const ProductImage = ({
         src={getImageUrlFromPath(imageUrl)}
         alt={alt}
         className={cn(
-          "h-full w-full rounded-t-lg object-cover transition-transform duration-300 ease-out",
+          "h-full w-full rounded-t-lg object-contain transition-transform duration-300 ease-out",
         )}
         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
         width={300}
