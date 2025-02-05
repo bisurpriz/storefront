@@ -22,14 +22,14 @@ const QuarterSelectorModal = dynamic(
   { ssr: true },
 );
 
-// Font optimizasyonu
+// Font optimizasyonu - preload stratejisi ile
 const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
   preload: true,
   adjustFontFallback: true,
-  display: "swap", // Font yüklenene kadar sistem fontunu kullan
+  display: "optional", // Font yüklenirken sistem fontunu kullan, hazır olunca değiştir
 });
 
 const manrope = Manrope({
@@ -38,7 +38,7 @@ const manrope = Manrope({
   variable: "--font-manrope",
   preload: true,
   adjustFontFallback: true,
-  display: "swap", // Font yüklenene kadar sistem fontunu kullan
+  display: "optional", // Font yüklenirken sistem fontunu kullan, hazır olunca değiştir
 });
 
 // Metadata'yı optimize et

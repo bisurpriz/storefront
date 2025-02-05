@@ -71,7 +71,12 @@ export const Image = ({
   }
 
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div
+      className={cn(
+        "relative flex items-center justify-center overflow-hidden bg-gray-100",
+        className,
+      )}
+    >
       {isLoading && (
         <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200" />
       )}

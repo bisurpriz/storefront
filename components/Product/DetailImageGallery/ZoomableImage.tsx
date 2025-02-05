@@ -233,7 +233,6 @@ const ZoomableImage = ({
                 className="object-contain"
                 sizes={`${width * 2}px`}
                 quality={100}
-                loading="lazy"
                 style={{
                   transform: `scale(2.5)`,
                   transformOrigin: `${position.x}% ${position.y}%`,

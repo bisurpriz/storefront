@@ -1,6 +1,8 @@
 "use client";
 
 import { CookieTokens } from "@/app/@auth/contants";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import useResponsive from "@/hooks/useResponsive";
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -22,7 +24,7 @@ export const publishLocationChange = (locationData: any) => {
 };
 
 // Location değişikliklerini dinleyen hook
-const useLocationChange = (callback: (locationData: any) => void) => {
+export const useLocationChange = (callback: (locationData: any) => void) => {
   useEffect(() => {
     // İlk değeri al
     const currentLocation = Cookies.get(CookieTokens.LOCATION_ID);
@@ -32,6 +34,8 @@ const useLocationChange = (callback: (locationData: any) => void) => {
       } catch (error) {
         console.error("Cookie parse error:", error);
       }
+    } else {
+      callback(null);
     }
 
     // Event listener ekle
@@ -69,18 +73,22 @@ export default function PlacesAutocomplete({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [shouldSearch, setShouldSearch] = useState(true);
   const ignoreNextChange = useRef(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { isMobile } = useResponsive();
 
   const { refresh } = useRouter();
 
   // Location değişikliklerini dinle
   useLocationChange(
     useCallback((locationData) => {
-      if (ignoreNextChange.current) {
-        ignoreNextChange.current = false;
-        return;
+      if (locationData) {
+        if (ignoreNextChange.current) {
+          ignoreNextChange.current = false;
+          return;
+        }
+        setInput(locationData.label);
+        setHasInteracted(false);
       }
-      setInput(locationData.label);
-      setHasInteracted(false);
     }, []),
   );
 
@@ -120,7 +128,13 @@ export default function PlacesAutocomplete({
     });
   }, [debouncedInput, getLocation, hasInteracted, shouldSearch]);
 
-  const ref = useClickAway<HTMLDivElement>(() => {
+  const ref = useClickAway<HTMLDivElement>((e) => {
+    // Tıklanan element bir buton ise click away'i engelle
+    const target = e.target as HTMLElement;
+    if (target.tagName === "BUTTON" || target.closest("button")) {
+      return;
+    }
+
     setIsOpen(false);
     setActiveIndex(-1);
   });
@@ -245,26 +259,109 @@ export default function PlacesAutocomplete({
     }
   }, [dontChangeCookie, onSelect, refresh]);
 
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsSheetOpen(open);
+    if (!open) {
+      setPredictions([]);
+      setActiveIndex(-1);
+    }
+  }, []);
+
+  const handleMobileSelect = useCallback(
+    (prediction: any) => {
+      handleSelect(prediction);
+      setIsSheetOpen(false);
+    },
+    [handleSelect],
+  );
+
   return (
     <div className="relative w-full" ref={ref}>
-      <SearchInput
-        value={input}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={() => setIsFocused(false)}
-        onClear={handleClear}
-        placeholder={placeholder}
-        isLoading={isPending}
-        isFocused={isFocused}
-        isGeocoding={isGeocoding}
-      />
-      <PredictionsList
-        predictions={predictions}
-        isOpen={isOpen}
-        activeIndex={activeIndex}
-        onSelect={handleSelect}
-      />
+      <div className="relative w-full">
+        <SearchInput
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          onFocus={(e) => {
+            handleFocus();
+            if (isMobile) {
+              e.preventDefault();
+              setIsSheetOpen(true);
+            }
+          }}
+          onBlur={() => !isMobile && setIsFocused(false)}
+          onClear={handleClear}
+          placeholder={placeholder}
+          isLoading={isPending}
+          isFocused={isFocused}
+          isGeocoding={isGeocoding}
+          className="w-full"
+        />
+
+        {/* Desktop Predictions */}
+
+        <div className="absolute left-0 right-0 z-50">
+          <PredictionsList
+            predictions={predictions}
+            isOpen={isOpen}
+            activeIndex={activeIndex}
+            onSelect={handleSelect}
+          />
+        </div>
+      </div>
+
+      {/* Mobile Bottom Sheet */}
+      {/*    <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
+        <SheetContent side="bottom" className="h-[85vh] rounded-t-[20px] p-0">
+          <div className="flex h-full flex-col">
+            <div className="sticky top-0 z-10 border-b bg-white px-4 py-3">
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-lg font-semibold">Adres Seç</h2>
+                <button
+                  onClick={() => setIsSheetOpen(false)}
+                  className="rounded-full p-2 hover:bg-gray-100"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <SearchInput
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                onBlur={() => setIsFocused(false)}
+                onClear={handleClear}
+                placeholder={placeholder}
+                isLoading={isPending}
+                isFocused={true}
+                isGeocoding={isGeocoding}
+                autoFocus
+              />
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <PredictionsList
+                predictions={predictions}
+                isOpen={true}
+                activeIndex={activeIndex}
+                onSelect={handleMobileSelect}
+                variant="sheet"
+              />
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet> */}
     </div>
   );
 }
