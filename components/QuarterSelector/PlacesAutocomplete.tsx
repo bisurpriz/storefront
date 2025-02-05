@@ -24,7 +24,7 @@ export const publishLocationChange = (locationData: any) => {
 };
 
 // Location değişikliklerini dinleyen hook
-const useLocationChange = (callback: (locationData: any) => void) => {
+export const useLocationChange = (callback: (locationData: any) => void) => {
   useEffect(() => {
     // İlk değeri al
     const currentLocation = Cookies.get(CookieTokens.LOCATION_ID);
@@ -34,6 +34,8 @@ const useLocationChange = (callback: (locationData: any) => void) => {
       } catch (error) {
         console.error("Cookie parse error:", error);
       }
+    } else {
+      callback(null);
     }
 
     // Event listener ekle
@@ -79,12 +81,14 @@ export default function PlacesAutocomplete({
   // Location değişikliklerini dinle
   useLocationChange(
     useCallback((locationData) => {
-      if (ignoreNextChange.current) {
-        ignoreNextChange.current = false;
-        return;
+      if (locationData) {
+        if (ignoreNextChange.current) {
+          ignoreNextChange.current = false;
+          return;
+        }
+        setInput(locationData.label);
+        setHasInteracted(false);
       }
-      setInput(locationData.label);
-      setHasInteracted(false);
     }, []),
   );
 
@@ -295,20 +299,19 @@ export default function PlacesAutocomplete({
         />
 
         {/* Desktop Predictions */}
-        {!isMobile && (
-          <div className="absolute left-0 right-0 z-50">
-            <PredictionsList
-              predictions={predictions}
-              isOpen={isOpen}
-              activeIndex={activeIndex}
-              onSelect={handleSelect}
-            />
-          </div>
-        )}
+
+        <div className="absolute left-0 right-0 z-50">
+          <PredictionsList
+            predictions={predictions}
+            isOpen={isOpen}
+            activeIndex={activeIndex}
+            onSelect={handleSelect}
+          />
+        </div>
       </div>
 
       {/* Mobile Bottom Sheet */}
-      <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
+      {/*    <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="bottom" className="h-[85vh] rounded-t-[20px] p-0">
           <div className="flex h-full flex-col">
             <div className="sticky top-0 z-10 border-b bg-white px-4 py-3">
@@ -358,7 +361,7 @@ export default function PlacesAutocomplete({
             </div>
           </div>
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
     </div>
   );
 }

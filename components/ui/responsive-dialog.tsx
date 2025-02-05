@@ -25,6 +25,7 @@ interface ResponsiveDialogProps {
   title?: string;
   description?: string;
   className?: string;
+  dismissible?: boolean;
 }
 
 export function ResponsiveDialog({
@@ -34,12 +35,13 @@ export function ResponsiveDialog({
   title,
   description,
   className,
+  dismissible = true,
 }: ResponsiveDialogProps) {
   const { isMobile } = useResponsive();
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
+      <Drawer dismissible={dismissible} open={open} onOpenChange={onOpenChange}>
         <DrawerContent className={cn("px-4", className)}>
           {(title || description) && (
             <DrawerHeader className="text-left">

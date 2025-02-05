@@ -1,38 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { CookieTokens } from "@/app/@auth/contants";
-
-import Cookies from "js-cookie";
-import { Button } from "../ui/button";
-import PlacesAutocomplete from "./PlacesAutocomplete";
+import PlacesAutocomplete, { useLocationChange } from "./PlacesAutocomplete";
 import { ResponsiveDialog } from "../ui/responsive-dialog";
 
 export default function QuarterSelectorModal() {
-  const [mounted, setMounted] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
-  const [renderCondition, setRenderCondition] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-
-    const selectedLocation = Cookies.get(CookieTokens.LOCATION_ID);
-
-    if (!selectedLocation) {
-      setRenderCondition(true);
-    }
-  }, []);
-
-  if (!mounted || !renderCondition) return null;
+  useLocationChange((location) => {
+    setIsDialogOpen(!location);
+  });
 
   return (
     <ResponsiveDialog
       open={isDialogOpen}
+      dismissible={false}
       onOpenChange={() => {}}
       title="Gönderim Yeri Seçin"
-      description="Mahalle, okul, hastane gibi yakınınızdaki önemli noktaları aratarak gönderim adresinizi seçebilirsiniz."
-      className="h-[50%] w-full max-w-xl"
+      description="Mahalle, okul, hastane gibi yakınızdaki önemli noktaları aratarak gönderim adresinizi seçebilirsiniz."
+      className="h-[50%] w-full max-w-xl md:flex md:flex-col"
     >
       <PlacesAutocomplete
         onSelect={(place) => {

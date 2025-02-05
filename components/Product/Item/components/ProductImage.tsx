@@ -25,7 +25,7 @@ export const ProductImage = ({
     return (
       <div
         className={cn(
-          "relative aspect-[3/4] h-52 w-full flex-shrink-0 lg:h-56 2xl:h-60",
+          "relative aspect-[3/4] w-full h-full flex-shrink-0 lg:h-56 2xl:h-60",
           "animate-pulse bg-gray-100",
           className,
         )}
@@ -40,7 +40,7 @@ export const ProductImage = ({
   return (
     <div
       className={cn(
-        "group relative aspect-[3/4] h-52 w-full flex-shrink-0 items-center justify-center lg:h-56 2xl:h-60",
+        "group relative aspect-[3/4] w-full h-full flex-shrink-0 items-center justify-center lg:h-56 2xl:h-60",
         "overflow-hidden",
         className,
       )}
