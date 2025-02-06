@@ -33,9 +33,14 @@ export default function RemainingTime({
           <Clock className="h-4 w-4 text-orange-600" />
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-slate-700">
-            {!isTodayDisabled && "Aynı gün teslimat için kalan sipariş süresi:"}
-          </span>
+          <motion.span 
+            className="text-sm font-medium bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {!isTodayDisabled && "Bugün teslimat için kalan sipariş süresi:"}
+          </motion.span>
           <div className="rounded-md bg-gradient-to-r from-orange-500 to-orange-600 px-2.5 py-1 shadow-sm">
             <span className="text-sm font-semibold tabular-nums text-white">
               {remainTime.hours > 0 && (
