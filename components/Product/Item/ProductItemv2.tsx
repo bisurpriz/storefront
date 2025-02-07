@@ -78,9 +78,9 @@ const ProductItemv2 = memo(
 
           <div className="flex flex-col p-2 sm:p-4">
             <div className="mb-2">
-              <p className="line-clamp-2 h-10 text-sm text-gray-600">
+              <p className="h-10 text-sm text-gray-600 line-clamp-2">
                 {tenantName && (
-                  <span className="mr-1 inline-block font-medium text-gray-900">
+                  <span className="inline-block mr-1 font-medium text-gray-900">
                     {tenantName}
                   </span>
                 )}
@@ -120,7 +120,7 @@ const ProductItemv2 = memo(
         rel={!isMobile ? "noopener noreferrer" : undefined}
         aria-label={`${tenantName} - ${name}`}
       >
-        <Card className="group relative">
+        <Card className="relative group">
           {cardContent}
           <AddToFavorite
             isFav={isFavorite}
