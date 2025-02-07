@@ -25,7 +25,7 @@ export const ProductImage = ({
     return (
       <div
         className={cn(
-          "relative aspect-[3/4] w-full h-full flex-shrink-0 lg:h-56 2xl:h-60",
+          "relative aspect-[3/4] h-full w-full flex-shrink-0 lg:h-56 2xl:h-60",
           "animate-pulse bg-gray-100",
           className,
         )}
@@ -40,15 +40,15 @@ export const ProductImage = ({
   return (
     <div
       className={cn(
-        "group relative aspect-[3/4] w-full h-full flex-shrink-0 items-center justify-center lg:h-56 2xl:h-60",
+        "group relative aspect-[3/4] h-full w-full flex-shrink-0 items-center justify-center lg:h-56 2xl:h-60",
         "overflow-hidden",
         className,
       )}
     >
       {/* Badges */}
-      <div className="absolute left-2 top-2 z-10 flex flex-col gap-1">
+      <div className="absolute z-10 flex flex-col gap-1 left-2 top-2">
         {isCustomizable && (
-          <Badge variant="new" size="sm" className="w-fit justify-start">
+          <Badge variant="new" size="sm" className="justify-start w-fit">
             🎨 Tasarlanabilir
           </Badge>
         )}
@@ -56,7 +56,7 @@ export const ProductImage = ({
           <Badge
             variant="freeShipping"
             size="sm"
-            className="w-fit justify-start"
+            className="justify-start w-fit"
           >
             🚚 Aynı Gün Teslimat
           </Badge>
