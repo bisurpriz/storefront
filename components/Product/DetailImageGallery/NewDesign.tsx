@@ -109,7 +109,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
                   : "border-transparent hover:border-primary/50",
               )}
             >
-              <div className="relative h-full w-full">
+              <div className="relative w-full h-full">
                 <Image
                   src={imageUrl}
                   alt={`Product thumbnail ${index + 1}`}
@@ -118,7 +118,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
                   sizes="90px"
                   priority={false}
                   className={cn(
-                    "h-auto w-auto object-cover transition-opacity duration-300",
+                    "aspect-square h-auto w-auto object-contain transition-opacity duration-300",
                   )}
                 />
               </div>
@@ -146,7 +146,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
               alt={`Product image ${selectedIndex + 1} placeholder`}
               width={500}
               height={500}
-              className="absolute inset-0 h-full w-full object-contain blur-sm"
+              className="absolute inset-0 object-contain w-full h-full blur-sm"
               sizes="(min-width: 1280px) 500px, 100vw"
               priority
               quality={10}
@@ -167,18 +167,18 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white"
+                className="absolute z-10 -translate-y-1/2 rounded-full left-2 top-1/2 bg-white/80 hover:bg-white"
                 onClick={handlePrevious}
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"
                 size="icon"
-                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white"
+                className="absolute z-10 -translate-y-1/2 rounded-full right-2 top-1/2 bg-white/80 hover:bg-white"
                 onClick={handleNext}
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="w-4 h-4" />
               </Button>
             </>
           )}
