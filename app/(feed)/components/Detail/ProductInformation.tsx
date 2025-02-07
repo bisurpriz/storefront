@@ -125,7 +125,7 @@ const ProductInformation = ({
     <div className="flex h-full w-full flex-col items-start justify-start gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
       <div className="flex w-full flex-col items-start justify-start space-y-4 rounded-lg">
         <div>
-          <h1 className="w-full text-2xl text-gray-700">{name}</h1>
+          <h1 className="w-full text-2xl capitalize text-gray-700">{name}</h1>
           {vendor && (
             <div className="flex items-center text-xs">
               <span className="me-1 font-semibold text-gray-700">Satıcı:</span>
