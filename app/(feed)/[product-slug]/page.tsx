@@ -8,7 +8,9 @@ import { getImageUrlFromPath } from "@/lib/utils";
 import { BonnmarseApi } from "@/service/fetch";
 import { GetProductImagesDocument } from "@/service/product/images";
 import { typesenseClient } from "@/typesense/client";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { userAgent } from "next/server";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
 
@@ -45,10 +47,16 @@ const ProductImageCarouselPage: FC<PageProps> = async (props) => {
     image: getImageUrlFromPath(product.image_url[0]),
   };
 
+  const { device } = userAgent({
+    headers: await headers(),
+  });
+
+  const isMobile = device.type === "mobile";
+
   return (
     <>
       <ProductSetter initialData={fullProductData as ProductType} />
-      <NewDesignGallery images={product.image_url} />
+      <NewDesignGallery images={product.image_url} isMobile={isMobile} />
       <JsonLd data={productData} />
     </>
   );

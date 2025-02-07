@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -14,6 +15,8 @@ interface ZoomableImageProps {
   height?: number;
   quality?: number;
   onLoad?: () => void;
+  className?: string;
+  isLoading?: boolean;
 }
 
 const shimmer = `
@@ -43,6 +46,8 @@ const ZoomableImage = ({
   height = 500,
   quality,
   onLoad,
+  className,
+  isLoading = false,
 }: ZoomableImageProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [isMobileZoomed, setIsMobileZoomed] = useState(false);
@@ -170,6 +175,7 @@ const ZoomableImage = ({
           className={cn(
             "relative h-full w-full",
             isMobile ? "touch-none" : "cursor-zoom-in",
+            isLoading && "animate-pulse bg-gray-100",
           )}
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
@@ -178,6 +184,11 @@ const ZoomableImage = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleDoubleTap}
         >
+          {isLoading && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary/70" />
+            </div>
+          )}
           <Image
             src={src}
             alt={alt}
@@ -185,6 +196,7 @@ const ZoomableImage = ({
             className={cn(
               "object-contain transition-transform duration-200",
               isMobileZoomed && "scale-[2.2]",
+              isLoading && "opacity-0",
             )}
             style={
               isMobileZoomed

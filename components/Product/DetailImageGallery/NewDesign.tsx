@@ -1,23 +1,34 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import { Image } from "@/components/ui/image";
 import { cn, getImageUrlFromPath } from "@/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import ZoomableImage from "./ZoomableImage";
 
 interface DetailImageGalleryProps {
   images: string[];
   className?: string;
+  isMobile?: boolean;
 }
 
-const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+const DetailImageGallery = ({
+  images,
+  className,
+  isMobile,
+}: DetailImageGalleryProps) => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [isPending, startTransition] = useTransition();
   const [isZoomed, setIsZoomed] = useState(false);
   const [highQualityLoaded, setHighQualityLoaded] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const thumbnailsRef = useRef<HTMLDivElement>(null);
 
   const validImages = useMemo(
     () =>
@@ -35,43 +46,19 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
       }),
     [images],
   );
-  const handlePrevious = useCallback(() => {
-    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : validImages.length - 1));
-  }, [validImages.length]);
-
-  const handleNext = useCallback(() => {
-    setSelectedIndex((prev) => (prev < validImages.length - 1 ? prev + 1 : 0));
-  }, [validImages.length]);
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") handlePrevious();
-      if (e.key === "ArrowRight") handleNext();
-    },
-    [handleNext, handlePrevious],
-  );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+    if (!api) return;
 
-  const scrollThumbnailIntoView = useCallback(() => {
-    if (!thumbnailsRef.current) return;
-    const thumbnails = thumbnailsRef.current.children;
-    if (thumbnails[selectedIndex]) {
-      thumbnails[selectedIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "nearest",
+    api.on("select", () => {
+      startTransition(() => {
+        setCurrent(api.selectedScrollSnap());
+        setHighQualityLoaded(false);
       });
-    }
-  }, [selectedIndex]);
+    });
+  }, [api]);
 
-  useEffect(() => {
-    scrollThumbnailIntoView();
-  }, [selectedIndex, scrollThumbnailIntoView]);
-
+  // Preload images
   useEffect(() => {
     validImages.forEach((src) => {
       const img = document.createElement("img");
@@ -79,7 +66,7 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
     });
   }, [validImages]);
 
-  // İlk görseli düşük kalitede yükle
+  // Load first image in low quality
   useEffect(() => {
     if (validImages.length > 0) {
       const imageUrl = getImageUrlFromPath(validImages[0]);
@@ -91,118 +78,143 @@ const DetailImageGallery = ({ images, className }: DetailImageGalleryProps) => {
 
   const thumbnails = useMemo(
     () => (
-      <div
-        ref={thumbnailsRef}
-        className="order-2 flex h-[100px] w-full gap-2 overflow-x-auto xl:order-1 xl:h-[500px] xl:w-[100px] xl:flex-col xl:overflow-y-auto"
-      >
-        {validImages.map((src, index) => {
-          const imageUrl = getImageUrlFromPath(src);
-
-          return (
-            <button
-              key={src}
-              onClick={() => setSelectedIndex(index)}
-              className={cn(
-                "group relative aspect-square h-[90px] w-[90px] shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all",
-                selectedIndex === index
-                  ? "border-primary"
-                  : "border-transparent hover:border-primary/50",
-              )}
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  src={imageUrl}
-                  alt={`Product thumbnail ${index + 1}`}
-                  width={90}
-                  height={90}
-                  sizes="90px"
-                  priority={false}
-                  className={cn(
-                    "aspect-square h-auto w-auto object-contain transition-opacity duration-300",
-                  )}
-                />
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    ),
-    [validImages, selectedIndex],
-  );
-
-  const mainImage = useMemo(() => {
-    const currentImage = validImages[selectedIndex];
-    const imageUrl = getImageUrlFromPath(currentImage);
-    const isFirstImage = selectedIndex === 0;
-
-    return (
-      <div className="order-1 w-full xl:order-2 xl:w-4/5">
-        <div
-          className={cn("relative mx-auto aspect-square w-full max-w-[500px]")}
+      <div className="order-2 mt-2 xl:order-1 xl:mr-2 xl:mt-0">
+        <Carousel
+          opts={{
+            align: "start",
+            axis: "x",
+          }}
+          className="w-full xl:w-[100px]"
+          orientation={!isMobile ? "vertical" : "horizontal"}
         >
-          {isFirstImage && !highQualityLoaded && (
-            <Image
-              src={`${imageUrl}?w=50&q=10`}
-              alt={`Product image ${selectedIndex + 1} placeholder`}
-              width={500}
-              height={500}
-              className="absolute inset-0 object-contain w-full h-full blur-sm"
-              sizes="(min-width: 1280px) 500px, 100vw"
-              priority
-              quality={10}
-            />
-          )}
-          <ZoomableImage
-            src={imageUrl}
-            alt={`Product image ${selectedIndex + 1}`}
-            onZoomChange={setIsZoomed}
-            priority={isFirstImage}
-            width={500}
-            height={500}
-            quality={isFirstImage ? 60 : 80}
-            onLoad={isFirstImage ? () => setHighQualityLoaded(true) : undefined}
-          />
-          {!isZoomed && validImages.length > 1 && (
+          <CarouselContent
+            className={cn("-ml-2 xl:-ml-0 xl:-mt-2", "flex xl:flex-col")}
+          >
+            {validImages.map((src, index) => {
+              const imageUrl = getImageUrlFromPath(src);
+
+              return (
+                <CarouselItem
+                  key={src}
+                  className={cn(
+                    "pl-2 xl:pl-0 xl:pt-2",
+                    "shrink-0 basis-[90px]",
+                  )}
+                >
+                  <button
+                    onClick={() => api?.scrollTo(index)}
+                    className={cn(
+                      "group relative aspect-square h-[90px] w-[90px] shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all",
+                      current === index
+                        ? "border-primary"
+                        : "border-transparent hover:border-primary/50",
+                      isPending && "opacity-50",
+                    )}
+                    disabled={isPending}
+                  >
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={imageUrl}
+                        alt={`Product thumbnail ${index + 1}`}
+                        width={90}
+                        height={90}
+                        sizes="90px"
+                        priority={false}
+                        className="object-contain w-auto h-auto transition-opacity duration-300 aspect-square"
+                      />
+                    </div>
+                  </button>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          {validImages.length > 4 && (
             <>
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute z-10 -translate-y-1/2 rounded-full left-2 top-1/2 bg-white/80 hover:bg-white"
-                onClick={handlePrevious}
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute z-10 -translate-y-1/2 rounded-full right-2 top-1/2 bg-white/80 hover:bg-white"
-                onClick={handleNext}
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+              <CarouselPrevious className="hidden xl:-top-8 xl:left-1/2 xl:flex xl:-translate-x-1/2 xl:rotate-90" />
+              <CarouselNext className="hidden xl:-bottom-8 xl:left-1/2 xl:flex xl:-translate-x-1/2 xl:rotate-90" />
             </>
           )}
-        </div>
+        </Carousel>
+      </div>
+    ),
+    [validImages, current, isPending, api],
+  );
+
+  const mainCarousel = useMemo(() => {
+    return (
+      <div className="order-1 w-full xl:order-2">
+        <Carousel
+          setApi={setApi}
+          className="w-full"
+          opts={{
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {validImages.map((src, index) => {
+              const imageUrl = getImageUrlFromPath(src);
+              const isFirstImage = index === 0;
+
+              return (
+                <CarouselItem key={src}>
+                  <div
+                    className={cn(
+                      "relative mx-auto aspect-square w-full max-w-[500px]",
+                      isPending && "animate-pulse bg-gray-200",
+                    )}
+                  >
+                    {isFirstImage && !highQualityLoaded && (
+                      <Image
+                        src={`${imageUrl}?w=50&q=10`}
+                        alt={`Product image ${index + 1} placeholder`}
+                        width={500}
+                        height={500}
+                        className={cn(
+                          "absolute inset-0 h-full w-full object-contain blur-sm",
+                          isPending && "opacity-50",
+                        )}
+                        sizes="(min-width: 1280px) 500px, 100vw"
+                        priority
+                        quality={10}
+                      />
+                    )}
+                    <ZoomableImage
+                      src={imageUrl}
+                      alt={`Product image ${index + 1}`}
+                      onZoomChange={setIsZoomed}
+                      priority={isFirstImage}
+                      width={500}
+                      height={500}
+                      quality={isFirstImage ? 60 : 80}
+                      onLoad={
+                        isFirstImage
+                          ? () => setHighQualityLoaded(true)
+                          : undefined
+                      }
+                      isLoading={isPending}
+                    />
+                  </div>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          {!isZoomed && validImages.length > 1 && (
+            <>
+              <CarouselPrevious className="absolute z-10 left-2" />
+              <CarouselNext className="absolute z-10 right-2" />
+            </>
+          )}
+        </Carousel>
       </div>
     );
-  }, [
-    validImages,
-    selectedIndex,
-    isZoomed,
-    handlePrevious,
-    handleNext,
-    highQualityLoaded,
-  ]);
+  }, [validImages, isPending, isZoomed, highQualityLoaded]);
 
   if (!validImages.length) return null;
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("mx-auto flex flex-col gap-2 xl:flex-row", className)}
-    >
+    <div className={cn("mx-auto flex flex-col xl:flex-row", className)}>
       {thumbnails}
-      {mainImage}
+      {mainCarousel}
     </div>
   );
 };
