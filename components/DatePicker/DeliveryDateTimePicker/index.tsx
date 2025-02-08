@@ -522,11 +522,6 @@ export default function DeliveryDateTimePicker({
             {selectedTimeRange && formatTimeRange(selectedTimeRange)}
           </strong>{" "}
           saatleri arasında tarafınıza teslim edilecektir.
-          {isSpecialDay(date)?.type === "gift" && (
-            <div className="mt-1 text-xs text-pink-600">
-              Not: {isSpecialDay(date)?.description}
-            </div>
-          )}
         </div>
       )}
     </div>
