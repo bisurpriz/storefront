@@ -208,7 +208,9 @@ const ProductActions = ({
     isButtonDisableForLocation() || isButtonDisableForTime();
 
   const shouldShowDeliveryLocations =
-    !selectedLocation || isButtonDisableForLocation();
+    !selectedLocation?.address_components.find((x) =>
+      x?.types?.some((y) => y === "administrative_area_level_4"),
+    ) || isButtonDisableForLocation();
 
   return (
     <>
@@ -238,7 +240,7 @@ const ProductActions = ({
         </Alert>
       )}
 
-      <div className="my-2 flex space-x-2">
+      <div className="flex my-2 space-x-2">
         <Button
           size="lg"
           variant={error ? "destructive" : "default"}
@@ -254,13 +256,13 @@ const ProductActions = ({
 
         <Button
           size="lg"
-          className="flex basis-1/5 items-center justify-center px-0"
+          className="flex items-center justify-center px-0 basis-1/5"
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <Heart className="h-8 w-8 fill-red-500 text-white" />
+              <Heart className="w-8 h-8 text-white fill-red-500" />
             ) : (
-              <Heart className="h-8 w-8 text-red-500" />
+              <Heart className="w-8 h-8 text-red-500" />
             )
           }
           onClick={handleFavorite}
