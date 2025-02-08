@@ -128,12 +128,6 @@ const DetailImageGallery = ({
               );
             })}
           </CarouselContent>
-          {validImages.length > 4 && (
-            <>
-              <CarouselPrevious className="hidden xl:-top-8 xl:left-1/2 xl:flex xl:-translate-x-1/2 xl:rotate-90" />
-              <CarouselNext className="hidden xl:-bottom-8 xl:left-1/2 xl:flex xl:-translate-x-1/2 xl:rotate-90" />
-            </>
-          )}
         </Carousel>
       </div>
     ),
