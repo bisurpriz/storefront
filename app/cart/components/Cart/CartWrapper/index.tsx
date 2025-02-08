@@ -57,15 +57,7 @@ const CartWrapper = () => {
         )}
       </AnimatePresence>
 
-      {cartItems && cartItems.length > 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <ProductGroup products={tenantGroupedProducts} />
-        </motion.div>
-      ) : (
+      {cartItems && cartItems.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
