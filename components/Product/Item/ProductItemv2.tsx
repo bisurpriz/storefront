@@ -80,8 +80,15 @@ const ProductItemv2 = memo(
             <div className="mb-2">
               <p className="h-10 text-sm text-gray-600 line-clamp-2">
                 {tenantName && (
-                  <span className="inline-block mr-1 font-medium text-gray-900">
-                    {tenantName}
+                  <span className="inline-block font-medium text-gray-900">
+                    {tenantName
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((word) => (
+                        <span key={word} className="mr-1">
+                          {word}
+                        </span>
+                      ))}
                   </span>
                 )}
                 {name}
