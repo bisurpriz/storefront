@@ -2,15 +2,21 @@
 
 import { addDays, format, isBefore, parse } from "date-fns";
 import { tr } from "date-fns/locale";
-import { ChevronDown } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Sheet,
   SheetContent,
@@ -25,6 +31,7 @@ import { localeFormat } from "@/utils/format";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { HOURS_BEFORE_DELIVERY_END, TimeRange } from "../HourSelect/utils";
+import { getSpecialDayStyle, isSpecialDay } from "./utils";
 
 type DeliveryDateTimePickerProps = {
   deliveryTimes: TimeRange[] | null;
@@ -46,11 +53,15 @@ export default function DeliveryDateTimePicker({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
   const { isTablet } = useResponsive();
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const tomorrow = addDays(new Date(), 1);
+  const twoWeeksFromTomorrow = addDays(tomorrow, 14);
 
   const days = [
     { label: "Bugün", value: new Date() },
     { label: "Yarın", value: addDays(new Date(), 1) },
-    { value: addDays(new Date(), 2) },
+    { label: "Takvim", value: null },
   ].map((day) => ({
     ...day,
     label: day.label || localeFormat(day.value, "EEEE"),
@@ -84,7 +95,7 @@ export default function DeliveryDateTimePicker({
     if (days && date)
       setSelectedButtonIndex(
         days.findIndex(
-          (day) => date.toDateString() === day.value.toDateString(),
+          (day) => date.toDateString() === day.value?.toDateString(),
         ),
       );
   }, [date]);
@@ -129,7 +140,7 @@ export default function DeliveryDateTimePicker({
             </Button>
           </SheetTrigger>
 
-          <SheetContent side="bottom" className="max-h-[50vh] sm:h-auto">
+          <SheetContent side="bottom" className="sm:h-auto">
             <SheetHeader>
               <SheetTitle>Teslimat Saati Planlaması</SheetTitle>
             </SheetHeader>
@@ -286,27 +297,176 @@ export default function DeliveryDateTimePicker({
     );
   };
 
+  const getCalendarButtonText = () => {
+    if (selectedButtonIndex === -1) {
+      const specialDay = isSpecialDay(date);
+      if (specialDay?.type === "gift") {
+        return (
+          <span className="flex items-center gap-1">
+            {specialDay.buttonStyle?.icon}
+            <span>{format(date, "d MMMM", { locale: tr })}</span>
+          </span>
+        );
+      }
+      return format(date, "d MMMM", { locale: tr });
+    }
+    return "Takvim";
+  };
+
+  const CalendarContent = () => (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={(newDate) => {
+        if (newDate) {
+          setDate(newDate);
+          setSelectedTimeRange(null);
+          setSelectedButtonIndex(-1);
+          setIsCalendarOpen(false);
+        }
+      }}
+      disabled={(date) => {
+        return isBefore(date, tomorrow) || date > twoWeeksFromTomorrow || false;
+      }}
+      modifiers={{
+        special: (date) => isSpecialDay(date) !== undefined,
+        gift: (date) => isSpecialDay(date)?.type === "gift",
+      }}
+      modifiersStyles={{
+        special: {
+          fontWeight: "bold",
+          border: "2px solid var(--primary)",
+          backgroundColor: "var(--primary-light)",
+        },
+        gift: {
+          border: "2px solid #ec4899",
+          background: "linear-gradient(to right, #fce7f3, #fdf2f8)",
+          color: "#be185d",
+          fontWeight: "bold",
+        },
+      }}
+      components={{
+        DayContent: (props) => {
+          const specialDay = isSpecialDay(props.date);
+          return (
+            <div className="relative h-full w-full">
+              <div className="flex items-center justify-center gap-0.5">
+                {specialDay?.type === "gift" && (
+                  <span className="text-[10px]">
+                    {specialDay.buttonStyle?.icon}
+                  </span>
+                )}
+                <span>{format(props.date, "d")}</span>
+              </div>
+              {specialDay && (
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 right-0 truncate px-0.5 text-[8px] leading-tight",
+                    specialDay.type === "gift"
+                      ? "bg-pink-100 text-pink-700"
+                      : "bg-primary/10 text-primary-foreground",
+                  )}
+                  title={`${specialDay.title}${
+                    specialDay.description ? ` - ${specialDay.description}` : ""
+                  }`}
+                >
+                  {specialDay.title}
+                </div>
+              )}
+            </div>
+          );
+        },
+      }}
+      initialFocus
+      className="w-full"
+    />
+  );
+
   return (
     <div className="w-full space-y-2">
       <div className="grid grid-cols-3 gap-2">
-        {days.map((day, index) => (
-          <Button
-            key={day.label}
-            variant={
-              date.toDateString() === day.value.toDateString()
-                ? "default"
-                : "soft"
-            }
-            className="col-span-1 min-h-[40px] px-2 text-sm lg:h-auto lg:py-4 lg:text-lg"
-            onClick={() => {
-              setDate(day.value);
-              setSelectedTimeRange(null);
-              setSelectedButtonIndex(index);
-            }}
-          >
-            {day.label}
-          </Button>
-        ))}
+        {days.map((day, index) => {
+          if (index === 2) {
+            return isTablet ? (
+              <Sheet
+                key="calendar-sheet"
+                open={isCalendarOpen}
+                onOpenChange={setIsCalendarOpen}
+              >
+                <SheetTrigger asChild>
+                  <Button
+                    variant={selectedButtonIndex === -1 ? "default" : "soft"}
+                    className={cn(
+                      "col-span-1 min-h-[40px] px-2 text-sm lg:h-auto lg:py-4 lg:text-lg",
+                      selectedButtonIndex === -1 && {
+                        ...getSpecialDayStyle(isSpecialDay(date)),
+                      },
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {getCalendarButtonText()}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  side="bottom"
+                  className="h-[80vh] p-0 sm:max-w-none"
+                >
+                  <SheetHeader className="p-6 pb-2">
+                    <SheetTitle>Teslimat Tarihi Seçin</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex h-full flex-col overflow-y-auto px-6 pb-6">
+                    <CalendarContent />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <Popover
+                key="calendar-popover"
+                open={isCalendarOpen}
+                onOpenChange={setIsCalendarOpen}
+              >
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={selectedButtonIndex === -1 ? "default" : "soft"}
+                    className={cn(
+                      "col-span-1 min-h-[40px] px-2 text-sm lg:h-auto lg:py-4 lg:text-lg",
+                      selectedButtonIndex === -1 && {
+                        ...getSpecialDayStyle(isSpecialDay(date)),
+                      },
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {getCalendarButtonText()}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <CalendarContent />
+                </PopoverContent>
+              </Popover>
+            );
+          }
+
+          return (
+            <Button
+              key={day.label}
+              variant={
+                date.toDateString() === day.value?.toDateString()
+                  ? "default"
+                  : "soft"
+              }
+              className="col-span-1 min-h-[40px] px-2 text-sm lg:h-auto lg:py-4 lg:text-lg"
+              onClick={() => {
+                if (day.value) {
+                  setDate(day.value);
+                  setSelectedTimeRange(null);
+                  setSelectedButtonIndex(index);
+                }
+              }}
+            >
+              {day.label}
+            </Button>
+          );
+        })}
         <motion.div
           key={selectedButtonIndex}
           className={cn(
@@ -318,7 +478,8 @@ export default function DeliveryDateTimePicker({
               "col-start-2 col-end-3": selectedButtonIndex === 1,
             },
             {
-              "col-start-3 col-end-4": selectedButtonIndex === 2,
+              "col-start-3 col-end-4":
+                selectedButtonIndex === -1 || selectedButtonIndex === 2,
             },
           )}
           initial={{ y: -16, opacity: 0 }}
@@ -339,9 +500,19 @@ export default function DeliveryDateTimePicker({
         <div
           className={cn(
             "rounded-lg border p-2 text-start font-manrope text-sm shadow-sm",
-            "bg-gradient-to-bl from-primary/20 to-accent text-slate-600",
+            {
+              "bg-gradient-to-bl from-primary/20 to-accent text-slate-600":
+                !isSpecialDay(date)?.type,
+              "border-pink-200 bg-gradient-to-r from-pink-100 to-pink-50 text-pink-700":
+                isSpecialDay(date)?.type === "gift",
+            },
           )}
         >
+          {isSpecialDay(date)?.type === "gift" && (
+            <span className="mr-2 text-lg">
+              {isSpecialDay(date)?.buttonStyle?.icon}
+            </span>
+          )}
           Sayın müşterimiz, siparişiniz{" "}
           <strong className="whitespace-nowrap">
             {format(date, "d MMMM yyyy", { locale: tr })}
@@ -351,6 +522,11 @@ export default function DeliveryDateTimePicker({
             {selectedTimeRange && formatTimeRange(selectedTimeRange)}
           </strong>{" "}
           saatleri arasında tarafınıza teslim edilecektir.
+          {isSpecialDay(date)?.type === "gift" && (
+            <div className="mt-1 text-xs text-pink-600">
+              Not: {isSpecialDay(date)?.description}
+            </div>
+          )}
         </div>
       )}
     </div>
