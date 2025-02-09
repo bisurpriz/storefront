@@ -10,10 +10,10 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { FC, useCallback, useState } from "react";
-import { toast } from "sonner";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 
@@ -105,9 +105,10 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
             response.data.error as keyof typeof AuthErrorMessages
           ];
 
-        toast.error(errorMessage, {
-          position: "bottom-right",
-          id: "register-error",
+        toast({
+          title: errorMessage,
+          description: "Bir hata oluştu. Lütfen tekrar deneyin.",
+          variant: "destructive",
           duration: 1500,
         });
         return;
@@ -125,25 +126,27 @@ const RegisterForm: FC<RegisterFormProps> = ({ onSuccessfulRegister }) => {
               loginResponse.data.error as keyof typeof AuthErrorMessages
             ];
 
-          toast.error(errorMessage, {
-            position: "bottom-right",
-            id: "login-error",
+          toast({
+            title: errorMessage,
+            description: "Bir hata oluştu. Lütfen tekrar deneyin.",
+            variant: "destructive",
             duration: 1500,
           });
           return;
         }
 
-        toast.success("Kayıt başarılı", {
-          position: "bottom-right",
-          id: "register-success",
+        toast({
+          title: "Kayıt başarılı",
           duration: 1500,
         });
         onSuccessfulRegister?.(true);
       }
     } catch (error) {
       console.error("Register error:", error);
-      toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {
-        position: "bottom-right",
+      toast({
+        title: "Bir hata oluştu. Lütfen tekrar deneyin.",
+        description: "Bir hata oluştu. Lütfen tekrar deneyin.",
+        variant: "destructive",
         duration: 3000,
       });
     } finally {

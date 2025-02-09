@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
 import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
+import { toast } from "@/hooks/use-toast";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { approveOrderImages } from "../actions";
 
 const ImagePreview = ({
@@ -25,13 +25,12 @@ const ImagePreview = ({
 
   const onSubmit = async (approveStatus: boolean) => {
     if (!note && !approveStatus) {
-      toast.error(
-        "Lütfen ürün görseli ile ilgili itiraz nedeninizi detaylı olarak belirtiniz.",
-        {
-          position: "bottom-right",
-          duration: 2000,
-        },
-      );
+      toast({
+        title:
+          "Lütfen ürün görseli ile ilgili itiraz nedeninizi detaylı olarak belirtiniz.",
+        variant: "destructive",
+        duration: 2000,
+      });
       return;
     }
 
@@ -41,24 +40,19 @@ const ImagePreview = ({
       status: approveStatus,
     });
 
-
     if (response?.data?.update_order_item?.returning?.[0]?.is_images_approved) {
       setApproveButtonDisabled(true);
-      toast.success(
-        "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
-        {
-          position: "bottom-right",
-          duration: 2000,
-        },
-      );
+      toast({
+        title:
+          "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
+        duration: 2000,
+      });
     } else {
-      toast.success(
-        "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecek.",
-        {
-          position: "bottom-right",
-          duration: 2000,
-        },
-      );
+      toast({
+        title:
+          "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecek.",
+        duration: 2000,
+      });
     }
   };
 

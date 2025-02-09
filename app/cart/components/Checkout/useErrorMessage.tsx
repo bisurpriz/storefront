@@ -1,14 +1,11 @@
-import useResponsive from "@/hooks/useResponsive";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 
 export const useErrorMessage = () => {
-  const { isDesktop } = useResponsive();
-
   const showToast = (message: string) => {
-    toast.error(message, {
+    toast({
+      title: message,
+      variant: "destructive",
       duration: 5000,
-      position: isDesktop ? "top-right" : "bottom-center",
-      id: "error-toast",
     });
   };
 

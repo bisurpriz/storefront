@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogContext";
 import { useOrderCustomizableModal } from "@/contexts/OrderCustomizableModal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
+import { toast } from "@/hooks/use-toast";
 import { useOrderFilters } from "@/hooks/useOrderFilters";
 import { localeFormat } from "@/utils/format";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { createReview } from "../../reviews/actions";
 import CreateReview from "../../reviews/components/CreateReview/CreateReview";
 import { OrderFiltersComponent } from "./OrderFilters";
@@ -49,7 +49,9 @@ export default function NewOrderDesign({ order }: NewOrderDesignProps) {
     });
     if (response?.created_at) {
       closeDialog();
-      toast.success("Değerlendirme başarıyla eklendi.");
+      toast({
+        title: "Değerlendirme başarıyla eklendi.",
+      });
     }
     push("/account/reviews");
   };

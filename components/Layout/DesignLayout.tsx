@@ -1,6 +1,6 @@
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import MobileBottomNav from "../MobileBottomNav";
-import { Toaster } from "../ui/sonner";
+import { Toaster } from "../ui/toaster";
 import Footer from "./Footer";
 import Header from "./Header";
 

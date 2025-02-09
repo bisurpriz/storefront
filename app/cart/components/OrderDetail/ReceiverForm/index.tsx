@@ -11,6 +11,7 @@ import { IPlace } from "@/common/types/Product/product";
 import { AutoCompleteOption } from "@/components/Autocomplete";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { toast } from "@/hooks/use-toast";
 import { parseJson } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,7 +24,6 @@ import {
   useTransition,
 } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { orderDetailSchema } from "../schema";
 import { NotesStep } from "./components/NotesStep";
 import { ProgressBar } from "./components/ProgressBar";
@@ -154,9 +154,10 @@ export default function ReceiverForm() {
         const errorStep = findFirstErrorStep(errors);
         if (errorStep !== -1) {
           setStep(errorStep);
-          toast.error(
-            `Lütfen ${STEPPER_DATA[errorStep - 1].label} bilgilerini kontrol ediniz`,
-          );
+          toast({
+            title: `Lütfen ${STEPPER_DATA[errorStep - 1].label} bilgilerini kontrol ediniz`,
+            variant: "destructive",
+          });
           return;
         }
       }
@@ -166,7 +167,10 @@ export default function ReceiverForm() {
         push(CartStepPaths.CHECKOUT);
       });
     } catch (error) {
-      toast.error("Bir hata oluştu. Lütfen tekrar deneyiniz.");
+      toast({
+        title: "Bir hata oluştu. Lütfen tekrar deneyiniz.",
+        variant: "destructive",
+      });
     }
   });
 
@@ -249,9 +253,10 @@ export default function ReceiverForm() {
       const isStepValid = await trigger(fieldsToValidate);
 
       if (!isStepValid) {
-        toast.error(
-          `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
-        );
+        toast({
+          title: `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
+          variant: "destructive",
+        });
         return;
       }
 

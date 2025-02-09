@@ -1,11 +1,10 @@
 "use client";
 
+import Modal from "@/components/Modal";
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
-import clsx from "clsx";
+import { toast } from "@/hooks/use-toast";
 import { ReactNode, createContext, useContext, useState } from "react";
 import OrderCustomize from "./OrderCustomize";
-import { toast } from "sonner";
-import Modal from "@/components/Modal";
 
 interface OrderCustomizableModalType {
   onOpen: (orderItem: GetUserOrdersQuery["order"][0]) => void;
@@ -36,12 +35,17 @@ export const OrderCustomizableModalProvider = ({
 
   const onStatusChange = (status: "succes" | "fail") => {
     if (status === "succes") {
-      toast.success("Siparişiniz başarıyla özelleştirildi.");
+      toast({
+        title: "Siparişiniz başarıyla özelleştirildi.",
+      });
       setSelectedOrder(null);
     }
 
     if (status === "fail") {
-      toast.error("Sipariş özelleştirme işlemi başarısız oldu.");
+      toast({
+        title: "Sipariş özelleştirme işlemi başarısız oldu.",
+        variant: "destructive",
+      });
     }
   };
 
