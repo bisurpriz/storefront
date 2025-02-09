@@ -1,11 +1,11 @@
 "use client";
 
 import { GetOrdersWithReviewsQuery } from "@/graphql/queries/review/review.generated";
+import { toast } from "@/hooks/use-toast";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { createReview } from "../../actions";
 
 import { OrderItemStatus } from "@/common/enums/Order/product";
@@ -44,11 +44,16 @@ const NotReviewedCard = ({
         throw new Error("Review creation failed");
       }
 
-      toast.success("Değerlendirme başarıyla eklendi.");
+      toast({
+        title: "Değerlendirme başarıyla eklendi.",
+      });
       closeDialog();
       refresh();
     } catch (error) {
-      toast.error("Değerlendirme eklenirken bir hata oluştu.");
+      toast({
+        title: "Değerlendirme eklenirken bir hata oluştu.",
+        variant: "destructive",
+      });
       console.error("Review creation error:", error);
     }
   };

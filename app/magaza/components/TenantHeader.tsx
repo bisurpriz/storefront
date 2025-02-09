@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GetVendorCouponsQuery } from "@/graphql/queries/vendors/getVendorById.generated";
+import { toast } from "@/hooks/use-toast";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { tr } from "date-fns/locale";
@@ -20,7 +21,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { toast } from "sonner";
 
 interface TenantHeaderProps {
   title: string;
@@ -70,14 +70,19 @@ const TenantHeader = ({
       try {
         await navigator.clipboard.writeText(window.location.href);
         setIsCopied(true);
-        toast.success("Bağlantı kopyalandı!");
+        toast({
+          title: "Bağlantı kopyalandı!",
+        });
 
         // 2 saniye sonra ikonu geri döndür
         setTimeout(() => {
           setIsCopied(false);
         }, 2000);
       } catch (err) {
-        toast.error("Bağlantı kopyalanırken bir hata oluştu");
+        toast({
+          title: "Bağlantı kopyalanırken bir hata oluştu",
+          variant: "destructive",
+        });
       }
     }
   };

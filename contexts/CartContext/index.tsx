@@ -8,6 +8,7 @@ import {
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { IPlace } from "@/common/types/Product/product";
 import { HOURS_BEFORE_DELIVERY_END } from "@/components/DatePicker/HourSelect/utils";
+import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -18,7 +19,6 @@ import {
   useReducer,
   useState,
 } from "react";
-import { toast } from "sonner";
 import {
   ADD_TO_CART,
   CLEAR_CART,
@@ -81,53 +81,63 @@ export const CartProvider = ({
   }, [cartDbItems]);
 
   const handleChangeDb = async (cartItems: ProductForCart[], type?: Type) => {
-    toast.loading(messages(type).loading, {
-      id: type,
+    toast({
+      title: messages(type).loading,
     });
     setLoading(true);
     const response = await updateCart(cartItems);
     setLoading(false);
     if (response.error) {
-      toast.error(messages(type).error, {
-        id: type,
+      toast({
+        title: messages(type).error,
       });
       return response;
     }
 
-    let toastActons;
+    let toastConfig;
 
     switch (type) {
       case "add":
-        toastActons = {
-          action: {
-            label: "Sepete Git",
-            onClick: () => push("/cart"),
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => push("/cart")}
+              className="text-sm font-medium"
+            >
+              Sepete Git
+            </button>
+          ),
         };
         break;
       case "clear":
-        toastActons = {
-          action: {
-            label: "Alışverişe Devam et",
-            onClick: () => push("/"),
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => push("/")}
+              className="text-sm font-medium"
+            >
+              Alışverişe Devam et
+            </button>
+          ),
         };
         break;
       default:
-        toastActons = {
-          action: {
-            label: "Kapat",
-            onClick: () => {
-              toast.dismiss(type);
-            },
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => {}}
+              className="text-sm font-medium"
+            >
+              Kapat
+            </button>
+          ),
         };
     }
 
-    toast.success(messages(type).success, {
-      id: type,
-      action: toastActons.action,
-    });
+    toast(toastConfig);
 
     return response;
   };
@@ -387,16 +397,11 @@ export const CartProvider = ({
           },
         });
 
-        toast.error(
-          `Teslimat süresi geçen ${invalidItems.length} ürün sepetinizden kaldırıldı.`,
-          {
-            duration: 5000,
-            action: {
-              label: "Tamam",
-              onClick: () => toast.dismiss(),
-            },
-          },
-        );
+        toast({
+          title: `Teslimat süresi geçen ${invalidItems.length} ürün sepetinizden kaldırıldı.`,
+          variant: "destructive",
+          duration: 5000,
+        });
       });
     }
   }, [cartState.cartItems]);

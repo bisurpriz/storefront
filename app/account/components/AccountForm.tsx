@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UpdateUserByIdDocument } from "@/graphql/queries/account/account.generated";
+import { toast } from "@/hooks/use-toast";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { localeDistanceFormat } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
@@ -22,7 +23,6 @@ import { Camera, Mail, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { object, string } from "yup";
 
 const schema = object().shape({
@@ -83,11 +83,16 @@ export default function AccountForm({ user }: AccountFormProps) {
           phone: phone.replace(/[^0-9]/g, ""),
         },
       });
-      toast.success("Profil bilgileriniz başarıyla güncellendi.");
+      toast({
+        title: "Profil bilgileriniz başarıyla güncellendi.",
+      });
       setIsEditing(false);
       refresh();
     } catch (error) {
-      toast.error("Bir hata oluştu. Lütfen tekrar deneyin.");
+      toast({
+        title: "Bir hata oluştu. Lütfen tekrar deneyin.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -175,7 +180,8 @@ export default function AccountForm({ user }: AccountFormProps) {
               {user?.email || ""}
             </CardDescription>
             <p className="mt-2 text-xs text-muted-foreground">
-              {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
+              {localeDistanceFormat(new Date(user?.created_at || ""))} önce
+              kaydoldunuz
             </p>
           </div>
         </div>

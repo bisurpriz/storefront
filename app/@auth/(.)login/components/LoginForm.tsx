@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
 import { login } from "../../actions";
 import { AuthErrorMessages } from "../../contants";
 
@@ -108,10 +108,12 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       if (newAttempts >= MAX_ATTEMPTS) {
         setIsLocked(true);
         setLockTimer(LOCK_TIME);
-        toast.error(
-          `Çok fazla başarısız deneme. ${LOCK_TIME / 60} dakika sonra tekrar deneyin.`,
-          { duration: 5000 },
-        );
+        toast({
+          title: `Çok fazla başarısız deneme. ${LOCK_TIME / 60} dakika sonra tekrar deneyin.`,
+          description: "Lütfen daha sonra tekrar deneyin.",
+          duration: 5000,
+          variant: "destructive",
+        });
       }
       return newAttempts;
     });
@@ -135,25 +137,28 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
           const errorMessage =
             AuthErrorMessages[data.error as keyof typeof AuthErrorMessages];
           handleLoginAttempt();
-          toast.error(errorMessage, {
-            position: "bottom-right",
-            id: "login-error",
+          toast({
+            title: errorMessage,
+            description: "Lütfen daha sonra tekrar deneyin.",
             duration: 1500,
+            variant: "destructive",
           });
           return;
         }
 
-        toast.success("Giriş başarılı", {
-          position: "bottom-right",
-          id: "login-success",
+        toast({
+          title: "Giriş başarılı",
+          description: "Lütfen daha sonra tekrar deneyin.",
           duration: 1500,
         });
         onSuccessfulLogin?.(true);
       } catch (error) {
         console.error("Login error:", error);
-        toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {
-          position: "bottom-right",
+        toast({
+          title: "Bir hata oluştu. Lütfen tekrar deneyin.",
+          description: "Lütfen daha sonra tekrar deneyin.",
           duration: 3000,
+          variant: "destructive",
         });
       }
     });
@@ -164,9 +169,11 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
       await signIn("google");
     } catch (error) {
       console.error("Google login error:", error);
-      toast.error("Google ile giriş yapılırken bir hata oluştu.", {
-        position: "bottom-right",
+      toast({
+        title: "Google ile giriş yapılırken bir hata oluştu.",
+        description: "Lütfen daha sonra tekrar deneyin.",
         duration: 3000,
+        variant: "destructive",
       });
     }
   }, []);

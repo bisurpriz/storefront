@@ -1,9 +1,9 @@
 "use client";
 
+import { toast } from "@/hooks/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, startTransition } from "react";
+import { startTransition, useEffect } from "react";
 import { useProgress } from "react-transition-progress";
-import { toast } from "sonner";
 
 const SocialCallback = () => {
   const searchParams = useSearchParams();
@@ -15,9 +15,8 @@ const SocialCallback = () => {
     if (result === "success") {
       startTransition(() => {
         startProgress();
-        toast.success("Giriş başarılı", {
-          position: "bottom-right",
-          id: "login-success",
+        toast({
+          title: "Giriş başarılı",
           duration: 1500,
         });
 
