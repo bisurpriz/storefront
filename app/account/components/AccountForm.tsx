@@ -180,7 +180,8 @@ export default function AccountForm({ user }: AccountFormProps) {
               {user?.email || ""}
             </CardDescription>
             <p className="mt-2 text-xs text-muted-foreground">
-              {localeDistanceFormat(new Date(user.created_at))} önce kaydoldunuz
+              {localeDistanceFormat(new Date(user?.created_at || ""))} önce
+              kaydoldunuz
             </p>
           </div>
         </div>

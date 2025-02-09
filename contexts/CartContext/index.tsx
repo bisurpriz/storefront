@@ -94,38 +94,50 @@ export const CartProvider = ({
       return response;
     }
 
-    let toastActons;
+    let toastConfig;
 
     switch (type) {
       case "add":
-        toastActons = {
-          action: {
-            label: "Sepete Git",
-            onClick: () => push("/cart"),
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => push("/cart")}
+              className="text-sm font-medium"
+            >
+              Sepete Git
+            </button>
+          ),
         };
         break;
       case "clear":
-        toastActons = {
-          action: {
-            label: "Alışverişe Devam et",
-            onClick: () => push("/"),
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => push("/")}
+              className="text-sm font-medium"
+            >
+              Alışverişe Devam et
+            </button>
+          ),
         };
         break;
       default:
-        toastActons = {
-          action: {
-            label: "Kapat",
-            onClick: () => {},
-          },
+        toastConfig = {
+          title: messages(type).success,
+          action: (
+            <button
+              onClick={() => {}}
+              className="text-sm font-medium"
+            >
+              Kapat
+            </button>
+          ),
         };
     }
 
-    toast({
-      title: messages(type).success,
-      action: toastActons.action,
-    });
+    toast(toastConfig);
 
     return response;
   };
