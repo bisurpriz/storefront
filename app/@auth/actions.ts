@@ -43,12 +43,13 @@ export const login = async ({ email, password }, headers = {}) => {
       user_id: user.id,
     };
 
+    const domain = process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+      : "localhost";
+
     Object.entries(cookieData).forEach(([key, value]) => {
       cook.set(key, value, {
-        domain:
-          process.env.NODE_ENV === "production"
-            ? ".bonnmarse.com"
-            : "localhost",
+        domain,
         path: "/",
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
