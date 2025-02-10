@@ -15,6 +15,7 @@ export interface ProductForCart
     | "is_service_free"
     | "delivery_time_ranges"
     | "slug"
+    | "description"
   > {
   quantity: number;
   deliveryDate?: Date;

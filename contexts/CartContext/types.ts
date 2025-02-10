@@ -40,7 +40,7 @@ export interface CartContextType {
   clearDeliveryTime: () => void;
   isProductInCart: (id: number) => ProductForCart;
   applyCouponCode: (code: string) => Promise<void>;
-  updateCartItemNote: (id: number, note: string) => void;
+  updateCartItemNote: (id: number, note: string, index: number) => void;
   hasCustomizableProduct: boolean;
   setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>;
 }

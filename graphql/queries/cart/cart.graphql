@@ -26,6 +26,7 @@ query getProductByIdForCart($id: bigint!) {
     slug
     image_url
     name
+    description
     price
     delivery_type
     is_service_free

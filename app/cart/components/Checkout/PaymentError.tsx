@@ -13,7 +13,7 @@ export const PaymentError = ({ errorMessage, onClose }: PaymentErrorProps) => {
   return (
     <div
       className={clsx(
-        "w-full max-w-screen-sm rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
+        "w-full max-w-screen-sm rounded-lg bg-white p-4",
         "flex flex-col items-center justify-center gap-2",
         "text-center",
       )}
