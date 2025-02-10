@@ -50,14 +50,12 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
           placeId,
           label,
         };
-
         Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData), {
           path: "/",
           httpOnly: false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          maxAge: 7 * 24 * 60 * 60,
         });
         publishLocationChange(placeData);
         refresh();
