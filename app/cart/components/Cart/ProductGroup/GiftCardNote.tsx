@@ -207,7 +207,7 @@ export function GiftCardNote({
           )}
         </Button>
       ) : (
-        <div className="h-fit space-y-4">
+        <div className="space-y-4">
           <h3 className="font-medium text-gray-900">
             Oluşturulan notlardan birini seçiniz:
           </h3>
@@ -309,7 +309,7 @@ export function GiftCardNote({
         </Dialog>
       ) : (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent className="h-auto">
+          <DrawerContent>
             <DrawerHeader>
               <DrawerTitle className="text-center text-xl font-semibold text-gray-900">
                 {generatedNotes.length
