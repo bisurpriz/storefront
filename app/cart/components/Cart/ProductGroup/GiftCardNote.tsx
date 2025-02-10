@@ -161,7 +161,7 @@ export function GiftCardNote({
   );
 
   const Content = (
-    <div className="space-y-6 p-6">
+    <div className="flex-1 space-y-6 p-6">
       <div className="space-y-2">
         <Label htmlFor="recipient" className="text-sm font-medium">
           Kime
