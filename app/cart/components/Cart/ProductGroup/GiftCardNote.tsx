@@ -161,70 +161,74 @@ export function GiftCardNote({
   );
 
   const Content = (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="space-y-2">
-        <Label htmlFor="recipient" className="text-sm font-medium">
-          Kime
-        </Label>
-        <Input
-          id="recipient"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          placeholder="Eşime, arkadaşıma, anne ve babama, çocuğuma, vb."
-          className="border-gray-200 focus:border-blue-500"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="notes" className="text-sm font-medium">
-          Konu
-        </Label>
-        <Textarea
-          id="notes"
-          value={userNotes}
-          onChange={(e) => setUserNotes(e.target.value)}
-          placeholder="Yeni yıl, yeni iş, doğum günü, evlilik yıldönümü, tebrik vb."
-          className="border-gray-200 focus:border-blue-500"
-        />
-      </div>
-
-      {!generatedNotes.length ? (
-        <Button
-          onClick={handleGenerate}
-          disabled={isPending}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
-        >
-          {isPending ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Not Oluşturuluyor...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-5 w-5" />
-              Yapay Zeka ile Not Oluştur
-            </>
-          )}
-        </Button>
-      ) : (
-        <div className="space-y-4">
-          <h3 className="font-medium text-gray-900">
-            Oluşturulan notlardan birini seçiniz:
-          </h3>
-          {generatedNotes.map((genNote, idx) => (
-            <div
-              key={idx}
-              onClick={() => handleSelectNote(genNote.note, 0)}
-              className="group cursor-pointer rounded-lg border border-gray-200 bg-gradient-to-r from-blue-200 to-purple-400 p-4 transition-all duration-200 hover:border-blue-500 hover:bg-blue-200"
-            >
-              <div className="flex items-start justify-between">
-                <p className="text-sm text-gray-700">{genNote.note}</p>
-                <Send className="h-5 w-5 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
-              </div>
-            </div>
-          ))}
+    <div className="flex h-full flex-col">
+      <div className="flex-1 space-y-6 overflow-y-auto px-6">
+        <div className="space-y-2 pt-2">
+          <Label htmlFor="recipient" className="text-sm font-medium">
+            Kime
+          </Label>
+          <Input
+            id="recipient"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            placeholder="Eşime, arkadaşıma, anne ve babama, çocuğuma, vb."
+            className="border-gray-200 focus:border-blue-500"
+          />
         </div>
-      )}
+
+        <div className="space-y-2">
+          <Label htmlFor="notes" className="text-sm font-medium">
+            Konu
+          </Label>
+          <Textarea
+            id="notes"
+            value={userNotes}
+            onChange={(e) => setUserNotes(e.target.value)}
+            placeholder="Yeni yıl, yeni iş, doğum günü, evlilik yıldönümü, tebrik vb."
+            className="border-gray-200 focus:border-blue-500"
+          />
+        </div>
+
+        {!generatedNotes.length ? (
+          <div className="pb-6">
+            <Button
+              onClick={handleGenerate}
+              disabled={isPending}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Not Oluşturuluyor...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Yapay Zeka ile Not Oluştur
+                </>
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4 pb-6">
+            <h3 className="font-medium text-gray-900">
+              Oluşturulan notlardan birini seçiniz:
+            </h3>
+            {generatedNotes.map((genNote, idx) => (
+              <div
+                key={idx}
+                onClick={() => handleSelectNote(genNote.note, 0)}
+                className="group cursor-pointer rounded-lg border border-gray-200 bg-gradient-to-r from-blue-200 to-purple-400 p-4 transition-all duration-200 hover:border-blue-500 hover:bg-blue-200"
+              >
+                <div className="flex items-start justify-between">
+                  <p className="text-sm text-gray-700">{genNote.note}</p>
+                  <Send className="h-5 w-5 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -296,7 +300,7 @@ export function GiftCardNote({
 
       {!isDesktop ? (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col">
             <DialogHeader>
               <DialogTitle className="text-center text-xl font-semibold text-gray-900">
                 {generatedNotes.length
@@ -309,8 +313,8 @@ export function GiftCardNote({
         </Dialog>
       ) : (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent>
-            <DrawerHeader>
+          <DrawerContent className="max-h-[85vh]">
+            <DrawerHeader className="pb-4">
               <DrawerTitle className="text-center text-xl font-semibold text-gray-900">
                 {generatedNotes.length
                   ? "Oluşturulmuş Notlar"

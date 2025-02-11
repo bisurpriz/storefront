@@ -50,7 +50,13 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
           placeId,
           label,
         };
+        const domain =
+          process.env.NODE_ENV === "production"
+            ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+            : "localhost";
+
         Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData), {
+          domain,
           path: "/",
           httpOnly: false,
           secure: process.env.NODE_ENV === "production",
