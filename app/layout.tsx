@@ -4,7 +4,6 @@ import "./globals.css";
 
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import DesignLayout from "@/components/Layout/DesignLayout";
-import NotificationListener from "@/components/Notification/NotificationListener";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -156,9 +155,6 @@ export default async function RootLayout({
         className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
         id="root"
       >
-        <Suspense fallback={null}>
-          <NotificationListener />
-        </Suspense>
         <Providers
           userData={userData}
           categoryData={categoryData}
