@@ -193,6 +193,50 @@ export default function ReceiverForm() {
     }
   });
 
+  // Her adımın validasyonunu kontrol et
+  const validateStep = useCallback(async () => {
+    const fieldsToValidate = getFieldsToValidate();
+    const isValid = await trigger(fieldsToValidate);
+
+    if (!isValid) {
+      const errorMessages = Object.entries(errors)
+        .filter(([key]) => fieldsToValidate.includes(key as FormFields))
+        .map(([_, value]) => value.message)
+        .join(", ");
+
+      toast({
+        title: `Lütfen eksik alanları doldurunuz`,
+        description: errorMessages,
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
+  }, [errors, getFieldsToValidate, trigger]);
+
+  const nextStep = useCallback(async () => {
+    const isStepValid = await validateStep();
+    if (!isStepValid) return false;
+
+    if (step === 1) {
+      updateStep(2);
+      return true;
+    }
+
+    if (step === 2) {
+      startTransition(() => {
+        sessionStorage.setItem(
+          "order-detail-form",
+          JSON.stringify(getValues()),
+        );
+      });
+      return true;
+    }
+
+    return false;
+  }, [step, validateStep, getValues, updateStep]);
+
   useEffect(() => {
     const loadFormData = () => {
       const localData = sessionStorage.getItem("order-detail-form");
@@ -250,36 +294,6 @@ export default function ReceiverForm() {
       startTransition(updateLocationFields);
     }
   }, [selectedCargoLocation, hasSameDayProduct, setValue]);
-
-  const nextStep = useCallback(async () => {
-    const fieldsToValidate = getFieldsToValidate();
-    const isStepValid = await trigger(fieldsToValidate);
-
-    if (!isStepValid) {
-      toast({
-        title: `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
-        variant: "destructive",
-      });
-      return false;
-    }
-
-    if (step === 1) {
-      updateStep(2);
-      return true;
-    }
-
-    if (step === 2) {
-      startTransition(() => {
-        sessionStorage.setItem(
-          "order-detail-form",
-          JSON.stringify(getValues()),
-        );
-      });
-      return true;
-    }
-
-    return false;
-  }, [step, trigger, getValues, updateStep]);
 
   const prevStep = useCallback(() => {
     if (step > 1) {

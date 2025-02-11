@@ -80,8 +80,14 @@ const CartSummary = () => {
               params.set("step", "2");
               replace(`?${params.toString()}`);
             } else if (currentStep === 2) {
-              startProgress();
-              push(CartStepPaths.CHECKOUT);
+              const handleNextStep = (window as any).handleReceiverFormNextStep;
+              if (handleNextStep) {
+                const canProceed = await handleNextStep();
+                if (canProceed) {
+                  startProgress();
+                  push(CartStepPaths.CHECKOUT);
+                }
+              }
             }
           }
         }
@@ -202,7 +208,7 @@ const CartSummary = () => {
               isOpen ? "rotate-180" : "",
             )}
           />
-          <span className="flex flex-1 flex-col items-start justify-between whitespace-nowrap text-xs">
+          <span className="flex flex-col items-start justify-between flex-1 text-xs whitespace-nowrap">
             <p className="text-slate-600">Toplam</p>
             <p className="text-sm font-semibold text-primary">
               {cost.totalPrice} ₺
