@@ -76,9 +76,7 @@ export default function ValentinesBanner() {
             className="w-4 h-4 text-pink-200 animate-pulse"
             aria-hidden="true"
           />
-          <p className="text-sm font-medium">
-            Sevgililer Günü'ne tüm ürünlerde aynı gün teslimat!
-          </p>
+          <p className="text-sm font-medium">Sevgililer gününüz kutlu olsun!</p>
           <Heart
             className="w-4 h-4 text-pink-200 animate-pulse"
             aria-hidden="true"
