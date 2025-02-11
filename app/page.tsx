@@ -3,7 +3,11 @@ import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSu
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
+import { Image } from "@/components/ui/image";
+import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { getImageUrlFromPath } from "@/lib/utils";
+import { GetBannersDocument } from "@/service/banner";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import dynamic from "next/dynamic";
@@ -16,7 +20,7 @@ const CategorySwiper = dynamic(
   () => import("@/components/SwiperExamples/CategorySwiper"),
   {
     loading: () => (
-      <div className="h-24 animate-pulse rounded-lg bg-primary/20" />
+      <div className="h-24 rounded-lg animate-pulse bg-primary/20" />
     ),
   },
 );
@@ -50,7 +54,19 @@ export default async function Page(props: {
     headers: await headers(),
   });
 
+  const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
+    query: GetBannersDocument,
+    tags: ["system_banner"],
+    withAuth: false,
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
+  });
+
   const isMobile = device.type === "mobile";
+
+  const selectedImage = system_banner[0].path;
 
   return (
     <div className="flex flex-col gap-4">
@@ -59,15 +75,24 @@ export default async function Page(props: {
           <CategorySwiper categories={category} />
         </Suspense>
       )}
+
       {!isBot && (
         <Suspense
           fallback={
-            <div className="mb-2 h-16 w-full animate-pulse rounded-lg bg-primary/20" />
+            <div className="w-full h-16 mb-2 rounded-lg animate-pulse bg-primary/20" />
           }
         >
           <GoogleLocationSelect from="home" />
         </Suspense>
       )}
+      <div className="w-full overflow-hidden rounded-md bg-primary/20">
+        <Image
+          src={getImageUrlFromPath(selectedImage)}
+          alt="banner"
+          className="w-full"
+          imageClassName="w-full h-full object-cover"
+        />
+      </div>
       {<InfiniteScrollCarouselWrapper searchParams={searchParams} />}
       {
         <Suspense fallback={<CampaignGridSuspense />}>
