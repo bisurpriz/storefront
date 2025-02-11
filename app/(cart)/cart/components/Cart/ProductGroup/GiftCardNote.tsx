@@ -4,7 +4,7 @@ import {
   checkAIAvailability,
   createGeneratedNotes,
   GeneratedNote,
-} from "@/app/cart/customize/[oId]/actions";
+} from "@/app/(cart)/cart/customize/[oId]/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

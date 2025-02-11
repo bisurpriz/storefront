@@ -1,12 +1,12 @@
 "use client";
 
+import { CartStepPaths } from "@/app/(cart)/cart/constants";
 import {
   getAddressString,
   getAvailableDistricts,
   getAvailableNeighborhoods,
   getLocationVariables,
 } from "@/app/(feed)/components/utils/validateLocation";
-import { CartStepPaths } from "@/app/cart/constants";
 import { IPlace } from "@/common/types/Product/product";
 import { AutoCompleteOption } from "@/components/Autocomplete";
 import { Button } from "@/components/ui/button";

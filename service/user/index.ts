@@ -1,4 +1,4 @@
-import { checkUserId } from "@/app/cart/actions";
+import { checkUserId } from "@/app/(cart)/cart/actions";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { BonnmarseApi } from "../fetch";
 

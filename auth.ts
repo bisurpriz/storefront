@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { registerUser } from "./app/(account)/account/actions";
 import { login } from "./app/@auth/actions";
-import { registerUser } from "./app/account/actions";
 import { AuthProvider } from "./common/enums/Auth";
 
 const USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";

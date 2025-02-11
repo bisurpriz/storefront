@@ -1,4 +1,4 @@
-import { orderTextsUpload } from "@/app/account/orders/actions";
+import { orderTextsUpload } from "@/app/(account)/account/orders/actions";
 import { createJwt } from "@/app/actions";
 import { CustomizableAreaType } from "@/common/enums/Order/product";
 import ImageUpload from "@/components/ImageUpload";

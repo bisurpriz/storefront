@@ -3,7 +3,7 @@
 import {
   addToFavorites,
   removeFromFavorites,
-} from "@/app/account/favorites/actions";
+} from "@/app/(account)/account/favorites/actions";
 import { Button } from "@/components/ui/button";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { cn } from "@/lib/utils";

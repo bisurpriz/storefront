@@ -3,12 +3,14 @@
 import {
   addToFavorites,
   removeFromFavorites,
-} from "@/app/account/favorites/actions";
+} from "@/app/(account)/account/favorites/actions";
+import { CartStepPaths } from "@/app/(cart)/cart/constants";
 import { IPlace } from "@/common/types/Product/product";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
 import { Heart, Truck } from "lucide-react";
@@ -43,6 +45,11 @@ interface Props {
   delivery_time_ranges: string;
 }
 
+interface ValidationState {
+  isValid: boolean;
+  message?: string;
+}
+
 const ProductActions = ({
   productId,
   isFavorite: initialIsFavorite,
@@ -56,7 +63,9 @@ const ProductActions = ({
   const [availableLevel4, setAvailableLevel4] = useState<
     Array<{ placeId: string; name: string }>
   >([]);
-  const [error, setError] = useState(false);
+  const [validationState, setValidationState] = useState<ValidationState>({
+    isValid: true,
+  });
 
   const { user } = useUser();
   const { addToCart, loading, deliveryTime } = useCart();
@@ -64,25 +73,52 @@ const ProductActions = ({
   const [isPending, startTransition] = useTransition();
   const startProgress = useProgress();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { toast } = useToast();
 
   const isSameDay = delivery_type === "SAME_DAY";
   const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
 
-  const handleFavorite = useCallback(() => {
-    startTransition(() => {
-      startProgress();
-      if (!user) {
-        push("/login");
-        return;
-      }
+  const validateDeliveryRequirements = useCallback((): ValidationState => {
+    if (hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour)) {
+      return {
+        isValid: false,
+        message: "Lütfen teslimat tarihi ve zamanını seçiniz.",
+      };
+    }
 
-      const action = isFavoriteState ? removeFromFavorites : addToFavorites;
-      action({ productId }).catch(() => {
+    if (isSameDay && (!selectedLocation || places.length === 0)) {
+      return {
+        isValid: false,
+        message: "Lütfen teslimat konumunu seçiniz.",
+      };
+    }
+
+    return { isValid: true };
+  }, [hasDeliveryTimes, deliveryTime, isSameDay, selectedLocation, places]);
+
+  const handleFavorite = useCallback(async () => {
+    if (!user) {
+      push("/login");
+      return;
+    }
+
+    try {
+      startTransition(() => {
+        startProgress();
+        const action = isFavoriteState ? removeFromFavorites : addToFavorites;
+        action({ productId });
         setIsFavoriteState(!isFavoriteState);
       });
-      setIsFavoriteState(!isFavoriteState);
-    });
-  }, [isFavoriteState, user, productId, push, startProgress]);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Hata",
+        description:
+          "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyiniz.",
+      });
+      setIsFavoriteState(isFavoriteState);
+    }
+  }, [isFavoriteState, user, productId, push, startProgress, toast]);
 
   const getCartPayload = useCallback(() => {
     const basePayload = {
@@ -104,32 +140,23 @@ const ProductActions = ({
   }, [productId, selectedLocation, isSameDay, hasDeliveryTimes, deliveryTime]);
 
   const handleAddToBasket = useCallback(() => {
-    const isValidDeliveryTime =
-      !hasDeliveryTimes || (deliveryTime.day && deliveryTime.hour);
-    const isValidLocation =
-      !isSameDay || (selectedLocation && places?.length > 0);
+    const validation = validateDeliveryRequirements();
 
-    if (isValidDeliveryTime && isValidLocation) {
-      startTransition(() => {
-        startProgress();
-        addToCart(getCartPayload());
-      });
+    if (!validation.isValid) {
+      setValidationState(validation);
+      timeoutRef.current = setTimeout(
+        () => setValidationState({ isValid: true }),
+        3000,
+      );
       return;
     }
 
-    setError(true);
-    timeoutRef.current = setTimeout(() => setError(false), 3000);
-  }, [
-    hasDeliveryTimes,
-    isSameDay,
-    selectedLocation,
-    places,
-    addToCart,
-    getCartPayload,
-    startProgress,
-  ]);
-
-  const isAddToCartLoading = isPending || loading;
+    startTransition(() => {
+      startProgress();
+      addToCart(getCartPayload());
+      push(CartStepPaths.CART);
+    });
+  }, [validateDeliveryRequirements, addToCart, getCartPayload, startProgress]);
 
   const isButtonDisableForLocation = useCallback(() => {
     if (!isSameDay) return false;
@@ -143,27 +170,24 @@ const ProductActions = ({
     const selectedLevel2 = getComponent("administrative_area_level_2");
     const selectedLevel1 = getComponent("administrative_area_level_1");
 
-    if (selectedLevel4) {
-      return !places?.some(
-        (place) =>
+    return !places?.some((place) => {
+      if (selectedLevel4) {
+        return (
           place?.addressComponents["administrative_area_level_4"] ===
-          selectedLevel4,
-      );
-    }
-
-    if (selectedLevel2) {
-      return !places?.some(
-        (place) =>
+          selectedLevel4
+        );
+      }
+      if (selectedLevel2) {
+        return (
           place?.addressComponents["administrative_area_level_2"] ===
-          selectedLevel2,
-      );
-    }
-
-    return !places?.some(
-      (place) =>
+          selectedLevel2
+        );
+      }
+      return (
         place?.addressComponents["administrative_area_level_1"] ===
-        selectedLevel1,
-    );
+        selectedLevel1
+      );
+    });
   }, [isSameDay, selectedLocation, places]);
 
   const isButtonDisableForTime = useCallback(() => {
@@ -194,8 +218,6 @@ const ProductActions = ({
     }
   }, [selectedLocation, places, isSameDay]);
 
-  const locationValidationInProgress = isPending && isSameDay;
-
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -206,6 +228,8 @@ const ProductActions = ({
 
   const isAddToCartDisabled =
     isButtonDisableForLocation() || isButtonDisableForTime();
+  const isAddToCartLoading = isPending || loading;
+  const locationValidationInProgress = isPending && isSameDay;
 
   const shouldShowDeliveryLocations =
     !selectedLocation?.address_components.find((x) =>
@@ -222,7 +246,7 @@ const ProductActions = ({
           <Truck
             className={locationValidationInProgress ? "animate-spin" : ""}
           />
-          <AlertTitle>Dikkat !</AlertTitle>
+          <AlertTitle>Dikkat!</AlertTitle>
           <AlertDescription>
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
             {locationValidationInProgress && " (Kontrol ediliyor...)"}
@@ -240,10 +264,10 @@ const ProductActions = ({
         </Alert>
       )}
 
-      <div className="flex my-2 space-x-2">
+      <div className="my-2 flex space-x-2">
         <Button
           size="lg"
-          variant={error ? "destructive" : "default"}
+          variant={!validationState.isValid ? "destructive" : "default"}
           className={clsx("flex basis-4/5 items-center justify-center px-0")}
           disabled={isAddToCartDisabled}
           onClick={handleAddToBasket}
@@ -256,27 +280,27 @@ const ProductActions = ({
 
         <Button
           size="lg"
-          className="flex items-center justify-center px-0 basis-1/5"
+          className="flex basis-1/5 items-center justify-center px-0"
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <Heart className="w-8 h-8 text-white fill-red-500" />
+              <Heart className="h-8 w-8 fill-red-500 text-white" />
             ) : (
-              <Heart className="w-8 h-8 text-red-500" />
+              <Heart className="h-8 w-8 text-red-500" />
             )
           }
           onClick={handleFavorite}
           loading={isPending}
         />
       </div>
-      {error && (
+      {!validationState.isValid && (
         <p
           className={clsx(
             "mt-2 text-sm font-semibold text-red-600",
-            error ? "animate-bounce" : "",
+            "animate-bounce",
           )}
         >
-          Lütfen teslimat tarihi ve zamanını seçiniz.
+          {validationState.message}
         </p>
       )}
     </>

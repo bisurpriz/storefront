@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Lato, Manrope } from "next/font/google";
 import "./globals.css";
 
+import ValentinesBanner from "@/components/Banner/ValentinesBanner";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
-import DesignLayout from "@/components/Layout/DesignLayout";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { ReactNode, Suspense } from "react";
-import { getCart } from "./cart/actions";
+import { getCart } from "./(cart)/cart/actions";
 import { Providers } from "./providers";
 
 // Dinamik import ile QuarterSelectorModal'ı lazy load ediyoruz
@@ -152,7 +152,7 @@ export default async function RootLayout({
       </head>
       <GoogleTagManagerInjector />
       <body
-        className={`${lato.variable} ${manrope.variable} h-dvh font-manrope`}
+        className={`${lato.variable} ${manrope.variable} flex h-dvh flex-col font-manrope`}
         id="root"
       >
         <Providers
@@ -161,9 +161,9 @@ export default async function RootLayout({
           cartItems={cartData.cartItems}
           costData={cartData.costData}
         >
-          <DesignLayout categories={categoryData?.category}>
-            {children}
-          </DesignLayout>
+          <ValentinesBanner />
+
+          {children}
           {auth}
           {!isBot && (
             <Suspense fallback={null}>
