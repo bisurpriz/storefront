@@ -14,7 +14,7 @@ import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import { localeFormat } from "@/utils/format";
 import { Gift, Truck, TruckIcon, X } from "lucide-react";
 import Image from "next/image";
-import GiftCardNote from "./GiftCardNote";
+import { GiftCardNote } from "./GiftCardNote";
 
 export default function CartItem({
   delivery_type,
@@ -33,6 +33,7 @@ export default function CartItem({
   deliveryDate,
   deliveryLocation,
   deliveryTime,
+  description,
 }: ProductForCart) {
   const {
     loading,
@@ -153,7 +154,27 @@ export default function CartItem({
             <AlertDescription>{DeliveryType[delivery_type]}</AlertDescription>
           </Alert>
         )}
-        <GiftCardNote id={id} quantity={quantity} />
+        {Array.from({ length: quantity }).map((_, index) => {
+          // data = [note1][note2][note3]
+          const notes = card_note?.match(/\[.*?\]/g);
+          const noteText =
+            notes?.[index]?.replaceAll("[", "").replaceAll("]", "") || "";
+
+          return (
+            <div key={index}>
+              <h5 className="text-sm font-semibold text-gray-800">
+                {index + 1}. Ürün notu
+              </h5>
+              <GiftCardNote
+                id={id}
+                product_description={description}
+                product_name={name}
+                card_note={noteText}
+                index={index}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

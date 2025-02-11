@@ -1,3 +1,5 @@
+import { CartContextType } from "./types";
+
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const CLEAR_CART = "CLEAR_CART";
@@ -10,27 +12,28 @@ export const CouponMessages = {
   COUPON_SUCCESS: "Kupon başarıyla uygulandı",
 };
 
-export const initialCartContextData = {
+export const initialCartContextData: CartContextType = {
   cartState: {
     cartItems: [],
+    count: 0,
     cost: {
       totalPrice: 0,
       isCouponApplied: false,
       couponMessage: "",
       discountAmount: 0,
     },
-    count: 0,
   },
   addToCart: () => {},
   removeFromCart: () => {},
   clearCart: () => {},
   updateCartItem: () => {},
   loading: false,
-  deliveryTime: null,
+  deliveryTime: { day: null, hour: "" },
   setDeliveryTimeHandler: () => {},
   clearDeliveryTime: () => {},
-  isProductInCart: () => null,
-  applyCouponCode: async () => {},
+  isProductInCart: () => undefined,
+  syncDeliveryTimeWithProduct: () => {},
+  applyCouponCode: () => {},
   updateCartItemNote: () => {},
   hasCustomizableProduct: false,
   setHasCustomizableProduct: () => {},

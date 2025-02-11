@@ -70,6 +70,7 @@ export const GetProductByIdForCartDocument = `
     image_url
     name
     price
+    description
     delivery_type
     is_service_free
     score

@@ -1,6 +1,5 @@
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { IPlace } from "@/common/types/Product/product";
-import { Dispatch, SetStateAction } from "react";
 
 export type Type = "add" | "remove" | "clear" | "update";
 
@@ -29,18 +28,19 @@ export type AddToCart = ({
 }) => void;
 
 export interface CartContextType {
+  cartState: CartState;
   addToCart: AddToCart;
-  removeFromCart: (itemId: number) => void;
+  removeFromCart: (itemId: number | string) => void;
   clearCart: () => void;
   updateCartItem: (item: ProductForCart) => void;
-  cartState: CartState;
   loading: boolean;
-  deliveryTime: DeliveryTime | null;
+  deliveryTime: DeliveryTime;
   setDeliveryTimeHandler: (deliveryTime: DeliveryTime) => void;
   clearDeliveryTime: () => void;
-  isProductInCart: (id: number) => ProductForCart;
-  applyCouponCode: (code: string) => Promise<void>;
-  updateCartItemNote: (id: number, note: string) => void;
+  isProductInCart: (id: number) => ProductForCart | undefined;
+  syncDeliveryTimeWithProduct: (id: number) => void;
+  applyCouponCode: (code: string) => void;
+  updateCartItemNote: (id: number, note: string, index: number) => void;
   hasCustomizableProduct: boolean;
-  setHasCustomizableProduct: Dispatch<SetStateAction<boolean>>;
+  setHasCustomizableProduct: (value: boolean) => void;
 }

@@ -49,10 +49,21 @@ export const AuthProvider = ({
     return !user || checkExpire(Cookies.get(CookieTokens.ACCESS_TOKEN));
   };
 
+  const domain =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+      : "localhost";
+
   const handleGuestUser = () => {
     const guestId = Cookies.get(CookieTokens.GUEST_ID);
     if (!guestId) {
-      Cookies.set(CookieTokens.GUEST_ID, uuidv4());
+      Cookies.set(CookieTokens.GUEST_ID, uuidv4(), {
+        domain,
+        path: "/",
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
     }
     setClientCookie(CookieTokens.USER_ID, null);
 

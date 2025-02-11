@@ -8,7 +8,7 @@ import {
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { IPlace } from "@/common/types/Product/product";
 import { HOURS_BEFORE_DELIVERY_END } from "@/components/DatePicker/HourSelect/utils";
-import { toast } from "@/hooks/use-toast";
+import { toast, ToasterToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -94,11 +94,12 @@ export const CartProvider = ({
       return response;
     }
 
-    let toastConfig;
+    let toastConfig: ToasterToast;
 
     switch (type) {
       case "add":
         toastConfig = {
+          id: "add",
           title: messages(type).success,
           action: (
             <button
@@ -112,12 +113,10 @@ export const CartProvider = ({
         break;
       case "clear":
         toastConfig = {
+          id: "clear",
           title: messages(type).success,
           action: (
-            <button
-              onClick={() => push("/")}
-              className="text-sm font-medium"
-            >
+            <button onClick={() => push("/")} className="text-sm font-medium">
               Alışverişe Devam et
             </button>
           ),
@@ -125,15 +124,8 @@ export const CartProvider = ({
         break;
       default:
         toastConfig = {
+          id: "update",
           title: messages(type).success,
-          action: (
-            <button
-              onClick={() => {}}
-              className="text-sm font-medium"
-            >
-              Kapat
-            </button>
-          ),
         };
     }
 
@@ -142,19 +134,22 @@ export const CartProvider = ({
     return response;
   };
 
-  const updateCartItemNote = (id: number, note: string) => {
+  const updateCartItemNote = (id: number, note: string, index: number) => {
     const cartItems = [...cartState.cartItems];
-    const index = cartItems.findIndex((item) => item.id === id);
-    if (index === -1) return cartState;
-    cartItems[index].card_note = note;
-    dispatch({
-      type: UPDATE_CART,
-      payload: {
-        cartItems,
-        count: cartItems.reduce((acc, item) => acc + item.quantity, 0),
-        cost: cartState.cost,
-      },
-    });
+    const findIndex = cartItems.findIndex((item) => item.id === id);
+    if (findIndex === -1) return cartState;
+    let notes = cartItems[findIndex].card_note?.match(/\[.*?\]/g);
+    if (notes?.length) {
+      notes[index] = note.replaceAll("[", "").replaceAll("]", "");
+    } else {
+      notes = [note.replaceAll("[", "").replaceAll("]", "")];
+    }
+    // [note1][note2][note3]
+    const noteString = notes
+      ?.map((n) => `[${n.replaceAll("[", "").replaceAll("]", "")}]`)
+      .join("");
+    cartItems[findIndex].card_note = noteString;
+    updateCartItem(cartItems[findIndex]);
   };
 
   const addToCart: AddToCart = async ({
@@ -325,9 +320,13 @@ export const CartProvider = ({
   };
 
   const isProductInCart = (id: number) => {
+    return cartState.cartItems.find((item) => item.id === id);
+  };
+
+  const syncDeliveryTimeWithProduct = (id: number) => {
     const product = cartState.cartItems.find((item) => item.id === id);
 
-    if (Boolean(product)) {
+    if (product) {
       setDeliveryTime({
         day: product.deliveryDate ? new Date(product.deliveryDate) : null,
         hour: product.deliveryTime || "",
@@ -335,8 +334,6 @@ export const CartProvider = ({
     } else {
       clearDeliveryTime();
     }
-
-    return product;
   };
 
   const isDeliveryTimeValid = (
@@ -418,6 +415,7 @@ export const CartProvider = ({
       setDeliveryTimeHandler,
       clearDeliveryTime,
       isProductInCart,
+      syncDeliveryTimeWithProduct,
       applyCouponCode,
       updateCartItemNote,
       hasCustomizableProduct,
@@ -434,6 +432,7 @@ export const CartProvider = ({
       setDeliveryTimeHandler,
       clearDeliveryTime,
       isProductInCart,
+      syncDeliveryTimeWithProduct,
       applyCouponCode,
       updateCartItemNote,
       hasCustomizableProduct,

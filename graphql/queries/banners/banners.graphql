@@ -1,9 +1,10 @@
 query getBanners @cached {
-  system_banner {
+  system_banner(order_by: { created_at: desc }) {
     expire_date
     id
     name
     path
     redirect_link
+    created_at
   }
 }

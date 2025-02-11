@@ -17,6 +17,7 @@ type ImageProps = {
   quality?: number;
   onLoad?: () => void;
   onClick?: () => void;
+  imageClassName?: string;
 };
 
 export const Image = ({
@@ -32,6 +33,7 @@ export const Image = ({
   quality,
   onLoad,
   onClick,
+  imageClassName,
 }: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -88,6 +90,7 @@ export const Image = ({
           "transition-transform duration-300 ease-out",
           isLoading ? "blur-xl grayscale" : "blur-0 grayscale-0",
           `object-${objectFit}`,
+          imageClassName,
         )}
         sizes={sizes}
         width={width}

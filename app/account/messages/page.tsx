@@ -1,6 +1,4 @@
 import { getTenantOrderItem } from "./action";
-import AdvancedChatScreen from "./components/Chatv2";
-import Listener from "./components/Listener";
 
 const MessagesPage = async (props: {
   searchParams: Promise<{
@@ -18,8 +16,11 @@ const MessagesPage = async (props: {
 
   return (
     <>
-      <AdvancedChatScreen />
-      <Listener />
+      {/* <AdvancedChatScreen />
+      <Listener /> */}
+      <div className="flex h-full w-full items-center justify-center">
+        Satıcı mesaj sayfamız yapım aşamasındadır.
+      </div>
     </>
   );
 };

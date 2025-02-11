@@ -50,8 +50,19 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
           placeId,
           label,
         };
+        const domain =
+          process.env.NODE_ENV === "production"
+            ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+            : "localhost";
 
-        Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData));
+        Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData), {
+          domain,
+          path: "/",
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
         publishLocationChange(placeData);
         refresh();
       }

@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertCircle, MapPin } from "lucide-react";
 import { useState } from "react";
 
 import { ResponsiveDialog } from "../ui/responsive-dialog";
@@ -17,20 +18,36 @@ export default function QuarterSelectorModal() {
       open={isDialogOpen}
       dismissible={false}
       onOpenChange={() => {}}
-      title="Gönderim Yeri Seçin"
-      description="Mahalle, okul, hastane gibi yakınızdaki önemli noktaları aratarak gönderim adresinizi seçebilirsiniz."
-      className="h-[50%] w-full max-w-xl md:flex md:h-fit md:flex-col"
+      title={"Teslimat Bölgesi Seçimi"}
+      description={
+        "Teslimat adresinizi belirlemek için mahalle, okul, hastane veya yakınınızdaki referans noktalarını kullanabilirsiniz."
+      }
+      className="h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
     >
-      <PlacesAutocomplete
-        onSelect={(place) => {
-          setIsDialogOpen(false);
-        }}
-      />
-      <div className="gap-1 mt-4 text-sm text-gray-500 md:mt-2">
-        <span className="text-center">
-          Gönderim adresinize göre en uygun ürünleri listeleyebilmemiz için
-          lütfen adresinizi seçin
-        </span>
+      <div className="space-y-6">
+        <PlacesAutocomplete
+          onSelect={(place) => {
+            setIsDialogOpen(false);
+          }}
+        />
+
+        <div className="flex flex-col gap-3 text-sm">
+          <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-muted/50 text-muted-foreground">
+            <MapPin className="flex-shrink-0 w-4 h-4" />
+            <span>
+              Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen teslimat
+              bölgenizi belirleyiniz.
+            </span>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-destructive/10 text-destructive">
+            <AlertCircle className="flex-shrink-0 w-4 h-4" />
+            <span>
+              Teslimat hizmetlerimiz şu an yalnızca <strong>Ankara</strong> ili
+              sınırları içerisinde mevcuttur.
+            </span>
+          </div>
+        </div>
       </div>
     </ResponsiveDialog>
   );

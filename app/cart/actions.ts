@@ -145,6 +145,7 @@ export const updateCart = async (cartItems: ProductForCart[]) => {
       is_service_free: item.is_service_free,
       delivery_type: item.delivery_type,
       deliveryLocation: item.deliveryLocation,
+      card_note: item.card_note,
     }));
 
     const { get } = await cookies();
@@ -247,6 +248,7 @@ export const getCart = async () => {
           ...item,
           quantity: hasProduct.quantity,
           product_customizable_areas: item.product_customizable_areas,
+          card_note: hasProduct.card_note,
         };
       })
       // Remove products with delivery date in the past
@@ -296,6 +298,7 @@ export const getProductByIdForCart = async (id: number) => {
     name: product_by_pk.name,
     price: product_by_pk.price,
     quantity: 1,
+    description: product_by_pk.description,
     delivery_time_ranges: product_by_pk.delivery_time_ranges,
     product_customizable_areas: product_by_pk.product_customizable_areas.map(
       (area) => ({
