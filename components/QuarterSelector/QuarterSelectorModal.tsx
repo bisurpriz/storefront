@@ -19,7 +19,7 @@ export default function QuarterSelectorModal() {
       onOpenChange={() => {}}
       title="Gönderim Yeri Seçin"
       description="Mahalle, okul, hastane gibi yakınızdaki önemli noktaları aratarak gönderim adresinizi seçebilirsiniz."
-      className="h-[50%] w-full max-w-xl md:flex md:h-fit md:flex-col"
+      className="h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
     >
       <PlacesAutocomplete
         onSelect={(place) => {
@@ -30,6 +30,9 @@ export default function QuarterSelectorModal() {
         <span className="text-center">
           Gönderim adresinize göre en uygun ürünleri listeleyebilmemiz için
           lütfen adresinizi seçin
+        </span>
+        <span className="text-center">
+          Şuan sadece Ankara içi gönderim yapıyoruz.
         </span>
       </div>
     </ResponsiveDialog>
