@@ -17,7 +17,7 @@ const HomePageGrid = async () => {
   });
 
   return (
-    <div className="my-4 grid grid-cols-12 gap-2">
+    <div className="grid grid-cols-12 gap-2 my-4">
       {system_banner?.map((_, index) => {
         const positionInCycle = index % 5;
         const isCol4 = positionInCycle < 3;
@@ -37,7 +37,7 @@ const HomePageGrid = async () => {
             <Image
               src={getImageUrlFromPath(_.path)}
               alt={_.name}
-              className="h-full w-full"
+              className="w-full h-full"
               width={isCol6 ? 1200 : 800}
               quality={100}
               height={isCol6 ? 600 : 400}
@@ -48,6 +48,7 @@ const HomePageGrid = async () => {
                   ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1200px"
                   : "(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 800px"
               }
+              imageClassName="w-full h-full"
             />
           </Link>
         );
