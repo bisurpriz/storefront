@@ -19,24 +19,26 @@ import { parseJson } from "@/utils/format";
 import { getPriceTR } from "@/utils/getPriceTR";
 import { Clock, Palette, ShoppingBasketIcon, Truck } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProductVariantSelector from "../ProductVariantSelector";
 import Promotions from "./Promotions";
-import RatingDetail, { RatingProps } from "./RatingDetail";
+import RatingDetail from "./RatingDetail";
 
-type ProductInformationProps = {
+interface Vendor {
+  name?: string;
+  id: string | number;
+}
+
+interface ProductInformationProps {
   name: string;
   price: number;
   discountPrice?: number;
   rating: number;
   reviewCount: number;
   promotion?: string;
-  rateCounts: RatingProps["rateCounts"];
+  rateCounts: Record<string, number>;
   discountRate?: number;
-  vendor?: {
-    name?: string;
-    id: any;
-  };
+  vendor?: Vendor;
   shippingType?: string;
   freeShipping?: boolean;
   deliveryTimeRanges: string;
@@ -44,25 +46,106 @@ type ProductInformationProps = {
   lastOrderTime?: string;
   productId: number;
   variants?: GetProductInformationQuery["product"]["variants"];
-};
+}
 
 const DynamicGoogleLocationSelect = dynamic(
   () => import("@/components/QuarterSelector/GoogleLocationSelect"),
   {
     ssr: false,
     loading: () => (
-      <Skeleton className="mb-2 h-14 w-full rounded-lg bg-primary/20" />
+      <Skeleton className="w-full mb-2 rounded-lg h-14 bg-primary/20" />
     ),
   },
 );
 
-const defaultRating = {
+const DEFAULT_RATING_COUNTS = {
   1: 0,
   2: 0,
   3: 0,
   4: 0,
   5: 0,
 };
+
+const PROMOTIONS = [
+  {
+    description: DeliveryType.SAME_DAY,
+    icon: <Clock />,
+    filterKey: FILTER_KEYS["SAME_DAY_DELIVERY"],
+    color: "info" as const,
+  },
+  {
+    description: "Ücretsiz kargo",
+    icon: <Truck />,
+    filterKey: FILTER_KEYS["FREE_SHIPPING"],
+    color: "warning" as const,
+  },
+  {
+    description: "Tasarlanabilir",
+    icon: <Palette />,
+    filterKey: FILTER_KEYS["CUSTOMIZABLE"],
+    color: "secondary" as const,
+  },
+];
+
+const ProductHeader = ({ name, vendor }: { name: string; vendor?: Vendor }) => {
+  const { isMobile } = useResponsive();
+
+  return (
+    <div>
+      <h1 className="w-full text-2xl text-gray-700 capitalize">{name}</h1>
+      {vendor && (
+        <div className="flex items-center text-xs">
+          <span className="font-semibold text-gray-700 me-1">Satıcı:</span>
+          <Link
+            href={getTenantUrl(vendor.name, vendor.id.toString())}
+            className="font-bold cursor-pointer me-1 text-sky-600"
+            aria-label={vendor.name}
+            title={vendor.name}
+            target={isMobile ? "_self" : "_blank"}
+            rel="noopener noreferrer"
+          >
+            {vendor.name}
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const PriceDisplay = ({
+  price,
+  discountPrice,
+  discountRate,
+  promotion,
+}: Pick<
+  ProductInformationProps,
+  "price" | "discountPrice" | "discountRate" | "promotion"
+>) => (
+  <div className="flex items-end justify-start gap-2 max-xl:flex-row max-xl:items-center max-lg:items-start">
+    {discountRate ? (
+      <span className="max-w-lg p-2 text-2xl font-medium text-white bg-red-500 w-max rounded-xl">
+        {discountRate}%
+      </span>
+    ) : null}
+    <span className="flex flex-col gap-1">
+      {discountPrice && discountPrice < price && (
+        <h5 className="max-w-lg text-base font-light leading-none whitespace-nowrap text-slate-500">
+          <del>₺{price?.toFixed(2)}</del>
+        </h5>
+      )}
+      <span className="flex items-end gap-2 max-xl:flex-row max-xl:items-center max-xl:text-start">
+        <h1 className="max-w-lg text-3xl font-semibold leading-none whitespace-nowrap text-primary">
+          {getPriceTR(discountPrice)}
+        </h1>
+        {promotion && (
+          <p className="max-w-lg text-sm leading-none whitespace-nowrap text-primary">
+            & {promotion}
+          </p>
+        )}
+      </span>
+    </span>
+  </div>
+);
 
 const ProductInformation = ({
   productId,
@@ -82,92 +165,53 @@ const ProductInformation = ({
   lastOrderTime,
   variants,
 }: ProductInformationProps) => {
-  const hasDeliveryTime = Boolean(parseJson(deliveryTimeRanges)?.length);
-  const [productInCart, setProductInCart] = useState(null);
-
-  const manipulatedRateCounts = Object.keys(defaultRating).reduce(
-    (acc, key) => {
-      return {
-        ...acc,
-        [key]: rateCounts[key] || 0,
-      };
-    },
-    defaultRating,
-  );
-
+  const {
+    setDeliveryTimeHandler,
+    deliveryTime,
+    isProductInCart,
+    syncDeliveryTimeWithProduct,
+  } = useCart();
+  const parsedDeliveryTimes = parseJson(deliveryTimeRanges);
+  const hasDeliveryTime = Boolean(parsedDeliveryTimes?.length);
   const isSameDay = shippingType === "SAME_DAY";
   const showDaySelect = isSameDay && hasDeliveryTime;
   const showExactTime = isSameDay && !hasDeliveryTime;
 
-  const { setDeliveryTimeHandler, deliveryTime, isProductInCart } = useCart();
+  const productInCart = isProductInCart(productId);
+
+  const isDeliveryTimeChanged =
+    productInCart &&
+    deliveryTime &&
+    (new Date(productInCart.deliveryDate).getDay() !==
+      new Date(deliveryTime.day).getDay() ||
+      productInCart.deliveryTime !== deliveryTime.hour);
 
   useEffect(() => {
-    setProductInCart(isProductInCart(productId));
+    syncDeliveryTimeWithProduct(productId);
+    return () => setDeliveryTimeHandler({ day: null, hour: "" });
   }, [productId]);
 
-  const isSettedDeliveryTime =
-    !productInCart || !deliveryTime
-      ? false
-      : Boolean(
-          new Date(productInCart.deliveryDate).getDay() !==
-            new Date(deliveryTime.day).getDay(),
-        ) || Boolean(productInCart.deliveryTime !== deliveryTime.hour);
-
-  useEffect(() => {
-    return () => {
-      setDeliveryTimeHandler(null);
-    };
-  }, []);
-
-  const { isMobile } = useResponsive();
+  const normalizedRateCounts = Object.keys(DEFAULT_RATING_COUNTS).reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: rateCounts[key] || 0,
+    }),
+    DEFAULT_RATING_COUNTS,
+  );
 
   return (
-    <div className="flex h-full w-full flex-col items-start justify-start gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
-      <div className="flex w-full flex-col items-start justify-start space-y-4 rounded-lg">
-        <div>
-          <h1 className="w-full text-2xl capitalize text-gray-700">{name}</h1>
-          {vendor && (
-            <div className="flex items-center text-xs">
-              <span className="me-1 font-semibold text-gray-700">Satıcı:</span>
-              <Link
-                href={getTenantUrl(vendor.name, vendor.id.toString())}
-                className="me-1 cursor-pointer font-bold text-sky-600"
-                aria-label={vendor.name}
-                title={vendor.name}
-                target={isMobile ? "_self" : "_blank"}
-                rel="noopener noreferrer"
-              >
-                {vendor.name}
-              </Link>
-            </div>
-          )}
-        </div>
+    <div className="flex flex-col items-start justify-start w-full h-full gap-4 rounded-md max-md:w-full max-md:rounded-none max-md:shadow-none">
+      <div className="flex flex-col items-start justify-start w-full space-y-4 rounded-lg">
+        <ProductHeader name={name} vendor={vendor} />
 
-        <div className="flex w-full items-end justify-start gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
-          <div className="flex items-center justify-start gap-2 max-xl:flex-row max-xl:items-center max-lg:items-start">
-            {discountRate ? (
-              <span className="w-max max-w-lg rounded-xl bg-red-500 p-2 text-2xl font-medium text-white">
-                {discountRate}%
-              </span>
-            ) : null}
-            <span className="flex flex-col gap-1">
-              {discountPrice && discountPrice < price ? (
-                <h5 className="max-w-lg whitespace-nowrap text-base font-light leading-none text-slate-500">
-                  <del>₺{price?.toFixed(2)}</del>
-                </h5>
-              ) : null}
-              <span className="flex items-end gap-2 max-xl:flex-row max-xl:items-center max-xl:text-start">
-                <h1 className="max-w-lg whitespace-nowrap text-3xl font-semibold leading-none text-primary">
-                  {getPriceTR(discountPrice)}
-                </h1>
-                {promotion && (
-                  <p className="max-w-lg whitespace-nowrap text-sm leading-none text-primary">
-                    & {promotion}
-                  </p>
-                )}
-              </span>
-            </span>
-          </div>
+        <div className="flex items-end justify-start w-full gap-2 max-xl:flex-col max-xl:items-start md:mt-4">
+          <PriceDisplay
+            price={price}
+            discountPrice={discountPrice}
+            discountRate={discountRate}
+            promotion={promotion}
+          />
+
           <HoverCard>
             <HoverCardTrigger className="xl:ml-auto">
               <ReviewRating
@@ -179,67 +223,60 @@ const ProductInformation = ({
             </HoverCardTrigger>
             <HoverCardContent className="w-full max-w-md">
               <RatingDetail
-                rateCounts={manipulatedRateCounts}
+                rateCounts={normalizedRateCounts}
                 rating={rating}
                 totalRating={reviewCount}
               />
             </HoverCardContent>
           </HoverCard>
         </div>
+
         <Promotions
-          promotions={[
-            {
-              description: DeliveryType.SAME_DAY,
-              icon: <Clock />,
-              filterKey: FILTER_KEYS["SAME_DAY_DELIVERY"],
-              show: isSameDay,
-              color: "info",
-            },
-            {
-              description: freeShipping ? "Ücretsiz kargo" : "Ücretli gönderim",
-              icon: <Truck />,
-              filterKey: FILTER_KEYS["FREE_SHIPPING"],
-              show: freeShipping,
-              color: "warning",
-            },
-            {
-              description: "Tasarlanabilir",
-              icon: <Palette />,
-              filterKey: FILTER_KEYS["CUSTOMIZABLE"],
-              show: isCustomizable,
-              color: "secondary",
-            },
-          ]}
-        />
-        <ProductVariantSelector
-          variants={variants.map(({ variant }) => ({
-            name: variant.name,
-            imageUrl: variant.image_url[0],
-            price: variant.price,
-            variantId: variant.id,
-            variantSlug: variant.slug,
-            categorySlug: variant?.product_categories?.[0]?.category.slug,
-            discountPrice: variant.discount_price,
+          promotions={PROMOTIONS.map((promo) => ({
+            ...promo,
+            show:
+              (promo.filterKey === FILTER_KEYS["SAME_DAY_DELIVERY"] &&
+                isSameDay) ||
+              (promo.filterKey === FILTER_KEYS["FREE_SHIPPING"] &&
+                freeShipping) ||
+              (promo.filterKey === FILTER_KEYS["CUSTOMIZABLE"] &&
+                isCustomizable),
           }))}
         />
 
+        {variants && (
+          <ProductVariantSelector
+            variants={variants.map(({ variant }) => ({
+              name: variant.name,
+              imageUrl: variant.image_url[0],
+              price: variant.price,
+              variantId: variant.id,
+              variantSlug: variant.slug,
+              categorySlug: variant?.product_categories?.[0]?.category.slug,
+              discountPrice: variant.discount_price,
+            }))}
+          />
+        )}
+
         {isSameDay && <DynamicGoogleLocationSelect />}
+
         {showExactTime && (
-          <div className="my-2 rounded-xl bg-purple-100 bg-opacity-50 p-1 px-4">
+          <div className="p-1 px-4 my-2 bg-purple-100 bg-opacity-50 rounded-xl">
             <p className="text-xs text-gray-500">
               Ürün gün içinde herhangi bir saatte teslim edilecektir.
             </p>
           </div>
         )}
+
         {showDaySelect && (
-          <div className="my-2 w-full">
+          <div className="w-full my-2">
             <DaySelect
-              deliveryTimes={parseJson(deliveryTimeRanges)}
-              onSelect={(date) => setDeliveryTimeHandler(date)}
+              deliveryTimes={parsedDeliveryTimes}
+              onSelect={setDeliveryTimeHandler}
               deliveryTime={deliveryTime}
               lastOrderTime={lastOrderTime}
             />
-            {isSettedDeliveryTime && (
+            {isDeliveryTimeChanged && (
               <Alert variant="informative" className="mt-2">
                 <ShoppingBasketIcon />
                 <AlertTitle>

@@ -320,9 +320,13 @@ export const CartProvider = ({
   };
 
   const isProductInCart = (id: number) => {
+    return cartState.cartItems.find((item) => item.id === id);
+  };
+
+  const syncDeliveryTimeWithProduct = (id: number) => {
     const product = cartState.cartItems.find((item) => item.id === id);
 
-    if (Boolean(product)) {
+    if (product) {
       setDeliveryTime({
         day: product.deliveryDate ? new Date(product.deliveryDate) : null,
         hour: product.deliveryTime || "",
@@ -330,8 +334,6 @@ export const CartProvider = ({
     } else {
       clearDeliveryTime();
     }
-
-    return product;
   };
 
   const isDeliveryTimeValid = (
@@ -413,6 +415,7 @@ export const CartProvider = ({
       setDeliveryTimeHandler,
       clearDeliveryTime,
       isProductInCart,
+      syncDeliveryTimeWithProduct,
       applyCouponCode,
       updateCartItemNote,
       hasCustomizableProduct,
@@ -429,6 +432,7 @@ export const CartProvider = ({
       setDeliveryTimeHandler,
       clearDeliveryTime,
       isProductInCart,
+      syncDeliveryTimeWithProduct,
       applyCouponCode,
       updateCartItemNote,
       hasCustomizableProduct,
