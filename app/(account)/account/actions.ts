@@ -18,7 +18,7 @@ import {
   UpdateUserByIdDocument,
 } from "@/service/user";
 import { revalidateTag } from "next/cache";
-import { readIdFromCookies } from "../actions";
+import { readIdFromCookies } from "../../actions";
 
 export const getUserById = async (id?: string) => {
   const userId = id || (await readIdFromCookies());

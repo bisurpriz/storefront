@@ -16,7 +16,7 @@ import useResponsive from "@/hooks/useResponsive";
 import clsx from "clsx";
 import { ChevronUp } from "lucide-react";
 import { motion } from "motion/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { useProgress } from "react-transition-progress";
 import { CartStepPaths } from "../../../constants";
@@ -39,11 +39,14 @@ const CartSummary = () => {
     useContract();
 
   const pathname = usePathname();
-  const { push } = useRouter();
+  const searchParams = useSearchParams();
+  const { push, replace } = useRouter();
   const { isTablet } = useResponsive();
   const startProgress = useProgress();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
+
+  const currentStep = Number(searchParams.get("step") || "1");
 
   useEffect(() => {
     setMounted(true);
@@ -58,11 +61,41 @@ const CartSummary = () => {
   }, [isTablet]);
 
   const changeStep = useCallback(() => {
-    startTransition(() => {
-      startProgress();
-      if (pathname === CartStepPaths.CART) push(CartStepPaths.ORDER_DETAIL);
+    startTransition(async () => {
+      if (pathname === CartStepPaths.CART) {
+        startProgress();
+        push(`${CartStepPaths.ORDER_DETAIL}?step=1`);
+        return;
+      }
+
+      if (pathname === CartStepPaths.ORDER_DETAIL) {
+        const orderDetailForm = document.getElementById("order-detail-form");
+        if (orderDetailForm) {
+          const formEvent = new Event("submit", { cancelable: true });
+          const shouldSubmit = await orderDetailForm.dispatchEvent(formEvent);
+
+          if (shouldSubmit) {
+            if (currentStep === 1) {
+              const params = new URLSearchParams(searchParams);
+              params.set("step", "2");
+              replace(`?${params.toString()}`);
+            } else if (currentStep === 2) {
+              startProgress();
+              push(CartStepPaths.CHECKOUT);
+            }
+          }
+        }
+        return;
+      }
+
+      // Handle checkout form submission
+      const orderDetailForm = document.getElementById("order-detail-form");
+      if (orderDetailForm) {
+        const formEvent = new Event("submit", { cancelable: true });
+        await orderDetailForm.dispatchEvent(formEvent);
+      }
     });
-  }, [pathname, push, startProgress]);
+  }, [pathname, push, startProgress, currentStep, searchParams, replace]);
 
   const handleDiscountCodeSubmit = useCallback(
     async (couponCode: string) => {

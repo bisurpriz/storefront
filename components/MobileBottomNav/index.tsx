@@ -40,7 +40,7 @@ const MenuItem = ({
         // üzerinde item sayısı göster
         <div className="relative">
           <span className="flex-1 text-2xl">{item.icon}</span>
-          <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+          <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -right-2 -top-2">
             {hasBadge.badgeText}
           </span>
         </div>
@@ -85,7 +85,7 @@ const MobileBottomNav = () => {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-10 hidden border-t border-gray-200 bg-white max-md:block"
+      className="fixed bottom-0 left-0 right-0 z-10 hidden bg-white border-t border-gray-200 max-md:block"
       id="mobile-bottom-nav"
     >
       <div className="grid grid-cols-5 gap-4 p-2">

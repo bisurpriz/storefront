@@ -64,7 +64,7 @@ export default function ValentinesBanner() {
   }
 
   return (
-    <div className="relative w-full overflow-hidden text-white bg-gradient-to-r from-pink-500 via-red-500 to-pink-500">
+    <div className="relative w-full text-white bg-gradient-to-r from-pink-500 via-red-500 to-pink-500">
       {/* Kar efekti */}
       {snowflakes.map((_, i) => (
         <Snowflake key={i} delay={i * 0.2} />

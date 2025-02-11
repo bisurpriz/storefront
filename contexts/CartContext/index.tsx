@@ -4,11 +4,11 @@ import {
   getCartCost,
   getProductByIdForCart,
   updateCart,
-} from "@/app/cart/actions";
+} from "@/app/(cart)/cart/actions";
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { IPlace } from "@/common/types/Product/product";
 import { HOURS_BEFORE_DELIVERY_END } from "@/components/DatePicker/HourSelect/utils";
-import { toast, ToasterToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -81,9 +81,6 @@ export const CartProvider = ({
   }, [cartDbItems]);
 
   const handleChangeDb = async (cartItems: ProductForCart[], type?: Type) => {
-    toast({
-      title: messages(type).loading,
-    });
     setLoading(true);
     const response = await updateCart(cartItems);
     setLoading(false);
@@ -93,43 +90,6 @@ export const CartProvider = ({
       });
       return response;
     }
-
-    let toastConfig: ToasterToast;
-
-    switch (type) {
-      case "add":
-        toastConfig = {
-          id: "add",
-          title: messages(type).success,
-          action: (
-            <button
-              onClick={() => push("/cart")}
-              className="text-sm font-medium"
-            >
-              Sepete Git
-            </button>
-          ),
-        };
-        break;
-      case "clear":
-        toastConfig = {
-          id: "clear",
-          title: messages(type).success,
-          action: (
-            <button onClick={() => push("/")} className="text-sm font-medium">
-              Alışverişe Devam et
-            </button>
-          ),
-        };
-        break;
-      default:
-        toastConfig = {
-          id: "update",
-          title: messages(type).success,
-        };
-    }
-
-    toast(toastConfig);
 
     return response;
   };
@@ -397,7 +357,7 @@ export const CartProvider = ({
         toast({
           title: `Teslimat süresi geçen ${invalidItems.length} ürün sepetinizden kaldırıldı.`,
           variant: "destructive",
-          duration: 5000,
+          duration: 3000,
         });
       });
     }

@@ -1,22 +1,29 @@
-import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import ValentinesBanner from "../Banner/ValentinesBanner";
-import MobileBottomNav from "../MobileBottomNav";
+import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { GetCategoriesDocument } from "@/service/category";
+import { BonnmarseApi } from "@/service/fetch";
 import { Toaster } from "../ui/toaster";
 import Footer from "./Footer";
 import Header from "./Header";
 
-export default function DesignLayout({
+export default async function DesignLayout({
   children,
-  categories,
 }: {
   children: React.ReactNode;
-  categories: GetAllCategoriesQuery["category"];
 }) {
+  const categories = await BonnmarseApi.request<GetMainCategoriesQuery>({
+    query: GetCategoriesDocument,
+    tags: ["getMainCategories"],
+    cache: {
+      enable: true,
+      duration: 30 * 60 * 1000,
+    },
+    withAuth: false,
+  });
+
   return (
-    <div className="flex flex-col min-h-dvh">
+    <div className="flex flex-col h-full">
       <Toaster />
-      <ValentinesBanner />
-      <Header category={categories} />
+      <Header category={categories.category} />
 
       <div className="relative flex flex-col flex-1 overflow-hidden">
         {/* Scrollable content area */}
@@ -29,8 +36,6 @@ export default function DesignLayout({
           <Footer />
         </div>
       </div>
-
-      <MobileBottomNav />
     </div>
   );
 }
