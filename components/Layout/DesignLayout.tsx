@@ -1,7 +1,6 @@
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
-import MobileBottomNav from "../MobileBottomNav";
 import { Toaster } from "../ui/toaster";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -37,8 +36,6 @@ export default async function DesignLayout({
           <Footer />
         </div>
       </div>
-
-      <MobileBottomNav />
     </div>
   );
 }

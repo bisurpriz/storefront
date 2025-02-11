@@ -1,6 +1,5 @@
 "use client";
 
-import { CartStepPaths } from "@/app/(cart)/cart/constants";
 import {
   getAddressString,
   getAvailableDistricts,
@@ -15,7 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { parseJson } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -25,7 +24,6 @@ import {
 } from "react";
 import { useForm } from "react-hook-form";
 import { orderDetailSchema } from "../schema";
-import { NotesStep } from "./components/NotesStep";
 import { ProgressBar } from "./components/ProgressBar";
 import { ReceiverInfoStep } from "./components/ReceiverInfoStep";
 import { SenderInfoStep } from "./components/SenderInfoStep";
@@ -39,7 +37,6 @@ const STEP_FIELDS: {
   sender: FormFields[];
   company: FormFields[];
   receiver: FormFields[];
-  notes: FormFields[];
 } = {
   sender: [
     "sender_name",
@@ -57,7 +54,6 @@ const STEP_FIELDS: {
     "receiver_neighborhood",
     "receiver_address",
   ],
-  notes: ["notes"],
 } as const;
 
 const findFirstErrorStep = (errors: Record<string, any>): number => {
@@ -73,23 +69,33 @@ const findFirstErrorStep = (errors: Record<string, any>): number => {
     return 1;
   if (errorFields.some((field) => STEP_FIELDS.receiver.includes(field)))
     return 2;
-  if (errorFields.some((field) => STEP_FIELDS.notes.includes(field))) return 3;
 
   return -1;
 };
 
 export default function ReceiverForm() {
-  const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
   const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
   const [selectedCargoLocation, setSelectedCargoLocation] = useState<IPlace>();
   const [selectedInvoiceType, setSelectedInvoiceType] =
     useState<InvoiceType>("person");
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const step = Number(searchParams.get("step") || "1");
+
   const {
     cartState: { cartItems },
   } = useCart();
-  const { push } = useRouter();
+
+  const updateStep = useCallback(
+    (newStep: number) => {
+      const params = new URLSearchParams(searchParams);
+      params.set("step", newStep.toString());
+      router.replace(`?${params.toString()}`);
+    },
+    [router, searchParams],
+  );
 
   // Lokasyon bilgilerini memo'la
   const { city, district, neighborhood, street, postal_code } = useMemo(
@@ -111,6 +117,7 @@ export default function ReceiverForm() {
     handleSubmit,
     setValue,
     trigger,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<OrderDetailFormData>({
     resolver: yupResolver(orderDetailSchema),
@@ -147,25 +154,37 @@ export default function ReceiverForm() {
     [placeData],
   );
 
+  const getFieldsToValidate = () => {
+    if (step === 1) {
+      return [
+        ...STEP_FIELDS.sender,
+        ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
+      ];
+    }
+    if (step === 2) {
+      return STEP_FIELDS.receiver;
+    }
+    return [];
+  };
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const isValid = await trigger();
+      const fieldsToValidate = getFieldsToValidate();
+      const isValid = await trigger(fieldsToValidate);
+
       if (!isValid) {
-        const errorStep = findFirstErrorStep(errors);
-        if (errorStep !== -1) {
-          setStep(errorStep);
-          toast({
-            title: `Lütfen ${STEPPER_DATA[errorStep - 1].label} bilgilerini kontrol ediniz`,
-            variant: "destructive",
-          });
-          return;
-        }
+        toast({
+          title: `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
+          variant: "destructive",
+        });
+        return;
       }
 
-      startTransition(() => {
-        sessionStorage.setItem("order-detail-form", JSON.stringify(data));
-        push(CartStepPaths.CHECKOUT);
-      });
+      if (step === 2) {
+        startTransition(() => {
+          sessionStorage.setItem("order-detail-form", JSON.stringify(data));
+        });
+      }
     } catch (error) {
       toast({
         title: "Bir hata oluştu. Lütfen tekrar deneyiniz.",
@@ -232,42 +251,51 @@ export default function ReceiverForm() {
     }
   }, [selectedCargoLocation, hasSameDayProduct, setValue]);
 
-  const getFieldsToValidate = () => {
+  const nextStep = useCallback(async () => {
+    const fieldsToValidate = getFieldsToValidate();
+    const isStepValid = await trigger(fieldsToValidate);
+
+    if (!isStepValid) {
+      toast({
+        title: `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
+        variant: "destructive",
+      });
+      return false;
+    }
+
     if (step === 1) {
-      return [
-        ...STEP_FIELDS.sender,
-        ...(selectedInvoiceType === "company" ? STEP_FIELDS.company : []),
-      ];
+      updateStep(2);
+      return true;
     }
+
     if (step === 2) {
-      return STEP_FIELDS.receiver;
+      startTransition(() => {
+        sessionStorage.setItem(
+          "order-detail-form",
+          JSON.stringify(getValues()),
+        );
+      });
+      return true;
     }
-    return [];
-  };
 
-  const nextStep = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault();
-      const fieldsToValidate = getFieldsToValidate();
-
-      const isStepValid = await trigger(fieldsToValidate);
-
-      if (!isStepValid) {
-        toast({
-          title: `Lütfen ${STEPPER_DATA[step - 1].label} bilgilerini eksiksiz doldurunuz`,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      setStep((prev) => Math.min(prev + 1, 3));
-    },
-    [step, selectedInvoiceType, trigger],
-  );
+    return false;
+  }, [step, trigger, getValues, updateStep]);
 
   const prevStep = useCallback(() => {
-    setStep((prev) => Math.max(prev - 1, 1));
-  }, []);
+    if (step > 1) {
+      updateStep(step - 1);
+    }
+  }, [step, updateStep]);
+
+  // Expose current step and nextStep function through window
+  useEffect(() => {
+    (window as any).handleReceiverFormNextStep = nextStep;
+    (window as any).currentFormStep = step;
+    return () => {
+      delete (window as any).handleReceiverFormNextStep;
+      delete (window as any).currentFormStep;
+    };
+  }, [nextStep, step]);
 
   // Form içeriğini render et
   const renderStepContent = useCallback(
@@ -301,7 +329,6 @@ export default function ReceiverForm() {
           >
             {currentStep === 1 && <SenderInfoStep {...props} />}
             {currentStep === 2 && <ReceiverInfoStep {...props} />}
-            {currentStep === 3 && <NotesStep control={control} />}
           </motion.div>
         </AnimatePresence>
       );
@@ -322,19 +349,19 @@ export default function ReceiverForm() {
   );
 
   return (
-    <div className="relative mx-auto p-4 sm:p-6">
+    <div className="relative p-4 mx-auto sm:p-6">
       {(isPending || isSubmitting) && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
-          <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="w-16 h-16 border-4 rounded-full animate-spin border-primary border-t-transparent" />
         </div>
       )}
 
       <ProgressBar step={step} />
 
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form onSubmit={onSubmit} className="space-y-8" id="order-detail-form">
         {renderStepContent(step)}
 
-        <div className="mt-8 flex justify-between">
+        <div className="flex justify-between mt-8">
           {step > 1 && (
             <Button
               type="button"
@@ -344,25 +371,6 @@ export default function ReceiverForm() {
               disabled={isSubmitting}
             >
               Geri
-            </Button>
-          )}
-
-          {step < 3 ? (
-            <Button
-              type="button"
-              onClick={nextStep}
-              className="ml-auto min-w-[120px]"
-              disabled={isSubmitting}
-            >
-              İleri
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="ml-auto min-w-[120px]"
-              disabled={isPending || isSubmitting}
-            >
-              Ödemeye Geç
             </Button>
           )}
         </div>

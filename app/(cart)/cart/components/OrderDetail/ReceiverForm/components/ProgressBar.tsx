@@ -11,7 +11,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
         {STEPPER_DATA.map((data, i) => (
           <div
             key={data.key}
-            className={`flex w-1/3 select-none justify-center gap-1 text-center text-sm lg:text-base ${
+            className={`flex w-1/2 select-none justify-center gap-1 text-center text-sm lg:text-base ${
               i < step ? "text-primary" : "text-muted-foreground"
             }`}
           >
@@ -19,10 +19,10 @@ export function ProgressBar({ step }: ProgressBarProps) {
           </div>
         ))}
       </div>
-      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
+      <div className="w-full h-2 mt-2 overflow-hidden rounded-full bg-muted">
         <div
-          className="h-full bg-primary transition-all duration-300 ease-in-out"
-          style={{ width: `${(step / 3) * 100}%` }}
+          className="h-full transition-all duration-300 ease-in-out bg-primary"
+          style={{ width: `${(step / 2) * 100}%` }}
         />
       </div>
     </div>

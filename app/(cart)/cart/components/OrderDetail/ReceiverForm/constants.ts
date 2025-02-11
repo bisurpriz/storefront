@@ -3,7 +3,6 @@ import { StepData } from "./types";
 export const STEPPER_DATA: StepData[] = [
   { label: "Gönderici", key: "sender" },
   { label: "Alıcı", key: "receiver" },
-  { label: "Notlar", key: "notes" },
 ] as const;
 
 export const MOTION_VARIANTS = {

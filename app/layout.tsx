@@ -4,6 +4,7 @@ import "./globals.css";
 
 import ValentinesBanner from "@/components/Banner/ValentinesBanner";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -149,6 +150,10 @@ export default async function RootLayout({
           href="https://d1sk8qn67xoao2.cloudfront.net"
           crossOrigin="anonymous"
         />
+        <meta
+          name="google-site-verification"
+          content="gg9nv9VRXJP_xbO8UJ-ALrSEsMbD18n3cpS6nBAGKn8"
+        />
       </head>
       <GoogleTagManagerInjector />
       <body
@@ -170,6 +175,7 @@ export default async function RootLayout({
               <QuarterSelectorModal />
             </Suspense>
           )}
+          <MobileBottomNav />
         </Providers>
       </body>
     </html>

@@ -1,4 +1,3 @@
-import { PageProps } from "@/.next/types/app/page";
 import { getProductRatings } from "@/app/(feed)/actions";
 import { getImageUrlFromPath, getProductDetailUrl } from "@/lib/utils";
 import { parseJson } from "@/utils/format";
@@ -28,9 +27,11 @@ export async function generateMetadata({ searchParams }) {
   };
 }
 
-const ProductInformationPage: FC<PageProps> = async (props) => {
-  const searchParams = await props.searchParams;
-  const productId = Number(searchParams["pid"]);
+const ProductInformationPage: FC<{
+  searchParams: Promise<{ pid: string }>;
+}> = async ({ searchParams }) => {
+  const { pid } = await searchParams;
+  const productId = Number(pid);
 
   if (!productId) {
     return redirect("/");
