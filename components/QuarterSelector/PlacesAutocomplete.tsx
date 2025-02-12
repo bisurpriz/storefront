@@ -231,21 +231,27 @@ export default function PlacesAutocomplete({
 
             onSelect?.(placeData);
 
-            const domain =
-              process.env.NODE_ENV === "production"
-                ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
-                : "localhost";
-
             if (!dontChangeCookie) {
               ignoreNextChange.current = true;
-              Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData), {
+
+              const domain =
+                process.env.NODE_ENV === "production"
+                  ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+                  : "localhost";
+              const cookieOptions: Cookies.CookieAttributes = {
                 domain,
                 path: "/",
                 httpOnly: false,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-              });
+              };
+
+              Cookies.set(
+                CookieTokens.LOCATION_ID,
+                JSON.stringify(placeData),
+                cookieOptions,
+              );
               publishLocationChange(placeData);
               refresh();
             }
