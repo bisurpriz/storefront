@@ -231,9 +231,15 @@ export default function PlacesAutocomplete({
 
             onSelect?.(placeData);
 
+            const domain =
+              process.env.NODE_ENV === "production"
+                ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
+                : "localhost";
+
             if (!dontChangeCookie) {
               ignoreNextChange.current = true;
               Cookies.set(CookieTokens.LOCATION_ID, JSON.stringify(placeData), {
+                domain,
                 path: "/",
                 httpOnly: false,
                 secure: process.env.NODE_ENV === "production",

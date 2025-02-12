@@ -52,3 +52,5 @@ certs
 .idea
 .vscode
 .yarn/install-state.gz
+# Sentry Config File
+.env.sentry-build-plugin

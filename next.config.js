@@ -111,7 +111,39 @@ const nextConfig = {
     REST_API_URL: process.env.REST_API_URL,
     NEXT_PUBLIC_REST_API_URL: process.env.NEXT_PUBLIC_REST_API_URL,
     NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+    styledComponents: true,
+  },
+  headers: async () => [
+    {
+      source: "/:path*",
+      headers: [
+        {
+          key: "X-DNS-Prefetch-Control",
+          value: "on",
+        },
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=31536000; includeSubDomains",
+        },
+        {
+          key: "X-Frame-Options",
+          value: "SAMEORIGIN",
+        },
+        {
+          key: "X-Content-Type-Options",
+          value: "nosniff",
+        },
+        {
+          key: "Referrer-Policy",
+          value: "origin-when-cross-origin",
+        },
+      ],
+    },
+  ],
 };
 
 const withPWA = require("next-pwa")({
@@ -121,4 +153,24 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
-module.exports = withPWA(nextConfig);
+const { withSentryConfig } = require("@sentry/nextjs");
+
+const sentryWebpackPluginOptions = {
+  org: "bonnmarse-2y",
+  project: "javascript-nextjs",
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  hideSourceMaps: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+  },
+  reactComponentAnnotation: {
+    enabled: true,
+  },
+  tunnelRoute: "/monitoring",
+};
+
+const composedConfig = withPWA(nextConfig);
+module.exports = withSentryConfig(composedConfig, sentryWebpackPluginOptions);

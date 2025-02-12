@@ -32,22 +32,22 @@ export function SearchResults({
         <button
           key={product.id}
           type="button"
-          className="flex max-h-32 w-full items-center space-x-3 rounded-lg p-4 text-left transition-colors duration-200 hover:bg-gray-100"
+          className="flex items-center w-full p-4 space-x-3 text-left transition-colors duration-200 rounded-lg max-h-32 hover:bg-gray-100"
           onClick={() => onSelect(product)}
         >
-          <div className="relative h-20 w-20 flex-shrink-0">
+          <div className="relative flex-shrink-0 w-20 h-20">
             <Image
               src={getImageUrlFromPath(product.image_url?.[0])}
               alt={product.name}
               fill
               sizes="80px"
-              className="rounded-md object-cover"
+              className="object-cover rounded-md"
               priority
             />
           </div>
-          <div className="min-w-0 flex-grow">
+          <div className="flex-grow min-w-0">
             <div className="flex flex-col items-start justify-start">
-              <h3 className="max-w-sm truncate text-sm font-medium text-gray-900">
+              <h3 className="max-w-sm text-sm font-medium text-gray-900 truncate">
                 {product.name}
               </h3>
               {product.tenant?.tenants[0]?.name && (
@@ -56,7 +56,7 @@ export function SearchResults({
                 </span>
               )}
             </div>
-            <div className="mt-1 flex items-center">
+            <div className="flex items-center mt-1">
               <span className="text-sm font-semibold text-gray-900">
                 {product.price ? `₺${product.price}` : "Fiyat bilgisi yok"}
               </span>
@@ -67,14 +67,14 @@ export function SearchResults({
               )}
             </div>
           </div>
-          <div className="flex w-fit flex-1 flex-col items-end">
+          <div className="flex flex-col items-end flex-1 w-fit">
             {product.score > 0 && (
               <div className="flex items-center">
                 <Star
                   className={cn("mr-1 h-4 w-4 fill-yellow-400 text-yellow-400")}
                 />
                 <span className="text-sm text-gray-600">
-                  {product.score.toFixed(1)}
+                  {product.score > 5 ? "5.0" : product.score.toFixed(1)}
                 </span>
               </div>
             )}

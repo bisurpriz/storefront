@@ -28,10 +28,10 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
   };
 
   return rateCounts ? (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex flex-col w-full gap-4">
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold max-sm:text-sm">
-          {rating.toFixed(1)} Puan
+          {rating > 5 ? "5.0" : rating.toFixed(1)} Puan
         </p>
         <Link
           href="#yorumlar"
@@ -48,15 +48,15 @@ const RatingDetail = ({ rateCounts, rating, totalRating }: RatingProps) => {
               "grid grid-cols-12 items-center justify-start text-xs font-semibold"
             }
           >
-            <p className="col-span-4 flex items-center justify-start gap-1 text-gray-700">
+            <p className="flex items-center justify-start col-span-4 gap-1 text-gray-700">
               {key}
               {Array.from({ length: parseInt(key) }).map((_, index) => (
                 <span key={index}>
-                  <CustomStar className="h-4 w-4 fill-yellow-400 stroke-yellow-400 max-sm:h-3 max-sm:w-3" />
+                  <CustomStar className="w-4 h-4 fill-yellow-400 stroke-yellow-400 max-sm:h-3 max-sm:w-3" />
                 </span>
               ))}
             </p>
-            <div className="col-span-8 flex items-center justify-start gap-4">
+            <div className="flex items-center justify-start col-span-8 gap-4">
               <div className={`relative h-1.5 w-52 rounded-lg bg-gray-200`}>
                 <motion.div
                   initial={{ width: 0 }}

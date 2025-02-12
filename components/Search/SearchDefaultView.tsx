@@ -48,15 +48,15 @@ export default function SearchDefaultView({
   };
 
   return (
-    <div className="mx-auto h-full w-full max-w-4xl cursor-pointer overflow-hidden overflow-y-auto rounded-lg bg-gradient-to-br from-white to-gray-100 p-6 shadow-lg">
+    <div className="w-full h-full max-w-4xl p-6 mx-auto overflow-hidden overflow-y-auto rounded-lg shadow-lg cursor-pointer bg-gradient-to-br from-white to-gray-100">
       <motion.div
-        className="mb-8 flex justify-center"
+        className="flex justify-center mb-8"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-primary/10">
-          <Search className="h-16 w-16 text-primary" />
+        <div className="flex items-center justify-center w-32 h-32 rounded-full bg-primary/10">
+          <Search className="w-16 h-16 text-primary" />
         </div>
       </motion.div>
 
@@ -75,22 +75,22 @@ export default function SearchDefaultView({
           )}
         >
           <TabsTrigger value="categories">
-            <Tag className="mr-2 h-4 w-4" />
+            <Tag className="w-4 h-4 mr-2" />
             Kategoriler
           </TabsTrigger>
           {featuredProducts?.length > 0 && (
             <TabsTrigger value="featured">
-              <Star className="mr-2 h-4 w-4" />
+              <Star className="w-4 h-4 mr-2" />
               Öne Çıkanlar
             </TabsTrigger>
           )}
           <TabsTrigger value="recent">
-            <Clock className="mr-2 h-4 w-4" />
+            <Clock className="w-4 h-4 mr-2" />
             Son Aramalar
           </TabsTrigger>
           {trendingSearches?.length > 0 && (
             <TabsTrigger value="trending">
-              <TrendingUp className="mr-2 h-4 w-4" />
+              <TrendingUp className="w-4 h-4 mr-2" />
               Trend Aramalar
             </TabsTrigger>
           )}
@@ -118,7 +118,7 @@ export default function SearchDefaultView({
                         className="rounded-full"
                       />
 
-                      <span className="text-center text-sm font-medium">
+                      <span className="text-sm font-medium text-center">
                         {category.name}
                       </span>
                     </Button>
@@ -138,13 +138,13 @@ export default function SearchDefaultView({
                     transition={{ duration: 0.2 * index }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="rounded-lg bg-white p-4 shadow-md transition-shadow hover:shadow-lg"
+                    className="p-4 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg"
                   >
                     <div className="flex items-center space-x-4">
                       <Image
                         src={getImageUrlFromPath(product.image_url?.[0])}
                         alt={product.name}
-                        className="h-20 w-20 rounded object-cover"
+                        className="object-cover w-20 h-20 rounded"
                         width={80}
                         height={80}
                       />
@@ -161,14 +161,16 @@ export default function SearchDefaultView({
                             />
                           ))}
                           <span className="ml-2 text-sm text-gray-600">
-                            {product.score.toFixed(1)}
+                            {product.score > 5
+                              ? "5.0"
+                              : product.score.toFixed(1)}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <Button size="sm" className="mt-4 w-full">
+                    <Button size="sm" className="w-full mt-4">
                       Ürüne Git
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </motion.div>
                 ))}
@@ -184,7 +186,7 @@ export default function SearchDefaultView({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
-                      className="flex items-center justify-between rounded-lg bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
+                      className="flex items-center justify-between p-3 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-md"
                     >
                       <span>{search}</span>
                       <div>
@@ -194,7 +196,7 @@ export default function SearchDefaultView({
                           onClick={() => removeRecentSearch(index)}
                           aria-label="Aramayı sil"
                         >
-                          <X className="h-4 w-4" />
+                          <X className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="ghost"
@@ -202,7 +204,7 @@ export default function SearchDefaultView({
                           className="ml-2"
                           onClick={() => push(`/arama?search=${search}`)}
                         >
-                          <ArrowRight className="h-4 w-4" />
+                          <ArrowRight className="w-4 h-4" />
                         </Button>
                       </div>
                     </motion.li>
@@ -210,7 +212,7 @@ export default function SearchDefaultView({
                 </ul>
               ) : (
                 <div className="py-8 text-center text-gray-500">
-                  <Clock className="mx-auto mb-4 h-16 w-16 text-gray-400" />
+                  <Clock className="w-16 h-16 mx-auto mb-4 text-gray-400" />
                   <p>Henüz arama geçmişiniz yok.</p>
                 </div>
               )}
@@ -226,14 +228,14 @@ export default function SearchDefaultView({
                   >
                     <Badge
                       variant="new"
-                      className="cursor-pointer px-3 py-2 text-base transition-colors hover:bg-primary hover:text-primary-foreground"
+                      className="px-3 py-2 text-base transition-colors cursor-pointer hover:bg-primary hover:text-primary-foreground"
                     >
                       {search}
                     </Badge>
                   </motion.div>
                 ))}
               </div>
-              <div className="mt-8 flex justify-center">
+              <div className="flex justify-center mt-8">
                 <motion.div
                   animate={{
                     scale: [1, 1.2, 1],
@@ -245,7 +247,7 @@ export default function SearchDefaultView({
                     repeatType: "reverse",
                   }}
                 >
-                  <TrendingUp className="h-16 w-16 text-primary" />
+                  <TrendingUp className="w-16 h-16 text-primary" />
                 </motion.div>
               </div>
             </TabsContent>
