@@ -87,7 +87,7 @@ const StarRating = memo(
           <span
             className={`${textSizeClasses[size]} font-medium text-gray-500 transition-colors group-hover:text-gray-700`}
           >
-            ({score.toFixed(1)})
+            ({score > 5 ? "5.0" : score.toFixed(1)})
           </span>
         )}
       </div>

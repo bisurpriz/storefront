@@ -1,7 +1,7 @@
 "use client";
 
-import Rating from "./CustomRating";
 import clsx from "clsx";
+import Rating from "./CustomRating";
 
 const ReviewRating = ({
   value = 0,
@@ -20,6 +20,7 @@ const ReviewRating = ({
   onChange?: (value: number) => void;
   tooltips?: string[];
 }) => {
+  const trueValue = value > 5 ? 5 : value;
   const reviewCountText =
     reviewCount > 0
       ? `${reviewCount} Değerlendirme`
@@ -32,22 +33,22 @@ const ReviewRating = ({
     <div className="flex items-center gap-1 font-semibold max-sm:flex-wrap">
       {showReviewCount && (
         <>
-          <p className={clsx(textStyle, "text-sm")}>{value.toFixed(1)}</p>
-          <span className="mx-1 h-1 w-1 flex-shrink-0 rounded-full bg-slate-400" />
+          <p className={clsx(textStyle, "text-sm")}>{trueValue.toFixed(1)}</p>
+          <span className="flex-shrink-0 w-1 h-1 mx-1 rounded-full bg-slate-400" />
         </>
       )}
 
       <Rating
-        defaultValue={value}
+        defaultValue={trueValue}
         disabled={readOnly}
         max={5}
         onChange={onChange}
         tooltips={tooltips}
-        value={value}
+        value={trueValue}
       />
       {showReviewCount && (
         <>
-          <span className="mx-1 h-1 w-1 flex-shrink-0 rounded-full bg-slate-400" />
+          <span className="flex-shrink-0 w-1 h-1 mx-1 rounded-full bg-slate-400" />
           <p className={clsx(textStyle, "text-warning text-xs")}>
             {reviewCountText}
           </p>
