@@ -1,9 +1,7 @@
-import { CookieTokens } from "@/app/@auth/contants";
-import { publishLocationChange } from "@/components/QuarterSelector/PlacesAutocomplete";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { setLocationCookie } from "@/utils/cookies";
 import { AnimatePresence, motion } from "framer-motion";
-import Cookies from "js-cookie";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
@@ -51,27 +49,7 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
           label,
         };
 
-        const domain =
-          process.env.NODE_ENV === "production"
-            ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
-            : "localhost";
-
-        // Cookie ayarlarını sabit bir obje olarak tanımlayalım
-        const cookieOptions: Cookies.CookieAttributes = {
-          domain,
-          path: "/",
-          httpOnly: false,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        };
-
-        Cookies.set(
-          CookieTokens.LOCATION_ID,
-          JSON.stringify(placeData),
-          cookieOptions,
-        );
-        publishLocationChange(placeData);
+        setLocationCookie(placeData);
         refresh();
       }
     },
@@ -199,8 +177,8 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
 
   return (
     <Alert variant="informative" className="mt-2 bg-sky-50/50">
-      <div className="absolute flex items-center justify-center w-10 h-10 rounded-full left-3 top-3 bg-sky-100 text-sky-700">
-        <MapPin className="w-5 h-5" strokeWidth={2.5} />
+      <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-700">
+        <MapPin className="h-5 w-5" strokeWidth={2.5} />
       </div>
       <div className="pl-12">
         <AlertTitle className="mb-2">Teslimat Bölgeleri</AlertTitle>
@@ -242,7 +220,7 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
             </AnimatePresence>
           </motion.div>
           {hasMore && (
-            <div className="flex justify-start pt-2 border-t border-sky-100">
+            <div className="flex justify-start border-t border-sky-100 pt-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -251,12 +229,12 @@ const DeliveryLocationsAlert = ({ locations }: Props) => {
               >
                 {showAll ? (
                   <>
-                    <ChevronUp className="w-3 h-3" />
+                    <ChevronUp className="h-3 w-3" />
                     Daha Az Göster
                   </>
                 ) : (
                   <>
-                    <ChevronDown className="w-3 h-3" />
+                    <ChevronDown className="h-3 w-3" />
                     {locations.length - visibleCount} mahalle daha
                   </>
                 )}
