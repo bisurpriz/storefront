@@ -137,11 +137,11 @@ export function GiftCardNote({
   };
 
   const LoadingContent = (
-    <div className="flex flex-col items-center justify-center space-y-4 py-8">
+    <div className="flex flex-col items-center justify-center py-8 space-y-4">
       <div className="relative">
-        <div className="h-24 w-24 animate-pulse rounded-full bg-gradient-to-r from-blue-600 to-purple-600" />
+        <div className="w-24 h-24 rounded-full animate-pulse bg-gradient-to-r from-blue-600 to-purple-600" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Sparkles className="h-12 w-12 animate-bounce text-white" />
+          <Sparkles className="w-12 h-12 text-white animate-bounce" />
         </div>
       </div>
       <div className="space-y-2 text-center">
@@ -155,15 +155,15 @@ export function GiftCardNote({
       <div className="flex space-x-2">
         <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.3s]" />
         <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.15s]" />
-        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600" />
+        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" />
       </div>
     </div>
   );
 
   const Content = (
-    <div className="flex h-full flex-col">
-      <div className="flex-1 space-y-6 overflow-y-auto px-6">
-        <div className="space-y-2 pt-2">
+    <div className="flex flex-col h-full">
+      <div className="flex-1 px-6 space-y-6 overflow-y-auto">
+        <div className="pt-2 space-y-2">
           <Label htmlFor="recipient" className="text-sm font-medium">
             Kime
           </Label>
@@ -194,23 +194,23 @@ export function GiftCardNote({
             <Button
               onClick={handleGenerate}
               disabled={isPending}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+              className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
             >
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                   Not Oluşturuluyor...
                 </>
               ) : (
                 <>
-                  <Sparkles className="mr-2 h-5 w-5" />
+                  <Sparkles className="w-5 h-5 mr-2" />
                   Yapay Zeka ile Not Oluştur
                 </>
               )}
             </Button>
           </div>
         ) : (
-          <div className="space-y-4 pb-6">
+          <div className="pb-6 space-y-4">
             <h3 className="font-medium text-gray-900">
               Oluşturulan notlardan birini seçiniz:
             </h3>
@@ -218,11 +218,11 @@ export function GiftCardNote({
               <div
                 key={idx}
                 onClick={() => handleSelectNote(genNote.note, 0)}
-                className="group cursor-pointer rounded-lg border border-gray-200 bg-gradient-to-r from-blue-200 to-purple-400 p-4 transition-all duration-200 hover:border-blue-500 hover:bg-blue-200"
+                className="p-4 transition-all duration-200 border border-gray-200 rounded-lg cursor-pointer group bg-gradient-to-r from-blue-200 to-purple-400 hover:border-blue-500 hover:bg-blue-200"
               >
                 <div className="flex items-start justify-between">
                   <p className="text-sm text-gray-700">{genNote.note}</p>
-                  <Send className="h-5 w-5 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <Send className="w-5 h-5 text-gray-400 transition-opacity opacity-0 group-hover:opacity-100" />
                 </div>
               </div>
             ))}
@@ -255,12 +255,12 @@ export function GiftCardNote({
       >
         {isAiGenerated ? (
           <>
-            <MessageSquareText className="mr-2 h-5 w-5 text-blue-600" />
+            <MessageSquareText className="w-5 h-5 mr-2 text-blue-600" />
             Oluşturulmuş Notları Görüntüle
           </>
         ) : (
           <>
-            <MessageSquarePlus className="mr-2 h-5 w-5 text-white" />
+            <MessageSquarePlus className="w-5 h-5 mr-2 text-white" />
             Yapay Zeka ile Not Oluştur
           </>
         )}
@@ -302,7 +302,7 @@ export function GiftCardNote({
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col">
             <DialogHeader>
-              <DialogTitle className="text-center text-xl font-semibold text-gray-900">
+              <DialogTitle className="text-xl font-semibold text-center text-gray-900">
                 {generatedNotes.length
                   ? "Oluşturulmuş Notlar"
                   : "Yapay Zeka ile Not Oluştur"}
@@ -313,9 +313,13 @@ export function GiftCardNote({
         </Dialog>
       ) : (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent className="max-h-[85vh]">
+          <DrawerContent
+            className={cn("max-h-[85vh]", {
+              "h-full": generatedNotes.length,
+            })}
+          >
             <DrawerHeader className="pb-4">
-              <DrawerTitle className="text-center text-xl font-semibold text-gray-900">
+              <DrawerTitle className="text-xl font-semibold text-center text-gray-900">
                 {generatedNotes.length
                   ? "Oluşturulmuş Notlar"
                   : "Yapay Zeka ile Not Oluştur"}
