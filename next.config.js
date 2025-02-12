@@ -155,6 +155,7 @@ const withPWA = require("next-pwa")({
 
 const { withSentryConfig } = require("@sentry/nextjs");
 
+/** @type {import('@sentry/nextjs').SentryBuildOptions} */
 const sentryWebpackPluginOptions = {
   org: "bonnmarse-2y",
   project: "javascript-nextjs",
