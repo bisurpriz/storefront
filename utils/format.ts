@@ -10,9 +10,12 @@ export const localeFormat = (value: Date, naming: string) => {
 };
 
 export const localeDistanceFormat = (value: Date) => {
-  const formatted = formatDistance(value, new Date(), { locale: tr });
-
-  return formatted;
+  try {
+    const formatted = formatDistance(value, new Date(), { locale: tr });
+    return formatted;
+  } catch (error) {
+    return '';
+  }
 };
 
 export const parseJson = (json: any) => {

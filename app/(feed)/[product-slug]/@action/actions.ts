@@ -18,7 +18,7 @@ export const getProductActions = async (
   const userId = await readIdFromCookies();
 
   if (userId) {
-    const { product } = await BonnmarseApi.request<GetProductActionDataQuery>({
+    const response = await BonnmarseApi.request<GetProductActionDataQuery>({
       query: GetProductActionDataDocument,
       variables: {
         id: productId,
@@ -27,34 +27,40 @@ export const getProductActions = async (
       withAuth: true,
     });
 
-    return {
-      product: {
-        user_favorites: product?.user_favorites,
-        user_favorites_aggregate: product?.user_favorites_aggregate,
-        tenant: product.tenant,
-        delivery_type: product.delivery_type,
-        delivery_time_ranges: product.delivery_time_ranges,
-      },
-    };
-  } else {
-    const { product } =
-      await BonnmarseApi.request<GetProductActionDataForAnonymousQuery>({
-        query: GetProductActionDataForAnonymousDocument,
-        variables: {
-          id: productId,
-        },
-        tags: ["getProductActionDataForAnonymous"],
-        withAuth: false,
-      });
+    const product = response?.product;
 
-    return {
-      product: {
-        user_favorites: [],
-        user_favorites_aggregate: product?.user_favorites_aggregate,
-        tenant: product.tenant,
-        delivery_type: product.delivery_type,
-        delivery_time_ranges: product.delivery_time_ranges,
-      },
-    };
+    if (product) {
+      return {
+        product: {
+          user_favorites: product?.user_favorites,
+          user_favorites_aggregate: product?.user_favorites_aggregate,
+          tenant: product.tenant,
+          delivery_type: product.delivery_type,
+          delivery_time_ranges: product.delivery_time_ranges,
+        },
+      };
+    }
   }
+
+  const response =
+    await BonnmarseApi.request<GetProductActionDataForAnonymousQuery>({
+      query: GetProductActionDataForAnonymousDocument,
+      variables: {
+        id: productId,
+      },
+      tags: ["getProductActionDataForAnonymous"],
+      withAuth: false,
+    });
+
+  const product = response?.product;
+
+  return {
+    product: {
+      user_favorites: [],
+      user_favorites_aggregate: product?.user_favorites_aggregate,
+      tenant: product.tenant,
+      delivery_type: product.delivery_type,
+      delivery_time_ranges: product.delivery_time_ranges,
+    },
+  };
 };
