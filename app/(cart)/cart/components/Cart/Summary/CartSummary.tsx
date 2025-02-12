@@ -76,9 +76,15 @@ const CartSummary = () => {
 
           if (shouldSubmit) {
             if (currentStep === 1) {
-              const params = new URLSearchParams(searchParams);
-              params.set("step", "2");
-              replace(`?${params.toString()}`);
+              const handleNextStep = (window as any).handleReceiverFormNextStep;
+              if (handleNextStep) {
+                const canProceed = await handleNextStep();
+                if (canProceed) {
+                  const params = new URLSearchParams(searchParams);
+                  params.set("step", "2");
+                  replace(`?${params.toString()}`);
+                }
+              }
             } else if (currentStep === 2) {
               const handleNextStep = (window as any).handleReceiverFormNextStep;
               if (handleNextStep) {

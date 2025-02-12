@@ -1,7 +1,7 @@
 import { ProductForCart } from "@/common/types/Cart/cart";
 import { createHmac, randomBytes } from "crypto";
 
-const COMMISSION = 0.1;
+const COMMISSION = 0.15;
 
 export const generateAuthorizationHeaderV2 = (uri, body) => {
   const iyziWsHeaderName = "IYZWSv2";

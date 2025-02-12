@@ -215,16 +215,60 @@ export default function ReceiverForm() {
     return true;
   }, [errors, getFieldsToValidate, trigger]);
 
+  const validateStep1 = useCallback(async () => {
+    const fieldsToValidate = [...STEP_FIELDS.sender];
+    if (selectedInvoiceType === "company") {
+      fieldsToValidate.push(...STEP_FIELDS.company);
+    }
+
+    const isValid = await trigger(fieldsToValidate);
+    if (!isValid) {
+      toast({
+        title: "Lütfen gönderici bilgilerini eksiksiz doldurunuz",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  }, [trigger, selectedInvoiceType]);
+
+  // URL değişimini izle ve step 1 validasyonunu kontrol et
+  useEffect(() => {
+    const checkStep1Validation = async () => {
+      if (step === 2) {
+        const isStep1Valid = await validateStep1();
+        if (!isStep1Valid) {
+          updateStep(1);
+        }
+      }
+    };
+
+    startTransition(() => {
+      checkStep1Validation();
+    });
+  }, [step, validateStep1, updateStep]);
+
   const nextStep = useCallback(async () => {
     const isStepValid = await validateStep();
     if (!isStepValid) return false;
 
     if (step === 1) {
+      const isStep1Valid = await validateStep1();
+      if (!isStep1Valid) return false;
+
       updateStep(2);
       return true;
     }
 
     if (step === 2) {
+      const isValid = await trigger(STEP_FIELDS.receiver);
+      if (!isValid) {
+        toast({
+          title: "Lütfen alıcı bilgilerini eksiksiz doldurunuz",
+          variant: "destructive",
+        });
+        return false;
+      }
       startTransition(() => {
         sessionStorage.setItem(
           "order-detail-form",
@@ -235,7 +279,7 @@ export default function ReceiverForm() {
     }
 
     return false;
-  }, [step, validateStep, getValues, updateStep]);
+  }, [step, validateStep, validateStep1, getValues, updateStep, trigger]);
 
   useEffect(() => {
     const loadFormData = () => {
@@ -363,10 +407,10 @@ export default function ReceiverForm() {
   );
 
   return (
-    <div className="relative p-4 mx-auto sm:p-6">
+    <div className="relative mx-auto p-4 sm:p-6">
       {(isPending || isSubmitting) && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
-          <div className="w-16 h-16 border-4 rounded-full animate-spin border-primary border-t-transparent" />
+          <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
       )}
 
@@ -375,7 +419,7 @@ export default function ReceiverForm() {
       <form onSubmit={onSubmit} className="space-y-8" id="order-detail-form">
         {renderStepContent(step)}
 
-        <div className="flex justify-between mt-8">
+        <div className="mt-8 flex justify-between">
           {step > 1 && (
             <Button
               type="button"
