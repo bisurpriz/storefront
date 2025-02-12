@@ -155,6 +155,7 @@ const withPWA = require("next-pwa")({
 
 const { withSentryConfig } = require("@sentry/nextjs");
 
+/** @type {import('@sentry/nextjs').SentryBuildOptions} */
 const sentryWebpackPluginOptions = {
   org: "bonnmarse-2y",
   project: "javascript-nextjs",
@@ -170,6 +171,7 @@ const sentryWebpackPluginOptions = {
     enabled: true,
   },
   tunnelRoute: "/monitoring",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 };
 
 const composedConfig = withPWA(nextConfig);

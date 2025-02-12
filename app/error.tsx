@@ -9,9 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle, Cookie, Home, RefreshCw } from "lucide-react";
 import { useEffect } from "react";
-
 export default function Error({
   error,
   reset,
@@ -19,10 +19,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error("Sayfa hatası:", error);
-  }, [error]);
-
   const clearCookies = () => {
     const cookies = document.cookie.split(";");
     cookies.forEach((cookie) => {
@@ -33,12 +29,17 @@ export default function Error({
     window.location.reload();
   };
 
+  useEffect(() => {
+    // Log the error to Sentry
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <div className="container m-auto flex min-h-[50vh] max-w-lg flex-col items-center justify-center">
       <Card className="w-full border-none shadow-none">
         <CardHeader className="gap-2 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50">
-            <AlertTriangle className="h-6 w-6 text-amber-500" />
+          <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-amber-50">
+            <AlertTriangle className="w-6 h-6 text-amber-500" />
           </div>
           <CardTitle>Bir Şeyler Yanlış Gitti</CardTitle>
           <CardDescription>
@@ -50,34 +51,34 @@ export default function Error({
         <CardContent className="space-y-2">
           <Button
             onClick={() => reset()}
-            className="flex w-full items-center justify-center gap-2"
+            className="flex items-center justify-center w-full gap-2"
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className="w-4 h-4" />
             Tekrar Dene
           </Button>
 
           <Button
             onClick={clearCookies}
             variant="outline"
-            className="flex w-full items-center justify-center gap-2"
+            className="flex items-center justify-center w-full gap-2"
           >
-            <Cookie className="h-4 w-4" />
+            <Cookie className="w-4 h-4" />
             Çerezleri Temizle
           </Button>
 
           <Button
             onClick={() => (window.location.href = "/")}
             variant="ghost"
-            className="flex w-full items-center justify-center gap-2"
+            className="flex items-center justify-center w-full gap-2"
           >
-            <Home className="h-4 w-4" />
+            <Home className="w-4 h-4" />
             Ana Sayfaya Dön
           </Button>
         </CardContent>
 
         {process.env.NODE_ENV === "development" && error.digest && (
           <CardFooter>
-            <p className="w-full text-center text-xs text-muted-foreground">
+            <p className="w-full text-xs text-center text-muted-foreground">
               Hata Kodu:{" "}
               <code className="rounded bg-muted px-1 py-0.5">
                 {error.digest}

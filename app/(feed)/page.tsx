@@ -3,7 +3,6 @@ import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSu
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
-import { Image } from "@/components/ui/image";
 import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { getImageUrlFromPath } from "@/lib/utils";
@@ -12,6 +11,7 @@ import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
 import dynamic from "next/dynamic";
 import { headers } from "next/headers";
+import Image from "next/image";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
 
@@ -90,7 +90,10 @@ export default async function Page(props: {
           src={getImageUrlFromPath(selectedImage)}
           alt="banner"
           className="w-full"
-          imageClassName="w-full h-full object-cover"
+          width={1300}
+          height={1300}
+          priority
+          sizes="100vw"
         />
       </div>
       {<InfiniteScrollCarouselWrapper searchParams={searchParams} />}

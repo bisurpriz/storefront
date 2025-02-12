@@ -51,13 +51,13 @@ const ImagePreview = ({
         setApproveButtonDisabled(true);
         toast({
           title:
-            "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
+            "Ürün görselleri başarıyla onaylandı. Siparişiniz en kısa sürede teslim edilecektir.",
           duration: 2000,
         });
       } else {
         toast({
           title:
-            "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecek.",
+            "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecektir.",
           duration: 2000,
         });
       }
