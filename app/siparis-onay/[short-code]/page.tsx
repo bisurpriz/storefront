@@ -29,11 +29,11 @@ const OrderApprove = async ({
   if (expiryDate && new Date(expiryDate) < new Date()) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-lg">
+        <div className="w-full max-w-md p-8 bg-white border border-gray-200 shadow-lg rounded-xl">
           <div className="text-center">
-            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+            <div className="inline-flex items-center justify-center w-16 h-16 mb-6 bg-red-100 rounded-full">
               <svg
-                className="h-8 w-8 text-red-600"
+                className="w-8 h-8 text-red-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -61,11 +61,11 @@ const OrderApprove = async ({
   if (isApproved) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-lg">
+        <div className="w-full max-w-md p-8 bg-white border border-gray-200 shadow-lg rounded-xl">
           <div className="text-center">
-            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+            <div className="inline-flex items-center justify-center w-16 h-16 mb-6 bg-green-100 rounded-full">
               <svg
-                className="h-8 w-8 text-green-600"
+                className="w-8 h-8 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

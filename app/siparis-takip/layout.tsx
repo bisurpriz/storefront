@@ -1,8 +1,7 @@
 import { Link } from "@/components/Link";
 import Image from "next/image";
-import { ReactNode } from "react";
 
-const CartLayout = ({ children }: { children: ReactNode }) => {
+const OrderTrackingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6 flex justify-center border-y p-6">
@@ -16,11 +15,11 @@ const CartLayout = ({ children }: { children: ReactNode }) => {
           />
         </Link>
       </div>
-      <div className="container relative mx-auto my-auto flex flex-1 flex-col justify-start px-4 md:px-0">
+      <div className="container relative mx-auto flex h-full flex-1 flex-col items-center justify-center px-4 md:px-0">
         {children}
       </div>
     </div>
   );
 };
 
-export default CartLayout;
+export default OrderTrackingLayout;

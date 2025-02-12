@@ -3,14 +3,20 @@
 import { AlertCircle, MapPin } from "lucide-react";
 import { useState } from "react";
 
+import { usePathname } from "next/navigation";
 import { ResponsiveDialog } from "../ui/responsive-dialog";
 import PlacesAutocomplete, { useLocationChange } from "./PlacesAutocomplete";
 
 export default function QuarterSelectorModal() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const pathname = usePathname();
 
   useLocationChange((location) => {
-    setIsDialogOpen(!location);
+    const publicRoutes = ["/siparis-takip", "/siparis-onay"];
+
+    const canShow =
+      !location && !publicRoutes.some((route) => pathname.includes(route));
+    setIsDialogOpen(canShow);
   });
 
   return (

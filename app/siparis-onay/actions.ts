@@ -30,7 +30,7 @@ export const approveOrderImages = async ({
   status,
 }: {
   shortCode: string;
-  note?: string;
+  note: string;
   status: boolean;
 }): Promise<any> => {
   const response = await axios.post(

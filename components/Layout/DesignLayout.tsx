@@ -28,8 +28,8 @@ export default async function DesignLayout({
       <div className="relative flex flex-col flex-1 overflow-hidden">
         {/* Scrollable content area */}
         <div className="absolute inset-0 flex flex-col overflow-hidden overflow-y-auto">
-          <main className="relative flex-1">
-            <div className="container px-2 py-6 pt-2 mx-auto max-w-7xl max-md:mb-20 max-sm:py-2 sm:px-4">
+          <main className="relative flex-1 mb-16 md:mb-0">
+            <div className="container px-2 py-6 pt-2 mx-auto max-w-7xl max-sm:py-2 sm:px-4">
               {children}
             </div>
           </main>
