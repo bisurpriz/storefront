@@ -1,9 +1,12 @@
 "use client";
 
-import { CookieTokens } from "@/app/@auth/contants";
 import useResponsive from "@/hooks/useResponsive";
+import {
+  getLocationCookie,
+  removeLocationCookie,
+  setLocationCookie,
+} from "@/utils/cookies";
 import { useClickAway, useDebounce } from "@uidotdev/usehooks";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { PredictionsList } from "./PredictionsList";
@@ -26,13 +29,9 @@ export const publishLocationChange = (locationData: any) => {
 export const useLocationChange = (callback: (locationData: any) => void) => {
   useEffect(() => {
     // İlk değeri al
-    const currentLocation = Cookies.get(CookieTokens.LOCATION_ID);
+    const currentLocation = getLocationCookie();
     if (currentLocation) {
-      try {
-        callback(JSON.parse(currentLocation));
-      } catch (error) {
-        console.error("Cookie parse error:", error);
-      }
+      callback(currentLocation);
     } else {
       callback(null);
     }
@@ -43,13 +42,13 @@ export const useLocationChange = (callback: (locationData: any) => void) => {
     };
 
     window.addEventListener(
-      LOCATION_CHANGE_EVENT,
+      "locationChange",
       handleLocationChange as EventListener,
     );
 
     return () => {
       window.removeEventListener(
-        LOCATION_CHANGE_EVENT,
+        "locationChange",
         handleLocationChange as EventListener,
       );
     };
@@ -233,27 +232,7 @@ export default function PlacesAutocomplete({
 
             if (!dontChangeCookie) {
               ignoreNextChange.current = true;
-
-              const domain =
-                process.env.NODE_ENV === "production"
-                  ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
-                  : "localhost";
-
-              const cookieOptions: Cookies.CookieAttributes = {
-                domain,
-                path: "/",
-                httpOnly: false,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-              };
-
-              Cookies.set(
-                CookieTokens.LOCATION_ID,
-                JSON.stringify(placeData),
-                cookieOptions,
-              );
-              publishLocationChange(placeData);
+              setLocationCookie(placeData);
               refresh();
             }
           }
@@ -272,7 +251,7 @@ export default function PlacesAutocomplete({
     onSelect?.(null);
 
     if (!dontChangeCookie) {
-      Cookies.remove(CookieTokens.LOCATION_ID);
+      removeLocationCookie();
       refresh();
     }
   }, [dontChangeCookie, onSelect, refresh]);
