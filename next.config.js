@@ -170,6 +170,7 @@ const sentryWebpackPluginOptions = {
     enabled: true,
   },
   tunnelRoute: "/monitoring",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 };
 
 const composedConfig = withPWA(nextConfig);
