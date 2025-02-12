@@ -21,9 +21,12 @@ const LoadingState = () => (
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="flex items-center justify-center py-12"
+    className="flex min-h-[300px] items-center justify-center"
   >
-    <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+    <div className="relative">
+      <div className="w-16 h-16 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      <Loader2 className="absolute w-8 h-8 text-blue-500 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" />
+    </div>
   </motion.div>
 );
 
@@ -32,12 +35,14 @@ const ErrorMessage = ({ message }: { message: string }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 20 }}
-    className="rounded-xl bg-red-50 p-6 text-center"
+    className="p-8 overflow-hidden text-center shadow-lg rounded-xl"
   >
-    <div className="mb-4 flex justify-center">
-      <AlertCircle className="h-12 w-12 text-red-500" />
+    <div className="flex justify-center mb-4">
+      <div className="p-3 bg-red-100 rounded-full">
+        <AlertCircle className="w-12 h-12 text-red-500" />
+      </div>
     </div>
-    <h3 className="mb-2 text-lg font-medium text-red-800">
+    <h3 className="mb-3 text-xl font-semibold text-red-800">
       Sipariş Bulunamadı
     </h3>
     <p className="text-red-600">{message}</p>
@@ -55,59 +60,67 @@ const OrderDetails = ({
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 20 }}
-    transition={{ duration: 0.1, ease: "easeInOut" }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
     className="space-y-6"
   >
-    <div className="rounded-xl bg-white p-6 shadow-lg">
-      <div className="mb-6 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
-        <h2 className="text-xl font-semibold text-gray-800">
-          Sipariş #{orderNo}
-        </h2>
-        <p className="text-sm text-gray-500">
-          Oluşturulma: {new Date(order.created_at).toLocaleDateString()}
-        </p>
+    <div className="overflow-hidden shadow-xl rounded-xl bg-gradient-to-br from-white to-gray-50">
+      <div className="px-8 py-6 bg-white border-b">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Package2 className="w-6 h-6 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800">
+              Sipariş #{orderNo}
+            </h2>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            {new Date(order.created_at).toLocaleDateString()}
+          </div>
+        </div>
       </div>
 
       {order.tenant_orders.map((to) => (
-        <div key={to.id} className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium text-gray-800">
+        <div key={to.id} className="p-8">
+          <div className="flex items-center justify-between px-4 py-3 mb-6 rounded-lg bg-blue-50">
+            <h3 className="text-lg font-semibold text-blue-900">
               {to.tenant?.tenants?.[0]?.name || "Satıcı"}
             </h3>
           </div>
 
-          <div className="relative mb-8 pt-4">
-            <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200 max-sm:left-4"></div>
+          <div className="relative pt-4">
+            <div className="absolute top-0 w-1 h-full rounded-full left-8 bg-gradient-to-b from-blue-200 to-blue-50"></div>
             {to.order_items.map((oi) => (
               <div
                 key={oi.product.id}
-                className="relative mb-6 flex items-start gap-4 pl-16 max-sm:pl-12"
+                className="relative flex items-start gap-6 pl-20 mb-8"
               >
-                <div className="absolute -left-2 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-blue-50 sm:h-16 sm:w-16">
+                <div className="absolute flex items-center justify-center w-20 h-20 p-2 overflow-hidden bg-white shadow-lg -left-2 rounded-xl">
                   {oi.product.image_url ? (
                     <Image
                       src={getImageUrlFromPath(oi.product.image_url[0])}
                       alt={oi.product.name}
-                      className="h-full w-full object-cover"
+                      className="object-cover w-full h-full rounded-lg"
                     />
                   ) : (
-                    <Package2 className="h-6 w-6 text-blue-500 sm:h-8 sm:w-8" />
+                    <Package2 className="w-10 h-10 text-blue-500" />
                   )}
                 </div>
-                <div className="flex-1 rounded-lg border bg-white p-3 shadow-sm sm:p-4">
-                  <div className="mb-3 flex flex-col justify-between gap-2 sm:flex-row sm:items-start sm:gap-4">
+                <div className="flex-1 p-6 transition-all bg-white border shadow-md rounded-xl hover:shadow-lg">
+                  <div className="flex flex-col justify-between gap-3 mb-4 sm:flex-row sm:items-center">
                     <div>
-                      <h4 className="mb-1 text-sm font-medium text-gray-800 sm:text-base">
+                      <h4 className="mb-2 text-lg font-medium text-gray-800">
                         {oi.product.name}
                       </h4>
-                      <div className="text-xs text-gray-500 sm:text-sm">
-                        <span>Satıcı:</span>{" "}
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <span>Satıcı:</span>
                         <Link
                           href={getTenantUrl(
                             to.tenant?.tenants?.[0]?.name,
                             to.tenant?.tenants?.[0]?.id,
                           )}
-                          className="text-blue-500 hover:underline"
+                          className="text-blue-600 hover:text-blue-700 hover:underline"
                         >
                           {to.tenant?.tenants?.[0]?.name || ""}
                         </Link>
@@ -117,9 +130,11 @@ const OrderDetails = ({
                       status={OrderItemStatus[oi.status || "Processing"]}
                     />
                   </div>
-                  <p className="text-xs text-gray-600">
-                    Miktar: {oi.quantity} Adet
-                  </p>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="px-3 py-1 rounded-full bg-blue-50">
+                      Miktar: {oi.quantity} Adet
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -167,10 +182,17 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
     }
   }, [initialOrderNo]);
 
+  const handleOrderNo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || /^\d*$/.test(value)) {
+      setOrderNo(Number(value));
+    }
+  };
+
   return (
-    <div className="mx-auto max-w-4xl p-4 max-sm:p-0">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-2xl font-bold text-gray-800">Sipariş Takip</h1>
+    <div className="w-full max-w-4xl p-4 mx-auto mb-16 space-y-8 max-sm:p-2 md:mb-0">
+      <div className="text-center">
+        <h1 className="mb-3 text-3xl font-bold text-gray-800">Sipariş Takip</h1>
         {!initialOrderNo && (
           <p className="text-gray-600">
             Siparişinizin durumunu öğrenmek için sipariş numaranızı giriniz
@@ -179,24 +201,31 @@ const TrackingDetail = ({ initialOrderNo }: TrackingDetailProps) => {
       </div>
 
       {!initialOrderNo && (
-        <div className="relative mb-8 overflow-hidden rounded-xl bg-white p-6 shadow-lg">
-          <div className="relative flex items-center gap-2">
-            <div className="relative flex-1">
+        <div className="p-6 overflow-hidden bg-white shadow-lg rounded-xl">
+          <div className="relative flex flex-col items-center gap-3 md:flex-row">
+            <div className="relative flex-1 w-full md:basis-1/2">
               <input
                 value={orderNo?.toString() ?? ""}
-                onChange={(e) => setOrderNo(Number(e.target.value))}
+                onChange={handleOrderNo}
                 type="text"
                 placeholder="Sipariş numaranızı giriniz"
-                className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 pl-12 text-lg transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full px-5 py-4 pl-12 text-lg transition-all border-2 border-gray-200 rounded-xl bg-gray-50 placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100"
               />
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute w-5 h-5 text-gray-400 -translate-y-1/2 left-4 top-1/2" />
             </div>
             <Button
               disabled={!orderNo || isLoading}
               onClick={onSubmit}
-              className="h-12 min-w-[120px] bg-blue-600 text-base hover:bg-blue-700"
+              className="w-full text-base font-medium transition-all bg-blue-600 shadow-lg h-14 rounded-xl hover:bg-blue-700 hover:shadow-blue-200 disabled:opacity-50 md:basis-1/2"
             >
-              {isLoading ? "Aranıyor..." : "Sorgula"}
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Aranıyor...
+                </span>
+              ) : (
+                "Sorgula"
+              )}
             </Button>
           </div>
         </div>

@@ -8,7 +8,8 @@ import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogCo
 import { toast } from "@/hooks/use-toast";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { approveOrderImages } from "../actions";
 
 const ImagePreview = ({
@@ -22,7 +23,8 @@ const ImagePreview = ({
   const [note, setNote] = useState("");
   const [approveButtonDisabled, setApproveButtonDisabled] = useState(false);
   const { openDialog: openModal } = useResponsiveDialog();
-
+  const { replace } = useRouter();
+  const [isPending, startTransition] = useTransition();
   const onSubmit = async (approveStatus: boolean) => {
     if (!note && !approveStatus) {
       toast({
@@ -34,26 +36,34 @@ const ImagePreview = ({
       return;
     }
 
-    const response = await approveOrderImages({
-      shortCode,
-      note,
-      status: approveStatus,
-    });
+    startTransition(async () => {
+      const response = await approveOrderImages({
+        shortCode,
+        note,
+        status: approveStatus,
+      });
 
-    if (response?.data?.update_order_item?.returning?.[0]?.is_images_approved) {
-      setApproveButtonDisabled(true);
-      toast({
-        title:
-          "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
-        duration: 2000,
-      });
-    } else {
-      toast({
-        title:
-          "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecek.",
-        duration: 2000,
-      });
-    }
+      console.log(response);
+
+      if (
+        response?.data?.update_order_item?.returning?.[0]?.is_images_approved
+      ) {
+        setApproveButtonDisabled(true);
+        toast({
+          title:
+            "Ürün görselleri başarıyla onaylandı. Siparişiniz hazırlanmaya başlanacak.",
+          duration: 2000,
+        });
+      } else {
+        toast({
+          title:
+            "İtirazınız ekibimize iletildi. En kısa sürede sizinle iletişime geçilecek.",
+          duration: 2000,
+        });
+      }
+
+      replace("/");
+    });
   };
 
   const nextImage = () => {
@@ -71,7 +81,7 @@ const ImagePreview = ({
   const handleImageClick = (index: number) => {
     setCurrentImageIndex(index);
     openModal(
-      <div className="relative flex h-full w-full items-center justify-center bg-background">
+      <div className="relative flex items-center justify-center w-full h-full bg-background">
         <DialogTitle className="sr-only">
           Sipariş Görseli {currentImageIndex + 1}
         </DialogTitle>
@@ -84,11 +94,11 @@ const ImagePreview = ({
           onClick={previousImage}
           variant="soft"
           size="icon"
-          className="absolute left-4 z-10 h-10 w-10 rounded-full border-0"
+          className="absolute z-10 w-10 h-10 border-0 rounded-full left-4"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="w-6 h-6" />
         </Button>
-        <div className="w-full items-center justify-center p-4">
+        <div className="items-center justify-center w-full p-4">
           <Image
             className="w-full"
             alt={`Sipariş görseli ${currentImageIndex + 1}`}
@@ -103,9 +113,9 @@ const ImagePreview = ({
           onClick={nextImage}
           variant="soft"
           size="icon"
-          className="absolute right-4 z-10 h-10 w-10 rounded-full border-0"
+          className="absolute z-10 w-10 h-10 border-0 rounded-full right-4"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="w-6 h-6" />
         </Button>
         <Badge variant="default" className="absolute right-4 top-4">
           {currentImageIndex + 1} / {initialImages.length}
@@ -115,8 +125,8 @@ const ImagePreview = ({
   };
 
   return (
-    <div className="w-full space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col w-full gap-6">
+      <div className="flex items-center justify-between my-4">
         <h2 className="text-2xl font-semibold text-gray-900">
           Sipariş Görselleri Onayı
         </h2>
@@ -125,29 +135,29 @@ const ImagePreview = ({
         </Badge>
       </div>
 
-      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+      <div className="p-4 text-sm text-yellow-800 border border-yellow-200 rounded-lg bg-yellow-50">
         Lütfen sipariş görsellerinizi dikkatlice inceleyiniz. Görselleri
         büyütmek için üzerlerine tıklayabilirsiniz. Görsellerle ilgili herhangi
         bir sorun yoksa onaylayabilir, düzeltilmesini istediğiniz noktalar varsa
         itiraz edebilirsiniz.
       </div>
 
-      <div className="grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 auto-rows-fr md:grid-cols-3 lg:grid-cols-4">
         {initialImages.map((image, index) => (
           <div
             key={image}
-            className="group relative aspect-square overflow-hidden rounded-lg bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-md"
+            className="relative overflow-hidden transition-all duration-300 bg-gray-100 rounded-lg shadow-sm group aspect-square hover:shadow-md"
           >
             <button
               onClick={() => handleImageClick(index)}
-              className="h-full w-full"
+              className="w-full h-full"
             >
               <Image
                 alt={`Sipariş görseli ${index + 1}`}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                 src={getImageUrlFromPath(image)}
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 bg-black/40 group-hover:opacity-100">
                 <Badge variant="default" className="text-gray-900">
                   Görseli İncele
                 </Badge>
@@ -157,7 +167,7 @@ const ImagePreview = ({
         ))}
       </div>
 
-      <div className="rounded-lg bg-gray-50 p-6">
+      <div className="p-6 mb-16 rounded-lg bg-gray-50 md:mb-0">
         <div className="space-y-4">
           <div className="space-y-2">
             <label
@@ -182,17 +192,17 @@ const ImagePreview = ({
 
           <div className="flex flex-col gap-4 pt-2 sm:flex-row">
             <Button
-              disabled={!note}
+              disabled={!note || isPending}
               variant="destructive"
               onClick={() => onSubmit(false)}
-              className="h-12 flex-1 text-base font-medium"
+              className="flex-1 h-12 text-base font-medium"
             >
               Görsellere İtiraz Et
             </Button>
             <Button
-              disabled={approveButtonDisabled}
+              disabled={approveButtonDisabled || isPending}
               onClick={() => onSubmit(true)}
-              className="h-12 flex-1 bg-green-600 text-base font-medium hover:bg-green-700"
+              className="flex-1 h-12 text-base font-medium bg-green-600 hover:bg-green-700"
             >
               Görselleri Onayla
             </Button>
