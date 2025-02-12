@@ -238,6 +238,7 @@ export default function PlacesAutocomplete({
                 process.env.NODE_ENV === "production"
                   ? process.env.NEXT_PUBLIC_DOMAIN || ".bonnmarse.com"
                   : "localhost";
+
               const cookieOptions: Cookies.CookieAttributes = {
                 domain,
                 path: "/",
