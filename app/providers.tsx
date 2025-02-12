@@ -39,15 +39,7 @@ export function Providers({
               <BreadcrumbProvider>
                 <ProductProvider>
                   <CategoryProvider category={categoryData?.category}>
-                    <CartProvider
-                      cartDbItems={cartItems}
-                      dbCost={{
-                        totalPrice: costData?.totalPrice || 0,
-                        isCouponApplied: false,
-                        couponMessage: "",
-                        discountAmount: 0,
-                      }}
-                    >
+                    <CartProvider cartDbItems={cartItems} dbCost={costData}>
                       <SearchProductProvider
                         categories={categoryData?.category as Category[]}
                       >

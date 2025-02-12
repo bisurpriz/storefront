@@ -2,7 +2,7 @@
 
 import { CostData, ProductForCart } from "@/common/types/Cart/cart";
 import { cookies } from "next/headers";
-import { createJwt, readIdFromCookies } from "../actions";
+import { createJwt, readIdFromCookies } from "../../actions";
 
 import { CustomizableArea } from "@/common/types/Order/order";
 import {
@@ -21,7 +21,7 @@ import {
 import { BonnmarseApi } from "@/service/fetch";
 import { parseJson } from "@/utils/format";
 import axios from "axios";
-import { CookieTokens } from "../@auth/contants";
+import { CookieTokens } from "../../@auth/contants";
 import { OrderDetailFormData } from "./components/OrderDetail/ReceiverForm/types";
 import { createOrderDataMapper } from "./utils";
 
@@ -271,6 +271,8 @@ export const getCart = async () => {
         totalPrice: 0,
         couponMessage: "",
         isCouponApplied: false,
+        discountAmount: 0,
+        totalWithDiscount: 0,
       },
     } as {
       cartItems: ProductForCart[];

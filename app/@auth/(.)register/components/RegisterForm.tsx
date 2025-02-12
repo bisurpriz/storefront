@@ -1,6 +1,6 @@
 "use client";
 
-import { registerUser } from "@/app/account/actions";
+import { registerUser } from "@/app/(account)/account/actions";
 import { Link } from "@/components/Link";
 import TextField from "@/components/TextField";
 import { Button } from "@/components/ui/button";

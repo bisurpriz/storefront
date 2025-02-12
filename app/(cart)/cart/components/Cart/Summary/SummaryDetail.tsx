@@ -75,7 +75,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
 
   return (
     <div className="max-md:border-t max-md:px-4 max-md:py-1 md:p-4">
-      <span className="mb-3 block w-full text-center text-xl font-normal">
+      <span className="block w-full mb-3 text-xl font-normal text-center">
         Sipariş Özeti
       </span>
       <div className="flex flex-col">
@@ -93,9 +93,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
           </div>
         )}
 
-        <div className="mt-1 py-3 text-sm xl:flex xl:justify-between">
+        <div className="py-3 mt-1 text-sm xl:flex xl:justify-between">
           <TextField
-            icon={<Ticket className="h-6 w-6" />}
+            icon={<Ticket className="w-6 h-6" />}
             placeholder="İndirim Kodu Girin"
             id="discountCode"
             fullWidth
@@ -107,9 +107,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
               type="button"
               size="sm"
               variant="destructive"
-              className="mt-2 flex w-full justify-center xl:ml-3 xl:mt-0 xl:w-auto"
+              className="flex justify-center w-full mt-2 xl:ml-3 xl:mt-0 xl:w-auto"
               onClick={handleCouponRemove}
-              icon={<TicketX className="mr-2 h-4 w-4" />}
+              icon={<TicketX className="w-4 h-4 mr-2" />}
             >
               Kaldır
             </Button>
@@ -118,9 +118,9 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
               type="button"
               size="sm"
               variant="default"
-              className="mt-2 flex w-full justify-center xl:ml-3 xl:mt-0 xl:w-auto"
+              className="flex justify-center w-full mt-2 xl:ml-3 xl:mt-0 xl:w-auto"
               onClick={handleCouponSubmit}
-              icon={<TicketCheck className="mr-2 h-4 w-4" />}
+              icon={<TicketCheck className="w-4 h-4 mr-2" />}
             >
               Kullan
             </Button>
@@ -155,7 +155,7 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
           </motion.span>
         </AnimationExitProvider>
 
-        <div className="mt-1 flex items-center justify-between border-t py-1 text-sm">
+        <div className="flex items-center justify-between py-1 mt-1 text-sm border-t">
           <span className="font-medium">Toplam</span>
           <span className="text-xl font-semibold text-primary">
             {formattedTotalWithDiscount} ₺
