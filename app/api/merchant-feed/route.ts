@@ -29,11 +29,7 @@ const sanitizeXMLContent = (text: string) => {
     .trim();
 };
 
-export function getImageUrlFromPath(
-  path?: string,
-  width?: number,
-  quality?: number,
-): string {
+function getImageUrlFromPath(path?: string): string {
   if (!path) return `https://via.placeholder.com/300`;
   if (path.startsWith("http") || path.startsWith("https")) return path;
 
