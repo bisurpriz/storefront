@@ -6,7 +6,7 @@ import InfiniteProductCarousel from ".";
 export default async function InfiniteScrollCarouselWrapper({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
   const response = await searchProductsv1(
