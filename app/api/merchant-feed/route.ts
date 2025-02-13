@@ -1,5 +1,5 @@
 import { IPlace } from "@/common/types/Product/product";
-import { getImageUrlFromPath } from "@/lib/utils";
+import { IMAGE_URL } from "@/contants/urls";
 import { TypesenseSearchResponse } from "@/types/product";
 import { typesenseClient } from "@/typesense/client";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
@@ -29,29 +29,18 @@ const sanitizeXMLContent = (text: string) => {
     .trim();
 };
 
-const getValidImageUrl = (
-  imagePath: string | null | undefined,
-  baseUrl: string,
-): string => {
-  if (!imagePath) return "";
+export function getImageUrlFromPath(
+  path?: string,
+  width?: number,
+  quality?: number,
+): string {
+  if (!path) return `https://via.placeholder.com/300`;
+  if (path.startsWith("http") || path.startsWith("https")) return path;
 
-  // URL zaten https:// veya http:// ile başlıyorsa direkt döndür
-  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-    return imagePath;
-  }
+  const imageUrl = `${IMAGE_URL}/${path}`;
 
-  // URL'i parçalara ayır ve doğru şekilde birleştir
-  const cleanBasePath = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-
-  // product/ ile başlayan yolları düzelt
-  const cleanImagePath = imagePath.startsWith("/")
-    ? imagePath
-    : imagePath.startsWith("product/")
-      ? `/product/${imagePath.slice(8)}`
-      : `/${imagePath}`;
-
-  return `${cleanBasePath}${cleanImagePath}`;
-};
+  return `${imageUrl}`;
+}
 
 interface ProductFeedItem {
   "g:id": string;
