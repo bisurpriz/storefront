@@ -148,7 +148,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSuccessfulLogin }) => {
 
         toast({
           title: "Giriş başarılı",
-          description: "Lütfen daha sonra tekrar deneyin.",
+          description: "",
           duration: 1500,
         });
         onSuccessfulLogin?.(true);
