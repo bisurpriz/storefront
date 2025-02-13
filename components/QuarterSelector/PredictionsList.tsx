@@ -60,11 +60,11 @@ export const PredictionsList = ({
             activeIndex === index ? "text-primary" : "text-gray-400",
           )}
         />
-        <div className="flex flex-1 flex-col">
-          <span className="line-clamp-1 font-medium">
+        <div className="flex flex-col flex-1">
+          <span className="font-medium line-clamp-1">
             {prediction.structured_formatting.main_text}
           </span>
-          <span className="line-clamp-2 text-sm text-gray-500">
+          <span className="text-sm text-gray-500 line-clamp-2">
             {prediction.structured_formatting.secondary_text}
           </span>
         </div>
