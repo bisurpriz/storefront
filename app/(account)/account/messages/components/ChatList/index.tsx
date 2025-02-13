@@ -1,8 +1,9 @@
+import { CookieTokens } from "@/app/@auth/contants";
 import Empty from "@/components/Empty";
 import { localeFormat } from "@/utils/format";
+import Cookies from "js-cookie";
 import ChatItem, { IChatItem } from "./ChatItem";
 import ChatItemSkeleton from "./ChatItemSkeleton";
-import Cookies from "js-cookie";
 
 const calculateUnread = (messages: any[], userId: string) => {
   const unread = messages.filter(
@@ -18,7 +19,7 @@ const ChatList = ({
   onMessageSelect: IChatItem["onMessageSelect"];
   chats: any[] | null;
 }) => {
-  const id = Cookies.get("user_id");
+  const id = Cookies.get(CookieTokens.USER_ID);
 
   if (chats && chats.length === 0)
     return (
@@ -29,7 +30,7 @@ const ChatList = ({
     );
 
   return (
-    <div className="h-full flex-1 overflow-auto px-2">
+    <div className="flex-1 h-full px-2 overflow-auto">
       {!chats ? (
         <ChatItemSkeleton />
       ) : (

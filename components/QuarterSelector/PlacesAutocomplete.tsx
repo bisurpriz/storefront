@@ -71,7 +71,6 @@ export default function PlacesAutocomplete({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [shouldSearch, setShouldSearch] = useState(true);
   const ignoreNextChange = useRef(false);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { isMobile } = useResponsive();
 
   const { refresh } = useRouter();
@@ -256,22 +255,6 @@ export default function PlacesAutocomplete({
     }
   }, [dontChangeCookie, onSelect, refresh]);
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsSheetOpen(open);
-    if (!open) {
-      setPredictions([]);
-      setActiveIndex(-1);
-    }
-  }, []);
-
-  const handleMobileSelect = useCallback(
-    (prediction: any) => {
-      handleSelect(prediction);
-      setIsSheetOpen(false);
-    },
-    [handleSelect],
-  );
-
   return (
     <div className="relative w-full" ref={ref}>
       <div className="relative w-full">
@@ -283,7 +266,6 @@ export default function PlacesAutocomplete({
             handleFocus();
             if (isMobile) {
               e.preventDefault();
-              setIsSheetOpen(true);
             }
           }}
           onBlur={() => !isMobile && setIsFocused(false)}
@@ -295,8 +277,6 @@ export default function PlacesAutocomplete({
           className="w-full"
         />
 
-        {/* Desktop Predictions */}
-
         <div className="absolute left-0 right-0 z-50">
           <PredictionsList
             predictions={predictions}
@@ -306,59 +286,6 @@ export default function PlacesAutocomplete({
           />
         </div>
       </div>
-
-      {/* Mobile Bottom Sheet */}
-      {/*    <Sheet open={isSheetOpen} onOpenChange={handleOpenChange}>
-        <SheetContent side="bottom" className="h-[85vh] rounded-t-[20px] p-0">
-          <div className="flex flex-col h-full">
-            <div className="sticky top-0 z-10 px-4 py-3 bg-white border-b">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold">Adres Seç</h2>
-                <button
-                  onClick={() => setIsSheetOpen(false)}
-                  className="p-2 rounded-full hover:bg-gray-100"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <SearchInput
-                value={input}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onFocus={handleFocus}
-                onBlur={() => setIsFocused(false)}
-                onClear={handleClear}
-                placeholder={placeholder}
-                isLoading={isPending}
-                isFocused={true}
-                isGeocoding={isGeocoding}
-                autoFocus
-              />
-            </div>
-            <div className="flex-1 p-4 overflow-y-auto">
-              <PredictionsList
-                predictions={predictions}
-                isOpen={true}
-                activeIndex={activeIndex}
-                onSelect={handleMobileSelect}
-                variant="sheet"
-              />
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet> */}
     </div>
   );
 }
