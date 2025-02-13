@@ -119,7 +119,7 @@ export async function GET() {
             "g:sale_price": discountPrice,
           }),
           "g:brand": sanitizeXMLContent(
-            product.tenant?.tenants[0].name || "Bonnmarse",
+            product.tenant?.tenants?.[0]?.name || "Bonnmarse",
           ),
           "g:google_product_category": "Food, Beverages & Tobacco > Food Items",
           ...(categories && {
@@ -139,8 +139,15 @@ export async function GET() {
     }
 
     // Generate XML feed exactly matching Google's format
-    const xmlContent = `<?xml version="1.0"?>
-<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rss [
+<!ELEMENT rss (channel)>
+<!ATTLIST rss version CDATA #REQUIRED>
+<!ATTLIST rss xmlns:g CDATA #REQUIRED>
+<!ELEMENT channel (title, link, description, item*)>
+<!ELEMENT item (g:id, g:title, g:description, g:link, g:image_link, g:condition, g:availability, g:price, g:brand, g:google_product_category, g:shipping)>
+]>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
 <channel>
 <title>Bonnmarse</title>
 <link>${sanitizeXMLContent(baseUrl)}</link>
