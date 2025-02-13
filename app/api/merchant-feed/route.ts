@@ -4,15 +4,50 @@ import { NextResponse } from "next/server";
 
 const sanitizeXMLContent = (text: string) => {
   if (!text) return "";
-  return text
-    .replace(/&/g, "&amp;")
+
+  // Önce HTML etiketlerini ve HTML entityleri temizle
+  const withoutHtml = text
+    .replace(/<[^>]*>/g, "") // HTML etiketlerini temizle
+    .replace(/&nbsp;/g, " ") // &nbsp; karakterini boşluk ile değiştir
+    .replace(/&amp;nbsp;/g, " ") // Önceden escape edilmiş &nbsp; karakterini temizle
+    .replace(/&#160;/g, " ") // Numeric equivalent of &nbsp;
+    .replace(/&[a-zA-Z]{1,10};/g, " "); // Diğer HTML entityleri temizle
+
+  // Sonra XML özel karakterlerini escape et
+  return withoutHtml
+    .replace(/&/g, "&amp;") // Tüm & karakterlerini escape et
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;")
     .replace(/\n/g, " ")
     .replace(/\r/g, " ")
+    .replace(/\s+/g, " ") // Birden fazla boşluğu tek boşluğa indir
     .trim();
+};
+
+const getValidImageUrl = (
+  imagePath: string | null | undefined,
+  baseUrl: string,
+): string => {
+  if (!imagePath) return "";
+
+  // URL zaten https:// veya http:// ile başlıyorsa direkt döndür
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+
+  // URL'i parçalara ayır ve doğru şekilde birleştir
+  const cleanBasePath = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+
+  // product/ ile başlayan yolları düzelt
+  const cleanImagePath = imagePath.startsWith("/")
+    ? imagePath
+    : imagePath.startsWith("product/")
+      ? `/product/${imagePath.slice(8)}`
+      : `/${imagePath}`;
+
+  return `${cleanBasePath}${cleanImagePath}`;
 };
 
 interface ProductFeedItem {
@@ -74,16 +109,22 @@ export async function GET() {
       const products = productsResponse.hits.map((hit) => {
         const product = hit.document;
         const productPrice = `${product.price?.toFixed(2) || "0.00"} TRY`;
-        const discountPrice = product.discount_price
-          ? `${product.discount_price.toFixed(2)} TRY`
+        const discountPrice = product.price
+          ? `${product.price.toFixed(2)} TRY`
           : undefined;
 
-        // Get additional images if available
+        // Get main image URL
+        const mainImageUrl = product.image_url?.[0]
+          ? getValidImageUrl(product.image_url[0], baseUrl)
+          : "";
+
+        // Get additional images if available (max 10 additional images)
         const additionalImages =
           product.image_url && product.image_url.length > 1
             ? product.image_url
                 .slice(1, 10)
-                .map((img) => `${baseUrl}${img}`)
+                .map((img) => getValidImageUrl(img, baseUrl))
+                .filter((url) => url !== "")
                 .join(",")
             : undefined;
 
@@ -99,32 +140,22 @@ export async function GET() {
           .filter(Boolean)
           .join(" > ");
 
-        return {
+        // Validate and create product data
+        const productData: ProductFeedItem = {
           "g:id": sanitizeXMLContent(product.id.toString()),
           "g:title": sanitizeXMLContent(product.name),
           "g:description": sanitizeXMLContent(product.description || ""),
           "g:link": sanitizeXMLContent(
             `${baseUrl}/${product.slug}?pid=${product.id}`,
           ),
-          "g:image_link": sanitizeXMLContent(
-            product.image_url?.[0] ? `${baseUrl}${product.image_url[0]}` : "",
-          ),
-          ...(additionalImages && {
-            "g:additional_image_link": sanitizeXMLContent(additionalImages),
-          }),
-          "g:condition": "new",
+          "g:image_link": sanitizeXMLContent(mainImageUrl),
+          "g:condition": "yeni",
           "g:availability": availability,
           "g:price": productPrice,
-          ...(discountPrice && {
-            "g:sale_price": discountPrice,
-          }),
           "g:brand": sanitizeXMLContent(
             product.tenant?.tenants?.[0]?.name || "Bonnmarse",
           ),
           "g:google_product_category": "Food, Beverages & Tobacco > Food Items",
-          ...(categories && {
-            "g:product_type": sanitizeXMLContent(categories),
-          }),
           "g:identifier_exists": "FALSE",
           "g:mpn": sanitizeXMLContent(
             product.product_no || product.id.toString(),
@@ -133,6 +164,20 @@ export async function GET() {
           "g:shipping_service": "Standart",
           "g:shipping_price": "0.00 TRY",
         };
+
+        // Add optional fields only if they exist
+        if (additionalImages) {
+          productData["g:additional_image_link"] =
+            sanitizeXMLContent(additionalImages);
+        }
+        if (discountPrice) {
+          productData["g:sale_price"] = discountPrice;
+        }
+        if (categories) {
+          productData["g:product_type"] = sanitizeXMLContent(categories);
+        }
+
+        return productData;
       });
 
       allProducts = [...allProducts, ...products];
@@ -142,33 +187,39 @@ export async function GET() {
     const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
 <channel>
-<title>Bonnmarse</title>
+<title>${sanitizeXMLContent("Bonnmarse")}</title>
 <link>${sanitizeXMLContent(baseUrl)}</link>
-<description>Bonnmarse ürün listesi</description>
+<description>${sanitizeXMLContent("Bonnmarse ürün listesi")}</description>
 ${allProducts
   .map((product) => {
     const elements = Object.entries(product)
-      .filter(([_, value]) => value !== undefined)
+      .filter(([_, value]) => value !== undefined && value !== "")
       .map(([key, value]) => {
+        // Skip shipping elements as they'll be handled separately
         if (
           key === "g:shipping_country" ||
           key === "g:shipping_service" ||
           key === "g:shipping_price"
         ) {
-          return null; // These will be handled separately
+          return null;
         }
-        return `<${key}>${value}</${key}>`;
+        // Ensure the value is sanitized
+        const sanitizedValue = sanitizeXMLContent(value.toString());
+        return `<${key}>${sanitizedValue}</${key}>`;
       })
       .filter(Boolean)
       .join("\n");
 
+    // Create shipping section with sanitized values
+    const shipping = `<g:shipping>
+<g:country>${sanitizeXMLContent(product["g:shipping_country"])}</g:country>
+<g:service>${sanitizeXMLContent(product["g:shipping_service"])}</g:service>
+<g:price>${sanitizeXMLContent(product["g:shipping_price"])}</g:price>
+</g:shipping>`;
+
     return `<item>
 ${elements}
-<g:shipping>
-<g:country>${product["g:shipping_country"]}</g:country>
-<g:service>${product["g:shipping_service"]}</g:service>
-<g:price>${product["g:shipping_price"]}</g:price>
-</g:shipping>
+${shipping}
 </item>`;
   })
   .join("\n")}
