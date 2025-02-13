@@ -1,5 +1,8 @@
+import { IPlace } from "@/common/types/Product/product";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { TypesenseSearchResponse } from "@/types/product";
 import { typesenseClient } from "@/typesense/client";
+import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
 import { NextResponse } from "next/server";
 
 const sanitizeXMLContent = (text: string) => {
@@ -75,13 +78,16 @@ export async function GET() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_HOST || "https://bonnmarse.com";
 
+    const filterBy = await createTypesenseQueryMapper({}, {} as IPlace);
+
     // First get total number of products
     const initialSearch = (await typesenseClient
       .collections("products")
       .documents()
       .search({
         q: "*",
-        per_page: 0, // We only need the total count
+        per_page: 0,
+        filter_by: filterBy.filter_by,
       })) as TypesenseSearchResponse & { out_of: number };
 
     const totalProducts = initialSearch.out_of;
@@ -115,7 +121,7 @@ export async function GET() {
 
         // Get main image URL
         const mainImageUrl = product.image_url?.[0]
-          ? getValidImageUrl(product.image_url[0], baseUrl)
+          ? getImageUrlFromPath(product.image_url[0])
           : "";
 
         // Get additional images if available (max 10 additional images)
@@ -123,7 +129,7 @@ export async function GET() {
           product.image_url && product.image_url.length > 1
             ? product.image_url
                 .slice(1, 10)
-                .map((img) => getValidImageUrl(img, baseUrl))
+                .map((img) => getImageUrlFromPath(img))
                 .filter((url) => url !== "")
                 .join(",")
             : undefined;
@@ -155,7 +161,7 @@ export async function GET() {
           "g:brand": sanitizeXMLContent(
             product.tenant?.tenants?.[0]?.name || "Bonnmarse",
           ),
-          "g:google_product_category": "Food, Beverages & Tobacco > Food Items",
+          "g:google_product_category": "984",
           "g:identifier_exists": "FALSE",
           "g:mpn": sanitizeXMLContent(
             product.product_no || product.id.toString(),
