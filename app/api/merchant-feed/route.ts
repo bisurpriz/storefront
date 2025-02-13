@@ -161,7 +161,7 @@ export async function GET() {
           "g:brand": sanitizeXMLContent(
             product.tenant?.tenants?.[0]?.name || "Bonnmarse",
           ),
-          "g:google_product_category": `Food, Chocolate & Flowers > ${categories}`,
+          "g:google_product_category": "984",
           "g:identifier_exists": "FALSE",
           "g:mpn": sanitizeXMLContent(
             product.product_no || product.id.toString(),
