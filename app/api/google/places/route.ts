@@ -64,13 +64,9 @@ export async function GET(request: NextRequest) {
     // Session kontrolü
     const session =
       request.cookies.get("user_id")?.value ||
-      request.cookies.get("guest_id")?.value;
-    if (!session) {
-      return NextResponse.json<ErrorResponse>(
-        { error: "Kullanıcı kimliği (user_id veya guest_id) gerekli." },
-        { status: 401 },
-      );
-    }
+      request.cookies.get("guest_id")?.value ||
+      // Fallback olarak random bir ID oluştur
+      `temp_${Math.random().toString(36).substring(7)}`;
 
     // Query kontrolü
     if (!query) {
