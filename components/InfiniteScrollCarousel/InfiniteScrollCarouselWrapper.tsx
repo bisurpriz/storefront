@@ -6,16 +6,15 @@ import InfiniteProductCarousel from ".";
 export default async function InfiniteScrollCarouselWrapper({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = await searchParams;
   const response = await searchProductsv1(
     {
       offset: 0,
       limit: PER_REQUEST,
     },
     {
-      ...params,
+      ...searchParams,
     },
   );
 
@@ -27,7 +26,7 @@ export default async function InfiniteScrollCarouselWrapper({
         (response?.hits?.map((p) => p.document) as Product[]) ?? []
       }
       fetchMoreProducts={searchProductsv1}
-      params={params}
+      params={searchParams}
       totalCount={response?.found!}
     />
   );
