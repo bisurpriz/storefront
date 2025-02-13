@@ -8,7 +8,7 @@ const sanitizeHtml = (html: string) => {
 
 export async function GET() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://bonnmarse.com";
+    const baseUrl = process.env.NEXT_PUBLIC_HOST || "https://bonnmarse.com";
 
     // First get total number of products
     const initialSearch = (await typesenseClient

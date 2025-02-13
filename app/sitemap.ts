@@ -3,7 +3,7 @@ import { typesenseClient } from "@/typesense/client";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://bonnmarse.com";
+  const baseUrl = process.env.NEXT_PUBLIC_HOST || "https://bonnmarse.com";
 
   // First get total number of products
   const initialSearch = (await typesenseClient
