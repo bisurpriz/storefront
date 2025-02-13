@@ -31,7 +31,11 @@ export const SearchInput = ({
     >
       <div className="relative overflow-hidden rounded-[10px]">
         <Input
-          icon={<MapPinnedIcon className={cn("text-white")} />}
+          icon={
+            <MapPinnedIcon
+              className={cn(value ? "text-white" : "text-primary")}
+            />
+          }
           type="text"
           value={value}
           onChange={onChange}
