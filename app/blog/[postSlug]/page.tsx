@@ -7,20 +7,17 @@ import Image from "next/image";
 import { cache } from "react";
 import { getBlogPostIdsAndSlug } from "./actions";
 
-export const revalidate = 3600;
+export const revalidate = 0;
 export const dynamicParams = false;
 
 const cachedGetBlogPostIdsAndSlug = cache(getBlogPostIdsAndSlug);
 
 export async function generateStaticParams() {
-  const response = await fetch(
-    "https://devapi.bonnmarse.com/api/rest/getblogpostidsandslug",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const response = await fetch(process.env.BLOG_ID_AND_SLUG_URL, {
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   const { blog } = await response.json();
 
@@ -38,9 +35,21 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { postSlug } = await props.params;
 
+  console.log(postSlug, " postSlug");
+
   const { blog } = await getBlogPostIdsAndSlug(postSlug);
 
-  const post = blog[0];
+  console.log(blog, " blog");
+
+  const post = blog?.[0];
+
+  if (!post) {
+    return {
+      title: "Yazı bulunamadı",
+      description: "İlgili yazı bulunamadı.",
+      creator: "Bonnmarşe",
+    };
+  }
 
   return {
     title: `${post?.title} | Bonnmarşe`,
@@ -61,10 +70,10 @@ export default async function BlogPostPage({ params }) {
   const { postSlug } = await params;
   const { blog } = await cachedGetBlogPostIdsAndSlug(postSlug);
 
-  const post = blog[0];
+  const post = blog?.[0];
 
   if (!post) {
-    return null;
+    return <div>Yazı bulunamadı</div>;
   }
 
   return (

@@ -10,14 +10,14 @@ import { getBlogPostUrl } from "@/utils/getBlogPostUrl";
 import { CalendarIcon } from "lucide-react";
 import { getStaticBlogPosts } from "./[postSlug]/actions";
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export default async function BlogPage() {
   const { blog } = await getStaticBlogPosts();
 
   return (
     <div>
-      <h1 className="mb-8 text-3xl font-bold">Blog Posts</h1>
+      <h1 className="mb-8 text-3xl font-bold">Bonnmarşe Blog</h1>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {blog.map((post) => (
