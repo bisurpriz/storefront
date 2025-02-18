@@ -1,6 +1,8 @@
 import { TypesenseSearchResponse } from "@/types/product";
 import { typesenseClient } from "@/typesense/client";
 import { MetadataRoute } from "next";
+import { getStaticBlogPosts } from "./blog/[postSlug]/actions";
+import { getBlogPostUrl } from "@/utils/getBlogPostUrl";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_HOST || "https://bonnmarse.com";
@@ -46,6 +48,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     allProducts = [...allProducts, ...productUrls];
   }
 
+  // Add blog posts
+  const { blog } = await getStaticBlogPosts();
+  const blogUrls = blog.map((post) => ({
+    url: `${baseUrl}${getBlogPostUrl(post.slug)}`,
+    lastModified: new Date(post.created_at).toISOString(),
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
   // Add static pages
   const staticPages = [
     {
@@ -60,7 +71,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "daily" as const,
+      priority: 0.7,
+    },
   ];
 
-  return [...staticPages, ...allProducts];
+  return [...staticPages, ...allProducts, ...blogUrls];
 }
