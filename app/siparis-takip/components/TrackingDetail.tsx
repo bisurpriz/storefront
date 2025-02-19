@@ -127,7 +127,7 @@ const OrderDetails = ({
                       </div>
                     </div>
                     <StatusBadge
-                      status={OrderItemStatus[oi.status || "Processing"]}
+                      status={OrderItemStatus[to.status || "Processing"]}
                     />
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
