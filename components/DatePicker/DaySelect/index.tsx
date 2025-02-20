@@ -27,6 +27,7 @@ const DaySelect: React.FC<Props> = ({
     );
   };
 
+
   const remainTime = () => {
     const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
     const today = new Date();
@@ -57,6 +58,7 @@ const DaySelect: React.FC<Props> = ({
         deliveryTime={deliveryTime}
         deliveryTimes={deliveryTimes}
         onSelect={onSelect}
+        isTodayDisabled={isTodayDisabled()}
       />
     </div>
   );

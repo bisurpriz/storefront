@@ -23,7 +23,7 @@ interface ResponsiveDialogProps {
   onOpenChange?: (open: boolean) => void;
   children?: ReactNode;
   title?: string;
-  description?: string;
+  description?: string | ReactNode;
   className?: string;
   dismissible?: boolean;
 }

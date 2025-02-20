@@ -1,6 +1,6 @@
 "use client";
 
-import { addDays, format, isBefore, parse } from "date-fns";
+import { addDays, format, isBefore, isToday, parse } from "date-fns";
 import { tr } from "date-fns/locale";
 import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
 
@@ -37,12 +37,14 @@ type DeliveryDateTimePickerProps = {
   deliveryTimes: TimeRange[] | null;
   deliveryTime: DeliveryTime;
   onSelect: (deliveryTime: DeliveryTime) => void;
+  isTodayDisabled?: boolean;
 };
 
 export default function DeliveryDateTimePicker({
   deliveryTime,
   deliveryTimes,
   onSelect,
+  isTodayDisabled,
 }: DeliveryDateTimePickerProps) {
   const [date, setDate] = useState<Date>(
     new Date(deliveryTime.day) || new Date(),
@@ -236,8 +238,11 @@ export default function DeliveryDateTimePicker({
           )}
         >
           {availableDeliveryTimes?.map((timeRange) => {
-            const isDisabled = isTimeRangeDisabled(timeRange);
+            const isDisabled =
+              isTimeRangeDisabled(timeRange) ||
+              (isTodayDisabled && isToday(date));
             const isSelected = selectedTimeRange === timeRange;
+
             return (
               <DropdownMenuItem
                 key={timeRange}
