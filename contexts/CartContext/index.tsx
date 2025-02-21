@@ -73,10 +73,13 @@ export const CartProvider = ({
   }, [cartState.cartItems]);
 
   useEffect(() => {
+    const cart = localStorage.getItem("cart");
+    const count = localStorage.getItem("count");
+    const cost = localStorage.getItem("cost");
     if (cartDbItems.length === 0) {
-      localStorage.removeItem("cart");
-      localStorage.removeItem("count");
-      localStorage.removeItem("cost");
+      cart && localStorage.removeItem("cart");
+      count && localStorage.removeItem("count");
+      cost && localStorage.removeItem("cost");
     }
   }, [cartDbItems]);
 
