@@ -1,9 +1,10 @@
 import { IPlace } from "@/common/types/Product/product";
-import { IMAGE_URL } from "@/contants/urls";
 import { TypesenseSearchResponse } from "@/types/product";
 import { typesenseClient } from "@/typesense/client";
 import { createTypesenseQueryMapper } from "@/utils/createTypesenseQueryMapper";
 import { NextResponse } from "next/server";
+
+const IMAGE_URL = "https://bonnmarse.s3.eu-north-1.amazonaws.com"
 
 const sanitizeXMLContent = (text: string) => {
   if (!text) return "";

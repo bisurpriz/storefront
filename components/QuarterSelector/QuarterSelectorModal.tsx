@@ -12,7 +12,7 @@ export default function QuarterSelectorModal() {
   const pathname = usePathname();
 
   useLocationChange((location) => {
-    const publicRoutes = ["/siparis-takip", "/siparis-onay"];
+    const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog"];
 
     const canShow =
       !location && !publicRoutes.some((route) => pathname.includes(route));
@@ -26,7 +26,11 @@ export default function QuarterSelectorModal() {
       onOpenChange={() => {}}
       title={"Teslimat Bölgesi Seçimi"}
       description={
-        "Teslimat adresinizi belirlemek için mahalle, okul, hastane veya yakınınızdaki referans noktalarını kullanabilirsiniz."
+        <>
+          Teslimat adresinizi belirlemek için <b>mahalle</b>, <b>okul</b>,{" "}
+          <b>hastane</b> veya yakınınızdaki <b>referans noktalarını</b>{" "}
+          kullanabilirsiniz.
+        </>
       }
       className="h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
     >
@@ -38,16 +42,16 @@ export default function QuarterSelectorModal() {
         />
 
         <div className="flex flex-col gap-3 text-sm">
-          <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-muted/50 text-muted-foreground">
-            <MapPin className="flex-shrink-0 w-4 h-4" />
+          <div className="flex items-center justify-center gap-2 rounded-lg bg-muted/50 px-4 py-3 text-muted-foreground">
+            <MapPin className="h-4 w-4 flex-shrink-0" />
             <span>
               Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen teslimat
               bölgenizi belirleyiniz.
             </span>
           </div>
 
-          <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-destructive/10 text-destructive">
-            <AlertCircle className="flex-shrink-0 w-4 h-4" />
+          <div className="flex items-center justify-center gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-destructive">
+            <AlertCircle className="h-4 w-4 flex-shrink-0" />
             <span>
               Teslimat hizmetlerimiz şu an yalnızca <strong>Ankara</strong> ili
               sınırları içerisinde mevcuttur.

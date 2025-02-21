@@ -109,7 +109,7 @@ export const searchProductsv1 = async (
         {
           q: filterBy.q ?? "*",
           query_by: "name",
-          sort_by: "score:desc",
+          sort_by: "score:desc,price:asc",
           filter_by: filterBy.filter_by,
           offset: 0,
           limit: PER_REQUEST,
