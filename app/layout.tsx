@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Lato, Manrope } from "next/font/google";
 import "./globals.css";
 
-import ValentinesBanner from "@/components/Banner/ValentinesBanner";
+//import ValentinesBanner from "@/components/Banner/ValentinesBanner";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
@@ -166,7 +166,7 @@ export default async function RootLayout({
           cartItems={cartData.cartItems}
           costData={cartData.costData}
         >
-          <ValentinesBanner />
+          {/* <ValentinesBanner /> */}
 
           {children}
           {auth}

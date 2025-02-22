@@ -40,6 +40,10 @@ export const getPaginatedVendorProducts = async <T>({
 };
 
 export const getVendorDetails = async ({ id }: { id: string }) => {
+  if (!id) {
+    return null;
+  }
+
   const { tenant_by_pk } = await BonnmarseApi.request<GetVendorByIdQuery>({
     query: GetVendorByIdDocument,
     variables: {

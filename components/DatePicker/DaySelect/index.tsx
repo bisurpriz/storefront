@@ -44,6 +44,10 @@ const DaySelect: React.FC<Props> = ({
     return { hours, minutes, seconds };
   };
 
+  if (deliveryTimes?.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex w-full flex-col gap-4 font-sans">
       {lastOrderTime &&
