@@ -49,14 +49,6 @@ export default function QuarterSelectorModal() {
               bölgenizi belirleyiniz.
             </span>
           </div>
-
-          <div className="flex items-center justify-center gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-destructive">
-            <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            <span>
-              Teslimat hizmetlerimiz şu an yalnızca <strong>Ankara</strong> ili
-              sınırları içerisinde mevcuttur.
-            </span>
-          </div>
         </div>
       </div>
     </ResponsiveDialog>
