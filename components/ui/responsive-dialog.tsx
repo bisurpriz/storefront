@@ -42,7 +42,7 @@ export function ResponsiveDialog({
   if (isMobile) {
     return (
       <Drawer dismissible={dismissible} open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className={cn("px-4", className)}>
+        <DrawerContent className={cn("fixed inset-x-0 bottom-0 mt-24 px-4", className)}>
           {(title || description) && (
             <DrawerHeader className="text-left">
               {title && <DrawerTitle>{title}</DrawerTitle>}

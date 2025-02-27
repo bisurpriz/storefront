@@ -32,9 +32,9 @@ export default function QuarterSelectorModal() {
           kullanabilirsiniz.
         </>
       }
-      className="h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
+      className="h-auto min-h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
     >
-      <div className="space-y-6">
+      <div className="flex h-full flex-col space-y-6">
         <PlacesAutocomplete
           onSelect={(place) => {
             setIsDialogOpen(false);
