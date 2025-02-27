@@ -32,22 +32,24 @@ export default function QuarterSelectorModal() {
           kullanabilirsiniz.
         </>
       }
-      className="h-auto min-h-[50dvh] w-full max-w-xl md:flex md:h-fit md:flex-col"
+      className="w-full max-w-xl md:h-fit"
     >
-      <div className="flex h-full flex-col space-y-6">
-        <PlacesAutocomplete
-          onSelect={(place) => {
-            setIsDialogOpen(false);
-          }}
-        />
+      <div className="flex-1 overflow-y-auto px-4 py-2">
+        <div className="space-y-6">
+          <PlacesAutocomplete
+            onSelect={(place) => {
+              setIsDialogOpen(false);
+            }}
+          />
 
-        <div className="flex flex-col gap-3 text-sm">
-          <div className="flex items-center justify-center gap-2 rounded-lg bg-muted/50 px-4 py-3 text-muted-foreground">
-            <MapPin className="h-4 w-4 flex-shrink-0" />
-            <span>
-              Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen teslimat
-              bölgenizi belirleyiniz.
-            </span>
+          <div className="flex flex-col gap-3 text-sm">
+            <div className="flex items-center justify-center gap-2 rounded-lg bg-muted/50 px-4 py-3 text-muted-foreground">
+              <MapPin className="h-4 w-4 flex-shrink-0" />
+              <span>
+                Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen teslimat
+                bölgenizi belirleyiniz.
+              </span>
+            </div>
           </div>
         </div>
       </div>
