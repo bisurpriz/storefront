@@ -12,7 +12,7 @@ export default function QuarterSelectorModal() {
   const pathname = usePathname();
 
   useLocationChange((location) => {
-    const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog"];
+    const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog", "/account"];
 
     const canShow =
       !location && !publicRoutes.some((route) => pathname.includes(route));

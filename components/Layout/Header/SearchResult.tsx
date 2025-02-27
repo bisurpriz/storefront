@@ -27,7 +27,7 @@ export function SearchResults({
   }
 
   return (
-    <div className="h-[60dvh] max-h-[60dvh] w-full cursor-pointer overflow-hidden overflow-y-auto">
+    <div className="w-full cursor-pointer">
       {products.map((product) => (
         <button
           key={product.id}
