@@ -1,29 +1,41 @@
 "use client";
 
 import { AlertCircle, MapPin } from "lucide-react";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ResponsiveDialog } from "../ui/responsive-dialog";
 import PlacesAutocomplete, { useLocationChange } from "./PlacesAutocomplete";
+import { getCookie, setCookie } from "@/utils/cookies";
+import { CookieTokens } from "@/app/@auth/contants";
 
 export default function QuarterSelectorModal() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const pathname = usePathname();
 
-  useLocationChange((location) => {
-    const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog", "/account"];
+  useEffect(() => {
+    const hasSeenModal = getCookie(CookieTokens.HAS_SEEN_LOCATION_MODAL);
+    if (!hasSeenModal) {
+      const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog", "/account"];
+      const location = getCookie(CookieTokens.LOCATION_ID);
+      
+      const canShow = !location && !publicRoutes.some((route) => pathname.includes(route));
+      setIsDialogOpen(canShow);
+      
+      if (canShow) {
+        setCookie(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true");
+      }
+    }
+  }, [pathname]);
 
-    const canShow =
-      !location && !publicRoutes.some((route) => pathname.includes(route));
-    setIsDialogOpen(canShow);
-  });
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
 
   return (
     <ResponsiveDialog
       open={isDialogOpen}
-      dismissible={false}
-      onOpenChange={() => {}}
+      dismissible={true}
+      onOpenChange={handleClose}
       title={"Teslimat Bölgesi Seçimi"}
       description={
         <>

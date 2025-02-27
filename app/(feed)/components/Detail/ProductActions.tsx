@@ -13,7 +13,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { parseJson } from "@/utils/format";
 import clsx from "clsx";
-import { Heart, Truck } from "lucide-react";
+import { Heart, MapPin, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   memo,
@@ -251,6 +251,27 @@ const ProductActions = ({
             Bu ürünün teslimatı seçtiğiniz bölgeye yapılamamaktadır.
             {locationValidationInProgress && " (Kontrol ediliyor...)"}
           </AlertDescription>
+        </Alert>
+      )}
+
+      {isButtonDisableForLocation() && selectedLocation && (
+        <Alert variant="warning" className="mt-2 bg-amber-50/50">
+          <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+            <MapPin className="h-5 w-5" strokeWidth={2.5} />
+          </div>
+          <div className="pl-12">
+            <AlertTitle className="mb-2 text-amber-800">Satıcı bu ürünü seçtiğiniz bölgeye gönderememektedir</AlertTitle>
+            <AlertDescription className="text-amber-700">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 h-auto gap-1 rounded-full bg-white px-3 py-1 text-[11px] font-medium text-amber-700 shadow-sm ring-1 ring-amber-100 hover:bg-amber-50 hover:text-amber-800"
+                onClick={() => push("/arama")}
+              >
+                Size uygun ürünleri görmek için tıklayınız
+              </Button>
+            </AlertDescription>
+          </div>
         </Alert>
       )}
 

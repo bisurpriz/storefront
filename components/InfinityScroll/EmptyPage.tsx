@@ -7,7 +7,7 @@ const EmptyPage = () => {
       <div className="mx-auto max-w-lg text-center">
         <Package className="mx-auto h-24 w-24 text-primary" />
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-700 max-md:text-2xl sm:text-4xl">
-          Henüz aramanızla eşleşen bir ürünümüz bulunmamaktadır.
+        Seçtiğiniz konum veya arama kriterlerine uygun bir ürün bulunamadı.
         </h1>
         <p className="mt-4 text-slate-500">
           Yakın zamanda daha fazla ürün çeşidiyle karşınızda olacağız.
