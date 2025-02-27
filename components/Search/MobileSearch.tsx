@@ -60,6 +60,13 @@ export function MobileSearch({
     };
   }, [mounted]);
 
+  useEffect(() => {
+    if (open) {
+      inputRef.current?.blur();
+      window.getSelection()?.removeAllRanges();
+    }
+  }, [open]);
+
   if (!mounted) {
     return (
       <div className="w-full">
@@ -72,30 +79,40 @@ export function MobileSearch({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <div className="w-full">
-          <SearchInput ref={inputRef} onClick={() => setOpen(true)} />
+          <SearchInput
+            ref={inputRef}
+            onClick={() => {
+              setOpen(true);
+              inputRef.current?.blur();
+              window.getSelection()?.removeAllRanges();
+              document.body.focus();
+            }}
+          />
         </div>
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          {inputVal ? (
-            <DrawerTitle>"{inputVal}" için arama sonuçları</DrawerTitle>
-          ) : (
-            <DrawerTitle>Sonuçlar</DrawerTitle>
-          )}
-        </DrawerHeader>
-        <div className="px-4 py-2">
-          <SearchInput ref={inputRef} />
-          <div className="mt-4">
-            <SearchResults
-              featuredProducts={featuredProducts}
-              categories={categories}
-              products={products}
-              onSelect={(result) => {
-                onSelect(result);
-                setOpen(false);
-              }}
-            />
+      <DrawerContent className="flex flex-col h-[85vh]">
+        <div className="flex-shrink-0 border-b bg-background">
+          <DrawerHeader className="px-4">
+            {inputVal ? (
+              <DrawerTitle>"{inputVal}" için arama sonuçları</DrawerTitle>
+            ) : (
+              <DrawerTitle>Sonuçlar</DrawerTitle>
+            )}
+          </DrawerHeader>
+          <div className="px-4 pb-4">
+            <SearchInput ref={inputRef} />
           </div>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 py-2">
+          <SearchResults
+            featuredProducts={featuredProducts}
+            categories={categories}
+            products={products}
+            onSelect={(result) => {
+              onSelect(result);
+              setOpen(false);
+            }}
+          />
         </div>
       </DrawerContent>
     </Drawer>

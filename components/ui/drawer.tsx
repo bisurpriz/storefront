@@ -8,6 +8,7 @@ import {
   ComponentPropsWithRef,
   FC,
   HTMLAttributes,
+  useEffect,
 } from "react";
 
 const Drawer = ({
@@ -40,22 +41,63 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 const DrawerContent: FC<
   ComponentPropsWithRef<typeof DrawerPrimitive.Content>
-> = ({ className, children, ref, ...props }) => (
-  <DrawerPortal>
-    <DrawerOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
-        className,
-      )}
-      {...props}
-    >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
-      {children}
-    </DrawerPrimitive.Content>
-  </DrawerPortal>
-);
+> = ({ className, children, ref, ...props }) => {
+  useEffect(() => {
+    const handleKeyboardShow = () => {
+      const content = document.querySelector('[data-vaul-drawer-content]');
+      if (content) {
+        content.setAttribute('style', 'position: absolute; bottom: 0; transform: none;');
+      }
+    };
+
+    const handleKeyboardHide = () => {
+      const content = document.querySelector('[data-vaul-drawer-content]');
+      if (content) {
+        content.removeAttribute('style');
+      }
+    };
+
+    // For iOS
+    window.addEventListener('focusin', handleKeyboardShow);
+    window.addEventListener('focusout', handleKeyboardHide);
+
+    // For Android
+    if (typeof window !== 'undefined' && window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => {
+        if (window.visualViewport!.height < window.innerHeight) {
+          handleKeyboardShow();
+        } else {
+          handleKeyboardHide();
+        }
+      });
+    }
+
+    return () => {
+      window.removeEventListener('focusin', handleKeyboardShow);
+      window.removeEventListener('focusout', handleKeyboardHide);
+      if (typeof window !== 'undefined' && window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', () => {});
+      }
+    };
+  }, []);
+
+  return (
+    <DrawerPortal>
+      <DrawerOverlay />
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
+          className
+        )}
+        {...props}
+      >
+        <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+        {children}
+      </DrawerPrimitive.Content>
+    </DrawerPortal>
+  );
+};
 
 DrawerContent.displayName = "DrawerContent";
 
