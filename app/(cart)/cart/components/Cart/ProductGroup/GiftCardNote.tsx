@@ -5,6 +5,7 @@ import {
   createGeneratedNotes,
   GeneratedNote,
 } from "@/app/(cart)/cart/customize/[oId]/actions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,27 +13,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import useResponsive from "@/hooks/useResponsive";
 import { cn } from "@/lib/utils";
 import {
+  AlertCircle,
+  CheckCircle2,
   Loader2,
   MessageSquarePlus,
   MessageSquareText,
   Send,
   Sparkles,
+  Wand2,
+  XCircle,
 } from "lucide-react";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 type GiftCardNoteProps = {
   id: number;
@@ -40,6 +38,12 @@ type GiftCardNoteProps = {
   product_name: string;
   card_note: string;
   index: number;
+};
+
+type AIServiceStatus = {
+  isAvailable: boolean;
+  isChecking: boolean;
+  error: string | null;
 };
 
 const sanitize = (description: string) => {
@@ -64,29 +68,83 @@ export function GiftCardNote({
   const [aiGeneratedIndexes, setAiGeneratedIndexes] = useState<Set<number>>(
     new Set(),
   );
-  const { isDesktop } = useResponsive();
+  const [aiServiceStatus, setAiServiceStatus] = useState<AIServiceStatus>({
+    isAvailable: false,
+    isChecking: true,
+    error: null,
+  });
+  const [showStatusModal, setShowStatusModal] = useState(false);
   const { toast } = useToast();
   const { updateCartItemNote } = useCart();
   const sanitizedProductDescription = sanitize(product_description);
+
+  // Check AI service availability on component mount
+  useEffect(() => {
+    const checkAIService = async () => {
+      try {
+        setAiServiceStatus((prev) => ({
+          ...prev,
+          isChecking: true,
+          error: null,
+        }));
+        const result = await checkAIAvailability();
+        setAiServiceStatus({
+          isAvailable: result.status,
+          isChecking: false,
+          error: result.status
+            ? null
+            : "Yapay zeka servisi şu anda kullanılamıyor.",
+        });
+      } catch (error) {
+        setAiServiceStatus({
+          isAvailable: false,
+          isChecking: false,
+          error: "Yapay zeka servisi kontrol edilirken bir hata oluştu.",
+        });
+      }
+    };
+
+    checkAIService();
+  }, []);
 
   const handleNoteChange = (value: string) => {
     setNote(value);
   };
 
   const handleGenerateClick = async () => {
-    const aiAvailable = await checkAIAvailability();
+    // Re-check AI availability before opening the modal
+    try {
+      setAiServiceStatus((prev) => ({
+        ...prev,
+        isChecking: true,
+        error: null,
+      }));
+      const result = await checkAIAvailability();
 
-    if (!aiAvailable.status) {
-      toast({
-        variant: "destructive",
-        title: "Yapay Zeka Servisi Kullanılamıyor",
-        description:
-          "Lütfen daha sonra tekrar deneyiniz veya notlarınızı manuel olarak giriniz.",
+      if (!result.status) {
+        setAiServiceStatus({
+          isAvailable: false,
+          isChecking: false,
+          error: "Yapay zeka servisi şu anda kullanılamıyor.",
+        });
+        setShowStatusModal(true);
+        return;
+      }
+
+      setAiServiceStatus({
+        isAvailable: true,
+        isChecking: false,
+        error: null,
       });
-      return;
+      setIsOpen(true);
+    } catch (error) {
+      setAiServiceStatus({
+        isAvailable: false,
+        isChecking: false,
+        error: "Yapay zeka servisi kontrol edilirken bir hata oluştu.",
+      });
+      setShowStatusModal(true);
     }
-
-    setIsOpen(true);
   };
 
   const handleGenerate = async () => {
@@ -111,6 +169,8 @@ export function GiftCardNote({
 
         if (generated) {
           setGeneratedNotes(generated);
+        } else {
+          throw new Error("Notlar oluşturulamadı.");
         }
       } catch (error) {
         toast({
@@ -128,6 +188,12 @@ export function GiftCardNote({
     setAiGeneratedIndexes((prev) => new Set(prev.add(index)));
     updateCartItemNote(id, note, index);
     setIsOpen(false);
+
+    toast({
+      title: "Not Seçildi",
+      description: "Hediye notunuz başarıyla kaydedildi.",
+      variant: "default",
+    });
   };
 
   const handleViewGeneratedNotes = (index: number) => {
@@ -136,19 +202,53 @@ export function GiftCardNote({
     }
   };
 
+  const handleRetryHealthCheck = async () => {
+    try {
+      setAiServiceStatus((prev) => ({
+        ...prev,
+        isChecking: true,
+        error: null,
+      }));
+      const result = await checkAIAvailability();
+
+      setAiServiceStatus({
+        isAvailable: result.status,
+        isChecking: false,
+        error: result.status
+          ? null
+          : "Yapay zeka servisi şu anda kullanılamıyor.",
+      });
+
+      if (result.status) {
+        setShowStatusModal(false);
+        toast({
+          title: "Bağlantı Başarılı",
+          description: "Yapay zeka servisi şu anda kullanılabilir.",
+          variant: "default",
+        });
+      }
+    } catch (error) {
+      setAiServiceStatus({
+        isAvailable: false,
+        isChecking: false,
+        error: "Yapay zeka servisi kontrol edilirken bir hata oluştu.",
+      });
+    }
+  };
+
   const LoadingContent = (
-    <div className="flex flex-col items-center justify-center py-8 space-y-4">
+    <div className="flex flex-col items-center justify-center py-4 space-y-4 sm:py-8">
       <div className="relative">
-        <div className="w-24 h-24 rounded-full animate-pulse bg-gradient-to-r from-blue-600 to-purple-600" />
+        <div className="w-16 h-16 rounded-full animate-pulse bg-gradient-to-r from-blue-600 to-purple-600 sm:h-24 sm:w-24" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Sparkles className="w-12 h-12 text-white animate-bounce" />
+          <Sparkles className="w-8 h-8 text-white animate-bounce sm:h-12 sm:w-12" />
         </div>
       </div>
       <div className="space-y-2 text-center">
-        <h3 className="text-lg font-medium text-gray-900">
+        <h3 className="text-base font-medium text-gray-900 sm:text-lg">
           Yapay Zeka Notlarınızı Oluşturuyor
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-xs text-gray-500 sm:text-sm">
           Sizin için en iyi hediye notları hazırlanıyor...
         </p>
       </div>
@@ -162,7 +262,7 @@ export function GiftCardNote({
 
   const Content = (
     <div className="flex flex-col h-full">
-      <div className="flex-1 px-6 space-y-6 overflow-y-auto">
+      <div className="flex-1 px-0 space-y-4 overflow-y-auto sm:px-4">
         <div className="pt-2 space-y-2">
           <Label htmlFor="recipient" className="text-sm font-medium">
             Kime
@@ -190,7 +290,7 @@ export function GiftCardNote({
         </div>
 
         {!generatedNotes.length ? (
-          <div className="pb-6">
+          <div className="pb-4">
             <Button
               onClick={handleGenerate}
               disabled={isPending}
@@ -203,14 +303,14 @@ export function GiftCardNote({
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Wand2 className="w-5 h-5 mr-2" />
                   Yapay Zeka ile Not Oluştur
                 </>
               )}
             </Button>
           </div>
         ) : (
-          <div className="pb-6 space-y-4">
+          <div className="pb-4 space-y-3">
             <h3 className="font-medium text-gray-900">
               Oluşturulan notlardan birini seçiniz:
             </h3>
@@ -218,7 +318,7 @@ export function GiftCardNote({
               <div
                 key={idx}
                 onClick={() => handleSelectNote(genNote.note, 0)}
-                className="p-4 transition-all duration-200 border border-gray-200 rounded-lg cursor-pointer group bg-gradient-to-r from-blue-200 to-purple-400 hover:border-blue-500 hover:bg-blue-200"
+                className="p-3 transition-all duration-200 border border-gray-200 rounded-lg cursor-pointer group hover:border-blue-500 hover:bg-blue-50"
               >
                 <div className="flex items-start justify-between">
                   <p className="text-sm text-gray-700">{genNote.note}</p>
@@ -226,9 +326,106 @@ export function GiftCardNote({
                 </div>
               </div>
             ))}
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                setGeneratedNotes([]);
+                setUserNotes("");
+                setRecipient("");
+              }}
+              className="w-full mt-2"
+            >
+              Yeni Not Oluştur
+            </Button>
           </div>
         )}
       </div>
+    </div>
+  );
+
+  const AIStatusContent = (
+    <div className="flex flex-col items-center justify-center py-4 space-y-4 sm:space-y-6 sm:py-6">
+      {aiServiceStatus.isChecking ? (
+        <>
+          <div className="relative">
+            <div className="w-16 h-16 bg-blue-100 rounded-full animate-pulse sm:h-20 sm:w-20" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin sm:h-10 sm:w-10" />
+            </div>
+          </div>
+          <div className="space-y-2 text-center">
+            <h3 className="text-base font-medium text-gray-900 sm:text-lg">
+              Yapay Zeka Servisi Kontrol Ediliyor
+            </h3>
+            <p className="text-xs text-gray-500 sm:text-sm">
+              Lütfen bekleyiniz...
+            </p>
+          </div>
+        </>
+      ) : aiServiceStatus.isAvailable ? (
+        <>
+          <div className="relative">
+            <div className="w-16 h-16 bg-green-100 rounded-full sm:h-20 sm:w-20" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-green-600 sm:h-10 sm:w-10" />
+            </div>
+          </div>
+          <div className="space-y-2 text-center">
+            <h3 className="text-base font-medium text-gray-900 sm:text-lg">
+              Yapay Zeka Servisi Aktif
+            </h3>
+            <p className="text-xs text-gray-500 sm:text-sm">
+              Hediye notlarınızı oluşturmak için hazır.
+            </p>
+          </div>
+          <Button
+            onClick={() => {
+              setShowStatusModal(false);
+              setIsOpen(true);
+            }}
+            className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+          >
+            <Wand2 className="w-5 h-5 mr-2" />
+            Not Oluşturmaya Başla
+          </Button>
+        </>
+      ) : (
+        <>
+          <div className="relative">
+            <div className="w-16 h-16 bg-red-100 rounded-full sm:h-20 sm:w-20" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <XCircle className="w-8 h-8 text-red-600 sm:h-10 sm:w-10" />
+            </div>
+          </div>
+          <div className="space-y-2 text-center">
+            <h3 className="text-base font-medium text-gray-900 sm:text-lg">
+              Yapay Zeka Servisi Kullanılamıyor
+            </h3>
+            <p className="text-xs text-gray-500 sm:text-sm">
+              {aiServiceStatus.error ||
+                "Şu anda yapay zeka servisi kullanılamıyor. Lütfen daha sonra tekrar deneyiniz."}
+            </p>
+          </div>
+          <div className="w-full space-y-3">
+            <Button
+              onClick={handleRetryHealthCheck}
+              className="w-full"
+              variant="outline"
+            >
+              <Loader2 className="w-5 h-5 mr-2" />
+              Tekrar Dene
+            </Button>
+            <Button
+              onClick={() => setShowStatusModal(false)}
+              className="w-full"
+              variant="ghost"
+            >
+              Kapat
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 
@@ -268,7 +465,7 @@ export function GiftCardNote({
     );
   };
 
-  const debounceRef = useRef<NodeJS.Timeout>(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleOnChangeNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -279,12 +476,25 @@ export function GiftCardNote({
     }
 
     debounceRef.current = setTimeout(() => {
-      updateCartItemNote(id, note, index);
+      updateCartItemNote(id, value, index);
     }, 1000);
   };
 
   return (
     <div className="space-y-6">
+      {!aiServiceStatus.isAvailable &&
+        !aiServiceStatus.isChecking &&
+        aiServiceStatus.error && (
+          <Alert variant="warning" className="mb-4">
+            <AlertCircle className="w-4 h-4" />
+            <AlertTitle>Yapay Zeka Servisi Kullanılamıyor</AlertTitle>
+            <AlertDescription>
+              Hediye notu oluşturmak için yapay zeka servisi şu anda
+              kullanılamıyor. Manuel olarak not girebilirsiniz.
+            </AlertDescription>
+          </Alert>
+        )}
+
       <div className="space-y-2">
         <Textarea
           value={note}
@@ -298,37 +508,31 @@ export function GiftCardNote({
         <GenerateButton index={0} />
       </div>
 
-      {!isDesktop ? (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-center text-gray-900">
-                {generatedNotes.length
-                  ? "Oluşturulmuş Notlar"
-                  : "Yapay Zeka ile Not Oluştur"}
-              </DialogTitle>
-            </DialogHeader>
-            {isPending ? LoadingContent : Content}
-          </DialogContent>
-        </Dialog>
-      ) : (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent
-            className={cn("max-h-[85vh]", {
-              "h-full": generatedNotes.length,
-            })}
-          >
-            <DrawerHeader className="pb-4">
-              <DrawerTitle className="text-xl font-semibold text-center text-gray-900">
-                {generatedNotes.length
-                  ? "Oluşturulmuş Notlar"
-                  : "Yapay Zeka ile Not Oluştur"}
-              </DrawerTitle>
-            </DrawerHeader>
-            {isPending ? LoadingContent : Content}
-          </DrawerContent>
-        </Drawer>
-      )}
+      {/* AI Status Modal */}
+      <Dialog open={showStatusModal} onOpenChange={setShowStatusModal}>
+        <DialogContent className="w-[90vw] max-w-md rounded-lg p-4 md:w-full">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-xl font-semibold text-center text-gray-900">
+              Yapay Zeka Servisi Durumu
+            </DialogTitle>
+          </DialogHeader>
+          {AIStatusContent}
+        </DialogContent>
+      </Dialog>
+
+      {/* Note Generation Modal */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-h-[80vh] w-[90vw] max-w-md overflow-y-auto rounded-lg p-4 md:w-full md:max-w-2xl">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-xl font-semibold text-center text-gray-900">
+              {generatedNotes.length
+                ? "Oluşturulmuş Notlar"
+                : "Yapay Zeka ile Not Oluştur"}
+            </DialogTitle>
+          </DialogHeader>
+          {isPending ? LoadingContent : Content}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
