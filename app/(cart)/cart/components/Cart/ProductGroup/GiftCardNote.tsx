@@ -22,9 +22,11 @@ import { cn } from "@/lib/utils";
 import {
   AlertCircle,
   CheckCircle2,
+  Gift,
   Loader2,
   MessageSquarePlus,
   MessageSquareText,
+  Pencil,
   Send,
   Sparkles,
   Wand2,
@@ -239,7 +241,7 @@ export function GiftCardNote({
   const LoadingContent = (
     <div className="flex flex-col items-center justify-center py-4 space-y-4 sm:py-8">
       <div className="relative">
-        <div className="w-16 h-16 rounded-full animate-pulse bg-gradient-to-r from-blue-600 to-purple-600 sm:h-24 sm:w-24" />
+        <div className="w-16 h-16 rounded-full animate-pulse bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 sm:h-24 sm:w-24" />
         <div className="absolute inset-0 flex items-center justify-center">
           <Sparkles className="w-8 h-8 text-white animate-bounce sm:h-12 sm:w-12" />
         </div>
@@ -253,9 +255,9 @@ export function GiftCardNote({
         </p>
       </div>
       <div className="flex space-x-2">
-        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.3s]" />
-        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.15s]" />
-        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" />
+        <div className="h-2 w-2 animate-bounce rounded-full bg-indigo-600 [animation-delay:-0.3s]" />
+        <div className="h-2 w-2 animate-bounce rounded-full bg-purple-600 [animation-delay:-0.15s]" />
+        <div className="w-2 h-2 bg-pink-600 rounded-full animate-bounce" />
       </div>
     </div>
   );
@@ -263,29 +265,56 @@ export function GiftCardNote({
   const Content = (
     <div className="flex flex-col h-full">
       <div className="flex-1 px-0 space-y-4 overflow-y-auto sm:px-4">
+        {!generatedNotes.length && (
+          <div className="p-3 mb-2 border border-indigo-100 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50">
+            <div className="flex items-start">
+              <div className="mt-0.5 flex-shrink-0">
+                <Gift className="w-5 h-5 text-indigo-500" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-indigo-800">
+                  Hediye Notu Oluşturucu
+                </h3>
+                <p className="mt-1 text-xs text-indigo-700">
+                  Yapay zeka ile "{product_name}" için özel hediye notu
+                  oluşturun.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="pt-2 space-y-2">
-          <Label htmlFor="recipient" className="text-sm font-medium">
-            Kime
+          <Label
+            htmlFor="recipient"
+            className="flex items-center text-sm font-medium"
+          >
+            <span className="mr-1">Kime</span>
+            <span className="text-xs text-rose-500">*</span>
           </Label>
           <Input
             id="recipient"
             value={recipient}
             onChange={(e) => setRecipient(e.target.value)}
             placeholder="Eşime, arkadaşıma, anne ve babama, çocuğuma, vb."
-            className="border-gray-200 focus:border-blue-500"
+            className="transition-all duration-200 border-gray-200 focus:border-indigo-500 focus:ring-indigo-200"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="notes" className="text-sm font-medium">
-            Konu
+          <Label
+            htmlFor="notes"
+            className="flex items-center text-sm font-medium"
+          >
+            <span className="mr-1">Konu</span>
+            <span className="text-xs text-rose-500">*</span>
           </Label>
           <Textarea
             id="notes"
             value={userNotes}
             onChange={(e) => setUserNotes(e.target.value)}
             placeholder="Yeni yıl, yeni iş, doğum günü, evlilik yıldönümü, tebrik vb."
-            className="border-gray-200 focus:border-blue-500"
+            className="transition-all duration-200 border-gray-200 focus:border-indigo-500 focus:ring-indigo-200"
           />
         </div>
 
@@ -294,7 +323,7 @@ export function GiftCardNote({
             <Button
               onClick={handleGenerate}
               disabled={isPending}
-              className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+              className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl"
             >
               {isPending ? (
                 <>
@@ -311,21 +340,29 @@ export function GiftCardNote({
           </div>
         ) : (
           <div className="pb-4 space-y-3">
-            <h3 className="font-medium text-gray-900">
+            <h3 className="flex items-center font-medium text-gray-900">
+              <Sparkles className="w-4 h-4 mr-2 text-indigo-500" />
               Oluşturulan notlardan birini seçiniz:
             </h3>
-            {generatedNotes.map((genNote, idx) => (
-              <div
-                key={idx}
-                onClick={() => handleSelectNote(genNote.note, 0)}
-                className="p-3 transition-all duration-200 border border-gray-200 rounded-lg cursor-pointer group hover:border-blue-500 hover:bg-blue-50"
-              >
-                <div className="flex items-start justify-between">
-                  <p className="text-sm text-gray-700">{genNote.note}</p>
-                  <Send className="w-5 h-5 text-gray-400 transition-opacity opacity-0 group-hover:opacity-100" />
+            <div className="space-y-3">
+              {generatedNotes.map((genNote, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => handleSelectNote(genNote.note, 0)}
+                  className="relative p-3 overflow-hidden transition-all duration-200 border border-gray-200 rounded-lg cursor-pointer group hover:border-indigo-500 hover:bg-indigo-50"
+                >
+                  <div className="flex items-start justify-between">
+                    <p className="pr-6 text-sm text-gray-700">{genNote.note}</p>
+                    <div className="absolute transition-opacity opacity-0 right-2 top-2 group-hover:opacity-100">
+                      <div className="p-1 bg-indigo-100 rounded-full">
+                        <Send className="w-4 h-4 text-indigo-600" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 transition-transform origin-left scale-x-0 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:scale-x-100"></div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             <Button
               variant="outline"
@@ -334,8 +371,9 @@ export function GiftCardNote({
                 setUserNotes("");
                 setRecipient("");
               }}
-              className="w-full mt-2"
+              className="w-full mt-2 text-indigo-700 transition-all duration-200 border-indigo-200 hover:bg-indigo-50 hover:text-indigo-800"
             >
+              <Pencil className="w-4 h-4 mr-2" />
               Yeni Not Oluştur
             </Button>
           </div>
@@ -349,9 +387,9 @@ export function GiftCardNote({
       {aiServiceStatus.isChecking ? (
         <>
           <div className="relative">
-            <div className="w-16 h-16 bg-blue-100 rounded-full animate-pulse sm:h-20 sm:w-20" />
+            <div className="w-16 h-16 bg-indigo-100 rounded-full animate-pulse sm:h-20 sm:w-20" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin sm:h-10 sm:w-10" />
+              <Loader2 className="w-8 h-8 text-indigo-600 animate-spin sm:h-10 sm:w-10" />
             </div>
           </div>
           <div className="space-y-2 text-center">
@@ -384,7 +422,7 @@ export function GiftCardNote({
               setShowStatusModal(false);
               setIsOpen(true);
             }}
-            className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+            className="w-full text-white transition-all duration-200 shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl"
           >
             <Wand2 className="w-5 h-5 mr-2" />
             Not Oluşturmaya Başla
@@ -410,7 +448,7 @@ export function GiftCardNote({
           <div className="w-full space-y-3">
             <Button
               onClick={handleRetryHealthCheck}
-              className="w-full"
+              className="w-full text-indigo-700 transition-all duration-200 border border-indigo-200 bg-indigo-50 hover:bg-indigo-100"
               variant="outline"
             >
               <Loader2 className="w-5 h-5 mr-2" />
@@ -418,7 +456,7 @@ export function GiftCardNote({
             </Button>
             <Button
               onClick={() => setShowStatusModal(false)}
-              className="w-full"
+              className="w-full text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-800"
               variant="ghost"
             >
               Kapat
@@ -446,13 +484,13 @@ export function GiftCardNote({
         className={cn(
           "w-full border-2 transition-all duration-200",
           isAiGenerated
-            ? "border-blue-200 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200"
-            : "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:text-white hover:shadow-xl",
+            ? "border-indigo-200 bg-gradient-to-r from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200"
+            : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-purple-700 hover:text-white hover:shadow-xl",
         )}
       >
         {isAiGenerated ? (
           <>
-            <MessageSquareText className="w-5 h-5 mr-2 text-blue-600" />
+            <MessageSquareText className="w-5 h-5 mr-2 text-indigo-600" />
             Oluşturulmuş Notları Görüntüle
           </>
         ) : (
@@ -485,10 +523,15 @@ export function GiftCardNote({
       {!aiServiceStatus.isAvailable &&
         !aiServiceStatus.isChecking &&
         aiServiceStatus.error && (
-          <Alert variant="warning" className="mb-4">
-            <AlertCircle className="w-4 h-4" />
-            <AlertTitle>Yapay Zeka Servisi Kullanılamıyor</AlertTitle>
-            <AlertDescription>
+          <Alert
+            variant="warning"
+            className="mb-4 border-amber-200 bg-amber-50"
+          >
+            <AlertCircle className="w-4 h-4 text-amber-600" />
+            <AlertTitle className="text-amber-800">
+              Yapay Zeka Servisi Kullanılamıyor
+            </AlertTitle>
+            <AlertDescription className="text-amber-700">
               Hediye notu oluşturmak için yapay zeka servisi şu anda
               kullanılamıyor. Manuel olarak not girebilirsiniz.
             </AlertDescription>
@@ -496,21 +539,40 @@ export function GiftCardNote({
         )}
 
       <div className="space-y-2">
-        <Textarea
-          value={note}
-          onChange={handleOnChangeNote}
-          placeholder="Hediye notunuzu buraya giriniz..."
-          className={cn(
-            "min-h-[120px] border-gray-200 focus:border-blue-500",
-            aiGeneratedIndexes.has(0) && "bg-blue-50/30",
+        <div className="flex items-center justify-between mb-1">
+          <Label
+            htmlFor={`note-${id}`}
+            className="flex items-center text-sm font-medium text-gray-700"
+          >
+            <Gift className="mr-1.5 h-4 w-4 text-indigo-500" />
+            Hediye Notu
+          </Label>
+          {aiGeneratedIndexes.has(0) && (
+            <div className="flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs text-indigo-600">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Yapay Zeka ile Oluşturuldu
+            </div>
           )}
-        />
+        </div>
+        <div className="relative group">
+          <Textarea
+            id={`note-${id}`}
+            value={note}
+            onChange={handleOnChangeNote}
+            placeholder="Hediye notunuzu buraya giriniz..."
+            className={cn(
+              "min-h-[120px] border-gray-200 transition-all duration-200 focus:border-indigo-500 focus:ring-indigo-200",
+              aiGeneratedIndexes.has(0) && "bg-indigo-50/30",
+            )}
+          />
+          <div className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-gradient-to-r from-indigo-500 to-purple-500 transition-transform duration-300 group-focus-within:scale-x-100"></div>
+        </div>
         <GenerateButton index={0} />
       </div>
 
       {/* AI Status Modal */}
       <Dialog open={showStatusModal} onOpenChange={setShowStatusModal}>
-        <DialogContent className="w-[90vw] max-w-md rounded-lg p-4 md:w-full">
+        <DialogContent className="w-[90vw] max-w-md rounded-lg border border-gray-200 p-4 shadow-xl md:w-full">
           <DialogHeader className="pb-2">
             <DialogTitle className="text-xl font-semibold text-center text-gray-900">
               Yapay Zeka Servisi Durumu
@@ -522,9 +584,10 @@ export function GiftCardNote({
 
       {/* Note Generation Modal */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-h-[80vh] w-[90vw] max-w-md overflow-y-auto rounded-lg p-4 md:w-full md:max-w-2xl">
+        <DialogContent className="max-h-[80vh] w-[90vw] max-w-md overflow-y-auto rounded-lg border border-gray-200 p-4 shadow-xl md:w-full md:max-w-2xl">
           <DialogHeader className="pb-2">
-            <DialogTitle className="text-xl font-semibold text-center text-gray-900">
+            <DialogTitle className="flex items-center justify-center text-xl font-semibold text-center text-gray-900">
+              <Wand2 className="w-5 h-5 mr-2 text-indigo-600" />
               {generatedNotes.length
                 ? "Oluşturulmuş Notlar"
                 : "Yapay Zeka ile Not Oluştur"}
