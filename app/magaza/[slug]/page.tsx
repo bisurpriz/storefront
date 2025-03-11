@@ -55,10 +55,10 @@ const Vendor = async (props: {
 
   const tenantDetails = responses[0];
 
-  const reviewsCount = responses[1].review_aggregate.aggregate.count;
+  const reviewsCount = responses[1]?.review_aggregate?.aggregate.count ?? 0;
   const productScoreAverage =
-    responses[2].product_aggregate.aggregate.avg.score;
-  const coupons = responses[3]?.coupon;
+    responses[2]?.product_aggregate?.aggregate.avg.score ?? 0;
+  const coupons = responses[3]?.coupon ?? [];
   const couponsCount = responses[3]?.coupon_aggregate.aggregate.count;
 
   const { device } = userAgent({
