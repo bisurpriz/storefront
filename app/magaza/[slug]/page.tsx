@@ -10,6 +10,7 @@ import {
   getVendorReviews,
 } from "../actions";
 import TenantHeader from "../components/TenantHeader";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = `Mağaza`;
@@ -37,6 +38,11 @@ const Vendor = async (props: {
   const searchParams = await props.searchParams;
 
   const vendorId = searchParams["mid"];
+
+  // If vendorId is null or undefined, redirect to the homepage
+  if (!vendorId) {
+    redirect("/");
+  }
 
   const responses = await Promise.all([
     getVendorDetails({
