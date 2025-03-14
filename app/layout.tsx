@@ -5,6 +5,7 @@ import "./globals.css";
 //import ValentinesBanner from "@/components/Banner/ValentinesBanner";
 import { GoogleTagManagerInjector } from "@/components/GoogleTagManager";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { PostHogUserIdentifier } from "@/components/PostHogUserIdentifier";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
@@ -141,6 +142,10 @@ export default async function RootLayout({
 
   // Paralel veri çekme
   const { userData, categoryData, cartData } = await getInitialData();
+  
+  // Check if user is authenticated
+  const isAuthenticated = !!userData?.user_by_pk;
+  const userId = userData?.user_by_pk?.id;
 
   return (
     <html lang="tr">
@@ -167,6 +172,16 @@ export default async function RootLayout({
           costData={cartData.costData}
         >
           {/* <ValentinesBanner /> */}
+          
+          {/* Identify user in PostHog */}
+          <PostHogUserIdentifier 
+            userId={userId} 
+            isAuthenticated={isAuthenticated}
+            userProperties={{
+              // Add any additional user properties here
+              cart_items_count: cartData.cartItems?.length || 0,
+            }}
+          />
 
           {children}
           {auth}

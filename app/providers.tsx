@@ -11,6 +11,7 @@ import { Category } from "@/graphql/generated-types";
 import { ApolloWrapper } from "@/graphql/lib/apollo-wrapper";
 import { GetUserByIdQuery } from "@/graphql/queries/account/account.generated";
 import { GetMainCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
+import { PostHogProvider } from "@/lib/posthog/PostHogProvider";
 import { ReactNode } from "react";
 import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
 
@@ -32,27 +33,29 @@ export function Providers({
   return (
     <ProgressBarProvider>
       <ProgressBar className="fixed top-0 z-[1000] h-1 bg-primary shadow-lg shadow-sky-500/20" />
-      <AuthProvider user={userData?.user_by_pk}>
-        <TooltipProvider>
-          <ResponsiveDialogProvider>
-            <ApolloWrapper>
-              <BreadcrumbProvider>
-                <ProductProvider>
-                  <CategoryProvider category={categoryData?.category}>
-                    <CartProvider cartDbItems={cartItems} dbCost={costData}>
-                      <SearchProductProvider
-                        categories={categoryData?.category as Category[]}
-                      >
-                        {children}
-                      </SearchProductProvider>
-                    </CartProvider>
-                  </CategoryProvider>
-                </ProductProvider>
-              </BreadcrumbProvider>
-            </ApolloWrapper>
-          </ResponsiveDialogProvider>
-        </TooltipProvider>
-      </AuthProvider>
+      <PostHogProvider>
+        <AuthProvider user={userData?.user_by_pk}>
+          <TooltipProvider>
+            <ResponsiveDialogProvider>
+              <ApolloWrapper>
+                <BreadcrumbProvider>
+                  <ProductProvider>
+                    <CategoryProvider category={categoryData?.category}>
+                      <CartProvider cartDbItems={cartItems} dbCost={costData}>
+                        <SearchProductProvider
+                          categories={categoryData?.category as Category[]}
+                        >
+                          {children}
+                        </SearchProductProvider>
+                      </CartProvider>
+                    </CategoryProvider>
+                  </ProductProvider>
+                </BreadcrumbProvider>
+              </ApolloWrapper>
+            </ResponsiveDialogProvider>
+          </TooltipProvider>
+        </AuthProvider>
+      </PostHogProvider>
     </ProgressBarProvider>
   );
 }
