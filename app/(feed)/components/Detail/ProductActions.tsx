@@ -82,7 +82,7 @@ const ProductActions = ({
     if (hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour)) {
       return {
         isValid: false,
-        message: "Lütfen teslimat tarihi ve zamanını seçiniz.",
+        message: "Bu ürün için satıcı henüz teslimat saatini belirlemedi.",
       };
     }
 
@@ -183,6 +183,7 @@ const ProductActions = ({
           selectedLevel2
         );
       }
+
       return (
         place?.addressComponents["administrative_area_level_1"] ===
         selectedLevel1
@@ -256,11 +257,13 @@ const ProductActions = ({
 
       {isButtonDisableForLocation() && selectedLocation && (
         <Alert variant="warning" className="mt-2 bg-amber-50/50">
-          <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-            <MapPin className="h-5 w-5" strokeWidth={2.5} />
+          <div className="absolute flex items-center justify-center w-10 h-10 rounded-full left-3 top-3 bg-amber-100 text-amber-700">
+            <MapPin className="w-5 h-5" strokeWidth={2.5} />
           </div>
           <div className="pl-12">
-            <AlertTitle className="mb-2 text-amber-800">Satıcı bu ürünü seçtiğiniz bölgeye gönderememektedir</AlertTitle>
+            <AlertTitle className="mb-2 text-amber-800">
+              Satıcı bu ürünü seçtiğiniz bölgeye gönderememektedir
+            </AlertTitle>
             <AlertDescription className="text-amber-700">
               <Button
                 variant="ghost"
@@ -285,7 +288,7 @@ const ProductActions = ({
         </Alert>
       )}
 
-      <div className="my-2 flex space-x-2">
+      <div className="flex my-2 space-x-2">
         <Button
           size="lg"
           variant={!validationState.isValid ? "destructive" : "default"}
@@ -301,13 +304,13 @@ const ProductActions = ({
 
         <Button
           size="lg"
-          className="flex basis-1/5 items-center justify-center px-0"
+          className="flex items-center justify-center px-0 basis-1/5"
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <Heart className="h-8 w-8 fill-red-500 text-white" />
+              <Heart className="w-8 h-8 text-white fill-red-500" />
             ) : (
-              <Heart className="h-8 w-8 text-red-500" />
+              <Heart className="w-8 h-8 text-red-500" />
             )
           }
           onClick={handleFavorite}
