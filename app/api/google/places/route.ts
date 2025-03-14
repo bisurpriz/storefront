@@ -11,6 +11,7 @@ interface PlacesApiResponse {
       main_text: string;
       secondary_text: string;
     };
+    types?: string[];
   }>;
   error_message?: string;
 }
@@ -102,7 +103,8 @@ export async function GET(request: NextRequest) {
     url.searchParams.append("key", apiKey);
     url.searchParams.append("language", language);
     url.searchParams.append("sessiontoken", session);
-    url.searchParams.append("types", "geocode");
+    // Hem geocode hem establishment tiplerini dahil et
+    url.searchParams.append("types", "geocode|establishment");
     url.searchParams.append("components", `country:${CONFIG.COUNTRY}`);
 
     // API isteği
