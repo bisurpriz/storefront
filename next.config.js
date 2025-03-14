@@ -3,7 +3,7 @@
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    scrollRestoration: true,
+    // scrollRestoration: true,
     optimizePackageImports: [
       "motion",
       "@hookform/resolvers",
