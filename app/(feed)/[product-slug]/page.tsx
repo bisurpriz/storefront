@@ -1,4 +1,4 @@
-import NewDesignGallery from "@/components/Product/DetailImageGallery/NewDesign";
+import { ProductCarousel } from "@/components/Product/DetailImageGallery/NewDesign";
 import ProductSetter from "@/contexts/ProductContext/ProductSetter";
 import { Product as ProductType } from "@/graphql/generated-types";
 import { GetProductImagesQuery } from "@/graphql/queries/products/getProductById.generated";
@@ -12,7 +12,6 @@ import { notFound } from "next/navigation";
 import { userAgent } from "next/server";
 import { FC } from "react";
 import { Product, WithContext } from "schema-dts";
-
 const ProductImageCarouselPage: FC<{
   searchParams: Promise<{ pid: string }>;
 }> = async ({ searchParams }) => {
@@ -57,7 +56,7 @@ const ProductImageCarouselPage: FC<{
   return (
     <>
       <ProductSetter initialData={fullProductData as ProductType} />
-      <NewDesignGallery images={product.image_url} isMobile={isMobile} />
+      <ProductCarousel images={product.image_url} />
       <JsonLd data={productData} />
     </>
   );
