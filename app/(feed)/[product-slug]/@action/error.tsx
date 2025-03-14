@@ -9,9 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle, RefreshCw } from "lucide-react";
-import { useEffect } from "react";
 
 export default function Error({
   error,
@@ -20,10 +18,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    // Log the error to Sentry
-    Sentry.captureException(error);
-  }, [error]);
 
   return (
     <div className="container m-auto flex min-h-[50vh] max-w-lg flex-col items-center justify-center p-4">

@@ -154,26 +154,5 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
-const { withSentryConfig } = require("@sentry/nextjs");
-
-/** @type {import('@sentry/nextjs').SentryBuildOptions} */
-const sentryWebpackPluginOptions = {
-  org: "bonnmarse-2y",
-  project: "javascript-nextjs",
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-  sourcemaps: {
-    deleteSourcemapsAfterUpload: true,
-  },
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-  tunnelRoute: "/monitoring",
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-};
-
 const composedConfig = withPWA(nextConfig);
-module.exports = withSentryConfig(composedConfig, sentryWebpackPluginOptions);
+module.exports = composedConfig;
