@@ -113,6 +113,8 @@ const nextConfig = {
     NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     BLOG_ID_AND_SLUG_URL: process.env.BLOG_ID_AND_SLUG_URL,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
