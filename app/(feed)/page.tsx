@@ -5,12 +5,18 @@ import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
 
-const CategorySwiper = dynamic(
+// Add metadata export with revalidate settings
+export const revalidate = 300; // Cache for 5min seconds (5k)
+
+// Force static rendering with revalidation
+export const dynamic = "force-static";
+
+const CategorySwiper = dynamicImport(
   () => import("@/components/SwiperExamples/CategorySwiper"),
   {
     loading: () => (
@@ -19,7 +25,7 @@ const CategorySwiper = dynamic(
   },
 );
 
-const GoogleLocationSelect = dynamic(
+const GoogleLocationSelect = dynamicImport(
   () => import("@/components/QuarterSelector/GoogleLocationSelect"),
 );
 
