@@ -24,6 +24,8 @@ import ProductCommentsLoadingPage from "../components/Detail/ProductCommentsLoad
 import ProductDescription from "../components/Detail/ProductDescription";
 import ProductDescriptionLoadingPage from "../components/Detail/ProductDescriptionLoadingPage";
 import ProductInformation from "../components/Detail/ProductInformation";
+import SimilarProducts from "../components/Detail/SimilarProducts";
+import SimilarProductsLoadingPage from "../components/Detail/SimilarProductsLoadingPage";
 
 // Set revalidation time for ISR (in seconds)
 export const revalidate = 300; // Revalidate 5 minutes
@@ -238,6 +240,16 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
           </div>
         </section>
         <section
+          className="mt-6"
+          id="benzer-urunler"
+          aria-labelledby="benzer-urunler"
+          aria-describedby="Benzer Ürünler"
+        >
+          <Suspense fallback={<SimilarProductsLoadingPage />}>
+            <SimilarProducts productId={product.id} />
+          </Suspense>
+        </section>
+        <section
           className="mt-6 max-md:mt-2"
           aria-labelledby="product-detail"
           aria-describedby="Ürün Detayları"
@@ -281,6 +293,7 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
             />
           </Suspense>
         </section>
+
         <JsonLd data={productData} />
       </>
     );
