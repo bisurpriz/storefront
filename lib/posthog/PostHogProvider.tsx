@@ -11,7 +11,11 @@ interface PostHogProviderProps {
 export function PostHogProvider({ children }: PostHogProviderProps) {
   useEffect(() => {
     // Initialize PostHog only on the client side
-    if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+    if (
+      typeof window !== "undefined" &&
+      process.env.NEXT_PUBLIC_POSTHOG_KEY &&
+      process.env.NEXT_PUBLIC_HOST === "https://bonnmarse.com"
+    ) {
       posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
         api_host:
           process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",

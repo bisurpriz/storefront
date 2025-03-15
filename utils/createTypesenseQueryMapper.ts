@@ -95,11 +95,11 @@ export const createTypesenseQueryMapper = async (
     return {
       q: queryBySearch,
       filter_by: filter_by.join("&&"),
-      sort_by: "_text_match:desc"
+      sort_by: "_text_match:desc",
     };
   }
   return {
     filter_by: filter_by.join("&&"),
-    sort_by: "score:desc"
+    sort_by: "score:desc",
   };
 };
