@@ -38,13 +38,13 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
         >
           <AccordionTrigger className="gap-2 py-4">
             <div className="flex items-center gap-2">
-              <InfoIcon className="h-5 w-5 text-primary" />
+              <InfoIcon className="w-5 h-5 text-primary" />
               <span className="text-lg font-semibold">Ürün Açıklaması</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
             <div
-              className="prose prose-sm prose-gray max-w-none prose-headings:font-semibold prose-p:text-gray-600 prose-strong:text-gray-900"
+              className="prose-sm prose prose-gray max-w-none prose-headings:font-semibold prose-p:text-gray-600 prose-strong:text-gray-900"
               dangerouslySetInnerHTML={{ __html: description }}
             />
           </AccordionContent>
@@ -54,12 +54,12 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
           <AccordionItem value="specifications" className="border-none">
             <AccordionTrigger className="gap-2 py-4">
               <div className="flex items-center gap-2">
-                <ListChecks className="h-5 w-5 text-blue-500" />
-                <span className="text-lg font-semibold">Teknik Özellikler</span>
+                <ListChecks className="w-5 h-5 text-blue-500" />
+                <span className="text-lg font-semibold">Özellikler</span>
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="overflow-hidden rounded-lg border border-gray-100">
+              <div className="overflow-hidden border border-gray-100 rounded-lg">
                 <div className="divide-y divide-gray-100">
                   {specifications.map((spec, index) => (
                     <div
@@ -83,12 +83,12 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
           <AccordionItem value="notes" className="border-none">
             <AccordionTrigger className="gap-2 py-4">
               <div className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-amber-500" />
+                <AlertCircle className="w-5 h-5 text-amber-500" />
                 <span className="text-lg font-semibold">Önemli Notlar</span>
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="rounded-lg border border-amber-100 bg-amber-50/50">
+              <div className="border rounded-lg border-amber-100 bg-amber-50/50">
                 <ul className="divide-y divide-amber-100">
                   {notes.map((note, index) => (
                     <li

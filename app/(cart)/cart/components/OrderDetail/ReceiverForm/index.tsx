@@ -360,7 +360,7 @@ export default function ReceiverForm() {
   }
 
   return (
-    <div className="relative p-4 mx-auto sm:p-6">
+    <div className="relative mx-auto">
       {isSubmitting && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
           <div className="w-16 h-16 border-4 rounded-full animate-spin border-primary border-t-transparent" />

@@ -54,53 +54,55 @@ const CartSummary = () => {
     }
   }, [isTablet]);
 
-  function changeStep() {
-    startTransition(async () => {
-      if (pathname === CartStepPaths.CART) {
+  async function changeStep() {
+    if (pathname === CartStepPaths.CART) {
+      startTransition(() => {
         startProgress();
-        push(`${CartStepPaths.ORDER_DETAIL}?step=1`);
-        return;
-      }
+      });
+      push(`${CartStepPaths.ORDER_DETAIL}?step=1`);
+      return;
+    }
 
-      if (pathname === CartStepPaths.ORDER_DETAIL) {
-        const orderDetailForm = document.getElementById("order-detail-form");
-        if (orderDetailForm) {
-          const formEvent = new Event("submit", { cancelable: true });
-          const shouldSubmit = await orderDetailForm.dispatchEvent(formEvent);
+    if (pathname === CartStepPaths.ORDER_DETAIL) {
+      const orderDetailForm = document.getElementById("order-detail-form");
+      if (orderDetailForm) {
+        const formEvent = new Event("submit", { cancelable: true });
+        const shouldSubmit = await orderDetailForm.dispatchEvent(formEvent);
 
-          if (shouldSubmit) {
-            if (currentStep === 1) {
-              const handleNextStep = (window as any).handleReceiverFormNextStep;
-              if (handleNextStep) {
-                const canProceed = await handleNextStep();
-                if (canProceed) {
-                  const params = new URLSearchParams(searchParams);
-                  params.set("step", "2");
-                  replace(`?${params.toString()}`);
-                }
+        if (shouldSubmit) {
+          if (currentStep === 1) {
+            const handleNextStep = (window as any).handleReceiverFormNextStep;
+            if (handleNextStep) {
+              const canProceed = await handleNextStep();
+              if (canProceed) {
+                const params = new URLSearchParams(searchParams);
+                params.set("step", "2");
+                replace(`?${params.toString()}`);
               }
-            } else if (currentStep === 2) {
-              const handleNextStep = (window as any).handleReceiverFormNextStep;
-              if (handleNextStep) {
-                const canProceed = await handleNextStep();
-                if (canProceed) {
+            }
+          } else if (currentStep === 2) {
+            const handleNextStep = (window as any).handleReceiverFormNextStep;
+            if (handleNextStep) {
+              const canProceed = await handleNextStep();
+              if (canProceed) {
+                startTransition(() => {
                   startProgress();
-                  push(CartStepPaths.CHECKOUT);
-                }
+                });
+                push(CartStepPaths.CHECKOUT);
               }
             }
           }
         }
-        return;
       }
+      return;
+    }
 
-      // Handle checkout form submission
-      const orderDetailForm = document.getElementById("order-detail-form");
-      if (orderDetailForm) {
-        const formEvent = new Event("submit", { cancelable: true });
-        await orderDetailForm.dispatchEvent(formEvent);
-      }
-    });
+    // Handle checkout form submission
+    const orderDetailForm = document.getElementById("order-detail-form");
+    if (orderDetailForm) {
+      const formEvent = new Event("submit", { cancelable: true });
+      await orderDetailForm.dispatchEvent(formEvent);
+    }
   }
 
   async function handleDiscountCodeSubmit(couponCode: string) {

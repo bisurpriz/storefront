@@ -277,14 +277,12 @@ export default function PlacesAutocomplete({
           className="w-full"
         />
 
-        <div className="absolute left-0 right-0 z-50">
-          <PredictionsList
-            predictions={predictions}
-            isOpen={isOpen}
-            activeIndex={activeIndex}
-            onSelect={handleSelect}
-          />
-        </div>
+        <PredictionsList
+          predictions={predictions}
+          isOpen={isOpen}
+          activeIndex={activeIndex}
+          onSelect={handleSelect}
+        />
       </div>
     </div>
   );

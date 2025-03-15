@@ -35,7 +35,24 @@ const creditCardSchema = object({
     }),
   creditCardCvv: string()
     .required("CVV zorunludur")
-    .matches(/^\d{3}$/, "CVV 3 haneli olmalıdır"),
+    .test("test-cvv", "CVV geçersiz", function (value) {
+      if (!value) return false;
+
+      // Get the credit card number from the form values
+      const { creditCardNumber } = this.parent;
+
+      if (!creditCardNumber) return /^\d{3}$/.test(value); // Default to 3 digits
+
+      const cleanNumber = creditCardNumber.replace(/\s+/g, "");
+
+      // American Express cards have 4-digit CVV
+      if (cleanNumber.startsWith("34") || cleanNumber.startsWith("37")) {
+        return /^\d{4}$/.test(value);
+      }
+
+      // Other cards have 3-digit CVV
+      return /^\d{3}$/.test(value);
+    }),
 });
 
 export type CreditCardForm = InferType<typeof creditCardSchema>;
