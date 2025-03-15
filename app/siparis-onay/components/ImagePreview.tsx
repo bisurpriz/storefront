@@ -43,8 +43,6 @@ const ImagePreview = ({
         status: approveStatus,
       });
 
-      console.log(response);
-
       if (
         response?.data?.update_order_item?.returning?.[0]?.is_images_approved
       ) {

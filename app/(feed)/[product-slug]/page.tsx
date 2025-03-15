@@ -4,10 +4,10 @@ import DetailImageGallerySuspense from "@/components/Product/DetailImageGallery/
 import { ProductCarousel } from "@/components/Product/DetailImageGallery/NewDesign";
 import { IPlace } from "@/components/QuarterSelector/types";
 import ProductSetter from "@/contexts/ProductContext/ProductSetter";
-import { Product as ProductType } from "@/graphql/generated-types";
 import JsonLd from "@/lib/JsonLd";
 import { getImageUrlFromPath } from "@/lib/utils";
 import { typesenseClient } from "@/typesense/client";
+import { ITypesenseProduct } from "@/typesense/typesense.type";
 import { parseJson } from "@/utils/format";
 import { getDiscountRate } from "@/utils/price";
 import { cookies } from "next/headers";
@@ -56,7 +56,7 @@ export async function generateStaticParams() {
       }
 
       const products = response.hits.map((product) => {
-        const doc = product.document as ProductType;
+        const doc = product.document as ITypesenseProduct;
         return {
           "product-slug": doc.slug || doc.id.toString(),
         };
@@ -98,7 +98,7 @@ export async function generateMetadata({
     const productData = (await typesenseClient
       .collections("products")
       .documents(id.toString())
-      .retrieve()) as ProductType;
+      .retrieve()) as ITypesenseProduct;
 
     return {
       title: productData.name || "Product Details",
@@ -130,8 +130,9 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
     const product = (await typesenseClient
       .collections("products")
       .documents(id.toString())
-      .retrieve()) as ProductType;
+      .retrieve()) as ITypesenseProduct;
 
+    console.log(product, "product");
     if (!product) {
       notFound();
     }
@@ -170,9 +171,7 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
       }
     };
     const selectedLocation = (await handleCookie()) as IPlace;
-    const places = parseJson(
-      product.tenant?.tenants?.[0].tenant_shipping_places?.[0]?.places,
-    );
+    const places = parseJson(product.places);
 
     return (
       <>
@@ -199,10 +198,10 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
                   (ratings?.reduce((acc, curr) => {
                     acc[curr.score] = curr.comment_count;
                     return acc;
-                  }, {}) as any) ?? {}
+                  }, {}) as Record<number, number>) ?? {}
                 }
                 rating={product.score ?? 0}
-                reviewCount={product.reviews_aggregate.aggregate.count}
+                reviewCount={product.review_count}
                 discountPrice={product.discount_price}
                 discountRate={getDiscountRate(
                   product.price,

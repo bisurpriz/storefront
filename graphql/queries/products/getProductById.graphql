@@ -19,16 +19,6 @@ query getProductById($id: bigint = 0) {
     properties
     score
     discount_price
-    questions {
-      created_at
-      id
-      question
-      updated_at
-      user {
-        firstname
-        lastname
-      }
-    }
     reviews {
       id
       comment

@@ -1,20 +1,20 @@
 "use client";
 
-import { Product } from "@/graphql/generated-types";
 import { getCategoryUrl, getProductDetailUrl, getTenantUrl } from "@/lib/utils";
+import { ITypesenseProduct } from "@/typesense/typesense.type";
 import { FC, useEffect } from "react";
 import { useProduct } from ".";
 import { useBreadcrumb } from "../BreadcrumbContext";
 
 type ProductSetterProps = {
-  initialData: Product;
+  initialData: ITypesenseProduct;
 };
 
 const ProductSetter: FC<ProductSetterProps> = ({ initialData }) => {
   const { setProduct } = useProduct();
   const { setBreadcrumbs } = useBreadcrumb();
 
-  const getBreadcrumb = (product: Product) => {
+  const getBreadcrumb = (product: ITypesenseProduct) => {
     if (!product) return [];
     let breadcrumb;
 

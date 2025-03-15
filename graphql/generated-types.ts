@@ -17172,8 +17172,8 @@ export type Review = {
   score?: Maybe<Scalars['Int']['output']>;
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
-  user: User;
-  user_id: Scalars['uuid']['output'];
+  user?: Maybe<User>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** aggregated selection of "review" */
@@ -20476,6 +20476,7 @@ export type Tenant = {
   /** An object relationship */
   quarter?: Maybe<Quarter>;
   quarter_id?: Maybe<Scalars['Int']['output']>;
+  ref_code?: Maybe<Scalars['String']['output']>;
   tax_office_name?: Maybe<Scalars['String']['output']>;
   tax_plate_url?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
@@ -21016,6 +21017,7 @@ export type Tenant_Bool_Exp = {
   phone?: InputMaybe<String_Comparison_Exp>;
   quarter?: InputMaybe<Quarter_Bool_Exp>;
   quarter_id?: InputMaybe<Int_Comparison_Exp>;
+  ref_code?: InputMaybe<String_Comparison_Exp>;
   tax_office_name?: InputMaybe<String_Comparison_Exp>;
   tax_plate_url?: InputMaybe<String_Comparison_Exp>;
   tax_quarter?: InputMaybe<Quarter_Bool_Exp>;
@@ -21386,6 +21388,7 @@ export type Tenant_Insert_Input = {
   phone?: InputMaybe<Scalars['String']['input']>;
   quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
   quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  ref_code?: InputMaybe<Scalars['String']['input']>;
   tax_office_name?: InputMaybe<Scalars['String']['input']>;
   tax_plate_url?: InputMaybe<Scalars['String']['input']>;
   tax_quarter?: InputMaybe<Quarter_Obj_Rel_Insert_Input>;
@@ -21412,6 +21415,7 @@ export type Tenant_Max_Fields = {
   owner_id?: Maybe<Scalars['uuid']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   quarter_id?: Maybe<Scalars['Int']['output']>;
+  ref_code?: Maybe<Scalars['String']['output']>;
   tax_office_name?: Maybe<Scalars['String']['output']>;
   tax_plate_url?: Maybe<Scalars['String']['output']>;
   tax_quarter_id?: Maybe<Scalars['Int']['output']>;
@@ -21435,6 +21439,7 @@ export type Tenant_Max_Order_By = {
   owner_id?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   quarter_id?: InputMaybe<Order_By>;
+  ref_code?: InputMaybe<Order_By>;
   tax_office_name?: InputMaybe<Order_By>;
   tax_plate_url?: InputMaybe<Order_By>;
   tax_quarter_id?: InputMaybe<Order_By>;
@@ -21458,6 +21463,7 @@ export type Tenant_Min_Fields = {
   owner_id?: Maybe<Scalars['uuid']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   quarter_id?: Maybe<Scalars['Int']['output']>;
+  ref_code?: Maybe<Scalars['String']['output']>;
   tax_office_name?: Maybe<Scalars['String']['output']>;
   tax_plate_url?: Maybe<Scalars['String']['output']>;
   tax_quarter_id?: Maybe<Scalars['Int']['output']>;
@@ -21481,6 +21487,7 @@ export type Tenant_Min_Order_By = {
   owner_id?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   quarter_id?: InputMaybe<Order_By>;
+  ref_code?: InputMaybe<Order_By>;
   tax_office_name?: InputMaybe<Order_By>;
   tax_plate_url?: InputMaybe<Order_By>;
   tax_quarter_id?: InputMaybe<Order_By>;
@@ -21532,6 +21539,7 @@ export type Tenant_Order_By = {
   phone?: InputMaybe<Order_By>;
   quarter?: InputMaybe<Quarter_Order_By>;
   quarter_id?: InputMaybe<Order_By>;
+  ref_code?: InputMaybe<Order_By>;
   tax_office_name?: InputMaybe<Order_By>;
   tax_plate_url?: InputMaybe<Order_By>;
   tax_quarter?: InputMaybe<Quarter_Order_By>;
@@ -21582,6 +21590,8 @@ export type Tenant_Select_Column =
   /** column name */
   | 'quarter_id'
   /** column name */
+  | 'ref_code'
+  /** column name */
   | 'tax_office_name'
   /** column name */
   | 'tax_plate_url'
@@ -21620,6 +21630,7 @@ export type Tenant_Set_Input = {
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  ref_code?: InputMaybe<Scalars['String']['input']>;
   tax_office_name?: InputMaybe<Scalars['String']['input']>;
   tax_plate_url?: InputMaybe<Scalars['String']['input']>;
   tax_quarter_id?: InputMaybe<Scalars['Int']['input']>;
@@ -22057,6 +22068,7 @@ export type Tenant_Stream_Cursor_Value_Input = {
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   quarter_id?: InputMaybe<Scalars['Int']['input']>;
+  ref_code?: InputMaybe<Scalars['String']['input']>;
   tax_office_name?: InputMaybe<Scalars['String']['input']>;
   tax_plate_url?: InputMaybe<Scalars['String']['input']>;
   tax_quarter_id?: InputMaybe<Scalars['Int']['input']>;
@@ -22112,6 +22124,8 @@ export type Tenant_Update_Column =
   | 'phone'
   /** column name */
   | 'quarter_id'
+  /** column name */
+  | 'ref_code'
   /** column name */
   | 'tax_office_name'
   /** column name */

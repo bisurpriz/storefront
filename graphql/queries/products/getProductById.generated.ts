@@ -7,7 +7,7 @@ export type GetProductByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductByIdQuery = { product?: { description?: string | null, id: any, slug?: string | null, image_url?: Array<string> | null, name: string, price?: number | null, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, properties?: any | null, score?: number | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }>, questions: Array<{ created_at: any, id: any, question: string, updated_at: any, user: { firstname?: string | null, lastname?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } }>, product_customizable_areas: Array<{ customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
+export type GetProductByIdQuery = { product?: { description?: string | null, id: any, slug?: string | null, image_url?: Array<string> | null, name: string, price?: number | null, quantity?: number | null, is_service_free?: boolean | null, delivery_time_ranges?: any | null, delivery_type?: Types.Delivery_Type_Enum | null, last_order_time?: any | null, properties?: any | null, score?: number | null, discount_price?: number | null, product_categories: Array<{ category: { name: string, id: number, slug?: string | null } }>, reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user?: { firstname?: string | null, lastname?: string | null, picture?: string | null, id: any } | null }>, product_customizable_areas: Array<{ customizable_area: { id: number, type: string } }>, reviews_aggregate: { aggregate?: { count: number } | null }, tenant: { id: any, tenants: Array<{ id: any, name?: string | null, logo?: string | null, iyzi_sub_merchant_key?: string | null, commision_rate?: number | null }> }, user_favorites: Array<{ user_id?: any | null, id: any }>, user_favorites_aggregate: { aggregate?: { count: number } | null } } | null };
 
 export type GetProductForCartQueryVariables = Types.Exact<{
   id?: Types.InputMaybe<Types.Scalars['bigint']['input']>;
@@ -70,7 +70,7 @@ export type GetProductCommentsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductCommentsQuery = { product?: { reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user: { firstname?: string | null, lastname?: string | null, picture?: string | null } }> } | null };
+export type GetProductCommentsQuery = { product?: { reviews: Array<{ id: number, comment?: string | null, created_at: any, score?: number | null, user?: { firstname?: string | null, lastname?: string | null, picture?: string | null } | null }> } | null };
 
 
 export const GetProductByIdDocument = gql`
@@ -95,16 +95,6 @@ export const GetProductByIdDocument = gql`
     properties
     score
     discount_price
-    questions {
-      created_at
-      id
-      question
-      updated_at
-      user {
-        firstname
-        lastname
-      }
-    }
     reviews {
       id
       comment
