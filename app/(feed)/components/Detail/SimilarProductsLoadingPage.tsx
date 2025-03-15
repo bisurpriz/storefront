@@ -3,16 +3,16 @@ const SimilarProductsLoadingPage = () => {
     <div className="mt-8">
       <h2 className="mb-4 text-xl font-semibold">Benzer Ürünler</h2>
       <div className="relative w-full">
-        <div className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
-          {Array.from({ length: 5 }).map((_, index) => (
+        <div className="flex gap-4 pb-4 overflow-x-auto no-scrollbar snap-x snap-mandatory">
+          {Array.from({ length: 10 }).map((_, index) => (
             <div
               key={index}
               className="w-[160px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-gray-200 md:w-[200px]"
             >
-              <div className="relative h-40 w-full animate-pulse bg-gray-200"></div>
+              <div className="relative w-full h-40 bg-gray-200 animate-pulse"></div>
               <div className="p-3">
-                <div className="mb-2 h-4 animate-pulse rounded bg-gray-200"></div>
-                <div className="mt-2 h-4 w-1/2 animate-pulse rounded bg-gray-200"></div>
+                <div className="h-4 mb-2 bg-gray-200 rounded animate-pulse"></div>
+                <div className="w-1/2 h-4 mt-2 bg-gray-200 rounded animate-pulse"></div>
               </div>
             </div>
           ))}
