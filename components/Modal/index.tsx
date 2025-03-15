@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +13,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import useResponsive from "@/hooks/useResponsive";
+import { ReactNode } from "react";
 
 interface ModalProps {
   open: boolean;

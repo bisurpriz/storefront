@@ -222,6 +222,12 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/react@19.0.10)(react@19.0.0)(use-sync-external-store@1.4.0(react@19.0.0))
     devDependencies:
+      '@eslint/eslintrc':
+        specifier: ^3.3.0
+        version: 3.3.0
+      '@eslint/js':
+        specifier: ^9.22.0
+        version: 9.22.0
       '@graphql-codegen/cli':
         specifier: ^5.0.5
         version: 5.0.5(@types/node@22.13.10)(graphql@16.10.0)(typescript@5.8.2)
@@ -240,6 +246,9 @@ importers:
       '@graphql-eslint/eslint-plugin':
         specifier: ^4.3.0
         version: 4.3.0(@types/node@22.13.10)(eslint@9.22.0(jiti@2.4.2))(graphql@16.10.0)(typescript@5.8.2)
+      '@next/eslint-plugin-next':
+        specifier: ^15.2.2
+        version: 15.2.2
       '@svgr/core':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.8.2)
@@ -1480,6 +1489,9 @@ packages:
 
   '@next/eslint-plugin-next@15.1.2':
     resolution: {integrity: sha512-sgfw3+WdaYOGPKCvM1L+UucBmRfh8V2Ygefp7ELON0+0vY7uohQwXXnVWg3rY7mXDKharQR3o7uedpfvnU2hlQ==}
+
+  '@next/eslint-plugin-next@15.2.2':
+    resolution: {integrity: sha512-1+BzokFuFQIfLaRxUKf2u5In4xhPV7tUgKcK53ywvFl6+LXHWHpFkcV7VNeKlyQKUotwiq4fy/aDNF9EiUp4RQ==}
 
   '@next/swc-darwin-arm64@13.5.8':
     resolution: {integrity: sha512-HkFw3QPeIy9bImWVTbsvzfEWQkuzBEQTK/L7ORMg+9sXNN0vNR5Gz/chD4/VbozTHyA38lWTrMBfLoWVpD+2IA==}
@@ -7566,6 +7578,10 @@ snapshots:
   '@next/env@15.2.2': {}
 
   '@next/eslint-plugin-next@15.1.2':
+    dependencies:
+      fast-glob: 3.3.1
+
+  '@next/eslint-plugin-next@15.2.2':
     dependencies:
       fast-glob: 3.3.1
 

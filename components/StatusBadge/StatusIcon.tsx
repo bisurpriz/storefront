@@ -4,12 +4,9 @@ import {
   Boxes,
   CheckCheck,
   CircleX,
-  FastForward,
   Gift,
   PackageCheck,
-  Receipt,
   Redo,
-  SplineIcon,
   Truck,
 } from "lucide-react";
 
@@ -27,7 +24,7 @@ const StatusIcon = ({ status }: { status: OrderItemStatus }) => {
 
   const Icon = icons[status];
 
-  return <Icon className="h-4 w-4" />;
+  return <Icon className="w-4 h-4" />;
 };
 
 export default StatusIcon;

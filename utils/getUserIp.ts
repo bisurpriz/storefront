@@ -35,7 +35,7 @@ export function getUserIP(onNewIP) {
 
       pc.setLocalDescription(sdp, noop, noop);
     })
-    .catch(function (reason) {
+    .catch(function () {
       // An error occurred, so handle the failure to connect
     });
 

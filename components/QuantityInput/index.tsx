@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Minus, Plus } from "lucide-react";
 
 interface NumberInputProps {

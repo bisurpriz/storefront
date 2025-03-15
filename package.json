@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "env-cmd -f .env next dev",
     "prod": "env-cmd -f .env.production next dev",
@@ -11,7 +12,7 @@
     "build:dev": "env-cmd -f .env next build",
     "start": "next start",
     "lint": "eslint .",
-    "lint:fix": "eslint \"/**/*.{ts,tsx}\" --fix",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix",
     "format": "prettier --write .",
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts dotenv_config_path=./.env",
     "generate-icons": "node generate-icons.js",
@@ -92,12 +93,15 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.22.0",
     "@graphql-codegen/cli": "^5.0.5",
     "@graphql-codegen/client-preset": "^4.7.0",
     "@graphql-codegen/near-operation-file-preset": "^3.0.0",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@graphql-eslint/eslint-plugin": "^4.3.0",
+    "@next/eslint-plugin-next": "^15.2.2",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-prettier": "^8.1.0",
