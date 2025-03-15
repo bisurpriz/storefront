@@ -47,7 +47,7 @@ export function SearchResults({
           </div>
           <div className="flex-grow min-w-0">
             <div className="flex flex-col items-start justify-start">
-              <h3 className="max-w-sm text-sm font-medium text-gray-900 truncate">
+              <h3 className="max-w-sm text-sm font-medium text-gray-900 truncate w-full">
                 {product.name}
               </h3>
               {product.tenant?.tenants[0]?.name && (
