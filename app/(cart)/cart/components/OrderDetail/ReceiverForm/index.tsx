@@ -15,13 +15,7 @@ import { parseJson } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useTransition,
-} from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { orderDetailSchema } from "../schema";
 import { ProgressBar } from "./components/ProgressBar";
@@ -74,7 +68,6 @@ const findFirstErrorStep = (errors: Record<string, any>): number => {
 };
 
 export default function ReceiverForm() {
-  const [isPending, startTransition] = useTransition();
   const [neighborhoods, setNeighborhoods] = useState<AutoCompleteOption[]>([]);
   const [selectedCargoLocation, setSelectedCargoLocation] = useState<IPlace>();
   const [selectedInvoiceType, setSelectedInvoiceType] =
@@ -88,28 +81,17 @@ export default function ReceiverForm() {
     cartState: { cartItems },
   } = useCart();
 
-  const updateStep = useCallback(
-    (newStep: number) => {
-      const params = new URLSearchParams(searchParams);
-      params.set("step", newStep.toString());
-      router.replace(`?${params.toString()}`);
-    },
-    [router, searchParams],
-  );
+  function updateStep(newStep: number) {
+    const params = new URLSearchParams(searchParams);
+    params.set("step", newStep.toString());
+    router.replace(`?${params.toString()}`);
+  }
 
-  // Lokasyon bilgilerini memo'la
-  const { city, district, neighborhood, street, postal_code } = useMemo(
-    () => getLocationVariables(cartItems[0].deliveryLocation),
-    [cartItems, step],
-  );
-  // Aynı gün teslimat kontrolünü memo'la
-  const hasSameDayProduct = useMemo(
-    () =>
-      cartItems.some(
-        (item) =>
-          item.delivery_type === "SAME_DAY" && item.delivery_time_ranges,
-      ),
-    [cartItems],
+  const { city, district, neighborhood, street, postal_code } =
+    getLocationVariables(cartItems[0].deliveryLocation);
+
+  const hasSameDayProduct = cartItems.some(
+    (item) => item.delivery_type === "SAME_DAY" && item.delivery_time_ranges,
   );
 
   const {
@@ -141,20 +123,14 @@ export default function ReceiverForm() {
     },
   });
 
-  const placeData = useMemo(
-    () =>
-      parseJson(
-        cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places,
-      ),
-    [cartItems],
+  // Direct calculations in React 19
+  const placeData = parseJson(
+    cartItems[0].tenant.tenants[0].tenant_shipping_places?.[0]?.places,
   );
 
-  const availableDistricts = useMemo(
-    () => getAvailableDistricts(placeData),
-    [placeData],
-  );
+  const availableDistricts = getAvailableDistricts(placeData);
 
-  const getFieldsToValidate = () => {
+  function getFieldsToValidate() {
     if (step === 1) {
       return [
         ...STEP_FIELDS.sender,
@@ -165,7 +141,7 @@ export default function ReceiverForm() {
       return STEP_FIELDS.receiver;
     }
     return [];
-  };
+  }
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -181,9 +157,7 @@ export default function ReceiverForm() {
       }
 
       if (step === 2) {
-        startTransition(() => {
-          sessionStorage.setItem("order-detail-form", JSON.stringify(data));
-        });
+        sessionStorage.setItem("order-detail-form", JSON.stringify(data));
       }
     } catch (error) {
       toast({
@@ -193,8 +167,8 @@ export default function ReceiverForm() {
     }
   });
 
-  // Her adımın validasyonunu kontrol et
-  const validateStep = useCallback(async () => {
+  // Validation functions - keeping these as separate functions for clarity
+  async function validateStep() {
     const fieldsToValidate = getFieldsToValidate();
     const isValid = await trigger(fieldsToValidate);
 
@@ -213,9 +187,9 @@ export default function ReceiverForm() {
     }
 
     return true;
-  }, [errors, getFieldsToValidate, trigger]);
+  }
 
-  const validateStep1 = useCallback(async () => {
+  async function validateStep1() {
     const fieldsToValidate = [...STEP_FIELDS.sender];
     if (selectedInvoiceType === "company") {
       fieldsToValidate.push(...STEP_FIELDS.company);
@@ -230,25 +204,24 @@ export default function ReceiverForm() {
       return false;
     }
     return true;
-  }, [trigger, selectedInvoiceType]);
+  }
+
+  // Helper function for step 1 validation - defined outside useEffect
+  async function checkStep1Validation() {
+    if (step === 2) {
+      const isStep1Valid = await validateStep1();
+      if (!isStep1Valid) {
+        updateStep(1);
+      }
+    }
+  }
 
   // URL değişimini izle ve step 1 validasyonunu kontrol et
   useEffect(() => {
-    const checkStep1Validation = async () => {
-      if (step === 2) {
-        const isStep1Valid = await validateStep1();
-        if (!isStep1Valid) {
-          updateStep(1);
-        }
-      }
-    };
+    checkStep1Validation();
+  }, [step]);
 
-    startTransition(() => {
-      checkStep1Validation();
-    });
-  }, [step, validateStep1, updateStep]);
-
-  const nextStep = useCallback(async () => {
+  async function nextStep() {
     const isStepValid = await validateStep();
     if (!isStepValid) return false;
 
@@ -269,81 +242,76 @@ export default function ReceiverForm() {
         });
         return false;
       }
-      startTransition(() => {
-        sessionStorage.setItem(
-          "order-detail-form",
-          JSON.stringify(getValues()),
-        );
-      });
+      sessionStorage.setItem("order-detail-form", JSON.stringify(getValues()));
       return true;
     }
 
     return false;
-  }, [step, validateStep, validateStep1, getValues, updateStep, trigger]);
+  }
+
+  // Helper function for loading form data - defined outside useEffect
+  function loadFormData() {
+    const localData = sessionStorage.getItem("order-detail-form");
+    if (localData) {
+      const parsedData = JSON.parse(localData);
+      Object.keys(parsedData).forEach((key) => {
+        setValue(key as keyof OrderDetailFormData, parsedData[key]);
+      });
+    }
+  }
 
   useEffect(() => {
-    const loadFormData = () => {
-      const localData = sessionStorage.getItem("order-detail-form");
-      if (localData) {
-        const parsedData = JSON.parse(localData);
-        Object.keys(parsedData).forEach((key) => {
-          setValue(key as keyof OrderDetailFormData, parsedData[key]);
-        });
-      }
-    };
-
-    startTransition(loadFormData);
+    loadFormData();
   }, [setValue]);
 
   // Mahalle listesini güncelle
   useEffect(() => {
     if (district && !neighborhood) {
-      startTransition(() => {
-        const availableNeighborhoods = getAvailableNeighborhoods(
-          placeData,
-          district,
-        );
-        setNeighborhoods(
-          availableNeighborhoods?.map((n) => ({
-            label: n,
-            value: n,
-          })) || [],
-        );
-      });
+      const availableNeighborhoods = getAvailableNeighborhoods(
+        placeData,
+        district,
+      );
+      setNeighborhoods(
+        availableNeighborhoods?.map((n) => ({
+          label: n,
+          value: n,
+        })) || [],
+      );
     }
   }, [district, neighborhood, placeData]);
 
-  useEffect(() => {
+  // Helper function for updating location fields - defined outside useEffect
+  function updateLocationFields() {
     if (selectedCargoLocation?.placeId && !hasSameDayProduct) {
-      const updateLocationFields = () => {
-        const city = selectedCargoLocation.address_components.find((ac) =>
-          ac.types.includes("administrative_area_level_1"),
-        )?.short_name;
-        const district = selectedCargoLocation.address_components.find((ac) =>
-          ac.types.includes("administrative_area_level_2"),
-        )?.short_name;
-        const neighborhood = selectedCargoLocation.address_components.find(
-          (ac) => ac.types.includes("administrative_area_level_4"),
-        )?.short_name;
+      const city = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_1"),
+      )?.short_name;
+      const district = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_2"),
+      )?.short_name;
+      const neighborhood = selectedCargoLocation.address_components.find((ac) =>
+        ac.types.includes("administrative_area_level_4"),
+      )?.short_name;
 
-        setValue("receiver_city", { label: city, value: city });
-        setValue("receiver_district", { label: district, value: district });
-        setValue("receiver_neighborhood", {
-          label: neighborhood,
-          value: neighborhood,
-        });
-        setValue("receiver_address", selectedCargoLocation.label);
-      };
-
-      startTransition(updateLocationFields);
+      setValue("receiver_city", { label: city, value: city });
+      setValue("receiver_district", { label: district, value: district });
+      setValue("receiver_neighborhood", {
+        label: neighborhood,
+        value: neighborhood,
+      });
+      setValue("receiver_address", selectedCargoLocation.label);
     }
+  }
+
+  useEffect(() => {
+    updateLocationFields();
   }, [selectedCargoLocation, hasSameDayProduct, setValue]);
 
-  const prevStep = useCallback(() => {
+  function prevStep() {
     if (step > 1) {
       updateStep(step - 1);
     }
-  }, [step, updateStep]);
+  }
 
   // Expose current step and nextStep function through window
   useEffect(() => {
@@ -356,61 +324,46 @@ export default function ReceiverForm() {
   }, [nextStep, step]);
 
   // Form içeriğini render et
-  const renderStepContent = useCallback(
-    (currentStep: number) => {
-      const props = {
-        control,
-        setValue,
-        hasSameDayProduct,
-        selectedCargoLocation,
-        setSelectedCargoLocation,
-        placeData,
-        city,
-        district,
-        neighborhood,
-        neighborhoods,
-        setNeighborhoods,
-        availableDistricts,
-        selectedInvoiceType,
-        setSelectedInvoiceType,
-      };
-
-      return (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            variants={MOTION_VARIANTS}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            {currentStep === 1 && <SenderInfoStep {...props} />}
-            {currentStep === 2 && <ReceiverInfoStep {...props} />}
-          </motion.div>
-        </AnimatePresence>
-      );
-    },
-    [
+  function renderStepContent(currentStep: number) {
+    const props = {
       control,
       setValue,
       hasSameDayProduct,
       selectedCargoLocation,
+      setSelectedCargoLocation,
       placeData,
       city,
       district,
       neighborhood,
       neighborhoods,
+      setNeighborhoods,
       availableDistricts,
       selectedInvoiceType,
-    ],
-  );
+      setSelectedInvoiceType,
+    };
+
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep}
+          variants={MOTION_VARIANTS}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          transition={{ duration: 0.3 }}
+        >
+          {currentStep === 1 && <SenderInfoStep {...props} />}
+          {currentStep === 2 && <ReceiverInfoStep {...props} />}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
-    <div className="relative mx-auto p-4 sm:p-6">
-      {(isPending || isSubmitting) && (
+    <div className="relative p-4 mx-auto sm:p-6">
+      {isSubmitting && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
-          <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="w-16 h-16 border-4 rounded-full animate-spin border-primary border-t-transparent" />
         </div>
       )}
 
@@ -419,7 +372,7 @@ export default function ReceiverForm() {
       <form onSubmit={onSubmit} className="space-y-8" id="order-detail-form">
         {renderStepContent(step)}
 
-        <div className="mt-8 flex justify-between">
+        <div className="flex justify-between mt-8">
           {step > 1 && (
             <Button
               type="button"

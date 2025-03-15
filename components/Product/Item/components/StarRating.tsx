@@ -1,7 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 interface StarRatingProps {
   score?: number | null;
@@ -46,39 +46,35 @@ const StarRating = memo(
       );
     }
 
-    const stars = useMemo(() => {
-      return [...Array(5)].map((_, index) => {
-        const fillPercentage = Math.max(
-          0,
-          Math.min(100, (score - index) * 100),
-        );
+    // Direct calculation in React 19 - no need for
+    const stars = [...Array(5)].map((_, index) => {
+      const fillPercentage = Math.max(0, Math.min(100, (score - index) * 100));
 
-        return (
-          <div key={index} className="relative">
-            {/* Arka plan yıldız */}
-            <Star
-              className={`${sizeClasses[size]} stroke-[1.5] text-gray-200`}
-              fill="currentColor"
-            />
+      return (
+        <div key={index} className="relative">
+          {/* Arka plan yıldız */}
+          <Star
+            className={`${sizeClasses[size]} stroke-[1.5] text-gray-200`}
+            fill="currentColor"
+          />
 
-            {/* Doluluk oranına göre sarı yıldız */}
-            {fillPercentage > 0 && (
-              <div
-                className="absolute inset-0"
-                style={{
-                  clipPath: `inset(0 ${100 - fillPercentage}% 0 0)`,
-                }}
-              >
-                <Star
-                  className={`${sizeClasses[size]} stroke-[1.5] text-yellow-400`}
-                  fill="currentColor"
-                />
-              </div>
-            )}
-          </div>
-        );
-      });
-    }, [score, size]);
+          {/* Doluluk oranına göre sarı yıldız */}
+          {fillPercentage > 0 && (
+            <div
+              className="absolute inset-0"
+              style={{
+                clipPath: `inset(0 ${100 - fillPercentage}% 0 0)`,
+              }}
+            >
+              <Star
+                className={`${sizeClasses[size]} stroke-[1.5] text-yellow-400`}
+                fill="currentColor"
+              />
+            </div>
+          )}
+        </div>
+      );
+    });
 
     return (
       <div className="flex items-center gap-1.5">

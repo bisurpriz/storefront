@@ -33,7 +33,7 @@ const CheckContract = memo(
     );
 
     return (
-      <div className="border-t px-4" role="region" aria-label="Sözleşme Onayı">
+      <div className="px-4 border-t" role="region" aria-label="Sözleşme Onayı">
         <Checkbox
           checked={approveContract}
           label={

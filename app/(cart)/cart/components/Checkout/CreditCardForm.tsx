@@ -8,7 +8,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Code, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useTransition } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
 import { CartStepPaths } from "../../constants";
@@ -22,11 +22,8 @@ const CreditCardFormComponent = () => {
   const { renderPopup, openPopup, closePopup } = usePopup();
   const { replace } = useRouter();
   const startProgress = useProgress();
-  const [isPending, startTransition] = useTransition();
   const { loading, errorMessage, base64Html, handlePayment, resetError } =
     usePayment();
-
-  const schema = useMemo(() => creditCardSchema, []);
 
   const { handleSubmit, control } = useForm<CreditCardForm>({
     defaultValues: {
@@ -35,12 +32,12 @@ const CreditCardFormComponent = () => {
       creditCardDate: "",
       creditCardCvv: "",
     } as CreditCardForm,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(creditCardSchema),
     mode: "onChange",
   });
 
   useEffect(() => {
-    startTransition(() => {
+    const checkOrderDetails = async () => {
       startProgress();
       try {
         const orderDetails = sessionStorage.getItem("order-detail-form");
@@ -49,14 +46,20 @@ const CreditCardFormComponent = () => {
         sessionStorage.removeItem("order-detail-form");
         replace(CartStepPaths.CART);
       }
-    });
-  }, []);
+    };
+
+    checkOrderDetails();
+  }, [replace, startProgress]);
 
   useEffect(() => {
     if (errorMessage) {
       openPopup();
     }
   }, [errorMessage, openPopup]);
+
+  const onSubmit = async (data: CreditCardForm) => {
+    await handlePayment(data, isTablet);
+  };
 
   return (
     <>
@@ -73,8 +76,8 @@ const CreditCardFormComponent = () => {
       <form
         id="credit-card-form"
         name="credit-card-form"
-        onSubmit={handleSubmit((data) => handlePayment(data, isTablet))}
-        className="relative flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-8 shadow-lg"
+        onSubmit={handleSubmit(onSubmit)}
+        className="relative flex flex-col items-center justify-center w-full gap-4 px-4 py-8 bg-white border border-gray-200 rounded-lg shadow-lg"
         autoComplete="off"
       >
         <Controller
@@ -91,7 +94,7 @@ const CreditCardFormComponent = () => {
             />
           )}
         />
-        <div className="flex w-full flex-col gap-4 md:flex-row md:items-start md:justify-start">
+        <div className="flex flex-col w-full gap-4 md:flex-row md:items-start md:justify-start">
           <Controller
             name="creditCardName"
             control={control}

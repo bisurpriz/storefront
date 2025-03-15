@@ -6,8 +6,8 @@ import { useResponsiveDialog } from "@/contexts/DialogContext/ResponsiveDialogCo
 import { GetUserOrdersQuery } from "@/graphql/queries/account/account.generated";
 import { MessageSquare, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
-import { useProgress } from "react-transition-progress";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { startMessageForOrder } from "../actions";
 
 interface OrderMessageProps {
@@ -19,97 +19,105 @@ interface OrderMessageProps {
 const MIN_MESSAGE_LENGTH = 1;
 const MAX_MESSAGE_LENGTH = 1000;
 
-export default function OrderMessage({ tenant, orderTenantId }: OrderMessageProps) {
-  const [message, setMessage] = useState("");
-  const [isPending, startMessageTransition] = useTransition();
-  const nextRouter = useRouter();
-  const startProgress = useProgress();
+// Form submit button with automatic pending state
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      variant="default"
+      size="sm"
+      disabled={pending}
+      className="h-9 min-w-[100px]"
+    >
+      <Send className={`mr-2 h-4 w-4 ${pending ? "animate-pulse" : ""}`} />
+      {pending ? "Gönderiliyor..." : "Gönder"}
+    </Button>
+  );
+}
+
+export default function OrderMessage({
+  tenant,
+  orderTenantId,
+}: OrderMessageProps) {
+  const router = useRouter();
   const { closeDialog } = useResponsiveDialog();
 
-  // Memoize tenant name to prevent unnecessary re-renders
-  const tenantName = useMemo(() => tenant.tenants?.[0]?.name, [tenant.tenants]);
+  // Define our action with useActionState
+  const [error, formAction] = useActionState(async (prevState, formData) => {
+    try {
+      const message = formData.get("message") as string;
 
-  // Memoize message validation
-  const isMessageValid = useMemo(() => {
-    const trimmedLength = message.trim().length;
-    return trimmedLength >= MIN_MESSAGE_LENGTH && trimmedLength <= MAX_MESSAGE_LENGTH;
-  }, [message]);
-
-  const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length <= MAX_MESSAGE_LENGTH) {
-      setMessage(value);
-    }
-  }, []);
-
-  const handleSendMessage = useCallback(async () => {
-    if (!isMessageValid) return;
-
-    startMessageTransition(async () => {
-      try {
-        startProgress();
-        const response = await startMessageForOrder({
-          message: message.trim(),
-          receiver_id: tenant.id,
-          order_tenant_id: orderTenantId,
-        });
-
-        if (response.insert_message_one.chat_thread.order_tenant_id) {
-          nextRouter.push(
-            `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`,
-          );
-          closeDialog();
-        }
-      } catch (error) {
-        console.error('Message sending failed:', error);
-        // Here you might want to show an error toast or message
+      if (
+        !message ||
+        message.trim().length < MIN_MESSAGE_LENGTH ||
+        message.trim().length > MAX_MESSAGE_LENGTH
+      ) {
+        return "Mesaj uzunluğu geçersiz";
       }
-    });
-  }, [message, tenant.id, orderTenantId, startProgress, nextRouter, closeDialog, isMessageValid]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
+      const response = await startMessageForOrder({
+        message: message.trim(),
+        receiver_id: tenant.id,
+        order_tenant_id: orderTenantId,
+      });
+
+      if (response.insert_message_one.chat_thread.order_tenant_id) {
+        router.push(
+          `/account/messages?oid=${response.insert_message_one.chat_thread.order_tenant_id}`,
+        );
+        closeDialog();
+      }
+      return null;
+    } catch (error) {
+      console.error("Message sending failed:", error);
+      return "Mesaj gönderilirken bir hata oluştu";
     }
-  }, [handleSendMessage]);
+  }, null);
 
-  const remainingChars = useMemo(() => 
-    MAX_MESSAGE_LENGTH - message.length
-  , [message.length]);
+  const tenantName = tenant.tenants?.[0]?.name;
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) form.requestSubmit();
+    }
+  }
 
   return (
     <div className="flex max-h-[80vh] flex-col p-1 sm:p-2">
-      <DialogHeader className="space-y-2 pb-4 px-3 sm:px-2">
+      <DialogHeader className="px-3 pb-4 space-y-2 sm:px-2">
         <DialogTitle className="flex items-center gap-2 text-xl">
-          <MessageSquare className="h-5 w-5" />
+          <MessageSquare className="w-5 h-5" />
           Satıcıya Mesaj Gönder
         </DialogTitle>
         <p className="text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{tenantName}</span> ile iletişime geçin
+          <span className="font-medium text-foreground">{tenantName}</span> ile
+          iletişime geçin
         </p>
       </DialogHeader>
 
-      <div className="flex flex-1 flex-col gap-4 px-3 sm:px-2 pb-4">
+      <form
+        action={formAction}
+        className="flex flex-col flex-1 gap-4 px-3 pb-4 sm:px-2"
+      >
+        {error && <div className="px-1 text-sm text-destructive">{error}</div>}
+
         <div className="relative flex-1">
           <textarea
             name="message"
             id="message"
             rows={4}
-            className="min-h-[140px] sm:min-h-[120px] w-full resize-none rounded-lg border bg-background p-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary disabled:opacity-70"
+            className="min-h-[140px] w-full resize-none rounded-lg border bg-background p-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary disabled:opacity-70 sm:min-h-[120px]"
             placeholder="Mesajınızı yazın..."
-            value={message}
-            onChange={handleMessageChange}
             onKeyDown={handleKeyDown}
-            disabled={isPending}
             aria-label="Mesaj içeriği"
             maxLength={MAX_MESSAGE_LENGTH}
           />
-          <div className="absolute bottom-3 right-3 flex items-center gap-2 text-xs">
-            <span className="text-muted-foreground/80">
-              {remainingChars} karakter kaldı
-            </span>
-            <div className="bg-background/80 px-1.5 py-0.5 rounded text-muted-foreground/80">
+          <div className="absolute flex items-center gap-2 text-xs bottom-3 right-3">
+            <div className="rounded bg-background/80 px-1.5 py-0.5 text-muted-foreground/80">
               Enter tuşu ile gönder
             </div>
           </div>
@@ -117,26 +125,17 @@ export default function OrderMessage({ tenant, orderTenantId }: OrderMessageProp
 
         <div className="flex items-center justify-end gap-2">
           <Button
+            type="button"
             variant="outline"
             size="sm"
             onClick={closeDialog}
             className="h-9"
-            disabled={isPending}
           >
             İptal
           </Button>
-          <Button
-            variant="default"
-            size="sm"
-            onClick={handleSendMessage}
-            disabled={!isMessageValid || isPending}
-            className="h-9 min-w-[100px]"
-          >
-            <Send className={`mr-2 h-4 w-4 ${isPending ? 'animate-pulse' : ''}`} />
-            {isPending ? 'Gönderiliyor...' : 'Gönder'}
-          </Button>
+          <SubmitButton />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

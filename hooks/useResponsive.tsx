@@ -1,5 +1,5 @@
 import { breakpoints } from "@/contants/breakpoints";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useResponsive = () => {
   const [mounted, setMounted] = useState(false);
@@ -10,11 +10,11 @@ const useResponsive = () => {
     setWidth(window.innerWidth);
   }, []);
 
-  const handleResize = useCallback(() => {
+  function handleResize() {
     requestAnimationFrame(() => {
       setWidth(window.innerWidth);
     });
-  }, []);
+  }
 
   useEffect(() => {
     if (!mounted) return;
@@ -33,21 +33,8 @@ const useResponsive = () => {
     return () => {
       window.removeEventListener("resize", resizeListener);
     };
-  }, [handleResize, mounted]);
+  }, [mounted]);
 
-  const breakpointValues = useMemo(
-    () => ({
-      isSmallMobile: width < breakpoints.xs,
-      isMobile: width < breakpoints.sm,
-      isTablet: width < breakpoints.md,
-      isDesktop: width < breakpoints.lg,
-      isLargeDesktop: width < breakpoints.xl,
-      isExtraLargeDesktop: width < breakpoints["2xl"],
-    }),
-    [width],
-  );
-
-  // Sunucu tarafında veya ilk mount'ta varsayılan değerleri döndür
   if (!mounted) {
     return {
       isSmallMobile: false,
@@ -59,7 +46,14 @@ const useResponsive = () => {
     };
   }
 
-  return breakpointValues;
+  return {
+    isSmallMobile: width < breakpoints.xs,
+    isMobile: width < breakpoints.sm,
+    isTablet: width < breakpoints.md,
+    isDesktop: width < breakpoints.lg,
+    isLargeDesktop: width < breakpoints.xl,
+    isExtraLargeDesktop: width < breakpoints["2xl"],
+  };
 };
 
 export default useResponsive;

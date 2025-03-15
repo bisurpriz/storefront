@@ -18,6 +18,7 @@ const nextConfig = {
       "embla-carousel-react",
     ],
     optimizeCss: true,
+    reactCompiler: true,
   },
   images: {
     loader: "default",

@@ -14,7 +14,6 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support";
 import { createClient } from "graphql-ws";
-import { useMemo } from "react";
 
 // Environment variables
 const HASURA_URL = process.env.HASURA_URL!;
@@ -150,10 +149,10 @@ function makeClient() {
 
 // Memoized Apollo Provider
 export function ApolloWrapper({ children }: React.PropsWithChildren) {
-  const client = useMemo(() => makeClient(), []);
+  const client = () => makeClient();
 
   return (
-    <ApolloNextAppProvider makeClient={() => client}>
+    <ApolloNextAppProvider makeClient={client}>
       {children}
     </ApolloNextAppProvider>
   );
