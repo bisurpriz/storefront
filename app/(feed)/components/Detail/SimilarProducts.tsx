@@ -31,7 +31,7 @@ const getSimilarProducts = async (
 ): Promise<SimilarProductsResponse> => {
   try {
     const response = await fetch(
-      `${AI_API_URL}/similar_products?product_id=${productId}&place_id=${place_id}`,
+      `${AI_API_URL}/similar_products?product_id=${productId}&place_id=${place_id}&limit=10`,
       {
         method: "GET",
         headers: {
@@ -109,7 +109,7 @@ const SimilarProducts = async ({ productId }: { productId: number }) => {
       <div className="mt-8">
         <h2 className="mb-4 text-xl font-semibold">Benzer Ürünler</h2>
         <div className="relative w-full">
-          <div className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
             {products.map((product) => (
               <Link
                 href={getProductDetailUrl(product.slug, product.id)}
