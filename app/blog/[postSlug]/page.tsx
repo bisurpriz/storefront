@@ -7,9 +7,6 @@ import Image from "next/image";
 import { cache } from "react";
 import { getBlogPostIdsAndSlug } from "./actions";
 
-export const revalidate = 604800;
-export const dynamicParams = false;
-
 const cachedGetBlogPostIdsAndSlug = cache(getBlogPostIdsAndSlug);
 
 export async function generateStaticParams() {
@@ -61,6 +58,9 @@ export async function generateMetadata(props: {
     robots: "index, follow",
   };
 }
+
+export const revalidate = 604800;
+export const dynamic = "force-static";
 
 export default async function BlogPostPage({ params }) {
   const { postSlug } = await params;
