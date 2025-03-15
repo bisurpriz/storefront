@@ -108,7 +108,7 @@ export const searchProductsv1 = async (
       .search(
         {
           q: filterBy.q ?? "*",
-          query_by: "name",
+          query_by: "name,description",
           sort_by: "score:desc,price:asc",
           filter_by: filterBy.filter_by,
           offset: 0,

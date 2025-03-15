@@ -75,6 +75,7 @@ export function DesktopSearch({
             "border border-primary",
             "z-10",
             "ring-2 ring-primary",
+            "max-h-[calc(100vh-10rem)] overflow-y-auto",
           )}
           initial={{ y: 40 }}
           animate={{ y: 10 }}
