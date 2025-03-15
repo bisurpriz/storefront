@@ -10,12 +10,6 @@ import { headers } from "next/headers";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
 
-// Add metadata export with revalidate settings
-export const revalidate = 300; // Cache for 5min seconds (5k)
-
-// Force static rendering with revalidation
-export const dynamic = "force-static";
-
 const CategorySwiper = dynamicImport(
   () => import("@/components/SwiperExamples/CategorySwiper"),
   {

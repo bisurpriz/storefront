@@ -28,6 +28,8 @@ import ProductInformation from "../components/Detail/ProductInformation";
 // Set revalidation time for ISR (in seconds)
 export const revalidate = 300; // Revalidate 5 minutes
 
+export const dynamic = "auto";
+
 // Define the page props interface
 interface ProductPageProps {
   params: Promise<{ "product-slug": string }>;
@@ -132,7 +134,6 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
       .documents(id.toString())
       .retrieve()) as ITypesenseProduct;
 
-    console.log(product, "product");
     if (!product) {
       notFound();
     }
