@@ -240,6 +240,16 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
           </div>
         </section>
         <section
+          className="mt-6"
+          id="benzer-urunler"
+          aria-labelledby="benzer-urunler"
+          aria-describedby="Benzer Ürünler"
+        >
+          <Suspense fallback={<SimilarProductsLoadingPage />}>
+            <SimilarProducts productId={product.id} />
+          </Suspense>
+        </section>
+        <section
           className="mt-6 max-md:mt-2"
           aria-labelledby="product-detail"
           aria-describedby="Ürün Detayları"
@@ -283,16 +293,7 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
             />
           </Suspense>
         </section>
-        <section
-          className="mt-6"
-          id="benzer-urunler"
-          aria-labelledby="benzer-urunler"
-          aria-describedby="Benzer Ürünler"
-        >
-          <Suspense fallback={<SimilarProductsLoadingPage />}>
-            <SimilarProducts productId={product.id} />
-          </Suspense>
-        </section>
+
         <JsonLd data={productData} />
       </>
     );
