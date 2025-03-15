@@ -13,8 +13,8 @@ export const localeDistanceFormat = (value: Date) => {
   try {
     const formatted = formatDistance(value, new Date(), { locale: tr });
     return formatted;
-  } catch (error) {
-    return '';
+  } catch (_error) {
+    return "";
   }
 };
 
@@ -24,7 +24,7 @@ export const parseJson = (json: any) => {
   }
   try {
     return JSON.parse(json);
-  } catch (e) {
+  } catch (_error) {
     return null;
   }
 };

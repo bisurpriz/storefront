@@ -15,7 +15,6 @@ import {
   ReactNode,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
   useState,
 } from "react";
@@ -366,44 +365,29 @@ export const CartProvider = ({
     }
   }, [cartState.cartItems]);
 
-  const value = useMemo(
-    () => ({
-      cartState,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-      deliveryTime,
-      setDeliveryTimeHandler,
-      clearDeliveryTime,
-      isProductInCart,
-      syncDeliveryTimeWithProduct,
-      applyCouponCode,
-      updateCartItemNote,
-      hasCustomizableProduct,
-      setHasCustomizableProduct,
-    }),
-    [
-      cartState,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      updateCartItem,
-      loading,
-      deliveryTime,
-      setDeliveryTimeHandler,
-      clearDeliveryTime,
-      isProductInCart,
-      syncDeliveryTimeWithProduct,
-      applyCouponCode,
-      updateCartItemNote,
-      hasCustomizableProduct,
-      setHasCustomizableProduct,
-    ],
+  return (
+    <CartContext.Provider
+      value={{
+        cartState,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        updateCartItem,
+        loading,
+        deliveryTime,
+        setDeliveryTimeHandler,
+        clearDeliveryTime,
+        isProductInCart,
+        syncDeliveryTimeWithProduct,
+        applyCouponCode,
+        updateCartItemNote,
+        hasCustomizableProduct,
+        setHasCustomizableProduct,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
   );
-
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => useContext(CartContext);

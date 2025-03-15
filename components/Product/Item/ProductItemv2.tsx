@@ -7,7 +7,7 @@ import { Product } from "@/graphql/generated-types";
 import useResponsive from "@/hooks/useResponsive";
 import { getProductDetailUrl } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import AddToFavorite from "./components/AddToFavorite";
 import { PriceTag } from "./components/PriceTag";
 import { ProductImage } from "./components/ProductImage";
@@ -33,20 +33,16 @@ const ProductItemv2 = memo(
     className,
   }: ProductItemv2Props) => {
     const { user } = useUser();
+    const { isMobile } = useResponsive();
 
     const [isFavorite, setIsFavorite] = useState(() =>
       user?.favorites?.some((fav) => Number(fav.product_id) === Number(id)),
     );
 
-    const tenantName = useMemo(() => tenant?.tenants[0].name, [tenant]);
-    const isCustomizable = useMemo(
-      () => product_customizable_areas?.length > 0,
-      [product_customizable_areas],
-    );
-    const isSameDayDelivery = useMemo(
-      () => delivery_type === "SAME_DAY",
-      [delivery_type],
-    );
+    const tenantName = tenant?.tenants[0].name;
+    const isCustomizable = product_customizable_areas?.length > 0;
+    const isSameDayDelivery = delivery_type === "SAME_DAY";
+    const productUrl = getProductDetailUrl(slug, Number(id));
 
     useEffect(() => {
       if (!user) return;
@@ -55,69 +51,9 @@ const ProductItemv2 = memo(
       );
     }, [user, id]);
 
-    const handleFavoriteChange = useCallback((newState: boolean) => {
+    function handleFavoriteChange(newState: boolean) {
       setIsFavorite(newState);
-    }, []);
-
-    const productUrl = useMemo(
-      () => getProductDetailUrl(slug, Number(id)),
-      [slug, id],
-    );
-
-    const { isMobile } = useResponsive();
-
-    const cardContent = useMemo(
-      () => (
-        <CardContent className="flex flex-col p-0">
-          <ProductImage
-            imageUrl={image_url?.[0]}
-            alt={name}
-            isCustomizable={isCustomizable}
-            isSameDayDelivery={isSameDayDelivery}
-          />
-
-          <div className="flex flex-col p-2 sm:p-4">
-            <div className="mb-2">
-              <p className="h-10 text-sm text-gray-600 line-clamp-2">
-                {tenantName && (
-                  <span className="inline-block font-medium text-gray-900">
-                    {tenantName
-                      .split(" ")
-                      .slice(0, 2)
-                      .map((word) => (
-                        <span key={word} className="mr-1">
-                          {word}
-                        </span>
-                      ))}
-                  </span>
-                )}
-                {name}
-              </p>
-            </div>
-
-            <StarRating score={score} reviewCount={0} size="sm" />
-
-            <div className="mt-auto">
-              <PriceTag
-                price={price}
-                discountPrice={discount_price}
-                className="mt-2"
-              />
-            </div>
-          </div>
-        </CardContent>
-      ),
-      [
-        name,
-        tenantName,
-        score,
-        price,
-        discount_price,
-        image_url,
-        isCustomizable,
-        isSameDayDelivery,
-      ],
-    );
+    }
 
     return (
       <Link
@@ -127,8 +63,45 @@ const ProductItemv2 = memo(
         rel={!isMobile ? "noopener noreferrer" : undefined}
         aria-label={`${tenantName} - ${name}`}
       >
-        <Card className="relative group">
-          {cardContent}
+        <Card className="group relative">
+          <CardContent className="flex flex-col p-0">
+            <ProductImage
+              imageUrl={image_url?.[0]}
+              alt={name}
+              isCustomizable={isCustomizable}
+              isSameDayDelivery={isSameDayDelivery}
+            />
+
+            <div className="flex flex-col p-2 sm:p-4">
+              <div className="mb-2">
+                <p className="line-clamp-2 h-10 text-sm text-gray-600">
+                  {tenantName && (
+                    <span className="inline-block font-medium text-gray-900">
+                      {tenantName
+                        .split(" ")
+                        .slice(0, 2)
+                        .map((word) => (
+                          <span key={word} className="mr-1">
+                            {word}
+                          </span>
+                        ))}
+                    </span>
+                  )}
+                  {name}
+                </p>
+              </div>
+
+              <StarRating score={score} reviewCount={0} size="sm" />
+
+              <div className="mt-auto">
+                <PriceTag
+                  price={price}
+                  discountPrice={discount_price}
+                  className="mt-2"
+                />
+              </div>
+            </div>
+          </CardContent>
           <AddToFavorite
             isFav={isFavorite}
             productId={id}

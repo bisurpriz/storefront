@@ -7,7 +7,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
@@ -46,17 +45,10 @@ export const BreadcrumbProvider: React.FC<BreadcrumbProviderProps> = ({
     }
   }, [pathname, clearBreadcrumbs]);
 
-  const contextValue = useMemo(
-    () => ({
-      breadcrumbs,
-      setBreadcrumbs,
-      clearBreadcrumbs,
-    }),
-    [breadcrumbs, setBreadcrumbs, clearBreadcrumbs],
-  );
-
   return (
-    <BreadcrumbContext.Provider value={contextValue}>
+    <BreadcrumbContext.Provider
+      value={{ breadcrumbs, setBreadcrumbs, clearBreadcrumbs }}
+    >
       {children}
     </BreadcrumbContext.Provider>
   );

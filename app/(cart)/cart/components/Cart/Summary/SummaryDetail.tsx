@@ -7,7 +7,7 @@ import { CouponMessages } from "@/contexts/CartContext/constants";
 import clsx from "clsx";
 import { Ticket, TicketCheck, TicketX } from "lucide-react";
 import { motion } from "motion/react";
-import { FC, useCallback, useMemo, useRef } from "react";
+import { FC, useRef } from "react";
 
 type SummaryDetailProps = {
   cost: number;
@@ -32,44 +32,38 @@ const SummaryDetail: FC<SummaryDetailProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleCouponSubmit = useCallback(() => {
+  function handleCouponSubmit() {
     const value = inputRef.current?.value;
     if (value && onDiscountCodeSubmit) {
       onDiscountCodeSubmit(value);
     }
-  }, [onDiscountCodeSubmit]);
+  }
 
-  const handleCouponRemove = useCallback(() => {
+  function handleCouponRemove() {
     if (handleRemoveCoupon) {
       handleRemoveCoupon();
       if (inputRef.current) {
         inputRef.current.value = "";
       }
     }
-  }, [handleRemoveCoupon]);
+  }
 
-  const formattedCost = useMemo(() => {
-    const numericCost = typeof cost === "number" ? cost : parseFloat(cost);
-    return isNaN(numericCost) ? "0.00" : numericCost.toFixed(2);
-  }, [cost]);
+  const numericCost = typeof cost === "number" ? cost : parseFloat(cost);
+  const formattedCost = isNaN(numericCost) ? "0.00" : numericCost.toFixed(2);
 
-  const formattedTotalWithDiscount = useMemo(() => {
-    const total = totalWithDiscount ?? cost;
-    const numericTotal = typeof total === "number" ? total : parseFloat(total);
-    return isNaN(numericTotal) ? "0.00" : numericTotal.toFixed(2);
-  }, [totalWithDiscount, cost]);
+  const total = totalWithDiscount ?? cost;
+  const numericTotal = typeof total === "number" ? total : parseFloat(total);
+  const formattedTotalWithDiscount = isNaN(numericTotal)
+    ? "0.00"
+    : numericTotal.toFixed(2);
 
-  const couponMessageText = useMemo(() => {
-    if (isCouponApplied) return CouponMessages.COUPON_SUCCESS;
-    return CouponMessages[couponMessage as keyof typeof CouponMessages] || "";
-  }, [isCouponApplied, couponMessage]);
+  const couponMessageText = isCouponApplied
+    ? CouponMessages.COUPON_SUCCESS
+    : CouponMessages[couponMessage as keyof typeof CouponMessages] || "";
 
-  const showCouponMessage = useMemo(() => {
-    return (
-      isCouponApplied ||
-      (couponMessage && couponMessage !== CouponMessages.COUPON_SUCCESS)
-    );
-  }, [isCouponApplied, couponMessage]);
+  const showCouponMessage =
+    isCouponApplied ||
+    (couponMessage && couponMessage !== CouponMessages.COUPON_SUCCESS);
 
   if (!isOpen) return null;
 

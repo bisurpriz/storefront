@@ -65,14 +65,14 @@ export default function CartItem({
             alt={name}
             width={120}
             height={120}
-            className="h-32 w-32 rounded-md object-cover max-sm:h-20 max-sm:w-20"
+            className="object-cover w-32 h-32 rounded-md max-sm:h-20 max-sm:w-20"
           />
         </div>
 
-        <div className="flex w-full flex-col items-start">
-          <div className="flex w-full items-start justify-between">
+        <div className="flex flex-col items-start w-full">
+          <div className="flex items-start justify-between w-full">
             <Link href={getProductDetailUrl(slug, id)}>
-              <h2 className="line-clamp-2 w-full text-lg font-semibold text-gray-800 max-sm:text-base">
+              <h2 className="w-full text-lg font-semibold text-gray-800 line-clamp-2 max-sm:text-base">
                 {name}
               </h2>
             </Link>
@@ -91,7 +91,7 @@ export default function CartItem({
             </button>
           </div>
 
-          <div className="mt-2 flex w-full items-center justify-between border-b pb-2">
+          <div className="flex items-center justify-between w-full pb-2 mt-2 border-b">
             <NumberInput
               defaultValue={quantity}
               onChange={(quantity) => {
@@ -107,17 +107,16 @@ export default function CartItem({
               }}
             />
 
-            <div className="flex w-fit flex-nowrap items-center gap-1 self-end text-sm font-bold leading-none text-gray-500 text-primary">
-              <span className="text-slate-500">{quantity} adet</span>
-              <span className="text-base">₺{price.toFixed(2)}</span>
+            <div className="flex items-center self-end gap-1 text-lg font-bold leading-none text-gray-500 w-fit flex-nowrap text-primary">
+              ₺{price.toFixed(2)}
             </div>
           </div>
 
-          <div className="mt-2 flex w-full items-center space-x-2 overflow-hidden overflow-x-auto text-sm">
+          <div className="flex items-center w-full mt-2 space-x-2 overflow-hidden overflow-x-auto text-sm">
             {(specialImageCount > 0 || specialTextCount > 0) && (
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild className="whitespace-nowrap">
-                  <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
+                  <span className="flex items-center px-2 text-xs rounded-md cursor-pointer select-none h-7 bg-primary-foreground text-primary">
                     <Gift size={14} className="mr-1" />
                     Kişiselleştirilebilir Ürün
                   </span>
@@ -133,7 +132,7 @@ export default function CartItem({
             {is_service_free && (
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild className="whitespace-nowrap">
-                  <span className="flex h-7 cursor-pointer select-none items-center rounded-md bg-primary-foreground px-2 text-xs text-primary">
+                  <span className="flex items-center px-2 text-xs rounded-md cursor-pointer select-none h-7 bg-primary-foreground text-primary">
                     <TruckIcon size={14} className="mr-1" />
                     Ücretsiz Kargo
                   </span>
@@ -161,18 +160,14 @@ export default function CartItem({
             notes?.[index]?.replaceAll("[", "").replaceAll("]", "") || "";
 
           return (
-            <div key={index}>
-              <h5 className="text-sm font-semibold text-gray-800">
-                {index + 1}. Ürün notu
-              </h5>
-              <GiftCardNote
-                id={id}
-                product_description={description}
-                product_name={name}
-                card_note={noteText}
-                index={index}
-              />
-            </div>
+            <GiftCardNote
+              key={index}
+              id={id}
+              product_description={description}
+              product_name={name}
+              card_note={noteText}
+              index={index}
+            />
           );
         })}
       </div>

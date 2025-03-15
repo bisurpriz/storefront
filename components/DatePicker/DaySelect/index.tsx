@@ -19,29 +19,58 @@ const DaySelect: React.FC<Props> = ({
   lastOrderTime,
 }) => {
   const isTodayDisabled = () => {
-    const today = new Date();
-    const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
-    return (
-      today.getHours() >= parseInt(hour) &&
-      today.getMinutes() >= parseInt(minute)
-    );
+    if (!lastOrderTime) {
+      return false;
+    }
+
+    try {
+      const today = new Date();
+      const parsedDate = new Date(lastOrderTime);
+
+      if (isNaN(parsedDate.getTime())) {
+        return false;
+      }
+
+      const [hour, minute] = format(parsedDate, "HH:mm").split(":");
+      return (
+        today.getHours() >= parseInt(hour) &&
+        today.getMinutes() >= parseInt(minute)
+      );
+    } catch (error) {
+      console.error("Error processing lastOrderTime:", error);
+      return false;
+    }
   };
 
-
   const remainTime = () => {
-    const [hour, minute] = format(new Date(lastOrderTime), "HH:mm").split(":");
-    const today = new Date();
-    const lastOrderDate = new Date();
-    lastOrderDate.setHours(parseInt(hour));
-    lastOrderDate.setMinutes(parseInt(minute));
-    lastOrderDate.setSeconds(0);
+    if (!lastOrderTime) {
+      return { hours: 0, minutes: 0, seconds: 0 };
+    }
 
-    const diff = lastOrderDate.getTime() - today.getTime();
-    const hours = Math.floor(diff / 1000 / 60 / 60);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+    try {
+      const parsedDate = new Date(lastOrderTime);
 
-    return { hours, minutes, seconds };
+      if (isNaN(parsedDate.getTime())) {
+        return { hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      const [hour, minute] = format(parsedDate, "HH:mm").split(":");
+      const today = new Date();
+      const lastOrderDate = new Date();
+      lastOrderDate.setHours(parseInt(hour));
+      lastOrderDate.setMinutes(parseInt(minute));
+      lastOrderDate.setSeconds(0);
+
+      const diff = lastOrderDate.getTime() - today.getTime();
+      const hours = Math.floor(diff / 1000 / 60 / 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      return { hours, minutes, seconds };
+    } catch (error) {
+      console.error("Error calculating remaining time:", error);
+      return { hours: 0, minutes: 0, seconds: 0 };
+    }
   };
 
   if (deliveryTimes?.length === 0) {

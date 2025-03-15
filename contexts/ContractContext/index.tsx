@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext } from "react";
 import ContractModal from "./ContractModal";
 import { ContractContextProps, ContractContextValue } from "./types";
 import { useContractState } from "./useContractState";
@@ -19,18 +19,15 @@ export const ContractProvider = ({ children }: ContractContextProps) => {
     updateContractData,
   } = useContractState();
 
-  const contextValue = useMemo(
-    () => ({
-      ...state,
-      openApproveContract,
-      setApproveContract,
-      updateContractData,
-    }),
-    [state, openApproveContract, setApproveContract, updateContractData],
-  );
-
   return (
-    <ContractContext.Provider value={contextValue}>
+    <ContractContext.Provider
+      value={{
+        ...state,
+        openApproveContract,
+        setApproveContract,
+        updateContractData,
+      }}
+    >
       {children}
       <ContractModal
         open={state.isModalOpen}

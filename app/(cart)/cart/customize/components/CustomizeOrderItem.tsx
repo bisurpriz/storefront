@@ -160,7 +160,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
           className="relative flex flex-col gap-4 rounded-lg"
         >
           <div className="flex flex-col gap-2">
-            <p className="whitespace-nowrap text-xs font-semibold text-slate-600">
+            <p className="text-xs font-semibold whitespace-nowrap text-slate-600">
               {quantity_index + 1}. ürün özelleştirmesi
             </p>
             {product.product_customizable_areas?.map((area, tindex) => {
@@ -195,7 +195,10 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
                   {hasSpecialImage.length ? (
                     <div className="flex flex-wrap gap-4">
                       {Array.from({ length: area.count }).map((_, keyIndex) => (
-                        <div className="flex items-center gap-2">
+                        <div
+                          key={`special-image-${keyIndex}`}
+                          className="flex items-center gap-2"
+                        >
                           <Image
                             src={getImageUrlFromPath(
                               hasSpecialImage[keyIndex]?.image_url,
@@ -225,7 +228,7 @@ const CustomizeOrderItem: FC<CustomizeOrderItemProps> = ({ orderItem }) => {
       <Button
         variant="default"
         type="button"
-        className="mt-4 w-full justify-center"
+        className="justify-center w-full mt-4"
         loading={loading}
         disabled={loading || status === "success" || disableButton}
         onClick={handleUpload}

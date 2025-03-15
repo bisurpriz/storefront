@@ -3,19 +3,19 @@ import Image from "next/image";
 
 const OrderTrackingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex h-full flex-col">
-      <div className="mb-6 flex justify-center border-y p-6">
+    <div className="flex flex-col h-full">
+      <div className="flex justify-center p-2 mb-6 border-y md:p-6">
         <Link href={"/"}>
           <Image
             src="/logo.svg"
-            width={240}
-            height={240}
+            width={120}
+            height={120}
             alt="Login"
             priority
           />
         </Link>
       </div>
-      <div className="container relative mx-auto flex h-full flex-1 flex-col items-center justify-center px-4 md:px-0">
+      <div className="container relative flex flex-col items-center justify-center flex-1 h-full px-4 mx-auto md:px-0">
         {children}
       </div>
     </div>

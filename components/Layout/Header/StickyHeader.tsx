@@ -15,11 +15,11 @@ const StickyHeader = () => {
   const [loaded, setLoaded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  if (typeof window !== "undefined") {
-    useEffect(() => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
       setLoaded(true);
-    }, []);
-  }
+    }
+  }, []);
 
   return (
     <AnimationExitProvider show={loaded}>

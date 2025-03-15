@@ -10,7 +10,8 @@ import { getBlogPostUrl } from "@/utils/getBlogPostUrl";
 import { CalendarIcon } from "lucide-react";
 import { getStaticBlogPosts } from "./[postSlug]/actions";
 
-export const revalidate = 0;
+export const revalidate = 604800; // 7 days
+export const dynamic = "force-static";
 
 export default async function BlogPage() {
   const { blog } = await getStaticBlogPosts();

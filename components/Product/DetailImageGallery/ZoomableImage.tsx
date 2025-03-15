@@ -174,7 +174,11 @@ const ZoomableImage = ({
           ref={imageRef}
           className={cn(
             "relative h-full w-full",
-            isMobile ? "touch-none" : "cursor-zoom-in",
+            isMobile 
+              ? isMobileZoomed 
+                ? "touch-none" 
+                : "touch-pan-y"
+              : "cursor-zoom-in",
             isLoading && "animate-pulse bg-gray-100",
           )}
           onMouseMove={handleMouseMove}

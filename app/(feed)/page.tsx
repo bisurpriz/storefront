@@ -1,22 +1,16 @@
-import { BannerCarousel } from "@/components/Grids/CampaignGrid/CampaignGrid";
 import CampaignGridSuspense from "@/components/Grids/CampaignGrid/CampaignGridSuspense";
 import HomePageGrid from "@/components/Grids/CampaignGrid/HomePageGrid";
 import ServerInfinityScroll from "@/components/InfinityScroll/ServerInfinityScroll";
 import ProductItemSkeleton from "@/components/Product/Item/ProductItemSkeleton";
-import { GetBannersQuery } from "@/graphql/queries/banners/banners.generated";
 import { GetAllCategoriesQuery } from "@/graphql/queries/categories/getCategories.generated";
-import { getImageUrlFromPath } from "@/lib/utils";
-import { GetBannersDocument } from "@/service/banner";
 import { GetCategoriesDocument } from "@/service/category";
 import { BonnmarseApi } from "@/service/fetch";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { headers } from "next/headers";
-import Image from "next/image";
 import { userAgent } from "next/server";
 import { Suspense } from "react";
 
-// Dinamik import ile lazy loading yapalım
-const CategorySwiper = dynamic(
+const CategorySwiper = dynamicImport(
   () => import("@/components/SwiperExamples/CategorySwiper"),
   {
     loading: () => (
@@ -25,14 +19,8 @@ const CategorySwiper = dynamic(
   },
 );
 
-const GoogleLocationSelect = dynamic(
+const GoogleLocationSelect = dynamicImport(
   () => import("@/components/QuarterSelector/GoogleLocationSelect"),
-);
-
-const InfiniteScrollCarouselWrapper = dynamic(
-  () =>
-    import("@/components/InfiniteScrollCarousel/InfiniteScrollCarouselWrapper"),
-  { ssr: true },
 );
 
 export default async function Page(props: {
@@ -54,19 +42,7 @@ export default async function Page(props: {
     headers: await headers(),
   });
 
-  const { system_banner } = await BonnmarseApi.request<GetBannersQuery>({
-    query: GetBannersDocument,
-    tags: ["system_banner"],
-    withAuth: false,
-    cache: {
-      enable: true,
-      duration: 30 * 60 * 1000,
-    },
-  });
-
   const isMobile = device.type === "mobile";
-
-  const selectedImage = system_banner[0].path;
 
   return (
     <div className="flex flex-col gap-4">
@@ -85,23 +61,9 @@ export default async function Page(props: {
           <GoogleLocationSelect from="home" />
         </Suspense>
       )}
-      <div className="w-full overflow-hidden rounded-md bg-primary/20">
-        <Image
-          src={getImageUrlFromPath(selectedImage)}
-          alt="banner"
-          className="w-full"
-          width={1300}
-          height={1300}
-          priority
-          sizes="100vw"
-        />
-      </div>
-      {<InfiniteScrollCarouselWrapper searchParams={searchParams} />}
-      {
-        <Suspense fallback={<CampaignGridSuspense />}>
-          {isMobile ? <BannerCarousel /> : <HomePageGrid />}
-        </Suspense>
-      }
+      <Suspense fallback={<CampaignGridSuspense />}>
+        <HomePageGrid />
+      </Suspense>
 
       <Suspense
         fallback={

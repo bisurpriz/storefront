@@ -28,10 +28,6 @@ export const getStaticBlogPosts = async () => {
   return await BonnmarseApi.request<GetStaticBlogPostsQuery>({
     query: GetStaticBlogPostsDocument,
     tags: ["getStaticBlogPosts"],
-    cache: {
-      enable: true,
-      duration: 30 * 60 * 1000,
-    },
     withAuth: false,
   });
 };
@@ -43,10 +39,6 @@ export const getBlogPostIdsAndSlug = async (slug) => {
       slug,
     },
     tags: ["getBlogPostIdsAndSlug"],
-    cache: {
-      enable: true,
-      duration: 30 * 60 * 1000,
-    },
     withAuth: false,
   });
 };

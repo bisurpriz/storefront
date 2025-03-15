@@ -1,21 +1,14 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { SearchX } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AutoCompleteOption } from ".";
 import {
   Command,
-  CommandInput,
   CommandEmpty,
-  CommandItem,
   CommandGroup,
+  CommandInput,
+  CommandItem,
   CommandList,
 } from "../ui/command";
-import { SearchX } from "lucide-react";
 
 function OptionList({
   options,

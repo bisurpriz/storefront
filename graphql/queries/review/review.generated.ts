@@ -25,7 +25,7 @@ export type GetProductReviewsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, user: { firstname?: string | null, lastname?: string | null } }>, review_aggregate: { aggregate?: { count: number } | null } };
+export type GetProductReviewsQuery = { review: Array<{ id: number, comment?: string | null, score?: number | null, created_at: any, user?: { firstname?: string | null, lastname?: string | null } | null }>, review_aggregate: { aggregate?: { count: number } | null } };
 
 
 export const GetOrdersWithReviewsDocument = gql`

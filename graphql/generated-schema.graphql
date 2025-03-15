@@ -20965,8 +20965,8 @@ type review {
   updated_at: timestamptz!
 
   """An object relationship"""
-  user: user!
-  user_id: uuid!
+  user: user
+  user_id: uuid
 }
 
 """
@@ -25667,6 +25667,7 @@ type tenant {
   """An object relationship"""
   quarter: quarter
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
 
@@ -26286,6 +26287,7 @@ input tenant_bool_exp {
   phone: String_comparison_exp
   quarter: quarter_bool_exp
   quarter_id: Int_comparison_exp
+  ref_code: String_comparison_exp
   tax_office_name: String_comparison_exp
   tax_plate_url: String_comparison_exp
   tax_quarter: quarter_bool_exp
@@ -26731,6 +26733,7 @@ input tenant_insert_input {
   phone: String
   quarter: quarter_obj_rel_insert_input
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
   tax_quarter: quarter_obj_rel_insert_input
@@ -26757,6 +26760,7 @@ type tenant_max_fields {
   owner_id: uuid
   phone: String
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
   tax_quarter_id: Int
@@ -26782,6 +26786,7 @@ input tenant_max_order_by {
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
+  ref_code: order_by
   tax_office_name: order_by
   tax_plate_url: order_by
   tax_quarter_id: order_by
@@ -26805,6 +26810,7 @@ type tenant_min_fields {
   owner_id: uuid
   phone: String
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
   tax_quarter_id: Int
@@ -26830,6 +26836,7 @@ input tenant_min_order_by {
   owner_id: order_by
   phone: order_by
   quarter_id: order_by
+  ref_code: order_by
   tax_office_name: order_by
   tax_plate_url: order_by
   tax_quarter_id: order_by
@@ -26889,6 +26896,7 @@ input tenant_order_by {
   phone: order_by
   quarter: quarter_order_by
   quarter_id: order_by
+  ref_code: order_by
   tax_office_name: order_by
   tax_plate_url: order_by
   tax_quarter: quarter_order_by
@@ -26957,6 +26965,9 @@ enum tenant_select_column {
   quarter_id
 
   """column name"""
+  ref_code
+
+  """column name"""
   tax_office_name
 
   """column name"""
@@ -27008,6 +27019,7 @@ input tenant_set_input {
   owner_id: uuid
   phone: String
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
   tax_quarter_id: Int
@@ -27526,6 +27538,7 @@ input tenant_stream_cursor_value_input {
   owner_id: uuid
   phone: String
   quarter_id: Int
+  ref_code: String
   tax_office_name: String
   tax_plate_url: String
   tax_quarter_id: Int
@@ -27600,6 +27613,9 @@ enum tenant_update_column {
 
   """column name"""
   quarter_id
+
+  """column name"""
+  ref_code
 
   """column name"""
   tax_office_name

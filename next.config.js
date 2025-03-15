@@ -3,7 +3,7 @@
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    scrollRestoration: true,
+    // scrollRestoration: true,
     optimizePackageImports: [
       "motion",
       "@hookform/resolvers",
@@ -18,6 +18,7 @@ const nextConfig = {
       "embla-carousel-react",
     ],
     optimizeCss: true,
+    reactCompiler: true,
   },
   images: {
     loader: "default",
@@ -149,7 +150,9 @@ const nextConfig = {
   ],
 };
 
-const withPWA = require("next-pwa")({
+import nextPWA from "next-pwa";
+
+const withPWA = nextPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
@@ -157,4 +160,5 @@ const withPWA = require("next-pwa")({
 });
 
 const composedConfig = withPWA(nextConfig);
-module.exports = composedConfig;
+
+export default composedConfig;

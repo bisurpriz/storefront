@@ -5,11 +5,13 @@ import { cn, getImageUrlFromPath } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const ProductCarousel = ({ images }: { images: string[] }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
 
   // Main carousel options
   const [mainRef, mainApi] = useEmblaCarousel({
@@ -18,12 +20,19 @@ export const ProductCarousel = ({ images }: { images: string[] }) => {
     inViewThreshold: 0.7,
   });
 
-  // Thumbnails carousel options
+  // Thumbnails carousel options - disable dragging to prevent touch scroll interference
   const [thumbsRef, thumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
-    dragFree: true,
+    dragFree: false,
     axis: isDesktop ? "y" : "x",
   });
+
+  // Update scroll buttons state
+  const updateScrollButtonsState = useCallback(() => {
+    if (!thumbsApi) return;
+    setCanScrollPrev(!thumbsApi.canScrollPrev() ? false : true);
+    setCanScrollNext(!thumbsApi.canScrollNext() ? false : true);
+  }, [thumbsApi]);
 
   // Handle resize for responsive behavior
   useEffect(() => {
@@ -32,6 +41,7 @@ export const ProductCarousel = ({ images }: { images: string[] }) => {
       setIsDesktop(desktop);
       if (thumbsApi) {
         thumbsApi.reInit({ axis: desktop ? "y" : "x" });
+        updateScrollButtonsState();
       }
     };
 
@@ -41,7 +51,7 @@ export const ProductCarousel = ({ images }: { images: string[] }) => {
     // Add resize listener
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [thumbsApi]);
+  }, [thumbsApi, updateScrollButtonsState]);
 
   // Event Handlers
   function handleThumbClick(index: number) {
@@ -56,39 +66,53 @@ export const ProductCarousel = ({ images }: { images: string[] }) => {
   }
 
   // Setup event listeners
-  if (mainApi) {
+  useEffect(() => {
+    if (!mainApi || !thumbsApi) return;
+
     mainApi.on("select", handleSelect);
-  }
+    thumbsApi.on("reInit", updateScrollButtonsState);
+    thumbsApi.on("scroll", updateScrollButtonsState);
+
+    updateScrollButtonsState();
+
+    return () => {
+      mainApi.off("select", handleSelect);
+      thumbsApi.off("reInit", updateScrollButtonsState);
+      thumbsApi.off("scroll", updateScrollButtonsState);
+    };
+  }, [mainApi, thumbsApi, updateScrollButtonsState]);
 
   return (
     <div className="grid gap-3 lg:grid-cols-[6rem_1fr] lg:gap-4">
       {/* Thumbnails - will be on left for desktop, bottom for mobile */}
-      <div className="order-2 overflow-hidden lg:order-1" ref={thumbsRef}>
-        <div className="grid touch-pan-x auto-cols-[5.5rem] grid-flow-col gap-2 lg:touch-pan-y lg:grid-flow-row lg:auto-rows-[6rem] lg:grid-rows-[repeat(auto-fill,minmax(6rem,1fr))]">
-          {images.map((image, index) => (
-            <button
-              key={index}
-              onClick={() => handleThumbClick(index)}
-              className={cn(
-                "relative aspect-square overflow-hidden rounded-lg border-2 transition-all",
-                selectedIndex === index
-                  ? "border-primary"
-                  : "border-transparent",
-              )}
-              aria-label={`View image ${index + 1}`}
-              aria-pressed={selectedIndex === index}
-            >
-              <Image
-                src={getImageUrlFromPath(image)}
-                sizes="(max-width: 768px) 72px, 80px"
-                alt={`Thumbnail ${index + 1}`}
-                fill
-                className="object-cover w-full h-full"
-                loading={index === 0 ? "eager" : "lazy"}
-                priority={index === 0}
-              />
-            </button>
-          ))}
+      <div className="relative order-2 overflow-hidden lg:order-1">
+        <div ref={thumbsRef}>
+          <div className="grid auto-cols-[5.5rem] grid-flow-col gap-2 lg:grid-flow-row lg:auto-rows-[6rem] lg:grid-rows-[repeat(auto-fill,minmax(6rem,1fr))]">
+            {images.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => handleThumbClick(index)}
+                className={cn(
+                  "relative aspect-square overflow-hidden rounded-lg border-2 transition-all",
+                  selectedIndex === index
+                    ? "border-primary"
+                    : "border-transparent",
+                )}
+                aria-label={`View image ${index + 1}`}
+                aria-pressed={selectedIndex === index}
+              >
+                <Image
+                  src={getImageUrlFromPath(image)}
+                  sizes="(max-width: 768px) 72px, 80px"
+                  alt={`Thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover w-full h-full"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  priority={index === 0}
+                />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

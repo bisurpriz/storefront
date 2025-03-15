@@ -1,12 +1,12 @@
 "use client";
 
-import { AlertCircle, MapPin } from "lucide-react";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { ResponsiveDialog } from "../ui/responsive-dialog";
-import PlacesAutocomplete, { useLocationChange } from "./PlacesAutocomplete";
-import { getCookie, setCookie } from "@/utils/cookies";
 import { CookieTokens } from "@/app/@auth/contants";
+import { getCookie, setCookie } from "@/utils/cookies";
+import { MapPin } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ResponsiveDialog } from "../ui/responsive-dialog";
+import PlacesAutocomplete from "./PlacesAutocomplete";
 
 export default function QuarterSelectorModal() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -15,12 +15,18 @@ export default function QuarterSelectorModal() {
   useEffect(() => {
     const hasSeenModal = getCookie(CookieTokens.HAS_SEEN_LOCATION_MODAL);
     if (!hasSeenModal) {
-      const publicRoutes = ["/siparis-takip", "/siparis-onay", "/blog", "/account"];
+      const publicRoutes = [
+        "/siparis-takip",
+        "/siparis-onay",
+        "/blog",
+        "/account",
+      ];
       const location = getCookie(CookieTokens.LOCATION_ID);
-      
-      const canShow = !location && !publicRoutes.some((route) => pathname.includes(route));
+
+      const canShow =
+        !location && !publicRoutes.some((route) => pathname.includes(route));
       setIsDialogOpen(canShow);
-      
+
       if (canShow) {
         setCookie(CookieTokens.HAS_SEEN_LOCATION_MODAL, "true");
       }
@@ -58,8 +64,8 @@ export default function QuarterSelectorModal() {
             <div className="flex items-center justify-center gap-2 rounded-lg bg-muted/50 px-4 py-3 text-muted-foreground">
               <MapPin className="h-4 w-4 flex-shrink-0" />
               <span>
-                Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen teslimat
-                bölgenizi belirleyiniz.
+                Size en uygun ürün ve hizmetleri sunabilmemiz için lütfen
+                teslimat bölgenizi belirleyiniz.
               </span>
             </div>
           </div>

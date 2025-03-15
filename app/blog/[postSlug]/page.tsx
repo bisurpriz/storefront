@@ -7,9 +7,6 @@ import Image from "next/image";
 import { cache } from "react";
 import { getBlogPostIdsAndSlug } from "./actions";
 
-export const revalidate = 0;
-export const dynamicParams = false;
-
 const cachedGetBlogPostIdsAndSlug = cache(getBlogPostIdsAndSlug);
 
 export async function generateStaticParams() {
@@ -35,11 +32,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { postSlug } = await props.params;
 
-  console.log(postSlug, " postSlug");
-
   const { blog } = await getBlogPostIdsAndSlug(postSlug);
-
-  console.log(blog, " blog");
 
   const post = blog?.[0];
 
@@ -66,6 +59,9 @@ export async function generateMetadata(props: {
   };
 }
 
+export const revalidate = 604800;
+export const dynamic = "force-static";
+
 export default async function BlogPostPage({ params }) {
   const { postSlug } = await params;
   const { blog } = await cachedGetBlogPostIdsAndSlug(postSlug);
@@ -77,7 +73,7 @@ export default async function BlogPostPage({ params }) {
   }
 
   return (
-    <article className="container prose prose-lg mx-auto max-w-5xl px-4 py-8 dark:prose-invert max-md:prose-sm">
+    <article className="container max-w-5xl px-4 py-8 mx-auto prose prose-lg dark:prose-invert max-md:prose-sm">
       <header className="mb-8">
         <h1 className="text-4xl font-bold">{post.title}</h1>
         <div className="flex items-center space-x-4">
@@ -91,7 +87,7 @@ export default async function BlogPostPage({ params }) {
           <div>
             <p className="!m-0 text-base font-semibold">{post.author}</p>
             <div className="flex items-center text-xs text-muted-foreground">
-              <CalendarIcon className="mr-1 h-4 w-4" />
+              <CalendarIcon className="w-4 h-4 mr-1" />
               <time dateTime="2023-11-10">
                 {localeFormat(new Date(post.created_at), "dd MMMM yyyy")}
               </time>
@@ -106,15 +102,15 @@ export default async function BlogPostPage({ params }) {
           alt={post.title}
           width={800}
           height={400}
-          className="mx-auto rounded-lg object-cover"
+          className="object-cover mx-auto rounded-lg"
         />
-        <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+        <figcaption className="mt-2 text-sm text-center text-muted-foreground">
           {post.title}
         </figcaption>
       </figure>
 
       <div
-        className="prose prose-sm"
+        className="prose-sm prose"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </article>

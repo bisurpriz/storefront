@@ -1,12 +1,11 @@
 "use client";
 
 import { OrderItemStatus } from "@/common/enums/Order/product";
-import { Link } from "@/components/Link";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Image } from "@/components/ui/image";
 import { GetOrderForTrackingQuery } from "@/graphql/queries/order/order.generated";
-import { getImageUrlFromPath, getTenantUrl } from "@/lib/utils";
+import { getImageUrlFromPath } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, Loader2, Package2, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -109,23 +108,9 @@ const OrderDetails = ({
                 </div>
                 <div className="flex-1 p-6 transition-all bg-white border shadow-md rounded-xl hover:shadow-lg">
                   <div className="flex flex-col justify-between gap-3 mb-4 sm:flex-row sm:items-center">
-                    <div>
-                      <h4 className="mb-2 text-lg font-medium text-gray-800">
-                        {oi.product.name}
-                      </h4>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>Satıcı:</span>
-                        <Link
-                          href={getTenantUrl(
-                            to.tenant?.tenants?.[0]?.name,
-                            to.tenant?.tenants?.[0]?.id,
-                          )}
-                          className="text-blue-600 hover:text-blue-700 hover:underline"
-                        >
-                          {to.tenant?.tenants?.[0]?.name || ""}
-                        </Link>
-                      </div>
-                    </div>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800">
+                      {oi.product.name}
+                    </h4>
                     <StatusBadge
                       status={OrderItemStatus[to.status || "Processing"]}
                     />
