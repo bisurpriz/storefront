@@ -1,5 +1,6 @@
 "use server";
 
+import { AI_API_URL } from "@/app/constants";
 import axios from "axios";
 
 type CheckAIAvailabilityResponse = {
@@ -44,16 +45,13 @@ export const createGeneratedNotes: (
 ) => Promise<GeneratedNote[]> = async (payload: GeneratedNotesPayload) => {
   const { product_name, product_description, user_notes, recipient } = payload;
   try {
-    const response = await axios.post(
-      "https://aware-lindy-bonnmarse-770961e7.koyeb.app/giftnote",
-      {
-        product_name,
-        product_description,
-        user_notes,
-        recipient,
-        number_of_notes: 3,
-      },
-    );
+    const response = await axios.post(`${AI_API_URL}/giftnote`, {
+      product_name,
+      product_description,
+      user_notes,
+      recipient,
+      number_of_notes: 3,
+    });
 
     return response.data;
   } catch (error) {
