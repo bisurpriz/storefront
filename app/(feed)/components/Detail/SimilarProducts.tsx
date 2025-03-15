@@ -24,6 +24,7 @@ interface MultiSearchResponse {
 interface SimilarProductsResponse {
   ids: string[];
 }
+
 const getSimilarProducts = async (
   productId: string,
   place_id: string,
@@ -39,7 +40,7 @@ const getSimilarProducts = async (
         cache: "no-store",
       },
     );
-    console.log(JSON.stringify(response, null, 2), "response");
+
     if (!response.ok) {
       console.error(`Error fetching similar products: ${response.status}`);
       return { ids: [] };
@@ -53,10 +54,34 @@ const getSimilarProducts = async (
   }
 };
 
+const fetchProductsById = async (
+  productIds: string[],
+): Promise<ITypesenseProduct[]> => {
+  if (!productIds.length) return [];
+
+  try {
+    const productsResponse = (await typesenseClient.multiSearch.perform({
+      searches: productIds.map((id) => ({
+        collection: "products",
+        q: "*",
+        filter_by: `id:=${id}`,
+        query_by: "name",
+      })),
+    })) as MultiSearchResponse;
+
+    // Extract products from the response
+    return productsResponse.results
+      .map((result) => result.hits?.[0]?.document)
+      .filter(Boolean) as ITypesenseProduct[];
+  } catch (error) {
+    console.error("Error fetching products by ID:", error);
+    return [];
+  }
+};
+
 const SimilarProducts = async ({ productId }: { productId: number }) => {
   try {
     const awaitedCookie = await cookies();
-
     const location = parseJson(
       awaitedCookie.get(CookieTokens.LOCATION_ID)?.value,
     );
@@ -69,25 +94,13 @@ const SimilarProducts = async ({ productId }: { productId: number }) => {
       productId.toString(),
       location.placeId,
     );
-    console.log(similarProducts.ids, "similarProducts");
+
     if (!similarProducts.ids || similarProducts.ids.length === 0) {
       return null;
     }
 
-    const productsResponse = (await typesenseClient.multiSearch.perform({
-      searches: similarProducts.ids.map((id) => ({
-        collection: "products",
-        q: "*",
-        filter_by: `id:=${id}`,
-        query_by: "name",
-      })),
-    })) as MultiSearchResponse;
+    const products = await fetchProductsById(similarProducts.ids);
 
-    console.log(productsResponse.results);
-    // Extract products from the response
-    const products = productsResponse.results
-      .map((result) => result.hits?.[0]?.document)
-      .filter(Boolean);
     if (products.length === 0) {
       return null;
     }
@@ -96,26 +109,28 @@ const SimilarProducts = async ({ productId }: { productId: number }) => {
       <div className="mt-8">
         <h2 className="mb-4 text-xl font-semibold">Benzer Ürünler</h2>
         <div className="relative w-full">
-          <div className="flex gap-4 pb-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+          <div className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
             {products.map((product) => (
               <Link
                 href={getProductDetailUrl(product.slug, product.id)}
                 key={product.id}
                 className="group w-[160px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-gray-200 transition-shadow hover:shadow-md md:w-[200px]"
               >
-                <div className="relative w-full h-40">
+                <div className="relative h-40 w-full">
                   <Image
                     src={getImageUrlFromPath(product.image_url[0])}
                     alt={product.name}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 160px, 200px"
+                    priority={false}
                   />
                 </div>
                 <div className="p-3">
-                  <h3 className="text-sm font-medium transition-colors group-hover:text-primary-600 line-clamp-2">
+                  <h3 className="group-hover:text-primary-600 line-clamp-2 text-sm font-medium transition-colors">
                     {product.name}
                   </h3>
-                  <p className="mt-2 text-sm font-semibold text-primary-600">
+                  <p className="text-primary-600 mt-2 text-sm font-semibold">
                     {product.price} TL
                   </p>
                 </div>

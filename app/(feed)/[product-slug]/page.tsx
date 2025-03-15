@@ -25,6 +25,7 @@ import ProductDescription from "../components/Detail/ProductDescription";
 import ProductDescriptionLoadingPage from "../components/Detail/ProductDescriptionLoadingPage";
 import ProductInformation from "../components/Detail/ProductInformation";
 import SimilarProducts from "../components/Detail/SimilarProducts";
+import SimilarProductsLoadingPage from "../components/Detail/SimilarProductsLoadingPage";
 
 // Set revalidation time for ISR (in seconds)
 export const revalidate = 300; // Revalidate 5 minutes
@@ -288,7 +289,7 @@ const ProductImageCarouselPage: FC<ProductPageProps> = async ({
           aria-labelledby="benzer-urunler"
           aria-describedby="Benzer Ürünler"
         >
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<SimilarProductsLoadingPage />}>
             <SimilarProducts productId={product.id} />
           </Suspense>
         </section>
