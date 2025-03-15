@@ -190,12 +190,6 @@ export function GiftCardNote({
     setAiGeneratedIndexes((prev) => new Set(prev.add(index)));
     updateCartItemNote(id, note, index);
     setIsOpen(false);
-
-    toast({
-      title: "Not Seçildi",
-      description: "Hediye notunuz başarıyla kaydedildi.",
-      variant: "default",
-    });
   };
 
   const handleViewGeneratedNotes = (index: number) => {
