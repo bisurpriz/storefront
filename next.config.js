@@ -118,7 +118,6 @@ const nextConfig = {
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
     styledComponents: true,
   },
   headers: async () => [
