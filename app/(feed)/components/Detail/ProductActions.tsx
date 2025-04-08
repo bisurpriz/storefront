@@ -79,6 +79,7 @@ const ProductActions = ({
   const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
 
   const isButtonDisableForLocation = useCallback(() => {
+    if (!isSameDay) return false;
     // Eğer seçili konum yoksa kontrol etmeye gerek yok
     if (!selectedLocation) return true;
 
@@ -114,7 +115,7 @@ const ProductActions = ({
         selectedLevel1
       );
     });
-
+    console.log(isLocationAvailable, "isLocationAvailable");
     return !isLocationAvailable;
   }, [selectedLocation, places]);
 
@@ -256,6 +257,8 @@ const ProductActions = ({
 
   const isAddToCartDisabled =
     isButtonDisableForLocation() || isButtonDisableForTime();
+  console.log("isAddToCartDisabled", isAddToCartDisabled);
+
   const isAddToCartLoading = isPending || loading;
   const locationValidationInProgress = isPending && isSameDay;
 
