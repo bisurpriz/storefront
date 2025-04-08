@@ -20,19 +20,73 @@ export function validateLocation(
 ) {
   if (!selectedLocation || !places || !isSameDay) return;
 
+  console.log("[VALIDATE_LOCATION] Starting validation", {
+    selectedLocation,
+    placesCount: places.length,
+  });
+
+  // First check for exact placeId match
+  if ("placeId" in selectedLocation) {
+    const exactMatch = places.some(
+      (place) => place.placeId === (selectedLocation as any).placeId,
+    );
+    if (exactMatch) {
+      console.log("[VALIDATE_LOCATION] Found exact placeId match");
+      setShowPlaceWarning(false);
+      return;
+    }
+  }
+
   const getAreaLevel = (level: string) =>
     selectedLocation.address_components.find((x) => x?.types?.includes(level))
       ?.short_name;
 
   const areaLevel1 = getAreaLevel("administrative_area_level_1");
+  const areaLevel2 = getAreaLevel("administrative_area_level_2");
   const areaLevel4 = getAreaLevel("administrative_area_level_4");
 
-  const isMatch = (place: Place) =>
-    place.addressComponents["administrative_area_level_1"] === areaLevel1 &&
-    (!areaLevel4 ||
-      place.addressComponents["administrative_area_level_4"] === areaLevel4);
+  console.log("[VALIDATE_LOCATION] Area levels", {
+    areaLevel1,
+    areaLevel2,
+    areaLevel4,
+  });
+
+  const isMatch = (place: Place) => {
+    // If we have a level4 (neighborhood), check that first
+    if (
+      areaLevel4 &&
+      place.addressComponents["administrative_area_level_4"] === areaLevel4
+    ) {
+      return true;
+    }
+
+    // If we have a level2 (district), check that
+    if (
+      areaLevel2 &&
+      place.addressComponents["administrative_area_level_2"] === areaLevel2
+    ) {
+      return true;
+    }
+
+    // Fallback to level1 (city)
+    return (
+      place.addressComponents["administrative_area_level_1"] === areaLevel1
+    );
+  };
 
   const isOK = areaLevel1 && places.some(isMatch);
+
+  console.log("[VALIDATE_LOCATION] Validation result", {
+    isOK,
+    places: places
+      .map((p) => ({
+        placeId: p.placeId,
+        level4: p.addressComponents["administrative_area_level_4"],
+        level2: p.addressComponents["administrative_area_level_2"],
+        level1: p.addressComponents["administrative_area_level_1"],
+      }))
+      .slice(0, 3), // Log first 3 places to avoid clutter
+  });
 
   setShowPlaceWarning(!isOK);
 }

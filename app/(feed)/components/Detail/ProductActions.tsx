@@ -127,23 +127,39 @@ const ProductActions = ({
 
     // Seçili lokasyon, gönderim yerleri arasında yoksa, butonu disable et
     const isLocationAvailable = places?.some((place) => {
-      if (selectedLevel4) {
+      // Hierarchical location validation
+      if (selectedLevel4 && selectedLevel2 && selectedLevel1) {
+        // If we have neighborhood, ensure district and city also match
         return (
           place?.addressComponents["administrative_area_level_4"] ===
-          selectedLevel4
-        );
-      }
-      if (selectedLevel2) {
-        return (
+            selectedLevel4 &&
           place?.addressComponents["administrative_area_level_2"] ===
-          selectedLevel2
+            selectedLevel2 &&
+          place?.addressComponents["administrative_area_level_1"] ===
+            selectedLevel1
         );
       }
 
-      return (
-        place?.addressComponents["administrative_area_level_1"] ===
-        selectedLevel1
-      );
+      if (selectedLevel2 && selectedLevel1) {
+        // If we have district but no neighborhood, ensure city matches
+        return (
+          place?.addressComponents["administrative_area_level_2"] ===
+            selectedLevel2 &&
+          place?.addressComponents["administrative_area_level_1"] ===
+            selectedLevel1
+        );
+      }
+
+      if (selectedLevel1) {
+        // If we only have city
+        return (
+          place?.addressComponents["administrative_area_level_1"] ===
+          selectedLevel1
+        );
+      }
+
+      // No location information available
+      return false;
     });
 
     console.log("[LOCATION_CHECK] Location availability check result", {
@@ -222,7 +238,7 @@ const ProductActions = ({
       );
       return {
         isValid: false,
-        message: "Lütfen teslimat tarihi ve saatini seçiniz.",
+        message: "Lütfen teslimat tarihi ve saati seçiniz.",
       };
     }
 
