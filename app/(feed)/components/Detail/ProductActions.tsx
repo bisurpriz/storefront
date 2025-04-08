@@ -78,6 +78,51 @@ const ProductActions = ({
   const isSameDay = delivery_type === "SAME_DAY";
   const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
 
+  const isButtonDisableForLocation = useCallback(() => {
+    // Eğer seçili konum yoksa kontrol etmeye gerek yok
+    if (!selectedLocation) return true;
+
+    // Eğer hiç place yoksa, butonu disable et
+    if (!places || places.length === 0) return true;
+
+    const getComponent = (type: string) =>
+      selectedLocation?.address_components?.find((x) =>
+        x?.types?.includes(type),
+      )?.short_name;
+
+    const selectedLevel4 = getComponent("administrative_area_level_4");
+    const selectedLevel2 = getComponent("administrative_area_level_2");
+    const selectedLevel1 = getComponent("administrative_area_level_1");
+
+    // Seçili lokasyon, gönderim yerleri arasında yoksa, butonu disable et
+    const isLocationAvailable = places?.some((place) => {
+      if (selectedLevel4) {
+        return (
+          place?.addressComponents["administrative_area_level_4"] ===
+          selectedLevel4
+        );
+      }
+      if (selectedLevel2) {
+        return (
+          place?.addressComponents["administrative_area_level_2"] ===
+          selectedLevel2
+        );
+      }
+
+      return (
+        place?.addressComponents["administrative_area_level_1"] ===
+        selectedLevel1
+      );
+    });
+
+    return !isLocationAvailable;
+  }, [selectedLocation, places]);
+
+  const isButtonDisableForTime = useCallback(() => {
+    if (!isSameDay) return false;
+    return hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour);
+  }, [isSameDay, hasDeliveryTimes, deliveryTime]);
+
   const validateDeliveryRequirements = useCallback((): ValidationState => {
     if (hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour)) {
       return {
@@ -86,15 +131,35 @@ const ProductActions = ({
       };
     }
 
-    if (isSameDay && (!selectedLocation || places.length === 0)) {
+    if (places.length === 0) {
+      return {
+        isValid: false,
+        message: "Bu ürün için teslimat bölgesi bulunmamaktadır.",
+      };
+    }
+
+    if (!selectedLocation) {
       return {
         isValid: false,
         message: "Lütfen teslimat konumunu seçiniz.",
       };
     }
 
+    if (isButtonDisableForLocation()) {
+      return {
+        isValid: false,
+        message: "Bu ürün seçili bölgeye gönderilememektedir.",
+      };
+    }
+
     return { isValid: true };
-  }, [hasDeliveryTimes, deliveryTime, isSameDay, selectedLocation, places]);
+  }, [
+    hasDeliveryTimes,
+    deliveryTime,
+    selectedLocation,
+    places,
+    isButtonDisableForLocation,
+  ]);
 
   const handleFavorite = useCallback(async () => {
     if (!user) {
@@ -158,44 +223,6 @@ const ProductActions = ({
     });
   }, [validateDeliveryRequirements, addToCart, getCartPayload, startProgress]);
 
-  const isButtonDisableForLocation = useCallback(() => {
-    if (!isSameDay) return false;
-
-    const getComponent = (type: string) =>
-      selectedLocation?.address_components?.find((x) =>
-        x?.types?.includes(type),
-      )?.short_name;
-
-    const selectedLevel4 = getComponent("administrative_area_level_4");
-    const selectedLevel2 = getComponent("administrative_area_level_2");
-    const selectedLevel1 = getComponent("administrative_area_level_1");
-
-    return !places?.some((place) => {
-      if (selectedLevel4) {
-        return (
-          place?.addressComponents["administrative_area_level_4"] ===
-          selectedLevel4
-        );
-      }
-      if (selectedLevel2) {
-        return (
-          place?.addressComponents["administrative_area_level_2"] ===
-          selectedLevel2
-        );
-      }
-
-      return (
-        place?.addressComponents["administrative_area_level_1"] ===
-        selectedLevel1
-      );
-    });
-  }, [isSameDay, selectedLocation, places]);
-
-  const isButtonDisableForTime = useCallback(() => {
-    if (!isSameDay) return false;
-    return hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour);
-  }, [isSameDay, hasDeliveryTimes, deliveryTime]);
-
   useEffect(() => {
     if (isSameDay) {
       const level4Places = places?.map((place) => ({
@@ -257,8 +284,8 @@ const ProductActions = ({
 
       {isButtonDisableForLocation() && selectedLocation && (
         <Alert variant="warning" className="mt-2 bg-amber-50/50">
-          <div className="absolute flex items-center justify-center w-10 h-10 rounded-full left-3 top-3 bg-amber-100 text-amber-700">
-            <MapPin className="w-5 h-5" strokeWidth={2.5} />
+          <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+            <MapPin className="h-5 w-5" strokeWidth={2.5} />
           </div>
           <div className="pl-12">
             <AlertTitle className="mb-2 text-amber-800">
@@ -288,7 +315,7 @@ const ProductActions = ({
         </Alert>
       )}
 
-      <div className="flex my-2 space-x-2">
+      <div className="my-2 flex space-x-2">
         <Button
           size="lg"
           variant={!validationState.isValid ? "destructive" : "default"}
@@ -297,20 +324,22 @@ const ProductActions = ({
           onClick={handleAddToBasket}
           loading={isAddToCartLoading}
         >
-          {isSameDay && places?.length === 0 && !hasDeliveryTimes
+          {isSameDay && places?.length === 0
             ? "Bu ürün için gönderim yeri mevcut değil"
-            : "Sepete Ekle"}
+            : isButtonDisableForLocation() && selectedLocation
+              ? "Seçili bölgeye gönderim yapılamamaktadır"
+              : "Sepete Ekle"}
         </Button>
 
         <Button
           size="lg"
-          className="flex items-center justify-center px-0 basis-1/5"
+          className="flex basis-1/5 items-center justify-center px-0"
           variant={isFavoriteState ? "destructive" : "outline"}
           icon={
             isFavoriteState ? (
-              <Heart className="w-8 h-8 text-white fill-red-500" />
+              <Heart className="h-8 w-8 fill-red-500 text-white" />
             ) : (
-              <Heart className="w-8 h-8 text-red-500" />
+              <Heart className="h-8 w-8 text-red-500" />
             )
           }
           onClick={handleFavorite}
