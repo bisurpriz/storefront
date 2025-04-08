@@ -79,12 +79,36 @@ const ProductActions = ({
   const hasDeliveryTimes = Boolean(parseJson(delivery_time_ranges)?.length > 0);
 
   const isButtonDisableForLocation = useCallback(() => {
-    if (!isSameDay) return false;
-    // Eğer seçili konum yoksa kontrol etmeye gerek yok
-    if (!selectedLocation) return true;
+    // Müşterinin seçtiği adres ürünün gidebileceği adresler arasında yoksa buton disable olmalıdır.
+    // Müşterinin adres seçmemiş ve ürün aynı gün teslimat ise buton disable olmalıdır.
+
+    console.log("[LOCATION_CHECK] Starting location check", {
+      isSameDay,
+      hasSelectedLocation: !!selectedLocation,
+      placesCount: places?.length || 0,
+    });
+
+    // Adres seçilmemişse ve ürün aynı gün teslimat ise buton disable olmalıdır
+    if (isSameDay && !selectedLocation) {
+      console.log(
+        "[LOCATION_CHECK] Disabled: Same day delivery but no location selected",
+      );
+      return true;
+    }
 
     // Eğer hiç place yoksa, butonu disable et
-    if (!places || places.length === 0) return true;
+    if (!places || places.length === 0) {
+      console.log("[LOCATION_CHECK] Disabled: No delivery places available");
+      return true;
+    }
+
+    // Eğer seçili konum yoksa daha fazla kontrol yapmaya gerek yok (same day değilse)
+    if (!selectedLocation) {
+      console.log(
+        "[LOCATION_CHECK] Enabled: Not same day delivery, no location needed",
+      );
+      return false;
+    }
 
     const getComponent = (type: string) =>
       selectedLocation?.address_components?.find((x) =>
@@ -94,6 +118,12 @@ const ProductActions = ({
     const selectedLevel4 = getComponent("administrative_area_level_4");
     const selectedLevel2 = getComponent("administrative_area_level_2");
     const selectedLevel1 = getComponent("administrative_area_level_1");
+
+    console.log("[LOCATION_CHECK] Location components", {
+      selectedLevel4,
+      selectedLevel2,
+      selectedLevel1,
+    });
 
     // Seçili lokasyon, gönderim yerleri arasında yoksa, butonu disable et
     const isLocationAvailable = places?.some((place) => {
@@ -115,46 +145,109 @@ const ProductActions = ({
         selectedLevel1
       );
     });
-    console.log(isLocationAvailable, "isLocationAvailable");
+
+    console.log("[LOCATION_CHECK] Location availability check result", {
+      isLocationAvailable,
+      places: places
+        ?.map((p) => ({
+          level4: p.addressComponents["administrative_area_level_4"],
+          level2: p.addressComponents["administrative_area_level_2"],
+          level1: p.addressComponents["administrative_area_level_1"],
+        }))
+        .slice(0, 3), // Log first 3 places to avoid console clutter
+    });
+
     return !isLocationAvailable;
-  }, [selectedLocation, places]);
+  }, [selectedLocation, places, isSameDay]);
 
   const isButtonDisableForTime = useCallback(() => {
-    if (!isSameDay) return false;
-    return hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour);
+    // Müşteri adres seçmişse ve tarih seçmemişse buton disable olmalıdır.
+
+    console.log("[TIME_CHECK] Starting time check", {
+      isSameDay,
+      hasDeliveryTimes,
+      selectedDay: deliveryTime.day ? deliveryTime.day.toISOString() : null,
+      selectedHour: deliveryTime.hour,
+    });
+
+    // Eğer aynı gün teslimat değilse, zaman kontrolü yapma
+    if (!isSameDay) {
+      console.log(
+        "[TIME_CHECK] Enabled: Not same day delivery, no time needed",
+      );
+      return false;
+    }
+
+    // Teslimat saatleri varsa ve müşteri tarih veya saat seçmemişse disable et
+    if (hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour)) {
+      console.log(
+        "[TIME_CHECK] Disabled: Same day delivery with times but missing selection",
+      );
+      return true;
+    }
+
+    console.log("[TIME_CHECK] Enabled: All time conditions met");
+    return false;
   }, [isSameDay, hasDeliveryTimes, deliveryTime]);
 
   const validateDeliveryRequirements = useCallback((): ValidationState => {
-    if (hasDeliveryTimes && (!deliveryTime.day || !deliveryTime.hour)) {
-      return {
-        isValid: false,
-        message: "Bu ürün için satıcı henüz teslimat saatini belirlemedi.",
-      };
-    }
+    console.log("[VALIDATION] Starting delivery validation", {
+      isSameDay,
+      hasDeliveryTimes,
+      hasLocation: !!selectedLocation,
+      placesCount: places?.length || 0,
+      deliveryDay: deliveryTime.day ? deliveryTime.day.toISOString() : null,
+      deliveryHour: deliveryTime.hour,
+    });
 
-    if (places.length === 0) {
-      return {
-        isValid: false,
-        message: "Bu ürün için teslimat bölgesi bulunmamaktadır.",
-      };
-    }
-
-    if (!selectedLocation) {
+    // Eğer adres seçilmemiş ve ürün aynı gün teslimat ise geçersiz
+    if (isSameDay && !selectedLocation) {
+      console.log(
+        "[VALIDATION] Invalid: Same day delivery but no location selected",
+      );
       return {
         isValid: false,
         message: "Lütfen teslimat konumunu seçiniz.",
       };
     }
 
-    if (isButtonDisableForLocation()) {
+    // Eğer teslimat saatleri varsa ve müşteri tarih/saat seçmemişse geçersiz
+    if (
+      isSameDay &&
+      hasDeliveryTimes &&
+      (!deliveryTime.day || !deliveryTime.hour)
+    ) {
+      console.log(
+        "[VALIDATION] Invalid: Same day delivery with times but missing time selection",
+      );
+      return {
+        isValid: false,
+        message: "Lütfen teslimat tarihi ve saatini seçiniz.",
+      };
+    }
+
+    // Eğer hiç teslimat yeri yoksa geçersiz
+    if (places.length === 0) {
+      console.log("[VALIDATION] Invalid: No delivery places available");
+      return {
+        isValid: false,
+        message: "Bu ürün için teslimat bölgesi bulunmamaktadır.",
+      };
+    }
+
+    // Eğer seçilen yer geçerli değilse geçersiz
+    if (selectedLocation && isButtonDisableForLocation()) {
+      console.log("[VALIDATION] Invalid: Location not in delivery areas");
       return {
         isValid: false,
         message: "Bu ürün seçili bölgeye gönderilememektedir.",
       };
     }
 
+    console.log("[VALIDATION] Valid: All conditions met");
     return { isValid: true };
   }, [
+    isSameDay,
     hasDeliveryTimes,
     deliveryTime,
     selectedLocation,
@@ -206,7 +299,9 @@ const ProductActions = ({
   }, [productId, selectedLocation, isSameDay, hasDeliveryTimes, deliveryTime]);
 
   const handleAddToBasket = useCallback(() => {
+    console.log("[ADD_TO_BASKET] Button clicked");
     const validation = validateDeliveryRequirements();
+    console.log("[ADD_TO_BASKET] Validation result", validation);
 
     if (!validation.isValid) {
       setValidationState(validation);
@@ -219,13 +314,18 @@ const ProductActions = ({
 
     startTransition(() => {
       startProgress();
-      addToCart(getCartPayload());
+      const payload = getCartPayload();
+      console.log("[ADD_TO_BASKET] Adding to cart with payload", payload);
+      addToCart(payload);
       push(CartStepPaths.CART);
     });
   }, [validateDeliveryRequirements, addToCart, getCartPayload, startProgress]);
 
   useEffect(() => {
     if (isSameDay) {
+      console.log("[EFFECT] Setting available level4 places", {
+        placesCount: places?.length || 0,
+      });
       const level4Places = places?.map((place) => ({
         placeId: place.placeId,
         name: place.label,
@@ -236,6 +336,10 @@ const ProductActions = ({
 
   useEffect(() => {
     if (isSameDay) {
+      console.log("[EFFECT] Running location validation", {
+        hasLocation: !!selectedLocation,
+        placesCount: places?.length || 0,
+      });
       startTransition(() => {
         validateLocation(
           selectedLocation,
@@ -248,7 +352,9 @@ const ProductActions = ({
   }, [selectedLocation, places, isSameDay]);
 
   useEffect(() => {
+    console.log("[COMPONENT] ProductActions mounted");
     return () => {
+      console.log("[COMPONENT] ProductActions unmounted");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -257,7 +363,11 @@ const ProductActions = ({
 
   const isAddToCartDisabled =
     isButtonDisableForLocation() || isButtonDisableForTime();
-  console.log("isAddToCartDisabled", isAddToCartDisabled);
+  console.log("[BUTTON_STATE] Final button state", {
+    isAddToCartDisabled,
+    locationDisabled: isButtonDisableForLocation(),
+    timeDisabled: isButtonDisableForTime(),
+  });
 
   const isAddToCartLoading = isPending || loading;
   const locationValidationInProgress = isPending && isSameDay;
@@ -308,6 +418,26 @@ const ProductActions = ({
         </Alert>
       )}
 
+      {isButtonDisableForLocation() && !selectedLocation && isSameDay && (
+        <Alert variant="informative" className="mt-2">
+          <MapPin />
+          <AlertTitle>Lütfen teslimat adresinizi seçin</AlertTitle>
+          <AlertDescription>
+            Ürünün teslimat için adres seçimi yapmanız gerekmektedir.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {isButtonDisableForTime() && selectedLocation && (
+        <Alert variant="informative" className="mt-2">
+          <Truck />
+          <AlertTitle>Lütfen teslimat tarihi ve saati seçin</AlertTitle>
+          <AlertDescription>
+            Sepete eklemeden önce teslimat tarihi ve saati seçmelisiniz.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {isSameDay && places?.length === 0 && (
         <Alert variant="destructive" className="mt-2">
           <Truck />
@@ -331,7 +461,11 @@ const ProductActions = ({
             ? "Bu ürün için gönderim yeri mevcut değil"
             : isButtonDisableForLocation() && selectedLocation
               ? "Seçili bölgeye gönderim yapılamamaktadır"
-              : "Sepete Ekle"}
+              : isButtonDisableForLocation() && !selectedLocation && isSameDay
+                ? "Lütfen teslimat konumunu seçin"
+                : isButtonDisableForTime() && selectedLocation
+                  ? "Lütfen teslimat tarihi ve saati seçin"
+                  : "Sepete Ekle"}
         </Button>
 
         <Button
